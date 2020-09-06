@@ -1,7 +1,9 @@
 library flutter_chat_ui;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/models/message.dart';
+export 'src/models/user.dart';
+export 'src/utils.dart';
+export 'src/widgets/chat.dart';
+export 'src/widgets/input.dart';
+export 'src/widgets/message.dart';
+export 'src/widgets/text_message.dart';
