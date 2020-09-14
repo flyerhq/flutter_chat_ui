@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/src/models/message.dart';
+import 'package:flutter_chat_ui/src/widgets/image_message.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/text_message.dart';
 
@@ -22,7 +23,7 @@ class Message extends StatelessWidget {
     switch (message.type) {
       case MessageType.image:
         final ImageMessageModel imageMessage = message;
-        return Image.network(imageMessage.url);
+        return ImageMessage(message: imageMessage);
       case MessageType.text:
         final TextMessageModel textMessage = message;
         return TextMessage(message: textMessage);
@@ -34,9 +35,15 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = InheritedUser.of(context).user;
+    final borderRadius = BorderRadius.only(
+      bottomLeft: Radius.circular(user.id == message.authorId ? 20 : 0),
+      bottomRight: Radius.circular(user.id == message.authorId ? 0 : 20),
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    );
 
     return Container(
-      alignment: message.authorId == user.id
+      alignment: user.id == message.authorId
           ? Alignment.centerRight
           : Alignment.centerLeft,
       margin: EdgeInsets.only(
@@ -47,16 +54,20 @@ class Message extends StatelessWidget {
           maxWidth: messageWidth.toDouble(),
         ),
         child: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            ),
-            color: Colors.blueAccent,
+          decoration: BoxDecoration(
+            borderRadius: borderRadius,
+            color:
+                user.id != message.authorId || message.type == MessageType.image
+                    ? Color(0xfff7f7f8)
+                    : Color(0xff6054c9),
           ),
           margin: const EdgeInsets.symmetric(
             horizontal: 24,
           ),
-          child: _buildMessage(),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: _buildMessage(),
+          ),
         ),
       ),
     );

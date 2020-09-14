@@ -40,39 +40,37 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  Future<List<MessageModel>> messages;
+  List<MessageModel> _messages = [];
 
-  Future<List<MessageModel>> _loadMessages() async {
+  void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
-    return (jsonDecode(response) as List)
+    final messages = (jsonDecode(response) as List)
         .map((e) => MessageModel.fromJson(e))
         .toList();
+
+    setState(() => {_messages = messages});
   }
 
   @override
   void initState() {
     super.initState();
-    messages = _loadMessages();
+    _loadMessages();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<MessageModel>>(
-        future: messages,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Chat(
-              messages: snapshot.data,
-              user: const User(
-                id: '06c33e8b-e835-4736-80f4-63f44b66666c',
-                name: 'Alex',
-              ),
-            );
-          }
-
-          return const Center(child: CircularProgressIndicator());
+      body: Chat(
+        messages: _messages,
+        onSendPressed: (message) {
+          setState(() {
+            _messages.insert(0, message);
+          });
         },
+        user: const User(
+          id: '06c33e8b-e835-4736-80f4-63f44b66666c',
+          name: 'Alex',
+        ),
       ),
     );
   }

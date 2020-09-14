@@ -10,12 +10,15 @@ class Chat extends StatefulWidget {
   Chat({
     Key key,
     @required this.messages,
+    @required this.onSendPressed,
     @required this.user,
   })  : assert(messages != null),
+        assert(onSendPressed != null),
         assert(user != null),
         super(key: key);
 
   final List<MessageModel> messages;
+  final void Function(TextMessageModel) onSendPressed;
   final User user;
 
   @override
@@ -54,7 +57,9 @@ class _ChatState extends State<Chat> {
               ),
             ),
           ),
-          Input(),
+          Input(
+            onSendPressed: widget.onSendPressed,
+          ),
         ],
       ),
     );
