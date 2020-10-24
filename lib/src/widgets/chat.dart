@@ -41,10 +41,14 @@ class _ChatState extends State<Chat> {
               child: GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus.unfocus(),
                 child: ListView.builder(
-                  itemCount: widget.messages.length,
+                  itemCount: widget.messages.length + 1,
                   padding: EdgeInsets.zero,
                   reverse: true,
                   itemBuilder: (context, index) {
+                    if (index == widget.messages.length) {
+                      return Container(height: 16);
+                    }
+
                     final message = widget.messages[index];
                     // Update the logic after pagination is introduced
                     final isFirst = index == 0;
