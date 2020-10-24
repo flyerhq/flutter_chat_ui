@@ -1,15 +1,19 @@
 import 'package:meta/meta.dart';
+import 'package:flutter_chat_ui/src/utils.dart';
 
 enum MessageType {
   image,
   text,
 }
 
+enum Status { error, read, sending, sent }
+
 @immutable
 abstract class MessageModel {
   const MessageModel(
     this.authorId,
     this.id,
+    this.status,
     this.timestamp,
     this.type,
   )   : assert(authorId != null),
@@ -19,11 +23,12 @@ abstract class MessageModel {
 
   final String authorId;
   final String id;
+  final Status status;
   final int timestamp;
   final MessageType type;
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
-    String type = json['type'];
+    final String type = json['type'];
 
     switch (type) {
       case 'image':
@@ -44,13 +49,14 @@ class ImageMessageModel extends MessageModel {
     @required id,
     @required this.imageName,
     @required this.size,
+    status,
     @required timestamp,
     @required this.url,
     this.width,
   })  : assert(imageName != null),
         assert(size != null),
         assert(url != null),
-        super(authorId, id, timestamp, MessageType.text);
+        super(authorId, id, status, timestamp, MessageType.text);
 
   final int height;
   final String imageName;
@@ -67,6 +73,7 @@ class ImageMessageModel extends MessageModel {
         super(
           json['authorId'],
           json['id'],
+          getStatusFromString(json['status']),
           json['timestamp'],
           MessageType.image,
         );
@@ -77,10 +84,11 @@ class TextMessageModel extends MessageModel {
   const TextMessageModel({
     @required authorId,
     @required id,
+    status,
     @required this.text,
     @required timestamp,
   })  : assert(text != null),
-        super(authorId, id, timestamp, MessageType.text);
+        super(authorId, id, status, timestamp, MessageType.text);
 
   final String text;
 
@@ -89,6 +97,7 @@ class TextMessageModel extends MessageModel {
         super(
           json['authorId'],
           json['id'],
+          getStatusFromString(json['status']),
           json['timestamp'],
           MessageType.text,
         );
