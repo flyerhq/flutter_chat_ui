@@ -7,11 +7,6 @@ enum MessageType {
 
 @immutable
 abstract class MessageModel {
-  final String authorId;
-  final String id;
-  final int timestamp;
-  final MessageType type;
-
   const MessageModel(
     this.authorId,
     this.id,
@@ -21,6 +16,11 @@ abstract class MessageModel {
         assert(id != null),
         assert(timestamp != null),
         assert(type != null);
+
+  final String authorId;
+  final String id;
+  final int timestamp;
+  final MessageType type;
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     String type = json['type'];
@@ -38,22 +38,30 @@ abstract class MessageModel {
 
 @immutable
 class ImageMessageModel extends MessageModel {
-  final num height;
-  final String url;
-  final num width;
-
-  ImageMessageModel({
+  const ImageMessageModel({
     @required authorId,
     this.height,
     @required id,
+    @required this.imageName,
+    @required this.size,
     @required timestamp,
     @required this.url,
     this.width,
-  })  : assert(url != null),
+  })  : assert(imageName != null),
+        assert(size != null),
+        assert(url != null),
         super(authorId, id, timestamp, MessageType.text);
+
+  final int height;
+  final String imageName;
+  final int size;
+  final String url;
+  final int width;
 
   ImageMessageModel.fromJson(Map<String, dynamic> json)
       : height = json['height'],
+        imageName = json['imageName'],
+        size = json['size'],
         url = json['url'],
         width = json['width'],
         super(
@@ -66,15 +74,15 @@ class ImageMessageModel extends MessageModel {
 
 @immutable
 class TextMessageModel extends MessageModel {
-  final String text;
-
-  TextMessageModel({
+  const TextMessageModel({
     @required authorId,
     @required id,
     @required this.text,
     @required timestamp,
   })  : assert(text != null),
         super(authorId, id, timestamp, MessageType.text);
+
+  final String text;
 
   TextMessageModel.fromJson(Map<String, dynamic> json)
       : text = json['text'],

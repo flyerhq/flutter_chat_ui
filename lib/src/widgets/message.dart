@@ -5,7 +5,7 @@ import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/text_message.dart';
 
 class Message extends StatelessWidget {
-  Message({
+  const Message({
     Key key,
     this.message,
     this.messageWidth,
@@ -47,7 +47,9 @@ class Message extends StatelessWidget {
           ? Alignment.centerRight
           : Alignment.centerLeft,
       margin: EdgeInsets.only(
-        bottom: previousMessageSameAuthor ? 8 : 24,
+        bottom: previousMessageSameAuthor ? 8 : 16,
+        left: 24,
+        right: 24,
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -60,9 +62,6 @@ class Message extends StatelessWidget {
                 user.id != message.authorId || message.type == MessageType.image
                     ? Color(0xfff7f7f8)
                     : Color(0xff6054c9),
-          ),
-          margin: const EdgeInsets.symmetric(
-            horizontal: 24,
           ),
           child: ClipRRect(
             borderRadius: borderRadius,

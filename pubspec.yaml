@@ -24,11 +24,20 @@ flutter:
   # To add assets to your package, add an assets section, like this:
   assets:
     - packages/flutter_chat_ui/assets/icon-attachment.png
+    - packages/flutter_chat_ui/assets/icon-document.png
+    - packages/flutter_chat_ui/assets/icon-read.png
     - packages/flutter_chat_ui/assets/icon-send.png
+    - packages/flutter_chat_ui/assets/icon-sent.png
     - packages/flutter_chat_ui/assets/2.0x/icon-attachment.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-document.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-read.png
     - packages/flutter_chat_ui/assets/2.0x/icon-send.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-sent.png
     - packages/flutter_chat_ui/assets/3.0x/icon-attachment.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-document.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-read.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-sent.png
 
   #
   # For details regarding assets in packages, see

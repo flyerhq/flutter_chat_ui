@@ -6,7 +6,7 @@ import 'package:flutter_chat_ui/src/widgets/send_button.dart';
 import 'package:uuid/uuid.dart';
 
 class Input extends StatefulWidget {
-  Input({
+  const Input({
     Key key,
     @required this.onSendPressed,
   })  : assert(onSendPressed != null),

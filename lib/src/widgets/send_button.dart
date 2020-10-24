@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SendButton extends StatelessWidget {
-  SendButton({
+  const SendButton({
     Key key,
     this.onPressed,
   })  : assert(onPressed != null),
@@ -12,12 +12,10 @@ class SendButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 20,
-      width: 20,
+      height: 24,
+      width: 24,
       child: IconButton(
-        iconSize: 20,
         padding: EdgeInsets.zero,
-        splashRadius: 20,
         icon: Image.asset(
           'assets/icon-send.png',
           package: 'flutter_chat_ui',

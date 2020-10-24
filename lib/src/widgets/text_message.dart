@@ -1,9 +1,9 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/src/models/message.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 
 class TextMessage extends StatelessWidget {
-  TextMessage({
+  const TextMessage({
     Key key,
     this.message,
   })  : assert(message != null),
@@ -23,9 +23,7 @@ class TextMessage extends StatelessWidget {
       child: Text(
         message.text,
         style: TextStyle(
-          color: user.id == message.authorId
-              ? Color(0xffffffff)
-              : Color(0xff2e2c2c),
+          color: user.id == message.authorId ? Colors.white : Color(0xff2e2c2c),
           fontSize: 16,
           fontWeight: FontWeight.w500,
           height: 1.25,

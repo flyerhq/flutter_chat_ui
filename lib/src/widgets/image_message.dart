@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_ui/src/models/message.dart';
 
 class ImageMessage extends StatelessWidget {
-  ImageMessage({
+  const ImageMessage({
     Key key,
     this.message,
   })  : assert(message != null),
