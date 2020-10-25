@@ -19,8 +19,8 @@ class Input extends StatefulWidget {
 }
 
 class _InputState extends State<Input> {
-  final _textController = TextEditingController();
   bool _sendButtonVisible = false;
+  final _textController = TextEditingController();
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    final query = MediaQuery.of(context);
+    final _query = MediaQuery.of(context);
 
     return Material(
       borderRadius: const BorderRadius.vertical(
@@ -62,10 +62,10 @@ class _InputState extends State<Input> {
       color: Colors.black,
       child: Container(
         padding: EdgeInsets.fromLTRB(
-          24 + query.padding.left,
+          24 + _query.padding.left,
           20,
-          24 + query.padding.right,
-          20 + query.viewInsets.bottom + query.padding.bottom,
+          24 + _query.padding.right,
+          20 + _query.viewInsets.bottom + _query.padding.bottom,
         ),
         child: Row(
           children: [
@@ -85,7 +85,7 @@ class _InputState extends State<Input> {
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                     height: 1.25,
                   ),
                   textCapitalization: TextCapitalization.sentences,

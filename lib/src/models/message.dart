@@ -58,18 +58,18 @@ class ImageMessageModel extends MessageModel {
         assert(url != null),
         super(authorId, id, status, timestamp, MessageType.text);
 
-  final int height;
+  final double height;
   final String imageName;
   final int size;
   final String url;
-  final int width;
+  final double width;
 
   ImageMessageModel.fromJson(Map<String, dynamic> json)
-      : height = json['height'],
+      : height = json['height']?.toDouble(),
         imageName = json['imageName'],
         size = json['size'],
         url = json['url'],
-        width = json['width'],
+        width = json['width']?.toDouble(),
         super(
           json['authorId'],
           json['id'],

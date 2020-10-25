@@ -48,7 +48,9 @@ class _ChatPageState extends State<ChatPage> {
         .map((e) => MessageModel.fromJson(e))
         .toList();
 
-    setState(() => {_messages = messages});
+    setState(() {
+      _messages = messages;
+    });
   }
 
   @override

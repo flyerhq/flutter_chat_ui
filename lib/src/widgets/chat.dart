@@ -28,7 +28,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
-    final messageWidth =
+    final _messageWidth =
         min(MediaQuery.of(context).size.width * 0.77, 440).floor();
 
     return InheritedUser(
@@ -61,7 +61,7 @@ class _ChatState extends State<Chat> {
 
                     return Message(
                       message: message,
-                      messageWidth: messageWidth,
+                      messageWidth: _messageWidth,
                       previousMessageSameAuthor: previousMessageSameAuthor,
                     );
                   },

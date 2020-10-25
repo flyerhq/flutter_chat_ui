@@ -23,7 +23,10 @@ class Message extends StatelessWidget {
     switch (message.type) {
       case MessageType.image:
         final ImageMessageModel imageMessage = message;
-        return ImageMessage(message: imageMessage);
+        return ImageMessage(
+          message: imageMessage,
+          messageWidth: messageWidth,
+        );
       case MessageType.text:
         final TextMessageModel textMessage = message;
         return TextMessage(message: textMessage);
@@ -34,16 +37,16 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = InheritedUser.of(context).user;
-    final borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(user.id == message.authorId ? 20 : 0),
-      bottomRight: Radius.circular(user.id == message.authorId ? 0 : 20),
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
+    final _user = InheritedUser.of(context).user;
+    final _borderRadius = BorderRadius.only(
+      bottomLeft: Radius.circular(_user.id == message.authorId ? 20 : 0),
+      bottomRight: Radius.circular(_user.id == message.authorId ? 0 : 20),
+      topLeft: const Radius.circular(20),
+      topRight: const Radius.circular(20),
     );
 
     return Container(
-      alignment: user.id == message.authorId
+      alignment: _user.id == message.authorId
           ? Alignment.centerRight
           : Alignment.centerLeft,
       margin: EdgeInsets.only(
@@ -57,14 +60,14 @@ class Message extends StatelessWidget {
         ),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            color:
-                user.id != message.authorId || message.type == MessageType.image
-                    ? Color(0xfff7f7f8)
-                    : Color(0xff6054c9),
+            borderRadius: _borderRadius,
+            color: _user.id != message.authorId ||
+                    message.type == MessageType.image
+                ? Color(0xfff7f7f8)
+                : Color(0xff6054c9),
           ),
           child: ClipRRect(
-            borderRadius: borderRadius,
+            borderRadius: _borderRadius,
             child: _buildMessage(),
           ),
         ),

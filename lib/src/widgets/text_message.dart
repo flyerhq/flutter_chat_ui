@@ -13,7 +13,7 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = InheritedUser.of(context).user;
+    final _user = InheritedUser.of(context).user;
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -23,7 +23,8 @@ class TextMessage extends StatelessWidget {
       child: Text(
         message.text,
         style: TextStyle(
-          color: user.id == message.authorId ? Colors.white : Color(0xff2e2c2c),
+          color:
+              _user.id == message.authorId ? Colors.white : Color(0xff2e2c2c),
           fontSize: 16,
           fontWeight: FontWeight.w500,
           height: 1.25,
