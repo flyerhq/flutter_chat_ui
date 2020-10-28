@@ -45,12 +45,14 @@ class _ImageMessageState extends State<ImageMessage> {
   }
 
   void _updateSize(ImageInfo info, bool _) {
-    setState(() {
-      _size = Size(
-        info.image.width.toDouble(),
-        info.image.height.toDouble(),
-      );
-    });
+    if (info != null) {
+      setState(() {
+        _size = Size(
+          info.image.width.toDouble(),
+          info.image.height.toDouble(),
+        );
+      });
+    }
   }
 
   @override
