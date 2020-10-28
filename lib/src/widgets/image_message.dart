@@ -20,38 +20,37 @@ class ImageMessage extends StatefulWidget {
 }
 
 class _ImageMessageState extends State<ImageMessage> {
+  CachedNetworkImageProvider _imageProvider;
+  ImageStreamListener _listener;
+  ImageStream _stream;
   Size _size = Size(0, 0);
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
-    });
-  }
-
-  Widget _buildImage(ImageProvider<Object> imageProvider) {
-    final widget = Image(
-      fit: BoxFit.contain,
-      image: imageProvider,
-    );
+    _imageProvider = CachedNetworkImageProvider(widget.message.url);
+    _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
 
     if (_size.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget.image
-            .resolve(ImageConfiguration.empty)
-            .addListener(ImageStreamListener((ImageInfo info, bool _) {
-          setState(() {
-            _size = Size(
-              info.image.width.toDouble(),
-              info.image.height.toDouble(),
-            );
-          });
-        }));
-      });
+      _stream = _imageProvider.resolve(ImageConfiguration.empty);
+      _listener = ImageStreamListener(_updateSize);
+      _stream.addListener(_listener);
     }
+  }
 
-    return widget;
+  @override
+  void dispose() {
+    _stream?.removeListener(_listener);
+    super.dispose();
+  }
+
+  void _updateSize(ImageInfo info, bool _) {
+    setState(() {
+      _size = Size(
+        info.image.width.toDouble(),
+        info.image.height.toDouble(),
+      );
+    });
   }
 
   @override
@@ -63,18 +62,17 @@ class _ImageMessageState extends State<ImageMessage> {
       ),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: CachedNetworkImageProvider(widget.message.url),
           fit: BoxFit.cover,
+          image: _imageProvider,
         ),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
         child: AspectRatio(
           aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
-          child: CachedNetworkImage(
-            imageBuilder: (context, imageProvider) =>
-                _buildImage(imageProvider),
-            imageUrl: widget.message.url,
+          child: Image(
+            fit: BoxFit.contain,
+            image: _imageProvider,
           ),
         ),
       ),

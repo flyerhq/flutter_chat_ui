@@ -44,13 +44,13 @@ abstract class MessageModel {
 @immutable
 class ImageMessageModel extends MessageModel {
   const ImageMessageModel({
-    @required authorId,
+    @required String authorId,
     this.height,
-    @required id,
+    @required String id,
     @required this.imageName,
     @required this.size,
-    status,
-    @required timestamp,
+    Status status,
+    @required int timestamp,
     @required this.url,
     this.width,
   })  : assert(imageName != null),
@@ -82,11 +82,11 @@ class ImageMessageModel extends MessageModel {
 @immutable
 class TextMessageModel extends MessageModel {
   const TextMessageModel({
-    @required authorId,
-    @required id,
-    status,
+    @required String authorId,
+    @required String id,
+    Status status,
     @required this.text,
-    @required timestamp,
+    @required int timestamp,
   })  : assert(text != null),
         super(authorId, id, status, timestamp, MessageType.text);
 
