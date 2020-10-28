@@ -1,3 +1,7 @@
+## 0.0.4
+
+- Fix image support
+
 ## 0.0.3
 
 - Added image support
