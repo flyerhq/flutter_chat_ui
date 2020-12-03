@@ -1,5 +1,5 @@
-import 'utils.test.dart' as utils_test;
+import 'util.test.dart' as util_test;
 
 void main() {
-  utils_test.main();
+  util_test.main();
 }

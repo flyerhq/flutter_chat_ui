@@ -1,3 +1,7 @@
+## 0.0.5
+
+- Moved types to the dedicated package
+
 ## 0.0.4
 
 - Fix image support

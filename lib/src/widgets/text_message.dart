@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/src/models/message.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 
 class TextMessage extends StatelessWidget {
@@ -9,7 +9,7 @@ class TextMessage extends StatelessWidget {
   })  : assert(message != null),
         super(key: key);
 
-  final TextMessageModel message;
+  final Types.TextMessage message;
 
   @override
   Widget build(BuildContext context) {

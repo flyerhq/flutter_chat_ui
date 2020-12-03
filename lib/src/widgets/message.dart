@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/src/models/message.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
 import 'package:flutter_chat_ui/src/widgets/image_message.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/text_message.dart';
@@ -15,20 +15,20 @@ class Message extends StatelessWidget {
         assert(previousMessageSameAuthor != null),
         super(key: key);
 
-  final MessageModel message;
+  final Types.Message message;
   final int messageWidth;
   final bool previousMessageSameAuthor;
 
   Widget _buildMessage() {
     switch (message.type) {
-      case MessageType.image:
-        final ImageMessageModel imageMessage = message;
+      case Types.MessageType.image:
+        final Types.ImageMessage imageMessage = message;
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
         );
-      case MessageType.text:
-        final TextMessageModel textMessage = message;
+      case Types.MessageType.text:
+        final Types.TextMessage textMessage = message;
         return TextMessage(message: textMessage);
       default:
         return Container();
@@ -62,7 +62,7 @@ class Message extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: _borderRadius,
             color: _user.id != message.authorId ||
-                    message.type == MessageType.image
+                    message.type == Types.MessageType.image
                 ? Color(0xfff7f7f8)
                 : Color(0xff6054c9),
           ),

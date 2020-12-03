@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/src/models/message.dart';
-import 'package:flutter_chat_ui/src/models/user.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/input.dart';
 import 'package:flutter_chat_ui/src/widgets/message.dart';
@@ -17,9 +16,9 @@ class Chat extends StatefulWidget {
         assert(user != null),
         super(key: key);
 
-  final List<MessageModel> messages;
-  final void Function(TextMessageModel) onSendPressed;
-  final User user;
+  final List<Types.Message> messages;
+  final void Function(Types.TextMessage) onSendPressed;
+  final Types.User user;
 
   @override
   _ChatState createState() => _ChatState();

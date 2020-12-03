@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/src/models/message.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
 import 'package:flutter_chat_ui/src/widgets/attachment_button.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/send_button.dart';
@@ -12,7 +12,7 @@ class Input extends StatefulWidget {
   })  : assert(onSendPressed != null),
         super(key: key);
 
-  final void Function(TextMessageModel) onSendPressed;
+  final void Function(Types.TextMessage) onSendPressed;
 
   @override
   _InputState createState() => _InputState();
@@ -35,7 +35,7 @@ class _InputState extends State<Input> {
   }
 
   void _handleSendPressed() {
-    final message = TextMessageModel(
+    final message = Types.TextMessage(
       authorId: InheritedUser.of(context).user.id,
       id: Uuid().v4(),
       text: _textController.text.trim(),

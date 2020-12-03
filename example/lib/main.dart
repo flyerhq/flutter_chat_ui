@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 void main() {
@@ -40,12 +41,12 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<MessageModel> _messages = [];
+  List<Types.Message> _messages = [];
 
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
-        .map((e) => MessageModel.fromJson(e))
+        .map((e) => Types.Message.fromJson(e))
         .toList();
 
     setState(() {
@@ -69,9 +70,10 @@ class _ChatPageState extends State<ChatPage> {
             _messages.insert(0, message);
           });
         },
-        user: const User(
+        user: const Types.User(
+          firstName: 'Alex',
           id: '06c33e8b-e835-4736-80f4-63f44b66666c',
-          name: 'Alex',
+          lastName: 'Demchenko',
         ),
       ),
     );
