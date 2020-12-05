@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class ImageMessage extends StatefulWidget {
   const ImageMessage({
@@ -12,7 +12,7 @@ class ImageMessage extends StatefulWidget {
         assert(messageWidth != null),
         super(key: key);
 
-  final Types.ImageMessage message;
+  final types.ImageMessage message;
   final int messageWidth;
 
   @override

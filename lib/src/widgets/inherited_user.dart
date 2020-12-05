@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as Types;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class InheritedUser extends InheritedWidget {
   const InheritedUser({
@@ -10,7 +10,7 @@ class InheritedUser extends InheritedWidget {
         assert(child != null),
         super(key: key, child: child);
 
-  final Types.User user;
+  final types.User user;
 
   static InheritedUser of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<InheritedUser>();
