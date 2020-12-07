@@ -1,3 +1,7 @@
+## 0.0.6
+
+- Add file support
+
 ## 0.0.5
 
 - Moved types to the dedicated package

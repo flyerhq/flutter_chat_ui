@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AttachmentButton extends StatelessWidget {
+  const AttachmentButton({
+    Key key,
+    this.onPressed,
+  }) : super(key: key);
+
+  final void Function() onPressed;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -10,9 +17,10 @@ class AttachmentButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         icon: Image.asset(
           'assets/icon-attachment.png',
+          color: const Color(0xffffffff),
           package: 'flutter_chat_ui',
         ),
-        onPressed: () {},
+        onPressed: onPressed,
       ),
     );
   }

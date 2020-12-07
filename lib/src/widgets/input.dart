@@ -76,17 +76,20 @@ class _InputState extends State<Input> {
                 child: TextField(
                   controller: _textController,
                   decoration: const InputDecoration.collapsed(
-                    hintStyle: TextStyle(color: Color(0xccffffff)),
+                    hintStyle: TextStyle(
+                      color: const Color(0x80ffffff),
+                    ),
                     hintText: 'Your message here',
                   ),
                   keyboardType: TextInputType.multiline,
                   maxLines: 5,
                   minLines: 1,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: const Color(0xffffffff),
+                    fontFamily: 'Avenir',
                     fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    height: 1.25,
+                    fontWeight: FontWeight.w500,
+                    height: 1.375,
                   ),
                   textCapitalization: TextCapitalization.sentences,
                 ),

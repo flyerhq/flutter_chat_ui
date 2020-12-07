@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/file_message.dart';
 import 'package:flutter_chat_ui/src/widgets/image_message.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/text_message.dart';
@@ -7,9 +8,9 @@ import 'package:flutter_chat_ui/src/widgets/text_message.dart';
 class Message extends StatelessWidget {
   const Message({
     Key key,
-    this.message,
-    this.messageWidth,
-    this.previousMessageSameAuthor,
+    @required this.message,
+    @required this.messageWidth,
+    @required this.previousMessageSameAuthor,
   })  : assert(message != null),
         assert(messageWidth != null),
         assert(previousMessageSameAuthor != null),
@@ -21,11 +22,17 @@ class Message extends StatelessWidget {
 
   Widget _buildMessage() {
     switch (message.type) {
+      case types.MessageType.file:
+        final types.FileMessage fileMessage = message;
+        return FileMessage(
+          message: fileMessage,
+        );
       case types.MessageType.image:
         final types.ImageMessage imageMessage = message;
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
+          onPressed: (String url) {},
         );
       case types.MessageType.text:
         final types.TextMessage textMessage = message;
@@ -63,8 +70,8 @@ class Message extends StatelessWidget {
             borderRadius: _borderRadius,
             color: _user.id != message.authorId ||
                     message.type == types.MessageType.image
-                ? Color(0xfff7f7f8)
-                : Color(0xff6054c9),
+                ? const Color(0xfff7f7f8)
+                : const Color(0xff6f61e8),
           ),
           child: ClipRRect(
             borderRadius: _borderRadius,
