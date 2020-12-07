@@ -1,3 +1,7 @@
+## 0.0.8
+
+- Update types
+
 ## 0.0.7
 
 - Fix image and file name overflow
