@@ -88,41 +88,44 @@ class _ImageMessageState extends State<ImageMessage> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.fromLTRB(0, 16, 24, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.message.imageName,
-                      style: TextStyle(
-                        color: _user.id == widget.message.authorId
-                            ? const Color(0xffffffff)
-                            : const Color(0xff1d1d21),
-                        fontFamily: 'Avenir',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        height: 1.375,
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 4,
-                      ),
-                      child: Text(
-                        formatBytes(widget.message.size),
+              Flexible(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 24, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.message.imageName,
                         style: TextStyle(
                           color: _user.id == widget.message.authorId
-                              ? const Color(0x80ffffff)
-                              : const Color(0xff9e9cab),
+                              ? const Color(0xffffffff)
+                              : const Color(0xff1d1d21),
                           fontFamily: 'Avenir',
-                          fontSize: 12,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                           height: 1.375,
                         ),
+                        textWidthBasis: TextWidthBasis.longestLine,
                       ),
-                    ),
-                  ],
+                      Container(
+                        margin: const EdgeInsets.only(
+                          top: 4,
+                        ),
+                        child: Text(
+                          formatBytes(widget.message.size),
+                          style: TextStyle(
+                            color: _user.id == widget.message.authorId
+                                ? const Color(0x80ffffff)
+                                : const Color(0xff9e9cab),
+                            fontFamily: 'Avenir',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            height: 1.375,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

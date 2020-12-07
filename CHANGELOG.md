@@ -1,3 +1,7 @@
+## 0.0.7
+
+- Fix image and file name overflow
+
 ## 0.0.6
 
 - Add file support
