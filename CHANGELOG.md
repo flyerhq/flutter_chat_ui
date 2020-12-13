@@ -1,3 +1,7 @@
+## 0.1.0
+
+- Update LICENSE
+
 ## 0.0.9
 
 - Update types
