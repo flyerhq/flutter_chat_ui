@@ -86,5 +86,15 @@
     "timestamp": 1598438785,
     "type": "image",
     "url": "https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg"
+  },
+  {
+    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "id": "8fa70836-3309-4d09-a777-4d9603e1f123",
+    "fileName": "image.jpg",
+    "mimeType": "image/jpg",
+    "size": 13264,
+    "timestamp":1598438785,
+    "type": "file",
+    "url": "https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg"
   }
 ]
