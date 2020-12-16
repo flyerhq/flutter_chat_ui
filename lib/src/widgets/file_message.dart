@@ -12,7 +12,7 @@ class FileMessage extends StatelessWidget {
         super(key: key);
 
   final types.FileMessage message;
-  final void Function(types.FileMessage message) onPressed;
+  final void Function(types.FileMessage) onPressed;
 
   @override
   Widget build(BuildContext context) {

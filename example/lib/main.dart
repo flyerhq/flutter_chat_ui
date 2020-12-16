@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -54,6 +58,21 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  void _openFile(types.FileMessage message) async {
+    final client = new http.Client();
+    var request = await client.get(Uri.parse(message.url));
+    var bytes = request.bodyBytes;
+    final documantsDir = (await getApplicationDocumentsDirectory()).path;
+    final localPath = '$documantsDir/${message.fileName}';
+
+    if (!File(localPath).existsSync()) {
+      final file = new File(localPath);
+      await file.writeAsBytes(bytes);
+    }
+
+    await OpenFile.open(localPath);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +84,9 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Chat(
         messages: _messages,
+        onFilePressed: (message) {
+          _openFile(message);
+        },
         onSendPressed: (message) {
           setState(() {
             _messages.insert(0, message);

@@ -10,6 +10,7 @@ class Message extends StatelessWidget {
     Key key,
     @required this.message,
     @required this.messageWidth,
+    this.onFilePressed,
     @required this.previousMessageSameAuthor,
   })  : assert(message != null),
         assert(messageWidth != null),
@@ -18,6 +19,7 @@ class Message extends StatelessWidget {
 
   final types.Message message;
   final int messageWidth;
+  final void Function(types.FileMessage) onFilePressed;
   final bool previousMessageSameAuthor;
 
   Widget _buildMessage() {
@@ -26,6 +28,7 @@ class Message extends StatelessWidget {
         final types.FileMessage fileMessage = message;
         return FileMessage(
           message: fileMessage,
+          onPressed: onFilePressed,
         );
       case types.MessageType.image:
         final types.ImageMessage imageMessage = message;

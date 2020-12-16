@@ -9,6 +9,7 @@ class Chat extends StatefulWidget {
   const Chat({
     Key key,
     @required this.messages,
+    this.onFilePressed,
     @required this.onSendPressed,
     @required this.user,
   })  : assert(messages != null),
@@ -17,6 +18,7 @@ class Chat extends StatefulWidget {
         super(key: key);
 
   final List<types.Message> messages;
+  final void Function(types.FileMessage) onFilePressed;
   final void Function(types.TextMessage) onSendPressed;
   final types.User user;
 
@@ -61,6 +63,7 @@ class _ChatState extends State<Chat> {
                     return Message(
                       message: message,
                       messageWidth: _messageWidth,
+                      onFilePressed: widget.onFilePressed,
                       previousMessageSameAuthor: previousMessageSameAuthor,
                     );
                   },
