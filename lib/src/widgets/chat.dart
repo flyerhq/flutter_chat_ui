@@ -8,8 +8,8 @@ import 'package:flutter_chat_ui/src/widgets/message.dart';
 class Chat extends StatefulWidget {
   const Chat({
     Key key,
-    this.onFilePressed,
     @required this.messages,
+    this.onFilePressed,
     @required this.onSendPressed,
     @required this.user,
   })  : assert(messages != null),
@@ -17,8 +17,8 @@ class Chat extends StatefulWidget {
         assert(user != null),
         super(key: key);
 
-  final void Function(types.FileMessage) onFilePressed;
   final List<types.Message> messages;
+  final void Function(types.FileMessage) onFilePressed;
   final void Function(types.TextMessage) onSendPressed;
   final types.User user;
 
