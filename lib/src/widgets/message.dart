@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/file_message.dart';
 import 'package:flutter_chat_ui/src/widgets/image_message.dart';
@@ -12,15 +13,18 @@ class Message extends StatelessWidget {
     @required this.messageWidth,
     this.onFilePressed,
     @required this.previousMessageSameAuthor,
+    @required this.shouldRenderTime,
   })  : assert(message != null),
         assert(messageWidth != null),
         assert(previousMessageSameAuthor != null),
+        assert(shouldRenderTime != null),
         super(key: key);
 
   final types.Message message;
   final int messageWidth;
   final void Function(types.FileMessage) onFilePressed;
   final bool previousMessageSameAuthor;
+  final bool shouldRenderTime;
 
   Widget _buildMessage() {
     switch (message.type) {
@@ -45,6 +49,60 @@ class Message extends StatelessWidget {
     }
   }
 
+  Widget _buildStatus() {
+    switch (message.status) {
+      case types.Status.sending:
+        return Container(
+          width: 12,
+          height: 12,
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.transparent,
+            strokeWidth: 2,
+            valueColor: new AlwaysStoppedAnimation<Color>(
+              Color(0xff6f61e8),
+            ),
+          ),
+        );
+        break;
+      default:
+        return Image.asset(
+          message.status == types.Status.read
+              ? 'assets/icon-read.png'
+              : 'assets/icon-sent.png',
+          color: const Color(0xff6f61e8),
+          package: 'flutter_chat_ui',
+        );
+    }
+  }
+
+  Widget _buildDate(bool currentUserIsAuthor) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+            right: currentUserIsAuthor ? 8 : 16,
+          ),
+          child: Text(
+            DateFormat.jm().format(
+              DateTime.fromMillisecondsSinceEpoch(
+                message.timestamp * 1000,
+              ),
+            ),
+            style: TextStyle(
+              color: const Color(0xff9e9cab),
+              fontFamily: 'Avenir',
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              height: 1.333,
+            ),
+          ),
+        ),
+        if (currentUserIsAuthor) _buildStatus()
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
@@ -54,6 +112,8 @@ class Message extends StatelessWidget {
       topLeft: const Radius.circular(20),
       topRight: const Radius.circular(20),
     );
+
+    final currentUserIsAuthor = _user.id == message.authorId;
 
     return Container(
       alignment: _user.id == message.authorId
@@ -68,18 +128,30 @@ class Message extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: messageWidth.toDouble(),
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: _borderRadius,
-            color: _user.id != message.authorId ||
-                    message.type == types.MessageType.image
-                ? const Color(0xfff7f7f8)
-                : const Color(0xff6f61e8),
-          ),
-          child: ClipRRect(
-            borderRadius: _borderRadius,
-            child: _buildMessage(),
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: _borderRadius,
+                color: !currentUserIsAuthor ||
+                        message.type == types.MessageType.image
+                    ? const Color(0xfff7f7f8)
+                    : const Color(0xff6f61e8),
+              ),
+              child: ClipRRect(
+                borderRadius: _borderRadius,
+                child: _buildMessage(),
+              ),
+            ),
+            if (shouldRenderTime)
+              Container(
+                margin: EdgeInsets.only(
+                  top: 8,
+                ),
+                child: _buildDate(currentUserIsAuthor),
+              )
+          ],
         ),
       ),
     );
