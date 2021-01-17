@@ -12,7 +12,8 @@ dependencies:
     sdk: flutter
   cached_network_image: ^2.3.3
   flutter_chat_types: ^1.0.3
-  meta: ^1.2.3
+  intl: ^0.16.1
+  meta: ^1.2.4
   uuid: ^2.2.2
 
 dev_dependencies:

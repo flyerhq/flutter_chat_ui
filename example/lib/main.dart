@@ -84,9 +84,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Chat(
         messages: _messages,
-        onFilePressed: (message) {
-          _openFile(message);
-        },
+        onFilePressed: _openFile,
         onSendPressed: (message) {
           setState(() {
             _messages.insert(0, message);
