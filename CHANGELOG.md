@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Add time and statuses
+
 ## 0.1.0
 
 - Update LICENSE
