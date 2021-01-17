@@ -51,10 +51,16 @@ class Message extends StatelessWidget {
 
   Widget _buildStatus() {
     switch (message.status) {
+      case types.Status.read:
+        return Image.asset(
+          'assets/icon-read.png',
+          color: const Color(0xff6f61e8),
+          package: 'flutter_chat_ui',
+        );
       case types.Status.sending:
-        return Container(
-          width: 12,
+        return SizedBox(
           height: 12,
+          width: 12,
           child: CircularProgressIndicator(
             backgroundColor: Colors.transparent,
             strokeWidth: 2,
@@ -63,19 +69,18 @@ class Message extends StatelessWidget {
             ),
           ),
         );
-        break;
-      default:
+      case types.Status.sent:
         return Image.asset(
-          message.status == types.Status.read
-              ? 'assets/icon-read.png'
-              : 'assets/icon-sent.png',
+          'assets/icon-sent.png',
           color: const Color(0xff6f61e8),
           package: 'flutter_chat_ui',
         );
+      default:
+        return Container();
     }
   }
 
-  Widget _buildDate(bool currentUserIsAuthor) {
+  Widget _buildTime(bool currentUserIsAuthor) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -94,7 +99,7 @@ class Message extends StatelessWidget {
               fontFamily: 'Avenir',
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              height: 1.333,
+              height: 1.375,
             ),
           ),
         ),
@@ -112,8 +117,7 @@ class Message extends StatelessWidget {
       topLeft: const Radius.circular(20),
       topRight: const Radius.circular(20),
     );
-
-    final currentUserIsAuthor = _user.id == message.authorId;
+    final _currentUserIsAuthor = _user.id == message.authorId;
 
     return Container(
       alignment: _user.id == message.authorId
@@ -134,7 +138,7 @@ class Message extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: _borderRadius,
-                color: !currentUserIsAuthor ||
+                color: !_currentUserIsAuthor ||
                         message.type == types.MessageType.image
                     ? const Color(0xfff7f7f8)
                     : const Color(0xff6f61e8),
@@ -149,7 +153,7 @@ class Message extends StatelessWidget {
                 margin: EdgeInsets.only(
                   top: 8,
                 ),
-                child: _buildDate(currentUserIsAuthor),
+                child: _buildTime(_currentUserIsAuthor),
               )
           ],
         ),

@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/util.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/input.dart';
 import 'package:flutter_chat_ui/src/widgets/message.dart';
-import 'package:flutter_chat_ui/src/date_formatter.dart';
 
 class Chat extends StatefulWidget {
   const Chat({
@@ -29,23 +28,6 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-  Widget _buildDate(types.Message message) {
-    return Text(
-      DateFormatter().getVerboseDateTimeRepresentation(
-        DateTime.fromMillisecondsSinceEpoch(
-          message.timestamp * 1000,
-        ),
-      ),
-      style: TextStyle(
-        color: const Color(0xff1d1d21),
-        fontFamily: 'Avenir',
-        fontSize: 12,
-        fontWeight: FontWeight.w800,
-        height: 1.333,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final _messageWidth =
@@ -70,35 +52,39 @@ class _ChatState extends State<Chat> {
                     }
 
                     final message = widget.messages[index];
-                    // Update the logic after pagination is introduced
+                    // TODO: Update the logic after pagination is introduced
                     final isFirst = index == 0;
                     final isLast = index == widget.messages.length - 1;
-                    final previousMessage =
-                        isFirst ? null : widget.messages[index - 1];
                     final nextMessage =
                         isLast ? null : widget.messages[index + 1];
+                    final previousMessage =
+                        isFirst ? null : widget.messages[index - 1];
 
-                    final previousMessageSameAuthor = previousMessage == null
-                        ? false
-                        : previousMessage.authorId == message.authorId;
+                    bool nextMessageDifferentDay = false;
+                    bool nextMessageSameAuthor = false;
+                    bool previousMessageSameAuthor = false;
+                    bool shouldRenderTime = message.timestamp != null;
 
-                    final nextMessageSameAuthor = nextMessage == null
-                        ? false
-                        : nextMessage.authorId == message.authorId;
+                    if (nextMessage != null) {
+                      nextMessageDifferentDay = message.timestamp != null &&
+                          DateTime.fromMillisecondsSinceEpoch(
+                                message.timestamp * 1000,
+                              ).day !=
+                              DateTime.fromMillisecondsSinceEpoch(
+                                nextMessage.timestamp * 1000,
+                              ).day;
+                      nextMessageSameAuthor =
+                          nextMessage.authorId == message.authorId;
+                    }
 
-                    final shouldRenderTime = message.timestamp == null
-                        ? false
-                        : !previousMessageSameAuthor ||
-                            previousMessage.timestamp - message.timestamp >= 60;
-
-                    final nextMessageDifferentDay = nextMessage == null
-                        ? false
-                        : DateTime.fromMillisecondsSinceEpoch(
-                              message.timestamp * 1000,
-                            ).day !=
-                            DateTime.fromMillisecondsSinceEpoch(
-                              nextMessage.timestamp * 1000,
-                            ).day;
+                    if (previousMessage != null) {
+                      previousMessageSameAuthor =
+                          previousMessage.authorId == message.authorId;
+                      shouldRenderTime = message.timestamp != null &&
+                          (!previousMessageSameAuthor ||
+                              previousMessage.timestamp - message.timestamp >=
+                                  60);
+                    }
 
                     return Column(
                       children: [
@@ -109,7 +95,20 @@ class _ChatState extends State<Chat> {
                               bottom: 32,
                               top: nextMessageSameAuthor ? 24 : 16,
                             ),
-                            child: _buildDate(message),
+                            child: Text(
+                              getVerboseDateTimeRepresentation(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  message.timestamp * 1000,
+                                ),
+                              ),
+                              style: TextStyle(
+                                color: const Color(0xff1d1d21),
+                                fontFamily: 'Avenir',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                height: 1.375,
+                              ),
+                            ),
                           ),
                         Message(
                           message: message,
