@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/util.dart';
@@ -25,7 +24,7 @@ class ImageMessage extends StatefulWidget {
 }
 
 class _ImageMessageState extends State<ImageMessage> {
-  CachedNetworkImageProvider _imageProvider;
+  NetworkImage _image;
   ImageStreamListener _listener;
   ImageStream _stream;
   Size _size = Size(0, 0);
@@ -33,11 +32,11 @@ class _ImageMessageState extends State<ImageMessage> {
   @override
   void initState() {
     super.initState();
-    _imageProvider = CachedNetworkImageProvider(widget.message.url);
+    _image = NetworkImage(widget.message.url);
     _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
 
     if (_size.isEmpty) {
-      _stream = _imageProvider.resolve(ImageConfiguration.empty);
+      _stream = _image.resolve(ImageConfiguration.empty);
       _listener = ImageStreamListener(_updateSize);
       _stream.addListener(_listener);
     }
@@ -84,7 +83,7 @@ class _ImageMessageState extends State<ImageMessage> {
                   borderRadius: BorderRadius.circular(15),
                   child: Image(
                     fit: BoxFit.cover,
-                    image: _imageProvider,
+                    image: _image,
                   ),
                 ),
               ),
@@ -141,7 +140,7 @@ class _ImageMessageState extends State<ImageMessage> {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: _imageProvider,
+            image: _image,
           ),
         ),
         child: BackdropFilter(
@@ -152,7 +151,7 @@ class _ImageMessageState extends State<ImageMessage> {
               onTap: () => widget.onPressed(widget.message.url),
               child: Image(
                 fit: BoxFit.contain,
-                image: _imageProvider,
+                image: _image,
               ),
             ),
           ),
