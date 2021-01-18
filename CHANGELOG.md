@@ -1,3 +1,7 @@
+## 0.3.0
+
+- Remove cached image
+
 ## 0.2.0
 
 - Add time and statuses
