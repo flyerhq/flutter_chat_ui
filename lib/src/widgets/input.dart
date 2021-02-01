@@ -8,10 +8,12 @@ import 'package:uuid/uuid.dart';
 class Input extends StatefulWidget {
   const Input({
     Key key,
+    this.onAttachmentPressed,
     @required this.onSendPressed,
   })  : assert(onSendPressed != null),
         super(key: key);
 
+  final void Function() onAttachmentPressed;
   final void Function(types.TextMessage) onSendPressed;
 
   @override
@@ -69,7 +71,9 @@ class _InputState extends State<Input> {
         ),
         child: Row(
           children: [
-            AttachmentButton(),
+            AttachmentButton(
+              onPressed: widget.onAttachmentPressed,
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -47,6 +49,49 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
 
+  void _handleAtachmentPress() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 180,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _showFilePicker();
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Open file picker"),
+                  )),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _showImagePicker();
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Open image picker"),
+                  )),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Cancel"),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
@@ -88,6 +133,29 @@ class _ChatPageState extends State<ChatPage> {
     await OpenFile.open(localPath);
   }
 
+  void _showFilePicker() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+
+    if (result != null) {
+      File file = File(result.files.single.path);
+      print(result.files.single.path);
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void _showImagePicker() async {
+    final result = await ImagePicker().getImage(source: ImageSource.gallery);
+    if (result != null) {
+      File file = File(result.path);
+      print(result.path);
+    } else {
+      // User canceled the picker
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -99,6 +167,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Chat(
         messages: _messages,
+        onAttachmentPressed: _handleAtachmentPress,
         onFilePressed: _openFile,
         onPreviewDataFetched: _onPreviewDataFetched,
         onSendPressed: (message) {
