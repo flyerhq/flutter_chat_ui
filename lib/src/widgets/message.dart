@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_link_previewer/flutter_link_previewer.dart'
+    show PreviewData;
 import 'package:flutter_chat_ui/src/widgets/file_message.dart';
 import 'package:flutter_chat_ui/src/widgets/image_message.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
@@ -12,6 +14,7 @@ class Message extends StatelessWidget {
     @required this.message,
     @required this.messageWidth,
     this.onFilePressed,
+    this.onPreviewDataFetched,
     @required this.previousMessageSameAuthor,
     @required this.shouldRenderTime,
   })  : assert(message != null),
@@ -23,6 +26,7 @@ class Message extends StatelessWidget {
   final types.Message message;
   final int messageWidth;
   final void Function(types.FileMessage) onFilePressed;
+  final void Function(types.TextMessage, PreviewData) onPreviewDataFetched;
   final bool previousMessageSameAuthor;
   final bool shouldRenderTime;
 
@@ -43,7 +47,10 @@ class Message extends StatelessWidget {
         );
       case types.MessageType.text:
         final types.TextMessage textMessage = message;
-        return TextMessage(message: textMessage);
+        return TextMessage(
+          message: textMessage,
+          onPreviewDataFetched: onPreviewDataFetched,
+        );
       default:
         return Container();
     }

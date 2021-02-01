@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_link_previewer/flutter_link_previewer.dart'
+    show PreviewData;
 import 'package:flutter_chat_ui/src/util.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/input.dart';
@@ -11,6 +13,7 @@ class Chat extends StatefulWidget {
     Key key,
     @required this.messages,
     this.onFilePressed,
+    this.onPreviewDataFetched,
     @required this.onSendPressed,
     @required this.user,
   })  : assert(messages != null),
@@ -20,6 +23,8 @@ class Chat extends StatefulWidget {
 
   final List<types.Message> messages;
   final void Function(types.FileMessage) onFilePressed;
+  final void Function(types.TextMessage, types.PreviewData)
+      onPreviewDataFetched;
   final void Function(types.TextMessage) onSendPressed;
   final types.User user;
 
@@ -28,6 +33,14 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  void _onPreviewDataFetched(
+    types.TextMessage message,
+    PreviewData previewData,
+  ) {
+    final _previewData = createPreviewData(previewData);
+    widget.onPreviewDataFetched(message, _previewData);
+  }
+
   @override
   Widget build(BuildContext context) {
     final _messageWidth =
@@ -114,6 +127,7 @@ class _ChatState extends State<Chat> {
                           message: message,
                           messageWidth: _messageWidth,
                           onFilePressed: widget.onFilePressed,
+                          onPreviewDataFetched: _onPreviewDataFetched,
                           previousMessageSameAuthor: previousMessageSameAuthor,
                           shouldRenderTime: shouldRenderTime,
                         ),
