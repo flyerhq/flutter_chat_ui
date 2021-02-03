@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_types: ^1.0.5
-  flutter_link_previewer: ^0.0.1
+  flutter_link_previewer: ^0.0.4
   intl: ^0.16.1
   meta: ^1.2.4
   uuid: ^2.2.2

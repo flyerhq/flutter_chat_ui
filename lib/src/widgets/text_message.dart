@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
-    show LinkPreview, PreviewData;
+    show LinkPreview, PreviewData, REGEX_LINK;
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
+import 'package:flutter_chat_ui/src/util.dart';
 
 class TextMessage extends StatelessWidget {
   const TextMessage({
@@ -16,19 +17,50 @@ class TextMessage extends StatelessWidget {
   final void Function(types.TextMessage, PreviewData) onPreviewDataFetched;
 
   void _onPreviewDataFetched(PreviewData previewData) {
-    if (onPreviewDataFetched != null)
+    if (message.previewData == null && onPreviewDataFetched != null)
       onPreviewDataFetched(message, previewData);
   }
 
-  Widget _linkPreview(String text, double width) {
+  Widget _linkPreview(
+    types.User user,
+    double width,
+  ) {
+    PreviewData cachedPreviewData;
+    if (message.previewData != null) {
+      cachedPreviewData = createChatPreviewData(message.previewData);
+    }
+    final style = TextStyle(
+      color: user.id == message.authorId
+          ? const Color(0xffffffff)
+          : const Color(0xff1d1d21),
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.375,
+    );
+
     return LinkPreview(
+      linkStyle: style,
+      metadataTextStyle: style.copyWith(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      metadataTitleStyle: style.copyWith(
+        fontWeight: FontWeight.w800,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 24,
+        vertical: 16,
+      ),
+      previewData: cachedPreviewData,
       onPreviewDataFetched: _onPreviewDataFetched,
-      text: text,
+      text: message.text,
+      textStyle: style,
       width: width,
     );
   }
 
-  Widget _textWidget(String text, types.User user) {
+  Widget _textWidget(types.User user) {
     return Text(
       message.text,
       style: TextStyle(
@@ -51,18 +83,14 @@ class TextMessage extends StatelessWidget {
 
     final urlRegexp = new RegExp(REGEX_LINK);
     final matches = urlRegexp.allMatches(message.text.toLowerCase());
-    // if (matches.isEmpty) return previewData;
+
+    if (matches.isNotEmpty) return _linkPreview(_user, _width);
 
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
-      ),
-      child: matches.isEmpty
-          ? _textWidget(message.text, _user)
-          : _linkPreview(message.text, _width),
-    );
+        margin: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        child: _textWidget(_user));
   }
 }
-
-const REGEX_LINK = r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+';

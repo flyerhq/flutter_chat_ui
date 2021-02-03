@@ -65,8 +65,15 @@ class _ChatPageState extends State<ChatPage> {
     types.TextMessage currentMessage =
         _messages[_messages.indexWhere((element) => element.id == message.id)];
     final updatedMessage = currentMessage.copyWith(previewData: previewData);
-    _messages[_messages.indexWhere((element) => element.id == message.id)] =
-        updatedMessage;
+    List<types.Message> updatedMessages = []..addAll(_messages);
+    updatedMessages[updatedMessages
+        .indexWhere((element) => element.id == message.id)] = updatedMessage;
+
+    Future.delayed(Duration.zero, () async {
+      setState(() {
+        _messages = updatedMessages;
+      });
+    });
   }
 
   void _openFile(types.FileMessage message) async {
