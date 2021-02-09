@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Connected with link preview
+
 ## 0.3.0
 
 - Remove cached image
