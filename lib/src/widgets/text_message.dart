@@ -25,10 +25,6 @@ class TextMessage extends StatelessWidget {
     types.User user,
     double width,
   ) {
-    PreviewData cachedPreviewData;
-    if (message.previewData != null) {
-      cachedPreviewData = createChatPreviewData(message.previewData);
-    }
     final style = TextStyle(
       color: user.id == message.authorId
           ? const Color(0xffffffff)
@@ -38,6 +34,11 @@ class TextMessage extends StatelessWidget {
       fontWeight: FontWeight.w500,
       height: 1.375,
     );
+
+    PreviewData cachedPreviewData;
+    if (message.previewData != null) {
+      cachedPreviewData = createChatPreviewData(message.previewData);
+    }
 
     return LinkPreview(
       linkStyle: style,

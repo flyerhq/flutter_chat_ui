@@ -4,37 +4,33 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart';
 
 types.PreviewData createPreviewData(PreviewData previewData) {
-  final _previewData = types.PreviewData();
-
   final _previewDataImgage = types.PreviewDataImage(
     height: previewData.image.height,
     url: previewData.image.url,
     width: previewData.image.width,
   );
 
-  _previewData.description = previewData.description;
-  _previewData.image = _previewDataImgage;
-  _previewData.link = previewData.link;
-  _previewData.title = previewData.title;
-
-  return _previewData;
+  return types.PreviewData(
+    description: previewData.description,
+    image: _previewDataImgage,
+    link: previewData.link,
+    title: previewData.title,
+  );
 }
 
 PreviewData createChatPreviewData(types.PreviewData previewData) {
-  final _previewData = PreviewData();
-
-  final _previewDataImgage = PreviewDataImage(
+  final _previewDataImage = PreviewDataImage(
     height: previewData.image.height,
     url: previewData.image.url,
     width: previewData.image.width,
   );
 
-  _previewData.description = previewData.description;
-  _previewData.image = _previewDataImgage;
-  _previewData.link = previewData.link;
-  _previewData.title = previewData.title;
-
-  return _previewData;
+  return PreviewData(
+    description: previewData.description,
+    image: _previewDataImage,
+    link: previewData.link,
+    title: previewData.title,
+  );
 }
 
 String formatBytes(int size, [int fractionDigits = 2]) {
