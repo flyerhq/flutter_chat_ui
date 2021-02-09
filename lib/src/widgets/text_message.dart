@@ -83,10 +83,11 @@ class TextMessage extends StatelessWidget {
     if (matches.isNotEmpty) return _linkPreview(_user, _width);
 
     return Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 16,
-        ),
-        child: _textWidget(_user));
+      margin: const EdgeInsets.symmetric(
+        horizontal: 24,
+        vertical: 16,
+      ),
+      child: _textWidget(_user),
+    );
   }
 }
