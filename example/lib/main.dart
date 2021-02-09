@@ -58,6 +58,21 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  void _onPreviewDataFetched(
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
+    final index = _messages.indexWhere((element) => element.id == message.id);
+    types.TextMessage currentMessage = _messages[index];
+    final updatedMessage = currentMessage.copyWith(previewData: previewData);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _messages[index] = updatedMessage;
+      });
+    });
+  }
+
   void _openFile(types.FileMessage message) async {
     final client = new http.Client();
     var request = await client.get(Uri.parse(message.url));
@@ -85,6 +100,7 @@ class _ChatPageState extends State<ChatPage> {
       body: Chat(
         messages: _messages,
         onFilePressed: _openFile,
+        onPreviewDataFetched: _onPreviewDataFetched,
         onSendPressed: (message) {
           setState(() {
             _messages.insert(0, message);
