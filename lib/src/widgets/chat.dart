@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_link_previewer/flutter_link_previewer.dart'
-    show PreviewData;
 import 'package:flutter_chat_ui/src/util.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/input.dart';
@@ -35,10 +33,9 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   void _onPreviewDataFetched(
     types.TextMessage message,
-    PreviewData previewData,
+    types.PreviewData previewData,
   ) {
-    final _previewData = createPreviewData(previewData);
-    widget.onPreviewDataFetched(message, _previewData);
+    widget.onPreviewDataFetched(message, previewData);
   }
 
   @override
