@@ -1,3 +1,7 @@
+## 0.4.2
+
+- Dependency update
+
 ## 0.4.1
 
 - Fixed missing null check
