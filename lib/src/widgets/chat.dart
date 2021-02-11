@@ -35,7 +35,8 @@ class _ChatState extends State<Chat> {
     types.TextMessage message,
     types.PreviewData previewData,
   ) {
-    widget.onPreviewDataFetched(message, previewData);
+    if (widget.onPreviewDataFetched != null)
+      widget.onPreviewDataFetched(message, previewData);
   }
 
   @override

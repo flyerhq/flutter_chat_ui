@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Fixed missing null check
+
 ## 0.4.0
 
 - Connected with link preview
