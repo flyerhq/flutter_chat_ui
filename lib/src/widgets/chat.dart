@@ -92,6 +92,7 @@ class _ChatState extends State<Chat> {
                       previousMessageSameAuthor =
                           previousMessage.authorId == message.authorId;
                       shouldRenderTime = message.timestamp != null &&
+                          previousMessage.timestamp != null &&
                           (!previousMessageSameAuthor ||
                               previousMessage.timestamp - message.timestamp >=
                                   60);
