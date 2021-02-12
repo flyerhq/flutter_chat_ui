@@ -27,6 +27,7 @@ dependencies:
   file_picker: ^2.1.6
   http: ^0.12.2
   image_picker: ^0.6.7+22
+  mime: ^0.9.7
   open_file: ^3.0.3
   path_provider: ^1.6.27
   flutter_chat_ui:

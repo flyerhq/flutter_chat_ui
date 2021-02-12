@@ -7,8 +7,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,6 +50,12 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
+
+  final _user = types.User(
+    firstName: 'Alex',
+    id: '06c33e8b-e835-4736-80f4-63f44b66666c',
+    lastName: 'Demchenko',
+  );
 
   void _handleAtachmentPress() {
     showModalBottomSheet<void>(
@@ -118,16 +126,26 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _openFile(types.FileMessage message) async {
-    final client = new http.Client();
-    var request = await client.get(Uri.parse(message.url));
-    var bytes = request.bodyBytes;
-    final documantsDir = (await getApplicationDocumentsDirectory()).path;
-    final localPath = '$documantsDir/${message.fileName}';
+  void _onSendMessage(types.Message message) {
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
 
-    if (!File(localPath).existsSync()) {
-      final file = new File(localPath);
-      await file.writeAsBytes(bytes);
+  void _openFile(types.FileMessage message) async {
+    String localPath = message.url;
+
+    if (message.url.startsWith('http')) {
+      final client = new http.Client();
+      var request = await client.get(Uri.parse(message.url));
+      var bytes = request.bodyBytes;
+      final documentsDir = (await getApplicationDocumentsDirectory()).path;
+      localPath = '$documentsDir/${message.fileName}';
+
+      if (!File(localPath).existsSync()) {
+        final file = new File(localPath);
+        await file.writeAsBytes(bytes);
+      }
     }
 
     await OpenFile.open(localPath);
@@ -139,8 +157,17 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     if (result != null) {
-      File file = File(result.files.single.path);
-      print(result.files.single.path);
+      final message = types.FileMessage(
+        authorId: _user.id,
+        id: Uuid().v4(),
+        fileName: result.files.single.name,
+        mimeType: lookupMimeType(result.files.single.path),
+        size: result.files.single.size,
+        url: result.files.single.path,
+        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      );
+
+      _onSendMessage(message);
     } else {
       // User canceled the picker
     }
@@ -149,8 +176,20 @@ class _ChatPageState extends State<ChatPage> {
   void _showImagePicker() async {
     final result = await ImagePicker().getImage(source: ImageSource.gallery);
     if (result != null) {
-      File file = File(result.path);
-      print(result.path);
+      final size = File(result.path).lengthSync();
+      final extension = result.path.split('.').last;
+
+      final message = types.ImageMessage(
+        authorId: _user.id,
+        id: Uuid().v4(),
+        imageName: 'image.$extension',
+        size: size,
+        // As ImageMessage currently supports only NetworkImage passing url instead of result.path,
+        url: 'https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg',
+        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      );
+
+      _onSendMessage(message);
     } else {
       // User canceled the picker
     }
@@ -170,16 +209,8 @@ class _ChatPageState extends State<ChatPage> {
         onAttachmentPressed: _handleAtachmentPress,
         onFilePressed: _openFile,
         onPreviewDataFetched: _onPreviewDataFetched,
-        onSendPressed: (message) {
-          setState(() {
-            _messages.insert(0, message);
-          });
-        },
-        user: const types.User(
-          firstName: 'Alex',
-          id: '06c33e8b-e835-4736-80f4-63f44b66666c',
-          lastName: 'Demchenko',
-        ),
+        onSendPressed: _onSendMessage,
+        user: _user,
       ),
     );
   }
