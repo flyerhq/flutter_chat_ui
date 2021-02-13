@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,6 +51,55 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
 
+  final _user = types.User(
+    firstName: 'Alex',
+    id: '06c33e8b-e835-4736-80f4-63f44b66666c',
+    lastName: 'Demchenko',
+  );
+
+  void _handleAtachmentPress() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 180,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _showFilePicker();
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Open file picker"),
+                  )),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _showImagePicker();
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Open image picker"),
+                  )),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Cancel"),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
@@ -73,19 +126,73 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _openFile(types.FileMessage message) async {
-    final client = new http.Client();
-    var request = await client.get(Uri.parse(message.url));
-    var bytes = request.bodyBytes;
-    final documantsDir = (await getApplicationDocumentsDirectory()).path;
-    final localPath = '$documantsDir/${message.fileName}';
+  void _onSendMessage(types.Message message) {
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
 
-    if (!File(localPath).existsSync()) {
-      final file = new File(localPath);
-      await file.writeAsBytes(bytes);
+  void _openFile(types.FileMessage message) async {
+    String localPath = message.url;
+
+    if (message.url.startsWith('http')) {
+      final client = new http.Client();
+      var request = await client.get(Uri.parse(message.url));
+      var bytes = request.bodyBytes;
+      final documentsDir = (await getApplicationDocumentsDirectory()).path;
+      localPath = '$documentsDir/${message.fileName}';
+
+      if (!File(localPath).existsSync()) {
+        final file = new File(localPath);
+        await file.writeAsBytes(bytes);
+      }
     }
 
     await OpenFile.open(localPath);
+  }
+
+  void _showFilePicker() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+
+    if (result != null) {
+      final message = types.FileMessage(
+        authorId: _user.id,
+        id: Uuid().v4(),
+        fileName: result.files.single.name,
+        mimeType: lookupMimeType(result.files.single.path),
+        size: result.files.single.size,
+        url: result.files.single.path,
+        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      );
+
+      _onSendMessage(message);
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void _showImagePicker() async {
+    final result = await ImagePicker().getImage(source: ImageSource.gallery);
+    if (result != null) {
+      final size = File(result.path).lengthSync();
+      final extension = result.path.split('.').last;
+
+      final message = types.ImageMessage(
+        authorId: _user.id,
+        id: Uuid().v4(),
+        imageName: 'image.$extension',
+        size: size,
+        // As ImageMessage currently supports only NetworkImage passing url instead of result.path,
+        url: 'https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg',
+        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      );
+
+      _onSendMessage(message);
+    } else {
+      // User canceled the picker
+    }
   }
 
   @override
@@ -99,18 +206,11 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Chat(
         messages: _messages,
+        onAttachmentPressed: _handleAtachmentPress,
         onFilePressed: _openFile,
         onPreviewDataFetched: _onPreviewDataFetched,
-        onSendPressed: (message) {
-          setState(() {
-            _messages.insert(0, message);
-          });
-        },
-        user: const types.User(
-          firstName: 'Alex',
-          id: '06c33e8b-e835-4736-80f4-63f44b66666c',
-          lastName: 'Demchenko',
-        ),
+        onSendPressed: _onSendMessage,
+        user: _user,
       ),
     );
   }

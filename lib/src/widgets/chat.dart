@@ -10,6 +10,7 @@ class Chat extends StatefulWidget {
   const Chat({
     Key key,
     @required this.messages,
+    this.onAttachmentPressed,
     this.onFilePressed,
     this.onPreviewDataFetched,
     @required this.onSendPressed,
@@ -20,6 +21,7 @@ class Chat extends StatefulWidget {
         super(key: key);
 
   final List<types.Message> messages;
+  final void Function() onAttachmentPressed;
   final void Function(types.FileMessage) onFilePressed;
   final void Function(types.TextMessage, types.PreviewData)
       onPreviewDataFetched;
@@ -137,6 +139,7 @@ class _ChatState extends State<Chat> {
               ),
             ),
             Input(
+              onAttachmentPressed: widget.onAttachmentPressed,
               onSendPressed: widget.onSendPressed,
             ),
           ],
