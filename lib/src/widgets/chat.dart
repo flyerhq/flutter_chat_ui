@@ -25,7 +25,7 @@ class Chat extends StatefulWidget {
   final void Function(types.FileMessage) onFilePressed;
   final void Function(types.TextMessage, types.PreviewData)
       onPreviewDataFetched;
-  final void Function(types.TextMessage) onSendPressed;
+  final void Function(types.PartialText) onSendPressed;
   final types.User user;
 
   @override

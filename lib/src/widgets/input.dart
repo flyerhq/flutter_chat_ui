@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/attachment_button.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/send_button.dart';
-import 'package:uuid/uuid.dart';
 
 class Input extends StatefulWidget {
   const Input({
@@ -14,7 +12,7 @@ class Input extends StatefulWidget {
         super(key: key);
 
   final void Function() onAttachmentPressed;
-  final void Function(types.TextMessage) onSendPressed;
+  final void Function(types.PartialText) onSendPressed;
 
   @override
   _InputState createState() => _InputState();
@@ -37,13 +35,8 @@ class _InputState extends State<Input> {
   }
 
   void _handleSendPressed() {
-    final message = types.TextMessage(
-      authorId: InheritedUser.of(context).user.id,
-      id: Uuid().v4(),
-      text: _textController.text.trim(),
-      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
-    );
-    widget.onSendPressed(message);
+    final _partialText = types.PartialText(text: _textController.text.trim());
+    widget.onSendPressed(_partialText);
     _textController.clear();
   }
 

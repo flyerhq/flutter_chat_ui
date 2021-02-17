@@ -1,3 +1,7 @@
+## 0.4.4
+
+- Updated to use partial
+
 ## 0.4.3
 
 - Fixed missing null check

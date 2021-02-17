@@ -57,6 +57,12 @@ class _ChatPageState extends State<ChatPage> {
     lastName: 'Demchenko',
   );
 
+  void _addMessage(types.Message message) {
+    setState(() {
+      _messages.insert(0, message);
+    });
+  }
+
   void _handleAtachmentPress() {
     showModalBottomSheet<void>(
       context: context,
@@ -126,10 +132,15 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _onSendMessage(types.Message message) {
-    setState(() {
-      _messages.insert(0, message);
-    });
+  void _onSendMessage(types.PartialText message) {
+    final textMessage = types.TextMessage(
+      authorId: _user.id,
+      id: Uuid().v4(),
+      text: message.text,
+      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+    );
+
+    _addMessage(textMessage);
   }
 
   void _openFile(types.FileMessage message) async {
@@ -167,7 +178,7 @@ class _ChatPageState extends State<ChatPage> {
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
       );
 
-      _onSendMessage(message);
+      _addMessage(message);
     } else {
       // User canceled the picker
     }
@@ -189,7 +200,7 @@ class _ChatPageState extends State<ChatPage> {
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
       );
 
-      _onSendMessage(message);
+      _addMessage(message);
     } else {
       // User canceled the picker
     }
