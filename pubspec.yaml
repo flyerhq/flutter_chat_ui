@@ -13,8 +13,6 @@ dependencies:
   flutter_chat_types: ^1.1.0
   flutter_link_previewer: ^0.0.8
   intl: ^0.16.1
-  meta: ^1.2.4
-  uuid: ^2.2.2
 
 dev_dependencies:
   flutter_test:

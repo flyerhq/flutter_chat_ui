@@ -30,6 +30,8 @@ dependencies:
   mime: ^0.9.7
   open_file: ^3.0.3
   path_provider: ^1.6.27
+  uuid: ^2.2.2
+
   flutter_chat_ui:
     path: ../
 
