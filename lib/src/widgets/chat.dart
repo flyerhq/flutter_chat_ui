@@ -9,6 +9,7 @@ import 'package:flutter_chat_ui/src/widgets/message.dart';
 class Chat extends StatefulWidget {
   const Chat({
     Key key,
+    this.isAttachmentUploading,
     @required this.messages,
     this.onAttachmentPressed,
     this.onFilePressed,
@@ -20,6 +21,7 @@ class Chat extends StatefulWidget {
         assert(user != null),
         super(key: key);
 
+  final bool isAttachmentUploading;
   final List<types.Message> messages;
   final void Function() onAttachmentPressed;
   final void Function(types.FileMessage) onFilePressed;
@@ -139,6 +141,7 @@ class _ChatState extends State<Chat> {
               ),
             ),
             Input(
+              isAttachmentUploading: widget.isAttachmentUploading,
               onAttachmentPressed: widget.onAttachmentPressed,
               onSendPressed: widget.onSendPressed,
             ),

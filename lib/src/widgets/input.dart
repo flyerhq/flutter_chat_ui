@@ -6,12 +6,14 @@ import 'package:flutter_chat_ui/src/widgets/send_button.dart';
 class Input extends StatefulWidget {
   const Input({
     Key key,
+    this.isAttachmentUploading,
     this.onAttachmentPressed,
     @required this.onSendPressed,
   })  : assert(onSendPressed != null),
         super(key: key);
 
   final void Function() onAttachmentPressed;
+  final bool isAttachmentUploading;
   final void Function(types.PartialText) onSendPressed;
 
   @override
@@ -64,9 +66,21 @@ class _InputState extends State<Input> {
         ),
         child: Row(
           children: [
-            AttachmentButton(
-              onPressed: widget.onAttachmentPressed,
-            ),
+            widget.isAttachmentUploading ?? false
+                ? Container(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.transparent,
+                      strokeWidth: 2,
+                      valueColor: new AlwaysStoppedAnimation<Color>(
+                        Color(0xffffffff),
+                      ),
+                    ),
+                  )
+                : AttachmentButton(
+                    onPressed: widget.onAttachmentPressed,
+                  ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -1,3 +1,7 @@
+## 0.4.5
+
+- Add attchment uploading handling
+
 ## 0.4.4
 
 - Updated to use partial
