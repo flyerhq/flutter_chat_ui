@@ -39,8 +39,9 @@ class _ChatState extends State<Chat> {
     types.TextMessage message,
     types.PreviewData previewData,
   ) {
-    if (widget.onPreviewDataFetched != null)
+    if (widget.onPreviewDataFetched != null) {
       widget.onPreviewDataFetched(message, previewData);
+    }
   }
 
   @override
@@ -55,90 +56,111 @@ class _ChatState extends State<Chat> {
         child: Column(
           children: [
             Flexible(
-              child: GestureDetector(
-                onTap: () => FocusManager.instance.primaryFocus.unfocus(),
-                child: ListView.builder(
-                  itemCount: widget.messages.length + 1,
-                  padding: EdgeInsets.zero,
-                  reverse: true,
-                  itemBuilder: (context, index) {
-                    if (index == widget.messages.length) {
-                      return Container(height: 16);
-                    }
-
-                    final message = widget.messages[index];
-                    // TODO: Update the logic after pagination is introduced
-                    final isFirst = index == 0;
-                    final isLast = index == widget.messages.length - 1;
-                    final nextMessage =
-                        isLast ? null : widget.messages[index + 1];
-                    final previousMessage =
-                        isFirst ? null : widget.messages[index - 1];
-
-                    bool nextMessageDifferentDay = false;
-                    bool nextMessageSameAuthor = false;
-                    bool previousMessageSameAuthor = false;
-                    bool shouldRenderTime = message.timestamp != null;
-
-                    if (nextMessage != null) {
-                      nextMessageDifferentDay = message.timestamp != null &&
-                          DateTime.fromMillisecondsSinceEpoch(
-                                message.timestamp * 1000,
-                              ).day !=
-                              DateTime.fromMillisecondsSinceEpoch(
-                                nextMessage.timestamp * 1000,
-                              ).day;
-                      nextMessageSameAuthor =
-                          nextMessage.authorId == message.authorId;
-                    }
-
-                    if (previousMessage != null) {
-                      previousMessageSameAuthor =
-                          previousMessage.authorId == message.authorId;
-                      shouldRenderTime = message.timestamp != null &&
-                          previousMessage.timestamp != null &&
-                          (!previousMessageSameAuthor ||
-                              previousMessage.timestamp - message.timestamp >=
-                                  60);
-                    }
-
-                    return Column(
-                      children: [
-                        if (nextMessageDifferentDay ||
-                            (isLast && message.timestamp != null))
-                          Container(
-                            margin: EdgeInsets.only(
-                              bottom: 32,
-                              top: nextMessageSameAuthor ? 24 : 16,
-                            ),
-                            child: Text(
-                              getVerboseDateTimeRepresentation(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                  message.timestamp * 1000,
-                                ),
-                              ),
-                              style: TextStyle(
-                                color: const Color(0xff1d1d21),
-                                fontFamily: 'Avenir',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w800,
-                                height: 1.375,
-                              ),
-                            ),
+              child: widget.messages.length == 0
+                  ? SizedBox.expand(
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          'No messages here yet',
+                          style: const TextStyle(
+                            color: Color(0xff9e9cab),
+                            fontFamily: 'Avenir',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            height: 1.375,
                           ),
-                        Message(
-                          message: message,
-                          messageWidth: _messageWidth,
-                          onFilePressed: widget.onFilePressed,
-                          onPreviewDataFetched: _onPreviewDataFetched,
-                          previousMessageSameAuthor: previousMessageSameAuthor,
-                          shouldRenderTime: shouldRenderTime,
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    );
-                  },
-                ),
-              ),
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () => FocusManager.instance.primaryFocus.unfocus(),
+                      child: ListView.builder(
+                        itemCount: widget.messages.length + 1,
+                        padding: EdgeInsets.zero,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          if (index == widget.messages.length) {
+                            return Container(height: 16);
+                          }
+
+                          final message = widget.messages[index];
+                          final isFirst = index == 0;
+                          final isLast = index == widget.messages.length - 1;
+                          final nextMessage =
+                              isLast ? null : widget.messages[index + 1];
+                          final previousMessage =
+                              isFirst ? null : widget.messages[index - 1];
+
+                          var nextMessageDifferentDay = false;
+                          var nextMessageSameAuthor = false;
+                          var previousMessageSameAuthor = false;
+                          var shouldRenderTime = message.timestamp != null;
+
+                          if (nextMessage != null) {
+                            nextMessageDifferentDay =
+                                message.timestamp != null &&
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                          message.timestamp * 1000,
+                                        ).day !=
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                          nextMessage.timestamp * 1000,
+                                        ).day;
+                            nextMessageSameAuthor =
+                                nextMessage.authorId == message.authorId;
+                          }
+
+                          if (previousMessage != null) {
+                            previousMessageSameAuthor =
+                                previousMessage.authorId == message.authorId;
+                            shouldRenderTime = message.timestamp != null &&
+                                previousMessage.timestamp != null &&
+                                (!previousMessageSameAuthor ||
+                                    previousMessage.timestamp -
+                                            message.timestamp >=
+                                        60);
+                          }
+
+                          return Column(
+                            children: [
+                              if (nextMessageDifferentDay ||
+                                  (isLast && message.timestamp != null))
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: 32,
+                                    top: nextMessageSameAuthor ? 24 : 16,
+                                  ),
+                                  child: Text(
+                                    getVerboseDateTimeRepresentation(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.timestamp * 1000,
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      color: const Color(0xff1d1d21),
+                                      fontFamily: 'Avenir',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w800,
+                                      height: 1.375,
+                                    ),
+                                  ),
+                                ),
+                              Message(
+                                key: ValueKey(message),
+                                message: message,
+                                messageWidth: _messageWidth,
+                                onFilePressed: widget.onFilePressed,
+                                onPreviewDataFetched: _onPreviewDataFetched,
+                                previousMessageSameAuthor:
+                                    previousMessageSameAuthor,
+                                shouldRenderTime: shouldRenderTime,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
             ),
             Input(
               isAttachmentUploading: widget.isAttachmentUploading,

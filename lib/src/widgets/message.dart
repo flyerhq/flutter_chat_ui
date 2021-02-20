@@ -42,7 +42,7 @@ class Message extends StatelessWidget {
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
-          onPressed: (String url) {},
+          onPressed: (String uri) {},
         );
       case types.MessageType.text:
         final types.TextMessage textMessage = message;
@@ -67,10 +67,10 @@ class Message extends StatelessWidget {
         return SizedBox(
           height: 12,
           width: 12,
-          child: CircularProgressIndicator(
+          child: const CircularProgressIndicator(
             backgroundColor: Colors.transparent,
             strokeWidth: 2,
-            valueColor: new AlwaysStoppedAnimation<Color>(
+            valueColor: AlwaysStoppedAnimation<Color>(
               Color(0xff6f61e8),
             ),
           ),

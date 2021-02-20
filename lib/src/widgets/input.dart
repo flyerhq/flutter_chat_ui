@@ -70,10 +70,10 @@ class _InputState extends State<Input> {
                 ? Container(
                     height: 24,
                     width: 24,
-                    child: CircularProgressIndicator(
+                    child: const CircularProgressIndicator(
                       backgroundColor: Colors.transparent,
                       strokeWidth: 2,
-                      valueColor: new AlwaysStoppedAnimation<Color>(
+                      valueColor: AlwaysStoppedAnimation<Color>(
                         Color(0xffffffff),
                       ),
                     ),
@@ -88,7 +88,7 @@ class _InputState extends State<Input> {
                   controller: _textController,
                   decoration: const InputDecoration.collapsed(
                     hintStyle: TextStyle(
-                      color: const Color(0x80ffffff),
+                      color: Color(0x80ffffff),
                     ),
                     hintText: 'Your message here',
                   ),
@@ -96,7 +96,7 @@ class _InputState extends State<Input> {
                   maxLines: 5,
                   minLines: 1,
                   style: const TextStyle(
-                    color: const Color(0xffffffff),
+                    color: Color(0xffffffff),
                     fontFamily: 'Avenir',
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

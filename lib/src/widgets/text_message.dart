@@ -17,8 +17,9 @@ class TextMessage extends StatelessWidget {
       onPreviewDataFetched;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
-    if (message.previewData == null && onPreviewDataFetched != null)
+    if (message.previewData == null && onPreviewDataFetched != null) {
       onPreviewDataFetched(message, previewData);
+    }
   }
 
   Widget _linkPreview(
@@ -44,12 +45,12 @@ class TextMessage extends StatelessWidget {
       metadataTitleStyle: style.copyWith(
         fontWeight: FontWeight.w800,
       ),
+      onPreviewDataFetched: _onPreviewDataFetched,
       padding: EdgeInsets.symmetric(
         horizontal: 24,
         vertical: 16,
       ),
       previewData: message.previewData,
-      onPreviewDataFetched: _onPreviewDataFetched,
       text: message.text,
       textStyle: style,
       width: width,
@@ -77,7 +78,7 @@ class TextMessage extends StatelessWidget {
     final _user = InheritedUser.of(context).user;
     final _width = MediaQuery.of(context).size.width;
 
-    final urlRegexp = new RegExp(REGEX_LINK);
+    final urlRegexp = RegExp(REGEX_LINK);
     final matches = urlRegexp.allMatches(message.text.toLowerCase());
 
     if (matches.isNotEmpty) return _linkPreview(_user, _width);

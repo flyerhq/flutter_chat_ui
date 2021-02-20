@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -17,46 +18,61 @@ class ImageMessage extends StatefulWidget {
 
   final types.ImageMessage message;
   final int messageWidth;
-  final void Function(String url) onPressed;
+  final void Function(String uri) onPressed;
 
   @override
   _ImageMessageState createState() => _ImageMessageState();
 }
 
 class _ImageMessageState extends State<ImageMessage> {
-  NetworkImage _image;
-  ImageStreamListener _listener;
+  ImageProvider _image;
   ImageStream _stream;
   Size _size = Size(0, 0);
 
   @override
   void initState() {
     super.initState();
-    _image = NetworkImage(widget.message.url);
-    _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
-
-    if (_size.isEmpty) {
-      _stream = _image.resolve(ImageConfiguration.empty);
-      _listener = ImageStreamListener(_updateSize);
-      _stream.addListener(_listener);
+    if (widget.message.uri.startsWith('http')) {
+      _image = NetworkImage(widget.message.uri);
+    } else {
+      _image = FileImage(File(widget.message.uri));
     }
+
+    _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_size.isEmpty) {
+      _getImage();
+    }
+  }
+
+  void _getImage() {
+    final oldImageStream = _stream;
+    _stream = _image.resolve(createLocalImageConfiguration(context));
+    if (_stream.key == oldImageStream?.key) {
+      return;
+    }
+    final listener = ImageStreamListener(_updateImage);
+    oldImageStream?.removeListener(listener);
+    _stream.addListener(listener);
+  }
+
+  void _updateImage(ImageInfo info, bool _) {
+    setState(() {
+      _size = Size(
+        info.image.width.toDouble(),
+        info.image.height.toDouble(),
+      );
+    });
   }
 
   @override
   void dispose() {
-    _stream?.removeListener(_listener);
+    _stream?.removeListener(ImageStreamListener(_updateImage));
     super.dispose();
-  }
-
-  void _updateSize(ImageInfo info, bool _) {
-    if (info != null) {
-      setState(() {
-        _size = Size(
-          info.image.width.toDouble(),
-          info.image.height.toDouble(),
-        );
-      });
-    }
   }
 
   @override
@@ -64,10 +80,14 @@ class _ImageMessageState extends State<ImageMessage> {
     final _user = InheritedUser.of(context).user;
 
     if (_size.aspectRatio == null || _size.aspectRatio == 0) {
-      return Container();
+      return Container(
+        color: const Color(0xfff7f7f8),
+        height: _size.height,
+        width: _size.width,
+      );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return GestureDetector(
-        onTap: () => widget.onPressed(widget.message.url),
+        onTap: () => widget.onPressed(widget.message.uri),
         child: Container(
           color: _user.id == widget.message.authorId
               ? const Color(0xff6f61e8)
@@ -148,7 +168,7 @@ class _ImageMessageState extends State<ImageMessage> {
           child: AspectRatio(
             aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
             child: GestureDetector(
-              onTap: () => widget.onPressed(widget.message.url),
+              onTap: () => widget.onPressed(widget.message.uri),
               child: Image(
                 fit: BoxFit.contain,
                 image: _image,

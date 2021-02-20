@@ -51,11 +51,13 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
 
-  final _user = types.User(
-    firstName: 'Alex',
-    id: '06c33e8b-e835-4736-80f4-63f44b66666c',
-    lastName: 'Demchenko',
-  );
+  final _user = types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
 
   void _addMessage(types.Message message) {
     setState(() {
@@ -73,32 +75,32 @@ class _ChatPageState extends State<ChatPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _showFilePicker();
-                  },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Open file picker"),
-                  )),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _showImagePicker();
-                  },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Open image picker"),
-                  )),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _showFilePicker();
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Open file picker"),
+                ),
+              ),
               FlatButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  _showImagePicker();
                 },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Open image picker"),
+                ),
+              ),
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Cancel"),
                 ),
-              )
+              ),
             ],
           ),
         );
@@ -144,12 +146,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _openFile(types.FileMessage message) async {
-    String localPath = message.url;
+    String localPath = message.uri;
 
-    if (message.url.startsWith('http')) {
+    if (message.uri.startsWith('http')) {
       final client = new http.Client();
-      var request = await client.get(Uri.parse(message.url));
-      var bytes = request.bodyBytes;
+      final request = await client.get(Uri.parse(message.uri));
+      final bytes = request.bodyBytes;
       final documentsDir = (await getApplicationDocumentsDirectory()).path;
       localPath = '$documentsDir/${message.fileName}';
 
@@ -170,12 +172,12 @@ class _ChatPageState extends State<ChatPage> {
     if (result != null) {
       final message = types.FileMessage(
         authorId: _user.id,
-        id: Uuid().v4(),
         fileName: result.files.single.name,
+        id: Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path),
         size: result.files.single.size,
-        url: result.files.single.path,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        uri: result.files.single.path,
       );
 
       _addMessage(message);
@@ -185,31 +187,33 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _showImagePicker() async {
-    final result = await ImagePicker().getImage(source: ImageSource.gallery);
+    final result = await ImagePicker().getImage(
+      imageQuality: 70,
+      maxWidth: 1440,
+      source: ImageSource.gallery,
+    );
+
     if (result != null) {
       final size = File(result.path).lengthSync();
-      final extension = result.path.split('.').last;
+      final bytes = await result.readAsBytes();
+      final image = await decodeImageFromList(bytes);
+      final imageName = result.path.split('/').last;
 
       final message = types.ImageMessage(
         authorId: _user.id,
+        height: image.height.toDouble(),
         id: Uuid().v4(),
-        imageName: 'image.$extension',
+        imageName: imageName,
         size: size,
-        // As ImageMessage currently supports only NetworkImage passing url instead of result.path,
-        url: 'https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg',
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        uri: result.path,
+        width: image.width.toDouble(),
       );
 
       _addMessage(message);
     } else {
       // User canceled the picker
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadMessages();
   }
 
   @override

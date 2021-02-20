@@ -1,3 +1,9 @@
+## 0.5.0
+
+- Update types
+- Add empty chat placeholder
+- Fix images
+
 ## 0.4.5
 
 - Add attchment uploading handling
