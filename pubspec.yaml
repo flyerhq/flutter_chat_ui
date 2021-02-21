@@ -13,6 +13,7 @@ dependencies:
   flutter_chat_types: ^1.1.1
   flutter_link_previewer: ^0.0.9
   intl: ^0.16.1
+  photo_view: ^0.10.3
 
 dev_dependencies:
   flutter_test:

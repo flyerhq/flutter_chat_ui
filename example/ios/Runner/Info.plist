@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access photos</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access photos</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Access camera</string>
 	<key>NSMicrophoneUsageDescription</key>
