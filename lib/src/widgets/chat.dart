@@ -41,6 +41,21 @@ class _ChatState extends State<Chat> {
   bool isImageViewVisible = false;
   int imageViewIndex = 0;
 
+  Widget _imageGalleryLoadingBuilder(
+      BuildContext context, ImageChunkEvent event) {
+    return Center(
+      child: Container(
+        width: 20.0,
+        height: 20.0,
+        child: CircularProgressIndicator(
+          value: event == null
+              ? 0
+              : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+        ),
+      ),
+    );
+  }
+
   void _onCloseGalleryPressed() {
     setState(() {
       isImageViewVisible = false;
@@ -73,31 +88,22 @@ class _ChatState extends State<Chat> {
 
   Widget _renderImageGallery(List<String> galleryItems) {
     return Dismissible(
-      key: Key('gallery'),
+      key: Key('gallery'), // TODO: Change?
       direction: DismissDirection.down,
       onDismissed: (direction) => _onCloseGalleryPressed(),
       child: Stack(
         children: [
           PhotoViewGallery.builder(
-            scrollPhysics: const BouncingScrollPhysics(),
-            builder: (BuildContext context, int index) {
-              return PhotoViewGalleryPageOptions(
-                imageProvider: _renderImageProvider(galleryItems[index]),
-              );
-            },
-            itemCount: galleryItems.length,
-            loadingBuilder: (context, event) => Center(
-              child: Container(
-                width: 20.0,
-                height: 20.0,
-                child: CircularProgressIndicator(
-                  value: event == null
-                      ? 0
-                      : event.cumulativeBytesLoaded / event.expectedTotalBytes,
-                ),
-              ),
+            builder: (BuildContext context, int index) =>
+                PhotoViewGalleryPageOptions(
+              imageProvider: _renderImageProvider(galleryItems[index]),
             ),
+            itemCount: galleryItems.length,
+            loadingBuilder: (context, event) =>
+                _imageGalleryLoadingBuilder(context, event),
             onPageChanged: _onPageChanged,
+            pageController: PageController(initialPage: imageViewIndex),
+            scrollPhysics: const BouncingScrollPhysics(),
           ),
           Positioned(
             right: 20,
