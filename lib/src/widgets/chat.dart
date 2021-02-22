@@ -42,7 +42,9 @@ class _ChatState extends State<Chat> {
   int imageViewIndex = 0;
 
   Widget _imageGalleryLoadingBuilder(
-      BuildContext context, ImageChunkEvent event) {
+    BuildContext context,
+    ImageChunkEvent event,
+  ) {
     return Center(
       child: Container(
         width: 20.0,
@@ -63,7 +65,10 @@ class _ChatState extends State<Chat> {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
-  void _onImagePressed(String url, List<String> galleryItems) {
+  void _onImagePressed(
+    String url,
+    List<String> galleryItems,
+  ) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     setState(() {
       isImageViewVisible = true;
@@ -133,10 +138,12 @@ class _ChatState extends State<Chat> {
     List<String> galleryItems = widget.messages.fold(
       [],
       (previousValue, element) => element is types.ImageMessage
-          ? List.from([
-              element.uri,
-              ...previousValue,
-            ])
+          ? List.from(
+              [
+                element.uri,
+                ...previousValue,
+              ],
+            )
           : previousValue,
     );
 
