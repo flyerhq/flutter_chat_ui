@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/util.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 import 'package:flutter_chat_ui/src/widgets/input.dart';
 import 'package:flutter_chat_ui/src/widgets/message.dart';
-import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class Chat extends StatefulWidget {
@@ -38,8 +38,8 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-  bool isImageViewVisible = false;
-  int imageViewIndex = 0;
+  bool _isImageViewVisible = false;
+  int _imageViewIndex = 0;
 
   Widget _imageGalleryLoadingBuilder(
     BuildContext context,
@@ -60,7 +60,7 @@ class _ChatState extends State<Chat> {
 
   void _onCloseGalleryPressed() {
     setState(() {
-      isImageViewVisible = false;
+      _isImageViewVisible = false;
     });
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
@@ -71,14 +71,14 @@ class _ChatState extends State<Chat> {
   ) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     setState(() {
-      isImageViewVisible = true;
-      imageViewIndex = galleryItems.indexOf(url);
+      _isImageViewVisible = true;
+      _imageViewIndex = galleryItems.indexOf(url);
     });
   }
 
   void _onPageChanged(int index) {
     setState(() {
-      imageViewIndex = index;
+      _imageViewIndex = index;
     });
   }
 
@@ -93,7 +93,7 @@ class _ChatState extends State<Chat> {
 
   Widget _renderImageGallery(List<String> galleryItems) {
     return Dismissible(
-      key: Key('gallery'), // TODO: Change?
+      key: Key('gallery'),
       direction: DismissDirection.down,
       onDismissed: (direction) => _onCloseGalleryPressed(),
       child: Stack(
@@ -107,8 +107,8 @@ class _ChatState extends State<Chat> {
             loadingBuilder: (context, event) =>
                 _imageGalleryLoadingBuilder(context, event),
             onPageChanged: _onPageChanged,
-            pageController: PageController(initialPage: imageViewIndex),
-            scrollPhysics: const BouncingScrollPhysics(),
+            pageController: PageController(initialPage: _imageViewIndex),
+            scrollPhysics: const ClampingScrollPhysics(),
           ),
           Positioned(
             right: 20,
@@ -276,7 +276,7 @@ class _ChatState extends State<Chat> {
               ],
             ),
           ),
-          if (isImageViewVisible) _renderImageGallery(galleryItems),
+          if (_isImageViewVisible) _renderImageGallery(galleryItems),
         ],
       ),
     );
