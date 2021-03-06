@@ -19,7 +19,7 @@ String getVerboseDateTimeRepresentation(DateTime dateTime) {
     return 'Today';
   }
 
-  final yesterday = now.subtract(Duration(days: 1));
+  final yesterday = now.subtract(const Duration(days: 1));
 
   if (localDateTime.day == yesterday.day &&
       localDateTime.month == yesterday.month &&

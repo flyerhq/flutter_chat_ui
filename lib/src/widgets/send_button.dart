@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class SendButton extends StatelessWidget {
   const SendButton({
-    Key key,
-    @required this.onPressed,
-  })  : assert(onPressed != null),
-        super(key: key);
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
 
   final void Function() onPressed;
 

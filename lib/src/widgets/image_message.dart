@@ -2,19 +2,16 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/util.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
+import '../util.dart';
+import 'inherited_user.dart';
 
 class ImageMessage extends StatefulWidget {
   const ImageMessage({
-    Key key,
-    @required this.message,
-    @required this.messageWidth,
-    @required this.onPressed,
-  })  : assert(message != null),
-        assert(messageWidth != null),
-        assert(onPressed != null),
-        super(key: key);
+    Key? key,
+    required this.message,
+    required this.messageWidth,
+    required this.onPressed,
+  }) : super(key: key);
 
   final types.ImageMessage message;
   final int messageWidth;
@@ -25,9 +22,9 @@ class ImageMessage extends StatefulWidget {
 }
 
 class _ImageMessageState extends State<ImageMessage> {
-  ImageProvider _image;
-  ImageStream _stream;
-  Size _size = Size(0, 0);
+  ImageProvider? _image;
+  ImageStream? _stream;
+  Size _size = const Size(0, 0);
 
   @override
   void initState() {
@@ -51,13 +48,13 @@ class _ImageMessageState extends State<ImageMessage> {
 
   void _getImage() {
     final oldImageStream = _stream;
-    _stream = _image.resolve(createLocalImageConfiguration(context));
-    if (_stream.key == oldImageStream?.key) {
+    _stream = _image?.resolve(createLocalImageConfiguration(context));
+    if (_stream?.key == oldImageStream?.key) {
       return;
     }
     final listener = ImageStreamListener(_updateImage);
     oldImageStream?.removeListener(listener);
-    _stream.addListener(listener);
+    _stream?.addListener(listener);
   }
 
   void _updateImage(ImageInfo info, bool _) {
@@ -103,7 +100,7 @@ class _ImageMessageState extends State<ImageMessage> {
                   borderRadius: BorderRadius.circular(15),
                   child: Image(
                     fit: BoxFit.cover,
-                    image: _image,
+                    image: _image!,
                   ),
                 ),
               ),
@@ -160,7 +157,7 @@ class _ImageMessageState extends State<ImageMessage> {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: _image,
+            image: _image!,
           ),
         ),
         child: BackdropFilter(
@@ -171,7 +168,7 @@ class _ImageMessageState extends State<ImageMessage> {
               onTap: () => widget.onPressed(widget.message.uri),
               child: Image(
                 fit: BoxFit.contain,
-                image: _image,
+                image: _image!,
               ),
             ),
           ),

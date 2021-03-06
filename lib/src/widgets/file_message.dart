@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/util.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
+import '../util.dart';
+import 'inherited_user.dart';
 
 class FileMessage extends StatelessWidget {
   const FileMessage({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
     this.onPressed,
-  })  : assert(message != null),
-        super(key: key);
+  }) : super(key: key);
 
   final types.FileMessage message;
-  final void Function(types.FileMessage) onPressed;
+  final void Function(types.FileMessage)? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
 
     return GestureDetector(
-      onTap: () => onPressed(message),
+      onTap: () => onPressed?.call(message),
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
         child: Row(

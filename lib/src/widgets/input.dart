@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/widgets/attachment_button.dart';
-import 'package:flutter_chat_ui/src/widgets/send_button.dart';
+import 'attachment_button.dart';
+import 'send_button.dart';
 
 class Input extends StatefulWidget {
   const Input({
-    Key key,
+    Key? key,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
-    @required this.onSendPressed,
-  })  : assert(onSendPressed != null),
-        super(key: key);
+    required this.onSendPressed,
+  }) : super(key: key);
 
-  final void Function() onAttachmentPressed;
-  final bool isAttachmentUploading;
+  final void Function()? onAttachmentPressed;
+  final bool? isAttachmentUploading;
   final void Function(types.PartialText) onSendPressed;
 
   @override
@@ -48,6 +47,22 @@ class _InputState extends State<Input> {
     });
   }
 
+  Widget _leftWidget() {
+    if (widget.isAttachmentUploading == true) {
+      return const SizedBox(
+        height: 24,
+        width: 24,
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.transparent,
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(Color(0xffffffff)),
+        ),
+      );
+    } else {
+      return AttachmentButton(onPressed: widget.onAttachmentPressed);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
@@ -66,21 +81,7 @@ class _InputState extends State<Input> {
         ),
         child: Row(
           children: [
-            widget.isAttachmentUploading ?? false
-                ? Container(
-                    height: 24,
-                    width: 24,
-                    child: const CircularProgressIndicator(
-                      backgroundColor: Colors.transparent,
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0xffffffff),
-                      ),
-                    ),
-                  )
-                : AttachmentButton(
-                    onPressed: widget.onAttachmentPressed,
-                  ),
+            _leftWidget(),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

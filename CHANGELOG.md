@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Migrate to Flutter 2
+
 ## 0.5.1
 
 - Add gallery

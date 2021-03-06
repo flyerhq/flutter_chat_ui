@@ -1,30 +1,31 @@
 name: flutter_chat_ui
 description: Flutter Chat UI
-version: 0.5.1
+version: 0.6.0
 homepage: https://github.com/flyerhq/flutter_chat_ui
 
+publish_to: 'none'
+
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_chat_types: ^1.1.1
-  flutter_link_previewer: ^0.1.0
-  intl: ^0.16.1
-  photo_view: ^0.10.3
+  flutter_chat_types: ^2.0.1
+  flutter_link_previewer: ^0.2.2
+  intl: ^0.17.0
+  photo_view:
+    git:
+      url: git://github.com/DevNico/photo_view.git
+      ref: master
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  pedantic: ^1.11.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
-  # To add assets to your package, add an assets section, like this:
   assets:
     - packages/flutter_chat_ui/assets/icon-attachment.png
     - packages/flutter_chat_ui/assets/icon-document.png
@@ -41,30 +42,3 @@ flutter:
     - packages/flutter_chat_ui/assets/3.0x/icon-read.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png
     - packages/flutter_chat_ui/assets/3.0x/icon-sent.png
-
-  #
-  # For details regarding assets in packages, see
-  # https://flutter.dev/assets-and-images/#from-packages
-  #
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # To add custom fonts to your package, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts in packages, see
-  # https://flutter.dev/custom-fonts/#from-packages

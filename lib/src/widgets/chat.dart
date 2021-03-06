@@ -3,32 +3,30 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/util.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
-import 'package:flutter_chat_ui/src/widgets/input.dart';
-import 'package:flutter_chat_ui/src/widgets/message.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:photo_view/photo_view_gallery.dart';
+import '../util.dart';
+import 'inherited_user.dart';
+import 'input.dart';
+import 'message.dart';
 
 class Chat extends StatefulWidget {
   const Chat({
-    Key key,
+    Key? key,
     this.isAttachmentUploading,
-    @required this.messages,
+    required this.messages,
     this.onAttachmentPressed,
     this.onFilePressed,
     this.onPreviewDataFetched,
-    @required this.onSendPressed,
-    @required this.user,
-  })  : assert(messages != null),
-        assert(onSendPressed != null),
-        assert(user != null),
-        super(key: key);
+    required this.onSendPressed,
+    required this.user,
+  }) : super(key: key);
 
-  final bool isAttachmentUploading;
+  final bool? isAttachmentUploading;
   final List<types.Message> messages;
-  final void Function() onAttachmentPressed;
-  final void Function(types.FileMessage) onFilePressed;
-  final void Function(types.TextMessage, types.PreviewData)
+  final void Function()? onAttachmentPressed;
+  final void Function(types.FileMessage)? onFilePressed;
+  final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
   final void Function(types.PartialText) onSendPressed;
   final types.User user;
@@ -43,16 +41,16 @@ class _ChatState extends State<Chat> {
 
   Widget _imageGalleryLoadingBuilder(
     BuildContext context,
-    ImageChunkEvent event,
+    ImageChunkEvent? event,
   ) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 20.0,
         height: 20.0,
         child: CircularProgressIndicator(
-          value: event == null
+          value: event == null || event.expectedTotalBytes == null
               ? 0
-              : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
         ),
       ),
     );
@@ -86,14 +84,12 @@ class _ChatState extends State<Chat> {
     types.TextMessage message,
     types.PreviewData previewData,
   ) {
-    if (widget.onPreviewDataFetched != null) {
-      widget.onPreviewDataFetched(message, previewData);
-    }
+    widget.onPreviewDataFetched?.call(message, previewData);
   }
 
   Widget _renderImageGallery(List<String> galleryItems) {
     return Dismissible(
-      key: Key('gallery'),
+      key: const Key('photo_view_gallery'),
       direction: DismissDirection.down,
       onDismissed: (direction) => _onCloseGalleryPressed(),
       child: Stack(
@@ -135,7 +131,7 @@ class _ChatState extends State<Chat> {
     final _messageWidth =
         min(MediaQuery.of(context).size.width * 0.77, 440).floor();
 
-    List<String> galleryItems = widget.messages.fold(
+    final galleryItems = widget.messages.fold<List<String>>(
       [],
       (previousValue, element) => element is types.ImageMessage
           ? List.from(
@@ -156,14 +152,14 @@ class _ChatState extends State<Chat> {
             child: Column(
               children: [
                 Flexible(
-                  child: widget.messages.length == 0
+                  child: widget.messages.isEmpty
                       ? SizedBox.expand(
                           child: Container(
                             alignment: Alignment.center,
-                            margin: EdgeInsets.symmetric(horizontal: 24),
-                            child: Text(
+                            margin: const EdgeInsets.symmetric(horizontal: 24),
+                            child: const Text(
                               'No messages here yet',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xff9e9cab),
                                 fontFamily: 'Avenir',
                                 fontSize: 16,
@@ -176,7 +172,7 @@ class _ChatState extends State<Chat> {
                         )
                       : GestureDetector(
                           onTap: () =>
-                              FocusManager.instance.primaryFocus.unfocus(),
+                              FocusManager.instance.primaryFocus?.unfocus(),
                           child: ListView.builder(
                             itemCount: widget.messages.length + 1,
                             padding: EdgeInsets.zero,
@@ -200,14 +196,15 @@ class _ChatState extends State<Chat> {
                               var previousMessageSameAuthor = false;
                               var shouldRenderTime = message.timestamp != null;
 
-                              if (nextMessage != null) {
+                              if (nextMessage != null &&
+                                  nextMessage.timestamp != null) {
                                 nextMessageDifferentDay =
                                     message.timestamp != null &&
                                         DateTime.fromMillisecondsSinceEpoch(
-                                              message.timestamp * 1000,
+                                              message.timestamp! * 1000,
                                             ).day !=
                                             DateTime.fromMillisecondsSinceEpoch(
-                                              nextMessage.timestamp * 1000,
+                                              nextMessage.timestamp! * 1000,
                                             ).day;
                                 nextMessageSameAuthor =
                                     nextMessage.authorId == message.authorId;
@@ -220,8 +217,8 @@ class _ChatState extends State<Chat> {
                                 shouldRenderTime = message.timestamp != null &&
                                     previousMessage.timestamp != null &&
                                     (!previousMessageSameAuthor ||
-                                        previousMessage.timestamp -
-                                                message.timestamp >=
+                                        previousMessage.timestamp! -
+                                                message.timestamp! >=
                                             60);
                               }
 
@@ -237,11 +234,11 @@ class _ChatState extends State<Chat> {
                                       child: Text(
                                         getVerboseDateTimeRepresentation(
                                           DateTime.fromMillisecondsSinceEpoch(
-                                            message.timestamp * 1000,
+                                            message.timestamp! * 1000,
                                           ),
                                         ),
-                                        style: TextStyle(
-                                          color: const Color(0xff1d1d21),
+                                        style: const TextStyle(
+                                          color: Color(0xff1d1d21),
                                           fontFamily: 'Avenir',
                                           fontSize: 12,
                                           fontWeight: FontWeight.w800,

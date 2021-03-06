@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/widgets/file_message.dart';
-import 'package:flutter_chat_ui/src/widgets/image_message.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
-import 'package:flutter_chat_ui/src/widgets/text_message.dart';
+import 'file_message.dart';
+import 'image_message.dart';
+import 'inherited_user.dart';
+import 'text_message.dart';
 
 class Message extends StatelessWidget {
   const Message({
-    Key key,
-    @required this.message,
-    @required this.messageWidth,
+    Key? key,
+    required this.message,
+    required this.messageWidth,
     this.onFilePressed,
-    @required this.onImagePressed,
+    required this.onImagePressed,
     this.onPreviewDataFetched,
-    @required this.previousMessageSameAuthor,
-    @required this.shouldRenderTime,
-  })  : assert(message != null),
-        assert(messageWidth != null),
-        assert(previousMessageSameAuthor != null),
-        assert(shouldRenderTime != null),
-        super(key: key);
+    required this.previousMessageSameAuthor,
+    required this.shouldRenderTime,
+  }) : super(key: key);
 
   final types.Message message;
   final int messageWidth;
-  final void Function(types.FileMessage) onFilePressed;
+  final void Function(types.FileMessage)? onFilePressed;
   final void Function(String) onImagePressed;
-  final void Function(types.TextMessage, types.PreviewData)
+  final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
   final bool previousMessageSameAuthor;
   final bool shouldRenderTime;
@@ -34,20 +30,20 @@ class Message extends StatelessWidget {
   Widget _buildMessage() {
     switch (message.type) {
       case types.MessageType.file:
-        final types.FileMessage fileMessage = message;
+        final fileMessage = message as types.FileMessage;
         return FileMessage(
           message: fileMessage,
           onPressed: onFilePressed,
         );
       case types.MessageType.image:
-        final types.ImageMessage imageMessage = message;
+        final imageMessage = message as types.ImageMessage;
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
           onPressed: onImagePressed,
         );
       case types.MessageType.text:
-        final types.TextMessage textMessage = message;
+        final textMessage = message as types.TextMessage;
         return TextMessage(
           message: textMessage,
           onPreviewDataFetched: onPreviewDataFetched,
@@ -66,15 +62,13 @@ class Message extends StatelessWidget {
           package: 'flutter_chat_ui',
         );
       case types.Status.sending:
-        return SizedBox(
+        return const SizedBox(
           height: 12,
           width: 12,
-          child: const CircularProgressIndicator(
+          child: CircularProgressIndicator(
             backgroundColor: Colors.transparent,
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Color(0xff6f61e8),
-            ),
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xff6f61e8)),
           ),
         );
       case types.Status.sent:
@@ -99,11 +93,11 @@ class Message extends StatelessWidget {
           child: Text(
             DateFormat.jm().format(
               DateTime.fromMillisecondsSinceEpoch(
-                message.timestamp * 1000,
+                message.timestamp! * 1000,
               ),
             ),
-            style: TextStyle(
-              color: const Color(0xff9e9cab),
+            style: const TextStyle(
+              color: Color(0xff9e9cab),
               fontFamily: 'Avenir',
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -158,7 +152,7 @@ class Message extends StatelessWidget {
             ),
             if (shouldRenderTime)
               Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 8,
                 ),
                 child: _buildTime(_currentUserIsAuthor),

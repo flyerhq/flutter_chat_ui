@@ -4,19 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart' show Chat;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -38,12 +41,14 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ChatPage(),
+      home: const ChatPage(),
     );
   }
 }
 
 class ChatPage extends StatefulWidget {
+  const ChatPage({Key? key}) : super(key: key);
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
@@ -51,7 +56,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
 
-  final _user = types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
 
   @override
   void initState() {
@@ -69,36 +74,36 @@ class _ChatPageState extends State<ChatPage> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 180,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   _showFilePicker();
                 },
-                child: Align(
+                child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Open file picker"),
+                  child: Text('Open file picker'),
                 ),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   _showImagePicker();
                 },
-                child: Align(
+                child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Open image picker"),
+                  child: Text('Open image picker'),
                 ),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Align(
+                child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Cancel"),
+                  child: Text('Cancel'),
                 ),
               ),
             ],
@@ -111,7 +116,7 @@ class _ChatPageState extends State<ChatPage> {
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e))
+        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
 
     setState(() {
@@ -124,10 +129,10 @@ class _ChatPageState extends State<ChatPage> {
     types.PreviewData previewData,
   ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
-    types.TextMessage currentMessage = _messages[index];
-    final updatedMessage = currentMessage.copyWith(previewData: previewData);
+    final currentMessage = _messages[index] as types.TextMessage;
+    final updatedMessage = currentMessage.copyWith(previewData);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         _messages[index] = updatedMessage;
       });
@@ -137,7 +142,7 @@ class _ChatPageState extends State<ChatPage> {
   void _onSendMessage(types.PartialText message) {
     final textMessage = types.TextMessage(
       authorId: _user.id,
-      id: Uuid().v4(),
+      id: const Uuid().v4(),
       text: message.text,
       timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
     );
@@ -146,17 +151,17 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _openFile(types.FileMessage message) async {
-    String localPath = message.uri;
+    var localPath = message.uri;
 
     if (message.uri.startsWith('http')) {
-      final client = new http.Client();
+      final client = http.Client();
       final request = await client.get(Uri.parse(message.uri));
       final bytes = request.bodyBytes;
       final documentsDir = (await getApplicationDocumentsDirectory()).path;
       localPath = '$documentsDir/${message.fileName}';
 
       if (!File(localPath).existsSync()) {
-        final file = new File(localPath);
+        final file = File(localPath);
         await file.writeAsBytes(bytes);
       }
     }
@@ -172,12 +177,12 @@ class _ChatPageState extends State<ChatPage> {
     if (result != null) {
       final message = types.FileMessage(
         authorId: _user.id,
-        fileName: result.files.single.name,
-        id: Uuid().v4(),
-        mimeType: lookupMimeType(result.files.single.path),
-        size: result.files.single.size,
+        fileName: result.files.single.name ?? '',
+        id: const Uuid().v4(),
+        mimeType: lookupMimeType(result.files.single.path ?? ''),
+        size: result.files.single.size ?? 0,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
-        uri: result.files.single.path,
+        uri: result.files.single.path ?? '',
       );
 
       _addMessage(message);
@@ -202,7 +207,7 @@ class _ChatPageState extends State<ChatPage> {
       final message = types.ImageMessage(
         authorId: _user.id,
         height: image.height.toDouble(),
-        id: Uuid().v4(),
+        id: const Uuid().v4(),
         imageName: imageName,
         size: size,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),

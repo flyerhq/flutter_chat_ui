@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, REGEX_LINK;
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
+import 'inherited_user.dart';
 
 class TextMessage extends StatelessWidget {
   const TextMessage({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
     this.onPreviewDataFetched,
-  })  : assert(message != null),
-        super(key: key);
+  }) : super(key: key);
 
   final types.TextMessage message;
-  final void Function(types.TextMessage, types.PreviewData)
+  final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
-    if (message.previewData == null && onPreviewDataFetched != null) {
-      onPreviewDataFetched(message, previewData);
+    if (message.previewData == null) {
+      onPreviewDataFetched?.call(message, previewData);
     }
   }
 
@@ -46,7 +45,7 @@ class TextMessage extends StatelessWidget {
         fontWeight: FontWeight.w800,
       ),
       onPreviewDataFetched: _onPreviewDataFetched,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 24,
         vertical: 16,
       ),
