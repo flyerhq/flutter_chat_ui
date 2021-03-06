@@ -12,6 +12,7 @@ class Message extends StatelessWidget {
     @required this.message,
     @required this.messageWidth,
     this.onFilePressed,
+    @required this.onImagePressed,
     this.onPreviewDataFetched,
     @required this.previousMessageSameAuthor,
     @required this.shouldRenderTime,
@@ -24,6 +25,7 @@ class Message extends StatelessWidget {
   final types.Message message;
   final int messageWidth;
   final void Function(types.FileMessage) onFilePressed;
+  final void Function(String) onImagePressed;
   final void Function(types.TextMessage, types.PreviewData)
       onPreviewDataFetched;
   final bool previousMessageSameAuthor;
@@ -42,7 +44,7 @@ class Message extends StatelessWidget {
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
-          onPressed: (String uri) {},
+          onPressed: onImagePressed,
         );
       case types.MessageType.text:
         final types.TextMessage textMessage = message;

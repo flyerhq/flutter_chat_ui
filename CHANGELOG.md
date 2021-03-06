@@ -1,3 +1,7 @@
+## 0.5.1
+
+- Add gallery
+
 ## 0.5.0
 
 - Update types
