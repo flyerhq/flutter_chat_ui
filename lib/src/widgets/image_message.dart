@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
+import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
 class ImageMessage extends StatefulWidget {
@@ -78,7 +79,7 @@ class _ImageMessageState extends State<ImageMessage> {
 
     if (_size.aspectRatio == null || _size.aspectRatio == 0) {
       return Container(
-        color: const Color(0xfff7f7f8),
+        color: InheritedChatTheme.of(context).theme.secondaryColor,
         height: _size.height,
         width: _size.width,
       );
@@ -87,8 +88,8 @@ class _ImageMessageState extends State<ImageMessage> {
         onTap: () => widget.onPressed(widget.message.uri),
         child: Container(
           color: _user.id == widget.message.authorId
-              ? const Color(0xff6f61e8)
-              : const Color(0xfff7f7f8),
+              ? InheritedChatTheme.of(context).theme.primaryColor
+              : InheritedChatTheme.of(context).theme.secondaryColor,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -112,15 +113,16 @@ class _ImageMessageState extends State<ImageMessage> {
                     children: [
                       Text(
                         widget.message.imageName,
-                        style: TextStyle(
-                          color: _user.id == widget.message.authorId
-                              ? const Color(0xffffffff)
-                              : const Color(0xff1d1d21),
-                          fontFamily: 'Avenir',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          height: 1.375,
-                        ),
+                        style:
+                            InheritedChatTheme.of(context).theme.body1.copyWith(
+                                  color: _user.id == widget.message.authorId
+                                      ? InheritedChatTheme.of(context)
+                                          .theme
+                                          .primaryTextColor
+                                      : InheritedChatTheme.of(context)
+                                          .theme
+                                          .secondaryTextColor,
+                                ),
                         textWidthBasis: TextWidthBasis.longestLine,
                       ),
                       Container(
@@ -129,15 +131,19 @@ class _ImageMessageState extends State<ImageMessage> {
                         ),
                         child: Text(
                           formatBytes(widget.message.size),
-                          style: TextStyle(
-                            color: _user.id == widget.message.authorId
-                                ? const Color(0x80ffffff)
-                                : const Color(0xff9e9cab),
-                            fontFamily: 'Avenir',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            height: 1.375,
-                          ),
+                          style: InheritedChatTheme.of(context)
+                              .theme
+                              .caption
+                              .copyWith(
+                                color: _user.id == widget.message.authorId
+                                    ? InheritedChatTheme.of(context)
+                                        .theme
+                                        .primaryTextColor
+                                        .withOpacity(0.5)
+                                    : InheritedChatTheme.of(context)
+                                        .theme
+                                        .captionColor,
+                              ),
                         ),
                       ),
                     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'attachment_button.dart';
+import 'inherited_chat_theme.dart';
 import 'send_button.dart';
 
 class Input extends StatefulWidget {
@@ -49,13 +50,15 @@ class _InputState extends State<Input> {
 
   Widget _leftWidget() {
     if (widget.isAttachmentUploading == true) {
-      return const SizedBox(
+      return SizedBox(
         height: 24,
         width: 24,
         child: CircularProgressIndicator(
           backgroundColor: Colors.transparent,
           strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(Color(0xffffffff)),
+          valueColor: AlwaysStoppedAnimation<Color>(
+            InheritedChatTheme.of(context).theme.inputTextColor,
+          ),
         ),
       );
     } else {
@@ -71,7 +74,7 @@ class _InputState extends State<Input> {
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(20),
       ),
-      color: Colors.black,
+      color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
       child: Container(
         padding: EdgeInsets.fromLTRB(
           24 + _query.padding.left,
@@ -87,22 +90,23 @@ class _InputState extends State<Input> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextField(
                   controller: _textController,
-                  decoration: const InputDecoration.collapsed(
-                    hintStyle: TextStyle(
-                      color: Color(0x80ffffff),
-                    ),
+                  decoration: InputDecoration.collapsed(
+                    hintStyle:
+                        InheritedChatTheme.of(context).theme.body1.copyWith(
+                              color: InheritedChatTheme.of(context)
+                                  .theme
+                                  .inputTextColor
+                                  .withOpacity(0.5),
+                            ),
                     hintText: 'Your message here',
                   ),
                   keyboardType: TextInputType.multiline,
                   maxLines: 5,
                   minLines: 1,
-                  style: const TextStyle(
-                    color: Color(0xffffffff),
-                    fontFamily: 'Avenir',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    height: 1.375,
-                  ),
+                  style: InheritedChatTheme.of(context).theme.body1.copyWith(
+                        color:
+                            InheritedChatTheme.of(context).theme.inputTextColor,
+                      ),
                   textCapitalization: TextCapitalization.sentences,
                 ),
               ),

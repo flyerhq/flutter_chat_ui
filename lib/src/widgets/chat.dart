@@ -3,9 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:photo_view/photo_view_gallery.dart';
+import '../chat_theme.dart';
 import '../util.dart';
+import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
@@ -19,6 +20,7 @@ class Chat extends StatefulWidget {
     this.onFilePressed,
     this.onPreviewDataFetched,
     required this.onSendPressed,
+    this.theme = const DefaultChatTheme(),
     required this.user,
   }) : super(key: key);
 
@@ -29,6 +31,7 @@ class Chat extends StatefulWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
   final void Function(types.PartialText) onSendPressed;
+  final ChatTheme theme;
   final types.User user;
 
   @override
@@ -145,136 +148,146 @@ class _ChatState extends State<Chat> {
 
     return InheritedUser(
       user: widget.user,
-      child: Stack(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                Flexible(
-                  child: widget.messages.isEmpty
-                      ? SizedBox.expand(
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.symmetric(horizontal: 24),
-                            child: const Text(
-                              'No messages here yet',
-                              style: TextStyle(
-                                color: Color(0xff9e9cab),
-                                fontFamily: 'Avenir',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                height: 1.375,
+      child: InheritedChatTheme(
+        theme: widget.theme,
+        child: Stack(
+          children: [
+            Container(
+              color: widget.theme.backgroundColor,
+              child: SafeArea(
+                bottom: false,
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: widget.messages.isEmpty
+                          ? SizedBox.expand(
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: Text(
+                                  'No messages here yet',
+                                  style: widget.theme.body1.copyWith(
+                                    color: widget.theme.captionColor,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () =>
-                              FocusManager.instance.primaryFocus?.unfocus(),
-                          child: ListView.builder(
-                            itemCount: widget.messages.length + 1,
-                            padding: EdgeInsets.zero,
-                            reverse: true,
-                            itemBuilder: (context, index) {
-                              if (index == widget.messages.length) {
-                                return Container(height: 16);
-                              }
+                            )
+                          : GestureDetector(
+                              onTap: () =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              child: ListView.builder(
+                                itemCount: widget.messages.length + 1,
+                                padding: EdgeInsets.zero,
+                                reverse: true,
+                                itemBuilder: (context, index) {
+                                  if (index == widget.messages.length) {
+                                    return Container(height: 16);
+                                  }
 
-                              final message = widget.messages[index];
-                              final isFirst = index == 0;
-                              final isLast =
-                                  index == widget.messages.length - 1;
-                              final nextMessage =
-                                  isLast ? null : widget.messages[index + 1];
-                              final previousMessage =
-                                  isFirst ? null : widget.messages[index - 1];
+                                  final message = widget.messages[index];
+                                  final isFirst = index == 0;
+                                  final isLast =
+                                      index == widget.messages.length - 1;
+                                  final nextMessage = isLast
+                                      ? null
+                                      : widget.messages[index + 1];
+                                  final previousMessage = isFirst
+                                      ? null
+                                      : widget.messages[index - 1];
 
-                              var nextMessageDifferentDay = false;
-                              var nextMessageSameAuthor = false;
-                              var previousMessageSameAuthor = false;
-                              var shouldRenderTime = message.timestamp != null;
+                                  var nextMessageDifferentDay = false;
+                                  var nextMessageSameAuthor = false;
+                                  var previousMessageSameAuthor = false;
+                                  var shouldRenderTime =
+                                      message.timestamp != null;
 
-                              if (nextMessage != null &&
-                                  nextMessage.timestamp != null) {
-                                nextMessageDifferentDay =
-                                    message.timestamp != null &&
+                                  if (nextMessage != null &&
+                                      nextMessage.timestamp != null) {
+                                    nextMessageDifferentDay = message
+                                                .timestamp !=
+                                            null &&
                                         DateTime.fromMillisecondsSinceEpoch(
                                               message.timestamp! * 1000,
                                             ).day !=
                                             DateTime.fromMillisecondsSinceEpoch(
                                               nextMessage.timestamp! * 1000,
                                             ).day;
-                                nextMessageSameAuthor =
-                                    nextMessage.authorId == message.authorId;
-                              }
+                                    nextMessageSameAuthor =
+                                        nextMessage.authorId ==
+                                            message.authorId;
+                                  }
 
-                              if (previousMessage != null) {
-                                previousMessageSameAuthor =
-                                    previousMessage.authorId ==
-                                        message.authorId;
-                                shouldRenderTime = message.timestamp != null &&
-                                    previousMessage.timestamp != null &&
-                                    (!previousMessageSameAuthor ||
-                                        previousMessage.timestamp! -
-                                                message.timestamp! >=
-                                            60);
-                              }
+                                  if (previousMessage != null) {
+                                    previousMessageSameAuthor =
+                                        previousMessage.authorId ==
+                                            message.authorId;
+                                    shouldRenderTime =
+                                        message.timestamp != null &&
+                                            previousMessage.timestamp != null &&
+                                            (!previousMessageSameAuthor ||
+                                                previousMessage.timestamp! -
+                                                        message.timestamp! >=
+                                                    60);
+                                  }
 
-                              return Column(
-                                children: [
-                                  if (nextMessageDifferentDay ||
-                                      (isLast && message.timestamp != null))
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        bottom: 32,
-                                        top: nextMessageSameAuthor ? 24 : 16,
-                                      ),
-                                      child: Text(
-                                        getVerboseDateTimeRepresentation(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                            message.timestamp! * 1000,
+                                  return Column(
+                                    children: [
+                                      if (nextMessageDifferentDay ||
+                                          (isLast && message.timestamp != null))
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            bottom: 32,
+                                            top:
+                                                nextMessageSameAuthor ? 24 : 16,
+                                          ),
+                                          child: Text(
+                                            getVerboseDateTimeRepresentation(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                message.timestamp! * 1000,
+                                              ),
+                                            ),
+                                            style:
+                                                widget.theme.subtitle2.copyWith(
+                                              color: widget
+                                                  .theme.secondaryTextColor,
+                                            ),
                                           ),
                                         ),
-                                        style: const TextStyle(
-                                          color: Color(0xff1d1d21),
-                                          fontFamily: 'Avenir',
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w800,
-                                          height: 1.375,
-                                        ),
+                                      Message(
+                                        key: ValueKey(message),
+                                        onImagePressed: (url) {
+                                          _onImagePressed(url, galleryItems);
+                                        },
+                                        message: message,
+                                        messageWidth: _messageWidth,
+                                        onFilePressed: widget.onFilePressed,
+                                        onPreviewDataFetched:
+                                            _onPreviewDataFetched,
+                                        previousMessageSameAuthor:
+                                            previousMessageSameAuthor,
+                                        shouldRenderTime: shouldRenderTime,
                                       ),
-                                    ),
-                                  Message(
-                                    key: ValueKey(message),
-                                    onImagePressed: (url) {
-                                      _onImagePressed(url, galleryItems);
-                                    },
-                                    message: message,
-                                    messageWidth: _messageWidth,
-                                    onFilePressed: widget.onFilePressed,
-                                    onPreviewDataFetched: _onPreviewDataFetched,
-                                    previousMessageSameAuthor:
-                                        previousMessageSameAuthor,
-                                    shouldRenderTime: shouldRenderTime,
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                    ),
+                    Input(
+                      isAttachmentUploading: widget.isAttachmentUploading,
+                      onAttachmentPressed: widget.onAttachmentPressed,
+                      onSendPressed: widget.onSendPressed,
+                    ),
+                  ],
                 ),
-                Input(
-                  isAttachmentUploading: widget.isAttachmentUploading,
-                  onAttachmentPressed: widget.onAttachmentPressed,
-                  onSendPressed: widget.onSendPressed,
-                ),
-              ],
+              ),
             ),
-          ),
-          if (_isImageViewVisible) _renderImageGallery(galleryItems),
-        ],
+            if (_isImageViewVisible) _renderImageGallery(galleryItems),
+          ],
+        ),
       ),
     );
   }

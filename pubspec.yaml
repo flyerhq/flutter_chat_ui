@@ -3,8 +3,6 @@ description: Flutter Chat UI
 version: 0.6.0
 homepage: https://github.com/flyerhq/flutter_chat_ui
 
-publish_to: 'none'
-
 environment:
   sdk: ">=2.12.0 <3.0.0"
   flutter: ">=2.0.0"
@@ -15,10 +13,7 @@ dependencies:
   flutter_chat_types: ^2.0.1
   flutter_link_previewer: ^0.2.2
   intl: ^0.17.0
-  photo_view:
-    git:
-      url: git://github.com/DevNico/photo_view.git
-      ref: master
+  photo_view: ^0.11.0
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, REGEX_LINK;
+import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
 class TextMessage extends StatelessWidget {
@@ -24,26 +25,23 @@ class TextMessage extends StatelessWidget {
   Widget _linkPreview(
     types.User user,
     double width,
+    BuildContext context,
   ) {
-    final style = TextStyle(
-      color: user.id == message.authorId
-          ? const Color(0xffffffff)
-          : const Color(0xff1d1d21),
-      fontFamily: 'Avenir',
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      height: 1.375,
-    );
+    final color = user.id == message.authorId
+        ? InheritedChatTheme.of(context).theme.primaryTextColor
+        : InheritedChatTheme.of(context).theme.secondaryTextColor;
 
     return LinkPreview(
-      linkStyle: style,
-      metadataTextStyle: style.copyWith(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-      ),
-      metadataTitleStyle: style.copyWith(
-        fontWeight: FontWeight.w800,
-      ),
+      linkStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
+            color: color,
+          ),
+      metadataTextStyle: InheritedChatTheme.of(context).theme.body2.copyWith(
+            color: color,
+          ),
+      metadataTitleStyle:
+          InheritedChatTheme.of(context).theme.subtitle1.copyWith(
+                color: color,
+              ),
       onPreviewDataFetched: _onPreviewDataFetched,
       padding: const EdgeInsets.symmetric(
         horizontal: 24,
@@ -51,23 +49,21 @@ class TextMessage extends StatelessWidget {
       ),
       previewData: message.previewData,
       text: message.text,
-      textStyle: style,
+      textStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
+            color: color,
+          ),
       width: width,
     );
   }
 
-  Widget _textWidget(types.User user) {
+  Widget _textWidget(types.User user, BuildContext context) {
     return Text(
       message.text,
-      style: TextStyle(
-        color: user.id == message.authorId
-            ? const Color(0xffffffff)
-            : const Color(0xff1d1d21),
-        fontFamily: 'Avenir',
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        height: 1.375,
-      ),
+      style: InheritedChatTheme.of(context).theme.body1.copyWith(
+            color: user.id == message.authorId
+                ? InheritedChatTheme.of(context).theme.primaryTextColor
+                : InheritedChatTheme.of(context).theme.secondaryTextColor,
+          ),
       textWidthBasis: TextWidthBasis.longestLine,
     );
   }
@@ -80,14 +76,14 @@ class TextMessage extends StatelessWidget {
     final urlRegexp = RegExp(REGEX_LINK);
     final matches = urlRegexp.allMatches(message.text.toLowerCase());
 
-    if (matches.isNotEmpty) return _linkPreview(_user, _width);
+    if (matches.isNotEmpty) return _linkPreview(_user, _width, context);
 
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 24,
         vertical: 16,
       ),
-      child: _textWidget(_user),
+      child: _textWidget(_user, context),
     );
   }
 }

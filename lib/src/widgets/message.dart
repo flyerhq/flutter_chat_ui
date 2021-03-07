@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'file_message.dart';
 import 'image_message.dart';
+import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'text_message.dart';
 
@@ -53,28 +54,30 @@ class Message extends StatelessWidget {
     }
   }
 
-  Widget _buildStatus() {
+  Widget _buildStatus(BuildContext context) {
     switch (message.status) {
       case types.Status.read:
         return Image.asset(
           'assets/icon-read.png',
-          color: const Color(0xff6f61e8),
+          color: InheritedChatTheme.of(context).theme.primaryColor,
           package: 'flutter_chat_ui',
         );
       case types.Status.sending:
-        return const SizedBox(
+        return SizedBox(
           height: 12,
           width: 12,
           child: CircularProgressIndicator(
             backgroundColor: Colors.transparent,
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Color(0xff6f61e8)),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              InheritedChatTheme.of(context).theme.primaryColor,
+            ),
           ),
         );
       case types.Status.sent:
         return Image.asset(
           'assets/icon-sent.png',
-          color: const Color(0xff6f61e8),
+          color: InheritedChatTheme.of(context).theme.primaryColor,
           package: 'flutter_chat_ui',
         );
       default:
@@ -82,7 +85,7 @@ class Message extends StatelessWidget {
     }
   }
 
-  Widget _buildTime(bool currentUserIsAuthor) {
+  Widget _buildTime(bool currentUserIsAuthor, BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -96,16 +99,12 @@ class Message extends StatelessWidget {
                 message.timestamp! * 1000,
               ),
             ),
-            style: const TextStyle(
-              color: Color(0xff9e9cab),
-              fontFamily: 'Avenir',
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              height: 1.375,
-            ),
+            style: InheritedChatTheme.of(context).theme.caption.copyWith(
+                  color: InheritedChatTheme.of(context).theme.captionColor,
+                ),
           ),
         ),
-        if (currentUserIsAuthor) _buildStatus()
+        if (currentUserIsAuthor) _buildStatus(context)
       ],
     );
   }
@@ -142,8 +141,8 @@ class Message extends StatelessWidget {
                 borderRadius: _borderRadius,
                 color: !_currentUserIsAuthor ||
                         message.type == types.MessageType.image
-                    ? const Color(0xfff7f7f8)
-                    : const Color(0xff6f61e8),
+                    ? InheritedChatTheme.of(context).theme.secondaryColor
+                    : InheritedChatTheme.of(context).theme.primaryColor,
               ),
               child: ClipRRect(
                 borderRadius: _borderRadius,
@@ -155,7 +154,7 @@ class Message extends StatelessWidget {
                 margin: const EdgeInsets.only(
                   top: 8,
                 ),
-                child: _buildTime(_currentUserIsAuthor),
+                child: _buildTime(_currentUserIsAuthor, context),
               )
           ],
         ),

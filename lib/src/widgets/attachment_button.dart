@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'inherited_chat_theme.dart';
 
 class AttachmentButton extends StatelessWidget {
   const AttachmentButton({
@@ -17,7 +18,7 @@ class AttachmentButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         icon: Image.asset(
           'assets/icon-attachment.png',
-          color: const Color(0xffffffff),
+          color: InheritedChatTheme.of(context).theme.inputTextColor,
           package: 'flutter_chat_ui',
         ),
         onPressed: onPressed,
