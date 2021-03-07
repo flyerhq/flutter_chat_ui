@@ -9,14 +9,19 @@ String formatBytes(int size, [int fractionDigits = 2]) {
       ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][multiple];
 }
 
-String getVerboseDateTimeRepresentation(DateTime dateTime) {
+String getVerboseDateTimeRepresentation(
+  DateTime dateTime,
+  String? locale,
+  String todayText,
+  String yesterdayText,
+) {
   final now = DateTime.now();
   final localDateTime = dateTime.toLocal();
 
   if (localDateTime.day == now.day &&
       localDateTime.month == now.month &&
       localDateTime.year == now.year) {
-    return 'Today';
+    return todayText;
   }
 
   final yesterday = now.subtract(const Duration(days: 1));
@@ -24,8 +29,8 @@ String getVerboseDateTimeRepresentation(DateTime dateTime) {
   if (localDateTime.day == yesterday.day &&
       localDateTime.month == yesterday.month &&
       localDateTime.year == yesterday.year) {
-    return 'Yesterday';
+    return yesterdayText;
   }
 
-  return DateFormat.d().add_MMMM().format(dateTime);
+  return DateFormat.MMMMd(locale).format(dateTime);
 }

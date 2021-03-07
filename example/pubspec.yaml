@@ -29,6 +29,7 @@ dependencies:
     path: ../
   http: ^0.13.0
   image_picker: ^0.7.2
+  intl: ^0.17.0
   mime: ^1.0.0
   open_file:
     git:

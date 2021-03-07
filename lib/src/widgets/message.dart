@@ -10,6 +10,7 @@ import 'text_message.dart';
 class Message extends StatelessWidget {
   const Message({
     Key? key,
+    this.dateLocale,
     required this.message,
     required this.messageWidth,
     this.onFilePressed,
@@ -19,6 +20,7 @@ class Message extends StatelessWidget {
     required this.shouldRenderTime,
   }) : super(key: key);
 
+  final String? dateLocale;
   final types.Message message;
   final int messageWidth;
   final void Function(types.FileMessage)? onFilePressed;
@@ -94,7 +96,7 @@ class Message extends StatelessWidget {
             right: currentUserIsAuthor ? 8 : 16,
           ),
           child: Text(
-            DateFormat.jm().format(
+            DateFormat.jm(dateLocale).format(
               DateTime.fromMillisecondsSinceEpoch(
                 message.timestamp! * 1000,
               ),

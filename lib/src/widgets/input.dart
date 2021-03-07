@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
+import 'inherited_l10n.dart';
 import 'send_button.dart';
 
 class Input extends StatefulWidget {
@@ -98,7 +99,7 @@ class _InputState extends State<Input> {
                                   .inputTextColor
                                   .withOpacity(0.5),
                             ),
-                    hintText: 'Your message here',
+                    hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
                   ),
                   keyboardType: TextInputType.multiline,
                   maxLines: 5,
