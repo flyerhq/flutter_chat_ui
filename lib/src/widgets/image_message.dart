@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:universal_io/io.dart';
+import '../conditional/conditional.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
@@ -30,12 +30,7 @@ class _ImageMessageState extends State<ImageMessage> {
   @override
   void initState() {
     super.initState();
-    if (widget.message.uri.startsWith('http')) {
-      _image = NetworkImage(widget.message.uri);
-    } else {
-      _image = FileImage(File(widget.message.uri));
-    }
-
+    _image = Conditional().getProvider(widget.message.uri);
     _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
   }
 

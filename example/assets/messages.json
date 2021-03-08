@@ -89,25 +89,25 @@
   },
   {
     "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
-    "height": 677,
+    "height": 600,
     "id": "8fa70836-3309-4d09-a777-4d9603e1f123",
     "imageName": "image",
-    "size": 197943,
+    "size": 59645,
     "status": "read",
     "timestamp": 1598438785,
     "type": "image",
-    "uri": "https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg",
-    "width": 1203
+    "uri": "https://hcti.io/v1/image/c1ea794e-32c7-4516-bd0f-8b835e8a2f2e",
+    "width": 1128
   },
   {
     "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
     "fileName": "image.jpg",
     "id": "8fa70836-3309-4d09-a777-4d9603e1f123",
     "mimeType": "image/jpg",
-    "size": 197943,
+    "size": 59645,
     "status": "read",
     "timestamp": 1598438784,
     "type": "file",
-    "uri": "https://i.ytimg.com/vi/L42-aFe8bMo/maxresdefault.jpg"
+    "uri": "https://hcti.io/v1/image/c1ea794e-32c7-4516-bd0f-8b835e8a2f2e"
   }
 ]

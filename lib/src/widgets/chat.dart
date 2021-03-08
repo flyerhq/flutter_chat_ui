@@ -1,12 +1,13 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:universal_io/io.dart';
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
+import '../conditional/conditional.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
@@ -73,13 +74,13 @@ class _ChatState extends State<Chat> {
   }
 
   void _onImagePressed(
-    String url,
+    String uri,
     List<String> galleryItems,
   ) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     setState(() {
       _isImageViewVisible = true;
-      _imageViewIndex = galleryItems.indexOf(url);
+      _imageViewIndex = galleryItems.indexOf(uri);
     });
   }
 
@@ -106,7 +107,7 @@ class _ChatState extends State<Chat> {
           PhotoViewGallery.builder(
             builder: (BuildContext context, int index) =>
                 PhotoViewGalleryPageOptions(
-              imageProvider: _renderImageProvider(galleryItems[index]),
+              imageProvider: Conditional().getProvider(galleryItems[index]),
             ),
             itemCount: galleryItems.length,
             loadingBuilder: (context, event) =>
@@ -128,29 +129,30 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  ImageProvider _renderImageProvider(String url) {
-    if (url.startsWith('http')) {
-      return NetworkImage(url);
-    }
-    return FileImage(File(url));
-  }
-
   @override
   Widget build(BuildContext context) {
     final _messageWidth =
         min(MediaQuery.of(context).size.width * 0.77, 440).floor();
 
-    final galleryItems = widget.messages.fold<List<String>>(
-      [],
-      (previousValue, element) => element is types.ImageMessage
-          ? List.from(
-              [
-                element.uri,
-                ...previousValue,
-              ],
-            )
-          : previousValue,
-    );
+    final galleryItems =
+        widget.messages.fold<List<String>>([], (previousValue, element) {
+      // Check if element is image message
+      if (element is types.ImageMessage) {
+        // For web add only remote uri, local files are not yet supported
+        if (kIsWeb) {
+          if (element.uri.startsWith('http')) {
+            return [element.uri, ...previousValue];
+          } else {
+            return previousValue;
+          }
+          // For everything else add uri
+        } else {
+          return [element.uri, ...previousValue];
+        }
+      }
+
+      return previousValue;
+    });
 
     return InheritedUser(
       user: widget.user,
@@ -274,8 +276,8 @@ class _ChatState extends State<Chat> {
                                         Message(
                                           key: ValueKey(message),
                                           dateLocale: widget.dateLocale,
-                                          onImagePressed: (url) {
-                                            _onImagePressed(url, galleryItems);
+                                          onImagePressed: (uri) {
+                                            _onImagePressed(uri, galleryItems);
                                           },
                                           message: message,
                                           messageWidth: _messageWidth,

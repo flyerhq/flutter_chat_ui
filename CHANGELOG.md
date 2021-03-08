@@ -1,3 +1,7 @@
+## 0.6.3
+
+- Replace universal IO with conditional import
+
 ## 0.6.2
 
 - Update dependencies
