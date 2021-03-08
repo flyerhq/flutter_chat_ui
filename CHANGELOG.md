@@ -1,3 +1,7 @@
+## 0.6.2
+
+- Update dependencies
+
 ## 0.6.1
 
 - Use universal IO

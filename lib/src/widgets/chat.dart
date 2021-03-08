@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:universal_io/io.dart';
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../util.dart';
