@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:universal_io/io.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';

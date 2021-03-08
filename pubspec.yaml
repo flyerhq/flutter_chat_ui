@@ -1,6 +1,6 @@
 name: flutter_chat_ui
 description: Flutter Chat UI
-version: 0.6.0
+version: 0.6.1
 homepage: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
@@ -14,6 +14,7 @@ dependencies:
   flutter_link_previewer: ^0.2.2
   intl: ^0.17.0
   photo_view: ^0.11.0
+  universal_io: ^2.0.0
 
 dev_dependencies:
   flutter_test:

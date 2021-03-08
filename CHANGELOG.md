@@ -1,3 +1,7 @@
+## 0.6.1
+
+- Use universal IO
+
 ## 0.6.0
 
 - Migrate to Flutter 2
