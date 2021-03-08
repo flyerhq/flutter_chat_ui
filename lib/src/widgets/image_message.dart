@@ -77,7 +77,7 @@ class _ImageMessageState extends State<ImageMessage> {
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
 
-    if (_size.aspectRatio == null || _size.aspectRatio == 0) {
+    if (_size.aspectRatio == 0) {
       return Container(
         color: InheritedChatTheme.of(context).theme.secondaryColor,
         height: _size.height,
