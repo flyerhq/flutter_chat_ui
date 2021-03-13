@@ -1,6 +1,6 @@
 name: flutter_chat_ui
 description: >
-  Actively maintainable, community-driven chat UI implementation with an
+  Actively maintained, community-driven chat UI implementation with an
   optional Firebase BaaS.
 version: 0.6.5
 homepage: https://github.com/flyerhq/flutter_chat_ui
