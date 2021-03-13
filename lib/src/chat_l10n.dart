@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Base chat l10n containing all required variables to provide localized copy.
+/// Extend this class if you want to create a custom l10n.
 @immutable
 abstract class ChatL10n {
+  /// Creates a new chat l10n based on provided copy
   const ChatL10n({
     required this.attachmentButtonAccessibilityLabel,
     required this.emptyChatPlaceholder,
@@ -12,17 +15,34 @@ abstract class ChatL10n {
     required this.yesterday,
   });
 
+  /// Accessibility label (hint) for the attachment button
   final String attachmentButtonAccessibilityLabel;
+
+  /// Placeholder when there are no messages
   final String emptyChatPlaceholder;
+
+  /// Accessibility label (hint) for the tap action on file message
   final String fileButtonAccessibilityLabel;
+
+  /// Placeholder for the text field
   final String inputPlaceholder;
+
+  /// Accessibility label (hint) for the send button
   final String sendButtonAccessibilityLabel;
+
+  /// Today string
   final String today;
+
+  /// Yesterday string
   final String yesterday;
 }
 
+/// English l10n which extends [ChatL10n]
 @immutable
 class ChatL10nEn extends ChatL10n {
+  /// Creates English l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
   const ChatL10nEn({
     String attachmentButtonAccessibilityLabel = 'Send media',
     String emptyChatPlaceholder = 'No messages here yet',
@@ -43,8 +63,12 @@ class ChatL10nEn extends ChatL10n {
         );
 }
 
+/// Polish l10n which extends [ChatL10n]
 @immutable
 class ChatL10nPl extends ChatL10n {
+  /// Creates Polish l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
   const ChatL10nPl({
     String attachmentButtonAccessibilityLabel = 'Wyślij multimedia',
     String emptyChatPlaceholder = 'Tu jeszcze nie ma wiadomości',
@@ -65,8 +89,12 @@ class ChatL10nPl extends ChatL10n {
         );
 }
 
+/// Russian l10n which extends [ChatL10n]
 @immutable
 class ChatL10nRu extends ChatL10n {
+  /// Creates Russian l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
   const ChatL10nRu({
     String attachmentButtonAccessibilityLabel = 'Отправить медиа',
     String emptyChatPlaceholder = 'Пока что у вас нет сообщений',
@@ -87,8 +115,12 @@ class ChatL10nRu extends ChatL10n {
         );
 }
 
+/// Ukrainian l10n which extends [ChatL10n]
 @immutable
 class ChatL10nUk extends ChatL10n {
+  /// Creates Ukrainian l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
   const ChatL10nUk({
     String attachmentButtonAccessibilityLabel = 'Надіслати медіа',
     String emptyChatPlaceholder = 'Повідомлень ще немає',

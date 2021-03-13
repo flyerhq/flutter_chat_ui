@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:intl/intl.dart';
 
+/// Returns text representation of a provided bytes value (e.g. 1kB, 1GB)
 String formatBytes(int size, [int fractionDigits = 2]) {
   if (size <= 0) return '0 B';
   final multiple = (log(size) / log(1024)).floor();
@@ -9,6 +10,8 @@ String formatBytes(int size, [int fractionDigits = 2]) {
       ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][multiple];
 }
 
+/// Returns formatted date used as a separator between different days in the
+/// chat history. Supports today, yesterday and formatted date values.
 String getVerboseDateTimeRepresentation(
   DateTime dateTime,
   String? locale,

@@ -14,7 +14,9 @@ import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
 
+/// Entry widget, represents the complete chat
 class Chat extends StatefulWidget {
+  /// Creates a chat widget
   const Chat({
     Key? key,
     this.dateLocale,
@@ -29,22 +31,46 @@ class Chat extends StatefulWidget {
     required this.user,
   }) : super(key: key);
 
+  /// See [Message.dateLocale]
   final String? dateLocale;
+
+  /// See [Input.isAttachmentUploading]
   final bool? isAttachmentUploading;
+
+  /// Localized copy. Extend [ChatL10n] class to create your own copy or use
+  /// existing one, like the default [ChatL10nEn]. You can customize only
+  /// certain variables, see more here [ChatL10nEn].
   final ChatL10n l10n;
+
+  /// List of [types.Message] to render in the chat widget
   final List<types.Message> messages;
+
+  /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;
+
+  /// See [Message.onFilePressed]
   final void Function(types.FileMessage)? onFilePressed;
+
+  /// See [Message.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// See [Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
+
+  /// Chat theme. Extend [ChatTheme] class to create your own theme or use
+  /// existing one, like the [DefaultChatTheme]. You can customize only certain
+  /// variables, see more here [DefaultChatTheme].
   final ChatTheme theme;
+
+  /// See [InheritedUser.user]
   final types.User user;
 
   @override
   _ChatState createState() => _ChatState();
 }
 
+/// [Chat] widget state
 class _ChatState extends State<Chat> {
   bool _isImageViewVisible = false;
   int _imageViewIndex = 0;

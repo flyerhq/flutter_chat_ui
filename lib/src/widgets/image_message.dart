@@ -6,7 +6,12 @@ import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
+/// A class that represents image message widget. Supports different
+/// aspect ratios, renders blurred image as a background which is visible
+/// if the image is narrow, renders image in form of a file if aspect
+/// ratio is very small or very big.
 class ImageMessage extends StatefulWidget {
+  /// Creates an image message widget based on [types.ImageMessage]
   const ImageMessage({
     Key? key,
     required this.message,
@@ -14,14 +19,20 @@ class ImageMessage extends StatefulWidget {
     required this.onPressed,
   }) : super(key: key);
 
+  /// [types.ImageMessage]
   final types.ImageMessage message;
+
+  /// Maximum message width
   final int messageWidth;
+
+  /// Called when user taps on an image
   final void Function(String uri) onPressed;
 
   @override
   _ImageMessageState createState() => _ImageMessageState();
 }
 
+/// [ImageMessage] widget state
 class _ImageMessageState extends State<ImageMessage> {
   ImageProvider? _image;
   ImageStream? _stream;

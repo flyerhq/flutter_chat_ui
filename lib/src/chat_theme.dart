@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Base chat theme containing all required variables to make a theme.
+/// Extend this class if you want to create a custom theme.
 @immutable
 abstract class ChatTheme {
+  /// Creates a new chat theme based on provided colors and text styles.
   const ChatTheme({
     required this.backgroundColor,
     required this.body1,
@@ -19,24 +22,55 @@ abstract class ChatTheme {
     required this.subtitle2,
   });
 
+  /// Used as a background color of a chat widget
   final Color backgroundColor;
+
+  /// Used as a primary text style in messages
   final TextStyle body1;
+
+  /// Slightly smaller [body1]
   final TextStyle body2;
+
+  /// Smallest text style, used for displaying message's time
   final TextStyle caption;
+
+  /// Color usually goes with a [caption] text style
   final Color captionColor;
+
+  /// Color to indicate something bad happended (usually shades of red)
   final Color errorColor;
+
+  /// Color of the bottom bar where text field is
   final Color inputBackgroundColor;
+
+  /// Color of the text field's text and attachment/send buttons
   final Color inputTextColor;
+
+  /// Primary color of the chat, used as a background of your messages
   final Color primaryColor;
+
+  /// Color of the text on a [primaryColor]
   final Color primaryTextColor;
+
+  /// Secondary color, used as a backgroud of received messages
   final Color secondaryColor;
+
+  /// Color of the text on a [secondaryColor]
   final Color secondaryTextColor;
+
+  /// Largest text style, used for displaying title of a link preview
   final TextStyle subtitle1;
+
+  /// Subtitle, used for date dividers in the chat
   final TextStyle subtitle2;
 }
 
+/// Default chat theme which extends [ChatTheme]
 @immutable
 class DefaultChatTheme extends ChatTheme {
+  /// Creates a default chat theme. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatTheme]
   const DefaultChatTheme({
     Color backgroundColor = const Color(0xffffffff),
     TextStyle body1 = const TextStyle(

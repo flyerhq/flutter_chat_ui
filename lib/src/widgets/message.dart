@@ -7,7 +7,11 @@ import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'text_message.dart';
 
+/// Base widget for all message types in the chat. Renders bubbles around
+/// messages, delivery time and status. Sets maximum width for a message for
+/// a nice look on larger screens.
 class Message extends StatelessWidget {
+  /// Creates a particular message from any message type
   const Message({
     Key? key,
     this.dateLocale,
@@ -20,14 +24,34 @@ class Message extends StatelessWidget {
     required this.shouldRenderTime,
   }) : super(key: key);
 
+  /// Locale will be passed to the `Intl` package. Make sure you initialized
+  /// date formatting in your app before passing any locale here, otherwise
+  /// an error will be thrown.
   final String? dateLocale;
+
+  /// Any message type
   final types.Message message;
+
+  /// Maximum message width
   final int messageWidth;
+
+  /// See [FileMessage.onPressed]. Used it to open file preview.
   final void Function(types.FileMessage)? onFilePressed;
+
+  /// See [ImageMessage.onPressed]. Will open image preview.
   final void Function(String) onImagePressed;
+
+  /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// Whether previous message was sent by the same person. Used for
+  /// different spacing for sent and received messages.
   final bool previousMessageSameAuthor;
+
+  /// Whether delivery time should be rendered. It is not rendered for
+  /// received messages and when sent messages have small difference in
+  /// delivery time.
   final bool shouldRenderTime;
 
   Widget _buildMessage() {

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 
+/// A class that represents send button widget
 class SendButton extends StatelessWidget {
+  /// Creates send button widget
   const SendButton({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
 
+  /// Callback for send button tap event
   final void Function() onPressed;
 
   @override

@@ -5,14 +5,19 @@ import 'package:flutter_link_previewer/flutter_link_previewer.dart'
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
+/// A class that represents text message widget with optional link preview
 class TextMessage extends StatelessWidget {
+  /// Creates a text message widget from a [types.TextMessage] class
   const TextMessage({
     Key? key,
     required this.message,
     this.onPreviewDataFetched,
   }) : super(key: key);
 
+  /// [types.TextMessage]
   final types.TextMessage message;
+
+  /// See [LinkPreview.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 

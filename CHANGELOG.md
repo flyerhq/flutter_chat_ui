@@ -1,3 +1,7 @@
+## 0.6.4
+
+- Add documentation comments
+
 ## 0.6.3
 
 - Replace universal IO with conditional import

@@ -28,13 +28,10 @@ dependencies:
   flutter_chat_ui:
     path: ../
   http: ^0.13.0
-  image_picker: ^0.7.2
+  image_picker: ^0.7.2+1
   intl: ^0.17.0
   mime: ^1.0.0
-  open_file:
-    git:
-      url: git://github.com/orevial/open_file.git
-      ref: null-safety-migration
+  open_file: ^3.1.0
   path_provider: ^2.0.1
   uuid: ^3.0.1
 
