@@ -19,9 +19,9 @@ class AttachmentButton extends StatelessWidget {
       height: 24,
       width: 24,
       child: IconButton(
-        icon: InheritedChatTheme.of(context).theme.attachmentIcon != null
+        icon: InheritedChatTheme.of(context).theme.attachmentButtonIcon != null
             ? Image.asset(
-                InheritedChatTheme.of(context).theme.attachmentIcon!,
+                InheritedChatTheme.of(context).theme.attachmentButtonIcon!,
                 color: InheritedChatTheme.of(context).theme.inputTextColor,
               )
             : Image.asset(

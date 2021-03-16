@@ -23,7 +23,6 @@ class FileMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
-
     final _color = _user.id == message.authorId
         ? InheritedChatTheme.of(context).theme.primaryTextColor
         : InheritedChatTheme.of(context).theme.primaryColor;

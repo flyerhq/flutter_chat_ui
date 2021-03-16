@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 abstract class ChatTheme {
   /// Creates a new chat theme based on provided colors and text styles.
   const ChatTheme({
-    required this.attachmentIcon,
+    required this.attachmentButtonIcon,
     required this.backgroundColor,
     required this.body1,
     required this.body2,
@@ -23,14 +23,14 @@ abstract class ChatTheme {
     required this.readIcon,
     required this.secondaryColor,
     required this.secondaryTextColor,
-    required this.sendIcon,
+    required this.sendButtonIcon,
     required this.sentIcon,
     required this.subtitle1,
     required this.subtitle2,
   });
 
   /// Icon for select attachment button
-  final String? attachmentIcon;
+  final String? attachmentButtonIcon;
 
   /// Used as a background color of a chat widget
   final Color backgroundColor;
@@ -47,7 +47,7 @@ abstract class ChatTheme {
   /// Color usually goes with a [caption] text style
   final Color captionColor;
 
-  /// Icon inside File Message
+  /// Icon inside file message
   final String? documentIcon;
 
   /// Color to indicate something bad happended (usually shades of red)
@@ -80,8 +80,8 @@ abstract class ChatTheme {
   /// Color of the text on a [secondaryColor]
   final Color secondaryTextColor;
 
-  /// Icon for Send button
-  final String? sendIcon;
+  /// Icon for send button
+  final String? sendButtonIcon;
 
   /// Icon for message 'sent' status
   final String? sentIcon;
@@ -100,7 +100,7 @@ class DefaultChatTheme extends ChatTheme {
   /// override only a couple of variables, otherwise create a new class
   /// which extends [ChatTheme]
   const DefaultChatTheme({
-    String? attachmentIcon,
+    String? attachmentButtonIcon,
     Color backgroundColor = const Color(0xffffffff),
     TextStyle body1 = const TextStyle(
       fontFamily: 'Avenir',
@@ -134,7 +134,7 @@ class DefaultChatTheme extends ChatTheme {
     String? readIcon,
     Color secondaryColor = const Color(0xfff7f7f8),
     Color secondaryTextColor = const Color(0xff1d1d21),
-    String? sendIcon,
+    String? sendButtonIcon,
     String? sentIcon,
     TextStyle subtitle1 = const TextStyle(
       fontFamily: 'Avenir',
@@ -149,7 +149,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
   }) : super(
-          attachmentIcon: attachmentIcon,
+          attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
           body1: body1,
           body2: body2,
@@ -166,7 +166,7 @@ class DefaultChatTheme extends ChatTheme {
           readIcon: readIcon,
           secondaryColor: secondaryColor,
           secondaryTextColor: secondaryTextColor,
-          sendIcon: sendIcon,
+          sendButtonIcon: sendButtonIcon,
           sentIcon: sentIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,
