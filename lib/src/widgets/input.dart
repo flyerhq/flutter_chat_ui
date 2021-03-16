@@ -85,9 +85,7 @@ class _InputState extends State<Input> {
     final _query = MediaQuery.of(context);
 
     return Material(
-      borderRadius: const BorderRadius.vertical(
-        top: Radius.circular(20),
-      ),
+      borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
       color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
       child: Container(
         padding: EdgeInsets.fromLTRB(

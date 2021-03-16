@@ -19,11 +19,16 @@ class AttachmentButton extends StatelessWidget {
       height: 24,
       width: 24,
       child: IconButton(
-        icon: Image.asset(
-          'assets/icon-attachment.png',
-          color: InheritedChatTheme.of(context).theme.inputTextColor,
-          package: 'flutter_chat_ui',
-        ),
+        icon: InheritedChatTheme.of(context).theme.attachmentButtonIcon != null
+            ? Image.asset(
+                InheritedChatTheme.of(context).theme.attachmentButtonIcon!,
+                color: InheritedChatTheme.of(context).theme.inputTextColor,
+              )
+            : Image.asset(
+                'assets/icon-attachment.png',
+                color: InheritedChatTheme.of(context).theme.inputTextColor,
+                package: 'flutter_chat_ui',
+              ),
         onPressed: onPressed,
         padding: EdgeInsets.zero,
         tooltip:

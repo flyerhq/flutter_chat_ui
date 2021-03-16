@@ -23,6 +23,9 @@ class FileMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
+    final _color = _user.id == message.authorId
+        ? InheritedChatTheme.of(context).theme.primaryTextColor
+        : InheritedChatTheme.of(context).theme.primaryColor;
 
     return Semantics(
       label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
@@ -48,13 +51,16 @@ class FileMessage extends StatelessWidget {
                 ),
                 height: 42,
                 width: 42,
-                child: Image.asset(
-                  'assets/icon-document.png',
-                  color: _user.id == message.authorId
-                      ? InheritedChatTheme.of(context).theme.primaryTextColor
-                      : InheritedChatTheme.of(context).theme.primaryColor,
-                  package: 'flutter_chat_ui',
-                ),
+                child: InheritedChatTheme.of(context).theme.documentIcon != null
+                    ? Image.asset(
+                        InheritedChatTheme.of(context).theme.documentIcon!,
+                        color: _color,
+                      )
+                    : Image.asset(
+                        'assets/icon-document.png',
+                        color: _color,
+                        package: 'flutter_chat_ui',
+                      ),
               ),
               Flexible(
                 child: Container(

@@ -83,11 +83,16 @@ class Message extends StatelessWidget {
   Widget _buildStatus(BuildContext context) {
     switch (message.status) {
       case types.Status.read:
-        return Image.asset(
-          'assets/icon-read.png',
-          color: InheritedChatTheme.of(context).theme.primaryColor,
-          package: 'flutter_chat_ui',
-        );
+        return InheritedChatTheme.of(context).theme.readIcon != null
+            ? Image.asset(
+                InheritedChatTheme.of(context).theme.readIcon!,
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+              )
+            : Image.asset(
+                'assets/icon-read.png',
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.sending:
         return SizedBox(
           height: 12,
@@ -101,11 +106,16 @@ class Message extends StatelessWidget {
           ),
         );
       case types.Status.sent:
-        return Image.asset(
-          'assets/icon-sent.png',
-          color: InheritedChatTheme.of(context).theme.primaryColor,
-          package: 'flutter_chat_ui',
-        );
+        return InheritedChatTheme.of(context).theme.sentIcon != null
+            ? Image.asset(
+                InheritedChatTheme.of(context).theme.sentIcon!,
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+              )
+            : Image.asset(
+                'assets/icon-sent.png',
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
       default:
         return Container();
     }
@@ -138,11 +148,15 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
+    final _messageBorderRadius =
+        InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(_user.id == message.authorId ? 20 : 0),
-      bottomRight: Radius.circular(_user.id == message.authorId ? 0 : 20),
-      topLeft: const Radius.circular(20),
-      topRight: const Radius.circular(20),
+      bottomLeft: Radius.circular(
+          _user.id == message.authorId ? _messageBorderRadius : 0),
+      bottomRight: Radius.circular(
+          _user.id == message.authorId ? 0 : _messageBorderRadius),
+      topLeft: Radius.circular(_messageBorderRadius),
+      topRight: Radius.circular(_messageBorderRadius),
     );
     final _currentUserIsAuthor = _user.id == message.authorId;
 
