@@ -65,7 +65,7 @@ abstract class ChatTheme {
   /// Border radius of message container
   final double messageBorderRadius;
 
-  /// Primary color of the chat, used as a background of your messages
+  /// Primary color of the chat, used as a background of sent messages
   final Color primaryColor;
 
   /// Color of the text on a [primaryColor]
