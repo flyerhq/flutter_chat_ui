@@ -71,7 +71,7 @@ abstract class ChatTheme {
   /// Color of the text on a [primaryColor]
   final Color primaryTextColor;
 
-  /// Icon for message 'read' status
+  /// Icon for message's `read` status
   final String? readIcon;
 
   /// Secondary color, used as a backgroud of received messages
@@ -83,7 +83,7 @@ abstract class ChatTheme {
   /// Icon for send button
   final String? sendButtonIcon;
 
-  /// Icon for message 'sent' status
+  /// Icon for message's `sent` status
   final String? sentIcon;
 
   /// Largest text style, used for displaying title of a link preview
