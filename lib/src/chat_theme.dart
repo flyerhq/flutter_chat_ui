@@ -50,7 +50,7 @@ abstract class ChatTheme {
   /// Icon inside file message
   final String? documentIcon;
 
-  /// Color to indicate something bad happended (usually shades of red)
+  /// Color to indicate something bad happened (usually - shades of red)
   final Color errorColor;
 
   /// Color of the bottom bar where text field is
@@ -65,7 +65,7 @@ abstract class ChatTheme {
   /// Border radius of message container
   final double messageBorderRadius;
 
-  /// Primary color of the chat, used as a background of sent messages
+  /// Primary color of the chat used as a background of sent messages
   final Color primaryColor;
 
   /// Color of the text on a [primaryColor]
@@ -74,7 +74,7 @@ abstract class ChatTheme {
   /// Icon for message's `read` status
   final String? readIcon;
 
-  /// Secondary color, used as a backgroud of received messages
+  /// Secondary color, used as a background of received messages
   final Color secondaryColor;
 
   /// Color of the text on a [secondaryColor]
