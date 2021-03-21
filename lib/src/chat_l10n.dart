@@ -63,6 +63,32 @@ class ChatL10nEn extends ChatL10n {
         );
 }
 
+/// Spanish l10n which extends [ChatL10n]
+@immutable
+class ChatL10nEs extends ChatL10n {
+  /// Creates Spanish l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nEs({
+    String attachmentButtonAccessibilityLabel = 'Enviar multimedia',
+    String emptyChatPlaceholder = 'Aún no hay mensajes',
+    String fileButtonAccessibilityLabel = 'Archivo',
+    String inputPlaceholder = 'Mensaje',
+    String sendButtonAccessibilityLabel = 'Enviar',
+    String today = 'Hoy',
+    String yesterday = 'Ayer',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+          today: today,
+          yesterday: yesterday,
+        );
+}
+
 /// Polish l10n which extends [ChatL10n]
 @immutable
 class ChatL10nPl extends ChatL10n {
@@ -99,7 +125,7 @@ class ChatL10nRu extends ChatL10n {
     String attachmentButtonAccessibilityLabel = 'Отправить медиа',
     String emptyChatPlaceholder = 'Пока что у вас нет сообщений',
     String fileButtonAccessibilityLabel = 'Файл',
-    String inputPlaceholder = 'Сообщение…',
+    String inputPlaceholder = 'Сообщение',
     String sendButtonAccessibilityLabel = 'Отправить',
     String today = 'Сегодня',
     String yesterday = 'Вчера',
@@ -128,7 +154,7 @@ class ChatL10nUk extends ChatL10n {
     String inputPlaceholder = 'Повідомлення',
     String sendButtonAccessibilityLabel = 'Надіслати',
     String today = 'Сьогодні',
-    String yesterday = 'Вчора',
+    String yesterday = 'Учора',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,

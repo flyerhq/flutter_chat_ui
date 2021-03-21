@@ -172,3 +172,83 @@ class DefaultChatTheme extends ChatTheme {
           subtitle2: subtitle2,
         );
 }
+
+/// Dark chat theme which extends [ChatTheme]
+@immutable
+class DarkChatTheme extends ChatTheme {
+  /// Creates a dark chat theme. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatTheme]
+  const DarkChatTheme({
+    String? attachmentButtonIcon,
+    Color backgroundColor = const Color(0xff1f1c38),
+    TextStyle body1 = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.375,
+    ),
+    TextStyle body2 = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      height: 1.428,
+    ),
+    TextStyle caption = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 1.333,
+    ),
+    Color captionColor = const Color(0xff9e9cab),
+    String? documentIcon,
+    Color errorColor = const Color(0xffff6767),
+    Color inputBackgroundColor = const Color(0xff2b2250),
+    BorderRadius inputBorderRadius = const BorderRadius.vertical(
+      top: Radius.circular(20),
+    ),
+    Color inputTextColor = const Color(0xffffffff),
+    double messageBorderRadius = 20.0,
+    Color primaryColor = const Color(0xff6f61e8),
+    Color primaryTextColor = const Color(0xffffffff),
+    String? readIcon,
+    Color secondaryColor = const Color(0xff2b2250),
+    Color secondaryTextColor = const Color(0xffffffff),
+    String? sendButtonIcon,
+    String? sentIcon,
+    TextStyle subtitle1 = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.375,
+    ),
+    TextStyle subtitle2 = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w800,
+      height: 1.333,
+    ),
+  }) : super(
+          attachmentButtonIcon: attachmentButtonIcon,
+          backgroundColor: backgroundColor,
+          body1: body1,
+          body2: body2,
+          caption: caption,
+          captionColor: captionColor,
+          documentIcon: documentIcon,
+          errorColor: errorColor,
+          inputBackgroundColor: inputBackgroundColor,
+          inputBorderRadius: inputBorderRadius,
+          inputTextColor: inputTextColor,
+          messageBorderRadius: messageBorderRadius,
+          primaryColor: primaryColor,
+          primaryTextColor: primaryTextColor,
+          readIcon: readIcon,
+          secondaryColor: secondaryColor,
+          secondaryTextColor: secondaryTextColor,
+          sendButtonIcon: sendButtonIcon,
+          sentIcon: sentIcon,
+          subtitle1: subtitle1,
+          subtitle2: subtitle2,
+        );
+}

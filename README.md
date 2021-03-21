@@ -1,8 +1,18 @@
-# Flutter Chat UI
+<h1 align="center">Flutter Chat UI</h1>
 
-Actively maintained, community-driven chat UI implementation with an optional [Firebase BaaS](https://github.com/flyerhq/flutter_firebase_chat_core).
+<p align="center">
+  Actively maintained, community-driven chat UI implementation with an optional <a href="https://github.com/flyerhq/flutter_firebase_chat_core">Firebase BaaS</a>.
+</p>
 
-<img></img>
+<br>
+
+<p align="center">
+  <a href="https://flyer.chat">
+    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/111913228-72fa3280-8a6d-11eb-8838-382a270d66f5.png" />
+  </a>
+</p>
+
+<br>
 
 Flyer Chat is a platform for creating in-app chat experiences using Flutter or [React Native](https://github.com/flyerhq/react-native-chat-ui). This repository contains chat UI implementation for Flutter.
 
