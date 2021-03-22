@@ -12,6 +12,7 @@ abstract class ChatTheme {
     required this.body2,
     required this.caption,
     required this.captionColor,
+    required this.deliveredIcon,
     required this.documentIcon,
     required this.errorColor,
     required this.inputBackgroundColor,
@@ -24,7 +25,6 @@ abstract class ChatTheme {
     required this.secondaryColor,
     required this.secondaryTextColor,
     required this.sendButtonIcon,
-    required this.sentIcon,
     required this.subtitle1,
     required this.subtitle2,
   });
@@ -46,6 +46,9 @@ abstract class ChatTheme {
 
   /// Color usually goes with a [caption] text style
   final Color captionColor;
+
+  /// Icon for message's `delivered` status
+  final String? deliveredIcon;
 
   /// Icon inside file message
   final String? documentIcon;
@@ -83,9 +86,6 @@ abstract class ChatTheme {
   /// Icon for send button
   final String? sendButtonIcon;
 
-  /// Icon for message's `sent` status
-  final String? sentIcon;
-
   /// Largest text style, used for displaying title of a link preview
   final TextStyle subtitle1;
 
@@ -121,6 +121,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
     Color captionColor = const Color(0xff9e9cab),
+    String? deliveredIcon,
     String? documentIcon,
     Color errorColor = const Color(0xffff6767),
     Color inputBackgroundColor = const Color(0xff1d1d21),
@@ -135,7 +136,6 @@ class DefaultChatTheme extends ChatTheme {
     Color secondaryColor = const Color(0xfff7f7f8),
     Color secondaryTextColor = const Color(0xff1d1d21),
     String? sendButtonIcon,
-    String? sentIcon,
     TextStyle subtitle1 = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 16,
@@ -155,6 +155,7 @@ class DefaultChatTheme extends ChatTheme {
           body2: body2,
           caption: caption,
           captionColor: captionColor,
+          deliveredIcon: deliveredIcon,
           documentIcon: documentIcon,
           errorColor: errorColor,
           inputBackgroundColor: inputBackgroundColor,
@@ -167,7 +168,6 @@ class DefaultChatTheme extends ChatTheme {
           secondaryColor: secondaryColor,
           secondaryTextColor: secondaryTextColor,
           sendButtonIcon: sendButtonIcon,
-          sentIcon: sentIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,
         );
@@ -201,6 +201,7 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
     Color captionColor = const Color(0xff9e9cab),
+    String? deliveredIcon,
     String? documentIcon,
     Color errorColor = const Color(0xffff6767),
     Color inputBackgroundColor = const Color(0xff2b2250),
@@ -215,7 +216,6 @@ class DarkChatTheme extends ChatTheme {
     Color secondaryColor = const Color(0xff2b2250),
     Color secondaryTextColor = const Color(0xffffffff),
     String? sendButtonIcon,
-    String? sentIcon,
     TextStyle subtitle1 = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 16,
@@ -235,6 +235,7 @@ class DarkChatTheme extends ChatTheme {
           body2: body2,
           caption: caption,
           captionColor: captionColor,
+          deliveredIcon: deliveredIcon,
           documentIcon: documentIcon,
           errorColor: errorColor,
           inputBackgroundColor: inputBackgroundColor,
@@ -247,7 +248,6 @@ class DarkChatTheme extends ChatTheme {
           secondaryColor: secondaryColor,
           secondaryTextColor: secondaryTextColor,
           sendButtonIcon: sendButtonIcon,
-          sentIcon: sentIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,
         );

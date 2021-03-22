@@ -1,3 +1,7 @@
+## 0.7.0
+
+- Update types
+
 ## 0.6.5
 
 - Update dependencies

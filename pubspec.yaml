@@ -2,7 +2,7 @@ name: flutter_chat_ui
 description: >
   Actively maintained, community-driven chat UI implementation with an
   optional Firebase BaaS.
-version: 0.6.5
+version: 0.7.0
 homepage: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
@@ -12,8 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_chat_types: ^2.0.4
-  flutter_link_previewer: ^1.0.2
+  flutter_chat_types: ^2.0.5
+  flutter_link_previewer: ^1.0.3
   intl: ^0.17.0
   photo_view: ^0.11.1
 
@@ -25,17 +25,17 @@ dev_dependencies:
 flutter:
   assets:
     - packages/flutter_chat_ui/assets/icon-attachment.png
+    - packages/flutter_chat_ui/assets/icon-delivered.png
     - packages/flutter_chat_ui/assets/icon-document.png
     - packages/flutter_chat_ui/assets/icon-read.png
     - packages/flutter_chat_ui/assets/icon-send.png
-    - packages/flutter_chat_ui/assets/icon-sent.png
     - packages/flutter_chat_ui/assets/2.0x/icon-attachment.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/2.0x/icon-document.png
     - packages/flutter_chat_ui/assets/2.0x/icon-read.png
     - packages/flutter_chat_ui/assets/2.0x/icon-send.png
-    - packages/flutter_chat_ui/assets/2.0x/icon-sent.png
     - packages/flutter_chat_ui/assets/3.0x/icon-attachment.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/3.0x/icon-document.png
     - packages/flutter_chat_ui/assets/3.0x/icon-read.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png
-    - packages/flutter_chat_ui/assets/3.0x/icon-sent.png

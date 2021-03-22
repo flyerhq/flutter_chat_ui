@@ -82,6 +82,17 @@ class Message extends StatelessWidget {
 
   Widget _buildStatus(BuildContext context) {
     switch (message.status) {
+      case types.Status.delivered:
+        return InheritedChatTheme.of(context).theme.deliveredIcon != null
+            ? Image.asset(
+                InheritedChatTheme.of(context).theme.deliveredIcon!,
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+              )
+            : Image.asset(
+                'assets/icon-delivered.png',
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.read:
         return InheritedChatTheme.of(context).theme.readIcon != null
             ? Image.asset(
@@ -105,17 +116,6 @@ class Message extends StatelessWidget {
             ),
           ),
         );
-      case types.Status.sent:
-        return InheritedChatTheme.of(context).theme.sentIcon != null
-            ? Image.asset(
-                InheritedChatTheme.of(context).theme.sentIcon!,
-                color: InheritedChatTheme.of(context).theme.primaryColor,
-              )
-            : Image.asset(
-                'assets/icon-sent.png',
-                color: InheritedChatTheme.of(context).theme.primaryColor,
-                package: 'flutter_chat_ui',
-              );
       default:
         return Container();
     }
