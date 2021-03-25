@@ -9,7 +9,7 @@ The [Open Source Guides](https://opensource.guide) website has a collection of r
 
 ## Helping with Documentation
 
-We use [Docusaurus](https://docusaurus.io) to build our documentation which is located in the [docs](https://github.com/flyerhq/flutter_chat_ui/tree/main/docs) folder. If you are adding new functionality or introducing a behavior change, we will ask you to update the documentation to reflect your changes.
+We use [Docusaurus](https://docusaurus.io) to build our documentation which is located in the [doc](https://github.com/flyerhq/flutter_chat_ui/tree/main/doc) folder. If you are adding new functionality or introducing a behavior change, we will ask you to update the documentation to reflect your changes.
 
 ## Contributing Code
 
