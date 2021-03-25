@@ -1,3 +1,7 @@
+## 0.8.0
+
+- Update example
+
 ## 0.7.0
 
 - Update types
