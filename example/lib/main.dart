@@ -1,16 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -20,28 +17,10 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chat',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const ChatPage(),
+    return const MaterialApp(
+      home: ChatPage(),
     );
   }
 }
@@ -55,7 +34,6 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
-
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
 
   @override
@@ -70,33 +48,33 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleAtachmentPress() {
+  void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 180,
+          height: 144,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _showFilePicker();
+                  _handleImageSelection();
                 },
                 child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Open file picker'),
+                  child: Text('Photo'),
                 ),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _showImagePicker();
+                  _handleFileSelection();
                 },
                 child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Open image picker'),
+                  child: Text('File'),
                 ),
               ),
               TextButton(
@@ -113,63 +91,11 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
-
-    setState(() {
-      _messages = messages;
-    });
+  void _handleFilePressed(types.FileMessage message) async {
+    await OpenFile.open(message.uri);
   }
 
-  void _onPreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final currentMessage = _messages[index] as types.TextMessage;
-    final updatedMessage = currentMessage.copyWith(previewData);
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
-    });
-  }
-
-  void _onSendMessage(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      authorId: _user.id,
-      id: const Uuid().v4(),
-      text: message.text,
-      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
-    );
-
-    _addMessage(textMessage);
-  }
-
-  void _openFile(types.FileMessage message) async {
-    var localPath = message.uri;
-
-    if (message.uri.startsWith('http')) {
-      final client = http.Client();
-      final request = await client.get(Uri.parse(message.uri));
-      final bytes = request.bodyBytes;
-      final documentsDir = (await getApplicationDocumentsDirectory()).path;
-      localPath = '$documentsDir/${message.fileName}';
-
-      if (!File(localPath).existsSync()) {
-        final file = File(localPath);
-        await file.writeAsBytes(bytes);
-      }
-    }
-
-    await OpenFile.open(localPath);
-  }
-
-  void _showFilePicker() async {
+  void _handleFileSelection() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.any,
     );
@@ -191,7 +117,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _showImagePicker() async {
+  void _handleImageSelection() async {
     final result = await ImagePicker().getImage(
       imageQuality: 70,
       maxWidth: 1440,
@@ -199,7 +125,6 @@ class _ChatPageState extends State<ChatPage> {
     );
 
     if (result != null) {
-      final size = File(result.path).lengthSync();
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
       final imageName = result.path.split('/').last;
@@ -209,7 +134,7 @@ class _ChatPageState extends State<ChatPage> {
         height: image.height.toDouble(),
         id: const Uuid().v4(),
         imageName: imageName,
-        size: size,
+        size: bytes.length,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.path,
         width: image.width.toDouble(),
@@ -221,15 +146,52 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void _handlePreviewDataFetched(
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
+    final index = _messages.indexWhere((element) => element.id == message.id);
+    final currentMessage = _messages[index] as types.TextMessage;
+    final updatedMessage = currentMessage.copyWith(previewData);
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      setState(() {
+        _messages[index] = updatedMessage;
+      });
+    });
+  }
+
+  void _handleSendPressed(types.PartialText message) {
+    final textMessage = types.TextMessage(
+      authorId: _user.id,
+      id: const Uuid().v4(),
+      text: message.text,
+      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+    );
+
+    _addMessage(textMessage);
+  }
+
+  void _loadMessages() async {
+    final response = await rootBundle.loadString('assets/messages.json');
+    final messages = (jsonDecode(response) as List)
+        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
+        .toList();
+
+    setState(() {
+      _messages = messages;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Chat(
         messages: _messages,
-        onAttachmentPressed: _handleAtachmentPress,
-        onFilePressed: _openFile,
-        onPreviewDataFetched: _onPreviewDataFetched,
-        onSendPressed: _onSendMessage,
+        onAttachmentPressed: _handleAtachmentPressed,
+        onFilePressed: _handleFilePressed,
+        onPreviewDataFetched: _handlePreviewDataFetched,
+        onSendPressed: _handleSendPressed,
         user: _user,
       ),
     );
