@@ -1,3 +1,7 @@
+## 1.0.0
+
+- Public release
+
 ## 0.8.0
 
 - Update example
