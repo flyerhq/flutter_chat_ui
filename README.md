@@ -1,7 +1,15 @@
+<br>
+
+<p align="center">
+  <a href="https://flyer.chat">
+    <img src="https://flyer.chat/assets/logo-dark.svg" width="288px" alt="Flyer Chat Logo" />
+  </a>
+</p>
+
 <h1 align="center">Flutter Chat UI</h1>
 
 <p align="center">
-  Actively maintained, community-driven chat UI implementation with an optional <a href="https://github.com/flyerhq/flutter_firebase_chat_core">Firebase BaaS</a>.
+  Actively maintained, community-driven chat UI implementation with an optional <a href="https://pub.dev/packages/flutter_firebase_chat_core">Firebase BaaS</a>.
 </p>
 
 <br>
@@ -18,9 +26,9 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 * **Free, open-source and community-driven**. We offer no paid plugins and strive to create an easy-to-use, almost drop-in chat experience for any application. Contributions are more than welcome! Please read our [Contributing Guide](CONTRIBUTING.md).
 
-* **Backend agnostic**. You can choose the backend you prefer. But if you don't have one, we provide our own free and open-source [Firebase implementation](https://github.com/flyerhq/flutter_firebase_chat_core), which can be used to create a working chat in minutes. We are also working on our more advanced SaaS and self-hosted solutions.
+* **Backend agnostic**. You can choose the backend you prefer. But if you don't have one, we provide our own free and open-source [Firebase implementation](https://pub.dev/packages/flutter_firebase_chat_core), which can be used to create a working chat in minutes. We are also working on our more advanced SaaS and self-hosted solutions.
 
-* **Customizable**. Supports custom themes, locales and more. Check our [documentation](https://flyer.chat) for the info. More options are on the way, let us know if something is missing.
+* **Customizable**. Supports custom themes, locales and more. Check our [documentation](https://docs.flyer.chat/flutter/chat-ui/) for the info. More options are on the way, let us know if something is missing.
 
 * **Minimum dependencies**. Our packages are lightweight. Use your favourite packages for selecting images, opening files etc. See the [example](https://github.com/flyerhq/flutter_chat_ui/blob/main/example/lib/main.dart) for possible implementation.
 
@@ -30,7 +38,7 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 `Dart >=2.12.0` and `Flutter >=2.0.0`
 
-Read our [documentation](https://flyer.chat) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
+Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
 
 ## Contributing
 
