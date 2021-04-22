@@ -96,7 +96,7 @@ class _InputState extends State<Input> {
         ),
         child: Row(
           children: [
-            _leftWidget(),
+            if (widget.onAttachmentPressed != null) _leftWidget(),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
