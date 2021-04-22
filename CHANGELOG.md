@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Hide the attachment button if `onAttachmentPressed` is not passed
+
 ## 1.0.0
 
 - Public release

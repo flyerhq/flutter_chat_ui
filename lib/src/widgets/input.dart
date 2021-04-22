@@ -96,31 +96,28 @@ class _InputState extends State<Input> {
         ),
         child: Row(
           children: [
-            _leftWidget(),
+            if (widget.onAttachmentPressed != null) _leftWidget(),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: TextField(
-                  controller: _textController,
-                  decoration: InputDecoration.collapsed(
-                    hintStyle:
-                        InheritedChatTheme.of(context).theme.body1.copyWith(
-                              color: InheritedChatTheme.of(context)
-                                  .theme
-                                  .inputTextColor
-                                  .withOpacity(0.5),
-                            ),
-                    hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
-                  ),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 5,
-                  minLines: 1,
-                  style: InheritedChatTheme.of(context).theme.body1.copyWith(
-                        color:
-                            InheritedChatTheme.of(context).theme.inputTextColor,
-                      ),
-                  textCapitalization: TextCapitalization.sentences,
+              child: TextField(
+                controller: _textController,
+                decoration: InputDecoration.collapsed(
+                  hintStyle:
+                      InheritedChatTheme.of(context).theme.body1.copyWith(
+                            color: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextColor
+                                .withOpacity(0.5),
+                          ),
+                  hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
                 ),
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                minLines: 1,
+                style: InheritedChatTheme.of(context).theme.body1.copyWith(
+                      color:
+                          InheritedChatTheme.of(context).theme.inputTextColor,
+                    ),
+                textCapitalization: TextCapitalization.sentences,
               ),
             ),
             Visibility(
