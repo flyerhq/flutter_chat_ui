@@ -27,6 +27,7 @@ abstract class ChatTheme {
     required this.sendButtonIcon,
     required this.subtitle1,
     required this.subtitle2,
+    required this.subtitle2Color,
   });
 
   /// Icon for select attachment button
@@ -91,6 +92,9 @@ abstract class ChatTheme {
 
   /// Subtitle, used for date dividers in the chat
   final TextStyle subtitle2;
+
+  /// Color of subtitle, used for date dividers in the chat
+  final Color subtitle2Color;
 }
 
 /// Default chat theme which extends [ChatTheme]
@@ -148,6 +152,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    Color subtitle2Color = const Color(0xff1d1d21),
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
@@ -170,6 +175,7 @@ class DefaultChatTheme extends ChatTheme {
           sendButtonIcon: sendButtonIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,
+          subtitle2Color: subtitle2Color,
         );
 }
 
@@ -228,6 +234,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    Color subtitle2Color = const Color(0xffffffff),
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
@@ -250,5 +257,6 @@ class DarkChatTheme extends ChatTheme {
           sendButtonIcon: sendButtonIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,
+          subtitle2Color: subtitle2Color,
         );
 }
