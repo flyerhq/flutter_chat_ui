@@ -154,10 +154,8 @@ class _ChatPageState extends State<ChatPage> {
     final currentMessage = _messages[index] as types.TextMessage;
     final updatedMessage = currentMessage.copyWith(previewData: previewData);
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
+    setState(() {
+      _messages[index] = updatedMessage;
     });
   }
 
