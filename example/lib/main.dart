@@ -91,10 +91,6 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _handleFilePressed(types.FileMessage message) async {
-    await OpenFile.open(message.uri);
-  }
-
   void _handleFileSelection() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.any,
@@ -146,6 +142,12 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void _handleMessageTap(types.Message message) async {
+    if (message is types.FileMessage) {
+      await OpenFile.open(message.uri);
+    }
+  }
+
   void _handlePreviewDataFetched(
     types.TextMessage message,
     types.PreviewData previewData,
@@ -187,7 +189,7 @@ class _ChatPageState extends State<ChatPage> {
       body: Chat(
         messages: _messages,
         onAttachmentPressed: _handleAtachmentPressed,
-        onFilePressed: _handleFilePressed,
+        onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,
         user: _user,

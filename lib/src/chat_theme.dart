@@ -93,7 +93,7 @@ abstract class ChatTheme {
   /// Subtitle, used for date dividers in the chat
   final TextStyle subtitle2;
 
-  /// Color of subtitle, used for date dividers in the chat
+  /// Color of the subtitle2, used for date dividers in the chat
   final Color subtitle2Color;
 }
 
