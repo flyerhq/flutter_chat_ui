@@ -294,8 +294,8 @@ class _ChatState extends State<Chat> {
                                               ),
                                               style: widget.theme.subtitle2
                                                   .copyWith(
-                                                color: widget
-                                                    .theme.secondaryTextColor,
+                                                color:
+                                                    widget.theme.subtitle2Color,
                                               ),
                                             ),
                                           ),
