@@ -17,8 +17,8 @@ class Message extends StatelessWidget {
     this.dateLocale,
     required this.message,
     required this.messageWidth,
-    this.onFilePressed,
-    required this.onImagePressed,
+    this.onMessageLongPress,
+    this.onMessageTap,
     this.onPreviewDataFetched,
     required this.previousMessageSameAuthor,
     required this.shouldRenderTime,
@@ -35,11 +35,11 @@ class Message extends StatelessWidget {
   /// Maximum message width
   final int messageWidth;
 
-  /// See [FileMessage.onPressed]. Used it to open file preview.
-  final void Function(types.FileMessage)? onFilePressed;
+  /// Called when user makes a long press on any message
+  final void Function(types.Message)? onMessageLongPress;
 
-  /// See [ImageMessage.onPressed]. Will open image preview.
-  final void Function(String) onImagePressed;
+  /// Called when user taps on any message
+  final void Function(types.Message)? onMessageTap;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -60,14 +60,12 @@ class Message extends StatelessWidget {
         final fileMessage = message as types.FileMessage;
         return FileMessage(
           message: fileMessage,
-          onPressed: onFilePressed,
         );
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
-          onPressed: onImagePressed,
         );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
@@ -176,17 +174,21 @@ class Message extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: _borderRadius,
-                color: !_currentUserIsAuthor ||
-                        message.type == types.MessageType.image
-                    ? InheritedChatTheme.of(context).theme.secondaryColor
-                    : InheritedChatTheme.of(context).theme.primaryColor,
-              ),
-              child: ClipRRect(
-                borderRadius: _borderRadius,
-                child: _buildMessage(),
+            GestureDetector(
+              onLongPress: () => onMessageLongPress?.call(message),
+              onTap: () => onMessageTap?.call(message),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: _borderRadius,
+                  color: !_currentUserIsAuthor ||
+                          message.type == types.MessageType.image
+                      ? InheritedChatTheme.of(context).theme.secondaryColor
+                      : InheritedChatTheme.of(context).theme.primaryColor,
+                ),
+                child: ClipRRect(
+                  borderRadius: _borderRadius,
+                  child: _buildMessage(),
+                ),
               ),
             ),
             if (shouldRenderTime)

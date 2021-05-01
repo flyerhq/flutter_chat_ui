@@ -29,88 +29,85 @@ class FileMessage extends StatelessWidget {
 
     return Semantics(
       label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
-      child: GestureDetector(
-        onTap: () => onPressed?.call(message),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: _user.id == message.authorId
-                      ? InheritedChatTheme.of(context)
-                          .theme
-                          .primaryTextColor
-                          .withOpacity(0.2)
-                      : InheritedChatTheme.of(context)
-                          .theme
-                          .primaryColor
-                          .withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(21),
-                ),
-                height: 42,
-                width: 42,
-                child: InheritedChatTheme.of(context).theme.documentIcon != null
-                    ? Image.asset(
-                        InheritedChatTheme.of(context).theme.documentIcon!,
-                        color: _color,
-                      )
-                    : Image.asset(
-                        'assets/icon-document.png',
-                        color: _color,
-                        package: 'flutter_chat_ui',
-                      ),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: _user.id == message.authorId
+                    ? InheritedChatTheme.of(context)
+                        .theme
+                        .primaryTextColor
+                        .withOpacity(0.2)
+                    : InheritedChatTheme.of(context)
+                        .theme
+                        .primaryColor
+                        .withOpacity(0.2),
+                borderRadius: BorderRadius.circular(21),
               ),
-              Flexible(
-                child: Container(
-                  margin: const EdgeInsets.only(
-                    left: 16,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        message.fileName,
-                        style:
-                            InheritedChatTheme.of(context).theme.body1.copyWith(
-                                  color: _user.id == message.authorId
-                                      ? InheritedChatTheme.of(context)
-                                          .theme
-                                          .primaryTextColor
-                                      : InheritedChatTheme.of(context)
-                                          .theme
-                                          .secondaryTextColor,
-                                ),
-                        textWidthBasis: TextWidthBasis.longestLine,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                          top: 4,
-                        ),
-                        child: Text(
-                          formatBytes(message.size),
-                          style: InheritedChatTheme.of(context)
-                              .theme
-                              .caption
-                              .copyWith(
+              height: 42,
+              width: 42,
+              child: InheritedChatTheme.of(context).theme.documentIcon != null
+                  ? Image.asset(
+                      InheritedChatTheme.of(context).theme.documentIcon!,
+                      color: _color,
+                    )
+                  : Image.asset(
+                      'assets/icon-document.png',
+                      color: _color,
+                      package: 'flutter_chat_ui',
+                    ),
+            ),
+            Flexible(
+              child: Container(
+                margin: const EdgeInsets.only(
+                  left: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      message.fileName,
+                      style:
+                          InheritedChatTheme.of(context).theme.body1.copyWith(
                                 color: _user.id == message.authorId
                                     ? InheritedChatTheme.of(context)
                                         .theme
                                         .primaryTextColor
-                                        .withOpacity(0.5)
                                     : InheritedChatTheme.of(context)
                                         .theme
-                                        .captionColor,
+                                        .secondaryTextColor,
                               ),
-                        ),
+                      textWidthBasis: TextWidthBasis.longestLine,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 4,
                       ),
-                    ],
-                  ),
+                      child: Text(
+                        formatBytes(message.size),
+                        style: InheritedChatTheme.of(context)
+                            .theme
+                            .caption
+                            .copyWith(
+                              color: _user.id == message.authorId
+                                  ? InheritedChatTheme.of(context)
+                                      .theme
+                                      .primaryTextColor
+                                      .withOpacity(0.5)
+                                  : InheritedChatTheme.of(context)
+                                      .theme
+                                      .captionColor,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

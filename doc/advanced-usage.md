@@ -64,7 +64,7 @@ You can use this URL https://bit.ly/2P0cn2g to test the file message presentatio
 
 :::
 
-On tap, images will be previewed inside an interactive image gallery.
+On tap, images will be previewed inside an interactive image gallery. To disable the image gallery pass `disableImageGallery` parameter to the Chat widget.
 
 ## Files
 
@@ -119,8 +119,10 @@ import 'package:open_file/open_file.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
-  void _handleFilePressed(types.FileMessage message) async {
-    await OpenFile.open(message.uri);
+  void _handleMessageTap(types.Message message) async {
+    if (message is types.FileMessage) {
+      await OpenFile.open(message.uri);
+    }
   }
 
   @override
@@ -128,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Chat(
         // ...
-        onFilePressed: _handleFilePressed,
+        onMessageTap: _handleMessageTap,
       ),
     );
   }
@@ -265,10 +267,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _handleFilePressed(types.FileMessage message) async {
-    await OpenFile.open(message.uri);
-  }
-
   void _handleFileSelection() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.any,
@@ -315,6 +313,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void _handleMessageTap(types.Message message) async {
+    if (message is types.FileMessage) {
+      await OpenFile.open(message.uri);
+    }
+  }
+
   void _handlePreviewDataFetched(
     types.TextMessage message,
     types.PreviewData previewData,
@@ -347,7 +351,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Chat(
         messages: _messages,
         onAttachmentPressed: _handleAtachmentPressed,
-        onFilePressed: _handleFilePressed,
+        onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,
         user: _user,
