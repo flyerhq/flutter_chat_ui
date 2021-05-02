@@ -96,6 +96,8 @@ class AudioRecorderState extends State<AudioRecorder> {
     final path = await _tempFile(suffix: '.aac');
     await _audioRecorder.startRecorder(
       toFile: path,
+      bitRate: 32000,
+      sampleRate: 32000,
     );
   }
 
