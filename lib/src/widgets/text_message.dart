@@ -37,6 +37,7 @@ class TextMessage extends StatelessWidget {
         : InheritedChatTheme.of(context).theme.secondaryTextColor;
 
     return LinkPreview(
+      enableAnimation: true,
       linkStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
             color: color,
           ),

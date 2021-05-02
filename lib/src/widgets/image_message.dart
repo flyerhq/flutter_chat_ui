@@ -16,7 +16,6 @@ class ImageMessage extends StatefulWidget {
     Key? key,
     required this.message,
     required this.messageWidth,
-    required this.onPressed,
   }) : super(key: key);
 
   /// [types.ImageMessage]
@@ -24,9 +23,6 @@ class ImageMessage extends StatefulWidget {
 
   /// Maximum message width
   final int messageWidth;
-
-  /// Called when user taps on an image
-  final void Function(String uri) onPressed;
 
   @override
   _ImageMessageState createState() => _ImageMessageState();
@@ -90,74 +86,71 @@ class _ImageMessageState extends State<ImageMessage> {
         width: _size.width,
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
-      return GestureDetector(
-        onTap: () => widget.onPressed(widget.message.uri),
-        child: Container(
-          color: _user.id == widget.message.authorId
-              ? InheritedChatTheme.of(context).theme.primaryColor
-              : InheritedChatTheme.of(context).theme.secondaryColor,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: 64,
-                margin: const EdgeInsets.all(16),
-                width: 64,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image(
-                    fit: BoxFit.cover,
-                    image: _image!,
-                  ),
+      return Container(
+        color: _user.id == widget.message.authorId
+            ? InheritedChatTheme.of(context).theme.primaryColor
+            : InheritedChatTheme.of(context).theme.secondaryColor,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 64,
+              margin: const EdgeInsets.all(16),
+              width: 64,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: _image!,
                 ),
               ),
-              Flexible(
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(0, 16, 24, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.message.imageName,
-                        style:
-                            InheritedChatTheme.of(context).theme.body1.copyWith(
-                                  color: _user.id == widget.message.authorId
-                                      ? InheritedChatTheme.of(context)
-                                          .theme
-                                          .primaryTextColor
-                                      : InheritedChatTheme.of(context)
-                                          .theme
-                                          .secondaryTextColor,
-                                ),
-                        textWidthBasis: TextWidthBasis.longestLine,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(
-                          top: 4,
-                        ),
-                        child: Text(
-                          formatBytes(widget.message.size),
-                          style: InheritedChatTheme.of(context)
-                              .theme
-                              .caption
-                              .copyWith(
+            ),
+            Flexible(
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 16, 24, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.message.imageName,
+                      style:
+                          InheritedChatTheme.of(context).theme.body1.copyWith(
                                 color: _user.id == widget.message.authorId
                                     ? InheritedChatTheme.of(context)
                                         .theme
                                         .primaryTextColor
-                                        .withOpacity(0.5)
                                     : InheritedChatTheme.of(context)
                                         .theme
-                                        .captionColor,
+                                        .secondaryTextColor,
                               ),
-                        ),
+                      textWidthBasis: TextWidthBasis.longestLine,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 4,
                       ),
-                    ],
-                  ),
+                      child: Text(
+                        formatBytes(widget.message.size),
+                        style: InheritedChatTheme.of(context)
+                            .theme
+                            .caption
+                            .copyWith(
+                              color: _user.id == widget.message.authorId
+                                  ? InheritedChatTheme.of(context)
+                                      .theme
+                                      .primaryTextColor
+                                      .withOpacity(0.5)
+                                  : InheritedChatTheme.of(context)
+                                      .theme
+                                      .captionColor,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     } else {
@@ -176,12 +169,9 @@ class _ImageMessageState extends State<ImageMessage> {
           filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
           child: AspectRatio(
             aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
-            child: GestureDetector(
-              onTap: () => widget.onPressed(widget.message.uri),
-              child: Image(
-                fit: BoxFit.contain,
-                image: _image!,
-              ),
+            child: Image(
+              fit: BoxFit.contain,
+              image: _image!,
             ),
           ),
         ),
