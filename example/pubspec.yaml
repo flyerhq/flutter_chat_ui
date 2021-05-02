@@ -36,10 +36,16 @@ dependencies:
   mime: ^1.0.0
   open_file: ^3.2.0
   uuid: ^3.0.4
+  permission_handler: ^7.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#TODO disable overrides before pull request
+dependency_overrides:
+  flutter_chat_types:
+    path: ../../flutter_chat_types
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -16,11 +16,20 @@ dependencies:
   flutter_link_previewer: ^1.0.5
   intl: ^0.17.0
   photo_view: ^0.11.1
+  flutter_sound: ^8.1.1
+  path_provider: ^2.0.1
+  uuid: ^3.0.4
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.11.0
+
+#TODO disable overrides before pull request
+dependency_overrides:
+  flutter_chat_types:
+    path: ../flutter_chat_types
 
 flutter:
   assets:

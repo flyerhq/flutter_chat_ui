@@ -28,10 +28,19 @@ abstract class ChatTheme {
     required this.subtitle1,
     required this.subtitle2,
     required this.subtitle2Color,
+    required this.audioButtonIcon,
+    required this.recordButtonIcon,
+    required this.pauseButtonIcon,
+    required this.cancelRecordingButtonIcon,
+    required this.recordColor,
+    required this.playButtonIcon,
   });
 
   /// Icon for select attachment button
   final String? attachmentButtonIcon;
+
+  /// Icon for audio recording button
+  final String? audioButtonIcon;
 
   /// Used as a background color of a chat widget
   final Color backgroundColor;
@@ -95,6 +104,22 @@ abstract class ChatTheme {
 
   /// Color of the subtitle2, used for date dividers in the chat
   final Color subtitle2Color;
+
+  /// Icon for record button
+  final String? recordButtonIcon;
+
+  /// Icon for recording cancellation button
+  final String? cancelRecordingButtonIcon;
+
+  /// Icon for pause button
+  final String? pauseButtonIcon;
+
+  /// Color of the recording button, used for the recording button itself
+  /// as well as for the animated decibel gauge
+  final Color recordColor;
+
+  /// Icon for play button
+  final String? playButtonIcon;
 }
 
 /// Default chat theme which extends [ChatTheme]
@@ -153,6 +178,12 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
     Color subtitle2Color = const Color(0xff1d1d21),
+    String? audioButtonIcon,
+    String? recordButtonIcon,
+    String? pauseButtonIcon,
+    String? cancelRecordingButtonIcon,
+    Color recordColor = Colors.red,
+    String? playButtonIcon,
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
@@ -176,6 +207,12 @@ class DefaultChatTheme extends ChatTheme {
           subtitle1: subtitle1,
           subtitle2: subtitle2,
           subtitle2Color: subtitle2Color,
+          audioButtonIcon: audioButtonIcon,
+          recordButtonIcon: recordButtonIcon,
+          pauseButtonIcon: pauseButtonIcon,
+          cancelRecordingButtonIcon: cancelRecordingButtonIcon,
+          recordColor: recordColor,
+          playButtonIcon: playButtonIcon,
         );
 }
 
@@ -235,6 +272,12 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
     Color subtitle2Color = const Color(0xffffffff),
+    String? audioButtonIcon,
+    String? recordButtonIcon,
+    String? pauseButtonIcon,
+    String? cancelRecordingButtonIcon,
+    Color recordColor = Colors.red,
+    String? playButtonIcon,
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
@@ -258,5 +301,11 @@ class DarkChatTheme extends ChatTheme {
           subtitle1: subtitle1,
           subtitle2: subtitle2,
           subtitle2Color: subtitle2Color,
+          audioButtonIcon: audioButtonIcon,
+          recordButtonIcon: recordButtonIcon,
+          pauseButtonIcon: pauseButtonIcon,
+          cancelRecordingButtonIcon: cancelRecordingButtonIcon,
+          recordColor: recordColor,
+          playButtonIcon: playButtonIcon,
         );
 }

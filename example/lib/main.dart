@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -35,11 +36,21 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  bool _microphoneAllowed = false;
 
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    _askForMicrophonePermission();
+  }
+
+  Future<void> _askForMicrophonePermission() async {
+    if (await Permission.microphone.request().isGranted) {
+      setState(() {
+        _microphoneAllowed = true;
+      });
+    }
   }
 
   void _addMessage(types.Message message) {
@@ -48,7 +59,27 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleAtachmentPressed() {
+  Future<bool> _handleAudioRecorded({
+    required Duration length,
+    required String filePath,
+    required List<double> waveForm,
+  }) async {
+    final message = types.AudioMessage(
+      length: length,
+      authorId: _user.id,
+      id: const Uuid().v4(),
+      mimeType: 'audio/aac',
+      waveForm: waveForm,
+      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      uri: filePath, //FIXME set the real URI
+    );
+
+    _addMessage(message);
+
+    return true;
+  }
+
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -188,10 +219,11 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Chat(
         messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
+        onAttachmentPressed: _handleAttachmentPressed,
         onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,
+        onAudioRecorded: _microphoneAllowed ? _handleAudioRecorded : null,
         user: _user,
       ),
     );
