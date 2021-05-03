@@ -41,6 +41,7 @@ class Input extends StatefulWidget {
     required Duration length,
     required String filePath,
     required List<double> waveForm,
+    required String mimeType,
   })? onAudioRecorded;
 
   /// Whether audio recording is uploading. Will replace audio button with a
@@ -136,6 +137,7 @@ class _InputState extends State<Input> {
           length: audioRecording.duration,
           filePath: audioRecording.filePath,
           waveForm: audioRecording.decibelLevels,
+          mimeType: audioRecording.mimeType,
         );
         if (success) {
           setState(() {

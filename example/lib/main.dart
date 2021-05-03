@@ -70,16 +70,19 @@ class _ChatPageState extends State<ChatPage> {
     required Duration length,
     required String filePath,
     required List<double> waveForm,
+    required String mimeType,
   }) async {
     final message = types.AudioMessage(
       length: length,
       authorId: _user.id,
       id: const Uuid().v4(),
-      mimeType: 'audio/aac',
+      mimeType: mimeType,
       waveForm: waveForm,
       timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
-      uri: filePath, //FIXME set the real URI
+      uri: filePath,
     );
+
+    // TODO(sarbogast): show how to retrieve audio data both on the web and on mobile
 
     _addMessage(message);
 

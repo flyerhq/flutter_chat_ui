@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -15,11 +16,13 @@ class AudioRecording {
     required this.filePath,
     required this.duration,
     required this.decibelLevels,
+    required this.mimeType,
   });
 
   final String filePath;
   final Duration duration;
   final List<double> decibelLevels;
+  final String mimeType;
 }
 
 class AudioRecorder extends StatefulWidget {
@@ -41,6 +44,8 @@ class AudioRecorderState extends State<AudioRecorder> {
   bool _audioRecorderReady = false;
   Duration _recordingDuration = const Duration();
   final List<double> _levels = [];
+  late String _recordingMimeType;
+  late Codec _recordingCodec;
 
   @override
   void initState() {
@@ -69,33 +74,45 @@ class AudioRecorderState extends State<AudioRecorder> {
   }
 
   /// Creates an path to a temporary file.
-  Future<String> _tempFile({String? suffix}) async {
-    suffix ??= 'tmp';
-
-    if (!suffix.startsWith('.')) {
-      suffix = '.$suffix';
+  Future<String> _createTempAacFilePath() async {
+    if (kIsWeb) {
+      throw Exception(
+        'This method only works for mobile as it creates a temporary AAC file',
+      );
     }
-
     const uuid = Uuid();
     String path;
-    if (!kIsWeb) {
-      final tmpDir = await getTemporaryDirectory();
-      path = '${join(tmpDir.path, uuid.v4())}$suffix';
-      final parent = dirname(path);
-      await Directory(parent).create(recursive: true);
-    } else {
-      path = 'uuid.v4()}$suffix';
-    }
+    final tmpDir = await getTemporaryDirectory();
+    path = '${join(tmpDir.path, uuid.v4())}.aac';
+    final parent = dirname(path);
+    await Directory(parent).create(recursive: true);
 
     return path;
   }
 
   void _startRecording() async {
-    final path = await _tempFile(suffix: '.aac');
+    String filePath;
+    final fileNameWithoutExtension = const Uuid().v4();
+    if (kIsWeb) {
+      if (await _audioRecorder.isEncoderSupported(Codec.opusWebM)) {
+        filePath = '$fileNameWithoutExtension.webm';
+        _recordingCodec = Codec.opusWebM;
+        _recordingMimeType = 'audio/webm;codecs="opus"';
+      } else {
+        filePath = '$fileNameWithoutExtension.mp4';
+        _recordingCodec = Codec.aacMP4;
+        _recordingMimeType = 'audio/aac';
+      }
+    } else {
+      filePath = await _createTempAacFilePath();
+      _recordingCodec = Codec.aacADTS;
+      _recordingMimeType = 'audio/aac';
+    }
     await _audioRecorder.startRecorder(
-      toFile: path,
+      toFile: filePath,
       bitRate: 32000,
       sampleRate: 32000,
+      codec: _recordingCodec,
     );
   }
 
@@ -116,6 +133,7 @@ class AudioRecorderState extends State<AudioRecorder> {
         filePath: fileName,
         duration: _recordingDuration,
         decibelLevels: _levels,
+        mimeType: _recordingMimeType,
       );
     } else {
       return null;

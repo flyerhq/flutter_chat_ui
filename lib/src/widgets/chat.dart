@@ -52,6 +52,7 @@ class Chat extends StatefulWidget {
     required Duration length,
     required String filePath,
     required List<double> waveForm,
+    required String mimeType,
   })? onAudioRecorded;
 
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
