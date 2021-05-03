@@ -31,7 +31,6 @@ class Chat extends StatefulWidget {
     required this.onSendPressed,
     this.theme = const DefaultChatTheme(),
     required this.user,
-    this.isAudioUploading,
     this.onAudioRecorded,
   }) : super(key: key);
 
@@ -43,9 +42,6 @@ class Chat extends StatefulWidget {
 
   /// See [Input.isAttachmentUploading]
   final bool? isAttachmentUploading;
-
-  /// See [Input.isAudioUploading]
-  final bool? isAudioUploading;
 
   /// See [Input.onAudioRecorded]
   final Future<bool> Function({
@@ -356,7 +352,6 @@ class _ChatState extends State<Chat> {
                       Input(
                         isAttachmentUploading: widget.isAttachmentUploading,
                         onAttachmentPressed: widget.onAttachmentPressed,
-                        isAudioUploading: widget.isAudioUploading,
                         onAudioRecorded: widget.onAudioRecorded,
                         onSendPressed: widget.onSendPressed,
                       ),

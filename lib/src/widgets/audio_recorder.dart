@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import 'inherited_chat_theme.dart';
+import 'inherited_chat_theme.dart';
 
 class AudioRecording {
   const AudioRecording({
@@ -29,8 +30,10 @@ class AudioRecorder extends StatefulWidget {
   const AudioRecorder({
     Key? key,
     required this.onCancelRecording,
+    this.disabled = false,
   }) : super(key: key);
 
+  final bool disabled;
   final void Function() onCancelRecording;
 
   @override
@@ -174,7 +177,10 @@ class AudioRecorderState extends State<AudioRecorder> {
                             shape: BoxShape.circle,
                             color: InheritedChatTheme.of(context)
                                 .theme
-                                .recordColor,
+                                .recordColor
+                                .withOpacity(
+                                  widget.disabled ? 0.5 : 1.0,
+                                ),
                           ),
                         ),
                         Padding(
@@ -185,19 +191,56 @@ class AudioRecorderState extends State<AudioRecorder> {
                             margin: const EdgeInsets.only(right: 16),
                             child: IconButton(
                               icon: _audioRecorder.isRecording
-                                  ? Icon(
-                                      Icons.pause,
-                                      color: InheritedChatTheme.of(context)
-                                          .theme
-                                          .inputTextColor,
-                                    )
-                                  : Icon(
-                                      Icons.fiber_manual_record,
-                                      color: InheritedChatTheme.of(context)
-                                          .theme
-                                          .recordColor,
-                                    ),
-                              onPressed: _toggleRecording,
+                                  ? (InheritedChatTheme.of(context)
+                                              .theme
+                                              .pauseButtonIcon !=
+                                          null
+                                      ? Image.asset(
+                                          InheritedChatTheme.of(context)
+                                              .theme
+                                              .pauseButtonIcon!,
+                                          color: InheritedChatTheme.of(context)
+                                              .theme
+                                              .inputTextColor
+                                              .withOpacity(
+                                                widget.disabled ? 0.5 : 1.0,
+                                              ),
+                                        )
+                                      : Icon(
+                                          Icons.pause,
+                                          color: InheritedChatTheme.of(context)
+                                              .theme
+                                              .inputTextColor
+                                              .withOpacity(
+                                                widget.disabled ? 0.5 : 1.0,
+                                              ),
+                                        ))
+                                  : (InheritedChatTheme.of(context)
+                                              .theme
+                                              .recordButtonIcon !=
+                                          null
+                                      ? Image.asset(
+                                          InheritedChatTheme.of(context)
+                                              .theme
+                                              .recordButtonIcon!,
+                                          color: InheritedChatTheme.of(context)
+                                              .theme
+                                              .recordColor
+                                              .withOpacity(
+                                                widget.disabled ? 0.5 : 1.0,
+                                              ),
+                                        )
+                                      : Icon(
+                                          Icons.fiber_manual_record,
+                                          color: InheritedChatTheme.of(context)
+                                              .theme
+                                              .recordColor
+                                              .withOpacity(
+                                                widget.disabled ? 0.5 : 1.0,
+                                              ),
+                                        )),
+                              onPressed:
+                                  widget.disabled ? null : _toggleRecording,
                               padding: EdgeInsets.zero,
                             ),
                           ),
@@ -205,12 +248,31 @@ class AudioRecorderState extends State<AudioRecorder> {
                       ],
                     ),
                     IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color:
-                            InheritedChatTheme.of(context).theme.inputTextColor,
-                      ),
-                      onPressed: _cancelRecording,
+                      icon: InheritedChatTheme.of(context)
+                                  .theme
+                                  .cancelRecordingButtonIcon !=
+                              null
+                          ? Image.asset(
+                              InheritedChatTheme.of(context)
+                                  .theme
+                                  .cancelRecordingButtonIcon!,
+                              color: InheritedChatTheme.of(context)
+                                  .theme
+                                  .inputTextColor
+                                  .withOpacity(
+                                    widget.disabled ? 0.5 : 1.0,
+                                  ),
+                            )
+                          : Icon(
+                              Icons.delete,
+                              color: InheritedChatTheme.of(context)
+                                  .theme
+                                  .inputTextColor
+                                  .withOpacity(
+                                    widget.disabled ? 0.5 : 1.0,
+                                  ),
+                            ),
+                      onPressed: widget.disabled ? null : _cancelRecording,
                       padding: EdgeInsets.zero,
                     ),
                     Expanded(

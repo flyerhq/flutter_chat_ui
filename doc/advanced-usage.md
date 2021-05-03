@@ -360,3 +360,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+
+## Audio messages
+
+You can also enabled audio message recording by providing a value for the `onAudioRecorded` callback function.
+
+Note that this has certain limitations and prerequisites:
+
+- All the audio recording and playback functionality uses [`flutter_sound`](https://pub.dev/packages/flutter_sound), which is only supported on Android, iOS and web, but not on desktop (Windows, MacOS, Linux). So if your application runs on a desktop, you should not use this functionality.
+- On mobile platforms (iOS and Android), you need to ask for permission to access the microphone before you enable this feature in the Chat widget. On the web, the browser does it automatically as soon as the sound recorder tries to open an audio session. To ask for this permission on mobile, you can use the [`permission_handler`](https://pub.dev/packages/permission_handler) Flutter library, as demonstrated in the example app. See the documentation of this plugin for setup instructions.
+- To enabled this feature, on the web, you need to add a few scripts to your `index.html`'s head section, as described [here](https://tau.canardoux.xyz/guides_web.html), and as demonstrated in the example app.
+- Unfortunately, there is no audio encoding format that can be [encoded and decoded across all platforms](https://tau.canardoux.xyz/guides_codec.html). So in addition to the path of the file where the audio was recorded (`filePath`), `onAudioRecorded` also provides you with the MIME type of the recorded audio. It can be important to take that into consideration as messages recorded on one platform should be uploaded to your backend so that they can be played back on any other platform that you support. So you might need to convert files if you want to support all web browsers.
+    - On mobile platforms (Android and iOS), since they can both record and play AAC/ADTS, the MIME type is audio/aac
+    - On the web, things are a little more complicated: on Chrome, Firefox or Edge, you should get `audio/webm;codecs="opus"` (OPUS/WEBM), but on Safari, you will get `audio/aac` (AAC/MP4)
+
+In addition to the file path of the recorded file, the MIME type, and the length of the recording, `onAudioRecorded` also provides you with a `waveForm` that is a list of `double` decibel levels that can be useful to show a visual representation of your recording, similar to the one that appears in the audio message bubble. Note that web browsers don't expose this decibel level data so messages recorded on the web appear as a simple track and return a `waveForm` that's just a list of 0.0 levels.
+
+Note that `onAudioRecorded` is a `Future<bool>` async function that should return true or false depending on whether the upload of the audio recording was successful. While your implementation of `onAudioRecorded` is in progress, the send button will in the chat input will be replaced by a progress indicator and the buttons of the recorder will be disabled.
+
+Inside `onAudioRecorded`, you can you the `filePath` parameter to retrieve the local temporary file from the file system using `File` on mobile platforms. But on the web again, things are a little different: `flutter_sound` stores the file in session storage <!--TODO specify how to access this file -->

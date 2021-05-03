@@ -72,6 +72,9 @@ class _ChatPageState extends State<ChatPage> {
     required List<double> waveForm,
     required String mimeType,
   }) async {
+    //To simulate an upload that takes some time
+    await Future.delayed(const Duration(seconds: 3));
+
     final message = types.AudioMessage(
       length: length,
       authorId: _user.id,

@@ -19,7 +19,6 @@ class Input extends StatefulWidget {
     this.isAttachmentUploading,
     this.onAttachmentPressed,
     required this.onSendPressed,
-    this.isAudioUploading,
     this.onAudioRecorded,
   }) : super(key: key);
 
@@ -44,12 +43,6 @@ class Input extends StatefulWidget {
     required String mimeType,
   })? onAudioRecorded;
 
-  /// Whether audio recording is uploading. Will replace audio button with a
-  /// [CircularProgressIndicator]. Since we don't handle the upload of the audio
-  /// we have no way of knowing if something is uploading so you need to set
-  /// this manually.
-  final bool? isAudioUploading;
-
   @override
   _InputState createState() => _InputState();
 }
@@ -60,6 +53,7 @@ class _InputState extends State<Input> {
   final _textController = TextEditingController();
   bool _sendButtonVisible = false;
   bool _recordingAudio = false;
+  bool _audioUploading = false;
 
   @override
   void initState() {
@@ -104,7 +98,7 @@ class _InputState extends State<Input> {
   }
 
   Widget _audioWidget() {
-    if (widget.isAudioUploading == true) {
+    if (_audioUploading == true) {
       return SizedBox(
         height: 24,
         width: 24,
@@ -133,12 +127,18 @@ class _InputState extends State<Input> {
       final audioRecording =
           await _audioRecorderKey.currentState!.stopRecording();
       if (audioRecording != null) {
+        setState(() {
+          _audioUploading = true;
+        });
         final success = await widget.onAudioRecorded!(
           length: audioRecording.duration,
           filePath: audioRecording.filePath,
           waveForm: audioRecording.decibelLevels,
           mimeType: audioRecording.mimeType,
         );
+        setState(() {
+          _audioUploading = false;
+        });
         if (success) {
           setState(() {
             _recordingAudio = false;
@@ -177,6 +177,7 @@ class _InputState extends State<Input> {
                   ? AudioRecorder(
                       key: _audioRecorderKey,
                       onCancelRecording: _cancelRecording,
+                      disabled: _audioUploading,
                     )
                   : TextField(
                       controller: _textController,
