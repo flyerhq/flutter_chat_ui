@@ -123,9 +123,9 @@ class _AudioMessageState extends State<AudioMessage> {
                 left: 16,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
+                  SizedBox(
                     width: widget.messageWidth.toDouble(),
                     height: 20,
                     child: _audioPlayer.isPlaying || _audioPlayer.isPaused

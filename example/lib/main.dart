@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
@@ -46,6 +47,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _askForMicrophonePermission() async {
+    if (kIsWeb) {
+      setState(() {
+        _microphoneAllowed = true;
+      });
+      return;
+    }
     if (await Permission.microphone.request().isGranted) {
       setState(() {
         _microphoneAllowed = true;

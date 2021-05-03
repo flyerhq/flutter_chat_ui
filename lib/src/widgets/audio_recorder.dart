@@ -10,8 +10,6 @@ import 'package:uuid/uuid.dart';
 
 import 'inherited_chat_theme.dart';
 
-const maxSamples = 100;
-
 class AudioRecording {
   const AudioRecording({
     required this.filePath,
@@ -62,7 +60,7 @@ class AudioRecorderState extends State<AudioRecorder> {
   Future<void> _initAudioRecorder() async {
     await _audioRecorder.openAudioSession();
     await _audioRecorder.setSubscriptionDuration(
-      const Duration(milliseconds: 10),
+      const Duration(milliseconds: 50),
     );
     setState(() {
       _audioRecorderReady = true;
@@ -114,26 +112,10 @@ class AudioRecorderState extends State<AudioRecorder> {
   Future<AudioRecording?> stopRecording() async {
     final fileName = await _audioRecorder.stopRecorder();
     if (fileName != null) {
-      var groupedLevels = [..._levels];
-      /*if (_levels.length > maxSamples) {
-        groupedLevels = <double>[];
-        final groupLevelsBy = (1.0 * _levels.length / maxSamples).ceil();
-        for (var i = 0; i < _levels.length; i += groupLevelsBy) {
-          var total = 0.0;
-          var countSamples = 0;
-          for (var j = i; j < _levels.length; j++) {
-            total += _levels[j];
-            countSamples++;
-          }
-          final average = total / countSamples;
-          groupedLevels.add(average);
-        }
-      }*/
-
       return AudioRecording(
         filePath: fileName,
         duration: _recordingDuration,
-        decibelLevels: groupedLevels,
+        decibelLevels: _levels,
       );
     } else {
       return null;
@@ -163,7 +145,7 @@ class AudioRecorderState extends State<AudioRecorder> {
                       children: [
                         AnimatedContainer(
                           margin: const EdgeInsets.only(right: 16),
-                          duration: const Duration(milliseconds: 10),
+                          duration: const Duration(milliseconds: 50),
                           width: min + disposition.decibels! * 0.3,
                           height: min + disposition.decibels! * 0.3,
                           constraints: const BoxConstraints(
