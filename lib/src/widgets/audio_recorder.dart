@@ -161,25 +161,26 @@ class AudioRecorderState extends State<AudioRecorder> {
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        AnimatedContainer(
-                          margin: const EdgeInsets.only(right: 16),
-                          duration: const Duration(milliseconds: 50),
-                          width: min + disposition.decibels! * 0.3,
-                          height: min + disposition.decibels! * 0.3,
-                          constraints: const BoxConstraints(
-                            maxHeight: 40.0,
-                            maxWidth: 40.0,
+                        if (_audioRecorder.isRecording)
+                          AnimatedContainer(
+                            margin: const EdgeInsets.only(right: 16),
+                            duration: const Duration(milliseconds: 50),
+                            width: min + disposition.decibels! * 0.3,
+                            height: min + disposition.decibels! * 0.3,
+                            constraints: const BoxConstraints(
+                              maxHeight: 40.0,
+                              maxWidth: 40.0,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: InheritedChatTheme.of(context)
+                                  .theme
+                                  .recordColor
+                                  .withOpacity(
+                                    widget.disabled ? 0.5 : 1.0,
+                                  ),
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: InheritedChatTheme.of(context)
-                                .theme
-                                .recordColor
-                                .withOpacity(
-                                  widget.disabled ? 0.5 : 1.0,
-                                ),
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
