@@ -378,4 +378,16 @@ In addition to the file path of the recorded file, the MIME type, and the length
 
 Note that `onAudioRecorded` is a `Future<bool>` async function that should return true or false depending on whether the upload of the audio recording was successful. While your implementation of `onAudioRecorded` is in progress, the send button will in the chat input will be replaced by a progress indicator and the buttons of the recorder will be disabled.
 
-Inside `onAudioRecorded`, you can you the `filePath` parameter to retrieve the local temporary file from the file system using `File` on mobile platforms. But on the web again, things are a little different: `flutter_sound` stores the file in session storage <!--TODO specify how to access this file -->
+Inside `onAudioRecorded`, you can you the `filePath` parameter to retrieve the local temporary file from the file system using `File` on mobile platforms. But on the web again, things are a little different: `flutter_sound` stores the file in session storage and in `filePath`, you get a blob URL that you can use to download the data served locally at that URL using something like the `http` package. Here is the relevant code demonstrating the two approaches in the example app:
+
+``` 
+if (kIsWeb) {
+  final response = await http.get(Uri.parse(filePath));
+  final data = response.bodyBytes;
+  print('audio recording size: ${data.length}');
+} else {
+  final file = File(filePath);
+  final data = await file.readAsBytes();
+  print('audio recording size: ${data.length}');
+}
+```

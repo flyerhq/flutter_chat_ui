@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -11,6 +12,7 @@ import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -85,7 +87,15 @@ class _ChatPageState extends State<ChatPage> {
       uri: filePath,
     );
 
-    // TODO(sarbogast): show how to retrieve audio data both on the web and on mobile
+    if (kIsWeb) {
+      final response = await http.get(Uri.parse(filePath));
+      final data = response.bodyBytes;
+      print('audio recording size: ${data.length}');
+    } else {
+      final file = File(filePath);
+      final data = await file.readAsBytes();
+      print('audio recording size: ${data.length}');
+    }
 
     _addMessage(message);
 

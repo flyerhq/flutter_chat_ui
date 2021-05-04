@@ -37,15 +37,18 @@ class _AudioMessageState extends State<AudioMessage> {
 
   @override
   void initState() {
-    _initAudioPlayer();
     super.initState();
+    _initAudioPlayer();
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _audioPlayer.closeAudioSession();
+    super.dispose();
   }
 
   Future<void> _initAudioPlayer() async {
     await _audioPlayer.openAudioSession();
-    await _audioPlayer.setSubscriptionDuration(
-      const Duration(milliseconds: 10),
-    );
     setState(() {
       _audioPlayerReady = true;
     });
@@ -64,6 +67,9 @@ class _AudioMessageState extends State<AudioMessage> {
         _playing = true;
       });
     } else {
+      await _audioPlayer.setSubscriptionDuration(
+        const Duration(milliseconds: 10),
+      );
       await _audioPlayer.startPlayer(
           fromURI: widget.message.uri,
           whenFinished: () {

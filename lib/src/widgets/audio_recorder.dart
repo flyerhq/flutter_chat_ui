@@ -57,19 +57,13 @@ class AudioRecorderState extends State<AudioRecorder> {
   }
 
   @override
-  void dispose() async {
+  Future<void> dispose() async {
     super.dispose();
-    if (_audioRecorder.isRecording) {
-      await _audioRecorder.stopRecorder();
-    }
     await _audioRecorder.closeAudioSession();
   }
 
   Future<void> _initAudioRecorder() async {
     await _audioRecorder.openAudioSession();
-    await _audioRecorder.setSubscriptionDuration(
-      const Duration(milliseconds: 50),
-    );
     setState(() {
       _audioRecorderReady = true;
     });
@@ -111,6 +105,9 @@ class AudioRecorderState extends State<AudioRecorder> {
       _recordingCodec = Codec.aacADTS;
       _recordingMimeType = 'audio/aac';
     }
+    await _audioRecorder.setSubscriptionDuration(
+      const Duration(milliseconds: 50),
+    );
     await _audioRecorder.startRecorder(
       toFile: filePath,
       bitRate: 32000,
