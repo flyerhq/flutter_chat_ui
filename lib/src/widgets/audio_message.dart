@@ -9,7 +9,7 @@ import 'inherited_user.dart';
 
 /// A class that represents audio message widget
 class AudioMessage extends StatefulWidget {
-  /// Creates an audio message widget based on a [types.FileMessage]
+  /// Creates an audio message widget based on a [types.AudioMessage]
   const AudioMessage({
     Key? key,
     required this.message,

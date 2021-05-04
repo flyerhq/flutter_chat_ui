@@ -46,7 +46,10 @@ dev_dependencies:
 #TODO disable overrides before pull request
 dependency_overrides:
   flutter_chat_types:
-    path: ../../flutter_chat_types
+    #path: ../../flutter_chat_types
+    git:
+      url: https://github.com/sarbogast/flutter_chat_types
+      ref: feature/audio_message_types
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
