@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import 'inherited_chat_theme.dart';
-import 'inherited_chat_theme.dart';
 
 class AudioRecording {
   const AudioRecording({
