@@ -89,7 +89,13 @@ class TextMessage extends StatelessWidget {
         horizontal: 24,
         vertical: 16,
       ),
-      child: _textWidget(_user, context),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _textWidget(_user, context),
+          Text(message.authorId),
+        ],
+      ),
     );
   }
 }
