@@ -163,6 +163,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
+      authorId: _user.id,
       id: const Uuid().v4(),
       text: message.text,
       timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
