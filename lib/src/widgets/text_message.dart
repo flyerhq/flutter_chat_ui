@@ -94,7 +94,12 @@ class TextMessage extends StatelessWidget {
         children: [
           _textWidget(_user, context),
           const SizedBox(height: 8,),
-          Text(message.authorId, style: InheritedChatTheme.of(context).theme.subtitle1),
+          Text(message.authorId, style: InheritedChatTheme.of(context).theme.body1.copyWith(
+            fontSize: 14,
+            color: _user.id == message.authorId
+                ? InheritedChatTheme.of(context).theme.primaryTextColor
+                : InheritedChatTheme.of(context).theme.secondaryTextColor,
+          ),),
         ],
       ),
     );
