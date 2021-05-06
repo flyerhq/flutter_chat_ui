@@ -93,7 +93,8 @@ class TextMessage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _textWidget(_user, context),
-          Text(message.authorId),
+          const SizedBox(height: 8,),
+          Text(message.authorId, style: InheritedChatTheme.of(context).theme.subtitle1),
         ],
       ),
     );
