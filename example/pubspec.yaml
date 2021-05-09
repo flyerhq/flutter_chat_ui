@@ -29,17 +29,30 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   file_picker: ^3.0.1
-  flutter_chat_ui:
-    path: ../
+  flutter_chat_ui: ^1.0.2
   image_picker: ^0.7.4
   intl: ^0.17.0
   mime: ^1.0.0
   open_file: ^3.2.0
   uuid: ^3.0.4
+  permission_handler: ^7.1.0
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+#TODO disable overrides before pull request
+dependency_overrides:
+  flutter_chat_types:
+    #path: ../../flutter_chat_types
+    git:
+      url: https://github.com/sarbogast/flutter_chat_types
+      ref: feature/audio_message_types
+  flutter_chat_ui:
+    git:
+      url: https://github.com/sarbogast/flutter_chat_ui
+      ref: feature/audio_message
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

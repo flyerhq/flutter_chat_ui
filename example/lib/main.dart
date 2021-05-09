@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
@@ -8,7 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -35,11 +39,27 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  bool _microphoneAllowed = false;
 
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    _askForMicrophonePermission();
+  }
+
+  Future<void> _askForMicrophonePermission() async {
+    if (kIsWeb) {
+      setState(() {
+        _microphoneAllowed = true;
+      });
+      return;
+    }
+    if (await Permission.microphone.request().isGranted) {
+      setState(() {
+        _microphoneAllowed = true;
+      });
+    }
   }
 
   void _addMessage(types.Message message) {
@@ -48,7 +68,41 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleAtachmentPressed() {
+  Future<bool> _handleAudioRecorded({
+    required Duration length,
+    required String filePath,
+    required List<double> waveForm,
+    required String mimeType,
+  }) async {
+    //To simulate an upload that takes some time
+    await Future.delayed(const Duration(seconds: 3));
+
+    final message = types.AudioMessage(
+      length: length,
+      authorId: _user.id,
+      id: const Uuid().v4(),
+      mimeType: mimeType,
+      waveForm: waveForm,
+      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      uri: filePath,
+    );
+
+    if (kIsWeb) {
+      final response = await http.get(Uri.parse(filePath));
+      final data = response.bodyBytes;
+      print('audio recording size: ${data.length}');
+    } else {
+      final file = File(filePath);
+      final data = await file.readAsBytes();
+      print('audio recording size: ${data.length}');
+    }
+
+    _addMessage(message);
+
+    return true;
+  }
+
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -188,10 +242,11 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Chat(
         messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
+        onAttachmentPressed: _handleAttachmentPressed,
         onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,
+        onAudioRecorded: _microphoneAllowed ? _handleAudioRecorded : null,
         user: _user,
       ),
     );
