@@ -20,11 +20,13 @@ class Chat extends StatefulWidget {
   const Chat({
     Key? key,
     this.dateLocale,
+    this.disableImageGallery,
     this.isAttachmentUploading,
     this.l10n = const ChatL10nEn(),
     required this.messages,
     this.onAttachmentPressed,
-    this.onFilePressed,
+    this.onMessageLongPress,
+    this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
     this.theme = const DefaultChatTheme(),
@@ -33,6 +35,9 @@ class Chat extends StatefulWidget {
 
   /// See [Message.dateLocale]
   final String? dateLocale;
+
+  /// Disable automatic image preview on tap.
+  final bool? disableImageGallery;
 
   /// See [Input.isAttachmentUploading]
   final bool? isAttachmentUploading;
@@ -48,8 +53,11 @@ class Chat extends StatefulWidget {
   /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;
 
-  /// See [Message.onFilePressed]
-  final void Function(types.FileMessage)? onFilePressed;
+  /// See [Message.onMessageLongPress]
+  final void Function(types.Message)? onMessageLongPress;
+
+  /// See [Message.onMessageTap]
+  final void Function(types.Message)? onMessageTap;
 
   /// See [Message.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -302,12 +310,24 @@ class _ChatState extends State<Chat> {
                                         Message(
                                           key: ValueKey(message),
                                           dateLocale: widget.dateLocale,
-                                          onImagePressed: (uri) {
-                                            _onImagePressed(uri, galleryItems);
-                                          },
                                           message: message,
                                           messageWidth: _messageWidth,
-                                          onFilePressed: widget.onFilePressed,
+                                          onMessageLongPress:
+                                              widget.onMessageLongPress,
+                                          onMessageTap: (tappedMessage) {
+                                            if (tappedMessage
+                                                    is types.ImageMessage &&
+                                                widget.disableImageGallery !=
+                                                    true) {
+                                              _onImagePressed(
+                                                tappedMessage.uri,
+                                                galleryItems,
+                                              );
+                                            }
+
+                                            widget.onMessageTap
+                                                ?.call(tappedMessage);
+                                          },
                                           onPreviewDataFetched:
                                               _onPreviewDataFetched,
                                           previousMessageSameAuthor:

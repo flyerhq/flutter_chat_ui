@@ -1,3 +1,11 @@
+## 1.0.2
+
+- **BREAKING CHANGE**: `onFilePressed` is replaced with `onMessageTap` to support tap event for different message types. See usage example.
+- Added `onMessageLongPress` callback, similar to the `onMessageTap`.
+- Added `disableImageGallery` parameter to optionally disable the image gallery on the image tap.
+- Added `subtitle2Color` to the theme, which is used to color date dividers in the chat. Thanks @sarbogast for the PR!
+- Fixed issues with link preview
+
 ## 1.0.1
 
 - Hide the attachment button if `onAttachmentPressed` is not passed
