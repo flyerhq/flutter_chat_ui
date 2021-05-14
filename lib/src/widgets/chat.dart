@@ -31,6 +31,7 @@ class Chat extends StatefulWidget {
     required this.onSendPressed,
     this.theme = const DefaultChatTheme(),
     required this.user,
+    this.usePreviewData = true,
   }) : super(key: key);
 
   /// See [Message.dateLocale]
@@ -73,6 +74,9 @@ class Chat extends StatefulWidget {
 
   /// See [InheritedUser.user]
   final types.User user;
+
+  ///
+  final bool usePreviewData;
 
   @override
   _ChatState createState() => _ChatState();
