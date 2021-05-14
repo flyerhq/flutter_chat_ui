@@ -75,7 +75,7 @@ class Chat extends StatefulWidget {
   /// See [InheritedUser.user]
   final types.User user;
 
-  ///
+  /// Should Preview be calculated
   final bool usePreviewData;
 
   @override
@@ -332,6 +332,7 @@ class _ChatState extends State<Chat> {
                                             widget.onMessageTap
                                                 ?.call(tappedMessage);
                                           },
+                                          usePreviewData: widget.usePreviewData,
                                           onPreviewDataFetched:
                                               _onPreviewDataFetched,
                                           previousMessageSameAuthor:
