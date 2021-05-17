@@ -20,7 +20,7 @@ class Message extends StatelessWidget {
     this.onMessageLongPress,
     this.onMessageTap,
     this.onPreviewDataFetched,
-    required this.previousMessageSameAuthor,
+    required this.roundBorder,
     required this.shouldRenderTime,
     this.usePreviewData = true,
   }) : super(key: key);
@@ -46,9 +46,8 @@ class Message extends StatelessWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// Whether previous message was sent by the same person. Used for
-  /// different spacing for sent and received messages.
-  final bool previousMessageSameAuthor;
+  /// Rounds border of the message to visually group messages together.
+  final bool roundBorder;
 
   /// Whether delivery time should be rendered. It is not rendered for
   /// received messages and when sent messages have small difference in
@@ -154,10 +153,14 @@ class Message extends StatelessWidget {
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(
-          _user.id == message.authorId ? _messageBorderRadius : 0),
-      bottomRight: Radius.circular(
-          _user.id == message.authorId ? 0 : _messageBorderRadius),
+      bottomLeft: Radius.circular(_user.id == message.authorId || roundBorder
+          ? _messageBorderRadius
+          : 0),
+      bottomRight: Radius.circular(_user.id == message.authorId
+          ? roundBorder
+              ? _messageBorderRadius
+              : 0
+          : _messageBorderRadius),
       topLeft: Radius.circular(_messageBorderRadius),
       topRight: Radius.circular(_messageBorderRadius),
     );
@@ -167,8 +170,8 @@ class Message extends StatelessWidget {
       alignment: _user.id == message.authorId
           ? Alignment.centerRight
           : Alignment.centerLeft,
-      margin: EdgeInsets.only(
-        bottom: previousMessageSameAuthor ? 8 : 16,
+      margin: const EdgeInsets.only(
+        bottom: 4,
         left: 24,
         right: 24,
       ),
