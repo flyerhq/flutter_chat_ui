@@ -24,16 +24,8 @@ String getVerboseDateTimeRepresentation(
   if (localDateTime.day == now.day &&
       localDateTime.month == now.month &&
       localDateTime.year == now.year) {
-    return todayText;
+    return DateFormat.Hm(locale).format(dateTime);
   }
 
-  final yesterday = now.subtract(const Duration(days: 1));
-
-  if (localDateTime.day == yesterday.day &&
-      localDateTime.month == yesterday.month &&
-      localDateTime.year == yesterday.year) {
-    return yesterdayText;
-  }
-
-  return DateFormat.MMMMd(locale).format(dateTime);
+  return '${DateFormat.MMMd(locale).format(dateTime)}, ${DateFormat.Hm(locale).format(dateTime)}';
 }
