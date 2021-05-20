@@ -110,7 +110,7 @@ class DefaultChatTheme extends ChatTheme {
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      height: 1.375,
+      height: 1.5,
     ),
     TextStyle body2 = const TextStyle(
       fontFamily: 'Avenir',
@@ -192,7 +192,7 @@ class DarkChatTheme extends ChatTheme {
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      height: 1.375,
+      height: 1.5,
     ),
     TextStyle body2 = const TextStyle(
       fontFamily: 'Avenir',
