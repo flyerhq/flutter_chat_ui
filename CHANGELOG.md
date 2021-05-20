@@ -1,3 +1,10 @@
+## 1.0.3
+
+- Fix various URL preview bugs (see https://pub.dev/packages/flutter_link_previewer/changelog)
+- Add an option to disable URL preview. Thanks @Elementarereigniss for the PR!
+- Add portugese localization. Thanks @BerkSpar for the PR!
+- Update dependencies
+
 ## 1.0.2
 
 - **BREAKING CHANGE**: `onFilePressed` is replaced with `onMessageTap` to support tap event for different message types. See usage example.
