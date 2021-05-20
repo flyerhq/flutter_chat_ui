@@ -22,7 +22,7 @@ class Message extends StatelessWidget {
     this.onPreviewDataFetched,
     required this.roundBorder,
     required this.shouldRenderTime,
-    this.usePreviewData = true,
+    required this.usePreviewData,
   }) : super(key: key);
 
   /// Locale will be passed to the `Intl` package. Make sure you initialized
