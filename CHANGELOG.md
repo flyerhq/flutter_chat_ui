@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Update dependencies
+
 ## 1.0.4
 
 - Additional URL preview bug fixes. Thanks @jlubeck for reporting!
