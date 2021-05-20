@@ -323,8 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
     types.PreviewData previewData,
   ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
-    final currentMessage = _messages[index] as types.TextMessage;
-    final updatedMessage = currentMessage.copyWith(previewData);
+    final updatedMessage = _messages[index].copyWith(previewData: previewData);
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
