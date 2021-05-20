@@ -30,8 +30,8 @@ class Chat extends StatefulWidget {
     this.onPreviewDataFetched,
     required this.onSendPressed,
     this.theme = const DefaultChatTheme(),
-    required this.user,
     this.usePreviewData = true,
+    required this.user,
   }) : super(key: key);
 
   /// See [Message.dateLocale]
@@ -72,11 +72,11 @@ class Chat extends StatefulWidget {
   /// variables, see more here [DefaultChatTheme].
   final ChatTheme theme;
 
+  /// See [Message.usePreviewData]
+  final bool usePreviewData;
+
   /// See [InheritedUser.user]
   final types.User user;
-
-  /// Should Preview be calculated
-  final bool usePreviewData;
 
   @override
   _ChatState createState() => _ChatState();
@@ -332,12 +332,12 @@ class _ChatState extends State<Chat> {
                                             widget.onMessageTap
                                                 ?.call(tappedMessage);
                                           },
-                                          usePreviewData: widget.usePreviewData,
                                           onPreviewDataFetched:
                                               _onPreviewDataFetched,
                                           previousMessageSameAuthor:
                                               previousMessageSameAuthor,
                                           shouldRenderTime: shouldRenderTime,
+                                          usePreviewData: widget.usePreviewData,
                                         ),
                                       ],
                                     );

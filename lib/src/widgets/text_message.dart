@@ -11,8 +11,8 @@ class TextMessage extends StatelessWidget {
   const TextMessage({
     Key? key,
     required this.message,
-    this.usePreviewData = true,
     this.onPreviewDataFetched,
+    this.usePreviewData = true,
   }) : super(key: key);
 
   /// [types.TextMessage]
@@ -22,7 +22,7 @@ class TextMessage extends StatelessWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// Should Preview be calculated
+  /// Enables link (URL) preview
   final bool usePreviewData;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {

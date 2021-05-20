@@ -19,10 +19,10 @@ class Message extends StatelessWidget {
     required this.messageWidth,
     this.onMessageLongPress,
     this.onMessageTap,
-    this.usePreviewData = true,
     this.onPreviewDataFetched,
     required this.previousMessageSameAuthor,
     required this.shouldRenderTime,
+    this.usePreviewData = true,
   }) : super(key: key);
 
   /// Locale will be passed to the `Intl` package. Make sure you initialized
@@ -42,9 +42,6 @@ class Message extends StatelessWidget {
   /// Called when user taps on any message
   final void Function(types.Message)? onMessageTap;
 
-  /// Should Preview be calculated
-  final bool usePreviewData;
-
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
@@ -57,6 +54,9 @@ class Message extends StatelessWidget {
   /// received messages and when sent messages have small difference in
   /// delivery time.
   final bool shouldRenderTime;
+
+  /// See [TextMessage.usePreviewData]
+  final bool usePreviewData;
 
   Widget _buildMessage() {
     switch (message.type) {
@@ -75,8 +75,8 @@ class Message extends StatelessWidget {
         final textMessage = message as types.TextMessage;
         return TextMessage(
           message: textMessage,
-          usePreviewData: usePreviewData,
           onPreviewDataFetched: onPreviewDataFetched,
+          usePreviewData: usePreviewData,
         );
       default:
         return Container();

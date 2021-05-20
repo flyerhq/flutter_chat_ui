@@ -63,32 +63,6 @@ class ChatL10nEn extends ChatL10n {
         );
 }
 
-/// Portuguese l10n which extends [ChatL10n]
-@immutable
-class ChatL10nPt extends ChatL10n {
-  /// Creates Portuguese l10n. Use this constructor if you want to
-  /// override only a couple of variables, otherwise create a new class
-  /// which extends [ChatL10n]
-  const ChatL10nPt({
-    String attachmentButtonAccessibilityLabel = 'Enviar mídia',
-    String emptyChatPlaceholder = 'Não há mensagens ainda',
-    String fileButtonAccessibilityLabel = 'Arquivo',
-    String inputPlaceholder = 'Mensagem',
-    String sendButtonAccessibilityLabel = 'Enviar',
-    String today = 'Hoje',
-    String yesterday = 'Ontem',
-  }) : super(
-          attachmentButtonAccessibilityLabel:
-              attachmentButtonAccessibilityLabel,
-          emptyChatPlaceholder: emptyChatPlaceholder,
-          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
-          inputPlaceholder: inputPlaceholder,
-          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
-        );
-}
-
 /// Spanish l10n which extends [ChatL10n]
 @immutable
 class ChatL10nEs extends ChatL10n {
@@ -129,6 +103,32 @@ class ChatL10nPl extends ChatL10n {
     String sendButtonAccessibilityLabel = 'Wyślij',
     String today = 'Dzisiaj',
     String yesterday = 'Wczoraj',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+          today: today,
+          yesterday: yesterday,
+        );
+}
+
+/// Portuguese l10n which extends [ChatL10n]
+@immutable
+class ChatL10nPt extends ChatL10n {
+  /// Creates Portuguese l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nPt({
+    String attachmentButtonAccessibilityLabel = 'Envia mídia',
+    String emptyChatPlaceholder = 'Ainda não há mensagens aqui',
+    String fileButtonAccessibilityLabel = 'Arquivo',
+    String inputPlaceholder = 'Mensagem',
+    String sendButtonAccessibilityLabel = 'Enviar',
+    String today = 'Hoje',
+    String yesterday = 'Ontem',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,

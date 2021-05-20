@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ## Link preview
 
-Link preview works automatically, we created a separate package for that, you can found it [here](https://pub.dev/packages/flutter_link_previewer). If you want, it can be disabled by setting `usePreviewData` to false. Usually, however, you'll want to save the preview data so it stays the same, you can do that using `onPreviewDataFetched` callback:
+Link preview works automatically, we created a separate package for that, you can found it [here](https://pub.dev/packages/flutter_link_previewer). It can be disabled by setting `usePreviewData` to false. Usually, however, you'll want to save the preview data so it stays the same, you can do that using `onPreviewDataFetched` callback:
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
@@ -149,8 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
     types.PreviewData previewData,
   ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
-    final currentMessage = _messages[index] as types.TextMessage;
-    final updatedMessage = currentMessage.copyWith(previewData);
+    final updatedMessage = _messages[index].copyWith(previewData: previewData);
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
