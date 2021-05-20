@@ -1,3 +1,8 @@
+## 1.0.4
+
+- Additional URL preview bug fixes. Thanks @jlubeck for reporting!
+- Update to Flutter 2.2
+
 ## 1.0.3
 
 - Fix various URL preview bugs (see https://pub.dev/packages/flutter_link_previewer/changelog)
