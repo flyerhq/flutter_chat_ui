@@ -97,21 +97,29 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      reverse: true,
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels >=
+            (notification.metrics.maxScrollExtent * 0.8)) {}
+
+        return false;
+      },
+      child: CustomScrollView(
+        reverse: true,
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+            ),
+            sliver: SliverAnimatedList(
+              initialItemCount: widget.items.length,
+              key: _listKey,
+              itemBuilder: (_, index, animation) =>
+                  _buildNewMessage(index, animation),
+            ),
           ),
-          sliver: SliverAnimatedList(
-            initialItemCount: widget.items.length,
-            key: _listKey,
-            itemBuilder: (_, index, animation) =>
-                _buildNewMessage(index, animation),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
