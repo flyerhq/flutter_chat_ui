@@ -12,7 +12,7 @@ class TextMessage extends StatelessWidget {
     Key? key,
     required this.message,
     this.onPreviewDataFetched,
-    this.usePreviewData = true,
+    required this.usePreviewData,
   }) : super(key: key);
 
   /// [types.TextMessage]

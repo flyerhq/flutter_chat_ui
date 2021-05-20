@@ -304,6 +304,7 @@ class _ChatState extends State<Chat> {
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['roundBorder'] == true,
         shouldRenderTime: false,
+        usePreviewData: widget.usePreviewData,
       );
     }
   }
