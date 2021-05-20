@@ -19,6 +19,7 @@ class Message extends StatelessWidget {
     required this.messageWidth,
     this.onMessageLongPress,
     this.onMessageTap,
+    this.usePreviewData = true,
     this.onPreviewDataFetched,
     required this.previousMessageSameAuthor,
     required this.shouldRenderTime,
@@ -40,6 +41,9 @@ class Message extends StatelessWidget {
 
   /// Called when user taps on any message
   final void Function(types.Message)? onMessageTap;
+
+  /// Should Preview be calculated
+  final bool usePreviewData;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -71,6 +75,7 @@ class Message extends StatelessWidget {
         final textMessage = message as types.TextMessage;
         return TextMessage(
           message: textMessage,
+          usePreviewData: usePreviewData,
           onPreviewDataFetched: onPreviewDataFetched,
         );
       default:

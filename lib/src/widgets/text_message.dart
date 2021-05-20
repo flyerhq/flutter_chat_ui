@@ -11,6 +11,7 @@ class TextMessage extends StatelessWidget {
   const TextMessage({
     Key? key,
     required this.message,
+    this.usePreviewData = true,
     this.onPreviewDataFetched,
   }) : super(key: key);
 
@@ -20,6 +21,9 @@ class TextMessage extends StatelessWidget {
   /// See [LinkPreview.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// Should Preview be calculated
+  final bool usePreviewData;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
     if (message.previewData == null) {
@@ -82,7 +86,9 @@ class TextMessage extends StatelessWidget {
     final urlRegexp = RegExp(REGEX_LINK);
     final matches = urlRegexp.allMatches(message.text.toLowerCase());
 
-    if (matches.isNotEmpty) return _linkPreview(_user, _width, context);
+    if (matches.isNotEmpty && usePreviewData) {
+      return _linkPreview(_user, _width, context);
+    }
 
     return Container(
       margin: const EdgeInsets.symmetric(
