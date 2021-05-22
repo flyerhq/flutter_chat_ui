@@ -30,12 +30,14 @@ String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
   return '${DateFormat.MMMd(locale).format(dateTime)}, ${DateFormat.Hm(locale).format(dateTime)}';
 }
 
-/// Parses provided messages to chat messages (with headers and spacers) and gallery
-List<Object> calculateChatMessages(Map<String, Object?> args) {
+/// Parses provided messages to chat messages (with headers and spacers) and
+/// returns them with a gallery
+List<Object> calculateChatMessages(
+  List<types.Message> messages, {
+  String? dateLocale,
+}) {
   final chatMessages = <Object>[];
-  final dateLocale = args['dateLocale'] as String?;
   final gallery = <PreviewImage>[];
-  final messages = args['messages']! as List<types.Message>;
 
   for (var i = messages.length - 1; i >= 0; i--) {
     final isFirst = i == messages.length - 1;

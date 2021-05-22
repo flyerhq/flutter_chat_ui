@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
@@ -104,15 +103,13 @@ class _ChatState extends State<Chat> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages.isNotEmpty) {
-      compute(calculateChatMessages, {
-        'dateLocale': widget.dateLocale,
-        'messages': widget.messages,
-      }).then((value) {
-        setState(() {
-          _chatMessages = value[0] as List<Object>;
-          _gallery = value[1] as List<PreviewImage>;
-        });
-      });
+      final result = calculateChatMessages(
+        widget.messages,
+        dateLocale: widget.dateLocale,
+      );
+
+      _chatMessages = result[0] as List<Object>;
+      _gallery = result[1] as List<PreviewImage>;
     }
   }
 
