@@ -108,8 +108,9 @@ class _ChatListState extends State<ChatList> {
         reverse: true,
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 16,
+            padding: const EdgeInsets.only(
+              bottom: 4,
+              top: 16,
             ),
             sliver: SliverAnimatedList(
               initialItemCount: widget.items.length,

@@ -87,10 +87,10 @@ class Chat extends StatefulWidget {
 
 /// [Chat] widget state
 class _ChatState extends State<Chat> {
-  bool _isImageViewVisible = false;
+  List<Object> _chatMessages = [];
+  List<PreviewImage> _gallery = [];
   int _imageViewIndex = 0;
-  List<PreviewImage> gallery = [];
-  late List<Object> messagesWithHeaders = List.from(widget.messages);
+  bool _isImageViewVisible = false;
 
   @override
   void initState() {
@@ -104,82 +104,96 @@ class _ChatState extends State<Chat> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages.isNotEmpty) {
-      gallery = [];
-      messagesWithHeaders = [];
+      calculateChatMessages();
+    }
+  }
 
-      for (var i = 0; i < widget.messages.length; i++) {
-        final isFirst = i == 0;
-        final isLast = i == widget.messages.length - 1;
-        final message = widget.messages[i];
-        final nextMessage = isFirst ? null : widget.messages[i - 1];
-        final nextMessageDifferentDay = message.timestamp != null &&
-            nextMessage?.timestamp != null &&
-            DateTime.fromMillisecondsSinceEpoch(
-                  message.timestamp! * 1000,
-                ).day !=
-                DateTime.fromMillisecondsSinceEpoch(
-                  nextMessage!.timestamp! * 1000,
-                ).day;
-        final nextMessageSameAuthor = nextMessage?.authorId == message.authorId;
-        final nextMessageWithinBigThreshold = nextMessage?.timestamp != null &&
-            message.timestamp != null &&
+  void calculateChatMessages() {
+    _chatMessages = [];
+    _gallery = [];
+
+    for (var i = widget.messages.length - 1; i >= 0; i--) {
+      final isFirst = i == widget.messages.length - 1;
+      final isLast = i == 0;
+      final message = widget.messages[i];
+      final messageHasTimestamp = message.timestamp != null;
+      final nextMessage = isLast ? null : widget.messages[i - 1];
+      final nextMessageHasTimestamp = nextMessage?.timestamp != null;
+      final nextMessageSameAuthor = message.authorId == nextMessage?.authorId;
+
+      var nextMessageDateThreshold = false;
+      var nextMessageDifferentDay = false;
+      var nextMessageInGroup = false;
+
+      if (messageHasTimestamp && nextMessageHasTimestamp) {
+        nextMessageDateThreshold =
             nextMessage!.timestamp! - message.timestamp! >= 900;
-        final nextMessageWithinThreshold = nextMessage?.timestamp != null &&
-            message.timestamp != null &&
-            nextMessage!.timestamp! - message.timestamp! <= 60;
 
-        if (nextMessageDifferentDay || nextMessageWithinBigThreshold) {
-          messagesWithHeaders.add(
-            DateHeader(
-              text: getVerboseDateTimeRepresentation(
-                DateTime.fromMillisecondsSinceEpoch(
-                  nextMessage!.timestamp! * 1000,
-                ),
-                widget.dateLocale,
-                widget.l10n.today,
-                widget.l10n.yesterday,
+        nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(
+              message.timestamp! * 1000,
+            ).day !=
+            DateTime.fromMillisecondsSinceEpoch(
+              nextMessage.timestamp! * 1000,
+            ).day;
+
+        nextMessageInGroup = nextMessageSameAuthor &&
+            nextMessage.timestamp! - message.timestamp! <= 60;
+      }
+
+      if (isFirst && messageHasTimestamp) {
+        _chatMessages.insert(
+          0,
+          DateHeader(
+            text: getVerboseDateTimeRepresentation(
+              DateTime.fromMillisecondsSinceEpoch(
+                message.timestamp! * 1000,
               ),
+              widget.dateLocale,
+              widget.l10n.today,
+              widget.l10n.yesterday,
             ),
-          );
-        }
+          ),
+        );
+      }
 
-        if (!nextMessageSameAuthor || !nextMessageWithinThreshold) {
-          messagesWithHeaders.add(
-            MessageSpacer(
-              height: 12,
-              id: message.id,
-            ),
-          );
-        }
+      _chatMessages.insert(0, {
+        'message': message,
+        'roundBorder': nextMessageInGroup,
+      });
 
-        messagesWithHeaders.add({
-          'message': message,
-          'roundBorder': nextMessageSameAuthor && nextMessageWithinThreshold,
-        });
+      if (!nextMessageInGroup) {
+        _chatMessages.insert(
+          0,
+          MessageSpacer(
+            height: 12,
+            id: message.id,
+          ),
+        );
+      }
 
-        if (isLast && message.timestamp != null) {
-          messagesWithHeaders.add(
-            DateHeader(
-              text: getVerboseDateTimeRepresentation(
-                DateTime.fromMillisecondsSinceEpoch(
-                  widget.messages[i].timestamp! * 1000,
-                ),
-                widget.dateLocale,
-                widget.l10n.today,
-                widget.l10n.yesterday,
+      if (nextMessageDifferentDay || nextMessageDateThreshold) {
+        _chatMessages.insert(
+          0,
+          DateHeader(
+            text: getVerboseDateTimeRepresentation(
+              DateTime.fromMillisecondsSinceEpoch(
+                nextMessage!.timestamp! * 1000,
               ),
+              widget.dateLocale,
+              widget.l10n.today,
+              widget.l10n.yesterday,
             ),
-          );
-        }
+          ),
+        );
+      }
 
-        if (message is types.ImageMessage) {
-          if (kIsWeb) {
-            if (message.uri.startsWith('http')) {
-              gallery.insert(0, PreviewImage(id: message.id, uri: message.uri));
-            }
-          } else {
-            gallery.insert(0, PreviewImage(id: message.id, uri: message.uri));
+      if (message is types.ImageMessage) {
+        if (kIsWeb) {
+          if (message.uri.startsWith('http')) {
+            _gallery.add(PreviewImage(id: message.id, uri: message.uri));
           }
+        } else {
+          _gallery.add(PreviewImage(id: message.id, uri: message.uri));
         }
       }
     }
@@ -210,10 +224,10 @@ class _ChatState extends State<Chat> {
 
   void _onImagePressed(types.ImageMessage message) {
     setState(() {
-      _isImageViewVisible = true;
-      _imageViewIndex = gallery.indexWhere(
+      _imageViewIndex = _gallery.indexWhere(
         (element) => element.id == message.id && element.uri == message.uri,
       );
+      _isImageViewVisible = true;
     });
   }
 
@@ -240,13 +254,14 @@ class _ChatState extends State<Chat> {
           PhotoViewGallery.builder(
             builder: (BuildContext context, int index) =>
                 PhotoViewGalleryPageOptions(
-              imageProvider: Conditional().getProvider(gallery[index].uri),
+              imageProvider: Conditional().getProvider(_gallery[index].uri),
             ),
-            itemCount: gallery.length,
+            itemCount: _gallery.length,
             loadingBuilder: (context, event) =>
                 _imageGalleryLoadingBuilder(context, event),
             onPageChanged: _onPageChanged,
             pageController: PageController(initialPage: _imageViewIndex),
+            scrollPhysics: const ClampingScrollPhysics(),
           ),
           Positioned(
             right: 16,
@@ -348,7 +363,7 @@ class _ChatState extends State<Chat> {
                                 child: ChatList(
                                   itemBuilder: (item, index) =>
                                       _buildMessage(item),
-                                  items: messagesWithHeaders,
+                                  items: _chatMessages,
                                 ),
                               ),
                       ),
