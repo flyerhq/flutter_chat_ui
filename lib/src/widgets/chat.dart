@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
@@ -104,98 +104,15 @@ class _ChatState extends State<Chat> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages.isNotEmpty) {
-      calculateChatMessages();
-    }
-  }
-
-  void calculateChatMessages() {
-    _chatMessages = [];
-    _gallery = [];
-
-    for (var i = widget.messages.length - 1; i >= 0; i--) {
-      final isFirst = i == widget.messages.length - 1;
-      final isLast = i == 0;
-      final message = widget.messages[i];
-      final messageHasTimestamp = message.timestamp != null;
-      final nextMessage = isLast ? null : widget.messages[i - 1];
-      final nextMessageHasTimestamp = nextMessage?.timestamp != null;
-      final nextMessageSameAuthor = message.authorId == nextMessage?.authorId;
-
-      var nextMessageDateThreshold = false;
-      var nextMessageDifferentDay = false;
-      var nextMessageInGroup = false;
-
-      if (messageHasTimestamp && nextMessageHasTimestamp) {
-        nextMessageDateThreshold =
-            nextMessage!.timestamp! - message.timestamp! >= 900;
-
-        nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(
-              message.timestamp! * 1000,
-            ).day !=
-            DateTime.fromMillisecondsSinceEpoch(
-              nextMessage.timestamp! * 1000,
-            ).day;
-
-        nextMessageInGroup = nextMessageSameAuthor &&
-            nextMessage.timestamp! - message.timestamp! <= 60;
-      }
-
-      if (isFirst && messageHasTimestamp) {
-        _chatMessages.insert(
-          0,
-          DateHeader(
-            text: getVerboseDateTimeRepresentation(
-              DateTime.fromMillisecondsSinceEpoch(
-                message.timestamp! * 1000,
-              ),
-              widget.dateLocale,
-              widget.l10n.today,
-              widget.l10n.yesterday,
-            ),
-          ),
-        );
-      }
-
-      _chatMessages.insert(0, {
-        'message': message,
-        'roundBorder': nextMessageInGroup,
+      compute(calculateChatMessages, {
+        'dateLocale': widget.dateLocale,
+        'messages': widget.messages,
+      }).then((value) {
+        setState(() {
+          _chatMessages = value[0] as List<Object>;
+          _gallery = value[1] as List<PreviewImage>;
+        });
       });
-
-      if (!nextMessageInGroup) {
-        _chatMessages.insert(
-          0,
-          MessageSpacer(
-            height: 12,
-            id: message.id,
-          ),
-        );
-      }
-
-      if (nextMessageDifferentDay || nextMessageDateThreshold) {
-        _chatMessages.insert(
-          0,
-          DateHeader(
-            text: getVerboseDateTimeRepresentation(
-              DateTime.fromMillisecondsSinceEpoch(
-                nextMessage!.timestamp! * 1000,
-              ),
-              widget.dateLocale,
-              widget.l10n.today,
-              widget.l10n.yesterday,
-            ),
-          ),
-        );
-      }
-
-      if (message is types.ImageMessage) {
-        if (kIsWeb) {
-          if (message.uri.startsWith('http')) {
-            _gallery.add(PreviewImage(id: message.id, uri: message.uri));
-          }
-        } else {
-          _gallery.add(PreviewImage(id: message.id, uri: message.uri));
-        }
-      }
     }
   }
 
