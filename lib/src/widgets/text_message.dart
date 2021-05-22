@@ -13,6 +13,7 @@ class TextMessage extends StatelessWidget {
     required this.message,
     this.onPreviewDataFetched,
     required this.usePreviewData,
+    this.showName = false,
   }) : super(key: key);
 
   /// [types.TextMessage]
@@ -24,6 +25,9 @@ class TextMessage extends StatelessWidget {
 
   /// Enables link (URL) preview
   final bool usePreviewData;
+
+  /// Whether message author should be shown
+  final bool showName;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
     if (message.previewData == null) {
@@ -42,6 +46,10 @@ class TextMessage extends StatelessWidget {
 
     return LinkPreview(
       enableAnimation: true,
+      header: showName ? 'Ignacy Maruda' : null,
+      headerStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
+            color: color,
+          ),
       linkStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
             color: color,
           ),
@@ -67,14 +75,33 @@ class TextMessage extends StatelessWidget {
   }
 
   Widget _textWidget(types.User user, BuildContext context) {
-    return Text(
-      message.text,
-      style: InheritedChatTheme.of(context).theme.body1.copyWith(
-            color: user.id == message.authorId
-                ? InheritedChatTheme.of(context).theme.primaryTextColor
-                : InheritedChatTheme.of(context).theme.secondaryTextColor,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (showName)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              'Ignacy maruda',
+              style: InheritedChatTheme.of(context).theme.body1.copyWith(
+                    color: user.id == message.authorId
+                        ? InheritedChatTheme.of(context).theme.primaryTextColor
+                        : InheritedChatTheme.of(context)
+                            .theme
+                            .secondaryTextColor,
+                  ),
+            ),
           ),
-      textWidthBasis: TextWidthBasis.longestLine,
+        Text(
+          message.text,
+          style: InheritedChatTheme.of(context).theme.body1.copyWith(
+                color: user.id == message.authorId
+                    ? InheritedChatTheme.of(context).theme.primaryTextColor
+                    : InheritedChatTheme.of(context).theme.secondaryTextColor,
+              ),
+          textWidthBasis: TextWidthBasis.longestLine,
+        ),
+      ],
     );
   }
 

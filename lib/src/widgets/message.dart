@@ -23,6 +23,8 @@ class Message extends StatelessWidget {
     required this.roundBorder,
     required this.shouldRenderTime,
     required this.usePreviewData,
+    required this.showAvatar,
+    required this.showName,
   }) : super(key: key);
 
   /// Locale will be passed to the `Intl` package. Make sure you initialized
@@ -57,6 +59,32 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
+  /// Whether user avatar should be rendered for incoming messages. It is rendered
+  /// only for last message in group by default.
+  final bool showAvatar;
+
+  /// Whether user name should be rendered for incoming messages. It is rendered
+  /// only for first text message in group by default.
+  final bool showName;
+
+  Widget _buildAvatar() {
+    return showAvatar
+        ? Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: const CircleAvatar(
+              backgroundColor: Color(0xff66e0da),
+              radius: 16,
+              child: Text(
+                'A',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          )
+        : Container(
+            margin: const EdgeInsets.only(right: 40),
+          );
+  }
+
   Widget _buildMessage() {
     switch (message.type) {
       case types.MessageType.file:
@@ -76,6 +104,7 @@ class Message extends StatelessWidget {
           message: textMessage,
           onPreviewDataFetched: onPreviewDataFetched,
           usePreviewData: usePreviewData,
+          showName: showName,
         );
       default:
         return Container();
@@ -175,39 +204,46 @@ class Message extends StatelessWidget {
         left: 24,
         right: 24,
       ),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: messageWidth.toDouble(),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            GestureDetector(
-              onLongPress: () => onMessageLongPress?.call(message),
-              onTap: () => onMessageTap?.call(message),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: _borderRadius,
-                  color: !_currentUserIsAuthor ||
-                          message.type == types.MessageType.image
-                      ? InheritedChatTheme.of(context).theme.secondaryColor
-                      : InheritedChatTheme.of(context).theme.primaryColor,
-                ),
-                child: ClipRRect(
-                  borderRadius: _borderRadius,
-                  child: _buildMessage(),
-                ),
-              ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!_currentUserIsAuthor) _buildAvatar(),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: messageWidth.toDouble(),
             ),
-            if (shouldRenderTime)
-              Container(
-                margin: const EdgeInsets.only(
-                  top: 8,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onLongPress: () => onMessageLongPress?.call(message),
+                  onTap: () => onMessageTap?.call(message),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: _borderRadius,
+                      color: !_currentUserIsAuthor ||
+                              message.type == types.MessageType.image
+                          ? InheritedChatTheme.of(context).theme.secondaryColor
+                          : InheritedChatTheme.of(context).theme.primaryColor,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: _borderRadius,
+                      child: _buildMessage(),
+                    ),
+                  ),
                 ),
-                child: _buildTime(_currentUserIsAuthor, context),
-              )
-          ],
-        ),
+                if (shouldRenderTime)
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 8,
+                    ),
+                    child: _buildTime(_currentUserIsAuthor, context),
+                  )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
