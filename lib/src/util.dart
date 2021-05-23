@@ -38,12 +38,12 @@ String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
 /// Parses provided messages to chat messages (with headers and spacers) and
 /// returns them with a gallery
 List<Object> calculateChatMessages(
-  List<types.Message> messages, {
+  List<types.Message> messages,
+  types.User user, {
   String? dateLocale,
 }) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
-  final user = args['user']! as types.User;
 
   var shouldShowName = false;
 
@@ -54,7 +54,6 @@ List<Object> calculateChatMessages(
     final messageHasTimestamp = message.timestamp != null;
     final nextMessage = isLast ? null : messages[i - 1];
     final nextMessageHasTimestamp = nextMessage?.timestamp != null;
-    final nextMessageSameAuthor = message.authorId == nextMessage?.authorId;
     final nextMessageSameAuthor = message.author.id == nextMessage?.author.id;
 
     var nextMessageDateThreshold = false;

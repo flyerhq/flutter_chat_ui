@@ -117,6 +117,7 @@ class _ChatState extends State<Chat> {
     if (widget.messages.isNotEmpty) {
       final result = calculateChatMessages(
         widget.messages,
+        widget.user,
         dateLocale: widget.dateLocale,
       );
 
