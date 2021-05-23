@@ -15,6 +15,7 @@ String formatBytes(int size, [int fractionDigits = 2]) {
       ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][multiple];
 }
 
+/// Returns user name as joined firstName and lastName
 String getUserName(types.User user) {
   return '${user.firstName ?? ''} ${user.lastName ?? ''}'.trim();
 }
@@ -42,6 +43,9 @@ List<Object> calculateChatMessages(
 }) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
+  final user = args['user']! as types.User;
+
+  var shouldShowName = false;
 
   for (var i = messages.length - 1; i >= 0; i--) {
     final isFirst = i == messages.length - 1;
