@@ -87,7 +87,7 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return Container(
-        color: _user.id == widget.message.authorId
+        color: _user.id == widget.message.author.id
             ? InheritedChatTheme.of(context).theme.primaryColor
             : InheritedChatTheme.of(context).theme.secondaryColor,
         child: Row(
@@ -115,7 +115,7 @@ class _ImageMessageState extends State<ImageMessage> {
                       widget.message.imageName,
                       style:
                           InheritedChatTheme.of(context).theme.body1.copyWith(
-                                color: _user.id == widget.message.authorId
+                                color: _user.id == widget.message.author.id
                                     ? InheritedChatTheme.of(context)
                                         .theme
                                         .primaryTextColor
@@ -135,7 +135,7 @@ class _ImageMessageState extends State<ImageMessage> {
                             .theme
                             .caption
                             .copyWith(
-                              color: _user.id == widget.message.authorId
+                              color: _user.id == widget.message.author.id
                                   ? InheritedChatTheme.of(context)
                                       .theme
                                       .primaryTextColor

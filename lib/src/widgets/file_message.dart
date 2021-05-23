@@ -23,7 +23,7 @@ class FileMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
-    final _color = _user.id == message.authorId
+    final _color = _user.id == message.author.id
         ? InheritedChatTheme.of(context).theme.primaryTextColor
         : InheritedChatTheme.of(context).theme.primaryColor;
 
@@ -36,7 +36,7 @@ class FileMessage extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: _user.id == message.authorId
+                color: _user.id == message.author.id
                     ? InheritedChatTheme.of(context)
                         .theme
                         .primaryTextColor
@@ -72,7 +72,7 @@ class FileMessage extends StatelessWidget {
                       message.fileName,
                       style:
                           InheritedChatTheme.of(context).theme.body1.copyWith(
-                                color: _user.id == message.authorId
+                                color: _user.id == message.author.id
                                     ? InheritedChatTheme.of(context)
                                         .theme
                                         .primaryTextColor
@@ -92,7 +92,7 @@ class FileMessage extends StatelessWidget {
                             .theme
                             .caption
                             .copyWith(
-                              color: _user.id == message.authorId
+                              color: _user.id == message.author.id
                                   ? InheritedChatTheme.of(context)
                                       .theme
                                       .primaryTextColor

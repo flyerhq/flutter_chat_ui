@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/util.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, REGEX_LINK;
 import 'inherited_chat_theme.dart';
@@ -23,11 +24,11 @@ class TextMessage extends StatelessWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// Enables link (URL) preview
-  final bool usePreviewData;
-
   /// Whether message author should be shown
   final bool showName;
+
+  /// Enables link (URL) preview
+  final bool usePreviewData;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
     if (message.previewData == null) {
@@ -40,13 +41,15 @@ class TextMessage extends StatelessWidget {
     double width,
     BuildContext context,
   ) {
-    final color = user.id == message.authorId
+    final color = user.id == message.author.id
         ? InheritedChatTheme.of(context).theme.primaryTextColor
         : InheritedChatTheme.of(context).theme.secondaryTextColor;
 
+    final userName = getUserName(message.author);
+
     return LinkPreview(
       enableAnimation: true,
-      header: showName ? 'Ignacy Maruda' : null,
+      header: showName && userName != '' ? userName : null,
       headerStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
             color: color,
           ),
@@ -75,16 +78,18 @@ class TextMessage extends StatelessWidget {
   }
 
   Widget _textWidget(types.User user, BuildContext context) {
+    final userName = getUserName(message.author);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showName)
+        if (showName && userName != '')
           Padding(
             padding: const EdgeInsets.only(bottom: 6.0),
             child: Text(
-              'Ignacy maruda',
+              userName,
               style: InheritedChatTheme.of(context).theme.body1.copyWith(
-                    color: user.id == message.authorId
+                    color: user.id == message.author.id
                         ? InheritedChatTheme.of(context).theme.primaryTextColor
                         : InheritedChatTheme.of(context)
                             .theme
@@ -95,7 +100,7 @@ class TextMessage extends StatelessWidget {
         Text(
           message.text,
           style: InheritedChatTheme.of(context).theme.body1.copyWith(
-                color: user.id == message.authorId
+                color: user.id == message.author.id
                     ? InheritedChatTheme.of(context).theme.primaryTextColor
                     : InheritedChatTheme.of(context).theme.secondaryTextColor,
               ),

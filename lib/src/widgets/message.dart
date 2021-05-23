@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/src/util.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'file_message.dart';
@@ -56,9 +57,6 @@ class Message extends StatelessWidget {
   /// delivery time.
   final bool shouldRenderTime;
 
-  /// See [TextMessage.usePreviewData]
-  final bool usePreviewData;
-
   /// Whether user avatar should be rendered for incoming messages. It is rendered
   /// only for last message in group by default.
   final bool showAvatar;
@@ -67,17 +65,29 @@ class Message extends StatelessWidget {
   /// only for first text message in group by default.
   final bool showName;
 
+  /// See [TextMessage.usePreviewData]
+  final bool usePreviewData;
+
   Widget _buildAvatar() {
+    final hasAvatar = message.author.avatarUrl != null;
+    final nameCharacters = getUserName(message.author).characters;
+
     return showAvatar
         ? Container(
             margin: const EdgeInsets.only(right: 8),
-            child: const CircleAvatar(
-              backgroundColor: Color(0xff66e0da),
+            child: CircleAvatar(
+              backgroundImage:
+                  hasAvatar ? NetworkImage(message.author.avatarUrl!) : null,
+              backgroundColor: const Color(0xff66e0da),
               radius: 16,
-              child: Text(
-                'A',
-                style: TextStyle(color: Colors.white),
-              ),
+              child: !hasAvatar
+                  ? Text(
+                      nameCharacters.isEmpty
+                          ? ''
+                          : nameCharacters.first.toUpperCase(),
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  : null,
             ),
           )
         : Container(
@@ -103,8 +113,8 @@ class Message extends StatelessWidget {
         return TextMessage(
           message: textMessage,
           onPreviewDataFetched: onPreviewDataFetched,
-          usePreviewData: usePreviewData,
           showName: showName,
+          usePreviewData: usePreviewData,
         );
       default:
         return Container();
@@ -182,10 +192,10 @@ class Message extends StatelessWidget {
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(_user.id == message.authorId || roundBorder
+      bottomLeft: Radius.circular(_user.id == message.author.id || roundBorder
           ? _messageBorderRadius
           : 0),
-      bottomRight: Radius.circular(_user.id == message.authorId
+      bottomRight: Radius.circular(_user.id == message.author.id
           ? roundBorder
               ? _messageBorderRadius
               : 0
@@ -193,10 +203,10 @@ class Message extends StatelessWidget {
       topLeft: Radius.circular(_messageBorderRadius),
       topRight: Radius.circular(_messageBorderRadius),
     );
-    final _currentUserIsAuthor = _user.id == message.authorId;
+    final _currentUserIsAuthor = _user.id == message.author.id;
 
     return Container(
-      alignment: _user.id == message.authorId
+      alignment: _user.id == message.author.id
           ? Alignment.centerRight
           : Alignment.centerLeft,
       margin: const EdgeInsets.only(

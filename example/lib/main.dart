@@ -106,7 +106,7 @@ class _ChatPageState extends State<ChatPage> {
 
     if (result != null) {
       final message = types.FileMessage(
-        authorId: _user.id,
+        author: _user,
         fileName: result.files.single.name ?? '',
         id: const Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path ?? ''),
@@ -134,7 +134,7 @@ class _ChatPageState extends State<ChatPage> {
       final imageName = result.path.split('/').last;
 
       final message = types.ImageMessage(
-        authorId: _user.id,
+        author: _user,
         height: image.height.toDouble(),
         id: const Uuid().v4(),
         imageName: imageName,
@@ -179,7 +179,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
-      authorId: _user.id,
+      author: _user,
       id: const Uuid().v4(),
       text: message.text,
       timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
