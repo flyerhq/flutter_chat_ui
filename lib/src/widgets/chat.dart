@@ -24,9 +24,12 @@ class Chat extends StatefulWidget {
     this.dateLocale,
     this.disableImageGallery,
     this.isAttachmentUploading,
+    this.isLastPage,
     this.l10n = const ChatL10nEn(),
     required this.messages,
     this.onAttachmentPressed,
+    this.onEndReached,
+    this.onEndReachedThreshold,
     this.onMessageLongPress,
     this.onMessageTap,
     this.onPreviewDataFetched,
@@ -45,6 +48,9 @@ class Chat extends StatefulWidget {
   /// See [Input.isAttachmentUploading]
   final bool? isAttachmentUploading;
 
+  /// See [ChatList.isLastPage]
+  final bool? isLastPage;
+
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
   /// existing one, like the default [ChatL10nEn]. You can customize only
   /// certain variables, see more here [ChatL10nEn].
@@ -55,6 +61,12 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;
+
+  /// See [ChatList.onEndReached]
+  final Future<void> Function()? onEndReached;
+
+  /// See [ChatList.onEndReachedThreshold]
+  final double? onEndReachedThreshold;
 
   /// See [Message.onMessageLongPress]
   final void Function(types.Message)? onMessageLongPress;
@@ -275,9 +287,13 @@ class _ChatState extends State<Chat> {
                                 onTap: () => FocusManager.instance.primaryFocus
                                     ?.unfocus(),
                                 child: ChatList(
+                                  isLastPage: widget.isLastPage,
                                   itemBuilder: (item, index) =>
                                       _buildMessage(item),
                                   items: _chatMessages,
+                                  onEndReached: widget.onEndReached,
+                                  onEndReachedThreshold:
+                                      widget.onEndReachedThreshold,
                                 ),
                               ),
                       ),
