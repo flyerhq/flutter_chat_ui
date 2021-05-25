@@ -1,25 +1,60 @@
 import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'inherited_chat_theme.dart';
 
+/// Animated list which handles automatic animations and pagination
 class ChatList extends StatefulWidget {
+  /// Creates a chat list widget
   const ChatList({
     Key? key,
+    this.isLastPage,
     required this.itemBuilder,
     required this.items,
+    this.onEndReached,
+    this.onEndReachedThreshold,
   }) : super(key: key);
 
+  /// Used for pagination (infinite scroll) together with [onEndReached].
+  /// When true, indicates that there are no more pages to load and
+  /// pagination will not be triggered.
+  final bool? isLastPage;
+
+  /// Items to build
   final List<Object> items;
+
+  /// Item builder
   final Widget Function(Object, int? index) itemBuilder;
+
+  /// Used for pagination (infinite scroll). Called when user scrolls
+  /// to the very end of the list (minus [onEndReachedThreshold]).
+  final Future<void> Function()? onEndReached;
+
+  /// Used for pagination (infinite scroll) together with [onEndReached].
+  /// Can be anything from 0 to 1, where 0 is immediate load of the next page
+  /// as soon as scroll starts, and 1 is load of the next page only if scrolled
+  /// to the very end of the list. Default value is 0.75, e.g. start loading
+  /// next page when scrolled through about 3/4 of the available content.
+  final double? onEndReachedThreshold;
 
   @override
   _ChatListState createState() => _ChatListState();
 }
 
-class _ChatListState extends State<ChatList> {
+/// [ChatList] widget state
+class _ChatListState extends State<ChatList>
+    with SingleTickerProviderStateMixin {
+  bool _isNextPageLoading = false;
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
-  late List<Object> oldData = List.from(widget.items);
+  late List<Object> _oldData = List.from(widget.items);
+
+  late final AnimationController _controller = AnimationController(vsync: this);
+
+  late final Animation<double> _animation = CurvedAnimation(
+    curve: Curves.easeOutQuad,
+    parent: _controller,
+  );
 
   @override
   void initState() {
@@ -33,6 +68,13 @@ class _ChatListState extends State<ChatList> {
     super.didUpdateWidget(oldWidget);
 
     _calculateDiffs(oldWidget.items);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller.dispose();
   }
 
   void _calculateDiffs(List<Object> oldList) async {
@@ -67,7 +109,7 @@ class _ChatListState extends State<ChatList> {
       );
     }
 
-    oldData = List.from(widget.items);
+    _oldData = List.from(widget.items);
   }
 
   Widget _buildRemovedMessage(Object item, Animation<double> animation) {
@@ -83,7 +125,7 @@ class _ChatListState extends State<ChatList> {
 
   Widget _buildNewMessage(int index, Animation<double> animation) {
     try {
-      final item = oldData[index];
+      final item = _oldData[index];
 
       return SizeTransition(
         axisAlignment: -1,
@@ -99,8 +141,31 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
+        if (widget.onEndReached == null || widget.isLastPage == true) {
+          return false;
+        }
+
         if (notification.metrics.pixels >=
-            (notification.metrics.maxScrollExtent * 0.8)) {}
+            (notification.metrics.maxScrollExtent *
+                (widget.onEndReachedThreshold ?? 0.75))) {
+          if (widget.items.isEmpty || _isNextPageLoading) return false;
+
+          _controller.duration = const Duration();
+          _controller.forward();
+
+          setState(() {
+            _isNextPageLoading = true;
+          });
+
+          widget.onEndReached!().whenComplete(() {
+            _controller.duration = const Duration(milliseconds: 300);
+            _controller.reverse();
+
+            setState(() {
+              _isNextPageLoading = false;
+            });
+          });
+        }
 
         return false;
       },
@@ -108,15 +173,41 @@ class _ChatListState extends State<ChatList> {
         reverse: true,
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.only(
-              bottom: 4,
-              top: 16,
-            ),
+            padding: const EdgeInsets.only(bottom: 4),
             sliver: SliverAnimatedList(
               initialItemCount: widget.items.length,
               key: _listKey,
               itemBuilder: (_, index, animation) =>
                   _buildNewMessage(index, animation),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(
+              top: 16,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: SizeTransition(
+                axisAlignment: 1,
+                sizeFactor: _animation,
+                child: Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 32,
+                    width: 32,
+                    child: SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.transparent,
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          InheritedChatTheme.of(context).theme.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],
