@@ -84,9 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result != null) {
       final message = types.FileMessage(
         authorId: _user.id,
-        fileName: result.files.single.name ?? '',
+        fileName: result.files.single.name,
         id: randomString(),
-        size: result.files.single.size ?? 0,
+        size: result.files.single.size,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.files.single.path ?? '',
       );
@@ -274,9 +274,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result != null) {
       final message = types.FileMessage(
         authorId: _user.id,
-        fileName: result.files.single.name ?? '',
+        fileName: result.files.single.name,
         id: randomString(),
-        size: result.files.single.size ?? 0,
+        size: result.files.single.size,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.files.single.path ?? '',
       );

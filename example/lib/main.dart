@@ -99,10 +99,10 @@ class _ChatPageState extends State<ChatPage> {
     if (result != null) {
       final message = types.FileMessage(
         authorId: _user.id,
-        fileName: result.files.single.name ?? '',
+        fileName: result.files.single.name,
         id: const Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path ?? ''),
-        size: result.files.single.size ?? 0,
+        size: result.files.single.size,
         timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.files.single.path ?? '',
       );
