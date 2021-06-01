@@ -86,7 +86,7 @@ class TextMessage extends StatelessWidget {
     final urlRegexp = RegExp(REGEX_LINK);
     final matches = urlRegexp.allMatches(message.text.toLowerCase());
 
-    if (matches.isNotEmpty && usePreviewData) {
+    if (matches.isNotEmpty && usePreviewData && onPreviewDataFetched != null) {
       return _linkPreview(_user, _width, context);
     }
 
