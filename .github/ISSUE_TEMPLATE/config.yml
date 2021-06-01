@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Link preview
+    url: https://github.com/flyerhq/flutter_link_previewer/issues/new
+    about: Use this to report link preview issues.
+  - name: Firebase chat core
+    url: https://github.com/flyerhq/flutter_firebase_chat_core/issues/new/choose
+    about: Use this to report Firebase chat core issues.
