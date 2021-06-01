@@ -1,3 +1,7 @@
+## 1.0.7
+
+- Disable link preview if `onPreviewDataFetched` is not specified
+
 ## 1.0.6
 
 - Update dependencies
