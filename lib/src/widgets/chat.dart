@@ -34,6 +34,8 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
+    this.showUserAvatars = false,
+    this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
     this.usePreviewData = true,
     required this.user,
@@ -81,6 +83,13 @@ class Chat extends StatefulWidget {
   /// See [Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
 
+  /// Show user avatars for received messages. Useful for a group chat.
+  final bool showUserAvatars;
+
+  /// Show user names for received messages. Useful for a group chat. Will be
+  /// shown only on text messages.
+  final bool showUserNames;
+
   /// Chat theme. Extend [ChatTheme] class to create your own theme or use
   /// existing one, like the [DefaultChatTheme]. You can customize only certain
   /// variables, see more here [DefaultChatTheme].
@@ -117,7 +126,9 @@ class _ChatState extends State<Chat> {
     if (widget.messages.isNotEmpty) {
       final result = calculateChatMessages(
         widget.messages,
+        widget.user,
         dateLocale: widget.dateLocale,
+        showUserNames: widget.showUserNames,
       );
 
       _chatMessages = result[0] as List<Object>;
@@ -243,8 +254,11 @@ class _ChatState extends State<Chat> {
           widget.onMessageTap?.call(tappedMessage);
         },
         onPreviewDataFetched: _onPreviewDataFetched,
-        roundBorder: map['roundBorder'] == true,
+        roundBorder: map['nextMessageInGroup'] == true,
         shouldRenderTime: false,
+        showAvatar:
+            widget.showUserAvatars && map['nextMessageInGroup'] == false,
+        showName: map['showName'] == true,
         usePreviewData: widget.usePreviewData,
       );
     }

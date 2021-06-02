@@ -15,6 +15,10 @@ String formatBytes(int size, [int fractionDigits = 2]) {
       ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][multiple];
 }
 
+/// Returns user name as joined firstName and lastName
+String getUserName(types.User user) =>
+    '${user.firstName ?? ''} ${user.lastName ?? ''}'.trim();
+
 /// Returns formatted date used as a divider between different days in the
 /// chat history
 String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
@@ -33,11 +37,15 @@ String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
 /// Parses provided messages to chat messages (with headers and spacers) and
 /// returns them with a gallery
 List<Object> calculateChatMessages(
-  List<types.Message> messages, {
+  List<types.Message> messages,
+  types.User user, {
   String? dateLocale,
+  required bool showUserNames,
 }) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
+
+  var shouldShowName = false;
 
   for (var i = messages.length - 1; i >= 0; i--) {
     final isFirst = i == messages.length - 1;
@@ -46,11 +54,36 @@ List<Object> calculateChatMessages(
     final messageHasTimestamp = message.timestamp != null;
     final nextMessage = isLast ? null : messages[i - 1];
     final nextMessageHasTimestamp = nextMessage?.timestamp != null;
-    final nextMessageSameAuthor = message.authorId == nextMessage?.authorId;
+    final nextMessageSameAuthor = message.author.id == nextMessage?.author.id;
 
     var nextMessageDateThreshold = false;
     var nextMessageDifferentDay = false;
     var nextMessageInGroup = false;
+    var showName = false;
+
+    if (showUserNames) {
+      final previousMessage = isFirst ? null : messages[i + 1];
+
+      final isFirstInGroup = (message.author.id != user.id) &&
+          ((message.author.id != previousMessage?.author.id) ||
+              (message.timestamp != null &&
+                  previousMessage?.timestamp != null &&
+                  message.timestamp! - previousMessage!.timestamp! > 60));
+
+      if (isFirstInGroup) {
+        shouldShowName = false;
+        if (message.type == types.MessageType.text) {
+          showName = true;
+        } else {
+          shouldShowName = true;
+        }
+      }
+
+      if (message.type == types.MessageType.text && shouldShowName) {
+        showName = true;
+        shouldShowName = false;
+      }
+    }
 
     if (messageHasTimestamp && nextMessageHasTimestamp) {
       nextMessageDateThreshold =
@@ -83,7 +116,11 @@ List<Object> calculateChatMessages(
 
     chatMessages.insert(0, {
       'message': message,
-      'roundBorder': nextMessageInGroup,
+      'nextMessageInGroup': nextMessageInGroup,
+      'showName': message.author.id != user.id &&
+          showUserNames &&
+          showName &&
+          getUserName(message.author).isNotEmpty,
     });
 
     if (!nextMessageInGroup) {

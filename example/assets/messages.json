@@ -1,6 +1,10 @@
 [
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "e7a673e9-86eb-4572-936f-2882b0183cdc",
     "status": "read",
     "text": "https://dev.to/demchenkoalex/making-a-right-keyboard-accessory-view-in-react-native-4n3p",
@@ -8,7 +12,11 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "e7a673e9-86eb-4572-936f-2882b0183cda",
     "status": "read",
     "text": "Dolore labore ipsum aspernatur. Omnis minima reprehenderit perspiciatis sunt rerum facilis consequatur omnis. Rerum totam est eos dolores quia qui aut. Rerum aperiam alias placeat odit non enim corporis unde molestiae. Aspernatur unde praesentium eum ut laudantium ea enim.",
@@ -16,7 +24,11 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "dc1a5e87-bd4e-46b0-9cb4-7d9abeda5ef8",
     "status": "read",
     "text": "Ut modi corporis consequuntur dolorem omnis asperiores unde voluptatem et.",
@@ -24,7 +36,11 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "2a202811-7d48-4ae9-8323-d764a56031dc",
     "status": "read",
     "text": "Voluptatem voluptatum eos aut voluptatem occaecati. Quia ducimus vero molestiae molestiae illum illo nisi autem. Labore consectetur expedita illum consequatur inventore consequatur quasi voluptatem. Perspiciatis ut reprehenderit officiis animi voluptas.",
@@ -32,7 +48,11 @@
     "type": "text"
   },
   {
-    "authorId": "06c33e8b-e835-4736-80f4-63f44b66666c",
+    "author": {
+      "firstName": "Daria",
+      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
+      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
+    },
     "id": "0371b8f4-314a-448e-85ba-9c7dc5ed7a1e",
     "status": "read",
     "text": "Qui ut nihil facilis quos.",
@@ -40,7 +60,11 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "db334c22-1fc4-4951-86b2-1eb7f7262743",
     "status": "read",
     "text": "Voluptatem ducimus quo vel sunt. Vitae illum recusandae fuga eum adipisci cumque nam dolor. Aut quia et ducimus a et voluptatibus quo saepe. Vel qui ipsum assumenda quibusdam necessitatibus. Et omnis consectetur ad quod fugiat placeat omnis eligendi aut. Deleniti aspernatur corrupti beatae est et cumque architecto cumque et.",
@@ -48,7 +72,11 @@
     "type": "text"
   },
   {
-    "authorId": "06c33e8b-e835-4736-80f4-63f44b66666c",
+    "author": {
+      "firstName": "Daria",
+      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
+      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
+    },
     "id": "f61a1924-e043-409f-9051-78ebfc68507a",
     "status": "read",
     "text": "Est maxime accusantium commodi voluptatem sed. Ut nemo vero ut voluptas qui. Eaque nulla quia pariatur sed qui iure. Odit expedita voluptas quia consequuntur consequatur qui laudantium. Iusto ut voluptatem. Omnis et eos asperiores modi totam quisquam nemo.",
@@ -56,7 +84,11 @@
     "type": "text"
   },
   {
-    "authorId": "06c33e8b-e835-4736-80f4-63f44b66666c",
+    "author": {
+      "firstName": "Daria",
+      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
+      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
+    },
     "id": "d46ffcb1-9340-4c60-8b8c-c9d17539b0c7",
     "status": "read",
     "text": "Fugit sed tenetur eaque perferendis est impedit.",
@@ -64,7 +96,11 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "b23e5907-6d8b-4134-8cf3-c6dd34fc42d2",
     "status": "read",
     "text": "Hic iure corrupti aut delectus tempore.",
@@ -72,7 +108,11 @@
     "type": "text"
   },
   {
-    "authorId": "06c33e8b-e835-4736-80f4-63f44b66666c",
+    "author": {
+      "firstName": "Daria",
+      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
+      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
+    },
     "id": "83093c75-2efb-47bc-84d6-37dbc53bb5de",
     "status": "read",
     "text": "Doloremque dolor aliquam totam dolor suscipit qui.",
@@ -80,7 +120,11 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "8fa70836-3309-4d09-a777-4d9603e1f123",
     "status": "read",
     "text": "Architecto quaerat nulla ipsa facilis cum quasi fuga voluptate.",
@@ -88,10 +132,14 @@
     "type": "text"
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "height": 600,
     "id": "8fa70836-3309-4d09-a777-4d9603e1f124",
-    "imageName": "image",
+    "name": "image",
     "size": 59645,
     "status": "read",
     "timestamp": 1598438785,
@@ -100,10 +148,14 @@
     "width": 1128
   },
   {
-    "authorId": "b4878b96-efbc-479a-8291-474ef323dec7",
-    "fileName": "image.jpg",
+    "author": {
+      "firstName": "Alex",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
     "id": "8fa70836-3309-4d09-a777-4d9603e1f125",
     "mimeType": "image/jpg",
+    "name": "image.jpg",
     "size": 59645,
     "status": "read",
     "timestamp": 1598438784,
