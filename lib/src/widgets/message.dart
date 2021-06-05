@@ -25,6 +25,7 @@ class Message extends StatelessWidget {
     required this.shouldRenderTime,
     required this.showAvatar,
     required this.showName,
+    required this.showUserAvatars,
     required this.usePreviewData,
   }) : super(key: key);
 
@@ -62,6 +63,9 @@ class Message extends StatelessWidget {
 
   /// See [TextMessage.showName]
   final bool showName;
+
+  /// Defines whethter avatars should be displayed
+  final bool showUserAvatars;
 
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
@@ -214,7 +218,7 @@ class Message extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor) _buildAvatar(),
+          if (!_currentUserIsAuthor && showUserAvatars) _buildAvatar(),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),

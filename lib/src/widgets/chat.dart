@@ -214,8 +214,9 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _buildMessage(Object object) {
-    final _messageWidth =
-        min(MediaQuery.of(context).size.width * 0.77, 440).floor();
+    final _messageWidth = widget.showUserAvatars
+        ? min(MediaQuery.of(context).size.width * 0.72, 400).floor()
+        : min(MediaQuery.of(context).size.width * 0.77, 440).floor();
 
     if (object is DateHeader) {
       return Container(
@@ -258,6 +259,7 @@ class _ChatState extends State<Chat> {
         shouldRenderTime: false,
         showAvatar:
             widget.showUserAvatars && map['nextMessageInGroup'] == false,
+        showUserAvatars: widget.showUserAvatars,
         showName: map['showName'] == true,
         usePreviewData: widget.usePreviewData,
       );
