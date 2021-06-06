@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       authorId: _user.id,
       id: randomString(),
       text: message.text,
-      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      timestamp: DateTime.now().millisecondsSinceEpoch,
     );
 
     _addMessage(textMessage);

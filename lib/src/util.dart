@@ -68,7 +68,7 @@ List<Object> calculateChatMessages(
           ((message.author.id != previousMessage?.author.id) ||
               (message.timestamp != null &&
                   previousMessage?.timestamp != null &&
-                  message.timestamp! - previousMessage!.timestamp! > 60));
+                  message.timestamp! - previousMessage!.timestamp! > 60000));
 
       if (isFirstInGroup) {
         shouldShowName = false;
@@ -87,17 +87,14 @@ List<Object> calculateChatMessages(
 
     if (messageHasTimestamp && nextMessageHasTimestamp) {
       nextMessageDateThreshold =
-          nextMessage!.timestamp! - message.timestamp! >= 900;
+          nextMessage!.timestamp! - message.timestamp! >= 900000;
 
-      nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(
-            message.timestamp! * 1000,
-          ).day !=
-          DateTime.fromMillisecondsSinceEpoch(
-            nextMessage.timestamp! * 1000,
-          ).day;
+      nextMessageDifferentDay =
+          DateTime.fromMillisecondsSinceEpoch(message.timestamp!).day !=
+              DateTime.fromMillisecondsSinceEpoch(nextMessage.timestamp!).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
-          nextMessage.timestamp! - message.timestamp! <= 60;
+          nextMessage.timestamp! - message.timestamp! <= 60000;
     }
 
     if (isFirst && messageHasTimestamp) {
@@ -105,9 +102,7 @@ List<Object> calculateChatMessages(
         0,
         DateHeader(
           text: getVerboseDateTimeRepresentation(
-            DateTime.fromMillisecondsSinceEpoch(
-              message.timestamp! * 1000,
-            ),
+            DateTime.fromMillisecondsSinceEpoch(message.timestamp!),
             dateLocale,
           ),
         ),
@@ -138,9 +133,7 @@ List<Object> calculateChatMessages(
         0,
         DateHeader(
           text: getVerboseDateTimeRepresentation(
-            DateTime.fromMillisecondsSinceEpoch(
-              nextMessage!.timestamp! * 1000,
-            ),
+            DateTime.fromMillisecondsSinceEpoch(nextMessage!.timestamp!),
             dateLocale,
           ),
         ),

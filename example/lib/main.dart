@@ -53,7 +53,7 @@ class _ChatPageState extends State<ChatPage> {
     //   authorId: '06c33e8b-e835-4736-80f4-63f44b666661',
     //   id: const Uuid().v4(),
     //   text: 'LOL',
-    //   timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+    //   timestamp: DateTime.now().millisecondsSinceEpoch,
     // );
 
     // _addMessage(textMessage);
@@ -111,7 +111,7 @@ class _ChatPageState extends State<ChatPage> {
         id: const Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path ?? ''),
         size: result.files.single.size,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.files.single.path ?? '',
       );
 
@@ -139,7 +139,7 @@ class _ChatPageState extends State<ChatPage> {
         id: const Uuid().v4(),
         name: name,
         size: bytes.length,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.path,
         width: image.width.toDouble(),
       );
@@ -182,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
       author: _user,
       id: const Uuid().v4(),
       text: message.text,
-      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      timestamp: DateTime.now().millisecondsSinceEpoch,
     );
 
     _addMessage(textMessage);

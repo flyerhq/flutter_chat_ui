@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
         id: randomString(),
         imageName: imageName,
         size: bytes.length,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.path,
         width: image.width.toDouble(),
       );
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         fileName: result.files.single.name,
         id: randomString(),
         size: result.files.single.size,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.files.single.path ?? '',
       );
 
@@ -277,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
         fileName: result.files.single.name,
         id: randomString(),
         size: result.files.single.size,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.files.single.path ?? '',
       );
 
@@ -303,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
         id: randomString(),
         imageName: imageName,
         size: bytes.length,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.path,
         width: image.width.toDouble(),
       );
@@ -337,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
       authorId: _user.id,
       id: randomString(),
       text: message.text,
-      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
+      timestamp: DateTime.now().millisecondsSinceEpoch,
     );
 
     _addMessage(textMessage);
