@@ -15,15 +15,16 @@ abstract class ChatTheme {
     required this.deliveredIcon,
     required this.documentIcon,
     required this.errorColor,
+    required this.errorIcon,
     required this.inputBackgroundColor,
     required this.inputBorderRadius,
     required this.inputTextColor,
     required this.messageBorderRadius,
     required this.primaryColor,
     required this.primaryTextColor,
-    required this.readIcon,
     required this.secondaryColor,
     required this.secondaryTextColor,
+    required this.seenIcon,
     required this.sendButtonIcon,
     required this.subtitle1,
     required this.subtitle2,
@@ -57,6 +58,9 @@ abstract class ChatTheme {
   /// Color to indicate something bad happened (usually - shades of red)
   final Color errorColor;
 
+  /// Icon for message's `error` status
+  final String? errorIcon;
+
   /// Color of the bottom bar where text field is
   final Color inputBackgroundColor;
 
@@ -75,14 +79,14 @@ abstract class ChatTheme {
   /// Color of the text on a [primaryColor]
   final Color primaryTextColor;
 
-  /// Icon for message's `read` status
-  final String? readIcon;
-
   /// Secondary color, used as a background of received messages
   final Color secondaryColor;
 
   /// Color of the text on a [secondaryColor]
   final Color secondaryTextColor;
+
+  /// Icon for message's `seen` status
+  final String? seenIcon;
 
   /// Icon for send button
   final String? sendButtonIcon;
@@ -128,6 +132,7 @@ class DefaultChatTheme extends ChatTheme {
     String? deliveredIcon,
     String? documentIcon,
     Color errorColor = const Color(0xffff6767),
+    String? errorIcon,
     Color inputBackgroundColor = const Color(0xff1d1d21),
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
@@ -136,9 +141,9 @@ class DefaultChatTheme extends ChatTheme {
     double messageBorderRadius = 20.0,
     Color primaryColor = const Color(0xff6f61e8),
     Color primaryTextColor = const Color(0xffffffff),
-    String? readIcon,
     Color secondaryColor = const Color(0xfff7f7f8),
     Color secondaryTextColor = const Color(0xff1d1d21),
+    String? seenIcon,
     String? sendButtonIcon,
     TextStyle subtitle1 = const TextStyle(
       fontFamily: 'Avenir',
@@ -163,15 +168,16 @@ class DefaultChatTheme extends ChatTheme {
           deliveredIcon: deliveredIcon,
           documentIcon: documentIcon,
           errorColor: errorColor,
+          errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
           inputTextColor: inputTextColor,
           messageBorderRadius: messageBorderRadius,
           primaryColor: primaryColor,
           primaryTextColor: primaryTextColor,
-          readIcon: readIcon,
           secondaryColor: secondaryColor,
           secondaryTextColor: secondaryTextColor,
+          seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,
@@ -210,6 +216,7 @@ class DarkChatTheme extends ChatTheme {
     String? deliveredIcon,
     String? documentIcon,
     Color errorColor = const Color(0xffff6767),
+    String? errorIcon,
     Color inputBackgroundColor = const Color(0xff2b2250),
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
@@ -218,9 +225,9 @@ class DarkChatTheme extends ChatTheme {
     double messageBorderRadius = 20.0,
     Color primaryColor = const Color(0xff6f61e8),
     Color primaryTextColor = const Color(0xffffffff),
-    String? readIcon,
     Color secondaryColor = const Color(0xff2b2250),
     Color secondaryTextColor = const Color(0xffffffff),
+    String? seenIcon,
     String? sendButtonIcon,
     TextStyle subtitle1 = const TextStyle(
       fontFamily: 'Avenir',
@@ -245,15 +252,16 @@ class DarkChatTheme extends ChatTheme {
           deliveredIcon: deliveredIcon,
           documentIcon: documentIcon,
           errorColor: errorColor,
+          errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
           inputTextColor: inputTextColor,
           messageBorderRadius: messageBorderRadius,
           primaryColor: primaryColor,
           primaryTextColor: primaryTextColor,
-          readIcon: readIcon,
           secondaryColor: secondaryColor,
           secondaryTextColor: secondaryTextColor,
+          seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
           subtitle1: subtitle1,
           subtitle2: subtitle2,

@@ -51,10 +51,11 @@ List<Object> calculateChatMessages(
     final isFirst = i == messages.length - 1;
     final isLast = i == 0;
     final message = messages[i];
-    final messageHasTimestamp = message.timestamp != null;
+    final messageHasCreatedAt = message.createdAt != null;
     final nextMessage = isLast ? null : messages[i - 1];
-    final nextMessageHasTimestamp = nextMessage?.timestamp != null;
+    final nextMessageHasCreatedAt = nextMessage?.createdAt != null;
     final nextMessageSameAuthor = message.author.id == nextMessage?.author.id;
+    final notMyMessage = message.author.id != user.id;
 
     var nextMessageDateThreshold = false;
     var nextMessageDifferentDay = false;
@@ -64,11 +65,11 @@ List<Object> calculateChatMessages(
     if (showUserNames) {
       final previousMessage = isFirst ? null : messages[i + 1];
 
-      final isFirstInGroup = (message.author.id != user.id) &&
+      final isFirstInGroup = notMyMessage &&
           ((message.author.id != previousMessage?.author.id) ||
-              (message.timestamp != null &&
-                  previousMessage?.timestamp != null &&
-                  message.timestamp! - previousMessage!.timestamp! > 60000));
+              (message.createdAt != null &&
+                  previousMessage?.createdAt != null &&
+                  message.createdAt! - previousMessage!.createdAt! > 60000));
 
       if (isFirstInGroup) {
         shouldShowName = false;
@@ -85,24 +86,24 @@ List<Object> calculateChatMessages(
       }
     }
 
-    if (messageHasTimestamp && nextMessageHasTimestamp) {
+    if (messageHasCreatedAt && nextMessageHasCreatedAt) {
       nextMessageDateThreshold =
-          nextMessage!.timestamp! - message.timestamp! >= 900000;
+          nextMessage!.createdAt! - message.createdAt! >= 900000;
 
       nextMessageDifferentDay =
-          DateTime.fromMillisecondsSinceEpoch(message.timestamp!).day !=
-              DateTime.fromMillisecondsSinceEpoch(nextMessage.timestamp!).day;
+          DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day !=
+              DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
-          nextMessage.timestamp! - message.timestamp! <= 60000;
+          nextMessage.createdAt! - message.createdAt! <= 60000;
     }
 
-    if (isFirst && messageHasTimestamp) {
+    if (isFirst && messageHasCreatedAt) {
       chatMessages.insert(
         0,
         DateHeader(
           text: getVerboseDateTimeRepresentation(
-            DateTime.fromMillisecondsSinceEpoch(message.timestamp!),
+            DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
             dateLocale,
           ),
         ),
@@ -112,10 +113,11 @@ List<Object> calculateChatMessages(
     chatMessages.insert(0, {
       'message': message,
       'nextMessageInGroup': nextMessageInGroup,
-      'showName': message.author.id != user.id &&
+      'showName': notMyMessage &&
           showUserNames &&
           showName &&
           getUserName(message.author).isNotEmpty,
+      'showStatus': true,
     });
 
     if (!nextMessageInGroup) {
@@ -133,7 +135,7 @@ List<Object> calculateChatMessages(
         0,
         DateHeader(
           text: getVerboseDateTimeRepresentation(
-            DateTime.fromMillisecondsSinceEpoch(nextMessage!.timestamp!),
+            DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
             dateLocale,
           ),
         ),

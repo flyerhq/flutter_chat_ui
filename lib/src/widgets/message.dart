@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
 import 'file_message.dart';
@@ -22,9 +21,9 @@ class Message extends StatelessWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.roundBorder,
-    required this.shouldRenderTime,
     required this.showAvatar,
     required this.showName,
+    required this.showStatus,
     required this.showUserAvatars,
     required this.usePreviewData,
   }) : super(key: key);
@@ -53,16 +52,14 @@ class Message extends StatelessWidget {
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
 
-  /// Whether delivery time should be rendered. It is not rendered for
-  /// received messages and when sent messages have small difference in
-  /// delivery time.
-  final bool shouldRenderTime;
-
   /// Show user avatar for the received message. Useful for a group chat.
   final bool showAvatar;
 
   /// See [TextMessage.showName]
   final bool showName;
+
+  /// Show message's status
+  final bool showStatus;
 
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
@@ -123,6 +120,17 @@ class Message extends StatelessWidget {
 
   Widget _buildStatus(BuildContext context) {
     switch (message.status) {
+      case types.Status.error:
+        return InheritedChatTheme.of(context).theme.errorIcon != null
+            ? Image.asset(
+                InheritedChatTheme.of(context).theme.errorIcon!,
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+              )
+            : Image.asset(
+                'assets/icon-error.png',
+                color: InheritedChatTheme.of(context).theme.errorColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.delivered:
         return InheritedChatTheme.of(context).theme.deliveredIcon != null
             ? Image.asset(
@@ -134,54 +142,34 @@ class Message extends StatelessWidget {
                 color: InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
-      case types.Status.read:
-        return InheritedChatTheme.of(context).theme.readIcon != null
+      case types.Status.seen:
+        return InheritedChatTheme.of(context).theme.seenIcon != null
             ? Image.asset(
-                InheritedChatTheme.of(context).theme.readIcon!,
+                InheritedChatTheme.of(context).theme.seenIcon!,
                 color: InheritedChatTheme.of(context).theme.primaryColor,
               )
             : Image.asset(
-                'assets/icon-read.png',
+                'assets/icon-seen.png',
                 color: InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
-        return SizedBox(
-          height: 12,
-          width: 12,
-          child: CircularProgressIndicator(
-            backgroundColor: Colors.transparent,
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              InheritedChatTheme.of(context).theme.primaryColor,
+        return Center(
+          child: SizedBox(
+            height: 10,
+            width: 10,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.transparent,
+              strokeWidth: 1.5,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                InheritedChatTheme.of(context).theme.primaryColor,
+              ),
             ),
           ),
         );
       default:
         return Container();
     }
-  }
-
-  Widget _buildTime(bool currentUserIsAuthor, BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: EdgeInsets.only(
-            right: currentUserIsAuthor ? 8 : 16,
-          ),
-          child: Text(
-            DateFormat.jm(dateLocale).format(
-              DateTime.fromMillisecondsSinceEpoch(message.timestamp!),
-            ),
-            style: InheritedChatTheme.of(context).theme.caption.copyWith(
-                  color: InheritedChatTheme.of(context).theme.captionColor,
-                ),
-          ),
-        ),
-        if (currentUserIsAuthor) _buildStatus(context)
-      ],
-    );
   }
 
   @override
@@ -210,7 +198,6 @@ class Message extends StatelessWidget {
       margin: const EdgeInsets.only(
         bottom: 4,
         left: 20,
-        right: 20,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -241,16 +228,20 @@ class Message extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (shouldRenderTime)
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 8,
-                    ),
-                    child: _buildTime(_currentUserIsAuthor, context),
-                  )
               ],
             ),
           ),
+          if (_currentUserIsAuthor)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Center(
+                child: SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: showStatus ? _buildStatus(context) : null,
+                ),
+              ),
+            ),
         ],
       ),
     );

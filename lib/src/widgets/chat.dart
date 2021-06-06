@@ -256,11 +256,11 @@ class _ChatState extends State<Chat> {
         },
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,
-        shouldRenderTime: false,
         showAvatar:
             widget.showUserAvatars && map['nextMessageInGroup'] == false,
-        showUserAvatars: widget.showUserAvatars,
         showName: map['showName'] == true,
+        showStatus: map['showStatus'] == true,
+        showUserAvatars: widget.showUserAvatars,
         usePreviewData: widget.usePreviewData,
       );
     }

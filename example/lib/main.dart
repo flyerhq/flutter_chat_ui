@@ -50,10 +50,10 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleAtachmentPressed() {
     // final textMessage = types.TextMessage(
-    //   authorId: '06c33e8b-e835-4736-80f4-63f44b666661',
+    //   author: _user,
+    //   createdAt: DateTime.now().millisecondsSinceEpoch,
     //   id: const Uuid().v4(),
     //   text: 'LOL',
-    //   timestamp: DateTime.now().millisecondsSinceEpoch,
     // );
 
     // _addMessage(textMessage);
@@ -107,11 +107,11 @@ class _ChatPageState extends State<ChatPage> {
     if (result != null) {
       final message = types.FileMessage(
         author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         name: result.files.single.name,
         id: const Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path ?? ''),
         size: result.files.single.size,
-        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.files.single.path ?? '',
       );
 
@@ -135,11 +135,11 @@ class _ChatPageState extends State<ChatPage> {
 
       final message = types.ImageMessage(
         author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: const Uuid().v4(),
         name: name,
         size: bytes.length,
-        timestamp: DateTime.now().millisecondsSinceEpoch,
         uri: result.path,
         width: image.width.toDouble(),
       );
@@ -180,9 +180,9 @@ class _ChatPageState extends State<ChatPage> {
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
       author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
       text: message.text,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
     );
 
     _addMessage(textMessage);
