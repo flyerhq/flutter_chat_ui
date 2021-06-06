@@ -34,7 +34,7 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.showUserAvatars = false,
+    this.showUserAvatars = true,
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
     this.usePreviewData = true,
@@ -83,7 +83,7 @@ class Chat extends StatefulWidget {
   /// See [Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
 
-  /// Show user avatars for received messages. Useful for a group chat.
+  /// See [Message.showUserAvatars]
   final bool showUserAvatars;
 
   /// Show user names for received messages. Useful for a group chat. Will be
@@ -214,10 +214,6 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _buildMessage(Object object) {
-    final _messageWidth = widget.showUserAvatars
-        ? min(MediaQuery.of(context).size.width * 0.72, 400).floor()
-        : min(MediaQuery.of(context).size.width * 0.77, 440).floor();
-
     if (object is DateHeader) {
       return Container(
         alignment: Alignment.center,
@@ -239,6 +235,10 @@ class _ChatState extends State<Chat> {
     } else {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
+      final _messageWidth =
+          widget.showUserAvatars && message.author.id != widget.user.id
+              ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
+              : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
 
       return Message(
         key: ValueKey(message.id),

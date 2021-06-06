@@ -64,7 +64,7 @@ class Message extends StatelessWidget {
   /// See [TextMessage.showName]
   final bool showName;
 
-  /// Defines whethter avatars should be displayed
+  /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
 
   /// See [TextMessage.usePreviewData]
@@ -211,8 +211,8 @@ class Message extends StatelessWidget {
           : Alignment.centerLeft,
       margin: const EdgeInsets.only(
         bottom: 4,
-        left: 24,
-        right: 24,
+        left: 20,
+        right: 20,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
