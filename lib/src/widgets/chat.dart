@@ -21,6 +21,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
     Key? key,
+    this.buildCustomMessage,
     this.dateLocale,
     this.disableImageGallery,
     this.isAttachmentUploading,
@@ -34,12 +35,15 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.showUserAvatars = true,
+    this.showUserAvatars = false,
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
+
+  /// See [Message.buildCustomMessage]
+  final Widget Function(types.Message)? buildCustomMessage;
 
   /// See [Message.dateLocale]
   final String? dateLocale;
@@ -223,9 +227,7 @@ class _ChatState extends State<Chat> {
         ),
         child: Text(
           object.text,
-          style: widget.theme.subtitle2.copyWith(
-            color: widget.theme.subtitle2Color,
-          ),
+          style: widget.theme.dateDividerTextStyle,
         ),
       );
     } else if (object is MessageSpacer) {
@@ -242,6 +244,7 @@ class _ChatState extends State<Chat> {
 
       return Message(
         key: ValueKey(message.id),
+        buildCustomMessage: widget.buildCustomMessage,
         dateLocale: widget.dateLocale,
         message: message,
         messageWidth: _messageWidth,
@@ -292,9 +295,8 @@ class _ChatState extends State<Chat> {
                                   ),
                                   child: Text(
                                     widget.l10n.emptyChatPlaceholder,
-                                    style: widget.theme.body1.copyWith(
-                                      color: widget.theme.captionColor,
-                                    ),
+                                    style: widget
+                                        .theme.emptyChatPlaceholderTextStyle,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

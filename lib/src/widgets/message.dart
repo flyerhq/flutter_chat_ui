@@ -14,6 +14,7 @@ class Message extends StatelessWidget {
   /// Creates a particular message from any message type
   const Message({
     Key? key,
+    this.buildCustomMessage,
     this.dateLocale,
     required this.message,
     required this.messageWidth,
@@ -27,6 +28,9 @@ class Message extends StatelessWidget {
     required this.showUserAvatars,
     required this.usePreviewData,
   }) : super(key: key);
+
+  /// Build a custom message inside predefined bubble
+  final Widget Function(types.Message)? buildCustomMessage;
 
   /// Locale will be passed to the `Intl` package. Make sure you initialized
   /// date formatting in your app before passing any locale here, otherwise
@@ -67,7 +71,9 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(BuildContext context) {
+    final color = getUserAvatarNameColor(message.author,
+        InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final hasImage = message.author.imageUrl != null;
     final name = getUserName(message.author);
 
@@ -77,12 +83,14 @@ class Message extends StatelessWidget {
             child: CircleAvatar(
               backgroundImage:
                   hasImage ? NetworkImage(message.author.imageUrl!) : null,
-              backgroundColor: const Color(0xff66e0da),
+              backgroundColor: color,
               radius: 16,
               child: !hasImage
                   ? Text(
                       name.isEmpty ? '' : name[0].toUpperCase(),
-                      style: const TextStyle(color: Colors.white),
+                      style: InheritedChatTheme.of(context)
+                          .theme
+                          .userAvatarTextStyle,
                     )
                   : null,
             ),
@@ -94,6 +102,11 @@ class Message extends StatelessWidget {
 
   Widget _buildMessage() {
     switch (message.type) {
+      case types.MessageType.custom:
+        final customMessage = message as types.CustomMessage;
+        return buildCustomMessage != null
+            ? buildCustomMessage!(customMessage)
+            : Container();
       case types.MessageType.file:
         final fileMessage = message as types.FileMessage;
         return FileMessage(
@@ -122,10 +135,7 @@ class Message extends StatelessWidget {
     switch (message.status) {
       case types.Status.error:
         return InheritedChatTheme.of(context).theme.errorIcon != null
-            ? Image.asset(
-                InheritedChatTheme.of(context).theme.errorIcon!,
-                color: InheritedChatTheme.of(context).theme.primaryColor,
-              )
+            ? InheritedChatTheme.of(context).theme.errorIcon!
             : Image.asset(
                 'assets/icon-error.png',
                 color: InheritedChatTheme.of(context).theme.errorColor,
@@ -133,10 +143,7 @@ class Message extends StatelessWidget {
               );
       case types.Status.delivered:
         return InheritedChatTheme.of(context).theme.deliveredIcon != null
-            ? Image.asset(
-                InheritedChatTheme.of(context).theme.deliveredIcon!,
-                color: InheritedChatTheme.of(context).theme.primaryColor,
-              )
+            ? InheritedChatTheme.of(context).theme.deliveredIcon!
             : Image.asset(
                 'assets/icon-delivered.png',
                 color: InheritedChatTheme.of(context).theme.primaryColor,
@@ -144,10 +151,7 @@ class Message extends StatelessWidget {
               );
       case types.Status.seen:
         return InheritedChatTheme.of(context).theme.seenIcon != null
-            ? Image.asset(
-                InheritedChatTheme.of(context).theme.seenIcon!,
-                color: InheritedChatTheme.of(context).theme.primaryColor,
-              )
+            ? InheritedChatTheme.of(context).theme.seenIcon!
             : Image.asset(
                 'assets/icon-seen.png',
                 color: InheritedChatTheme.of(context).theme.primaryColor,
@@ -203,7 +207,7 @@ class Message extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _buildAvatar(),
+          if (!_currentUserIsAuthor && showUserAvatars) _buildAvatar(context),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),

@@ -113,16 +113,13 @@ class _ImageMessageState extends State<ImageMessage> {
                   children: [
                     Text(
                       widget.message.name,
-                      style:
-                          InheritedChatTheme.of(context).theme.body1.copyWith(
-                                color: _user.id == widget.message.author.id
-                                    ? InheritedChatTheme.of(context)
-                                        .theme
-                                        .primaryTextColor
-                                    : InheritedChatTheme.of(context)
-                                        .theme
-                                        .secondaryTextColor,
-                              ),
+                      style: _user.id == widget.message.author.id
+                          ? InheritedChatTheme.of(context)
+                              .theme
+                              .sentMessageBodyTextStyle
+                          : InheritedChatTheme.of(context)
+                              .theme
+                              .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
@@ -131,19 +128,13 @@ class _ImageMessageState extends State<ImageMessage> {
                       ),
                       child: Text(
                         formatBytes(widget.message.size),
-                        style: InheritedChatTheme.of(context)
-                            .theme
-                            .caption
-                            .copyWith(
-                              color: _user.id == widget.message.author.id
-                                  ? InheritedChatTheme.of(context)
-                                      .theme
-                                      .primaryTextColor
-                                      .withOpacity(0.5)
-                                  : InheritedChatTheme.of(context)
-                                      .theme
-                                      .captionColor,
-                            ),
+                        style: _user.id == widget.message.author.id
+                            ? InheritedChatTheme.of(context)
+                                .theme
+                                .sentMessageCaptionTextStyle
+                            : InheritedChatTheme.of(context)
+                                .theme
+                                .receivedMessageCaptionTextStyle,
                       ),
                     ),
                   ],

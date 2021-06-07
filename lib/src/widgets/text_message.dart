@@ -41,28 +41,36 @@ class TextMessage extends StatelessWidget {
     double width,
     BuildContext context,
   ) {
-    final color = user.id == message.author.id
-        ? InheritedChatTheme.of(context).theme.primaryTextColor
-        : InheritedChatTheme.of(context).theme.secondaryTextColor;
+    final bodyTextStyle = user.id == message.author.id
+        ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
+        : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle;
+    final linkDescriptionTextStyle = user.id == message.author.id
+        ? InheritedChatTheme.of(context)
+            .theme
+            .sentMessageLinkDescriptionTextStyle
+        : InheritedChatTheme.of(context)
+            .theme
+            .receivedMessageLinkDescriptionTextStyle;
+    final linkTitleTextStyle = user.id == message.author.id
+        ? InheritedChatTheme.of(context).theme.sentMessageLinkTitleTextStyle
+        : InheritedChatTheme.of(context)
+            .theme
+            .receivedMessageLinkTitleTextStyle;
 
+    final color = getUserAvatarNameColor(message.author,
+        InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final name = getUserName(message.author);
 
     return LinkPreview(
       enableAnimation: true,
       header: showName ? name : null,
-      headerStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
-            color: color,
-          ),
-      linkStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
-            color: color,
-          ),
-      metadataTextStyle: InheritedChatTheme.of(context).theme.body2.copyWith(
-            color: color,
-          ),
-      metadataTitleStyle:
-          InheritedChatTheme.of(context).theme.subtitle1.copyWith(
-                color: color,
-              ),
+      headerStyle: InheritedChatTheme.of(context)
+          .theme
+          .userNameTextStyle
+          .copyWith(color: color),
+      linkStyle: bodyTextStyle,
+      metadataTextStyle: linkDescriptionTextStyle,
+      metadataTitleStyle: linkTitleTextStyle,
       onPreviewDataFetched: _onPreviewDataFetched,
       padding: const EdgeInsets.symmetric(
         horizontal: 24,
@@ -70,14 +78,14 @@ class TextMessage extends StatelessWidget {
       ),
       previewData: message.previewData,
       text: message.text,
-      textStyle: InheritedChatTheme.of(context).theme.body1.copyWith(
-            color: color,
-          ),
+      textStyle: bodyTextStyle,
       width: width,
     );
   }
 
   Widget _textWidget(types.User user, BuildContext context) {
+    final color = getUserAvatarNameColor(message.author,
+        InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final name = getUserName(message.author);
 
     return Column(
@@ -88,22 +96,21 @@ class TextMessage extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 6.0),
             child: Text(
               name,
-              style: InheritedChatTheme.of(context).theme.body1.copyWith(
-                    color: user.id == message.author.id
-                        ? InheritedChatTheme.of(context).theme.primaryTextColor
-                        : InheritedChatTheme.of(context)
-                            .theme
-                            .secondaryTextColor,
-                  ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: InheritedChatTheme.of(context)
+                  .theme
+                  .userNameTextStyle
+                  .copyWith(color: color),
             ),
           ),
         Text(
           message.text,
-          style: InheritedChatTheme.of(context).theme.body1.copyWith(
-                color: user.id == message.author.id
-                    ? InheritedChatTheme.of(context).theme.primaryTextColor
-                    : InheritedChatTheme.of(context).theme.secondaryTextColor,
-              ),
+          style: user.id == message.author.id
+              ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
+              : InheritedChatTheme.of(context)
+                  .theme
+                  .receivedMessageBodyTextStyle,
           textWidthBasis: TextWidthBasis.longestLine,
         ),
       ],

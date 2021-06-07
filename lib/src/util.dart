@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
@@ -13,6 +14,12 @@ String formatBytes(int size, [int fractionDigits = 2]) {
   return (size / pow(1024, multiple)).toStringAsFixed(fractionDigits) +
       ' ' +
       ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][multiple];
+}
+
+/// Returns user avatar and name color based on the ID
+Color getUserAvatarNameColor(types.User user, List<Color> colors) {
+  final index = user.id.hashCode % colors.length;
+  return colors[index];
 }
 
 /// Returns user name as joined firstName and lastName
