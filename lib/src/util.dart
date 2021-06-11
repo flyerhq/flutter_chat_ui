@@ -35,5 +35,5 @@ String getVerboseDateTimeRepresentation(
     return yesterdayText;
   }
 
-  return DateFormat.MMMMd(locale).format(dateTime);
+  return DateFormat('d MMMM y').format(dateTime);
 }

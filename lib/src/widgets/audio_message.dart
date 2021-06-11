@@ -3,6 +3,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/wave_form.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:intl/intl.dart';
+
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
@@ -208,6 +209,7 @@ class _AudioMessageState extends State<AudioMessage> {
                                     ? snapshot.data!.duration.inMilliseconds -
                                         snapshot.data!.position.inMilliseconds
                                     : widget.message.length.inMilliseconds,
+                                isUtc: true,
                               ),
                             ),
                             style: InheritedChatTheme.of(context)
@@ -230,6 +232,7 @@ class _AudioMessageState extends State<AudioMessage> {
                       AudioMessage.durationFormat.format(
                         DateTime.fromMillisecondsSinceEpoch(
                           widget.message.length.inMilliseconds,
+                          isUtc: true,
                         ),
                       ),
                       style:

@@ -277,6 +277,7 @@ class AudioRecorderState extends State<AudioRecorder> {
                         _audioRecorderDurationFormat.format(
                           DateTime.fromMillisecondsSinceEpoch(
                             snapshot.data!.duration.inMilliseconds,
+                            isUtc: true,
                           ),
                         ),
                         textAlign: TextAlign.center,

@@ -1,10 +1,13 @@
 import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -302,6 +305,20 @@ class _ChatState extends State<Chat> {
                                               top: nextMessageSameAuthor
                                                   ? 24
                                                   : 16,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                              horizontal: 12,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              border: Border.all(
+                                                color:
+                                                    widget.theme.subtitle2Color,
+                                                width: 1,
+                                              ),
                                             ),
                                             child: Text(
                                               getVerboseDateTimeRepresentation(
