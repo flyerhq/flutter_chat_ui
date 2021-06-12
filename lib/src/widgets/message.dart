@@ -141,6 +141,7 @@ class Message extends StatelessWidget {
                 color: InheritedChatTheme.of(context).theme.errorColor,
                 package: 'flutter_chat_ui',
               );
+      case types.Status.sent:
       case types.Status.delivered:
         return InheritedChatTheme.of(context).theme.deliveredIcon != null
             ? InheritedChatTheme.of(context).theme.deliveredIcon!
