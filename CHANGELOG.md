@@ -1,3 +1,37 @@
+## 1.1.0
+
+This release markes a major chat architecture overhaul based on a community feedback. In the future we don't expect such big changes in one release and will try to do backwards compatible code as much as possible.
+
+Breaking changes:
+
+- **BREAKING CHANGE**: [FileMessage] `fileName` is renamed to `name`
+- **BREAKING CHANGE**: [ImageMessage] `imageName` is renamed to `name`
+- **BREAKING CHANGE**: [Messages] `authorId` is replaced with `author` to support avatars and names inside the chat
+- **BREAKING CHANGE**: [Messages] `timestamp` is renamed to `createdAt`. All timestamps are in `ms` now. 
+- **BREAKING CHANGE**: [Status] `read` is renamed to `seen`
+- **BREAKING CHANGE**: [User] `avatarUrl` is renamed to `imageUrl`
+- New `custom` and `unsupported` message types. First one is used to build any message you want, second one is to support backwards compatibility
+
+New features:
+
+- Ability to display user name & avatar, `showUserAvatars` and `showUserNames`
+- Automatic messages animation
+- Pagination, `onEndReached` (use this function to load more items, should be async to correctly show loading indicator), `onEndReachedThreshold` (value between 0 and 1, where 1 indicates that loading should start when all previous items are visible and 0.5 indicates half of items are visible, defaults to 0.75), `isLastPage` (if true loading indicator will not be shown)
+- `buildCustomMessage` to build anything you want. Can be improved to modify bubble, PRs are open :)
+- Time is moved to headers
+- Theme with more customizations
+
+Theme migration guide:
+
+- `attachmentButtonIcon`, `deliveredIcon`, `documentIcon`, `errorIcon`, `seenIcon`, `sendButtonIcon` type change `String` -> `Widget`
+- `body1` replaced with `emptyChatPlaceholderTextStyle`, `inputTextStyle`, `receivedMessageBodyTextStyle`, `sentMessageBodyTextStyle`
+- `body2` replaced with `receivedMessageLinkDescriptionTextStyle`, `sentMessageLinkDescriptionTextStyle`
+- `subtitle1` replaced with `receivedMessageLinkTitleTextStyle`, `sentMessageLinkTitleTextStyle`
+- `subtitle2` and `subtitle2Color` are replaced with `dateDividerTextStyle`
+- `caption` and `captionColor` are replaced with `receivedMessageCaptionTextStyle`, `sentMessageCaptionTextStyle`
+- `primaryTextColor` replaced with `receivedMessageDocumentIconColor`, `sentMessageDocumentIconColor`
+- `secondaryTextColor` replaced with `receivedMessageBodyTextStyle`
+
 ## 1.0.7
 
 - Disable link preview if `onPreviewDataFetched` is not specified

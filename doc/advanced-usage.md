@@ -28,12 +28,12 @@ class _MyHomePageState extends State<MyHomePage> {
       final imageName = result.path.split('/').last;
 
       final message = types.ImageMessage(
-        authorId: _user.id,
+        author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: randomString(),
         imageName: imageName,
         size: bytes.length,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.path,
         width: image.width.toDouble(),
       );
@@ -83,11 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (result != null) {
       final message = types.FileMessage(
-        authorId: _user.id,
+        author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         fileName: result.files.single.name,
         id: randomString(),
         size: result.files.single.size,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.files.single.path ?? '',
       );
 
@@ -273,11 +273,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (result != null) {
       final message = types.FileMessage(
-        authorId: _user.id,
+        author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         fileName: result.files.single.name,
         id: randomString(),
         size: result.files.single.size,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.files.single.path ?? '',
       );
 
@@ -298,12 +298,12 @@ class _MyHomePageState extends State<MyHomePage> {
       final imageName = result.path.split('/').last;
 
       final message = types.ImageMessage(
-        authorId: _user.id,
+        author: _user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: randomString(),
         imageName: imageName,
         size: bytes.length,
-        timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
         uri: result.path,
         width: image.width.toDouble(),
       );
@@ -334,10 +334,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
-      authorId: _user.id,
+      author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
       id: randomString(),
       text: message.text,
-      timestamp: (DateTime.now().millisecondsSinceEpoch / 1000).floor(),
     );
 
     _addMessage(textMessage);

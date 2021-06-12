@@ -23,9 +23,9 @@ class FileMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
-    final _color = _user.id == message.authorId
-        ? InheritedChatTheme.of(context).theme.primaryTextColor
-        : InheritedChatTheme.of(context).theme.primaryColor;
+    final _color = _user.id == message.author.id
+        ? InheritedChatTheme.of(context).theme.sentMessageDocumentIconColor
+        : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
 
     return Semantics(
       label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
@@ -36,24 +36,13 @@ class FileMessage extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: _user.id == message.authorId
-                    ? InheritedChatTheme.of(context)
-                        .theme
-                        .primaryTextColor
-                        .withOpacity(0.2)
-                    : InheritedChatTheme.of(context)
-                        .theme
-                        .primaryColor
-                        .withOpacity(0.2),
+                color: _color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(21),
               ),
               height: 42,
               width: 42,
               child: InheritedChatTheme.of(context).theme.documentIcon != null
-                  ? Image.asset(
-                      InheritedChatTheme.of(context).theme.documentIcon!,
-                      color: _color,
-                    )
+                  ? InheritedChatTheme.of(context).theme.documentIcon!
                   : Image.asset(
                       'assets/icon-document.png',
                       color: _color,
@@ -69,39 +58,28 @@ class FileMessage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      message.fileName,
-                      style:
-                          InheritedChatTheme.of(context).theme.body1.copyWith(
-                                color: _user.id == message.authorId
-                                    ? InheritedChatTheme.of(context)
-                                        .theme
-                                        .primaryTextColor
-                                    : InheritedChatTheme.of(context)
-                                        .theme
-                                        .secondaryTextColor,
-                              ),
+                      message.name,
+                      style: _user.id == message.author.id
+                          ? InheritedChatTheme.of(context)
+                              .theme
+                              .sentMessageBodyTextStyle
+                          : InheritedChatTheme.of(context)
+                              .theme
+                              .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
                         top: 4,
                       ),
-                      child: Text(
-                        formatBytes(message.size),
-                        style: InheritedChatTheme.of(context)
-                            .theme
-                            .caption
-                            .copyWith(
-                              color: _user.id == message.authorId
-                                  ? InheritedChatTheme.of(context)
-                                      .theme
-                                      .primaryTextColor
-                                      .withOpacity(0.5)
-                                  : InheritedChatTheme.of(context)
-                                      .theme
-                                      .captionColor,
-                            ),
-                      ),
+                      child: Text(formatBytes(message.size),
+                          style: _user.id == message.author.id
+                              ? InheritedChatTheme.of(context)
+                                  .theme
+                                  .sentMessageCaptionTextStyle
+                              : InheritedChatTheme.of(context)
+                                  .theme
+                                  .receivedMessageCaptionTextStyle),
                     ),
                   ],
                 ),

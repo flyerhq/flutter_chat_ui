@@ -87,7 +87,7 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return Container(
-        color: _user.id == widget.message.authorId
+        color: _user.id == widget.message.author.id
             ? InheritedChatTheme.of(context).theme.primaryColor
             : InheritedChatTheme.of(context).theme.secondaryColor,
         child: Row(
@@ -112,17 +112,14 @@ class _ImageMessageState extends State<ImageMessage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.message.imageName,
-                      style:
-                          InheritedChatTheme.of(context).theme.body1.copyWith(
-                                color: _user.id == widget.message.authorId
-                                    ? InheritedChatTheme.of(context)
-                                        .theme
-                                        .primaryTextColor
-                                    : InheritedChatTheme.of(context)
-                                        .theme
-                                        .secondaryTextColor,
-                              ),
+                      widget.message.name,
+                      style: _user.id == widget.message.author.id
+                          ? InheritedChatTheme.of(context)
+                              .theme
+                              .sentMessageBodyTextStyle
+                          : InheritedChatTheme.of(context)
+                              .theme
+                              .receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
@@ -131,19 +128,13 @@ class _ImageMessageState extends State<ImageMessage> {
                       ),
                       child: Text(
                         formatBytes(widget.message.size),
-                        style: InheritedChatTheme.of(context)
-                            .theme
-                            .caption
-                            .copyWith(
-                              color: _user.id == widget.message.authorId
-                                  ? InheritedChatTheme.of(context)
-                                      .theme
-                                      .primaryTextColor
-                                      .withOpacity(0.5)
-                                  : InheritedChatTheme.of(context)
-                                      .theme
-                                      .captionColor,
-                            ),
+                        style: _user.id == widget.message.author.id
+                            ? InheritedChatTheme.of(context)
+                                .theme
+                                .sentMessageCaptionTextStyle
+                            : InheritedChatTheme.of(context)
+                                .theme
+                                .receivedMessageCaptionTextStyle,
                       ),
                     ),
                   ],

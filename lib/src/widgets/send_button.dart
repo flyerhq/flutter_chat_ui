@@ -21,10 +21,7 @@ class SendButton extends StatelessWidget {
       width: 24,
       child: IconButton(
         icon: InheritedChatTheme.of(context).theme.sendButtonIcon != null
-            ? Image.asset(
-                InheritedChatTheme.of(context).theme.sendButtonIcon!,
-                color: InheritedChatTheme.of(context).theme.inputTextColor,
-              )
+            ? InheritedChatTheme.of(context).theme.sendButtonIcon!
             : Image.asset(
                 'assets/icon-send.png',
                 color: InheritedChatTheme.of(context).theme.inputTextColor,
