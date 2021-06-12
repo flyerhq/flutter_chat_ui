@@ -11,8 +11,6 @@ abstract class ChatL10n {
     required this.fileButtonAccessibilityLabel,
     required this.inputPlaceholder,
     required this.sendButtonAccessibilityLabel,
-    required this.today,
-    required this.yesterday,
   });
 
   /// Accessibility label (hint) for the attachment button
@@ -29,12 +27,6 @@ abstract class ChatL10n {
 
   /// Accessibility label (hint) for the send button
   final String sendButtonAccessibilityLabel;
-
-  /// Today string
-  final String today;
-
-  /// Yesterday string
-  final String yesterday;
 }
 
 /// English l10n which extends [ChatL10n]
@@ -49,8 +41,6 @@ class ChatL10nEn extends ChatL10n {
     String fileButtonAccessibilityLabel = 'File',
     String inputPlaceholder = 'Message',
     String sendButtonAccessibilityLabel = 'Send',
-    String today = 'Today',
-    String yesterday = 'Yesterday',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
@@ -58,8 +48,6 @@ class ChatL10nEn extends ChatL10n {
           fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
           inputPlaceholder: inputPlaceholder,
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
         );
 }
 
@@ -75,8 +63,6 @@ class ChatL10nEs extends ChatL10n {
     String fileButtonAccessibilityLabel = 'Archivo',
     String inputPlaceholder = 'Mensaje',
     String sendButtonAccessibilityLabel = 'Enviar',
-    String today = 'Hoy',
-    String yesterday = 'Ayer',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
@@ -84,8 +70,6 @@ class ChatL10nEs extends ChatL10n {
           fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
           inputPlaceholder: inputPlaceholder,
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
         );
 }
 
@@ -101,8 +85,6 @@ class ChatL10nPl extends ChatL10n {
     String fileButtonAccessibilityLabel = 'Plik',
     String inputPlaceholder = 'Napisz wiadomość',
     String sendButtonAccessibilityLabel = 'Wyślij',
-    String today = 'Dzisiaj',
-    String yesterday = 'Wczoraj',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
@@ -110,8 +92,6 @@ class ChatL10nPl extends ChatL10n {
           fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
           inputPlaceholder: inputPlaceholder,
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
         );
 }
 
@@ -127,8 +107,6 @@ class ChatL10nPt extends ChatL10n {
     String fileButtonAccessibilityLabel = 'Arquivo',
     String inputPlaceholder = 'Mensagem',
     String sendButtonAccessibilityLabel = 'Enviar',
-    String today = 'Hoje',
-    String yesterday = 'Ontem',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
@@ -136,8 +114,6 @@ class ChatL10nPt extends ChatL10n {
           fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
           inputPlaceholder: inputPlaceholder,
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
         );
 }
 
@@ -153,8 +129,6 @@ class ChatL10nRu extends ChatL10n {
     String fileButtonAccessibilityLabel = 'Файл',
     String inputPlaceholder = 'Сообщение',
     String sendButtonAccessibilityLabel = 'Отправить',
-    String today = 'Сегодня',
-    String yesterday = 'Вчера',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
@@ -162,8 +136,6 @@ class ChatL10nRu extends ChatL10n {
           fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
           inputPlaceholder: inputPlaceholder,
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
         );
 }
 
@@ -179,8 +151,6 @@ class ChatL10nUk extends ChatL10n {
     String fileButtonAccessibilityLabel = 'Файл',
     String inputPlaceholder = 'Повідомлення',
     String sendButtonAccessibilityLabel = 'Надіслати',
-    String today = 'Сьогодні',
-    String yesterday = 'Учора',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
@@ -188,7 +158,5 @@ class ChatL10nUk extends ChatL10n {
           fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
           inputPlaceholder: inputPlaceholder,
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-          today: today,
-          yesterday: yesterday,
         );
 }
