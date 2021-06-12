@@ -140,52 +140,7 @@ class _ChatState extends State<Chat> {
     }
   }
 
-  Widget _imageGalleryLoadingBuilder(
-    BuildContext context,
-    ImageChunkEvent? event,
-  ) {
-    return Center(
-      child: SizedBox(
-        width: 20.0,
-        height: 20.0,
-        child: CircularProgressIndicator(
-          value: event == null || event.expectedTotalBytes == null
-              ? 0
-              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
-        ),
-      ),
-    );
-  }
-
-  void _onCloseGalleryPressed() {
-    setState(() {
-      _isImageViewVisible = false;
-    });
-  }
-
-  void _onImagePressed(types.ImageMessage message) {
-    setState(() {
-      _imageViewIndex = _gallery.indexWhere(
-        (element) => element.id == message.id && element.uri == message.uri,
-      );
-      _isImageViewVisible = true;
-    });
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _imageViewIndex = index;
-    });
-  }
-
-  void _onPreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    widget.onPreviewDataFetched?.call(message, previewData);
-  }
-
-  Widget _renderImageGallery() {
+  Widget _buildImageGallery() {
     return Dismissible(
       key: const Key('photo_view_gallery'),
       direction: DismissDirection.down,
@@ -269,6 +224,51 @@ class _ChatState extends State<Chat> {
     }
   }
 
+  Widget _imageGalleryLoadingBuilder(
+    BuildContext context,
+    ImageChunkEvent? event,
+  ) {
+    return Center(
+      child: SizedBox(
+        width: 20.0,
+        height: 20.0,
+        child: CircularProgressIndicator(
+          value: event == null || event.expectedTotalBytes == null
+              ? 0
+              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+        ),
+      ),
+    );
+  }
+
+  void _onCloseGalleryPressed() {
+    setState(() {
+      _isImageViewVisible = false;
+    });
+  }
+
+  void _onImagePressed(types.ImageMessage message) {
+    setState(() {
+      _imageViewIndex = _gallery.indexWhere(
+        (element) => element.id == message.id && element.uri == message.uri,
+      );
+      _isImageViewVisible = true;
+    });
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _imageViewIndex = index;
+    });
+  }
+
+  void _onPreviewDataFetched(
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
+    widget.onPreviewDataFetched?.call(message, previewData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return InheritedUser(
@@ -324,7 +324,7 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
-              if (_isImageViewVisible) _renderImageGallery(),
+              if (_isImageViewVisible) _buildImageGallery(),
             ],
           ),
         ),
