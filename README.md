@@ -30,7 +30,7 @@
 
 <p align="center">
   <a href="https://flyer.chat">
-    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/111913228-72fa3280-8a6d-11eb-8838-382a270d66f5.png" />
+    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/121787953-a6121500-cbc9-11eb-83ff-db0435d2cd57.png" />
   </a>
 </p>
 
