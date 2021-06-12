@@ -49,14 +49,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleAtachmentPressed() {
-    // final textMessage = types.TextMessage(
-    //   author: _user,
-    //   createdAt: DateTime.now().millisecondsSinceEpoch,
-    //   id: const Uuid().v4(),
-    //   text: 'LOL',
-    // );
-
-    // _addMessage(textMessage);
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -150,13 +142,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _handleMessageLongPress(types.Message message) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    setState(() {
-      _messages = [..._messages]..removeAt(index);
-    });
-  }
-
   void _handleMessageTap(types.Message message) async {
     if (message is types.FileMessage) {
       await OpenFile.open(message.uri);
@@ -205,7 +190,6 @@ class _ChatPageState extends State<ChatPage> {
       body: Chat(
         messages: _messages,
         onAttachmentPressed: _handleAtachmentPressed,
-        onMessageLongPress: _handleMessageLongPress,
         onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,

@@ -18,6 +18,7 @@ New features:
 - Automatic messages animation
 - Pagination, `onEndReached` (use this function to load more items, should be async to correctly show loading indicator), `onEndReachedThreshold` (value between 0 and 1, where 1 indicates that loading should start when all previous items are visible and 0.5 indicates half of items are visible, defaults to 0.75), `isLastPage` (if true loading indicator will not be shown)
 - `buildCustomMessage` to build anything you want. Can be improved to modify bubble, PRs are open :)
+- Time is moved to headers
 - Theme with more customizations
 
 Theme migration guide:
