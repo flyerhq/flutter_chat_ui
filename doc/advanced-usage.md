@@ -25,14 +25,14 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final imageName = result.path.split('/').last;
+      final name = result.path.split('/').last;
 
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: randomString(),
-        imageName: imageName,
+        name: name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        fileName: result.files.single.name,
+        name: result.files.single.name,
         id: randomString(),
         size: result.files.single.size,
         uri: result.files.single.path ?? '',
@@ -275,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        fileName: result.files.single.name,
+        name: result.files.single.name,
         id: randomString(),
         size: result.files.single.size,
         uri: result.files.single.path ?? '',
@@ -295,14 +295,14 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final imageName = result.path.split('/').last;
+      final name = result.path.split('/').last;
 
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: randomString(),
-        imageName: imageName,
+        name: name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
@@ -358,3 +358,62 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+
+## Custom messages
+
+Use the `buildCustomMessage` function to build whatever message you want. To store the data use a `metadata` map of the `CustomMessage`. You can have multiple different custom messages, you will need to identify them based on some property inside the `metadata` and build accordingly.
+
+## Pagination
+
+Use `onEndReached`, `onEndReachedThreshold` and `isLastPage` parameters to control pagination. To learn more see [API reference](https://pub.dev/documentation/flutter_chat_ui/latest/flutter_chat_ui/ChatList-class.html). Here is a simple example based on a [basic usage](basic-usage):
+
+```dart
+// ...
+import 'package:http/http.dart' as http;
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _page = 0;
+  // ...
+  @override
+  void initState() {
+    super.initState();
+    _handleEndReached();
+  }
+
+  Future<void> _handleEndReached() async {
+    final uri = Uri.parse(
+      'https://api.instantwebtools.net/v1/passenger?page=$_page&size=20',
+    );
+    final response = await http.get(uri);
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    final data = json['data'] as List<dynamic>;
+    final messages = data
+        .map(
+          (e) => types.TextMessage(
+            author: _user,
+            id: e['_id'] as String,
+            text: e['name'] as String,
+          ),
+        )
+        .toList();
+    setState(() {
+      _messages = [..._messages, ...messages];
+      _page = _page + 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Chat(
+        // ...
+        onEndReached: _handleEndReached,
+      ),
+    );
+  }
+}
+```
+
+## User avatars & names
+
+To show user avatars & names use `showUserAvatars` and `showUserNames` parameters. Can be used separately. By default, the chat will select one of 10 provided colors as an avatar background and name text color. Color is calculated based on the user's `id` hash code, so it is unique in different rooms. To modify provided colors use `userAvatarNameColors` parameter in [theme](themes). If you want to have one color for everyone, just pass this color as a single item in the `userAvatarNameColors` list.

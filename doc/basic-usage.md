@@ -26,8 +26,8 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 // For the testing purposes, you should probably use https://pub.dev/packages/uuid
 String randomString() {
-  var random = Random.secure();
-  var values = List<int>.generate(16, (i) => random.nextInt(255));
+  final random = Random.secure();
+  final values = List<int>.generate(16, (i) => random.nextInt(255));
   return base64UrlEncode(values);
 }
 
