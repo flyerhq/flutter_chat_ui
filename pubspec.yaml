@@ -12,8 +12,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_chat_types: ^2.1.5
-  flutter_link_previewer: ^2.0.8
+  #flutter_chat_types: ^2.1.5
+  #flutter_link_previewer: ^2.0.8
+
+  flutter_chat_types:
+    git:
+      url: https://github.com/ntsmac/flutter_chat_types.git
+      ref: audio_message_types
+
+  flutter_link_previewer:
+    git:
+      url: https://github.com/ntsmac/flutter_link_previewer.git
+      ref: feature/audio_message
+
   intl: ^0.17.0
   photo_view: ^0.11.1
   flutter_sound: ^8.1.4
@@ -26,13 +37,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.11.0
-
-#TODO disable overrides before pull request
-dependency_overrides:
-  flutter_chat_types:
-    git:
-      url: https://github.com/ntsmac/flutter_chat_types.git
-      ref: audio_message_types
 
 flutter:
   assets:
