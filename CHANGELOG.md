@@ -1,3 +1,7 @@
+## 1.1.1
+
+Export `ChatList` class
+
 ## 1.1.0
 
 This release markes a major chat architecture overhaul based on a community feedback. In the future we don't expect such big changes in one release and will try to do backwards compatible code as much as possible.
