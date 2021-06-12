@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/audio_button.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'attachment_button.dart';
 import 'audio_recorder.dart';
 import 'inherited_chat_theme.dart';
@@ -119,30 +121,32 @@ class _InputState extends State<Input> {
   }
 
   Future<void> _toggleRecording() async {
-    if (!_recordingAudio) {
-      setState(() {
-        _recordingAudio = true;
-      });
-    } else {
-      final audioRecording =
-          await _audioRecorderKey.currentState!.stopRecording();
-      if (audioRecording != null) {
+    if (await Permission.microphone.request().isGranted) {
+      if (!_recordingAudio) {
         setState(() {
-          _audioUploading = true;
+          _recordingAudio = true;
         });
-        final success = await widget.onAudioRecorded!(
-          length: audioRecording.duration,
-          filePath: audioRecording.filePath,
-          waveForm: audioRecording.decibelLevels,
-          mimeType: audioRecording.mimeType,
-        );
-        setState(() {
-          _audioUploading = false;
-        });
-        if (success) {
+      } else {
+        final audioRecording =
+            await _audioRecorderKey.currentState!.stopRecording();
+        if (audioRecording != null) {
           setState(() {
-            _recordingAudio = false;
+            _audioUploading = true;
           });
+          final success = await widget.onAudioRecorded!(
+            length: audioRecording.duration,
+            filePath: audioRecording.filePath,
+            waveForm: audioRecording.decibelLevels,
+            mimeType: audioRecording.mimeType,
+          );
+          setState(() {
+            _audioUploading = false;
+          });
+          if (success) {
+            setState(() {
+              _recordingAudio = false;
+            });
+          }
         }
       }
     }

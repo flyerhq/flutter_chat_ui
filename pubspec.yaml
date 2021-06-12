@@ -20,6 +20,7 @@ dependencies:
   path_provider: ^2.0.2
   uuid: ^3.0.4
   path: ^1.8.0
+  permission_handler: ^8.0.1
 
 dev_dependencies:
   flutter_test:
