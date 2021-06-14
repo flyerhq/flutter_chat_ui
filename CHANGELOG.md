@@ -1,3 +1,6 @@
+## 1.1.2
+- The text inside text messages is now selectable
+
 ## 1.1.1
 
 Export `ChatList` class

@@ -104,7 +104,7 @@ class TextMessage extends StatelessWidget {
                   .copyWith(color: color),
             ),
           ),
-        Text(
+        SelectableText(
           message.text,
           style: user.id == message.author.id
               ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
