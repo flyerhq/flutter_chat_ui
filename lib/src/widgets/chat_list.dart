@@ -48,6 +48,7 @@ class _ChatListState extends State<ChatList>
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
+  final _scrollController = ScrollController();
 
   late final AnimationController _controller = AnimationController(vsync: this);
 
@@ -75,6 +76,7 @@ class _ChatListState extends State<ChatList>
     super.dispose();
 
     _controller.dispose();
+    _scrollController.dispose();
   }
 
   void _calculateDiffs(List<Object> oldList) async {
@@ -95,7 +97,14 @@ class _ChatListState extends State<ChatList>
 
     for (final update in diffResult.getUpdates(batch: false)) {
       update.when(
-        insert: (pos, count) => _listKey.currentState?.insertItem(pos),
+        insert: (pos, count) {
+          _listKey.currentState?.insertItem(pos);
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInQuad,
+          );
+        },
         remove: (pos, count) {
           final item = oldList[pos];
           _listKey.currentState?.removeItem(
@@ -103,9 +112,8 @@ class _ChatListState extends State<ChatList>
             (_, animation) => _buildRemovedMessage(item, animation),
           );
         },
-        change: (pos, payload) =>
-            print('changed on $pos with payload $payload'),
-        move: (from, to) => print('move $from to $to'),
+        change: (pos, payload) {},
+        move: (from, to) {},
       );
     }
 
@@ -170,6 +178,7 @@ class _ChatListState extends State<ChatList>
         return false;
       },
       child: CustomScrollView(
+        controller: _scrollController,
         reverse: true,
         slivers: [
           SliverPadding(
