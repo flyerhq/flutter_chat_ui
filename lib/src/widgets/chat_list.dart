@@ -76,6 +76,7 @@ class _ChatListState extends State<ChatList>
     super.dispose();
 
     _controller.dispose();
+    _scrollController.dispose();
   }
 
   void _calculateDiffs(List<Object> oldList) async {
