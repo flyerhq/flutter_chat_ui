@@ -1,5 +1,7 @@
 ## 1.1.2
-- The text inside text messages is now selectable
+
+- The text inside text messages is now selectable. Thanks @AndreHaueisen for the PR!
+- Scroll to bottom when new message is added. Thanks @jlubeck for reporting!
 
 ## 1.1.1
 
