@@ -1,11 +1,8 @@
-## 1.1.3
-
-Minor change to make it easier to focus the input field by making the entire composition area tappable.
-
 ## 1.1.2
 
 - The text inside text messages is now selectable. Thanks @AndreHaueisen for the PR!
 - Scroll to bottom when new message is added. Thanks @jlubeck for reporting!
+- Minor change to make it easier to focus the input field by making the entire composition area tappable. Thanks @muncman for the PR!
 
 ## 1.1.1
 

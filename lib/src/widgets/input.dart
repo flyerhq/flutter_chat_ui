@@ -35,15 +35,14 @@ class Input extends StatefulWidget {
 
 /// [Input] widget state
 class _InputState extends State<Input> {
+  final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
   final _textController = TextEditingController();
-  late final FocusNode _inputFocusNode;
 
   @override
   void initState() {
     super.initState();
     _textController.addListener(_handleTextControllerChange);
-    _inputFocusNode = FocusNode();
   }
 
   @override
