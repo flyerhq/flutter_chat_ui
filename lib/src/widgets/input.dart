@@ -37,15 +37,18 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   bool _sendButtonVisible = false;
   final _textController = TextEditingController();
+  late final FocusNode _inputFocusNode;
 
   @override
   void initState() {
     super.initState();
     _textController.addListener(_handleTextControllerChange);
+    _inputFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
+    _inputFocusNode.dispose();
     _textController.dispose();
     super.dispose();
   }
@@ -84,54 +87,58 @@ class _InputState extends State<Input> {
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
 
-    return Material(
-      borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
-      color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(
-          24 + _query.padding.left,
-          20,
-          24 + _query.padding.right,
-          20 + _query.viewInsets.bottom + _query.padding.bottom,
-        ),
-        child: Row(
-          children: [
-            if (widget.onAttachmentPressed != null) _leftWidget(),
-            Expanded(
-              child: TextField(
-                controller: _textController,
-                decoration: InputDecoration.collapsed(
-                  hintStyle: InheritedChatTheme.of(context)
+    return GestureDetector(
+      onTap: () => _inputFocusNode.requestFocus(),
+      child: Material(
+        borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
+        color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(
+            24 + _query.padding.left,
+            20,
+            24 + _query.padding.right,
+            20 + _query.viewInsets.bottom + _query.padding.bottom,
+          ),
+          child: Row(
+            children: [
+              if (widget.onAttachmentPressed != null) _leftWidget(),
+              Expanded(
+                child: TextField(
+                  controller: _textController,
+                  decoration: InputDecoration.collapsed(
+                    hintStyle: InheritedChatTheme.of(context)
+                        .theme
+                        .inputTextStyle
+                        .copyWith(
+                          color: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextColor
+                              .withOpacity(0.5),
+                        ),
+                    hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
+                  ),
+                  focusNode: _inputFocusNode,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 5,
+                  minLines: 1,
+                  style: InheritedChatTheme.of(context)
                       .theme
                       .inputTextStyle
                       .copyWith(
-                        color: InheritedChatTheme.of(context)
-                            .theme
-                            .inputTextColor
-                            .withOpacity(0.5),
+                        color:
+                            InheritedChatTheme.of(context).theme.inputTextColor,
                       ),
-                  hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
+                  textCapitalization: TextCapitalization.sentences,
                 ),
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
-                minLines: 1,
-                style: InheritedChatTheme.of(context)
-                    .theme
-                    .inputTextStyle
-                    .copyWith(
-                      color:
-                          InheritedChatTheme.of(context).theme.inputTextColor,
-                    ),
-                textCapitalization: TextCapitalization.sentences,
               ),
-            ),
-            Visibility(
-              visible: _sendButtonVisible,
-              child: SendButton(
-                onPressed: _handleSendPressed,
+              Visibility(
+                visible: _sendButtonVisible,
+                child: SendButton(
+                  onPressed: _handleSendPressed,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
