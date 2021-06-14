@@ -1,3 +1,7 @@
+## 1.1.3
+
+- [WEB] Add shortcuts to send messages on `enter` press
+
 ## 1.1.2
 
 - The text inside text messages is now selectable. Thanks @AndreHaueisen for the PR!

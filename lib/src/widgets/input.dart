@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'send_button.dart';
+
+class NewLineIntent extends Intent {
+  const NewLineIntent();
+}
+
+class SendMessageIntent extends Intent {
+  const SendMessageIntent();
+}
 
 /// A class that represents bottom bar widget with a text field, attachment and
 /// send buttons inside. Hides send button when text field is empty.
@@ -88,55 +97,88 @@ class _InputState extends State<Input> {
 
     return GestureDetector(
       onTap: () => _inputFocusNode.requestFocus(),
-      child: Material(
-        borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
-        color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
-        child: Container(
-          padding: EdgeInsets.fromLTRB(
-            24 + _query.padding.left,
-            20,
-            24 + _query.padding.right,
-            20 + _query.viewInsets.bottom + _query.padding.bottom,
-          ),
-          child: Row(
-            children: [
-              if (widget.onAttachmentPressed != null) _leftWidget(),
-              Expanded(
-                child: TextField(
-                  controller: _textController,
-                  decoration: InputDecoration.collapsed(
-                    hintStyle: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextStyle
-                        .copyWith(
-                          color: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextColor
-                              .withOpacity(0.5),
-                        ),
-                    hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
+      child: Shortcuts(
+        shortcuts: {
+          LogicalKeySet(LogicalKeyboardKey.enter): const SendMessageIntent(),
+          LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
+              const NewLineIntent(),
+          LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
+              const NewLineIntent(),
+        },
+        child: Actions(
+          actions: {
+            SendMessageIntent: CallbackAction<SendMessageIntent>(
+              onInvoke: (SendMessageIntent intent) => _handleSendPressed(),
+            ),
+            NewLineIntent: CallbackAction<NewLineIntent>(
+              onInvoke: (NewLineIntent intent) {
+                final _newValue = '${_textController.text}\r\n';
+                _textController.value = TextEditingValue(
+                  text: _newValue,
+                  selection: TextSelection.fromPosition(
+                    TextPosition(offset: _newValue.length),
                   ),
-                  focusNode: _inputFocusNode,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 5,
-                  minLines: 1,
-                  style: InheritedChatTheme.of(context)
-                      .theme
-                      .inputTextStyle
-                      .copyWith(
-                        color:
-                            InheritedChatTheme.of(context).theme.inputTextColor,
+                );
+              },
+            ),
+          },
+          child: Focus(
+            autofocus: true,
+            child: Material(
+              borderRadius:
+                  InheritedChatTheme.of(context).theme.inputBorderRadius,
+              color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(
+                  24 + _query.padding.left,
+                  20,
+                  24 + _query.padding.right,
+                  20 + _query.viewInsets.bottom + _query.padding.bottom,
+                ),
+                child: Row(
+                  children: [
+                    if (widget.onAttachmentPressed != null) _leftWidget(),
+                    Expanded(
+                      child: TextField(
+                        controller: _textController,
+                        decoration: InputDecoration.collapsed(
+                          hintStyle: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextStyle
+                              .copyWith(
+                                color: InheritedChatTheme.of(context)
+                                    .theme
+                                    .inputTextColor
+                                    .withOpacity(0.5),
+                              ),
+                          hintText:
+                              InheritedL10n.of(context).l10n.inputPlaceholder,
+                        ),
+                        focusNode: _inputFocusNode,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        minLines: 1,
+                        style: InheritedChatTheme.of(context)
+                            .theme
+                            .inputTextStyle
+                            .copyWith(
+                              color: InheritedChatTheme.of(context)
+                                  .theme
+                                  .inputTextColor,
+                            ),
+                        textCapitalization: TextCapitalization.sentences,
                       ),
-                  textCapitalization: TextCapitalization.sentences,
+                    ),
+                    Visibility(
+                      visible: _sendButtonVisible,
+                      child: SendButton(
+                        onPressed: _handleSendPressed,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Visibility(
-                visible: _sendButtonVisible,
-                child: SendButton(
-                  onPressed: _handleSendPressed,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
