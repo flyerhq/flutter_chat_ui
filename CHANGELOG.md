@@ -1,10 +1,20 @@
+## 1.1.3
+
+- [WEB] Add shortcuts to send messages on `enter` press
+
+## 1.1.2
+
+- The text inside text messages is now selectable. Thanks @AndreHaueisen for the PR!
+- Scroll to bottom when new message is added. Thanks @jlubeck for reporting!
+- Minor change to make it easier to focus the input field by making the entire composition area tappable. Thanks @muncman for the PR!
+
 ## 1.1.1
 
 Export `ChatList` class
 
 ## 1.1.0
 
-This release markes a major chat architecture overhaul based on a community feedback. In the future we don't expect such big changes in one release and will try to do backwards compatible code as much as possible.
+This release marks a major chat architecture overhaul based on a community feedback. In the future we don't expect such big changes in one release and will try to do backwards compatible code as much as possible.
 
 Breaking changes:
 
