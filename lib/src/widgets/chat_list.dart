@@ -2,6 +2,7 @@ import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'inherited_chat_theme.dart';
+import 'inherited_user.dart';
 
 /// Animated list which handles automatic animations and pagination
 class ChatList extends StatefulWidget {
@@ -99,11 +100,6 @@ class _ChatListState extends State<ChatList>
       update.when(
         insert: (pos, count) {
           _listKey.currentState?.insertItem(pos);
-          _scrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInQuad,
-          );
         },
         remove: (pos, count) {
           final item = oldList[pos];
@@ -117,7 +113,38 @@ class _ChatListState extends State<ChatList>
       );
     }
 
+    _scrollToBottomIfNeeded(oldList);
+
     _oldData = List.from(widget.items);
+  }
+
+  // Hacky solution to reconsider
+  void _scrollToBottomIfNeeded(List<Object> oldList) {
+    try {
+      // Take index 1 because there is always a spacer on index 0
+      final oldItem = oldList[1];
+      final item = widget.items[1];
+
+      // Compare items to fire only on newly added messages
+      if (oldItem != item && item is Map<String, Object>) {
+        final message = item['message']! as types.Message;
+
+        // Run only for sent message
+        if (message.author.id == InheritedUser.of(context).user.id) {
+          // Delay to give some time for Flutter to calculate new
+          // size after new message was added
+          Future.delayed(const Duration(milliseconds: 100), () {
+            _scrollController.animateTo(
+              0,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInQuad,
+            );
+          });
+        }
+      }
+    } catch (e) {
+      // Do nothing if there are no items
+    }
   }
 
   Widget _buildRemovedMessage(Object item, Animation<double> animation) {

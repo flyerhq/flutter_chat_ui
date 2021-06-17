@@ -1,3 +1,7 @@
+## 1.1.4
+
+- Remove automatic scroll to bottom for incoming messages
+
 ## 1.1.3
 
 - [WEB] Add shortcuts to send messages on `enter` press
