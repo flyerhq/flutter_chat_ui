@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
+
 import './models/date_header.dart';
 import './models/message_spacer.dart';
 import './models/preview_image.dart';
@@ -28,9 +30,17 @@ String getUserName(types.User user) =>
 
 /// Returns formatted date used as a divider between different days in the
 /// chat history
-String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
+String getVerboseDateTimeRepresentation(
+  DateTime dateTime,
+  String? locale, {
+  DateFormat? dateFormat,
+}) {
   final now = DateTime.now();
   final localDateTime = dateTime.toLocal();
+
+  if (dateFormat != null) {
+    return dateFormat.format(dateTime);
+  }
 
   if (localDateTime.day == now.day &&
       localDateTime.month == now.month &&
@@ -48,6 +58,7 @@ List<Object> calculateChatMessages(
   types.User user, {
   String? dateLocale,
   required bool showUserNames,
+  DateFormat? dateFormat,
 }) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
@@ -112,6 +123,7 @@ List<Object> calculateChatMessages(
           text: getVerboseDateTimeRepresentation(
             DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
             dateLocale,
+            dateFormat: dateFormat,
           ),
         ),
       );
@@ -144,6 +156,7 @@ List<Object> calculateChatMessages(
           text: getVerboseDateTimeRepresentation(
             DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
             dateLocale,
+            dateFormat: dateFormat,
           ),
         ),
       );

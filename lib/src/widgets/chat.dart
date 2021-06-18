@@ -1,8 +1,11 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
+import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -39,6 +42,7 @@ class Chat extends StatefulWidget {
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
     this.usePreviewData = true,
+    this.customDateFormat,
     required this.user,
   }) : super(key: key);
 
@@ -105,6 +109,11 @@ class Chat extends StatefulWidget {
   /// See [InheritedUser.user]
   final types.User user;
 
+  /// Allows you to customize the date format.
+  /// [dateLocale] will be ignored if you use this, so if you want a localized date
+  /// make sure you initialize your [customDateFormat] with a locale
+  final DateFormat? customDateFormat;
+
   @override
   _ChatState createState() => _ChatState();
 }
@@ -133,6 +142,7 @@ class _ChatState extends State<Chat> {
         widget.user,
         dateLocale: widget.dateLocale,
         showUserNames: widget.showUserNames,
+        dateFormat: widget.customDateFormat,
       );
 
       _chatMessages = result[0] as List<Object>;
