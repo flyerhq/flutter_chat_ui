@@ -5,9 +5,7 @@ import 'package:meta/meta.dart';
 @immutable
 class DateHeader extends Equatable {
   /// Creates a date header.
-  const DateHeader({
-    required this.text,
-  });
+  const DateHeader({required this.text});
 
   /// Equatable props
   @override
