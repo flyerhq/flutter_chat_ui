@@ -147,8 +147,8 @@ class _InputState extends State<Input> {
                       child: TextField(
                         controller: _textController,
                         onChanged: widget.onTextChanged != null
-                        ? (text) => _onTextChanged(text)
-                        : null,
+                            ? (text) => _onTextChanged(text)
+                            : null,
                         decoration: InputDecoration.collapsed(
                           hintStyle: InheritedChatTheme.of(context)
                               .theme
