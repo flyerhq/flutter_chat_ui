@@ -1,3 +1,7 @@
+## 1.1.5
+
+- Adds [onTextChanged] callback to detect when the user is typing
+
 ## 1.1.4
 
 - Remove automatic scroll to bottom for incoming messages
