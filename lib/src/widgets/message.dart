@@ -15,7 +15,6 @@ class Message extends StatelessWidget {
   const Message({
     Key? key,
     this.buildCustomMessage,
-    this.dateLocale,
     required this.message,
     required this.messageWidth,
     this.onMessageLongPress,
@@ -31,11 +30,6 @@ class Message extends StatelessWidget {
 
   /// Build a custom message inside predefined bubble
   final Widget Function(types.Message)? buildCustomMessage;
-
-  /// Locale will be passed to the `Intl` package. Make sure you initialized
-  /// date formatting in your app before passing any locale here, otherwise
-  /// an error will be thrown.
-  final String? dateLocale;
 
   /// Any message type
   final types.Message message;
@@ -106,7 +100,7 @@ class Message extends StatelessWidget {
         final customMessage = message as types.CustomMessage;
         return buildCustomMessage != null
             ? buildCustomMessage!(customMessage)
-            : Container();
+            : const SizedBox();
       case types.MessageType.file:
         final fileMessage = message as types.FileMessage;
         return FileMessage(
@@ -127,7 +121,7 @@ class Message extends StatelessWidget {
           usePreviewData: usePreviewData,
         );
       default:
-        return Container();
+        return const SizedBox();
     }
   }
 
@@ -173,7 +167,7 @@ class Message extends StatelessWidget {
           ),
         );
       default:
-        return Container();
+        return const SizedBox();
     }
   }
 

@@ -28,17 +28,28 @@ String getUserName(types.User user) =>
 
 /// Returns formatted date used as a divider between different days in the
 /// chat history
-String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
-  final now = DateTime.now();
+String getVerboseDateTimeRepresentation(
+  DateTime dateTime, {
+  DateFormat? dateFormat,
+  String? dateLocale,
+  DateFormat? timeFormat,
+}) {
+  final formattedDate = dateFormat != null
+      ? dateFormat.format(dateTime)
+      : DateFormat.MMMd(dateLocale).format(dateTime);
+  final formattedTime = timeFormat != null
+      ? timeFormat.format(dateTime)
+      : DateFormat.Hm(dateLocale).format(dateTime);
   final localDateTime = dateTime.toLocal();
+  final now = DateTime.now();
 
   if (localDateTime.day == now.day &&
       localDateTime.month == now.month &&
       localDateTime.year == now.year) {
-    return DateFormat.Hm(locale).format(dateTime);
+    return formattedTime;
   }
 
-  return '${DateFormat.MMMd(locale).format(dateTime)}, ${DateFormat.Hm(locale).format(dateTime)}';
+  return '$formattedDate, $formattedTime';
 }
 
 /// Parses provided messages to chat messages (with headers and spacers) and
@@ -46,8 +57,11 @@ String getVerboseDateTimeRepresentation(DateTime dateTime, String? locale) {
 List<Object> calculateChatMessages(
   List<types.Message> messages,
   types.User user, {
+  String Function(DateTime)? customDateHeaderText,
+  DateFormat? dateFormat,
   String? dateLocale,
   required bool showUserNames,
+  DateFormat? timeFormat,
 }) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
@@ -109,10 +123,16 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
-          text: getVerboseDateTimeRepresentation(
-            DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
-            dateLocale,
-          ),
+          text: customDateHeaderText != null
+              ? customDateHeaderText(
+                  DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
+                )
+              : getVerboseDateTimeRepresentation(
+                  DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
+                  dateFormat: dateFormat,
+                  dateLocale: dateLocale,
+                  timeFormat: timeFormat,
+                ),
         ),
       );
     }
@@ -141,10 +161,16 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
-          text: getVerboseDateTimeRepresentation(
-            DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
-            dateLocale,
-          ),
+          text: customDateHeaderText != null
+              ? customDateHeaderText(
+                  DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
+                )
+              : getVerboseDateTimeRepresentation(
+                  DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
+                  dateFormat: dateFormat,
+                  dateLocale: dateLocale,
+                  timeFormat: timeFormat,
+                ),
         ),
       );
     }

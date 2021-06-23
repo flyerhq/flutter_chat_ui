@@ -23,6 +23,7 @@ class Input extends StatefulWidget {
     this.isAttachmentUploading,
     this.onAttachmentPressed,
     required this.onSendPressed,
+    this.onTextChanged,
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
@@ -37,6 +38,9 @@ class Input extends StatefulWidget {
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
   final void Function(types.PartialText) onSendPressed;
+
+  /// Will be called whenever the text inside [TextField] changes
+  final void Function(String)? onTextChanged;
 
   @override
   _InputState createState() => _InputState();
@@ -158,6 +162,7 @@ class _InputState extends State<Input> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                         minLines: 1,
+                        onChanged: widget.onTextChanged,
                         style: InheritedChatTheme.of(context)
                             .theme
                             .inputTextStyle

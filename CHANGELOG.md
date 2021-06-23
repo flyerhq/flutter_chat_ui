@@ -1,3 +1,9 @@
+## 1.1.5
+
+- Added `onTextChanged` callback to detect when user is typing. Thanks @AndreHaueisen for the PR!
+- Added `dateFormat` and `timeFormat` allowing user to customize the date and time visible between messages. Thanks @AndreHaueisen for the PR!
+- Added `customDateHeaderText` allowing to pass and arbitrary string visible between messages. See the documentation in the code for more info.
+
 ## 1.1.4
 
 - Remove automatic scroll to bottom for incoming messages
