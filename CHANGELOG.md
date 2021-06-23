@@ -1,3 +1,7 @@
+## 1.1.5
+
+- Adds [DateFormat] `customDateFormat` allowing the user to customize the date
+
 ## 1.1.4
 
 - Remove automatic scroll to bottom for incoming messages

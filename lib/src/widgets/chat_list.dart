@@ -168,7 +168,7 @@ class _ChatListState extends State<ChatList>
         child: widget.itemBuilder(item, index),
       );
     } catch (e) {
-      return Container();
+      return const SizedBox();
     }
   }
 
