@@ -1,11 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -25,6 +23,8 @@ class Chat extends StatefulWidget {
   const Chat({
     Key? key,
     this.buildCustomMessage,
+    this.customDateHeaderText,
+    this.dateFormat,
     this.dateLocale,
     this.disableImageGallery,
     this.isAttachmentUploading,
@@ -42,15 +42,33 @@ class Chat extends StatefulWidget {
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
+    this.timeFormat,
     this.usePreviewData = true,
-    this.customDateFormat,
     required this.user,
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
   final Widget Function(types.Message)? buildCustomMessage;
 
-  /// See [Message.dateLocale]
+  /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
+  /// customize date headers in your case, use this to return an arbitrary
+  /// string based on a [DateTime] of a particular message. Can be helpful to
+  /// return "Today" if [DateTime] is today. IMPORTANT: this will replace
+  /// all default date headers, so you must handle all cases yourself, like
+  /// for example today, yesterday and before. Or you can just return the same
+  /// date header for any message.
+  final String Function(DateTime)? customDateHeaderText;
+
+  /// Allows you to customize the date format. IMPORTANT: only for the date,
+  /// do not return time here. See [timeFormat] to customize the time format.
+  /// [dateLocale] will be ignored if you use this, so if you want a localized date
+  /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
+  /// for more customization.
+  final DateFormat? dateFormat;
+
+  /// Locale will be passed to the `Intl` package. Make sure you initialized
+  /// date formatting in your app before passing any locale here, otherwise
+  /// an error will be thrown. Also see [customDateHeaderText], [dateFormat], [timeFormat].
   final String? dateLocale;
 
   /// Disable automatic image preview on tap.
@@ -93,7 +111,7 @@ class Chat extends StatefulWidget {
   final void Function(types.PartialText) onSendPressed;
 
   /// See [Input.onTextChanged]
-  final void Function(types.PartialText)? onTextChanged;
+  final void Function(String)? onTextChanged;
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
@@ -107,16 +125,18 @@ class Chat extends StatefulWidget {
   /// variables, see more here [DefaultChatTheme].
   final ChatTheme theme;
 
+  /// Allows you to customize the time format. IMPORTANT: only for the time,
+  /// do not return date here. See [dateFormat] to customize the date format.
+  /// [dateLocale] will be ignored if you use this, so if you want a localized time
+  /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
+  /// for more customization.
+  final DateFormat? timeFormat;
+
   /// See [Message.usePreviewData]
   final bool usePreviewData;
 
   /// See [InheritedUser.user]
   final types.User user;
-
-  /// Allows you to customize the date format.
-  /// [dateLocale] will be ignored if you use this, so if you want a localized date
-  /// make sure you initialize your [customDateFormat] with a locale
-  final DateFormat? customDateFormat;
 
   @override
   _ChatState createState() => _ChatState();
@@ -144,9 +164,11 @@ class _ChatState extends State<Chat> {
       final result = calculateChatMessages(
         widget.messages,
         widget.user,
+        customDateHeaderText: widget.customDateHeaderText,
+        dateFormat: widget.dateFormat,
         dateLocale: widget.dateLocale,
         showUserNames: widget.showUserNames,
-        dateFormat: widget.customDateFormat,
+        timeFormat: widget.timeFormat,
       );
 
       _chatMessages = result[0] as List<Object>;
@@ -214,7 +236,6 @@ class _ChatState extends State<Chat> {
       return Message(
         key: ValueKey(message.id),
         buildCustomMessage: widget.buildCustomMessage,
-        dateLocale: widget.dateLocale,
         message: message,
         messageWidth: _messageWidth,
         onMessageLongPress: widget.onMessageLongPress,

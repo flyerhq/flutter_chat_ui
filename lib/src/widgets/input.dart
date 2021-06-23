@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
@@ -41,7 +40,7 @@ class Input extends StatefulWidget {
   final void Function(types.PartialText) onSendPressed;
 
   /// Will be called whenever the text inside [TextField] changes
-  final void Function(types.PartialText)? onTextChanged;
+  final void Function(String)? onTextChanged;
 
   @override
   _InputState createState() => _InputState();
@@ -146,9 +145,6 @@ class _InputState extends State<Input> {
                     Expanded(
                       child: TextField(
                         controller: _textController,
-                        onChanged: widget.onTextChanged != null
-                            ? (text) => _onTextChanged(text)
-                            : null,
                         decoration: InputDecoration.collapsed(
                           hintStyle: InheritedChatTheme.of(context)
                               .theme
@@ -166,6 +162,7 @@ class _InputState extends State<Input> {
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                         minLines: 1,
+                        onChanged: widget.onTextChanged,
                         style: InheritedChatTheme.of(context)
                             .theme
                             .inputTextStyle
@@ -191,10 +188,5 @@ class _InputState extends State<Input> {
         ),
       ),
     );
-  }
-
-  void _onTextChanged(String? text) {
-    final partialText = types.PartialText(text: _textController.text.trim());
-    widget.onTextChanged!(partialText);
   }
 }
