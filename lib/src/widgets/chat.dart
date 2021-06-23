@@ -38,6 +38,7 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
+    this.onTextChanged,
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
@@ -90,6 +91,9 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
+
+  /// See [Input.onTextChanged]
+  final void Function(types.PartialText)? onTextChanged;
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
@@ -329,6 +333,7 @@ class _ChatState extends State<Chat> {
                         isAttachmentUploading: widget.isAttachmentUploading,
                         onAttachmentPressed: widget.onAttachmentPressed,
                         onSendPressed: widget.onSendPressed,
+                        onTextChanged: widget.onTextChanged,
                       ),
                     ],
                   ),

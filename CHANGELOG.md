@@ -1,5 +1,6 @@
 ## 1.1.5
 
+- Adds [onTextChanged] callback to detect when the user is typing
 - Adds [DateFormat] `customDateFormat` allowing the user to customize the date
 
 ## 1.1.4
