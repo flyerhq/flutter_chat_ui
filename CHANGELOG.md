@@ -1,3 +1,7 @@
+## 1.1.6
+
+- Added `emptyState` that allows you to customize what the user sees when there are no messages
+
 ## 1.1.5
 
 - Added `onTextChanged` callback to detect when user is typing. Thanks @AndreHaueisen for the PR!

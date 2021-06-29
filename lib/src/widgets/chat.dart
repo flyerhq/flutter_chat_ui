@@ -45,6 +45,7 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
+    this.emptyState,
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
@@ -137,6 +138,9 @@ class Chat extends StatefulWidget {
 
   /// See [InheritedUser.user]
   final types.User user;
+
+  /// Allows you to change what the user sees when there are no messages
+  final Widget? emptyState;
 
   @override
   _ChatState createState() => _ChatState();
@@ -323,18 +327,7 @@ class _ChatState extends State<Chat> {
                       Flexible(
                         child: widget.messages.isEmpty
                             ? SizedBox.expand(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                  ),
-                                  child: Text(
-                                    widget.l10n.emptyChatPlaceholder,
-                                    style: widget
-                                        .theme.emptyChatPlaceholderTextStyle,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                                child: _buildEmptyState(),
                               )
                             : GestureDetector(
                                 onTap: () => FocusManager.instance.primaryFocus
@@ -366,5 +359,20 @@ class _ChatState extends State<Chat> {
         ),
       ),
     );
+  }
+
+  Widget _buildEmptyState() {
+    return widget.emptyState ??
+        Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 24,
+          ),
+          child: Text(
+            widget.l10n.emptyChatPlaceholder,
+            style: widget.theme.emptyChatPlaceholderTextStyle,
+            textAlign: TextAlign.center,
+          ),
+        );
   }
 }
