@@ -220,10 +220,10 @@ class Message extends StatelessWidget {
                           borderRadius: _borderRadius,
                         // ignore: prefer_const_literals_to_create_immutables
                         boxShadow: [const BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 2,
-                              offset: Offset(0,0),
-                            spreadRadius: 2
+                              color: Color.fromRGBO(0, 0, 0, 0.1),
+                              blurRadius: 10,
+                              offset: Offset(0,2),
+                            spreadRadius: 0
                           )],
                         color: !_currentUserIsAuthor ||
                                 message.type == types.MessageType.image
