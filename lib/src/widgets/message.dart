@@ -213,17 +213,27 @@ class Message extends StatelessWidget {
                 GestureDetector(
                   onLongPress: () => onMessageLongPress?.call(message),
                   onTap: () => onMessageTap?.call(message),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: _borderRadius,
-                      color: !_currentUserIsAuthor ||
-                              message.type == types.MessageType.image
-                          ? InheritedChatTheme.of(context).theme.secondaryColor
-                          : InheritedChatTheme.of(context).theme.primaryColor,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: _borderRadius,
-                      child: _buildMessage(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: _borderRadius,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        boxShadow: [const BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 2,
+                              offset: Offset(0,0),
+                            spreadRadius: 2
+                          )],
+                        color: !_currentUserIsAuthor ||
+                                message.type == types.MessageType.image
+                            ? InheritedChatTheme.of(context).theme.secondaryColor
+                            : InheritedChatTheme.of(context).theme.primaryColor,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: _borderRadius,
+                        child: _buildMessage(),
+                      ),
                     ),
                   ),
                 ),
