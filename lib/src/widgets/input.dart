@@ -128,59 +128,70 @@ class _InputState extends State<Input> {
           },
           child: Focus(
             autofocus: true,
-            child: Material(
-              borderRadius:
-                  InheritedChatTheme.of(context).theme.inputBorderRadius,
-              color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(
-                  24 + _query.padding.left,
-                  20,
-                  24 + _query.padding.right,
-                  20 + _query.viewInsets.bottom + _query.padding.bottom,
-                ),
-                child: Row(
-                  children: [
-                    if (widget.onAttachmentPressed != null) _leftWidget(),
-                    Expanded(
-                      child: TextField(
-                        controller: _textController,
-                        decoration: InputDecoration.collapsed(
-                          hintStyle: InheritedChatTheme.of(context)
+            child: Container(
+              decoration: BoxDecoration(
+                // ignore: prefer_const_literals_to_create_immutables
+                boxShadow: [const BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                    blurRadius: 10,
+                    offset: Offset(0,2),
+                    spreadRadius: 0
+                )],),
+              child: Material(
+                borderRadius:
+                    InheritedChatTheme.of(context).theme.inputBorderRadius,
+                color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+                child: Container(
+
+                  padding: EdgeInsets.fromLTRB(
+                    24 + _query.padding.left,
+                    20,
+                    24 + _query.padding.right,
+                    20 + _query.viewInsets.bottom + _query.padding.bottom,
+                  ),
+                  child: Row(
+                    children: [
+                      if (widget.onAttachmentPressed != null) _leftWidget(),
+                      Expanded(
+                        child: TextField(
+                          controller: _textController,
+                          decoration: InputDecoration.collapsed(
+                            hintStyle: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextStyle
+                                .copyWith(
+                                  color: InheritedChatTheme.of(context)
+                                      .theme
+                                      .inputTextColor
+                                      .withOpacity(0.5),
+                                ),
+                            hintText:
+                                InheritedL10n.of(context).l10n.inputPlaceholder,
+                          ),
+                          focusNode: _inputFocusNode,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          minLines: 1,
+                          onChanged: widget.onTextChanged,
+                          style: InheritedChatTheme.of(context)
                               .theme
                               .inputTextStyle
                               .copyWith(
                                 color: InheritedChatTheme.of(context)
                                     .theme
-                                    .inputTextColor
-                                    .withOpacity(0.5),
+                                    .inputTextColor,
                               ),
-                          hintText:
-                              InheritedL10n.of(context).l10n.inputPlaceholder,
+                          textCapitalization: TextCapitalization.sentences,
                         ),
-                        focusNode: _inputFocusNode,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        minLines: 1,
-                        onChanged: widget.onTextChanged,
-                        style: InheritedChatTheme.of(context)
-                            .theme
-                            .inputTextStyle
-                            .copyWith(
-                              color: InheritedChatTheme.of(context)
-                                  .theme
-                                  .inputTextColor,
-                            ),
-                        textCapitalization: TextCapitalization.sentences,
                       ),
-                    ),
-                    Visibility(
-                      visible: _sendButtonVisible,
-                      child: SendButton(
-                        onPressed: _handleSendPressed,
+                      Visibility(
+                        visible: _sendButtonVisible,
+                        child: SendButton(
+                          onPressed: _handleSendPressed,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

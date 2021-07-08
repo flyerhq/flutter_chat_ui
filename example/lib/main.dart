@@ -194,7 +194,23 @@ class _ChatPageState extends State<ChatPage> {
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,
         user: _user,
+        theme: _getChatTheme(),
       ),
+    );
+  }
+
+  ChatTheme _getChatTheme() {
+    return DefaultChatTheme(
+
+      inputBackgroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      inputTextColor: Colors.black,
+      inputBorderRadius: BorderRadius.zero,
+      primaryColor: Colors.white,
+      secondaryColor: Colors.white,
+      receivedMessageBodyTextStyle: TextStyle(color: Colors.black),
+      sentMessageBodyTextStyle: TextStyle(color: Colors.black),
+
     );
   }
 }
