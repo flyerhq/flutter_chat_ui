@@ -73,6 +73,28 @@ class ChatL10nEs extends ChatL10n {
         );
 }
 
+/// Korean l10n which extends [ChatL10n]
+@immutable
+class ChatL10nKo extends ChatL10n {
+  /// Creates Korean l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nKo({
+    String attachmentButtonAccessibilityLabel = '미디어 보내기',
+    String emptyChatPlaceholder = '주고받은 메시지가 없습니다',
+    String fileButtonAccessibilityLabel = '파일',
+    String inputPlaceholder = '메시지',
+    String sendButtonAccessibilityLabel = '보내기',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
+}
+
 /// Polish l10n which extends [ChatL10n]
 @immutable
 class ChatL10nPl extends ChatL10n {
@@ -151,28 +173,6 @@ class ChatL10nUk extends ChatL10n {
     String fileButtonAccessibilityLabel = 'Файл',
     String inputPlaceholder = 'Повідомлення',
     String sendButtonAccessibilityLabel = 'Надіслати',
-  }) : super(
-          attachmentButtonAccessibilityLabel:
-              attachmentButtonAccessibilityLabel,
-          emptyChatPlaceholder: emptyChatPlaceholder,
-          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
-          inputPlaceholder: inputPlaceholder,
-          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-        );
-}
-
-/// Korean l10n which extends [ChatL10n]
-@immutable
-class ChatL10nKo extends ChatL10n {
-  /// Creates Korean l10n. Use this constructor if you want to
-  /// override only a couple of variables, otherwise create a new class
-  /// which extends [ChatL10n]
-  const ChatL10nKo({
-    String attachmentButtonAccessibilityLabel = '미디어 전송',
-    String emptyChatPlaceholder = '아직 메시지가 없습니다.',
-    String fileButtonAccessibilityLabel = '파일',
-    String inputPlaceholder = '메시지',
-    String sendButtonAccessibilityLabel = '전송',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
