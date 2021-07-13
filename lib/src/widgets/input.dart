@@ -73,7 +73,7 @@ class _InputState extends State<Input> {
 
   void _handleTextControllerChange() {
     setState(() {
-      _sendButtonVisible = _textController.text != '';
+      _sendButtonVisible = _textController.text.trim() != '';
     });
   }
 
