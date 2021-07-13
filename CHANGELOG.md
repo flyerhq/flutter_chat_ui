@@ -1,3 +1,7 @@
+## 1.1.7
+
+- Update dependencies
+
 ## 1.1.6
 
 - Added `emptyState` that allows you to customize what the user sees when there are no messages. Thanks @AndreHaueisen for the PR!
