@@ -160,3 +160,25 @@ class ChatL10nUk extends ChatL10n {
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
         );
 }
+
+/// Korean l10n which extends [ChatL10n]
+@immutable
+class ChatL10nKo extends ChatL10n {
+  /// Creates Korean l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nKo({
+    String attachmentButtonAccessibilityLabel = '미디어 전송',
+    String emptyChatPlaceholder = '아직 메시지가 없습니다.',
+    String fileButtonAccessibilityLabel = '파일',
+    String inputPlaceholder = '메시지',
+    String sendButtonAccessibilityLabel = '전송',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
+}
