@@ -1,6 +1,8 @@
 ## 1.1.6
 
-- Added `emptyState` that allows you to customize what the user sees when there are no messages
+- Added `emptyState` that allows you to customize what the user sees when there are no messages. Thanks @AndreHaueisen for the PR!
+- Added Korean localization. Thanks @ChangJoo-Park for the PR!
+- Can't send spaces anymore. Thanks @kwamerex101 for reporting the bug!
 
 ## 1.1.5
 
