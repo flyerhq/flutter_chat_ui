@@ -79,8 +79,9 @@ class _InputState extends State<Input> {
 
   Widget _leftWidget() {
     if (widget.isAttachmentUploading == true) {
-      return SizedBox(
+      return Container(
         height: 24,
+        margin: const EdgeInsets.only(right: 16),
         width: 24,
         child: CircularProgressIndicator(
           backgroundColor: Colors.transparent,

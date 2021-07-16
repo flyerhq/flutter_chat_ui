@@ -16,7 +16,7 @@ import 'package:image_picker/image_picker.dart';
 class _MyHomePageState extends State<MyHomePage> {
   // ...
   void _handleImageSelection() async {
-    final result = await ImagePicker().getImage(
+    final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 1440,
       source: ImageSource.gallery,
@@ -25,14 +25,13 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final name = result.path.split('/').last;
 
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: randomString(),
-        name: name,
+        name: result.name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
@@ -85,8 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        name: result.files.single.name,
         id: randomString(),
+        name: result.files.single.name,
         size: result.files.single.size,
         uri: result.files.single.path ?? '',
       );
@@ -227,39 +226,41 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: 144,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Photo'),
+        return SafeArea(
+          child: SizedBox(
+            height: 144,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _handleImageSelection();
+                  },
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Photo'),
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleFileSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('File'),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _handleFileSelection();
+                  },
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('File'),
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Cancel'),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Cancel'),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -275,8 +276,8 @@ class _MyHomePageState extends State<MyHomePage> {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        name: result.files.single.name,
         id: randomString(),
+        name: result.files.single.name,
         size: result.files.single.size,
         uri: result.files.single.path ?? '',
       );
@@ -286,7 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _handleImageSelection() async {
-    final result = await ImagePicker().getImage(
+    final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 1440,
       source: ImageSource.gallery,
@@ -295,14 +296,13 @@ class _MyHomePageState extends State<MyHomePage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final name = result.path.split('/').last;
 
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: randomString(),
-        name: name,
+        name: result.name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),

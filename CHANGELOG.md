@@ -1,3 +1,9 @@
+## 1.1.8
+
+- Update dependencies and example
+- Fix scroll controller not attached warning. Thanks @fikretsengul for reporting the bug!
+- Fix right margin on input's progress indicator
+
 ## 1.1.7
 
 - Update dependencies

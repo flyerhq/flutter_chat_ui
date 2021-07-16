@@ -102,21 +102,19 @@ class _ChatPageState extends State<ChatPage> {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        name: result.files.single.name,
         id: const Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path ?? ''),
+        name: result.files.single.name,
         size: result.files.single.size,
         uri: result.files.single.path ?? '',
       );
 
       _addMessage(message);
-    } else {
-      // User canceled the picker
     }
   }
 
   void _handleImageSelection() async {
-    final result = await ImagePicker().getImage(
+    final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 1440,
       source: ImageSource.gallery,
@@ -125,22 +123,19 @@ class _ChatPageState extends State<ChatPage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final name = result.path.split('/').last;
 
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: const Uuid().v4(),
-        name: name,
+        name: result.name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
       );
 
       _addMessage(message);
-    } else {
-      // User canceled the picker
     }
   }
 
