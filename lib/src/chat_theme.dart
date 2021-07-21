@@ -70,6 +70,7 @@ abstract class ChatTheme {
     required this.receivedMessageLinkTitleTextStyle,
     required this.secondaryColor,
     required this.seenIcon,
+    required this.sendingIcon,
     required this.sendButtonIcon,
     required this.sentMessageBodyTextStyle,
     required this.sentMessageCaptionTextStyle,
@@ -147,6 +148,9 @@ abstract class ChatTheme {
 
   /// Icon for message's `seen` status. For the best look use size of 16.
   final Widget? seenIcon;
+
+  /// Icon for message's `sending` status. For the best look use size of 16.
+  final Widget? sendingIcon;
 
   /// Icon for send button
   final Widget? sendButtonIcon;
@@ -252,6 +256,7 @@ class DefaultChatTheme extends ChatTheme {
     ),
     Color secondaryColor = SECONDARY,
     Widget? seenIcon,
+    Widget? sendingIcon,
     Widget? sendButtonIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -319,6 +324,7 @@ class DefaultChatTheme extends ChatTheme {
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
+          sendingIcon: sendingIcon,
           sendButtonIcon: sendButtonIcon,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
@@ -403,6 +409,7 @@ class DarkChatTheme extends ChatTheme {
     ),
     Color secondaryColor = SECONDARY_DARK,
     Widget? seenIcon,
+    Widget? sendingIcon,
     Widget? sendButtonIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -470,6 +477,7 @@ class DarkChatTheme extends ChatTheme {
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
+          sendingIcon: sendingIcon,
           sendButtonIcon: sendButtonIcon,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
