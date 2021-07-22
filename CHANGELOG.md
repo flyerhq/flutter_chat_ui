@@ -1,3 +1,8 @@
+## 1.1.9
+
+- Add `sendingIcon` widget to the theme. Thanks @abhisunkewar for the PR!
+- Update dependencies
+
 ## 1.1.8
 
 - Update dependencies and example

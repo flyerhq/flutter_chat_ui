@@ -70,8 +70,8 @@ abstract class ChatTheme {
     required this.receivedMessageLinkTitleTextStyle,
     required this.secondaryColor,
     required this.seenIcon,
-    required this.sendingIcon,
     required this.sendButtonIcon,
+    required this.sendingIcon,
     required this.sentMessageBodyTextStyle,
     required this.sentMessageCaptionTextStyle,
     required this.sentMessageDocumentIconColor,
@@ -149,11 +149,11 @@ abstract class ChatTheme {
   /// Icon for message's `seen` status. For the best look use size of 16.
   final Widget? seenIcon;
 
-  /// Icon for message's `sending` status. For the best look use size of 16.
-  final Widget? sendingIcon;
-
   /// Icon for send button
   final Widget? sendButtonIcon;
+
+  /// Icon for message's `sending` status. For the best look use size of 10.
+  final Widget? sendingIcon;
 
   /// Body text style used for displaying text on different types
   /// of sent messages
@@ -256,8 +256,8 @@ class DefaultChatTheme extends ChatTheme {
     ),
     Color secondaryColor = SECONDARY,
     Widget? seenIcon,
-    Widget? sendingIcon,
     Widget? sendButtonIcon,
+    Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -324,8 +324,8 @@ class DefaultChatTheme extends ChatTheme {
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
-          sendingIcon: sendingIcon,
           sendButtonIcon: sendButtonIcon,
+          sendingIcon: sendingIcon,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
@@ -409,8 +409,8 @@ class DarkChatTheme extends ChatTheme {
     ),
     Color secondaryColor = SECONDARY_DARK,
     Widget? seenIcon,
-    Widget? sendingIcon,
     Widget? sendButtonIcon,
+    Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -477,8 +477,8 @@ class DarkChatTheme extends ChatTheme {
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
-          sendingIcon: sendingIcon,
           sendButtonIcon: sendButtonIcon,
+          sendingIcon: sendingIcon,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
