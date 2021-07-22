@@ -153,19 +153,21 @@ class Message extends StatelessWidget {
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
-        return Center(
-          child: SizedBox(
-            height: 10,
-            width: 10,
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.transparent,
-              strokeWidth: 1.5,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                InheritedChatTheme.of(context).theme.primaryColor,
-              ),
-            ),
-          ),
-        );
+        return InheritedChatTheme.of(context).theme.sendingIcon != null
+            ? InheritedChatTheme.of(context).theme.sendingIcon!
+            : Center(
+                child: SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    strokeWidth: 1.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      InheritedChatTheme.of(context).theme.primaryColor,
+                    ),
+                  ),
+                ),
+              );
       default:
         return const SizedBox();
     }
