@@ -68,7 +68,7 @@ class _ImageMessageState extends State<ImageMessage> {
       _isUploading = false;
     });
     if (widget.onUploadSuccessCallback != null) {
-      final url = json['url'] as String ?? '';
+      final url = json['url'] as String;
       final message = widget.message.copyWith(uri: url);
       widget.onUploadSuccessCallback!(message);
     }
