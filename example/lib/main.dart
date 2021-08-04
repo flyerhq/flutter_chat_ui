@@ -186,6 +186,10 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYW1pci52YWhvcmFAdGhlc3VuZmxvd2VybGFiLmNvbSIsImVtYWlsIjoiYWFtaXIudmFob3JhQHRoZXN1bmZsb3dlcmxhYi5jb20iLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjI4MDgxMjA0fQ.og7NZe76sML6pHW8gV8XHubWjyRpZ6mEoZAYjdGuogsVo7ce4Lz1g8SPtrnIIsPzQ7z3_IL3z03hVC1fQFKkAw';
+    const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/100';
+    const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
+
     return Scaffold(
       body: Chat(
         messages: _messages,
@@ -196,6 +200,9 @@ class _ChatPageState extends State<ChatPage> {
         user: _user,
         theme: _getChatTheme(),
         onUploadSuccessCallback: _onUploadSuccess,
+        authToken: token,
+        fileUploadUrl: fileUploadUrl,
+          fileDownloadUrl: fileDownloadUrl,
       ),
     );
   }
@@ -205,7 +212,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   ChatTheme _getChatTheme() {
-    return DefaultChatTheme(
+    return const DefaultChatTheme(
 
       inputBackgroundColor: Colors.white,
       backgroundColor: Colors.white,

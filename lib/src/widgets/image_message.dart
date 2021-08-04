@@ -59,7 +59,7 @@ class _ImageMessageState extends State<ImageMessage> {
       _isUploading = true;
     });
 
-    final json = await FileService().fileUploadMultipart(filePath: widget.message.uri, onUploadProgress: (percentage){
+    final fileUrl = await FileService().fileUploadMultipart(filePath: widget.message.uri, onUploadProgress: (percentage){
       setState(() {
         _percentage = percentage/100;
       });
@@ -68,8 +68,7 @@ class _ImageMessageState extends State<ImageMessage> {
       _isUploading = false;
     });
     if (widget.onUploadSuccessCallback != null) {
-      final url = json['url'] as String;
-      final message = widget.message.copyWith(uri: url);
+      final message = widget.message.copyWith(uri: fileUrl);
       widget.onUploadSuccessCallback!(message);
     }
   }

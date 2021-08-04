@@ -14,13 +14,15 @@ class FileService {
     // ignore: sort_unnamed_constructors_first, sort_constructors_first
     factory FileService() => _instance;
 
-    void configure({required String uploadUrl, required String token}) {
-        _url = uploadUrl;
+    void configure({required String uploadUrl, required String fileDownloadUrl,required String token}) {
+        _fileUploadUrl = uploadUrl;
         _token = token;
+        _fileDownloadUrl = '$fileDownloadUrl/';
     }
 
     String _token = '';
-    String _url = '';
+    String _fileUploadUrl = '';
+    String _fileDownloadUrl = '';
 
     static bool trustSelfSigned = true;
 
@@ -32,18 +34,18 @@ class FileService {
         return httpClient;
     }
 
-    Future<dynamic> fileUploadMultipart(
+    Future<String> fileUploadMultipart(
         {required String filePath, OnUploadProgressCallback? onUploadProgress}) async {
 
         final httpClient = getHttpClient();
 
-        final request = await httpClient.postUrl(Uri.parse(_url));
+        final request = await httpClient.postUrl(Uri.parse(_fileUploadUrl));
 
         var byteCount = 0;
 
         final multipart = await http.MultipartFile.fromPath('multipartFile', filePath);
 
-        final requestMultipart = http.MultipartRequest('POST', Uri.parse(_url));
+        final requestMultipart = http.MultipartRequest('POST', Uri.parse(_fileUploadUrl));
 
         requestMultipart.files.add(multipart);
         requestMultipart.fields.addAll({'type':'chat'});
@@ -93,7 +95,8 @@ class FileService {
         } else {
             final response = await readResponseAsString(httpResponse);
             final jsonObject = json.decode(response);
-            return jsonObject;
+            final fileUrl = _fileDownloadUrl + (jsonObject['url'] as String);
+            return fileUrl;
         }
     }
 

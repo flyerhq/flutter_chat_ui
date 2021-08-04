@@ -47,7 +47,7 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
-    this.onUploadSuccessCallback, this.s3BucketUrl, this.authToken,
+    this.onUploadSuccessCallback, this.fileUploadUrl, this.authToken, this.fileDownloadUrl,
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
@@ -142,9 +142,9 @@ class Chat extends StatefulWidget {
   final types.User user;
 
   final OnUploadSuccessCallback? onUploadSuccessCallback;
-  final String? s3BucketUrl;
+  final String? fileUploadUrl;
   final String? authToken;
-
+  final String? fileDownloadUrl;
   @override
   _ChatState createState() => _ChatState();
 }
@@ -161,8 +161,8 @@ class _ChatState extends State<Chat> {
     super.initState();
 
     didUpdateWidget(widget);
-    if (widget.s3BucketUrl != null && widget.authToken != null) {
-      FileService().configure(uploadUrl: widget.s3BucketUrl!, token: widget.authToken!);
+    if (widget.fileUploadUrl != null && widget.authToken != null  && widget.fileDownloadUrl != null) {
+      FileService().configure(uploadUrl: widget.fileUploadUrl!, fileDownloadUrl: widget.fileDownloadUrl!,token: widget.authToken!);
     }
   }
 
