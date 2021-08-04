@@ -55,18 +55,25 @@ class _ImageMessageState extends State<ImageMessage> {
   }
 
   Future<void> _uploadAttachment() async {
-    setState(() {
-      _isUploading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isUploading = true;
+      });
+    }
 
     final fileUrl = await FileService().fileUploadMultipart(filePath: widget.message.uri, onUploadProgress: (percentage){
+      if (mounted) {
+        setState(() {
+          _percentage = percentage/100;
+        });
+      }
+    });
+    if (mounted) {
       setState(() {
-        _percentage = percentage/100;
+        _isUploading = false;
       });
-    });
-    setState(() {
-      _isUploading = false;
-    });
+    }
+
     if (widget.onUploadSuccessCallback != null) {
       final message = widget.message.copyWith(uri: fileUrl);
       widget.onUploadSuccessCallback!(message);
