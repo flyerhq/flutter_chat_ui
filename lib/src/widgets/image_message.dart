@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/uploader/file_upload_helper.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../conditional/conditional.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
@@ -10,12 +12,15 @@ import 'inherited_user.dart';
 /// aspect ratios, renders blurred image as a background which is visible
 /// if the image is narrow, renders image in form of a file if aspect
 /// ratio is very small or very big.
+
+typedef OnUploadSuccessCallback = void Function(types.Message message);
+
 class ImageMessage extends StatefulWidget {
   /// Creates an image message widget based on [types.ImageMessage]
   const ImageMessage({
     Key? key,
     required this.message,
-    required this.messageWidth,
+    required this.messageWidth, this.onUploadSuccessCallback,
   }) : super(key: key);
 
   /// [types.ImageMessage]
@@ -23,6 +28,8 @@ class ImageMessage extends StatefulWidget {
 
   /// Maximum message width
   final int messageWidth;
+
+  final OnUploadSuccessCallback? onUploadSuccessCallback;
 
   @override
   _ImageMessageState createState() => _ImageMessageState();
@@ -33,12 +40,38 @@ class _ImageMessageState extends State<ImageMessage> {
   ImageProvider? _image;
   ImageStream? _stream;
   Size _size = const Size(0, 0);
-
+  double _percentage = 0.5;
+  bool _isUploading = false;
+  
   @override
   void initState() {
     super.initState();
     _image = Conditional().getProvider(widget.message.uri);
     _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
+
+    if (!widget.message.uri.contains('http')) {
+     _uploadAttachment();
+    }
+  }
+
+  Future<void> _uploadAttachment() async {
+    setState(() {
+      _isUploading = true;
+    });
+
+    final json = await FileService().fileUploadMultipart(filePath: widget.message.uri, onUploadProgress: (percentage){
+      setState(() {
+        _percentage = percentage;
+      });
+    });
+    setState(() {
+      _isUploading = false;
+    });
+    if (widget.onUploadSuccessCallback != null) {
+      final url = json['url'] as String ?? '';
+      final message = widget.message.copyWith(uri: url);
+      widget.onUploadSuccessCallback!(message);
+    }
   }
 
   @override
@@ -99,9 +132,11 @@ class _ImageMessageState extends State<ImageMessage> {
               width: 64,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: _image!,
+                child: uploadProgress(
+                  child: Image(
+                    fit: BoxFit.cover,
+                    image: _image!,
+                  ),
                 ),
               ),
             ),
@@ -160,13 +195,38 @@ class _ImageMessageState extends State<ImageMessage> {
           filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
           child: AspectRatio(
             aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
-            child: Image(
-              fit: BoxFit.contain,
-              image: _image!,
+            child: uploadProgress(
+              child: Image(
+                fit: BoxFit.contain,
+                image: _image!,
+              ),
             ),
           ),
         ),
       );
     }
+  }
+
+  Widget uploadProgress({required Widget child}) {
+    return Stack(
+      children: [
+        child,
+        Visibility(
+          visible: _isUploading,
+          child: Container(
+            color: Colors.black.withOpacity(0.7),
+            child: Center(
+              child: CircularPercentIndicator(
+                radius: 60.0,
+                lineWidth: 5.0,
+                percent: _percentage,
+                backgroundColor: Colors.transparent,
+                progressColor: InheritedChatTheme.of(context).theme.primaryColor,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

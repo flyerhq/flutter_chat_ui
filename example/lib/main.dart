@@ -195,8 +195,13 @@ class _ChatPageState extends State<ChatPage> {
         onSendPressed: _handleSendPressed,
         user: _user,
         theme: _getChatTheme(),
+        onUploadSuccessCallback: _onUploadSuccess,
       ),
     );
+  }
+
+  void _onUploadSuccess(types.Message message) {
+
   }
 
   ChatTheme _getChatTheme() {

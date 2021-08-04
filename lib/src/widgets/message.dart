@@ -26,6 +26,7 @@ class Message extends StatelessWidget {
     required this.showStatus,
     required this.showUserAvatars,
     required this.usePreviewData,
+    this.onUploadSuccessCallback,
   }) : super(key: key);
 
   /// Build a custom message inside predefined bubble
@@ -64,6 +65,8 @@ class Message extends StatelessWidget {
 
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
+
+  final OnUploadSuccessCallback? onUploadSuccessCallback;
 
   Widget _buildAvatar(BuildContext context) {
     final color = getUserAvatarNameColor(message.author,
@@ -111,6 +114,7 @@ class Message extends StatelessWidget {
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
+          onUploadSuccessCallback: onUploadSuccessCallback,
         );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;

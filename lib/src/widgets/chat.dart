@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/uploader/file_upload_helper.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -12,6 +13,7 @@ import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../util.dart';
 import 'chat_list.dart';
+import 'image_message.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'input.dart';
@@ -45,6 +47,7 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
+    this.onUploadSuccessCallback, this.s3BucketUrl, this.authToken,
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
@@ -138,6 +141,10 @@ class Chat extends StatefulWidget {
   /// See [InheritedUser.user]
   final types.User user;
 
+  final OnUploadSuccessCallback? onUploadSuccessCallback;
+  final String? s3BucketUrl;
+  final String? authToken;
+
   @override
   _ChatState createState() => _ChatState();
 }
@@ -154,6 +161,9 @@ class _ChatState extends State<Chat> {
     super.initState();
 
     didUpdateWidget(widget);
+    if (widget.s3BucketUrl != null && widget.authToken != null) {
+      FileService().configure(uploadUrl: widget.s3BucketUrl!, token: widget.authToken!);
+    }
   }
 
   @override
@@ -255,6 +265,7 @@ class _ChatState extends State<Chat> {
         showStatus: map['showStatus'] == true,
         showUserAvatars: widget.showUserAvatars,
         usePreviewData: widget.usePreviewData,
+        onUploadSuccessCallback: widget.onUploadSuccessCallback,
       );
     }
   }
