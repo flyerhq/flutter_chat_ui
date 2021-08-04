@@ -40,7 +40,7 @@ class _ImageMessageState extends State<ImageMessage> {
   ImageProvider? _image;
   ImageStream? _stream;
   Size _size = const Size(0, 0);
-  double _percentage = 0.5;
+  double _percentage = 0.0;
   bool _isUploading = false;
   
   @override
@@ -61,7 +61,7 @@ class _ImageMessageState extends State<ImageMessage> {
 
     final json = await FileService().fileUploadMultipart(filePath: widget.message.uri, onUploadProgress: (percentage){
       setState(() {
-        _percentage = percentage;
+        _percentage = percentage/100;
       });
     });
     setState(() {
