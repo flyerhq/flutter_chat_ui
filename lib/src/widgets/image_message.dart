@@ -71,13 +71,14 @@ class _ImageMessageState extends State<ImageMessage> {
       setState(() {
         _isUploading = true;
         _isUploadFailed = false;
+        _percentage = 0.0;
       });
     }
     try {
       final fileUrl = await FileService().fileUploadMultipart(
           filePath: _message.uri,
           onUploadProgress: (percentage) {
-            //log("Uploading: $percentage");
+            log("Uploading: $percentage");
             if (mounted) {
               setState(() {
                 _percentage = percentage / 100;
@@ -283,15 +284,17 @@ class _ImageMessageState extends State<ImageMessage> {
           visible: _isUploadFailed,
           child: Container(
             color: Colors.black.withOpacity(0.5),
-            child: Center(
-              child: InkWell(
-                onTap: () {
-                  _uploadAttachment();
-                },
+            child: InkWell(
+              onTap: () {
+                _uploadAttachment();
+              },
+              child: Center(
                 child: Container(child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(Icons.error, color: Colors.black54,),
-                    Text('Upload fail, tap to upload')
+                    Icon(Icons.error, color: Colors.white,),
+                    Text('Upload failed. Tap to retry.', style: TextStyle(color: Colors.white,), textAlign: TextAlign.center,)
                   ],
                 )),
               ),
