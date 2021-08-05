@@ -209,7 +209,7 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _onUploadSuccess(types.Message message) {
+  void _onUploadSuccess(types.ImageMessage message) {
     setState(() {
       int index = _messages.indexWhere((element) => element.id == message.id);
       _messages.removeAt(index);

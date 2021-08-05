@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'inherited_user.dart';
 /// if the image is narrow, renders image in form of a file if aspect
 /// ratio is very small or very big.
 
-typedef OnUploadSuccessCallback = void Function(types.Message message);
+typedef OnUploadSuccessCallback = void Function(types.ImageMessage message);
 
 class ImageMessage extends StatefulWidget {
   /// Creates an image message widget based on [types.ImageMessage]
@@ -76,7 +77,7 @@ class _ImageMessageState extends State<ImageMessage> {
       final fileUrl = await FileService().fileUploadMultipart(
           filePath: _message.uri,
           onUploadProgress: (percentage) {
-            print("Uploading: $percentage");
+            //log("Uploading: $percentage");
             if (mounted) {
               setState(() {
                 _percentage = percentage / 100;
