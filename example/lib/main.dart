@@ -10,6 +10,7 @@ import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 
+
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
@@ -140,6 +141,7 @@ class _ChatPageState extends State<ChatPage> {
     } else {
       // User canceled the picker
     }
+
   }
 
   void _handleMessageTap(types.Message message) async {
@@ -186,7 +188,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYW1pci52YWhvcmFAdGhlc3VuZmxvd2VybGFiLmNvbSIsImVtYWlsIjoiYWFtaXIudmFob3JhQHRoZXN1bmZsb3dlcmxhYi5jb20iLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjI4MDgxMjA0fQ.og7NZe76sML6pHW8gV8XHubWjyRpZ6mEoZAYjdGuogsVo7ce4Lz1g8SPtrnIIsPzQ7z3_IL3z03hVC1fQFKkAw';
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYW1pcjEyM0B5b3BtYWlsLmNvbSIsImVtYWlsIjoiYWFtaXIxMjNAeW9wbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjI4MTcwNDg2fQ._AsOptylWS4yA6p8elJF81QtRe4seWBsKAyA9D_ES_KM_PQaPZ2CLx_T5rqyvFbdufDFbCgaE2GMX07KbIHDQw';
     const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/100';
     const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
 
@@ -202,13 +204,17 @@ class _ChatPageState extends State<ChatPage> {
         onUploadSuccessCallback: _onUploadSuccess,
         authToken: token,
         fileUploadUrl: fileUploadUrl,
-          fileDownloadUrl: fileDownloadUrl,
+        fileDownloadUrl: fileDownloadUrl,
       ),
     );
   }
 
   void _onUploadSuccess(types.Message message) {
-
+    setState(() {
+      int index = _messages.indexWhere((element) => element.id == message.id);
+      _messages.removeAt(index);
+      _messages.insert(index, message);
+    });
   }
 
   ChatTheme _getChatTheme() {
