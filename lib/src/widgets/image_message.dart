@@ -40,8 +40,8 @@ class ImageMessage extends StatefulWidget {
 
 /// [ImageMessage] widget state
 class _ImageMessageState extends State<ImageMessage> {
-  //ImageProvider? _image;
-  ImageStream? _stream;
+  // ImageProvider? _image;
+  // ImageStream? _stream;
   Size _size = const Size(0, 0);
   double _percentage = 0.0;
   bool _isUploading = false;
@@ -111,17 +111,17 @@ class _ImageMessageState extends State<ImageMessage> {
     //   _getImage();
     // }
   }
-
-  // void _getImage() {
-  //   final oldImageStream = _stream;
-  //   _stream = _image?.resolve(createLocalImageConfiguration(context));
-  //   if (_stream?.key == oldImageStream?.key) {
-  //     return;
-  //   }
-  //   final listener = ImageStreamListener(_updateImage);
-  //   oldImageStream?.removeListener(listener);
-  //   _stream?.addListener(listener);
-  // }
+  /*
+  void _getImage() {
+    final oldImageStream = _stream;
+    _stream = _image?.resolve(createLocalImageConfiguration(context));
+    if (_stream?.key == oldImageStream?.key) {
+      return;
+    }
+    final listener = ImageStreamListener(_updateImage);
+    oldImageStream?.removeListener(listener);
+    _stream?.addListener(listener);
+  }
 
   void _updateImage(ImageInfo info, bool _) {
     setState(() {
@@ -131,10 +131,10 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     });
   }
-
+   */
   @override
   void dispose() {
-    _stream?.removeListener(ImageStreamListener(_updateImage));
+    //_stream?.removeListener(ImageStreamListener(_updateImage));
     super.dispose();
   }
 
@@ -144,93 +144,11 @@ class _ImageMessageState extends State<ImageMessage> {
         .of(context)
         .user;
 
-    if (_size.aspectRatio == 0) {
-      return Container(
-        color: InheritedChatTheme
-            .of(context)
-            .theme
-            .secondaryColor,
-        height: _size.height,
-        width: _size.width,
-      );
-    } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
-      return Container(
-        color: _user.id == _message.author.id
-            ? InheritedChatTheme
-            .of(context)
-            .theme
-            .primaryColor
-            : InheritedChatTheme
-            .of(context)
-            .theme
-            .secondaryColor,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 64,
-              margin: const EdgeInsets.all(16),
-              width: 64,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: uploadProgress(),
-              ),
-            ),
-            Flexible(
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(0, 16, 24, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _message.name,
-                      style: _user.id == _message.author.id
-                          ? InheritedChatTheme
-                          .of(context)
-                          .theme
-                          .sentMessageBodyTextStyle
-                          : InheritedChatTheme
-                          .of(context)
-                          .theme
-                          .receivedMessageBodyTextStyle,
-                      textWidthBasis: TextWidthBasis.longestLine,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 4,
-                      ),
-                      child: Text(
-                        formatBytes(_message.size),
-                        style: _user.id == _message.author.id
-                            ? InheritedChatTheme
-                            .of(context)
-                            .theme
-                            .sentMessageCaptionTextStyle
-                            : InheritedChatTheme
-                            .of(context)
-                            .theme
-                            .receivedMessageCaptionTextStyle,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
       return Container(
         constraints: BoxConstraints(
           maxHeight: widget.messageWidth.toDouble(),
           minWidth: 170,
         ),
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     fit: BoxFit.cover,
-        //     image: Conditional().getProvider(_message.uri),
-        //   ),
-        // ),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
           child: AspectRatio(
@@ -239,7 +157,6 @@ class _ImageMessageState extends State<ImageMessage> {
           ),
         ),
       );
-    }
   }
 
   Widget uploadProgress() {
@@ -251,7 +168,7 @@ class _ImageMessageState extends State<ImageMessage> {
             imageUrl: _message.uri,
             placeholder: (context, url) {
               return _localUrl != null
-                  ? _getImage(_localUrl!)
+                  ? _getLocalImage(_localUrl!)
                   : CircularProgressIndicator();
             },
             errorWidget: (context, url, error) {
@@ -259,7 +176,7 @@ class _ImageMessageState extends State<ImageMessage> {
             },
           ),
         )
-            : _getImage(_message.uri),
+            : _getLocalImage(_message.uri),
         //child,
         Visibility(
           visible: _isUploading,
@@ -271,6 +188,9 @@ class _ImageMessageState extends State<ImageMessage> {
                 lineWidth: 5.0,
                 percent: _percentage,
                 backgroundColor: Colors.transparent,
+                animation: true,
+                animationDuration: 500,
+                animateFromLastPercent: true,
                 progressColor:
                 InheritedChatTheme
                     .of(context)
@@ -305,7 +225,7 @@ class _ImageMessageState extends State<ImageMessage> {
     );
   }
 
-  Widget _getImage(String url) {
+  Widget _getLocalImage(String url) {
     return Center(
       child: Image(
         fit: BoxFit.cover,
