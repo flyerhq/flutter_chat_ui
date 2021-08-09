@@ -1,3 +1,24 @@
+## 1.1.9
+
+- Add `sendingIcon` widget to the theme. Thanks @abhisunkewar for the PR!
+- Update dependencies
+
+## 1.1.8
+
+- Update dependencies and example
+- Fix scroll controller not attached warning. Thanks @fikretsengul for reporting the bug!
+- Fix right margin on input's progress indicator
+
+## 1.1.7
+
+- Update dependencies
+
+## 1.1.6
+
+- Added `emptyState` that allows you to customize what the user sees when there are no messages. Thanks @AndreHaueisen for the PR!
+- Added Korean localization. Thanks @ChangJoo-Park for the PR!
+- Can't send spaces anymore. Thanks @kwamerex101 for reporting the bug!
+
 ## 1.1.5
 
 - Added `onTextChanged` callback to detect when user is typing. Thanks @AndreHaueisen for the PR!
