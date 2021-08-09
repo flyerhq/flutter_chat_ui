@@ -71,6 +71,7 @@ abstract class ChatTheme {
     required this.secondaryColor,
     required this.seenIcon,
     required this.sendButtonIcon,
+    required this.sendingIcon,
     required this.sentMessageBodyTextStyle,
     required this.sentMessageCaptionTextStyle,
     required this.sentMessageDocumentIconColor,
@@ -150,6 +151,9 @@ abstract class ChatTheme {
 
   /// Icon for send button
   final Widget? sendButtonIcon;
+
+  /// Icon for message's `sending` status. For the best look use size of 10.
+  final Widget? sendingIcon;
 
   /// Body text style used for displaying text on different types
   /// of sent messages
@@ -253,6 +257,7 @@ class DefaultChatTheme extends ChatTheme {
     Color secondaryColor = SECONDARY,
     Widget? seenIcon,
     Widget? sendButtonIcon,
+    Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -320,6 +325,7 @@ class DefaultChatTheme extends ChatTheme {
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
+          sendingIcon: sendingIcon,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
@@ -404,6 +410,7 @@ class DarkChatTheme extends ChatTheme {
     Color secondaryColor = SECONDARY_DARK,
     Widget? seenIcon,
     Widget? sendButtonIcon,
+    Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
       fontFamily: 'Avenir',
@@ -471,6 +478,7 @@ class DarkChatTheme extends ChatTheme {
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
+          sendingIcon: sendingIcon,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,

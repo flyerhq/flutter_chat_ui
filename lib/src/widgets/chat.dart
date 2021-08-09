@@ -29,6 +29,7 @@ class Chat extends StatefulWidget {
     this.dateFormat,
     this.dateLocale,
     this.disableImageGallery,
+    this.emptyState,
     this.isAttachmentUploading,
     this.isLastPage,
     this.l10n = const ChatL10nEn(),
@@ -76,6 +77,11 @@ class Chat extends StatefulWidget {
 
   /// Disable automatic image preview on tap.
   final bool? disableImageGallery;
+
+  /// Allows you to change what the user sees when there are no messages.
+  /// `emptyChatPlaceholder` and `emptyChatPlaceholderTextStyle` are ignored
+  /// in this case.
+  final Widget? emptyState;
 
   /// See [Input.isAttachmentUploading]
   final bool? isAttachmentUploading;
@@ -184,6 +190,21 @@ class _ChatState extends State<Chat> {
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
     }
+  }
+
+  Widget _buildEmptyState() {
+    return widget.emptyState ??
+        Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.symmetric(
+            horizontal: 24,
+          ),
+          child: Text(
+            widget.l10n.emptyChatPlaceholder,
+            style: widget.theme.emptyChatPlaceholderTextStyle,
+            textAlign: TextAlign.center,
+          ),
+        );
   }
 
   Widget _buildImageGallery() {
@@ -334,18 +355,7 @@ class _ChatState extends State<Chat> {
                       Flexible(
                         child: widget.messages.isEmpty
                             ? SizedBox.expand(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                  ),
-                                  child: Text(
-                                    widget.l10n.emptyChatPlaceholder,
-                                    style: widget
-                                        .theme.emptyChatPlaceholderTextStyle,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                                child: _buildEmptyState(),
                               )
                             : GestureDetector(
                                 onTap: () => FocusManager.instance.primaryFocus

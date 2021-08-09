@@ -134,11 +134,13 @@ class _ChatListState extends State<ChatList>
           // Delay to give some time for Flutter to calculate new
           // size after new message was added
           Future.delayed(const Duration(milliseconds: 100), () {
-            _scrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInQuad,
-            );
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(
+                0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInQuad,
+              );
+            }
           });
         }
       }
