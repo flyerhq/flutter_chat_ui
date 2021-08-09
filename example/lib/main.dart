@@ -115,7 +115,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
+
+    final result = await ImagePicker().getImage(
       imageQuality: 70,
       maxWidth: 1440,
       source: ImageSource.gallery,
@@ -124,13 +125,13 @@ class _ChatPageState extends State<ChatPage> {
     if (result != null) {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-
+      final name = result.path.split('/').last;
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
         id: const Uuid().v4(),
-        name: result.name,
+        name: name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
@@ -185,7 +186,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYW1pcjEyM0B5b3BtYWlsLmNvbSIsImVtYWlsIjoiYWFtaXIxMjNAeW9wbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjI4MTcwNDg2fQ._AsOptylWS4yA6p8elJF81QtRe4seWBsKAyA9D_ES_KM_PQaPZ2CLx_T5rqyvFbdufDFbCgaE2GMX07KbIHDQw';
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDA3QHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzMTA4ODAxOH0.vIrjkTJiown_a-lSHkHYjDYWxUO9Px7KRiOHaWVD8vVqgGxq5eYt79pZSbEEWRXg37-FR4ChaDiSkAcszgiYgA';
     const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/100';
     const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
 
