@@ -237,7 +237,7 @@ class _ChatListState extends State<ChatList>
                       width: 16,
                       child: CircularProgressIndicator(
                         backgroundColor: Colors.transparent,
-                        strokeWidth: 2,
+                        strokeWidth: 1.5,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           InheritedChatTheme.of(context).theme.primaryColor,
                         ),

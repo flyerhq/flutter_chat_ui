@@ -29,7 +29,7 @@ class Message extends StatelessWidget {
   }) : super(key: key);
 
   /// Build a custom message inside predefined bubble
-  final Widget Function(types.Message)? buildCustomMessage;
+  final Widget Function(types.CustomMessage)? buildCustomMessage;
 
   /// Any message type
   final types.Message message;
@@ -66,8 +66,10 @@ class Message extends StatelessWidget {
   final bool usePreviewData;
 
   Widget _buildAvatar(BuildContext context) {
-    final color = getUserAvatarNameColor(message.author,
-        InheritedChatTheme.of(context).theme.userAvatarNameColors);
+    final color = getUserAvatarNameColor(
+      message.author,
+      InheritedChatTheme.of(context).theme.userAvatarNameColors,
+    );
     final hasImage = message.author.imageUrl != null;
     final name = getUserName(message.author);
 
@@ -89,9 +91,7 @@ class Message extends StatelessWidget {
                   : null,
             ),
           )
-        : Container(
-            margin: const EdgeInsets.only(right: 40),
-          );
+        : const SizedBox(width: 40);
   }
 
   Widget _buildMessage() {
@@ -127,21 +127,21 @@ class Message extends StatelessWidget {
 
   Widget _buildStatus(BuildContext context) {
     switch (message.status) {
+      case types.Status.delivered:
+      case types.Status.sent:
+        return InheritedChatTheme.of(context).theme.deliveredIcon != null
+            ? InheritedChatTheme.of(context).theme.deliveredIcon!
+            : Image.asset(
+                'assets/icon-delivered.png',
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.error:
         return InheritedChatTheme.of(context).theme.errorIcon != null
             ? InheritedChatTheme.of(context).theme.errorIcon!
             : Image.asset(
                 'assets/icon-error.png',
                 color: InheritedChatTheme.of(context).theme.errorColor,
-                package: 'flutter_chat_ui',
-              );
-      case types.Status.sent:
-      case types.Status.delivered:
-        return InheritedChatTheme.of(context).theme.deliveredIcon != null
-            ? InheritedChatTheme.of(context).theme.deliveredIcon!
-            : Image.asset(
-                'assets/icon-delivered.png',
-                color: InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.seen:

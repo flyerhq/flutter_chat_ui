@@ -17,10 +17,8 @@ String formatBytes(int size, [int fractionDigits = 2]) {
 }
 
 /// Returns user avatar and name color based on the ID
-Color getUserAvatarNameColor(types.User user, List<Color> colors) {
-  final index = user.id.hashCode % colors.length;
-  return colors[index];
-}
+Color getUserAvatarNameColor(types.User user, List<Color> colors) =>
+    colors[user.id.hashCode % colors.length];
 
 /// Returns user name as joined firstName and lastName
 String getUserName(types.User user) =>
@@ -88,7 +86,7 @@ List<Object> calculateChatMessages(
 
       final isFirstInGroup = notMyMessage &&
           ((message.author.id != previousMessage?.author.id) ||
-              (message.createdAt != null &&
+              (messageHasCreatedAt &&
                   previousMessage?.createdAt != null &&
                   message.createdAt! - previousMessage!.createdAt! > 60000));
 
