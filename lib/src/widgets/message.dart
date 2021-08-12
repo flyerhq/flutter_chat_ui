@@ -79,7 +79,7 @@ class Message extends StatelessWidget {
             child: CircleAvatar(
               backgroundImage:
                   hasImage ? NetworkImage(message.author.imageUrl!) : null,
-              backgroundColor: color,
+              backgroundColor: hasImage ? null : color,
               radius: 16,
               child: !hasImage
                   ? Text(
