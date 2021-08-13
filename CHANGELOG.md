@@ -1,3 +1,9 @@
+## 1.2.0
+
+- Fix avatar color when using an image. Thanks @m-j-g for reporting!
+- Can't send spaces using keyboard anymore. Thanks @m-j-g for reporting!
+- Update dependencies
+
 ## 1.1.9
 
 - Add `sendingIcon` widget to the theme. Thanks @abhisunkewar for the PR!
