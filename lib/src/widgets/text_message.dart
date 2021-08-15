@@ -122,11 +122,13 @@ class TextMessage extends StatelessWidget {
     final _user = InheritedUser.of(context).user;
     final _width = MediaQuery.of(context).size.width;
 
-    final urlRegexp = RegExp(REGEX_LINK);
-    final matches = urlRegexp.allMatches(message.text.toLowerCase());
+    if (usePreviewData && onPreviewDataFetched != null) {
+      final urlRegexp = RegExp(REGEX_LINK);
+      final matches = urlRegexp.allMatches(message.text.toLowerCase());
 
-    if (matches.isNotEmpty && usePreviewData && onPreviewDataFetched != null) {
-      return _linkPreview(_user, _width, context);
+      if (matches.isNotEmpty) {
+        return _linkPreview(_user, _width, context);
+      }
     }
 
     return Container(
