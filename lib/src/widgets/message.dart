@@ -176,13 +176,14 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
+    final _currentUserIsAuthor = _user.id == message.author.id;
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(_user.id == message.author.id || roundBorder
-          ? _messageBorderRadius
-          : 0),
-      bottomRight: Radius.circular(_user.id == message.author.id
+      bottomLeft: Radius.circular(
+        _currentUserIsAuthor || roundBorder ? _messageBorderRadius : 0,
+      ),
+      bottomRight: Radius.circular(_currentUserIsAuthor
           ? roundBorder
               ? _messageBorderRadius
               : 0
@@ -190,12 +191,10 @@ class Message extends StatelessWidget {
       topLeft: Radius.circular(_messageBorderRadius),
       topRight: Radius.circular(_messageBorderRadius),
     );
-    final _currentUserIsAuthor = _user.id == message.author.id;
 
     return Container(
-      alignment: _user.id == message.author.id
-          ? Alignment.centerRight
-          : Alignment.centerLeft,
+      alignment:
+          _currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
       margin: const EdgeInsets.only(
         bottom: 4,
         left: 20,
