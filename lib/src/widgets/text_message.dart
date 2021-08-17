@@ -123,8 +123,8 @@ class TextMessage extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width;
 
     if (usePreviewData && onPreviewDataFetched != null) {
-      final urlRegexp = RegExp(REGEX_LINK);
-      final matches = urlRegexp.allMatches(message.text.toLowerCase());
+      final urlRegexp = RegExp(REGEX_LINK, caseSensitive: false);
+      final matches = urlRegexp.allMatches(message.text);
 
       if (matches.isNotEmpty) {
         return _linkPreview(_user, _width, context);
