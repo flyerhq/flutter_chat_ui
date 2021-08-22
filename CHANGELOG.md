@@ -1,3 +1,7 @@
+## 1.3.0
+
+- Update dependencies
+
 ## 1.2.0
 
 - Fix avatar color when using an image. Thanks @m-j-g for reporting!
