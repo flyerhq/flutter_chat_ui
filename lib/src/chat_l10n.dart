@@ -161,6 +161,28 @@ class ChatL10nRu extends ChatL10n {
         );
 }
 
+/// Turkish l10n which extends [ChatL10n]
+@immutable
+class ChatL10nTr extends ChatL10n {
+  /// Creates Turkish l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nTr({
+    String attachmentButtonAccessibilityLabel = 'Medya gönder',
+    String emptyChatPlaceholder = 'Henüz mesaj yok',
+    String fileButtonAccessibilityLabel = 'Dosya',
+    String inputPlaceholder = 'Mesaj',
+    String sendButtonAccessibilityLabel = 'Gönder',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
+}
+
 /// Ukrainian l10n which extends [ChatL10n]
 @immutable
 class ChatL10nUk extends ChatL10n {
