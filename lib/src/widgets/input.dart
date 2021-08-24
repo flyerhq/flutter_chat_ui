@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
+import '../models/send_button_visibility_mode.dart';
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
@@ -24,6 +26,7 @@ class Input extends StatefulWidget {
     this.onAttachmentPressed,
     required this.onSendPressed,
     this.onTextChanged,
+    required this.sendButtonVisibilityMode,
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
@@ -42,6 +45,9 @@ class Input extends StatefulWidget {
   /// Will be called whenever the text inside [TextField] changes
   final void Function(String)? onTextChanged;
 
+  /// See [Chat.sendButtonVisibilityMode]
+  final SendButtonVisibilityMode sendButtonVisibilityMode;
+
   @override
   _InputState createState() => _InputState();
 }
@@ -55,7 +61,11 @@ class _InputState extends State<Input> {
   @override
   void initState() {
     super.initState();
-    _textController.addListener(_handleTextControllerChange);
+    // When sendButtonVisibilityMode is set to SendButtonVisibilityMode.editing,
+    // we will need to add a listener to check if _textController is empty.
+    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
+      _textController.addListener(_handleTextControllerChange);
+    }
   }
 
   @override
@@ -179,7 +189,9 @@ class _InputState extends State<Input> {
                       ),
                     ),
                     Visibility(
-                      visible: _sendButtonVisible,
+                      visible: widget.sendButtonVisibilityMode ==
+                              SendButtonVisibilityMode.always ||
+                          _sendButtonVisible,
                       child: SendButton(
                         onPressed: _handleSendPressed,
                       ),

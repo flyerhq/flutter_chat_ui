@@ -1,15 +1,18 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
 import '../models/date_header.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
+import '../models/send_button_visibility_mode.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'inherited_chat_theme.dart';
@@ -40,6 +43,7 @@ class Chat extends StatefulWidget {
     this.onPreviewDataFetched,
     required this.onSendPressed,
     this.onTextChanged,
+    this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.theme = const DefaultChatTheme(),
@@ -118,6 +122,12 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onTextChanged]
   final void Function(String)? onTextChanged;
+
+  /// Controls the visibility behavior of the [SendButton] based on the
+  /// [TextField] state inside the [Input] widget.
+  ///
+  /// Defaults to [SendButtonVisibilityMode.editing].
+  final SendButtonVisibilityMode sendButtonVisibilityMode;
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
@@ -364,6 +374,8 @@ class _ChatState extends State<Chat> {
                         onAttachmentPressed: widget.onAttachmentPressed,
                         onSendPressed: widget.onSendPressed,
                         onTextChanged: widget.onTextChanged,
+                        sendButtonVisibilityMode:
+                            widget.sendButtonVisibilityMode,
                       ),
                     ],
                   ),

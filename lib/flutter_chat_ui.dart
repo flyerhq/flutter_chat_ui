@@ -2,6 +2,7 @@ library flutter_chat_ui;
 
 export 'src/chat_l10n.dart';
 export 'src/chat_theme.dart';
+export 'src/models/send_button_visibility_mode.dart';
 export 'src/util.dart' show formatBytes;
 export 'src/widgets/attachment_button.dart';
 export 'src/widgets/chat.dart';
