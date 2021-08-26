@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/uploader/file_upload_helper.dart';
+import 'package:flutter_chat_ui/src/widgets/image_viewer.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -208,7 +209,46 @@ class _ChatState extends State<Chat> {
         );
   }
 
-  Widget _buildImageGallery() {
+  void _buildImageGallery() {
+    showDialog(context: context, builder: (BuildContext context) {
+      return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Dismissible(
+          key: const Key('photo_view_gallery'),
+          direction: DismissDirection.down,
+          onDismissed: (direction) => _onCloseGalleryPressed(),
+          child: Container(
+            //color: Colors.black26,
+            child: Stack(
+              children: [
+                InteractiveViewer(
+                  minScale: 1.0,
+                  maxScale: 2.0,
+                  child: Center(
+                    child: CachedNetworkImage(
+                        imageUrl: _gallery[_imageViewIndex].uri,
+                        placeholder: (context, url) {
+                          return Center(child: CircularProgressIndicator());
+                        }),
+                  ),
+                ),
+                Positioned(
+                  right: 16,
+                  top: 16,
+                  child: CloseButton(
+                    color: Colors.white,
+                    onPressed: (){
+                      _onCloseGalleryPressed();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+    /*
     return Dismissible(
       key: const Key('photo_view_gallery'),
       direction: DismissDirection.down,
@@ -254,6 +294,7 @@ class _ChatState extends State<Chat> {
         ),
       ),
     );
+     */
   }
 
   Widget _buildMessage(Object object) {
@@ -326,18 +367,22 @@ class _ChatState extends State<Chat> {
   }
 
   void _onCloseGalleryPressed() {
-    setState(() {
-      _isImageViewVisible = false;
-    });
+    // setState(() {
+    //
+    // });
+    Navigator.of(context).pop();
+    _isImageViewVisible = false;
   }
 
   void _onImagePressed(types.ImageMessage message) {
-    setState(() {
-      _imageViewIndex = _gallery.indexWhere(
-        (element) => element.id == message.id && element.uri == message.uri,
-      );
-      _isImageViewVisible = true;
-    });
+    // setState(() {
+    //
+    // });
+    _imageViewIndex = _gallery.indexWhere(
+          (element) => element.id == message.id && element.uri == message.uri,
+    );
+    _isImageViewVisible = true;
+    _buildImageGallery();
   }
 
   void _onPageChanged(int index) {
@@ -398,7 +443,7 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
-              if (_isImageViewVisible) _buildImageGallery(),
+              //if (_isImageViewVisible) _buildImageGallery(),
             ],
           ),
         ),

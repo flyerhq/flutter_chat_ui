@@ -187,6 +187,7 @@ class _ChatPageState extends State<ChatPage> {
     const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
 
     return Scaffold(
+      appBar: AppBar(title: Text('Chat'),),
       body: Chat(
         messages: _messages,
         onAttachmentPressed: _handleAtachmentPressed,
