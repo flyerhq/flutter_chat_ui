@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/uploader/file_upload_helper.dart';
@@ -212,29 +213,45 @@ class _ChatState extends State<Chat> {
       key: const Key('photo_view_gallery'),
       direction: DismissDirection.down,
       onDismissed: (direction) => _onCloseGalleryPressed(),
-      child: Stack(
-        children: [
-          PhotoViewGallery.builder(
-            builder: (BuildContext context, int index) =>
-                PhotoViewGalleryPageOptions(
-              imageProvider: Conditional().getProvider(_gallery[index].uri),
+      child: Container(
+        color: Colors.black26,
+        child: Stack(
+          children: [
+            InteractiveViewer(
+              minScale: 1.0,
+              maxScale: 2.0,
+              child: Center(
+                child: CachedNetworkImage(
+                  imageUrl: _gallery[_imageViewIndex].uri,
+                  placeholder: (context, url) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                ),
+              ),
             ),
-            itemCount: _gallery.length,
-            loadingBuilder: (context, event) =>
-                _imageGalleryLoadingBuilder(context, event),
-            onPageChanged: _onPageChanged,
-            pageController: PageController(initialPage: _imageViewIndex),
-            scrollPhysics: const ClampingScrollPhysics(),
-          ),
-          Positioned(
-            right: 16,
-            top: 56,
-            child: CloseButton(
-              color: Colors.white,
-              onPressed: _onCloseGalleryPressed,
+            /// Commented as gallery view is not required.
+            // PhotoViewGallery.builder(
+            //   builder: (BuildContext context, int index) =>
+            //       PhotoViewGalleryPageOptions(
+            //     imageProvider: Conditional().getProvider(_gallery[index].uri),
+            //   ),
+            //   itemCount: _gallery.length,
+            //   loadingBuilder: (context, event) =>
+            //       _imageGalleryLoadingBuilder(context, event),
+            //   onPageChanged: _onPageChanged,
+            //   pageController: PageController(initialPage: _imageViewIndex),
+            //   scrollPhysics: const ClampingScrollPhysics(),
+            // ),
+            Positioned(
+              right: 16,
+              top: 40,
+              child: CloseButton(
+                color: Colors.white,
+                onPressed: _onCloseGalleryPressed,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

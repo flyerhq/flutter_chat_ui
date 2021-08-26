@@ -116,11 +116,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleImageSelection() async {
 
-    final result = await ImagePicker().getImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
+    final result = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (result != null) {
       final bytes = await result.readAsBytes();
@@ -144,7 +140,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleMessageTap(types.Message message) async {
     if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
+      //await OpenFile.open(message.uri);
     }
   }
 
@@ -186,7 +182,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MDA3QHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzMTA4ODAxOH0.vIrjkTJiown_a-lSHkHYjDYWxUO9Px7KRiOHaWVD8vVqgGxq5eYt79pZSbEEWRXg37-FR4ChaDiSkAcszgiYgA';
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYW1pcjEyQHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzMjU1Mjk1MH0.zq0Dk0WbCJd055tY6Ndf76wWxEISDYOjgRRcv5a8x4Jas9lpqotl7SCFIbEcElaCTz8Y8k-AmIETYtRO8q3NtQ';
     const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/100';
     const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
 
