@@ -79,7 +79,7 @@ class Message extends StatelessWidget {
             child: CircleAvatar(
               backgroundImage:
                   hasImage ? NetworkImage(message.author.imageUrl!) : null,
-              backgroundColor: hasImage ? InheritedChatTheme.of(context).theme.userImagedAvatarBackgroundColor, : color,
+              backgroundColor: hasImage ? InheritedChatTheme.of(context).theme.userImagedAvatarBackgroundColor : color,
               radius: 16,
               child: !hasImage
                   ? Text(
