@@ -456,7 +456,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Color userImagedAvatarBackgroundColor = DARK,
+    Color userImagedAvatarBackgroundColor = SECONDARY_DARK,
     TextStyle userNameTextStyle = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 12,
