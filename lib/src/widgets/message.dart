@@ -72,6 +72,8 @@ class Message extends StatelessWidget {
     );
     final hasImage = message.author.imageUrl != null;
     final name = getUserName(message.author);
+    final userImagedAvatarBackgroundColor =
+      InheritedChatTheme.of(context).theme.userImagedAvatarBackgroundColor;
 
     return showAvatar
         ? Container(
@@ -79,7 +81,9 @@ class Message extends StatelessWidget {
             child: CircleAvatar(
               backgroundImage:
                   hasImage ? NetworkImage(message.author.imageUrl!) : null,
-              backgroundColor: hasImage ? InheritedChatTheme.of(context).theme.userImagedAvatarBackgroundColor : color,
+              backgroundColor: hasImage
+                ? userImagedAvatarBackgroundColor
+                : color,
               radius: 16,
               child: !hasImage
                   ? Text(
