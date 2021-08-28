@@ -77,9 +77,9 @@ abstract class ChatTheme {
     required this.sentMessageDocumentIconColor,
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
+    required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
-    required this.userImagedAvatarBackgroundColor,
     required this.userNameTextStyle,
   });
 
@@ -174,6 +174,10 @@ abstract class ChatTheme {
   /// Text style used for displaying link title on sent messages
   final TextStyle sentMessageLinkTitleTextStyle;
 
+  /// Color used as a background for user avatar if an image is provided.
+  /// Visible if the image has some transparent parts.
+  final Color userAvatarImageBackgroundColor;
+
   /// Colors used as backgrounds for user avatars with no image and so,
   /// corresponding user names.
   /// Calculated based on a user ID, so unique across the whole app.
@@ -182,10 +186,6 @@ abstract class ChatTheme {
   /// Text style used for displaying initials on user avatar if no
   /// image is provided
   final TextStyle userAvatarTextStyle;
-
-  /// Color used as background for user avatar if an image is provided.
-  /// Visible if the provided image has some transparent parts.
-  final Color userImagedAvatarBackgroundColor;
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
@@ -293,6 +293,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = COLORS,
     TextStyle userAvatarTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -301,7 +302,6 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Color userImagedAvatarBackgroundColor = NEUTRAL_7,
     TextStyle userNameTextStyle = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 12,
@@ -339,9 +339,9 @@ class DefaultChatTheme extends ChatTheme {
           sentMessageLinkDescriptionTextStyle:
               sentMessageLinkDescriptionTextStyle,
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
+          userAvatarImageBackgroundColor: userAvatarImageBackgroundColor,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
-          userImagedAvatarBackgroundColor: userImagedAvatarBackgroundColor,
           userNameTextStyle: userNameTextStyle,
         );
 }
@@ -448,6 +448,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = COLORS,
     TextStyle userAvatarTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -456,7 +457,6 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    Color userImagedAvatarBackgroundColor = SECONDARY_DARK,
     TextStyle userNameTextStyle = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 12,
@@ -494,9 +494,9 @@ class DarkChatTheme extends ChatTheme {
           sentMessageLinkDescriptionTextStyle:
               sentMessageLinkDescriptionTextStyle,
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
+          userAvatarImageBackgroundColor: userAvatarImageBackgroundColor,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
-          userImagedAvatarBackgroundColor: userImagedAvatarBackgroundColor,
           userNameTextStyle: userNameTextStyle,
         );
 }
