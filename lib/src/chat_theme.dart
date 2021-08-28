@@ -79,6 +79,7 @@ abstract class ChatTheme {
     required this.sentMessageLinkTitleTextStyle,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
+    required this.userImagedAvatarBackgroundColor,
     required this.userNameTextStyle,
   });
 
@@ -173,13 +174,18 @@ abstract class ChatTheme {
   /// Text style used for displaying link title on sent messages
   final TextStyle sentMessageLinkTitleTextStyle;
 
-  /// Colors used as backgrounds for user avatars and corresponded user names.
+  /// Colors used as backgrounds for user avatars with no image and so,
+  /// corresponding user names.
   /// Calculated based on a user ID, so unique across the whole app.
   final List<Color> userAvatarNameColors;
 
   /// Text style used for displaying initials on user avatar if no
   /// image is provided
   final TextStyle userAvatarTextStyle;
+
+  /// Color used as background for user avatar if an image is provided.
+  /// Visible if the provided image has some transparent parts.
+  final Color userImagedAvatarBackgroundColor;
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
@@ -295,6 +301,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    Color userImagedAvatarBackgroundColor = NEUTRAL_7,
     TextStyle userNameTextStyle = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 12,
@@ -334,6 +341,7 @@ class DefaultChatTheme extends ChatTheme {
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
+          userImagedAvatarBackgroundColor: userImagedAvatarBackgroundColor,
           userNameTextStyle: userNameTextStyle,
         );
 }
@@ -448,6 +456,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    Color userImagedAvatarBackgroundColor = SECONDARY_DARK,
     TextStyle userNameTextStyle = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 12,
@@ -487,6 +496,7 @@ class DarkChatTheme extends ChatTheme {
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
+          userImagedAvatarBackgroundColor: userImagedAvatarBackgroundColor,
           userNameTextStyle: userNameTextStyle,
         );
 }
