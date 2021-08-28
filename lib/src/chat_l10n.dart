@@ -171,7 +171,7 @@ class ChatL10nTr extends ChatL10n {
     String attachmentButtonAccessibilityLabel = 'Medya gönder',
     String emptyChatPlaceholder = 'Henüz mesaj yok',
     String fileButtonAccessibilityLabel = 'Dosya',
-    String inputPlaceholder = 'Mesaj',
+    String inputPlaceholder = 'Mesaj yazın',
     String sendButtonAccessibilityLabel = 'Gönder',
   }) : super(
           attachmentButtonAccessibilityLabel:
