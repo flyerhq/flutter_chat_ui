@@ -1,5 +1,11 @@
 ## 1.3.0
 
+- Chat is now correctly rendered in not full screen mode. Removed `SafeArea` from the lib itself, wrap `Chat` component if needed. Thanks @m-j-g for reporting!
+- Fixes crash deserializing `previewData`. Thanks @m-j-g for reporting!
+- Fixed automatic scroll to bottom issue in paginated mode. Thanks @m-j-g for reporting!
+- Added `userAvatarImageBackgroundColor`. Thanks @pierrebarbaroux for the PR!
+- Added `sendButtonVisibilityMode`. Thanks @halildurmus for the PR!
+- Added Turkish localization. Thanks @halildurmus for the PR!
 - Update dependencies
 
 ## 1.2.0
