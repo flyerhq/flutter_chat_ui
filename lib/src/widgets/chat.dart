@@ -18,7 +18,8 @@ import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
 
-/// Entry widget, represents the complete chat
+/// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
+/// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
@@ -234,7 +235,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget _buildMessage(Object object) {
+  Widget _buildMessage(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
       return Container(
         alignment: Alignment.center,
@@ -256,8 +257,8 @@ class _ChatState extends State<Chat> {
       final message = map['message']! as types.Message;
       final _messageWidth =
           widget.showUserAvatars && message.author.id != widget.user.id
-              ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
-              : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
+              ? min(constraints.maxWidth * 0.72, 440).floor()
+              : min(constraints.maxWidth * 0.78, 440).floor();
 
       return Message(
         key: ValueKey(message.id),
@@ -341,39 +342,39 @@ class _ChatState extends State<Chat> {
             children: [
               Container(
                 color: widget.theme.backgroundColor,
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: widget.messages.isEmpty
-                            ? SizedBox.expand(
-                                child: _buildEmptyState(),
-                              )
-                            : GestureDetector(
-                                onTap: () => FocusManager.instance.primaryFocus
-                                    ?.unfocus(),
-                                child: ChatList(
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: widget.messages.isEmpty
+                          ? SizedBox.expand(
+                              child: _buildEmptyState(),
+                            )
+                          : GestureDetector(
+                              onTap: () =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              child: LayoutBuilder(
+                                builder: (BuildContext context,
+                                        BoxConstraints constraints) =>
+                                    ChatList(
                                   isLastPage: widget.isLastPage,
                                   itemBuilder: (item, index) =>
-                                      _buildMessage(item),
+                                      _buildMessage(item, constraints),
                                   items: _chatMessages,
                                   onEndReached: widget.onEndReached,
                                   onEndReachedThreshold:
                                       widget.onEndReachedThreshold,
                                 ),
                               ),
-                      ),
-                      Input(
-                        isAttachmentUploading: widget.isAttachmentUploading,
-                        onAttachmentPressed: widget.onAttachmentPressed,
-                        onSendPressed: widget.onSendPressed,
-                        onTextChanged: widget.onTextChanged,
-                        sendButtonVisibilityMode:
-                            widget.sendButtonVisibilityMode,
-                      ),
-                    ],
-                  ),
+                            ),
+                    ),
+                    Input(
+                      isAttachmentUploading: widget.isAttachmentUploading,
+                      onAttachmentPressed: widget.onAttachmentPressed,
+                      onSendPressed: widget.onSendPressed,
+                      onTextChanged: widget.onTextChanged,
+                      sendButtonVisibilityMode: widget.sendButtonVisibilityMode,
+                    ),
+                  ],
                 ),
               ),
               if (_isImageViewVisible) _buildImageGallery(),
