@@ -125,23 +125,26 @@ class _ChatListState extends State<ChatList>
       final oldItem = oldList[1];
       final item = widget.items[1];
 
-      // Compare items to fire only on newly added messages
-      if (oldItem != item && item is Map<String, Object>) {
+      if (oldItem is Map<String, Object> && item is Map<String, Object>) {
+        final oldMessage = oldItem['message']! as types.Message;
         final message = item['message']! as types.Message;
 
-        // Run only for sent message
-        if (message.author.id == InheritedUser.of(context).user.id) {
-          // Delay to give some time for Flutter to calculate new
-          // size after new message was added
-          Future.delayed(const Duration(milliseconds: 100), () {
-            if (_scrollController.hasClients) {
-              _scrollController.animateTo(
-                0,
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInQuad,
-              );
-            }
-          });
+        // Compare items to fire only on newly added messages
+        if (oldMessage != message) {
+          // Run only for sent message
+          if (message.author.id == InheritedUser.of(context).user.id) {
+            // Delay to give some time for Flutter to calculate new
+            // size after new message was added
+            Future.delayed(const Duration(milliseconds: 100), () {
+              if (_scrollController.hasClients) {
+                _scrollController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInQuad,
+                );
+              }
+            });
+          }
         }
       }
     } catch (e) {
