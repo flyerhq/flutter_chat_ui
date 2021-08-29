@@ -83,7 +83,7 @@ class TextMessage extends StatelessWidget {
     );
   }
 
-  Widget _textWidget(types.User user, BuildContext context) {
+  Widget _textWidgetBuilder(types.User user, BuildContext context) {
     final color = getUserAvatarNameColor(message.author,
         InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final name = getUserName(message.author);
@@ -136,7 +136,7 @@ class TextMessage extends StatelessWidget {
         horizontal: 24,
         vertical: 16,
       ),
-      child: _textWidget(_user, context),
+      child: _textWidgetBuilder(_user, context),
     );
   }
 }

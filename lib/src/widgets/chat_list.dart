@@ -105,7 +105,7 @@ class _ChatListState extends State<ChatList>
           final item = oldList[pos];
           _listKey.currentState?.removeItem(
             pos,
-            (_, animation) => _buildRemovedMessage(item, animation),
+            (_, animation) => _removedMessageBuilder(item, animation),
           );
         },
         change: (pos, payload) {},
@@ -116,6 +116,31 @@ class _ChatListState extends State<ChatList>
     _scrollToBottomIfNeeded(oldList);
 
     _oldData = List.from(widget.items);
+  }
+
+  Widget _newMessageBuilder(int index, Animation<double> animation) {
+    try {
+      final item = _oldData[index];
+
+      return SizeTransition(
+        axisAlignment: -1,
+        sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
+        child: widget.itemBuilder(item, index),
+      );
+    } catch (e) {
+      return const SizedBox();
+    }
+  }
+
+  Widget _removedMessageBuilder(Object item, Animation<double> animation) {
+    return SizeTransition(
+      axisAlignment: -1,
+      sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
+      child: FadeTransition(
+        opacity: animation.drive(CurveTween(curve: Curves.easeInQuad)),
+        child: widget.itemBuilder(item, null),
+      ),
+    );
   }
 
   // Hacky solution to reconsider
@@ -149,31 +174,6 @@ class _ChatListState extends State<ChatList>
       }
     } catch (e) {
       // Do nothing if there are no items
-    }
-  }
-
-  Widget _buildRemovedMessage(Object item, Animation<double> animation) {
-    return SizeTransition(
-      axisAlignment: -1,
-      sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
-      child: FadeTransition(
-        opacity: animation.drive(CurveTween(curve: Curves.easeInQuad)),
-        child: widget.itemBuilder(item, null),
-      ),
-    );
-  }
-
-  Widget _buildNewMessage(int index, Animation<double> animation) {
-    try {
-      final item = _oldData[index];
-
-      return SizeTransition(
-        axisAlignment: -1,
-        sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
-        child: widget.itemBuilder(item, index),
-      );
-    } catch (e) {
-      return const SizedBox();
     }
   }
 
@@ -219,7 +219,7 @@ class _ChatListState extends State<ChatList>
               initialItemCount: widget.items.length,
               key: _listKey,
               itemBuilder: (_, index, animation) =>
-                  _buildNewMessage(index, animation),
+                  _newMessageBuilder(index, animation),
             ),
           ),
           SliverPadding(

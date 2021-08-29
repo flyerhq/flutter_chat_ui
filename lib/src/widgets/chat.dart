@@ -24,8 +24,8 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
     Key? key,
-    this.buildCustomMessage,
     this.customDateHeaderText,
+    this.customMessageBuilder,
     this.dateFormat,
     this.dateLocale,
     this.disableImageGallery,
@@ -51,9 +51,6 @@ class Chat extends StatefulWidget {
     required this.user,
   }) : super(key: key);
 
-  /// See [Message.buildCustomMessage]
-  final Widget Function(types.Message)? buildCustomMessage;
-
   /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
   /// customize date headers in your case, use this to return an arbitrary
   /// string based on a [DateTime] of a particular message. Can be helpful to
@@ -62,6 +59,9 @@ class Chat extends StatefulWidget {
   /// for example today, yesterday and before. Or you can just return the same
   /// date header for any message.
   final String Function(DateTime)? customDateHeaderText;
+
+  /// See [Message.customMessageBuilder]
+  final Widget Function(types.Message)? customMessageBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
@@ -188,7 +188,7 @@ class _ChatState extends State<Chat> {
     }
   }
 
-  Widget _buildEmptyState() {
+  Widget _emptyStateBuilder() {
     return widget.emptyState ??
         Container(
           alignment: Alignment.center,
@@ -203,7 +203,7 @@ class _ChatState extends State<Chat> {
         );
   }
 
-  Widget _buildImageGallery() {
+  Widget _imageGalleryBuilder() {
     return Dismissible(
       key: const Key('photo_view_gallery'),
       direction: DismissDirection.down,
@@ -235,7 +235,24 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  Widget _buildMessage(Object object, BoxConstraints constraints) {
+  Widget _imageGalleryLoadingBuilder(
+    BuildContext context,
+    ImageChunkEvent? event,
+  ) {
+    return Center(
+      child: SizedBox(
+        width: 20.0,
+        height: 20.0,
+        child: CircularProgressIndicator(
+          value: event == null || event.expectedTotalBytes == null
+              ? 0
+              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+        ),
+      ),
+    );
+  }
+
+  Widget _messageBuilder(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
       return Container(
         alignment: Alignment.center,
@@ -262,7 +279,7 @@ class _ChatState extends State<Chat> {
 
       return Message(
         key: ValueKey(message.id),
-        buildCustomMessage: widget.buildCustomMessage,
+        customMessageBuilder: widget.customMessageBuilder,
         message: message,
         messageWidth: _messageWidth,
         onMessageLongPress: widget.onMessageLongPress,
@@ -283,23 +300,6 @@ class _ChatState extends State<Chat> {
         usePreviewData: widget.usePreviewData,
       );
     }
-  }
-
-  Widget _imageGalleryLoadingBuilder(
-    BuildContext context,
-    ImageChunkEvent? event,
-  ) {
-    return Center(
-      child: SizedBox(
-        width: 20.0,
-        height: 20.0,
-        child: CircularProgressIndicator(
-          value: event == null || event.expectedTotalBytes == null
-              ? 0
-              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
-        ),
-      ),
-    );
   }
 
   void _onCloseGalleryPressed() {
@@ -347,7 +347,7 @@ class _ChatState extends State<Chat> {
                     Flexible(
                       child: widget.messages.isEmpty
                           ? SizedBox.expand(
-                              child: _buildEmptyState(),
+                              child: _emptyStateBuilder(),
                             )
                           : GestureDetector(
                               onTap: () =>
@@ -358,7 +358,7 @@ class _ChatState extends State<Chat> {
                                     ChatList(
                                   isLastPage: widget.isLastPage,
                                   itemBuilder: (item, index) =>
-                                      _buildMessage(item, constraints),
+                                      _messageBuilder(item, constraints),
                                   items: _chatMessages,
                                   onEndReached: widget.onEndReached,
                                   onEndReachedThreshold:
@@ -377,7 +377,7 @@ class _ChatState extends State<Chat> {
                   ],
                 ),
               ),
-              if (_isImageViewVisible) _buildImageGallery(),
+              if (_isImageViewVisible) _imageGalleryBuilder(),
             ],
           ),
         ),
