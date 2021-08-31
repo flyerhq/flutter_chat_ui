@@ -1,3 +1,8 @@
+## 1.3.1
+
+- Rename `buildCustomMessage` to `customMessageBuilder`
+- Update dependencies
+
 ## 1.3.0
 
 - Chat is now correctly rendered in not full screen mode. Removed `SafeArea` from the lib itself, wrap `Chat` component if needed. Thanks @m-j-g for reporting!

@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         id: randomString(),
         name: result.files.single.name,
         size: result.files.single.size,
-        uri: result.files.single.path ?? '',
+        uri: result.files.single.path,
       );
 
       _addMessage(message);
@@ -291,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
         id: randomString(),
         name: result.files.single.name,
         size: result.files.single.size,
-        uri: result.files.single.path ?? '',
+        uri: result.files.single.path,
       );
 
       _addMessage(message);

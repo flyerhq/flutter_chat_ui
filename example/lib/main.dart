@@ -103,10 +103,10 @@ class _ChatPageState extends State<ChatPage> {
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         id: const Uuid().v4(),
-        mimeType: lookupMimeType(result.files.single.path ?? ''),
+        mimeType: lookupMimeType(result.files.single.path),
         name: result.files.single.name,
         size: result.files.single.size,
-        uri: result.files.single.path ?? '',
+        uri: result.files.single.path,
       );
 
       _addMessage(message);
