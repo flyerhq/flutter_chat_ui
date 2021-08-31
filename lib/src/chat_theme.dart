@@ -59,8 +59,11 @@ abstract class ChatTheme {
     required this.errorIcon,
     required this.inputBackgroundColor,
     required this.inputBorderRadius,
-    required this.inputTextStyle,
+    required this.inputMargin,
     required this.inputTextColor,
+    this.inputTextCursorColor,
+    required this.inputTextDecoration,
+    required this.inputTextStyle,
     required this.messageBorderRadius,
     required this.primaryColor,
     required this.receivedMessageBodyTextStyle,
@@ -113,8 +116,17 @@ abstract class ChatTheme {
   /// Top border radius of the bottom bar where text field is
   final BorderRadius inputBorderRadius;
 
+  /// Insets of the bottom bar where text field is
+  final EdgeInsetsGeometry inputMargin;
+
   /// Color of the text field's text and attachment/send buttons
   final Color inputTextColor;
+
+  /// Color of the text field's cursor
+  final Color? inputTextCursorColor;
+
+  /// Decoration of the input text field
+  final InputDecoration inputTextDecoration;
 
   /// Text style of the message input. To change the color use [inputTextColor].
   final TextStyle inputTextStyle;
@@ -222,6 +234,18 @@ class DefaultChatTheme extends ChatTheme {
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
+    Color? inputCursorColor,
+    InputDecoration inputDecoration = const InputDecoration.collapsed(
+      hintStyle: TextStyle(
+        color: NEUTRAL_7_WITH_OPACITY,
+        fontFamily: 'Avenir',
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        height: 1.5,
+      ),
+      hintText: null,
+    ),
+    EdgeInsetsGeometry inputMargin = const EdgeInsets.all(0.0),
     Color inputTextColor = NEUTRAL_7,
     TextStyle inputTextStyle = const TextStyle(
       fontFamily: 'Avenir',
@@ -319,7 +343,10 @@ class DefaultChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
+          inputMargin: inputMargin,
           inputTextColor: inputTextColor,
+          inputTextCursorColor: inputCursorColor,
+          inputTextDecoration: inputDecoration,
           inputTextStyle: inputTextStyle,
           messageBorderRadius: messageBorderRadius,
           primaryColor: primaryColor,
@@ -377,6 +404,18 @@ class DarkChatTheme extends ChatTheme {
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
+    Color? inputCursorColor,
+    InputDecoration inputDecoration = const InputDecoration.collapsed(
+      hintStyle: TextStyle(
+        color: NEUTRAL_7_WITH_OPACITY,
+        fontFamily: 'Avenir',
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        height: 1.5,
+      ),
+      hintText: null,
+    ),
+    EdgeInsetsGeometry inputMargin = const EdgeInsets.all(0.0),
     Color inputTextColor = NEUTRAL_7,
     TextStyle inputTextStyle = const TextStyle(
       fontFamily: 'Avenir',
@@ -474,7 +513,10 @@ class DarkChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
+          inputMargin: inputMargin,
           inputTextColor: inputTextColor,
+          inputTextCursorColor: inputCursorColor,
+          inputTextDecoration: inputDecoration,
           inputTextStyle: inputTextStyle,
           messageBorderRadius: messageBorderRadius,
           primaryColor: primaryColor,
