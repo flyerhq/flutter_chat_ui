@@ -236,13 +236,6 @@ class DefaultChatTheme extends ChatTheme {
     ),
     Color? inputCursorColor,
     InputDecoration inputDecoration = const InputDecoration.collapsed(
-      hintStyle: TextStyle(
-        color: NEUTRAL_7_WITH_OPACITY,
-        fontFamily: 'Avenir',
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        height: 1.5,
-      ),
       hintText: null,
     ),
     EdgeInsetsGeometry inputMargin = const EdgeInsets.all(0.0),
@@ -406,13 +399,6 @@ class DarkChatTheme extends ChatTheme {
     ),
     Color? inputCursorColor,
     InputDecoration inputDecoration = const InputDecoration.collapsed(
-      hintStyle: TextStyle(
-        color: NEUTRAL_7_WITH_OPACITY,
-        fontFamily: 'Avenir',
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        height: 1.5,
-      ),
       hintText: null,
     ),
     EdgeInsetsGeometry inputMargin = const EdgeInsets.all(0.0),
