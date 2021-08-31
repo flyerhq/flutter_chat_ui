@@ -59,7 +59,7 @@ abstract class ChatTheme {
     required this.errorIcon,
     required this.inputBackgroundColor,
     required this.inputBorderRadius,
-    required this.inputMargin,
+    required this.inputPadding,
     required this.inputTextColor,
     this.inputTextCursorColor,
     required this.inputTextDecoration,
@@ -117,7 +117,7 @@ abstract class ChatTheme {
   final BorderRadius inputBorderRadius;
 
   /// Insets of the bottom bar where text field is
-  final EdgeInsetsGeometry inputMargin;
+  final EdgeInsetsGeometry inputPadding;
 
   /// Color of the text field's text and attachment/send buttons
   final Color inputTextColor;
@@ -343,7 +343,7 @@ class DefaultChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
-          inputMargin: inputMargin,
+          inputPadding: inputMargin,
           inputTextColor: inputTextColor,
           inputTextCursorColor: inputCursorColor,
           inputTextDecoration: inputDecoration,
@@ -513,7 +513,7 @@ class DarkChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
-          inputMargin: inputMargin,
+          inputPadding: inputMargin,
           inputTextColor: inputTextColor,
           inputTextCursorColor: inputCursorColor,
           inputTextDecoration: inputDecoration,

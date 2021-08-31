@@ -146,7 +146,7 @@ class _InputState extends State<Input> {
           child: Focus(
             autofocus: true,
             child: Padding(
-              padding: InheritedChatTheme.of(context).theme.inputMargin,
+              padding: InheritedChatTheme.of(context).theme.inputPadding,
               child: Material(
                 borderRadius:
                     InheritedChatTheme.of(context).theme.inputBorderRadius,
