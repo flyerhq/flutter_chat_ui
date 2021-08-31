@@ -238,13 +238,17 @@ class _ChatListState extends State<ChatList>
                     child: SizedBox(
                       height: 16,
                       width: 16,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.transparent,
-                        strokeWidth: 1.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          InheritedChatTheme.of(context).theme.primaryColor,
-                        ),
-                      ),
+                      child: _isNextPageLoading
+                          ? CircularProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                              strokeWidth: 1.5,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                InheritedChatTheme.of(context)
+                                    .theme
+                                    .primaryColor,
+                              ),
+                            )
+                          : null,
                     ),
                   ),
                 ),
