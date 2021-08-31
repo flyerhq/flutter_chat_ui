@@ -43,7 +43,7 @@ const SECONDARY = Color(0xfff5f5f7);
 /// Secondary dark
 const SECONDARY_DARK = Color(0xff2b2250);
 
-/// Base chat theme containing all required variables to make a theme.
+/// Base chat theme containing all required properties to make a theme.
 /// Extend this class if you want to create a custom theme.
 @immutable
 abstract class ChatTheme {
@@ -195,7 +195,7 @@ abstract class ChatTheme {
 @immutable
 class DefaultChatTheme extends ChatTheme {
   /// Creates a default chat theme. Use this constructor if you want to
-  /// override only a couple of variables, otherwise create a new class
+  /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatTheme]
   const DefaultChatTheme({
     Widget? attachmentButtonIcon,
@@ -350,7 +350,7 @@ class DefaultChatTheme extends ChatTheme {
 @immutable
 class DarkChatTheme extends ChatTheme {
   /// Creates a dark chat theme. Use this constructor if you want to
-  /// override only a couple of variables, otherwise create a new class
+  /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatTheme]
   const DarkChatTheme({
     Widget? attachmentButtonIcon,

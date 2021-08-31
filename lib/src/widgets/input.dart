@@ -16,7 +16,7 @@ class SendMessageIntent extends Intent {
 }
 
 /// A class that represents bottom bar widget with a text field, attachment and
-/// send buttons inside. Hides send button when text field is empty.
+/// send buttons inside. By default hides send button when text field is empty.
 class Input extends StatefulWidget {
   /// Creates [Input] widget
   const Input({

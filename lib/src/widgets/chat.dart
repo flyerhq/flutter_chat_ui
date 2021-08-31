@@ -91,7 +91,7 @@ class Chat extends StatefulWidget {
 
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
   /// existing one, like the default [ChatL10nEn]. You can customize only
-  /// certain variables, see more here [ChatL10nEn].
+  /// certain properties, see more here [ChatL10nEn].
   final ChatL10n l10n;
 
   /// List of [types.Message] to render in the chat widget
@@ -134,7 +134,7 @@ class Chat extends StatefulWidget {
 
   /// Chat theme. Extend [ChatTheme] class to create your own theme or use
   /// existing one, like the [DefaultChatTheme]. You can customize only certain
-  /// variables, see more here [DefaultChatTheme].
+  /// properties, see more here [DefaultChatTheme].
   final ChatTheme theme;
 
   /// Allows you to customize the time format. IMPORTANT: only for the time,

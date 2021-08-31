@@ -8,7 +8,7 @@ import 'inherited_user.dart';
 import 'text_message.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
-/// messages, delivery time and status. Sets maximum width for a message for
+/// messages and status. Sets maximum width for a message for
 /// a nice look on larger screens.
 class Message extends StatelessWidget {
   /// Creates a particular message from any message type
