@@ -235,8 +235,9 @@ class DefaultChatTheme extends ChatTheme {
       top: Radius.circular(20),
     ),
     Color? inputCursorColor,
-    InputDecoration inputDecoration = const InputDecoration.collapsed(
-      hintText: null,
+    InputDecoration inputDecoration = const InputDecoration(
+      isCollapsed: true,
+      border: InputBorder.none,
     ),
     EdgeInsetsGeometry inputMargin = const EdgeInsets.all(0.0),
     Color inputTextColor = NEUTRAL_7,
@@ -398,8 +399,9 @@ class DarkChatTheme extends ChatTheme {
       top: Radius.circular(20),
     ),
     Color? inputCursorColor,
-    InputDecoration inputDecoration = const InputDecoration.collapsed(
-      hintText: null,
+    InputDecoration inputDecoration = const InputDecoration(
+      isCollapsed: true,
+      border: InputBorder.none,
     ),
     EdgeInsetsGeometry inputMargin = const EdgeInsets.all(0.0),
     Color inputTextColor = NEUTRAL_7,
