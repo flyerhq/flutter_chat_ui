@@ -24,6 +24,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
     Key? key,
+    this.customBottomWidget,
     this.customDateHeaderText,
     this.customMessageBuilder,
     this.dateFormat,
@@ -50,6 +51,11 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
+
+  /// Allows to replace default Input widget in chat eg. if you want to block
+  /// sending messages, create channel view etc. To remove input just pass
+  /// an empty [Container] in this prop.
+  final Widget? customBottomWidget;
 
   /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
   /// customize date headers in your case, use this to return an arbitrary
@@ -367,13 +373,15 @@ class _ChatState extends State<Chat> {
                               ),
                             ),
                     ),
-                    Input(
-                      isAttachmentUploading: widget.isAttachmentUploading,
-                      onAttachmentPressed: widget.onAttachmentPressed,
-                      onSendPressed: widget.onSendPressed,
-                      onTextChanged: widget.onTextChanged,
-                      sendButtonVisibilityMode: widget.sendButtonVisibilityMode,
-                    ),
+                    widget.customBottomWidget ??
+                        Input(
+                          isAttachmentUploading: widget.isAttachmentUploading,
+                          onAttachmentPressed: widget.onAttachmentPressed,
+                          onSendPressed: widget.onSendPressed,
+                          onTextChanged: widget.onTextChanged,
+                          sendButtonVisibilityMode:
+                              widget.sendButtonVisibilityMode,
+                        ),
                   ],
                 ),
               ),
