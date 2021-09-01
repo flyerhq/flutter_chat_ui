@@ -1,3 +1,9 @@
+## 1.3.2
+
+- Fix memory leak. Thanks @m-j-g for reporting!
+- Add `customBottomWidget` useful to remove the input and create a channel view
+- Add `inputPadding`, `inputTextCursorColor` and `inputTextDecoration` to the theme for the additional input customization
+
 ## 1.3.1
 
 - Rename `buildCustomMessage` to `customMessageBuilder`
