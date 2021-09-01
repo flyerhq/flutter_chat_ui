@@ -52,9 +52,8 @@ class Chat extends StatefulWidget {
     required this.user,
   }) : super(key: key);
 
-  /// Allows to replace default Input widget in chat eg. if you want to block
-  /// sending messages, create channel view etc. To remove input just pass
-  /// an empty [Container] in this prop.
+  /// Allows you to replace the default Input widget e.g. if you want to create
+  /// a channel view.
   final Widget? customBottomWidget;
 
   /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
