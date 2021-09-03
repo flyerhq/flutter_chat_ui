@@ -42,6 +42,7 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
+    this.onTextFieldTap,
     this.onTextChanged,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
@@ -126,6 +127,9 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onTextChanged]
   final void Function(String)? onTextChanged;
+
+  /// See [Input.onTextFieldTap]
+  final void Function()? onTextFieldTap;
 
   /// See [Input.sendButtonVisibilityMode]
   final SendButtonVisibilityMode sendButtonVisibilityMode;
@@ -378,6 +382,7 @@ class _ChatState extends State<Chat> {
                           onAttachmentPressed: widget.onAttachmentPressed,
                           onSendPressed: widget.onSendPressed,
                           onTextChanged: widget.onTextChanged,
+                          onTextFieldTap: widget.onTextFieldTap,
                           sendButtonVisibilityMode:
                               widget.sendButtonVisibilityMode,
                         ),
