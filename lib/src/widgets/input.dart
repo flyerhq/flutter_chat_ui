@@ -45,7 +45,7 @@ class Input extends StatefulWidget {
   /// Will be called whenever the text inside [TextField] changes
   final void Function(String)? onTextChanged;
 
-  /// Will be called on [TextField] tap.
+  /// Will be called on [TextField] tap
   final void Function()? onTextFieldTap;
 
   /// Controls the visibility behavior of the [SendButton] based on the

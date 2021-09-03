@@ -42,8 +42,8 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.onTextFieldTap,
     this.onTextChanged,
+    this.onTextFieldTap,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
     this.showUserNames = false,
@@ -250,8 +250,8 @@ class _ChatState extends State<Chat> {
   ) {
     return Center(
       child: SizedBox(
-        width: 20.0,
-        height: 20.0,
+        width: 20,
+        height: 20,
         child: CircularProgressIndicator(
           value: event == null || event.expectedTotalBytes == null
               ? 0

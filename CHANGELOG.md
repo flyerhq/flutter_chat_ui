@@ -1,3 +1,8 @@
+## 1.3.3
+
+- Add `onTextFieldTap`. Thanks @halildurmus for the PR!
+- Add `messageInsetsHorizontal` and `messageInsetsVertical` to the theme to customize message bubble's paddings
+
 ## 1.3.2
 
 - Fix memory leak. Thanks @m-j-g for reporting!

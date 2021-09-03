@@ -95,7 +95,12 @@ class _ImageMessageState extends State<ImageMessage> {
           children: [
             Container(
               height: 64,
-              margin: const EdgeInsets.all(16),
+              margin: EdgeInsets.fromLTRB(
+                InheritedChatTheme.of(context).theme.messageInsetsVertical,
+                InheritedChatTheme.of(context).theme.messageInsetsVertical,
+                16,
+                InheritedChatTheme.of(context).theme.messageInsetsVertical,
+              ),
               width: 64,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
@@ -107,7 +112,12 @@ class _ImageMessageState extends State<ImageMessage> {
             ),
             Flexible(
               child: Container(
-                margin: const EdgeInsets.fromLTRB(0, 16, 24, 16),
+                margin: EdgeInsets.fromLTRB(
+                  0,
+                  InheritedChatTheme.of(context).theme.messageInsetsVertical,
+                  InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
+                  InheritedChatTheme.of(context).theme.messageInsetsVertical,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -65,6 +65,8 @@ abstract class ChatTheme {
     required this.inputTextDecoration,
     required this.inputTextStyle,
     required this.messageBorderRadius,
+    required this.messageInsetsHorizontal,
+    required this.messageInsetsVertical,
     required this.primaryColor,
     required this.receivedMessageBodyTextStyle,
     required this.receivedMessageCaptionTextStyle,
@@ -133,6 +135,12 @@ abstract class ChatTheme {
 
   /// Border radius of message container
   final double messageBorderRadius;
+
+  /// Horizontal message bubble insets
+  final double messageInsetsHorizontal;
+
+  /// Vertical message bubble insets
+  final double messageInsetsVertical;
 
   /// Primary color of the chat used as a background of sent messages
   /// and statuses
@@ -248,7 +256,9 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
-    double messageBorderRadius = 20.0,
+    double messageBorderRadius = 20,
+    double messageInsetsHorizontal = 20,
+    double messageInsetsVertical = 16,
     Color primaryColor = PRIMARY,
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_0,
@@ -344,6 +354,8 @@ class DefaultChatTheme extends ChatTheme {
           inputTextDecoration: inputTextDecoration,
           inputTextStyle: inputTextStyle,
           messageBorderRadius: messageBorderRadius,
+          messageInsetsHorizontal: messageInsetsHorizontal,
+          messageInsetsVertical: messageInsetsVertical,
           primaryColor: primaryColor,
           receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,
           receivedMessageCaptionTextStyle: receivedMessageCaptionTextStyle,
@@ -413,7 +425,9 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
-    double messageBorderRadius = 20.0,
+    double messageBorderRadius = 20,
+    double messageInsetsHorizontal = 20,
+    double messageInsetsVertical = 16,
     Color primaryColor = PRIMARY,
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: NEUTRAL_7,
@@ -503,6 +517,8 @@ class DarkChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
+          messageInsetsHorizontal: messageInsetsHorizontal,
+          messageInsetsVertical: messageInsetsVertical,
           inputPadding: inputPadding,
           inputTextColor: inputTextColor,
           inputTextCursorColor: inputTextCursorColor,

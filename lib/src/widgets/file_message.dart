@@ -26,7 +26,12 @@ class FileMessage extends StatelessWidget {
     return Semantics(
       label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 16, 24, 16),
+        padding: EdgeInsets.fromLTRB(
+          InheritedChatTheme.of(context).theme.messageInsetsVertical,
+          InheritedChatTheme.of(context).theme.messageInsetsVertical,
+          InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
+          InheritedChatTheme.of(context).theme.messageInsetsVertical,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
