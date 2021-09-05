@@ -3,7 +3,7 @@ id: basic-usage
 title: Basic Usage
 ---
 
-You start with a `Chat` widget that will render a chat. It has 3 required parameters:
+You start with a `Chat` widget that will render a chat. It has 3 required properties:
 
 * `messages` - an array of messages to be rendered. Accepts abstract message, see [types](types). If you have your message types you will need to map those to any of the defined ones. Let us know if we need to add more message types or add more fields to the existing ones.
 * `onSendPressed` - a function that will have a partial text message as a parameter. See [types](types) for more info on how types are structured. From the partial text message you need to create a text message which will at least have `author`, `id` and `text`, this is done by you because we wanted to give you more control over those values.
