@@ -137,7 +137,7 @@ class _ImageMessageState extends State<ImageMessage> {
                         top: 4,
                       ),
                       child: Text(
-                        formatBytes(widget.message.size),
+                        formatBytes(widget.message.size.truncate()),
                         style: _user.id == widget.message.author.id
                             ? InheritedChatTheme.of(context)
                                 .theme

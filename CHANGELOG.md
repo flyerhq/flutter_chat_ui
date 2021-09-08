@@ -1,3 +1,7 @@
+## 1.3.4
+
+- Update dependencies
+
 ## 1.3.3
 
 - Add `onTextFieldTap`. Thanks @halildurmus for the PR!

@@ -74,7 +74,7 @@ class FileMessage extends StatelessWidget {
                         top: 4,
                       ),
                       child: Text(
-                        formatBytes(message.size),
+                        formatBytes(message.size.truncate()),
                         style: _user.id == message.author.id
                             ? InheritedChatTheme.of(context)
                                 .theme
