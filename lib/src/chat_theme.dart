@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // For internal usage only. Use values from theme itself.
 
 /// See [ChatTheme.userAvatarNameColors]
-const COLORS = [
+const colors = [
   Color(0xffff6767),
   Color(0xff66e0da),
   Color(0xfff5a2d9),
@@ -17,31 +17,31 @@ const COLORS = [
 ];
 
 /// Dark
-const DARK = Color(0xff1f1c38);
+const dark = Color(0xff1f1c38);
 
 /// Error
-const ERROR = Color(0xffff6767);
+const error = Color(0xffff6767);
 
 /// N0
-const NEUTRAL_0 = Color(0xff1d1c21);
+const neutral0 = Color(0xff1d1c21);
 
 /// N2
-const NEUTRAL_2 = Color(0xff9e9cab);
+const neutral2 = Color(0xff9e9cab);
 
 /// N7
-const NEUTRAL_7 = Color(0xffffffff);
+const neutral7 = Color(0xffffffff);
 
 /// N7 with opacity
-const NEUTRAL_7_WITH_OPACITY = Color(0x80ffffff);
+const neutral7WithOpacity = Color(0x80ffffff);
 
 /// Primary
-const PRIMARY = Color(0xff6f61e8);
+const primary = Color(0xff6f61e8);
 
 /// Secondary
-const SECONDARY = Color(0xfff5f5f7);
+const secondary = Color(0xfff5f5f7);
 
 /// Secondary dark
-const SECONDARY_DARK = Color(0xff2b2250);
+const secondaryDark = Color(0xff2b2250);
 
 /// Base chat theme containing all required properties to make a theme.
 /// Extend this class if you want to create a custom theme.
@@ -219,9 +219,9 @@ class DefaultChatTheme extends ChatTheme {
   /// which extends [ChatTheme]
   const DefaultChatTheme({
     Widget? attachmentButtonIcon,
-    Color backgroundColor = NEUTRAL_7,
+    Color backgroundColor = neutral7,
     TextStyle dateDividerTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: neutral2,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
@@ -230,20 +230,20 @@ class DefaultChatTheme extends ChatTheme {
     Widget? deliveredIcon,
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: neutral2,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
-    Color errorColor = ERROR,
+    Color errorColor = error,
     Widget? errorIcon,
-    Color inputBackgroundColor = NEUTRAL_0,
+    Color inputBackgroundColor = neutral0,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
     EdgeInsetsGeometry inputPadding = EdgeInsets.zero,
-    Color inputTextColor = NEUTRAL_7,
+    Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
       border: InputBorder.none,
@@ -259,73 +259,73 @@ class DefaultChatTheme extends ChatTheme {
     double messageBorderRadius = 20,
     double messageInsetsHorizontal = 20,
     double messageInsetsVertical = 16,
-    Color primaryColor = PRIMARY,
+    Color primaryColor = primary,
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: neutral0,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: neutral2,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color receivedMessageDocumentIconColor = PRIMARY,
+    Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: neutral0,
       fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_0,
+      color: neutral0,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    Color secondaryColor = SECONDARY,
+    Color secondaryColor = secondary,
     Widget? seenIcon,
     Widget? sendButtonIcon,
     Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_7_WITH_OPACITY,
+      color: neutral7WithOpacity,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color sentMessageDocumentIconColor = NEUTRAL_7,
+    Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
     Color userAvatarImageBackgroundColor = Colors.transparent,
-    List<Color> userAvatarNameColors = COLORS,
+    List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
@@ -388,9 +388,9 @@ class DarkChatTheme extends ChatTheme {
   /// which extends [ChatTheme]
   const DarkChatTheme({
     Widget? attachmentButtonIcon,
-    Color backgroundColor = DARK,
+    Color backgroundColor = dark,
     TextStyle dateDividerTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
@@ -399,20 +399,20 @@ class DarkChatTheme extends ChatTheme {
     Widget? deliveredIcon,
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
-      color: NEUTRAL_2,
+      color: neutral2,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
-    Color errorColor = ERROR,
+    Color errorColor = error,
     Widget? errorIcon,
-    Color inputBackgroundColor = SECONDARY_DARK,
+    Color inputBackgroundColor = secondaryDark,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
     EdgeInsetsGeometry inputPadding = EdgeInsets.zero,
-    Color inputTextColor = NEUTRAL_7,
+    Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
       border: InputBorder.none,
@@ -428,73 +428,73 @@ class DarkChatTheme extends ChatTheme {
     double messageBorderRadius = 20,
     double messageInsetsHorizontal = 20,
     double messageInsetsVertical = 16,
-    Color primaryColor = PRIMARY,
+    Color primaryColor = primary,
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_7_WITH_OPACITY,
+      color: neutral7WithOpacity,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color receivedMessageDocumentIconColor = PRIMARY,
+    Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    Color secondaryColor = SECONDARY_DARK,
+    Color secondaryColor = secondaryDark,
     Widget? seenIcon,
     Widget? sendButtonIcon,
     Widget? sendingIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
-      color: NEUTRAL_7_WITH_OPACITY,
+      color: neutral7WithOpacity,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
     ),
-    Color sentMessageDocumentIconColor = NEUTRAL_7,
+    Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
     Color userAvatarImageBackgroundColor = Colors.transparent,
-    List<Color> userAvatarNameColors = COLORS,
+    List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: neutral7,
       fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
