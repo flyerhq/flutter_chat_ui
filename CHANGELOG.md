@@ -1,3 +1,7 @@
+## 1.4.1
+
+- Fix release on `pub.dev`
+
 ## 1.4.0
 
 - Update to Flutter 2.5
