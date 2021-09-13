@@ -228,7 +228,10 @@ class _ChatState extends State<Chat> {
                         imageUrl: _gallery[_imageViewIndex].uri,
                         placeholder: (context, url) {
                           return Center(child: CircularProgressIndicator());
-                        }),
+                        },
+                        errorWidget: (context, url, error){
+                          return Container();
+                        },),
                   ),
                 ),
                 Positioned(
@@ -247,53 +250,6 @@ class _ChatState extends State<Chat> {
         ),
       );
     });
-    /*
-    return Dismissible(
-      key: const Key('photo_view_gallery'),
-      direction: DismissDirection.down,
-      onDismissed: (direction) => _onCloseGalleryPressed(),
-      child: Container(
-        color: Colors.black26,
-        child: Stack(
-          children: [
-            InteractiveViewer(
-              minScale: 1.0,
-              maxScale: 2.0,
-              child: Center(
-                child: CachedNetworkImage(
-                  imageUrl: _gallery[_imageViewIndex].uri,
-                  placeholder: (context, url) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                ),
-              ),
-            ),
-            /// Commented as gallery view is not required.
-            // PhotoViewGallery.builder(
-            //   builder: (BuildContext context, int index) =>
-            //       PhotoViewGalleryPageOptions(
-            //     imageProvider: Conditional().getProvider(_gallery[index].uri),
-            //   ),
-            //   itemCount: _gallery.length,
-            //   loadingBuilder: (context, event) =>
-            //       _imageGalleryLoadingBuilder(context, event),
-            //   onPageChanged: _onPageChanged,
-            //   pageController: PageController(initialPage: _imageViewIndex),
-            //   scrollPhysics: const ClampingScrollPhysics(),
-            // ),
-            Positioned(
-              right: 16,
-              top: 40,
-              child: CloseButton(
-                color: Colors.white,
-                onPressed: _onCloseGalleryPressed,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-     */
   }
 
   Widget _buildMessage(Object object) {
@@ -380,8 +336,12 @@ class _ChatState extends State<Chat> {
     _imageViewIndex = _gallery.indexWhere(
           (element) => element.id == message.id && element.uri == message.uri,
     );
-    _isImageViewVisible = true;
-    _buildImageGallery();
+    if (_imageViewIndex >= 0) {
+      if (_gallery[_imageViewIndex].uri.contains('http')) {
+        _isImageViewVisible = true;
+        _buildImageGallery();
+      }
+    }
   }
 
   void _onPageChanged(int index) {

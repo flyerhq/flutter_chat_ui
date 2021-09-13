@@ -54,7 +54,6 @@ class _ImageMessageState extends State<ImageMessage> {
   void initState() {
     super.initState();
     _message = widget.message;
-    //_image = Conditional().getProvider(widget.message.uri);
     _size = Size(_message.width ?? 0, _message.height ?? 0);
 
     if (!_message.uri.contains('http')) {
@@ -62,6 +61,16 @@ class _ImageMessageState extends State<ImageMessage> {
       _uploadAttachment();
     } else {
       _isNetworkImage = true;
+    }
+  }
+
+  bool isValidForFullScreen() {
+    if (_isNetworkImage) {
+      return true;
+    } else if (_isUploading || _isUploadFailed) {
+      return false;
+    } else {
+      return false;
     }
   }
 
