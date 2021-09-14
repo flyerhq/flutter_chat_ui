@@ -15,7 +15,6 @@ class Message extends StatelessWidget {
   const Message({
     Key? key,
     this.customMessageBuilder,
-    this.textMessageBuilder,
     required this.message,
     required this.messageWidth,
     this.onMessageLongPress,
@@ -49,7 +48,7 @@ class Message extends StatelessWidget {
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
-  onPreviewDataFetched;
+      onPreviewDataFetched;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
@@ -79,26 +78,26 @@ class Message extends StatelessWidget {
 
     return showAvatar
         ? Container(
-      margin: const EdgeInsets.only(right: 8),
-      child: CircleAvatar(
-        backgroundColor: hasImage
-            ? InheritedChatTheme.of(context)
-            .theme
-            .userAvatarImageBackgroundColor
-            : color,
-        backgroundImage:
-        hasImage ? NetworkImage(message.author.imageUrl!) : null,
-        radius: 16,
-        child: !hasImage
-            ? Text(
-          name.isEmpty ? '' : name[0].toUpperCase(),
-          style: InheritedChatTheme.of(context)
-              .theme
-              .userAvatarTextStyle,
-        )
-            : null,
-      ),
-    )
+            margin: const EdgeInsets.only(right: 8),
+            child: CircleAvatar(
+              backgroundColor: hasImage
+                  ? InheritedChatTheme.of(context)
+                      .theme
+                      .userAvatarImageBackgroundColor
+                  : color,
+              backgroundImage:
+                  hasImage ? NetworkImage(message.author.imageUrl!) : null,
+              radius: 16,
+              child: !hasImage
+                  ? Text(
+                      name.isEmpty ? '' : name[0].toUpperCase(),
+                      style: InheritedChatTheme.of(context)
+                          .theme
+                          .userAvatarTextStyle,
+                    )
+                  : null,
+            ),
+          )
         : const SizedBox(width: 40);
   }
 
@@ -142,42 +141,42 @@ class Message extends StatelessWidget {
         return InheritedChatTheme.of(context).theme.deliveredIcon != null
             ? InheritedChatTheme.of(context).theme.deliveredIcon!
             : Image.asset(
-          'assets/icon-delivered.png',
-          color: InheritedChatTheme.of(context).theme.primaryColor,
-          package: 'flutter_chat_ui',
-        );
+                'assets/icon-delivered.png',
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.error:
         return InheritedChatTheme.of(context).theme.errorIcon != null
             ? InheritedChatTheme.of(context).theme.errorIcon!
             : Image.asset(
-          'assets/icon-error.png',
-          color: InheritedChatTheme.of(context).theme.errorColor,
-          package: 'flutter_chat_ui',
-        );
+                'assets/icon-error.png',
+                color: InheritedChatTheme.of(context).theme.errorColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.seen:
         return InheritedChatTheme.of(context).theme.seenIcon != null
             ? InheritedChatTheme.of(context).theme.seenIcon!
             : Image.asset(
-          'assets/icon-seen.png',
-          color: InheritedChatTheme.of(context).theme.primaryColor,
-          package: 'flutter_chat_ui',
-        );
+                'assets/icon-seen.png',
+                color: InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
       case types.Status.sending:
         return InheritedChatTheme.of(context).theme.sendingIcon != null
             ? InheritedChatTheme.of(context).theme.sendingIcon!
             : Center(
-          child: SizedBox(
-            height: 10,
-            width: 10,
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.transparent,
-              strokeWidth: 1.5,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                InheritedChatTheme.of(context).theme.primaryColor,
-              ),
-            ),
-          ),
-        );
+                child: SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    strokeWidth: 1.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      InheritedChatTheme.of(context).theme.primaryColor,
+                    ),
+                  ),
+                ),
+              );
       default:
         return const SizedBox();
     }
@@ -195,8 +194,8 @@ class Message extends StatelessWidget {
       ),
       bottomRight: Radius.circular(_currentUserIsAuthor
           ? roundBorder
-          ? _messageBorderRadius
-          : 0
+              ? _messageBorderRadius
+              : 0
           : _messageBorderRadius),
       topLeft: Radius.circular(_messageBorderRadius),
       topRight: Radius.circular(_messageBorderRadius),
@@ -204,7 +203,7 @@ class Message extends StatelessWidget {
 
     return Container(
       alignment:
-      _currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
+          _currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
       margin: const EdgeInsets.only(
         bottom: 4,
         left: 20,
@@ -228,7 +227,7 @@ class Message extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: _borderRadius,
                       color: !_currentUserIsAuthor ||
-                          message.type == types.MessageType.image
+                              message.type == types.MessageType.image
                           ? InheritedChatTheme.of(context).theme.secondaryColor
                           : InheritedChatTheme.of(context).theme.primaryColor,
                     ),
