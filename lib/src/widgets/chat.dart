@@ -230,7 +230,7 @@ class _ChatState extends State<Chat> {
                           return Center(child: CircularProgressIndicator());
                         },
                         errorWidget: (context, url, error){
-                          return Container();
+                          return Icon(Icons.error, color: Colors.white,);
                         },),
                   ),
                 ),

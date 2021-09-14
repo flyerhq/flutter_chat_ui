@@ -52,16 +52,15 @@ class _ImageMessageState extends State<ImageMessage> {
 
   @override
   void initState() {
-    super.initState();
     _message = widget.message;
     _size = Size(_message.width ?? 0, _message.height ?? 0);
-
     if (!_message.uri.contains('http')) {
       _isNetworkImage = false;
       _uploadAttachment();
     } else {
       _isNetworkImage = true;
     }
+    super.initState();
   }
 
   bool isValidForFullScreen() {
@@ -76,13 +75,9 @@ class _ImageMessageState extends State<ImageMessage> {
 
   Future<void> _uploadAttachment() async {
     print("Upload started");
-    if (mounted) {
-      setState(() {
-        _isUploading = true;
-        _isUploadFailed = false;
-        _percentage = 0.0;
-      });
-    }
+    _isUploading = true;
+    _isUploadFailed = false;
+    _percentage = 0.0;
     try {
       final fileUrl = await FileService().fileUploadMultipart(
           filePath: _message.uri,
@@ -99,12 +94,13 @@ class _ImageMessageState extends State<ImageMessage> {
         _message = _message.copyWith(uri: fileUrl) as types.ImageMessage;
         widget.onUploadSuccessCallback!(_message);
       }
+      _isUploading = false;
+      _isNetworkImage = true;
       if (mounted) {
-        setState(() {
-          _isUploading = false;
-          _isNetworkImage = true;
-        });
+        setState(() {});
       }
+    } on DuplicateFileException catch (e) {
+      log('Duplicate file');
     } catch (e) {
       if (mounted) {
         _isUploading = false;
@@ -215,6 +211,7 @@ class _ImageMessageState extends State<ImageMessage> {
             color: Colors.black.withOpacity(0.5),
             child: InkWell(
               onTap: () {
+                FileService().resetCurrentFilePath();
                 _uploadAttachment();
               },
               child: Center(
