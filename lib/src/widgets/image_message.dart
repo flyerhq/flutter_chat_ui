@@ -52,6 +52,7 @@ class _ImageMessageState extends State<ImageMessage> {
 
   @override
   void initState() {
+    super.initState();
     _message = widget.message;
     _size = Size(_message.width ?? 0, _message.height ?? 0);
     if (!_message.uri.contains('http')) {
@@ -59,17 +60,6 @@ class _ImageMessageState extends State<ImageMessage> {
       _uploadAttachment();
     } else {
       _isNetworkImage = true;
-    }
-    super.initState();
-  }
-
-  bool isValidForFullScreen() {
-    if (_isNetworkImage) {
-      return true;
-    } else if (_isUploading || _isUploadFailed) {
-      return false;
-    } else {
-      return false;
     }
   }
 
@@ -99,12 +89,11 @@ class _ImageMessageState extends State<ImageMessage> {
       if (mounted) {
         setState(() {});
       }
-    } on DuplicateFileException catch (e) {
-      log('Duplicate file');
-    } catch (e) {
+    }catch (e) {
+      _isUploading = false;
+      _isUploadFailed = true;
       if (mounted) {
-        _isUploading = false;
-        _isUploadFailed = true;
+        setState(() {});
       }
     }
   }
@@ -211,7 +200,6 @@ class _ImageMessageState extends State<ImageMessage> {
             color: Colors.black.withOpacity(0.5),
             child: InkWell(
               onTap: () {
-                FileService().resetCurrentFilePath();
                 _uploadAttachment();
               },
               child: Center(

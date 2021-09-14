@@ -25,7 +25,6 @@ class FileService {
     String _token = '';
     String _fileUploadUrl = '';
     String _fileDownloadUrl = '';
-    String _currentFileUploadPath = '';
 
     static bool trustSelfSigned = true;
 
@@ -36,17 +35,9 @@ class FileService {
 
         return httpClient;
     }
-    
-    void resetCurrentFilePath() {
-        _currentFileUploadPath = '';
-    }
 
     Future<String> fileUploadMultipart(
         {required String filePath, OnUploadProgressCallback? onUploadProgress}) async {
-        if (_currentFileUploadPath == filePath) {
-            throw DuplicateFileException();
-        }
-        _currentFileUploadPath = filePath;
         final httpClient = getHttpClient();
 
         final request = await httpClient.postUrl(Uri.parse(_fileUploadUrl));
