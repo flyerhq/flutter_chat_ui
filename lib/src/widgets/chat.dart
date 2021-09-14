@@ -124,7 +124,7 @@ class Chat extends StatefulWidget {
 
   /// See [Message.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
-  onPreviewDataFetched;
+      onPreviewDataFetched;
 
   /// See [Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
@@ -226,8 +226,8 @@ class _ChatState extends State<Chat> {
           PhotoViewGallery.builder(
             builder: (BuildContext context, int index) =>
                 PhotoViewGalleryPageOptions(
-                  imageProvider: Conditional().getProvider(_gallery[index].uri),
-                ),
+              imageProvider: Conditional().getProvider(_gallery[index].uri),
+            ),
             itemCount: _gallery.length,
             loadingBuilder: (context, event) =>
                 _imageGalleryLoadingBuilder(context, event),
@@ -249,9 +249,9 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _imageGalleryLoadingBuilder(
-      BuildContext context,
-      ImageChunkEvent? event,
-      ) {
+    BuildContext context,
+    ImageChunkEvent? event,
+  ) {
     return Center(
       child: SizedBox(
         width: 20,
@@ -286,14 +286,13 @@ class _ChatState extends State<Chat> {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
       final _messageWidth =
-      widget.showUserAvatars && message.author.id != widget.user.id
-          ? min(constraints.maxWidth * 0.72, 440).floor()
-          : min(constraints.maxWidth * 0.78, 440).floor();
+          widget.showUserAvatars && message.author.id != widget.user.id
+              ? min(constraints.maxWidth * 0.72, 440).floor()
+              : min(constraints.maxWidth * 0.78, 440).floor();
 
       return Message(
         key: ValueKey(message.id),
         customMessageBuilder: widget.customMessageBuilder,
-        textMessageBuilder: widget.textMessageBuilder,
         message: message,
         messageWidth: _messageWidth,
         onMessageLongPress: widget.onMessageLongPress,
@@ -325,7 +324,7 @@ class _ChatState extends State<Chat> {
   void _onImagePressed(types.ImageMessage message) {
     setState(() {
       _imageViewIndex = _gallery.indexWhere(
-            (element) => element.id == message.id && element.uri == message.uri,
+        (element) => element.id == message.id && element.uri == message.uri,
       );
       _isImageViewVisible = true;
     });
@@ -338,9 +337,9 @@ class _ChatState extends State<Chat> {
   }
 
   void _onPreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
@@ -361,25 +360,25 @@ class _ChatState extends State<Chat> {
                     Flexible(
                       child: widget.messages.isEmpty
                           ? SizedBox.expand(
-                        child: _emptyStateBuilder(),
-                      )
+                              child: _emptyStateBuilder(),
+                            )
                           : GestureDetector(
-                        onTap: () =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
-                        child: LayoutBuilder(
-                          builder: (BuildContext context,
-                              BoxConstraints constraints) =>
-                              ChatList(
-                                isLastPage: widget.isLastPage,
-                                itemBuilder: (item, index) =>
-                                    _messageBuilder(item, constraints),
-                                items: _chatMessages,
-                                onEndReached: widget.onEndReached,
-                                onEndReachedThreshold:
-                                widget.onEndReachedThreshold,
+                              onTap: () =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              child: LayoutBuilder(
+                                builder: (BuildContext context,
+                                        BoxConstraints constraints) =>
+                                    ChatList(
+                                  isLastPage: widget.isLastPage,
+                                  itemBuilder: (item, index) =>
+                                      _messageBuilder(item, constraints),
+                                  items: _chatMessages,
+                                  onEndReached: widget.onEndReached,
+                                  onEndReachedThreshold:
+                                      widget.onEndReachedThreshold,
+                                ),
                               ),
-                        ),
-                      ),
+                            ),
                     ),
                     widget.customBottomWidget ??
                         Input(
@@ -389,7 +388,7 @@ class _ChatState extends State<Chat> {
                           onTextChanged: widget.onTextChanged,
                           onTextFieldTap: widget.onTextFieldTap,
                           sendButtonVisibilityMode:
-                          widget.sendButtonVisibilityMode,
+                              widget.sendButtonVisibilityMode,
                         ),
                   ],
                 ),
