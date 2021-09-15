@@ -1,3 +1,8 @@
+## 1.4.2
+
+- Add `fileMessageBuilder`, `imageMessageBuilder` and `textMessageBuilder` for more customization options. Thanks @Androrier for the PR!
+- Fix avatar initials (show first letters of first and last names, instead of one, where applicable)
+
 ## 1.4.1
 
 - Fix release on `pub.dev`
