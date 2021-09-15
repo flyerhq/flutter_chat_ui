@@ -15,6 +15,8 @@ class Message extends StatelessWidget {
   const Message({
     Key? key,
     this.customMessageBuilder,
+    this.fileMessageBuilder,
+    this.imageMessageBuilder,
     required this.message,
     required this.messageWidth,
     this.onMessageLongPress,
@@ -25,14 +27,21 @@ class Message extends StatelessWidget {
     required this.showName,
     required this.showStatus,
     required this.showUserAvatars,
+    this.textMessageBuilder,
     required this.usePreviewData,
   }) : super(key: key);
 
   /// Build a custom message inside predefined bubble
-  final Widget Function(types.CustomMessage)? customMessageBuilder;
+  final Widget Function(types.CustomMessage, {int messageWidth})?
+      customMessageBuilder;
 
-  /// Build a custom text message inside predefined bubble
-  final Widget Function(types.TextMessage, Function(types.TextMessage, types.PreviewData)? , bool, bool)? textMessageBuilder;
+  /// Build a file message inside predefined bubble
+  final Widget Function(types.FileMessage, {int messageWidth})?
+      fileMessageBuilder;
+
+  /// Build an image message inside predefined bubble
+  final Widget Function(types.ImageMessage, {int messageWidth})?
+      imageMessageBuilder;
 
   /// Any message type
   final types.Message message;
@@ -64,6 +73,10 @@ class Message extends StatelessWidget {
 
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
+
+  /// Build a text message inside predefined bubble.
+  final Widget Function(types.TextMessage, {int messageWidth, bool showName})?
+      textMessageBuilder;
 
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
@@ -106,29 +119,32 @@ class Message extends StatelessWidget {
       case types.MessageType.custom:
         final customMessage = message as types.CustomMessage;
         return customMessageBuilder != null
-            ? customMessageBuilder!(customMessage)
+            ? customMessageBuilder!(customMessage, messageWidth: messageWidth)
             : const SizedBox();
       case types.MessageType.file:
         final fileMessage = message as types.FileMessage;
-        return FileMessage(
-          message: fileMessage,
-        );
+        return fileMessageBuilder != null
+            ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
+            : FileMessage(message: fileMessage);
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
-        return ImageMessage(
-          message: imageMessage,
-          messageWidth: messageWidth,
-        );
+        return imageMessageBuilder != null
+            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
+            : ImageMessage(message: imageMessage, messageWidth: messageWidth);
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
         return textMessageBuilder != null
-            ? textMessageBuilder!(textMessage, onPreviewDataFetched, showName, usePreviewData)
+            ? textMessageBuilder!(
+                textMessage,
+                messageWidth: messageWidth,
+                showName: showName,
+              )
             : TextMessage(
-          message: textMessage,
-          onPreviewDataFetched: onPreviewDataFetched,
-          showName: showName,
-          usePreviewData: usePreviewData,
-        );
+                message: textMessage,
+                onPreviewDataFetched: onPreviewDataFetched,
+                showName: showName,
+                usePreviewData: usePreviewData,
+              );
       default:
         return const SizedBox();
     }
