@@ -24,6 +24,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
     Key? key,
+    this.textMessageBuilder,
     this.customBottomWidget,
     this.customDateHeaderText,
     this.customMessageBuilder,
@@ -68,6 +69,9 @@ class Chat extends StatefulWidget {
 
   /// See [Message.customMessageBuilder]
   final Widget Function(types.Message)? customMessageBuilder;
+
+  /// See [Message.textMessageBuilder]
+  final Widget Function(types.TextMessage, Function(types.TextMessage, types.PreviewData)? , bool, bool)? textMessageBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
