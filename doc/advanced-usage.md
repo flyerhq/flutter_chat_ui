@@ -83,14 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
       type: FileType.any,
     );
 
-    if (result != null) {
+    if (result != null && result.files.single.path != null) {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         id: randomString(),
         name: result.files.single.name,
         size: result.files.single.size,
-        uri: result.files.single.path,
+        uri: result.files.single.path!,
       );
 
       _addMessage(message);
@@ -284,14 +284,14 @@ class _MyHomePageState extends State<MyHomePage> {
       type: FileType.any,
     );
 
-    if (result != null) {
+    if (result != null && result.files.single.path != null) {
       final message = types.FileMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         id: randomString(),
         name: result.files.single.name,
         size: result.files.single.size,
-        uri: result.files.single.path,
+        uri: result.files.single.path!,
       );
 
       _addMessage(message);
