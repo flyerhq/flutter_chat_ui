@@ -374,6 +374,53 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
+## Custom chat bubbles
+
+Let's use the [bubble](https://pub.dev/packages/bubble) package as an example (version `1.2.1` at the point of writing, example might not work as it is if the new version is released). Just pass the `_bubbleBuilder` function to the `Chat` widget. `child` parameter of the `_bubbleBuilder` function is a default message content (which you can further customize using `customMessageBuilder`, `fileMessageBuilder`, `imageMessageBuilder`, `textMessageBuilder` etc.). `message` parameter gives you the actual message to work with, where you can see whether the current user is author, message type, or anything you'd like to customize the bubble. `nextMessageInGroup` parameter gives you a hint about message groups and if you want to add a nip only for the last message in the group, you can do that (messages are grouped when written in quick succession by the same author).
+
+```dart
+import 'package:bubble/bubble.dart';
+
+Widget _bubbleBuilder(
+  Widget child, {
+  required message,
+  required nextMessageInGroup,
+}) {
+  return Bubble(
+    child: child,
+    color: _user.id != message.author.id ||
+            message.type == types.MessageType.image
+        ? const Color(0xfff5f5f7)
+        : const Color(0xff6f61e8),
+    margin: nextMessageInGroup
+        ? const BubbleEdges.symmetric(horizontal: 6)
+        : null,
+    nip: nextMessageInGroup
+        ? BubbleNip.no
+        : _user.id != message.author.id
+            ? BubbleNip.leftBottom
+            : BubbleNip.rightBottom,
+  );
+}
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: SafeArea(
+      bottom: false,
+      child: Chat(
+        // ...
+        bubbleBuilder: _bubbleBuilder,
+      ),
+    ),
+  );
+}
+```
+
+This is how it would look like
+
+<img src="https://user-images.githubusercontent.com/14123304/133879196-ef3e3655-58c7-48b7-a0d6-084eb8968df9.png" width="288px" alt="Custom chat bubbles" />
+
 ## Custom messages
 
 Use the `customMessageBuilder` function to build whatever message you want. To store the data use a `metadata` map of the `CustomMessage`. You can have multiple different custom messages, you will need to identify them based on some property inside the `metadata` and build accordingly.
