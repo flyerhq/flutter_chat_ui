@@ -1,3 +1,8 @@
+## 1.4.4
+
+- Add `dateHeaderThreshold` and `groupMessagesThreshold` (see the documentation comments)
+- Update dependencies
+
 ## 1.4.3
 
 - Add `bubbleBuilder` to allow the chat bubble customization. See [documentation](https://docs.flyer.chat/flutter/chat-ui/advanced-usage#custom-chat-bubbles).

@@ -29,10 +29,12 @@ class Chat extends StatefulWidget {
     this.customDateHeaderText,
     this.customMessageBuilder,
     this.dateFormat,
+    this.dateHeaderThreshold = 900000,
     this.dateLocale,
     this.disableImageGallery,
     this.emptyState,
     this.fileMessageBuilder,
+    this.groupMessagesThreshold = 60000,
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
@@ -88,6 +90,12 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? dateFormat;
 
+  /// Time (in ms) between two messages when we will render a date header.
+  /// Default value is 15 minutes, 900000 ms. When time between two messages
+  /// is higher than this threshold, date header will be rendered. Also,
+  /// not related to this value, date header will be rendered on every new day.
+  final int dateHeaderThreshold;
+
   /// Locale will be passed to the `Intl` package. Make sure you initialized
   /// date formatting in your app before passing any locale here, otherwise
   /// an error will be thrown. Also see [customDateHeaderText], [dateFormat], [timeFormat].
@@ -104,6 +112,11 @@ class Chat extends StatefulWidget {
   /// See [Message.fileMessageBuilder]
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
+
+  /// Time (in ms) between two messages when we will visually group them.
+  /// Default value is 1 minute, 60000 ms. When time between two messages
+  /// is lower than this threshold, they will be visually grouped.
+  final int groupMessagesThreshold;
 
   /// See [Message.imageMessageBuilder]
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -214,7 +227,9 @@ class _ChatState extends State<Chat> {
         widget.user,
         customDateHeaderText: widget.customDateHeaderText,
         dateFormat: widget.dateFormat,
+        dateHeaderThreshold: widget.dateHeaderThreshold,
         dateLocale: widget.dateLocale,
+        groupMessagesThreshold: widget.groupMessagesThreshold,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
       );

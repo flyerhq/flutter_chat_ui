@@ -72,7 +72,9 @@ List<Object> calculateChatMessages(
   types.User user, {
   String Function(DateTime)? customDateHeaderText,
   DateFormat? dateFormat,
+  required int dateHeaderThreshold,
   String? dateLocale,
+  required int groupMessagesThreshold,
   required bool showUserNames,
   DateFormat? timeFormat,
 }) {
@@ -103,7 +105,8 @@ List<Object> calculateChatMessages(
           ((message.author.id != previousMessage?.author.id) ||
               (messageHasCreatedAt &&
                   previousMessage?.createdAt != null &&
-                  message.createdAt! - previousMessage!.createdAt! > 60000));
+                  message.createdAt! - previousMessage!.createdAt! >
+                      groupMessagesThreshold));
 
       if (isFirstInGroup) {
         shouldShowName = false;
@@ -122,14 +125,14 @@ List<Object> calculateChatMessages(
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {
       nextMessageDateThreshold =
-          nextMessage!.createdAt! - message.createdAt! >= 900000;
+          nextMessage!.createdAt! - message.createdAt! >= dateHeaderThreshold;
 
       nextMessageDifferentDay =
           DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day !=
               DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
-          nextMessage.createdAt! - message.createdAt! <= 60000;
+          nextMessage.createdAt! - message.createdAt! <= groupMessagesThreshold;
     }
 
     if (isFirst && messageHasCreatedAt) {
