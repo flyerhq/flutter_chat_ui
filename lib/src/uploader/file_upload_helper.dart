@@ -1,7 +1,9 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 typedef OnUploadProgressCallback = void Function(double percentage);
@@ -61,6 +63,8 @@ class FileService {
         request.headers.set(HttpHeaders.contentTypeHeader, value);
         //requestMultipart.headers.addAll(headers);
         request.headers.add('Authorization', 'Bearer $_token');
+        debugPrint('Upload Url: $_fileUploadUrl');
+        debugPrint('Token: $_token');
 
         final Stream<List<int>> streamUpload = msStream.transform(
             StreamTransformer.fromHandlers(
