@@ -127,12 +127,12 @@ class _ChatPageState extends State<ChatPage> {
       final message = types.ImageMessage(
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        height: image.height.toDouble(),
+        //height: 200,
         id: const Uuid().v4(),
         name: name,
-        size: bytes.length,
+        size: 200,
         uri: result.path,
-        width: image.width.toDouble(),
+        //width: image.width.toDouble(),
       );
 
       _addMessage(message);

@@ -167,26 +167,26 @@ class _ImageMessageState extends State<ImageMessage> {
     return Stack(
       children: [
         _isNetworkImage
-            ? Center(
-          child: CachedNetworkImage(
-            fit: BoxFit.fill,
-            imageUrl: _message.uri,
-            // imageBuilder: (cnt, imageProvider) {
-            //             //   final image = Image(image: imageProvider,);
-            //             //   _updateImageSize();
-            //             //   return image;
-            //             // },
-            placeholder: (context, url) {
-              return _localUrl != null
-                  ? _getLocalImage(_localUrl!)
-                  : CircularProgressIndicator();
-            },
-            errorWidget: (context, url, error) {
-              return Icon(Icons.error);
-            },
-          ),
-        )
-            : _getLocalImage(_message.uri),
+            ? Positioned.fill(
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: _message.uri,
+                // imageBuilder: (cnt, imageProvider) {
+                //             //   final image = Image(image: imageProvider,);
+                //             //   _updateImageSize();
+                //             //   return image;
+                //             // },
+                placeholder: (context, url) {
+                  return _localUrl != null
+                      ? _getLocalImage(_localUrl!)
+                      : CircularProgressIndicator();
+                },
+                errorWidget: (context, url, error) {
+                  return Icon(Icons.error);
+                },
+              ),
+            )
+            : Positioned.fill(child: _getLocalImage(_message.uri)),
         //child,
         Visibility(
           visible: _isUploading,
@@ -236,11 +236,9 @@ class _ImageMessageState extends State<ImageMessage> {
   }
 
   Widget _getLocalImage(String url) {
-    return Center(
-      child: Image(
-        fit: BoxFit.cover,
-        image: Conditional().getProvider(url),
-      ),
+    return Image(
+      fit: BoxFit.cover,
+      image: Conditional().getProvider(url),
     );
   }
 }
