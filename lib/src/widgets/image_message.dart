@@ -169,6 +169,7 @@ class _ImageMessageState extends State<ImageMessage> {
         _isNetworkImage
             ? Center(
           child: CachedNetworkImage(
+            fit: BoxFit.fill,
             imageUrl: _message.uri,
             // imageBuilder: (cnt, imageProvider) {
             //             //   final image = Image(image: imageProvider,);
