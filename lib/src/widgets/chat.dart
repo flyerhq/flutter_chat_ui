@@ -169,7 +169,7 @@ class _ChatState extends State<Chat> {
 
     didUpdateWidget(widget);
     if (widget.fileUploadUrl != null && widget.authToken != null  && widget.fileDownloadUrl != null) {
-      FileService().configure(uploadUrl: widget.fileUploadUrl!, fileDownloadUrl: widget.fileDownloadUrl!,token: widget.authToken!);
+      FileUploader().configure(uploadUrl: widget.fileUploadUrl!, fileDownloadUrl: widget.fileDownloadUrl!,token: widget.authToken!);
     }
   }
 

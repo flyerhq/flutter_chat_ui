@@ -10,13 +10,13 @@ typedef OnUploadProgressCallback = void Function(double percentage);
 
 class DuplicateFileException implements Exception {}
 
-class FileService {
+class FileUploader {
 
-    FileService._();
-    static final FileService _instance = FileService._();
+    FileUploader._();
+    static final FileUploader _instance = FileUploader._();
 
     // ignore: sort_unnamed_constructors_first, sort_constructors_first
-    factory FileService() => _instance;
+    factory FileUploader() => _instance;
 
     void configure({required String uploadUrl, required String fileDownloadUrl,required String token}) {
         _fileUploadUrl = uploadUrl;

@@ -2,11 +2,11 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/uploader/file_upload_helper.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../conditional/conditional.dart';
-import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
@@ -69,7 +69,7 @@ class _ImageMessageState extends State<ImageMessage> {
     _isUploadFailed = false;
     _percentage = 0.0;
     try {
-      final fileUrl = await FileService().fileUploadMultipart(
+      final fileUrl = await FileUploader().fileUploadMultipart(
           filePath: _message.uri,
           onUploadProgress: (percentage) {
             log("Uploading: $percentage");
@@ -153,6 +153,16 @@ class _ImageMessageState extends State<ImageMessage> {
       );
   }
 
+  void _updateImageSize() async{
+    if (_size.height == 0) {
+      var file = await DefaultCacheManager().getSingleFile(_message.uri);
+      final bytes = await file.readAsBytes();
+      final image = await decodeImageFromList(bytes);
+      _size = Size(image.width.toDouble() , image.height.toDouble());
+      setState(() {});
+    }
+  }
+
   Widget uploadProgress() {
     return Stack(
       children: [
@@ -160,6 +170,11 @@ class _ImageMessageState extends State<ImageMessage> {
             ? Center(
           child: CachedNetworkImage(
             imageUrl: _message.uri,
+            imageBuilder: (cnt, imageProvider) {
+              final image = Image(image: imageProvider,);
+              _updateImageSize();
+              return image;
+            },
             placeholder: (context, url) {
               return _localUrl != null
                   ? _getLocalImage(_localUrl!)

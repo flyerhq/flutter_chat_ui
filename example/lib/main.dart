@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
@@ -182,8 +184,8 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYW1pcjEyQHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzMjU1Mjk1MH0.zq0Dk0WbCJd055tY6Ndf76wWxEISDYOjgRRcv5a8x4Jas9lpqotl7SCFIbEcElaCTz8Y8k-AmIETYtRO8q3NtQ';
-    const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/100';
+    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaHViaGFtQHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzNTQzMjQ4Nn0.H7-ErY4hhDylePK6645V41whJkXV-5QB3u7fYrEKtrCVf_plMNC6vPjAhk_51xbpPi8kU82EGQ07mNbRE3s6wg';
+    const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/sync/100';
     const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
 
     return Scaffold(
