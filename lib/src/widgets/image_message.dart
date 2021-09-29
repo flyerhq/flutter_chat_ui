@@ -88,7 +88,7 @@ class _ImageMessageState extends State<ImageMessage> {
       if (mounted) {
         setState(() {});
       }
-    }catch (e) {
+    } catch (e) {
       _isUploading = false;
       _isUploadFailed = true;
       if (mounted) {
@@ -104,6 +104,7 @@ class _ImageMessageState extends State<ImageMessage> {
     //   _getImage();
     // }
   }
+
   /*
   void _getImage() {
     final oldImageStream = _stream;
@@ -133,23 +134,21 @@ class _ImageMessageState extends State<ImageMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser
-        .of(context)
-        .user;
+    final _user = InheritedUser.of(context).user;
 
-      return Container(
-        constraints: BoxConstraints(
-          maxHeight: widget.messageWidth.toDouble(),
-          minWidth: 170,
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: widget.messageWidth.toDouble(),
+        minWidth: 170,
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+        child: AspectRatio(
+          aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
+          child: uploadProgress(),
         ),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-          child: AspectRatio(
-            aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
-            child: uploadProgress(),
-          ),
-        ),
-      );
+      ),
+    );
   }
 
   // Will utilize in future.
@@ -168,24 +167,29 @@ class _ImageMessageState extends State<ImageMessage> {
       children: [
         _isNetworkImage
             ? Positioned.fill(
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: _message.uri,
-                // imageBuilder: (cnt, imageProvider) {
-                //             //   final image = Image(image: imageProvider,);
-                //             //   _updateImageSize();
-                //             //   return image;
-                //             // },
-                placeholder: (context, url) {
-                  return _localUrl != null
-                      ? _getLocalImage(_localUrl!)
-                      : CircularProgressIndicator();
-                },
-                errorWidget: (context, url, error) {
-                  return Icon(Icons.error);
-                },
-              ),
-            )
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: _message.uri,
+                  // imageBuilder: (cnt, imageProvider) {
+                  //             //   final image = Image(image: imageProvider,);
+                  //             //   _updateImageSize();
+                  //             //   return image;
+                  //             // },
+                  placeholder: (context, url) {
+                    return _localUrl != null
+                        ? _getLocalImage(_localUrl!)
+                        : Center(
+                            child: Container(
+                                width: 60,
+                                height: 60,
+                                child: CircularProgressIndicator()),
+                          );
+                  },
+                  errorWidget: (context, url, error) {
+                    return Icon(Icons.error);
+                  },
+                ),
+              )
             : Positioned.fill(child: _getLocalImage(_message.uri)),
         //child,
         Visibility(
@@ -202,10 +206,7 @@ class _ImageMessageState extends State<ImageMessage> {
                 animationDuration: 500,
                 animateFromLastPercent: true,
                 progressColor:
-                InheritedChatTheme
-                    .of(context)
-                    .theme
-                    .primaryColor,
+                    InheritedChatTheme.of(context).theme.primaryColor,
               ),
             ),
           ),
@@ -219,12 +220,22 @@ class _ImageMessageState extends State<ImageMessage> {
                 _uploadAttachment();
               },
               child: Center(
-                child: Container(child: Column(
+                child: Container(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(Icons.error, color: Colors.white,),
-                    Text('Upload failed. Tap to retry.', style: TextStyle(color: Colors.white,), textAlign: TextAlign.center,)
+                    Icon(
+                      Icons.error,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      'Upload failed. Tap to retry.',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
                   ],
                 )),
               ),
