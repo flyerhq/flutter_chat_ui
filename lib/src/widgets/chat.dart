@@ -35,6 +35,7 @@ class Chat extends StatefulWidget {
     this.emptyState,
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
+    this.hideBackgroundOnSingleEmojiMessages = true,
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
@@ -117,6 +118,9 @@ class Chat extends StatefulWidget {
   /// Default value is 1 minute, 60000 ms. When time between two messages
   /// is lower than this threshold, they will be visually grouped.
   final int groupMessagesThreshold;
+
+  /// See [Message.hideBackgroundOnSingleEmojiMessages]
+  final bool hideBackgroundOnSingleEmojiMessages;
 
   /// See [Message.imageMessageBuilder]
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -333,6 +337,8 @@ class _ChatState extends State<Chat> {
         bubbleBuilder: widget.bubbleBuilder,
         customMessageBuilder: widget.customMessageBuilder,
         fileMessageBuilder: widget.fileMessageBuilder,
+        hideBackgroundOnSingleEmojiMessages:
+            widget.hideBackgroundOnSingleEmojiMessages,
         imageMessageBuilder: widget.imageMessageBuilder,
         message: message,
         messageWidth: _messageWidth,

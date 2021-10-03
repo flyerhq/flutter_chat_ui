@@ -11,11 +11,15 @@ class TextMessage extends StatelessWidget {
   /// Creates a text message widget from a [types.TextMessage] class
   const TextMessage({
     Key? key,
+    required this.hideBackgroundOnSingleEmojiMessages,
     required this.message,
     this.onPreviewDataFetched,
     required this.usePreviewData,
     required this.showName,
   }) : super(key: key);
+
+  /// See [Message.hideBackgroundSingleEmojiMessages]
+  final bool hideBackgroundOnSingleEmojiMessages;
 
   /// [types.TextMessage]
   final types.TextMessage message;
@@ -84,9 +88,11 @@ class TextMessage extends StatelessWidget {
     );
   }
 
-  Widget _textWidgetBuilder(types.User user, BuildContext context) {
-    final color = getUserAvatarNameColor(message.author,
-        InheritedChatTheme.of(context).theme.userAvatarNameColors);
+  Widget _textWidgetBuilder(
+      types.User user, BuildContext context, bool isSingleEmoji) {
+    final theme = InheritedChatTheme.of(context).theme;
+    final color =
+        getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
     final name = getUserName(message.author);
 
     return Column(
@@ -99,19 +105,18 @@ class TextMessage extends StatelessWidget {
               name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: InheritedChatTheme.of(context)
-                  .theme
-                  .userNameTextStyle
-                  .copyWith(color: color),
+              style: theme.userNameTextStyle.copyWith(color: color),
             ),
           ),
         SelectableText(
           message.text,
           style: user.id == message.author.id
-              ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
-              : InheritedChatTheme.of(context)
-                  .theme
-                  .receivedMessageBodyTextStyle,
+              ? isSingleEmoji
+                  ? theme.sentSingleEmojiMessageTextStyle
+                  : theme.sentMessageBodyTextStyle
+              : isSingleEmoji
+                  ? theme.receivedSingleEmojiMessageTextStyle
+                  : theme.receivedMessageBodyTextStyle,
           textWidthBasis: TextWidthBasis.longestLine,
         ),
       ],
@@ -120,6 +125,8 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _isSingleEmoji = isSingleEmoji(message);
+    final _theme = InheritedChatTheme.of(context).theme;
     final _user = InheritedUser.of(context).user;
     final _width = MediaQuery.of(context).size.width;
 
@@ -134,11 +141,12 @@ class TextMessage extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal:
-            InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
-        vertical: InheritedChatTheme.of(context).theme.messageInsetsVertical,
+        horizontal: _isSingleEmoji && hideBackgroundOnSingleEmojiMessages
+            ? 0.0
+            : _theme.messageInsetsHorizontal,
+        vertical: _theme.messageInsetsVertical,
       ),
-      child: _textWidgetBuilder(_user, context),
+      child: _textWidgetBuilder(_user, context, _isSingleEmoji),
     );
   }
 }

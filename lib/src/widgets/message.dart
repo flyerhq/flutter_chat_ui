@@ -17,6 +17,7 @@ class Message extends StatelessWidget {
     this.bubbleBuilder,
     this.customMessageBuilder,
     this.fileMessageBuilder,
+    required this.hideBackgroundOnSingleEmojiMessages,
     this.imageMessageBuilder,
     required this.message,
     required this.messageWidth,
@@ -50,6 +51,9 @@ class Message extends StatelessWidget {
   /// Build a file message inside predefined bubble
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
+
+  /// Hide background for messages containing ony an emoji.
+  final bool hideBackgroundOnSingleEmojiMessages;
 
   /// Build an image message inside predefined bubble
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -133,6 +137,7 @@ class Message extends StatelessWidget {
     BuildContext context,
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
+    bool isSingleEmoji,
   ) {
     return bubbleBuilder != null
         ? bubbleBuilder!(
@@ -140,19 +145,21 @@ class Message extends StatelessWidget {
             message: message,
             nextMessageInGroup: roundBorder,
           )
-        : Container(
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              color: !currentUserIsAuthor ||
-                      message.type == types.MessageType.image
-                  ? InheritedChatTheme.of(context).theme.secondaryColor
-                  : InheritedChatTheme.of(context).theme.primaryColor,
-            ),
-            child: ClipRRect(
-              borderRadius: borderRadius,
-              child: _messageBuilder(),
-            ),
-          );
+        : isSingleEmoji && hideBackgroundOnSingleEmojiMessages
+            ? _messageBuilder()
+            : Container(
+                decoration: BoxDecoration(
+                  borderRadius: borderRadius,
+                  color: !currentUserIsAuthor ||
+                          message.type == types.MessageType.image
+                      ? InheritedChatTheme.of(context).theme.secondaryColor
+                      : InheritedChatTheme.of(context).theme.primaryColor,
+                ),
+                child: ClipRRect(
+                  borderRadius: borderRadius,
+                  child: _messageBuilder(),
+                ),
+              );
   }
 
   Widget _messageBuilder() {
@@ -181,6 +188,8 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : TextMessage(
+                hideBackgroundOnSingleEmojiMessages:
+                    hideBackgroundOnSingleEmojiMessages,
                 message: textMessage,
                 onPreviewDataFetched: onPreviewDataFetched,
                 showName: showName,
@@ -243,6 +252,8 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
     final _currentUserIsAuthor = _user.id == message.author.id;
+    final _isSingleEmoji = message is types.TextMessage &&
+        isSingleEmoji(message as types.TextMessage);
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
@@ -284,6 +295,7 @@ class Message extends StatelessWidget {
                     context,
                     _borderRadius,
                     _currentUserIsAuthor,
+                    _isSingleEmoji,
                   ),
                 ),
               ],
