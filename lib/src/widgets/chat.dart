@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import '../chat_l10n.dart';
@@ -24,6 +25,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
     Key? key,
+    this.mentions,
     this.bubbleBuilder,
     this.customBottomWidget,
     this.customDateHeaderText,
@@ -173,6 +175,8 @@ class Chat extends StatefulWidget {
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
   final bool showUserNames;
+
+  final List<Mention>? mentions;
 
   /// See [Message.textMessageBuilder]
   final Widget Function(
@@ -424,6 +428,7 @@ class _ChatState extends State<Chat> {
                     ),
                     widget.customBottomWidget ??
                         Input(
+                          mentions: widget.mentions,
                           isAttachmentUploading: widget.isAttachmentUploading,
                           onAttachmentPressed: widget.onAttachmentPressed,
                           onSendPressed: widget.onSendPressed,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_mentions/flutter_mentions.dart';
 import '../models/send_button_visibility_mode.dart';
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
@@ -18,10 +19,13 @@ class SendMessageIntent extends Intent {
 /// A class that represents bottom bar widget with a text field, attachment and
 /// send buttons inside. By default hides send button when text field is empty.
 class Input extends StatefulWidget {
+  final List<Mention>? mentions;
+
   /// Creates [Input] widget
   const Input({
     Key? key,
     this.isAttachmentUploading,
+    this.mentions,
     this.onAttachmentPressed,
     required this.onSendPressed,
     this.onTextChanged,
@@ -61,12 +65,11 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
-  final _textController = TextEditingController();
-
+  final TextEditingController _textController = TextEditingController();
+  final _regex = '/\[[0-9]+\]\(([^)]+)\)/gi';
   @override
   void initState() {
     super.initState();
-
     if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
       _sendButtonVisible = _textController.text.trim() != '';
       _textController.addListener(_handleTextControllerChange);
@@ -92,9 +95,7 @@ class _InputState extends State<Input> {
   }
 
   void _handleTextControllerChange() {
-    setState(() {
-      _sendButtonVisible = _textController.text.trim() != '';
-    });
+    setState(() => _sendButtonVisible = _textController.text.trim() != '');
   }
 
   Widget _leftWidget() {
@@ -119,7 +120,7 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
-
+    var _regex = '/\@\[[0-9]+\]\(([^)]+)\)/gi';
     return GestureDetector(
       onTap: () => _inputFocusNode.requestFocus(),
       child: Shortcuts(
@@ -167,8 +168,7 @@ class _InputState extends State<Input> {
                     children: [
                       if (widget.onAttachmentPressed != null) _leftWidget(),
                       Expanded(
-                        child: TextField(
-                          controller: _textController,
+                        child: FlutterMentions(
                           cursorColor: InheritedChatTheme.of(context)
                               .theme
                               .inputTextCursorColor,
@@ -193,7 +193,12 @@ class _InputState extends State<Input> {
                           keyboardType: TextInputType.multiline,
                           maxLines: 5,
                           minLines: 1,
-                          onChanged: widget.onTextChanged,
+                          onMentionAdd: (val) {
+                            _textController.text += "${val['id']}";
+                          },
+                          onMarkupChanged: (val) {
+                            _textController.text = val;
+                          },
                           onTap: widget.onTextFieldTap,
                           style: InheritedChatTheme.of(context)
                               .theme
@@ -203,7 +208,16 @@ class _InputState extends State<Input> {
                                     .theme
                                     .inputTextColor,
                               ),
+                          suggestionPosition: SuggestionPosition.Top,
                           textCapitalization: TextCapitalization.sentences,
+                          mentions: [
+                            ...(widget.mentions ??
+                                [
+                                  Mention(trigger: '@', data: [
+                                    {'id': '55', 'display': 'mufy'}
+                                  ])
+                                ])
+                          ],
                         ),
                       ),
                       Visibility(
