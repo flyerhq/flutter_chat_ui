@@ -218,11 +218,11 @@ class ChatL10nZhCN extends ChatL10n {
     String inputPlaceholder = '消息',
     String sendButtonAccessibilityLabel = '发送',
   }) : super(
-    attachmentButtonAccessibilityLabel:
-    attachmentButtonAccessibilityLabel,
-    emptyChatPlaceholder: emptyChatPlaceholder,
-    fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
-    inputPlaceholder: inputPlaceholder,
-    sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-  );
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
 }
