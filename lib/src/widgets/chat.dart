@@ -60,7 +60,8 @@ class Chat extends StatefulWidget {
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
     this.usePreviewData = true,
-    required this.user, this.suggestionListDecoration,
+    required this.user,
+    this.suggestionListDecoration,
   }) : super(key: key);
 
   /// See [Message.bubbleBuilder]
@@ -430,7 +431,8 @@ class _ChatState extends State<Chat> {
                     ),
                     widget.customBottomWidget ??
                         Input(
-                          suggestionListDecoration: widget.suggestionListDecoration,
+                          suggestionListDecoration:
+                              widget.suggestionListDecoration,
                           mentions: widget.mentions,
                           isAttachmentUploading: widget.isAttachmentUploading,
                           onAttachmentPressed: widget.onAttachmentPressed,
