@@ -21,6 +21,8 @@ class SendMessageIntent extends Intent {
 class Input extends StatefulWidget {
   final List<Mention>? mentions;
 
+  final BoxDecoration? suggestionListDecoration;
+
   /// Creates [Input] widget
   const Input({
     Key? key,
@@ -30,7 +32,7 @@ class Input extends StatefulWidget {
     required this.onSendPressed,
     this.onTextChanged,
     this.onTextFieldTap,
-    required this.sendButtonVisibilityMode,
+    required this.sendButtonVisibilityMode, this.suggestionListDecoration,
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
@@ -120,7 +122,6 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
-    var _regex = '/\@\[[0-9]+\]\(([^)]+)\)/gi';
     return GestureDetector(
       onTap: () => _inputFocusNode.requestFocus(),
       child: Shortcuts(
@@ -189,16 +190,14 @@ class _InputState extends State<Input> {
                                     .l10n
                                     .inputPlaceholder,
                               ),
+                          suggestionListDecoration: widget.suggestionListDecoration,
                           focusNode: _inputFocusNode,
                           keyboardType: TextInputType.multiline,
                           maxLines: 5,
                           minLines: 1,
-                          onMentionAdd: (val) {
-                            _textController.text += "${val['id']}";
-                          },
-                          onMarkupChanged: (val) {
-                            _textController.text = val;
-                          },
+                          onMentionAdd: (val) =>
+                              _textController.text += "${val['id']}",
+                          onMarkupChanged: (val) => _textController.text = val,
                           onTap: widget.onTextFieldTap,
                           style: InheritedChatTheme.of(context)
                               .theme

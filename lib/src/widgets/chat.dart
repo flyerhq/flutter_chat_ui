@@ -22,6 +22,8 @@ import 'message.dart';
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
+  final BoxDecoration? suggestionListDecoration;
+
   /// Creates a chat widget
   const Chat({
     Key? key,
@@ -58,7 +60,7 @@ class Chat extends StatefulWidget {
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
     this.usePreviewData = true,
-    required this.user,
+    required this.user, this.suggestionListDecoration,
   }) : super(key: key);
 
   /// See [Message.bubbleBuilder]
@@ -428,6 +430,7 @@ class _ChatState extends State<Chat> {
                     ),
                     widget.customBottomWidget ??
                         Input(
+                          suggestionListDecoration: widget.suggestionListDecoration,
                           mentions: widget.mentions,
                           isAttachmentUploading: widget.isAttachmentUploading,
                           onAttachmentPressed: widget.onAttachmentPressed,
