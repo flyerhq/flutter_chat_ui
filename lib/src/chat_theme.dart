@@ -68,22 +68,22 @@ abstract class ChatTheme {
     required this.messageInsetsHorizontal,
     required this.messageInsetsVertical,
     required this.primaryColor,
+    required this.receivedEmojiMessageTextStyle,
     required this.receivedMessageBodyTextStyle,
     required this.receivedMessageCaptionTextStyle,
     required this.receivedMessageDocumentIconColor,
     required this.receivedMessageLinkDescriptionTextStyle,
     required this.receivedMessageLinkTitleTextStyle,
-    required this.receivedSingleEmojiMessageTextStyle,
     required this.secondaryColor,
     required this.seenIcon,
     required this.sendButtonIcon,
     required this.sendingIcon,
+    required this.sentEmojiMessageTextStyle,
     required this.sentMessageBodyTextStyle,
     required this.sentMessageCaptionTextStyle,
     required this.sentMessageDocumentIconColor,
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
-    required this.sentSingleEmojiMessageTextStyle,
     required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
@@ -148,6 +148,9 @@ abstract class ChatTheme {
   /// and statuses
   final Color primaryColor;
 
+  /// Text style used for displaying emojis on text messages
+  final TextStyle receivedEmojiMessageTextStyle;
+
   /// Body text style used for displaying text on different types
   /// of received messages
   final TextStyle receivedMessageBodyTextStyle;
@@ -166,9 +169,6 @@ abstract class ChatTheme {
   /// Text style used for displaying link title on received messages
   final TextStyle receivedMessageLinkTitleTextStyle;
 
-  /// Text style used for displaying single emoji on text messages
-  final TextStyle receivedSingleEmojiMessageTextStyle;
-
   /// Secondary color, used as a background of received messages
   final Color secondaryColor;
 
@@ -180,6 +180,9 @@ abstract class ChatTheme {
 
   /// Icon for message's `sending` status. For the best look use size of 10.
   final Widget? sendingIcon;
+
+  /// Text style used for displaying emojis on text messages
+  final TextStyle sentEmojiMessageTextStyle;
 
   /// Body text style used for displaying text on different types
   /// of sent messages
@@ -198,9 +201,6 @@ abstract class ChatTheme {
 
   /// Text style used for displaying link title on sent messages
   final TextStyle sentMessageLinkTitleTextStyle;
-
-  /// Text style used for displaying single emoji on text messages
-  final TextStyle sentSingleEmojiMessageTextStyle;
 
   /// Color used as a background for user avatar if an image is provided.
   /// Visible if the image has some transparent parts.
@@ -268,6 +268,7 @@ class DefaultChatTheme extends ChatTheme {
     double messageInsetsHorizontal = 20,
     double messageInsetsVertical = 16,
     Color primaryColor = primary,
+    TextStyle receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: neutral0,
       fontFamily: 'Avenir',
@@ -297,12 +298,11 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    TextStyle receivedSingleEmojiMessageTextStyle =
-        const TextStyle(fontSize: 40),
     Color secondaryColor = secondary,
     Widget? seenIcon,
     Widget? sendButtonIcon,
     Widget? sendingIcon,
+    TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
       fontFamily: 'Avenir',
@@ -332,7 +332,6 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    TextStyle sentSingleEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
@@ -368,25 +367,24 @@ class DefaultChatTheme extends ChatTheme {
           messageInsetsHorizontal: messageInsetsHorizontal,
           messageInsetsVertical: messageInsetsVertical,
           primaryColor: primaryColor,
+          receivedEmojiMessageTextStyle: receivedEmojiMessageTextStyle,
           receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,
           receivedMessageCaptionTextStyle: receivedMessageCaptionTextStyle,
           receivedMessageDocumentIconColor: receivedMessageDocumentIconColor,
           receivedMessageLinkDescriptionTextStyle:
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
-          receivedSingleEmojiMessageTextStyle:
-              receivedSingleEmojiMessageTextStyle,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
           sendingIcon: sendingIcon,
+          sentEmojiMessageTextStyle: sentEmojiMessageTextStyle,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
           sentMessageLinkDescriptionTextStyle:
               sentMessageLinkDescriptionTextStyle,
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
-          sentSingleEmojiMessageTextStyle: sentSingleEmojiMessageTextStyle,
           userAvatarImageBackgroundColor: userAvatarImageBackgroundColor,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
@@ -443,6 +441,7 @@ class DarkChatTheme extends ChatTheme {
     double messageInsetsHorizontal = 20,
     double messageInsetsVertical = 16,
     Color primaryColor = primary,
+    TextStyle receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: neutral7,
       fontFamily: 'Avenir',
@@ -472,12 +471,11 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    TextStyle receivedSingleEmojiMessageTextStyle =
-        const TextStyle(fontSize: 40),
     Color secondaryColor = secondaryDark,
     Widget? seenIcon,
     Widget? sendButtonIcon,
     Widget? sendingIcon,
+    TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
       fontFamily: 'Avenir',
@@ -507,7 +505,6 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    TextStyle sentSingleEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
@@ -543,25 +540,24 @@ class DarkChatTheme extends ChatTheme {
           inputTextStyle: inputTextStyle,
           messageBorderRadius: messageBorderRadius,
           primaryColor: primaryColor,
+          receivedEmojiMessageTextStyle: receivedEmojiMessageTextStyle,
           receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,
           receivedMessageCaptionTextStyle: receivedMessageCaptionTextStyle,
           receivedMessageDocumentIconColor: receivedMessageDocumentIconColor,
           receivedMessageLinkDescriptionTextStyle:
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
-          receivedSingleEmojiMessageTextStyle:
-              receivedSingleEmojiMessageTextStyle,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
           sendingIcon: sendingIcon,
+          sentEmojiMessageTextStyle: sentEmojiMessageTextStyle,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
           sentMessageLinkDescriptionTextStyle:
               sentMessageLinkDescriptionTextStyle,
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
-          sentSingleEmojiMessageTextStyle: sentSingleEmojiMessageTextStyle,
           userAvatarImageBackgroundColor: userAvatarImageBackgroundColor,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,

@@ -8,6 +8,7 @@ import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
 import '../models/date_header.dart';
+import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/send_button_visibility_mode.dart';
@@ -32,10 +33,11 @@ class Chat extends StatefulWidget {
     this.dateHeaderThreshold = 900000,
     this.dateLocale,
     this.disableImageGallery,
+    this.emojiEnlargementBehavior = EmojiEnlargementBehavior.multi,
     this.emptyState,
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
-    this.hideBackgroundOnSingleEmojiMessages = true,
+    this.hideBackgroundOnEmojiMessages = true,
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
@@ -105,6 +107,9 @@ class Chat extends StatefulWidget {
   /// Disable automatic image preview on tap.
   final bool? disableImageGallery;
 
+  /// See [Message.emojiEnlargementBehavior]
+  final EmojiEnlargementBehavior emojiEnlargementBehavior;
+
   /// Allows you to change what the user sees when there are no messages.
   /// `emptyChatPlaceholder` and `emptyChatPlaceholderTextStyle` are ignored
   /// in this case.
@@ -119,8 +124,8 @@ class Chat extends StatefulWidget {
   /// is lower than this threshold, they will be visually grouped.
   final int groupMessagesThreshold;
 
-  /// See [Message.hideBackgroundOnSingleEmojiMessages]
-  final bool hideBackgroundOnSingleEmojiMessages;
+  /// See [Message.hideBackgroundOnEmojiMessages]
+  final bool hideBackgroundOnEmojiMessages;
 
   /// See [Message.imageMessageBuilder]
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -336,9 +341,9 @@ class _ChatState extends State<Chat> {
         key: ValueKey(message.id),
         bubbleBuilder: widget.bubbleBuilder,
         customMessageBuilder: widget.customMessageBuilder,
+        emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
         fileMessageBuilder: widget.fileMessageBuilder,
-        hideBackgroundOnSingleEmojiMessages:
-            widget.hideBackgroundOnSingleEmojiMessages,
+        hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
         imageMessageBuilder: widget.imageMessageBuilder,
         message: message,
         messageWidth: _messageWidth,

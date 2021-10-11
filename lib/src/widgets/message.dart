@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
 import 'file_message.dart';
 import 'image_message.dart';
@@ -16,8 +17,9 @@ class Message extends StatelessWidget {
     Key? key,
     this.bubbleBuilder,
     this.customMessageBuilder,
+    required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
-    required this.hideBackgroundOnSingleEmojiMessages,
+    required this.hideBackgroundOnEmojiMessages,
     this.imageMessageBuilder,
     required this.message,
     required this.messageWidth,
@@ -48,12 +50,17 @@ class Message extends StatelessWidget {
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
 
+  /// Controls the enlargement behavior of the emojis in the
+  /// [types.TextMessage].
+  /// Defaults to [EmojiEnlargementBehavior.multi].
+  final EmojiEnlargementBehavior emojiEnlargementBehavior;
+
   /// Build a file message inside predefined bubble
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
 
-  /// Hide background for messages containing ony an emoji.
-  final bool hideBackgroundOnSingleEmojiMessages;
+  /// Hide background for messages containing only emojis.
+  final bool hideBackgroundOnEmojiMessages;
 
   /// Build an image message inside predefined bubble
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -137,7 +144,7 @@ class Message extends StatelessWidget {
     BuildContext context,
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
-    bool isSingleEmoji,
+    bool enlargeEmojis,
   ) {
     return bubbleBuilder != null
         ? bubbleBuilder!(
@@ -145,7 +152,7 @@ class Message extends StatelessWidget {
             message: message,
             nextMessageInGroup: roundBorder,
           )
-        : isSingleEmoji && hideBackgroundOnSingleEmojiMessages
+        : enlargeEmojis && hideBackgroundOnEmojiMessages
             ? _messageBuilder()
             : Container(
                 decoration: BoxDecoration(
@@ -188,8 +195,8 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : TextMessage(
-                hideBackgroundOnSingleEmojiMessages:
-                    hideBackgroundOnSingleEmojiMessages,
+                emojiEnlargementBehavior: emojiEnlargementBehavior,
+                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
                 onPreviewDataFetched: onPreviewDataFetched,
                 showName: showName,
@@ -252,8 +259,11 @@ class Message extends StatelessWidget {
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
     final _currentUserIsAuthor = _user.id == message.author.id;
-    final _isSingleEmoji = message is types.TextMessage &&
-        isSingleEmoji(message as types.TextMessage);
+    final _enlargeEmojis =
+        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
+            message is types.TextMessage &&
+            isConsistsOfEmojis(
+                emojiEnlargementBehavior, message as types.TextMessage);
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadius.only(
@@ -295,7 +305,7 @@ class Message extends StatelessWidget {
                     context,
                     _borderRadius,
                     _currentUserIsAuthor,
-                    _isSingleEmoji,
+                    _enlargeEmojis,
                   ),
                 ),
               ],
