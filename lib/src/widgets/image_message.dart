@@ -6,6 +6,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/uploader/file_upload_helper.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../conditional/conditional.dart';
+import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
@@ -22,6 +23,7 @@ class ImageMessage extends StatefulWidget {
     Key? key,
     required this.message,
     required this.messageWidth,
+    required this.showName,
     this.onUploadSuccessCallback,
   }) : super(key: key);
 
@@ -32,6 +34,9 @@ class ImageMessage extends StatefulWidget {
   final int messageWidth;
 
   final OnUploadSuccessCallback? onUploadSuccessCallback;
+
+  /// Show user name for the received message. Useful for a group chat.
+  final bool showName;
 
   @override
   _ImageMessageState createState() => _ImageMessageState();
@@ -135,19 +140,40 @@ class _ImageMessageState extends State<ImageMessage> {
   @override
   Widget build(BuildContext context) {
     final _user = InheritedUser.of(context).user;
+    final name = getUserName(widget.message.author);
+    final color = getUserAvatarNameColor(widget.message.author,
+        InheritedChatTheme.of(context).theme.userAvatarNameColors);
 
-    return Container(
-      constraints: BoxConstraints(
-        maxHeight: widget.messageWidth.toDouble(),
-        minWidth: 170,
-      ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-        child: AspectRatio(
-          aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
-          child: uploadProgress(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.showName)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: InheritedChatTheme.of(context)
+                  .theme
+                  .userNameTextStyle
+                  .copyWith(color: color),
+            ),
+          ),
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: widget.messageWidth.toDouble(),
+            minWidth: 170,
+          ),
+          child: AspectRatio(
+            aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
+            child: uploadProgress(),
+          ),
         ),
-      ),
+      ],
     );
   }
 

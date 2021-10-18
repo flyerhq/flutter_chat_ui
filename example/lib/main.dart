@@ -8,10 +8,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
-
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
@@ -117,7 +117,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleImageSelection() async {
-
     final result = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (result != null) {
@@ -137,7 +136,6 @@ class _ChatPageState extends State<ChatPage> {
 
       _addMessage(message);
     }
-
   }
 
   void _handleMessageTap(types.Message message) async {
@@ -184,14 +182,21 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaHViaGFtQHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzNTQzMjQ4Nn0.H7-ErY4hhDylePK6645V41whJkXV-5QB3u7fYrEKtrCVf_plMNC6vPjAhk_51xbpPi8kU82EGQ07mNbRE3s6wg';
-    const fileUploadUrl = 'http://dev.breakersparadise.com:8080/api/file/sync/100';
-    const fileDownloadUrl = 'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
+    const token =
+        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzaHViaGFtQHlvcG1haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYzNTQzMjQ4Nn0.H7-ErY4hhDylePK6645V41whJkXV-5QB3u7fYrEKtrCVf_plMNC6vPjAhk_51xbpPi8kU82EGQ07mNbRE3s6wg';
+    const fileUploadUrl =
+        'http://dev.breakersparadise.com:8080/api/file/sync/100';
+    const fileDownloadUrl =
+        'https://breakersparadise-dev.s3.us-east-2.amazonaws.com';
 
     return Scaffold(
-      appBar: AppBar(title: Text('Chat'),),
+      appBar: AppBar(
+        title: Text('Chat'),
+      ),
       body: Chat(
         messages: _messages,
+        showUserNames: true,
+        showUserAvatars: true,
         onAttachmentPressed: _handleAtachmentPressed,
         onMessageTap: _handleMessageTap,
         onPreviewDataFetched: _handlePreviewDataFetched,
@@ -202,6 +207,8 @@ class _ChatPageState extends State<ChatPage> {
         authToken: token,
         fileUploadUrl: fileUploadUrl,
         fileDownloadUrl: fileDownloadUrl,
+        //dateFormat: DateFormat.yMd(),
+        timeFormat: DateFormat('hh:mm a'),
       ),
     );
   }
@@ -216,7 +223,6 @@ class _ChatPageState extends State<ChatPage> {
 
   ChatTheme _getChatTheme() {
     return const DefaultChatTheme(
-
       inputBackgroundColor: Colors.white,
       backgroundColor: Colors.white,
       inputTextColor: Colors.black,
@@ -225,7 +231,6 @@ class _ChatPageState extends State<ChatPage> {
       secondaryColor: Colors.white,
       receivedMessageBodyTextStyle: TextStyle(color: Colors.black),
       sentMessageBodyTextStyle: TextStyle(color: Colors.black),
-
     );
   }
 }

@@ -359,7 +359,10 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    return InheritedUser(
+    return MediaQuery.removePadding(
+    context: context,
+    removeTop: true,
+    child: InheritedUser(
       user: widget.user,
       child: InheritedChatTheme(
         theme: widget.theme,
@@ -407,6 +410,6 @@ class _ChatState extends State<Chat> {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

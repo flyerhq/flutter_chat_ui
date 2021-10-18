@@ -114,6 +114,7 @@ class Message extends StatelessWidget {
         return ImageMessage(
           message: imageMessage,
           messageWidth: messageWidth,
+          showName: showName,
           onUploadSuccessCallback: onUploadSuccessCallback,
         );
       case types.MessageType.text:

@@ -101,7 +101,7 @@ List<Object> calculateChatMessages(
         }
       }
 
-      if (message.type == types.MessageType.text && shouldShowName) {
+      if ((message.type == types.MessageType.text || message.type == types.MessageType.image ) && (shouldShowName)) {
         showName = true;
         shouldShowName = false;
       }
