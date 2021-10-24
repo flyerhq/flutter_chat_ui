@@ -324,10 +324,7 @@ class _ChatState extends State<Chat> {
     if (object is DateHeader) {
       return Container(
         alignment: Alignment.center,
-        margin: const EdgeInsets.only(
-          bottom: 32,
-          top: 16,
-        ),
+        margin: widget.theme.dateDividerPadding,
         child: Text(
           object.text,
           style: widget.theme.dateDividerTextStyle,
