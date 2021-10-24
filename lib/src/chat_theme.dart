@@ -242,7 +242,6 @@ class DefaultChatTheme extends ChatTheme {
     ),
     TextStyle dateDividerTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -251,7 +250,6 @@ class DefaultChatTheme extends ChatTheme {
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -271,7 +269,6 @@ class DefaultChatTheme extends ChatTheme {
       isCollapsed: true,
     ),
     TextStyle inputTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -283,14 +280,12 @@ class DefaultChatTheme extends ChatTheme {
     TextStyle receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: neutral0,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -298,14 +293,12 @@ class DefaultChatTheme extends ChatTheme {
     Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral0,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
       color: neutral0,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -317,14 +310,12 @@ class DefaultChatTheme extends ChatTheme {
     TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -332,14 +323,12 @@ class DefaultChatTheme extends ChatTheme {
     Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -350,13 +339,11 @@ class DefaultChatTheme extends ChatTheme {
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
     TextStyle userNameTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -423,7 +410,6 @@ class DarkChatTheme extends ChatTheme {
     ),
     TextStyle dateDividerTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -432,7 +418,6 @@ class DarkChatTheme extends ChatTheme {
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -452,7 +437,6 @@ class DarkChatTheme extends ChatTheme {
       isCollapsed: true,
     ),
     TextStyle inputTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -464,14 +448,12 @@ class DarkChatTheme extends ChatTheme {
     TextStyle receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -479,14 +461,12 @@ class DarkChatTheme extends ChatTheme {
     Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -498,14 +478,12 @@ class DarkChatTheme extends ChatTheme {
     TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -513,14 +491,12 @@ class DarkChatTheme extends ChatTheme {
     Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -531,13 +507,11 @@ class DarkChatTheme extends ChatTheme {
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
     TextStyle userNameTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
