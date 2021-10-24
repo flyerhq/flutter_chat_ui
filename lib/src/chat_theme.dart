@@ -207,8 +207,8 @@ abstract class ChatTheme {
   /// Text style used for displaying link title on sent messages
   final TextStyle sentMessageLinkTitleTextStyle;
 
-  /// Insets of message status icon
-  final EdgeInsets statusIconPadding;
+  /// Padding around status icons
+  final EdgeInsetsGeometry statusIconPadding;
 
   /// Color used as a background for user avatar if an image is provided.
   /// Visible if the image has some transparent parts.
@@ -344,7 +344,8 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    EdgeInsets statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    EdgeInsetsGeometry statusIconPadding =
+        const EdgeInsets.symmetric(horizontal: 4),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
@@ -524,7 +525,8 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    EdgeInsets statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    EdgeInsetsGeometry statusIconPadding =
+        const EdgeInsets.symmetric(horizontal: 4),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
