@@ -324,7 +324,7 @@ class _ChatState extends State<Chat> {
     if (object is DateHeader) {
       return Container(
         alignment: Alignment.center,
-        margin: widget.theme.dateDividerPadding,
+        margin: widget.theme.dateDividerMargin,
         child: Text(
           object.text,
           style: widget.theme.dateDividerTextStyle,
