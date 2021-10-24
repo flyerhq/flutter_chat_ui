@@ -210,6 +210,7 @@ class _ChatListState extends State<ChatList>
         return false;
       },
       child: CustomScrollView(
+        physics: InheritedChatTheme.of(context).theme.scrollPhysics,
         controller: _scrollController,
         reverse: true,
         slivers: [

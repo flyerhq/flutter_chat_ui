@@ -74,6 +74,7 @@ abstract class ChatTheme {
     required this.receivedMessageDocumentIconColor,
     required this.receivedMessageLinkDescriptionTextStyle,
     required this.receivedMessageLinkTitleTextStyle,
+    required this.scrollPhysics,
     required this.secondaryColor,
     required this.seenIcon,
     required this.sendButtonIcon,
@@ -168,6 +169,9 @@ abstract class ChatTheme {
 
   /// Text style used for displaying link title on received messages
   final TextStyle receivedMessageLinkTitleTextStyle;
+
+  /// Determines the physics of messages
+  final ScrollPhysics scrollPhysics;
 
   /// Secondary color, used as a background of received messages
   final Color secondaryColor;
@@ -298,6 +302,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    ScrollPhysics scrollPhysics = const ClampingScrollPhysics(),
     Color secondaryColor = secondary,
     Widget? seenIcon,
     Widget? sendButtonIcon,
@@ -374,6 +379,7 @@ class DefaultChatTheme extends ChatTheme {
           receivedMessageLinkDescriptionTextStyle:
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
+          scrollPhysics: scrollPhysics,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
@@ -471,6 +477,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    ScrollPhysics scrollPhysics = const ClampingScrollPhysics(),
     Color secondaryColor = secondaryDark,
     Widget? seenIcon,
     Widget? sendButtonIcon,
@@ -547,6 +554,7 @@ class DarkChatTheme extends ChatTheme {
           receivedMessageLinkDescriptionTextStyle:
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
+          scrollPhysics: scrollPhysics,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
