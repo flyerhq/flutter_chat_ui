@@ -94,7 +94,10 @@ class TextMessage extends StatelessWidget {
   }
 
   Widget _textWidgetBuilder(
-      types.User user, BuildContext context, bool enlargeEmojis) {
+    types.User user,
+    BuildContext context,
+    bool enlargeEmojis,
+  ) {
     final theme = InheritedChatTheme.of(context).theme;
     final color =
         getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
