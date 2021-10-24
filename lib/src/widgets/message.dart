@@ -313,14 +313,8 @@ class Message extends StatelessWidget {
           ),
           if (_currentUserIsAuthor)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Center(
-                child: SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: showStatus ? _statusBuilder(context) : null,
-                ),
-              ),
+              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+              child: showStatus ? _statusBuilder(context) : null,
             ),
         ],
       ),
