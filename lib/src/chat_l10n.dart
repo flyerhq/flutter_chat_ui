@@ -204,3 +204,25 @@ class ChatL10nUk extends ChatL10n {
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
         );
 }
+
+/// Simplified Chinese l10n which extends [ChatL10n]
+@immutable
+class ChatL10nZhCN extends ChatL10n {
+  /// Creates Simplified Chinese l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nZhCN({
+    String attachmentButtonAccessibilityLabel = '发送文件',
+    String emptyChatPlaceholder = '尚无消息',
+    String fileButtonAccessibilityLabel = '文件',
+    String inputPlaceholder = '消息',
+    String sendButtonAccessibilityLabel = '发送',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
+}
