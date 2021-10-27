@@ -1,3 +1,7 @@
+## 1.5.1
+
+- Increase tests coverage
+
 ## 1.5.0
 
 - Remove `Avenir` as a default font family
