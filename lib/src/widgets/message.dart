@@ -24,7 +24,9 @@ class Message extends StatelessWidget {
     required this.message,
     required this.messageWidth,
     this.onMessageLongPress,
+    this.onMessageStatusLongPress,
     this.onMessageTap,
+    this.onMessageStatusTap,
     this.onPreviewDataFetched,
     required this.roundBorder,
     required this.showAvatar,
@@ -75,8 +77,14 @@ class Message extends StatelessWidget {
   /// Called when user makes a long press on any message
   final void Function(types.Message)? onMessageLongPress;
 
+  /// Called when user makes a long press on status icon on any message
+  final void Function(types.Message)? onMessageStatusLongPress;
+
   /// Called when user taps on any message
   final void Function(types.Message)? onMessageTap;
+
+  /// Called when user taps on status icon on any message
+  final void Function(types.Message)? onMessageStatusTap;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -314,7 +322,14 @@ class Message extends StatelessWidget {
           if (_currentUserIsAuthor)
             Padding(
               padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus ? _statusBuilder(context) : null,
+              child: showStatus
+                  ? GestureDetector(
+                      onLongPress: () =>
+                          onMessageStatusLongPress?.call(message),
+                      onTap: () => onMessageStatusTap?.call(message),
+                      child: _statusBuilder(context),
+                    )
+                  : null,
             ),
         ],
       ),
