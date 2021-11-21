@@ -23,6 +23,7 @@ class Message extends StatelessWidget {
     this.imageMessageBuilder,
     required this.message,
     required this.messageWidth,
+    this.onAvatarTap,
     this.onMessageLongPress,
     this.onMessageStatusLongPress,
     this.onMessageStatusTap,
@@ -73,6 +74,9 @@ class Message extends StatelessWidget {
 
   /// Maximum message width
   final int messageWidth;
+
+  // Called when uses taps on an avatar
+  final void Function(types.User)? onAvatarTap;
 
   /// Called when user makes a long press on any message
   final void Function(types.Message)? onMessageLongPress;
@@ -126,23 +130,26 @@ class Message extends StatelessWidget {
     return showAvatar
         ? Container(
             margin: const EdgeInsets.only(right: 8),
-            child: CircleAvatar(
-              backgroundColor: hasImage
-                  ? InheritedChatTheme.of(context)
-                      .theme
-                      .userAvatarImageBackgroundColor
-                  : color,
-              backgroundImage:
-                  hasImage ? NetworkImage(message.author.imageUrl!) : null,
-              radius: 16,
-              child: !hasImage
-                  ? Text(
-                      initials,
-                      style: InheritedChatTheme.of(context)
-                          .theme
-                          .userAvatarTextStyle,
-                    )
-                  : null,
+            child: GestureDetector(
+              onTap: () => onAvatarTap?.call(message.author),
+              child: CircleAvatar(
+                backgroundColor: hasImage
+                    ? InheritedChatTheme.of(context)
+                        .theme
+                        .userAvatarImageBackgroundColor
+                    : color,
+                backgroundImage:
+                    hasImage ? NetworkImage(message.author.imageUrl!) : null,
+                radius: 16,
+                child: !hasImage
+                    ? Text(
+                        initials,
+                        style: InheritedChatTheme.of(context)
+                            .theme
+                            .userAvatarTextStyle,
+                      )
+                    : null,
+              ),
             ),
           )
         : const SizedBox(width: 40);
