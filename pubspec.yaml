@@ -13,7 +13,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  diffutil_dart: ^2.0.0+1
+  diffutil_dart: ^3.0.0
   equatable: ^2.0.3
   flutter_chat_types: ^3.2.0
   flutter_link_previewer: ^2.6.0
