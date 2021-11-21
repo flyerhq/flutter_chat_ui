@@ -234,10 +234,10 @@ class ChatL10nZhTW extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n]
   const ChatL10nZhTW({
-    String attachmentButtonAccessibilityLabel = '傳送多媒體',
-    String emptyChatPlaceholder = '尚無訊息',
+    String attachmentButtonAccessibilityLabel = '傳送媒體',
+    String emptyChatPlaceholder = '還沒有訊息在這裡',
     String fileButtonAccessibilityLabel = '檔案',
-    String inputPlaceholder = '請輸入訊息...',
+    String inputPlaceholder = '輸入訊息',
     String sendButtonAccessibilityLabel = '傳送',
   }) : super(
           attachmentButtonAccessibilityLabel:

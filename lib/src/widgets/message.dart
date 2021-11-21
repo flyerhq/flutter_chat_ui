@@ -25,8 +25,8 @@ class Message extends StatelessWidget {
     required this.messageWidth,
     this.onMessageLongPress,
     this.onMessageStatusLongPress,
-    this.onMessageTap,
     this.onMessageStatusTap,
+    this.onMessageTap,
     this.onPreviewDataFetched,
     required this.roundBorder,
     required this.showAvatar,
@@ -77,14 +77,14 @@ class Message extends StatelessWidget {
   /// Called when user makes a long press on any message
   final void Function(types.Message)? onMessageLongPress;
 
-  /// Called when user makes a long press on status icon on any message
+  /// Called when user makes a long press on status icon in any message
   final void Function(types.Message)? onMessageStatusLongPress;
+
+  /// Called when user taps on status icon in any message
+  final void Function(types.Message)? onMessageStatusTap;
 
   /// Called when user taps on any message
   final void Function(types.Message)? onMessageTap;
-
-  /// Called when user taps on status icon on any message
-  final void Function(types.Message)? onMessageStatusTap;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
