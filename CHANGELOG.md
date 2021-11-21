@@ -1,3 +1,11 @@
+## 1.5.2
+
+- Add status icon tap and long press. Thanks @ikurek for the PR!
+- Add Traditional Chinese localization. Thanks @Wei-Hsun for the PR!
+- Add `onAvatarTap`
+- Fix local image preview on web
+- Update dependencies
+
 ## 1.5.1
 
 - Increase tests coverage
