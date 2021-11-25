@@ -126,9 +126,12 @@ class _ChatListState extends State<ChatList>
       final item = widget.items[1];
 
       // Compare items to fire only on newly added messages
-      if (oldItem != item && item is Map<String, Object>) {
+      if (oldItem != item && item is Map<String, Object> && oldItem is Map<String, Object>) {
         final message = item['message']! as types.Message;
-
+        final oldMessage = oldItem['message']! as types.Message;
+        if (message.id == oldMessage.id) {
+          return;
+        }
         // Run only for sent message
         if (message.author.id == InheritedUser.of(context).user.id) {
           // Delay to give some time for Flutter to calculate new

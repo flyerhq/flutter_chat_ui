@@ -209,8 +209,20 @@ class _ChatPageState extends State<ChatPage> {
         fileDownloadUrl: fileDownloadUrl,
         //dateFormat: DateFormat.yMd(),
         timeFormat: DateFormat('hh:mm a'),
+        onEndReached: _onEndReached,
       ),
     );
+  }
+
+  Future<void> _onEndReached() async{
+    final response = await rootBundle.loadString('assets/messages.json');
+    final messages = (jsonDecode(response) as List)
+        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
+        .toList();
+
+    setState(() {
+      _messages.addAll(messages);
+    });
   }
 
   void _onUploadSuccess(types.ImageMessage message) {
