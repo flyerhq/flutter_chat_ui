@@ -1,5 +1,6 @@
 ## 1.5.3
 
+- Remove image blur
 - Update dependencies
 
 ## 1.5.2
