@@ -3,7 +3,6 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_ui/src/models/message_spacer.dart';
 import 'package:flutter_chat_ui/src/models/preview_image.dart';
 import 'package:flutter_chat_ui/src/util.dart';
-import 'package:flutter_chat_ui/src/chat_theme.dart' show colors;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_test/flutter_test.dart';
 

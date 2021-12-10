@@ -1,3 +1,7 @@
+## 1.5.3
+
+- Update dependencies
+
 ## 1.5.2
 
 - Add status icon tap and long press. Thanks @ikurek for the PR!
