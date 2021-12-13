@@ -1,9 +1,11 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -166,7 +168,7 @@ class Chat extends StatefulWidget {
   final double? onEndReachedThreshold;
 
   /// See [Message.onMessageLongPress]
-  final void Function(types.Message)? onMessageLongPress;
+  final void Function(BuildContext content, types.Message)? onMessageLongPress;
 
   /// See [Message.onMessageStatusLongPress]
   final void Function(types.Message)? onMessageStatusLongPress;
@@ -175,7 +177,7 @@ class Chat extends StatefulWidget {
   final void Function(types.Message)? onMessageStatusTap;
 
   /// See [Message.onMessageTap]
-  final void Function(types.Message)? onMessageTap;
+  final void Function(BuildContext context, types.Message)? onMessageTap;
 
   /// See [Message.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -368,13 +370,13 @@ class _ChatState extends State<Chat> {
         onMessageLongPress: widget.onMessageLongPress,
         onMessageStatusLongPress: widget.onMessageStatusLongPress,
         onMessageStatusTap: widget.onMessageStatusTap,
-        onMessageTap: (tappedMessage) {
+        onMessageTap: (content, tappedMessage) {
           if (tappedMessage is types.ImageMessage &&
               widget.disableImageGallery != true) {
             _onImagePressed(tappedMessage);
           }
 
-          widget.onMessageTap?.call(tappedMessage);
+          widget.onMessageTap?.call(content, tappedMessage);
         },
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,

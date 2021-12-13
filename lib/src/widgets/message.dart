@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
 import 'file_message.dart';
@@ -79,7 +80,7 @@ class Message extends StatelessWidget {
   final void Function(types.User)? onAvatarTap;
 
   /// Called when user makes a long press on any message
-  final void Function(types.Message)? onMessageLongPress;
+  final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
   /// Called when user makes a long press on status icon in any message
   final void Function(types.Message)? onMessageStatusLongPress;
@@ -88,7 +89,7 @@ class Message extends StatelessWidget {
   final void Function(types.Message)? onMessageStatusTap;
 
   /// Called when user taps on any message
-  final void Function(types.Message)? onMessageTap;
+  final void Function(BuildContext context, types.Message)? onMessageTap;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -314,8 +315,8 @@ class Message extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onLongPress: () => onMessageLongPress?.call(message),
-                  onTap: () => onMessageTap?.call(message),
+                  onLongPress: () => onMessageLongPress?.call(context, message),
+                  onTap: () => onMessageTap?.call(context, message),
                   child: _bubbleBuilder(
                     context,
                     _borderRadius,

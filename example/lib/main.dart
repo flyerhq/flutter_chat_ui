@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -139,7 +140,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void _handleMessageTap(types.Message message) async {
+  void _handleMessageTap(BuildContext context, types.Message message) async {
     if (message is types.FileMessage) {
       await OpenFile.open(message.uri);
     }
