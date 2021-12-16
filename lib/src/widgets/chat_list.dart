@@ -14,6 +14,7 @@ class ChatList extends StatefulWidget {
     required this.items,
     this.onEndReached,
     this.onEndReachedThreshold,
+    this.scrollPhysics,
   }) : super(key: key);
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
@@ -37,6 +38,9 @@ class ChatList extends StatefulWidget {
   /// to the very end of the list. Default value is 0.75, e.g. start loading
   /// next page when scrolled through about 3/4 of the available content.
   final double? onEndReachedThreshold;
+
+  /// Determines the physics of the scroll view
+  final ScrollPhysics? scrollPhysics;
 
   @override
   _ChatListState createState() => _ChatListState();
@@ -211,6 +215,7 @@ class _ChatListState extends State<ChatList>
       },
       child: CustomScrollView(
         controller: _scrollController,
+        physics: widget.scrollPhysics,
         reverse: true,
         slivers: [
           SliverPadding(

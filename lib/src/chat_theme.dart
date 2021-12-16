@@ -51,6 +51,7 @@ abstract class ChatTheme {
   const ChatTheme({
     required this.attachmentButtonIcon,
     required this.backgroundColor,
+    required this.dateDividerMargin,
     required this.dateDividerTextStyle,
     required this.deliveredIcon,
     required this.documentIcon,
@@ -68,6 +69,7 @@ abstract class ChatTheme {
     required this.messageInsetsHorizontal,
     required this.messageInsetsVertical,
     required this.primaryColor,
+    required this.receivedEmojiMessageTextStyle,
     required this.receivedMessageBodyTextStyle,
     required this.receivedMessageCaptionTextStyle,
     required this.receivedMessageDocumentIconColor,
@@ -77,11 +79,13 @@ abstract class ChatTheme {
     required this.seenIcon,
     required this.sendButtonIcon,
     required this.sendingIcon,
+    required this.sentEmojiMessageTextStyle,
     required this.sentMessageBodyTextStyle,
     required this.sentMessageCaptionTextStyle,
     required this.sentMessageDocumentIconColor,
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
+    required this.statusIconPadding,
     required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
@@ -93,6 +97,9 @@ abstract class ChatTheme {
 
   /// Used as a background color of a chat widget
   final Color backgroundColor;
+
+  /// Margin around date dividers
+  final EdgeInsetsGeometry dateDividerMargin;
 
   /// Text style of the date dividers
   final TextStyle dateDividerTextStyle;
@@ -146,6 +153,9 @@ abstract class ChatTheme {
   /// and statuses
   final Color primaryColor;
 
+  /// Text style used for displaying emojis on text messages
+  final TextStyle receivedEmojiMessageTextStyle;
+
   /// Body text style used for displaying text on different types
   /// of received messages
   final TextStyle receivedMessageBodyTextStyle;
@@ -176,6 +186,9 @@ abstract class ChatTheme {
   /// Icon for message's `sending` status. For the best look use size of 10.
   final Widget? sendingIcon;
 
+  /// Text style used for displaying emojis on text messages
+  final TextStyle sentEmojiMessageTextStyle;
+
   /// Body text style used for displaying text on different types
   /// of sent messages
   final TextStyle sentMessageBodyTextStyle;
@@ -193,6 +206,9 @@ abstract class ChatTheme {
 
   /// Text style used for displaying link title on sent messages
   final TextStyle sentMessageLinkTitleTextStyle;
+
+  /// Padding around status icons
+  final EdgeInsetsGeometry statusIconPadding;
 
   /// Color used as a background for user avatar if an image is provided.
   /// Visible if the image has some transparent parts.
@@ -220,9 +236,12 @@ class DefaultChatTheme extends ChatTheme {
   const DefaultChatTheme({
     Widget? attachmentButtonIcon,
     Color backgroundColor = neutral7,
+    EdgeInsetsGeometry dateDividerMargin = const EdgeInsets.only(
+      bottom: 32,
+      top: 16,
+    ),
     TextStyle dateDividerTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -231,7 +250,6 @@ class DefaultChatTheme extends ChatTheme {
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -251,7 +269,6 @@ class DefaultChatTheme extends ChatTheme {
       isCollapsed: true,
     ),
     TextStyle inputTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -260,16 +277,15 @@ class DefaultChatTheme extends ChatTheme {
     double messageInsetsHorizontal = 20,
     double messageInsetsVertical = 16,
     Color primaryColor = primary,
+    TextStyle receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: neutral0,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -277,14 +293,12 @@ class DefaultChatTheme extends ChatTheme {
     Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral0,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
       color: neutral0,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -293,16 +307,15 @@ class DefaultChatTheme extends ChatTheme {
     Widget? seenIcon,
     Widget? sendButtonIcon,
     Widget? sendingIcon,
+    TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -310,29 +323,27 @@ class DefaultChatTheme extends ChatTheme {
     Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    EdgeInsetsGeometry statusIconPadding =
+        const EdgeInsets.symmetric(horizontal: 4),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
     TextStyle userNameTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -340,6 +351,7 @@ class DefaultChatTheme extends ChatTheme {
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
+          dateDividerMargin: dateDividerMargin,
           dateDividerTextStyle: dateDividerTextStyle,
           deliveredIcon: deliveredIcon,
           documentIcon: documentIcon,
@@ -357,6 +369,7 @@ class DefaultChatTheme extends ChatTheme {
           messageInsetsHorizontal: messageInsetsHorizontal,
           messageInsetsVertical: messageInsetsVertical,
           primaryColor: primaryColor,
+          receivedEmojiMessageTextStyle: receivedEmojiMessageTextStyle,
           receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,
           receivedMessageCaptionTextStyle: receivedMessageCaptionTextStyle,
           receivedMessageDocumentIconColor: receivedMessageDocumentIconColor,
@@ -367,12 +380,14 @@ class DefaultChatTheme extends ChatTheme {
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
           sendingIcon: sendingIcon,
+          sentEmojiMessageTextStyle: sentEmojiMessageTextStyle,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
           sentMessageLinkDescriptionTextStyle:
               sentMessageLinkDescriptionTextStyle,
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
+          statusIconPadding: statusIconPadding,
           userAvatarImageBackgroundColor: userAvatarImageBackgroundColor,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
@@ -389,9 +404,12 @@ class DarkChatTheme extends ChatTheme {
   const DarkChatTheme({
     Widget? attachmentButtonIcon,
     Color backgroundColor = dark,
+    EdgeInsetsGeometry dateDividerMargin = const EdgeInsets.only(
+      bottom: 32,
+      top: 16,
+    ),
     TextStyle dateDividerTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -400,7 +418,6 @@ class DarkChatTheme extends ChatTheme {
     Widget? documentIcon,
     TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
       color: neutral2,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -420,7 +437,6 @@ class DarkChatTheme extends ChatTheme {
       isCollapsed: true,
     ),
     TextStyle inputTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
@@ -429,16 +445,15 @@ class DarkChatTheme extends ChatTheme {
     double messageInsetsHorizontal = 20,
     double messageInsetsVertical = 16,
     Color primaryColor = primary,
+    TextStyle receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -446,14 +461,12 @@ class DarkChatTheme extends ChatTheme {
     Color receivedMessageDocumentIconColor = primary,
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
@@ -462,16 +475,15 @@ class DarkChatTheme extends ChatTheme {
     Widget? seenIcon,
     Widget? sendButtonIcon,
     Widget? sendingIcon,
+    TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle sentMessageBodyTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
       color: neutral7WithOpacity,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -479,29 +491,27 @@ class DarkChatTheme extends ChatTheme {
     Color sentMessageDocumentIconColor = neutral7,
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
       height: 1.428,
     ),
     TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    EdgeInsetsGeometry statusIconPadding =
+        const EdgeInsets.symmetric(horizontal: 4),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
       color: neutral7,
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
     TextStyle userNameTextStyle = const TextStyle(
-      fontFamily: 'Avenir',
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
@@ -509,6 +519,7 @@ class DarkChatTheme extends ChatTheme {
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
           backgroundColor: backgroundColor,
+          dateDividerMargin: dateDividerMargin,
           dateDividerTextStyle: dateDividerTextStyle,
           deliveredIcon: deliveredIcon,
           documentIcon: documentIcon,
@@ -526,6 +537,7 @@ class DarkChatTheme extends ChatTheme {
           inputTextStyle: inputTextStyle,
           messageBorderRadius: messageBorderRadius,
           primaryColor: primaryColor,
+          receivedEmojiMessageTextStyle: receivedEmojiMessageTextStyle,
           receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,
           receivedMessageCaptionTextStyle: receivedMessageCaptionTextStyle,
           receivedMessageDocumentIconColor: receivedMessageDocumentIconColor,
@@ -536,12 +548,14 @@ class DarkChatTheme extends ChatTheme {
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
           sendingIcon: sendingIcon,
+          sentEmojiMessageTextStyle: sentEmojiMessageTextStyle,
           sentMessageBodyTextStyle: sentMessageBodyTextStyle,
           sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
           sentMessageDocumentIconColor: sentMessageDocumentIconColor,
           sentMessageLinkDescriptionTextStyle:
               sentMessageLinkDescriptionTextStyle,
           sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
+          statusIconPadding: statusIconPadding,
           userAvatarImageBackgroundColor: userAvatarImageBackgroundColor,
           userAvatarNameColors: userAvatarNameColors,
           userAvatarTextStyle: userAvatarTextStyle,
