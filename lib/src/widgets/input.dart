@@ -68,7 +68,7 @@ class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
   final TextEditingController _textController = TextEditingController();
-  final _regex = '/\[[0-9]+\]\(([^)]+)\)/gi';
+
   @override
   void initState() {
     super.initState();
@@ -209,14 +209,9 @@ class _InputState extends State<Input> {
                               ),
                           suggestionPosition: SuggestionPosition.Top,
                           textCapitalization: TextCapitalization.sentences,
-                          mentions: [
-                            ...(widget.mentions ??
-                                [
-                                  Mention(trigger: '@', data: [
-                                    {'id': '55', 'display': 'mufy'}
-                                  ])
-                                ])
-                          ],
+                          mentions: widget.mentions?.isNotEmpty == true
+                              ? widget.mentions!
+                              : [Mention(trigger: '@')],
                         ),
                       ),
                       Visibility(
