@@ -425,62 +425,64 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    return InheritedUser(
-      user: widget.user,
-      child: InheritedChatTheme(
-        theme: widget.theme,
-        child: InheritedL10n(
-          l10n: widget.l10n,
-          child: Stack(
-            children: [
-              Container(
-                color: widget.theme.backgroundColor,
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: widget.messages.isEmpty
-                          ? SizedBox.expand(
-                              child: _emptyStateBuilder(),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                widget.onBackgroundTap?.call();
-                              },
-                              child: LayoutBuilder(
-                                builder: (BuildContext context,
-                                        BoxConstraints constraints) =>
-                                    ChatList(
-                                  isLastPage: widget.isLastPage,
-                                  itemBuilder: (item, index) =>
-                                      _messageBuilder(item, constraints),
-                                  items: _chatMessages,
-                                  onEndReached: widget.onEndReached,
-                                  onEndReachedThreshold:
-                                      widget.onEndReachedThreshold,
-                                  scrollPhysics: widget.scrollPhysics,
+    return Portal(
+      child: InheritedUser(
+        user: widget.user,
+        child: InheritedChatTheme(
+          theme: widget.theme,
+          child: InheritedL10n(
+            l10n: widget.l10n,
+            child: Stack(
+              children: [
+                Container(
+                  color: widget.theme.backgroundColor,
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: widget.messages.isEmpty
+                            ? SizedBox.expand(
+                                child: _emptyStateBuilder(),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  widget.onBackgroundTap?.call();
+                                },
+                                child: LayoutBuilder(
+                                  builder: (BuildContext context,
+                                          BoxConstraints constraints) =>
+                                      ChatList(
+                                    isLastPage: widget.isLastPage,
+                                    itemBuilder: (item, index) =>
+                                        _messageBuilder(item, constraints),
+                                    items: _chatMessages,
+                                    onEndReached: widget.onEndReached,
+                                    onEndReachedThreshold:
+                                        widget.onEndReachedThreshold,
+                                    scrollPhysics: widget.scrollPhysics,
+                                  ),
                                 ),
                               ),
-                            ),
-                    ),
-                    widget.customBottomWidget ??
-                        Input(
-                          suggestionListDecoration:
-                              widget.suggestionListDecoration,
-                          mentions: widget.mentions,
-                          isAttachmentUploading: widget.isAttachmentUploading,
-                          onAttachmentPressed: widget.onAttachmentPressed,
-                          onSendPressed: widget.onSendPressed,
-                          onTextChanged: widget.onTextChanged,
-                          onTextFieldTap: widget.onTextFieldTap,
-                          sendButtonVisibilityMode:
-                              widget.sendButtonVisibilityMode,
-                        ),
-                  ],
+                      ),
+                      widget.customBottomWidget ??
+                          Input(
+                            suggestionListDecoration:
+                                widget.suggestionListDecoration,
+                            mentions: widget.mentions,
+                            isAttachmentUploading: widget.isAttachmentUploading,
+                            onAttachmentPressed: widget.onAttachmentPressed,
+                            onSendPressed: widget.onSendPressed,
+                            onTextChanged: widget.onTextChanged,
+                            onTextFieldTap: widget.onTextFieldTap,
+                            sendButtonVisibilityMode:
+                                widget.sendButtonVisibilityMode,
+                          ),
+                    ],
+                  ),
                 ),
-              ),
-              if (_isImageViewVisible) _imageGalleryBuilder(),
-            ],
+                if (_isImageViewVisible) _imageGalleryBuilder(),
+              ],
+            ),
           ),
         ),
       ),
