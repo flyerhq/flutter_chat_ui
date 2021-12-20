@@ -22,6 +22,7 @@ class Input extends StatefulWidget {
     Key? key,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
+    this.messageTextController,
     required this.onSendPressed,
     this.onTextChanged,
   }) : super(key: key);
@@ -42,6 +43,9 @@ class Input extends StatefulWidget {
   /// Will be called whenever the text inside [TextField] changes
   final void Function(String)? onTextChanged;
 
+  /// for external use
+  final TextEditingController? messageTextController;
+
   @override
   _InputState createState() => _InputState();
 }
@@ -50,11 +54,12 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
-  final _textController = TextEditingController();
+  late TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
+    _textController = widget.messageTextController ?? TextEditingController();
     _textController.addListener(_handleTextControllerChange);
   }
 
@@ -68,7 +73,9 @@ class _InputState extends State<Input> {
   void _handleSendPressed() {
     final _partialText = types.PartialText(text: _textController.text.trim());
     widget.onSendPressed(_partialText);
-    _textController.clear();
+    if (widget.messageTextController == null) {
+      _textController.clear();
+    }
   }
 
   void _handleTextControllerChange() {
@@ -132,18 +139,20 @@ class _InputState extends State<Input> {
             child: Container(
               decoration: BoxDecoration(
                 // ignore: prefer_const_literals_to_create_immutables
-                boxShadow: [const BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.1),
-                    blurRadius: 10,
-                    offset: Offset(0,2),
-                    spreadRadius: 0
-                )],),
+                boxShadow: [
+                  const BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: 10,
+                      offset: Offset(0, 2),
+                      spreadRadius: 0)
+                ],
+              ),
               child: Material(
                 borderRadius:
                     InheritedChatTheme.of(context).theme.inputBorderRadius,
-                color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+                color:
+                    InheritedChatTheme.of(context).theme.inputBackgroundColor,
                 child: Container(
-
                   padding: EdgeInsets.fromLTRB(
                     24 + _query.padding.left,
                     20,
