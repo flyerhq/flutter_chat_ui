@@ -49,7 +49,11 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
-    this.onUploadSuccessCallback, this.fileUploadUrl, this.authToken, this.fileDownloadUrl,
+    this.onUploadSuccessCallback,
+    this.fileUploadUrl,
+    this.authToken,
+    this.messageController,
+    this.fileDownloadUrl,
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
@@ -142,6 +146,8 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? timeFormat;
 
+  final TextEditingController? messageController;
+
   /// See [Message.usePreviewData]
   final bool usePreviewData;
 
@@ -168,8 +174,13 @@ class _ChatState extends State<Chat> {
     super.initState();
 
     didUpdateWidget(widget);
-    if (widget.fileUploadUrl != null && widget.authToken != null  && widget.fileDownloadUrl != null) {
-      FileUploader().configure(uploadUrl: widget.fileUploadUrl!, fileDownloadUrl: widget.fileDownloadUrl!,token: widget.authToken!);
+    if (widget.fileUploadUrl != null &&
+        widget.authToken != null &&
+        widget.fileDownloadUrl != null) {
+      FileUploader().configure(
+          uploadUrl: widget.fileUploadUrl!,
+          fileDownloadUrl: widget.fileDownloadUrl!,
+          token: widget.authToken!);
     }
   }
 
@@ -209,47 +220,53 @@ class _ChatState extends State<Chat> {
   }
 
   void _buildImageGallery() {
-    showDialog(context: context, builder: (BuildContext context) {
-      return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Dismissible(
-          key: const Key('photo_view_gallery'),
-          direction: DismissDirection.down,
-          onDismissed: (direction) => _onCloseGalleryPressed(),
-          child: Container(
-            //color: Colors.black26,
-            child: Stack(
-              children: [
-                InteractiveViewer(
-                  minScale: 1.0,
-                  maxScale: 2.0,
-                  child: Center(
-                    child: CachedNetworkImage(
-                        imageUrl: _gallery[_imageViewIndex].uri,
-                        placeholder: (context, url) {
-                          return Center(child: CircularProgressIndicator());
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Dismissible(
+              key: const Key('photo_view_gallery'),
+              direction: DismissDirection.down,
+              onDismissed: (direction) => _onCloseGalleryPressed(),
+              child: Container(
+                //color: Colors.black26,
+                child: Stack(
+                  children: [
+                    InteractiveViewer(
+                      minScale: 1.0,
+                      maxScale: 2.0,
+                      child: Center(
+                        child: CachedNetworkImage(
+                          imageUrl: _gallery[_imageViewIndex].uri,
+                          placeholder: (context, url) {
+                            return Center(child: CircularProgressIndicator());
+                          },
+                          errorWidget: (context, url, error) {
+                            return Icon(
+                              Icons.error,
+                              color: Colors.white,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 16,
+                      top: 16,
+                      child: CloseButton(
+                        color: Colors.white,
+                        onPressed: () {
+                          _onCloseGalleryPressed();
                         },
-                        errorWidget: (context, url, error){
-                          return Icon(Icons.error, color: Colors.white,);
-                        },),
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-                Positioned(
-                  right: 16,
-                  top: 16,
-                  child: CloseButton(
-                    color: Colors.white,
-                    onPressed: (){
-                      _onCloseGalleryPressed();
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      );
-    });
+          );
+        });
   }
 
   Widget _buildMessage(Object object) {
@@ -334,7 +351,7 @@ class _ChatState extends State<Chat> {
     //
     // });
     _imageViewIndex = _gallery.indexWhere(
-          (element) => element.id == message.id && element.uri == message.uri,
+      (element) => element.id == message.id && element.uri == message.uri,
     );
     if (_imageViewIndex >= 0) {
       if (_gallery[_imageViewIndex].uri.contains('http')) {
@@ -360,56 +377,59 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return MediaQuery.removePadding(
-    context: context,
-    removeTop: true,
-    child: InheritedUser(
-      user: widget.user,
-      child: InheritedChatTheme(
-        theme: widget.theme,
-        child: InheritedL10n(
-          l10n: widget.l10n,
-          child: Stack(
-            children: [
-              Container(
-                color: widget.theme.backgroundColor,
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: widget.messages.isEmpty
-                            ? SizedBox.expand(
-                                child: _buildEmptyState(),
-                              )
-                            : GestureDetector(
-                                onTap: () => FocusManager.instance.primaryFocus
-                                    ?.unfocus(),
-                                child: ChatList(
-                                  isLastPage: widget.isLastPage,
-                                  itemBuilder: (item, index) =>
-                                      _buildMessage(item),
-                                  items: _chatMessages,
-                                  onEndReached: widget.onEndReached,
-                                  onEndReachedThreshold:
-                                      widget.onEndReachedThreshold,
+      context: context,
+      removeTop: true,
+      child: InheritedUser(
+        user: widget.user,
+        child: InheritedChatTheme(
+          theme: widget.theme,
+          child: InheritedL10n(
+            l10n: widget.l10n,
+            child: Stack(
+              children: [
+                Container(
+                  color: widget.theme.backgroundColor,
+                  child: SafeArea(
+                    bottom: false,
+                    child: Column(
+                      children: [
+                        Flexible(
+                          child: widget.messages.isEmpty
+                              ? SizedBox.expand(
+                                  child: _buildEmptyState(),
+                                )
+                              : GestureDetector(
+                                  onTap: () => FocusManager
+                                      .instance.primaryFocus
+                                      ?.unfocus(),
+                                  child: ChatList(
+                                    isLastPage: widget.isLastPage,
+                                    itemBuilder: (item, index) =>
+                                        _buildMessage(item),
+                                    items: _chatMessages,
+                                    onEndReached: widget.onEndReached,
+                                    onEndReachedThreshold:
+                                        widget.onEndReachedThreshold,
+                                  ),
                                 ),
-                              ),
-                      ),
-                      Input(
-                        isAttachmentUploading: widget.isAttachmentUploading,
-                        onAttachmentPressed: widget.onAttachmentPressed,
-                        onSendPressed: widget.onSendPressed,
-                        onTextChanged: widget.onTextChanged,
-                      ),
-                    ],
+                        ),
+                        Input(
+                          isAttachmentUploading: widget.isAttachmentUploading,
+                          onAttachmentPressed: widget.onAttachmentPressed,
+                          onSendPressed: widget.onSendPressed,
+                          onTextChanged: widget.onTextChanged,
+                          messageTextController:widget.messageController,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              //if (_isImageViewVisible) _buildImageGallery(),
-            ],
+                //if (_isImageViewVisible) _buildImageGallery(),
+              ],
+            ),
           ),
         ),
       ),
-    ),);
+    );
   }
 }
