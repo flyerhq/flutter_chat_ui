@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -233,6 +232,7 @@ class _ChatPageState extends State<ChatPage> {
         bottom: false,
         child: Chat(
           messages: _messages,
+          suggestionListDecoration: BoxDecoration(color: Theme.of(context).canvasColor),
           onAttachmentPressed: _handleAtachmentPressed,
           mentions: [
             /// This is a sample of a mention.

@@ -23,6 +23,8 @@ import 'message.dart';
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
+
+  /// suggestion list decoration for flutter mentions
   final BoxDecoration? suggestionListDecoration;
 
   /// Creates a chat widget
