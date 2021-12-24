@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -181,6 +182,50 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  /// list of mentsions data
+  final _mentionsData = [
+    {
+      'id': '1',
+      'display': 'John Doe',
+    },
+    {
+      'id': '2',
+      'display': 'Jane Doe',
+    },
+    {
+      'id': '3',
+      'display': 'Jack Doe',
+    },
+    {
+      'id': '4',
+      'display': 'Jill Doe',
+    },
+    {
+      'id': '5',
+      'display': 'Jenny Doe',
+    },
+    {
+      'id': '6',
+      'display': 'John Smith',
+    },
+    {
+      'id': '7',
+      'display': 'Jane Smith',
+    },
+    {
+      'id': '8',
+      'display': 'Jack Smith',
+    },
+    {
+      'id': '9',
+      'display': 'Jill Smith',
+    },
+    {
+      'id': '10',
+      'display': 'Jenny Smith',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,6 +234,20 @@ class _ChatPageState extends State<ChatPage> {
         child: Chat(
           messages: _messages,
           onAttachmentPressed: _handleAtachmentPressed,
+          mentions: [
+            /// This is a sample of a mention.
+            Mention(
+                /// trigger mention list when user types @
+                trigger: '@',
+                /// data source for mention list
+                data: _mentionsData,
+                /// builder for the mention list
+                suggestionBuilder: (l) {
+                  return ListTile(
+                    title: Text(l['display']),
+                  );
+                })
+          ],
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
