@@ -1,3 +1,12 @@
+## 1.5.4
+
+- **BREAKING CHANGE**: Rename `inputPadding` theme key to `inputMargin` (outer insets) and add `inputPadding` (inner insets, previously were hardcoded) 
+- **BREAKING CHANGE**: Add `BuildContext` as a first parameter for `onMessageLongPress`, `onMessageStatusLongPress`, `onMessageStatusTap`, `onMessageTap`. Thanks @leeyisoft for the PR!
+- Add `inputContainerDecoration` to the theme
+- Remove keyboard shortuts from Android and iOS platforms. Thanks @kyoungsongKim for reporting!
+- Use utf8 codec to parse chinese symbols in link preview. Thanks @minchemo for reporting!
+- Update dependencies. Requires Dart >= 2.15.1.
+
 ## 1.5.3
 
 - Remove image blur

@@ -83,10 +83,11 @@ class Message extends StatelessWidget {
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
   /// Called when user makes a long press on status icon in any message
-  final void Function(types.Message)? onMessageStatusLongPress;
+  final void Function(BuildContext context, types.Message)?
+      onMessageStatusLongPress;
 
   /// Called when user taps on status icon in any message
-  final void Function(types.Message)? onMessageStatusTap;
+  final void Function(BuildContext context, types.Message)? onMessageStatusTap;
 
   /// Called when user taps on any message
   final void Function(BuildContext context, types.Message)? onMessageTap;
@@ -333,8 +334,8 @@ class Message extends StatelessWidget {
               child: showStatus
                   ? GestureDetector(
                       onLongPress: () =>
-                          onMessageStatusLongPress?.call(message),
-                      onTap: () => onMessageStatusTap?.call(message),
+                          onMessageStatusLongPress?.call(context, message),
+                      onTap: () => onMessageStatusTap?.call(context, message),
                       child: _statusBuilder(context),
                     )
                   : null,

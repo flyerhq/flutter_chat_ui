@@ -168,13 +168,14 @@ class Chat extends StatefulWidget {
   final double? onEndReachedThreshold;
 
   /// See [Message.onMessageLongPress]
-  final void Function(BuildContext content, types.Message)? onMessageLongPress;
+  final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
   /// See [Message.onMessageStatusLongPress]
-  final void Function(types.Message)? onMessageStatusLongPress;
+  final void Function(BuildContext context, types.Message)?
+      onMessageStatusLongPress;
 
   /// See [Message.onMessageStatusTap]
-  final void Function(types.Message)? onMessageStatusTap;
+  final void Function(BuildContext context, types.Message)? onMessageStatusTap;
 
   /// See [Message.onMessageTap]
   final void Function(BuildContext context, types.Message)? onMessageTap;
@@ -370,13 +371,13 @@ class _ChatState extends State<Chat> {
         onMessageLongPress: widget.onMessageLongPress,
         onMessageStatusLongPress: widget.onMessageStatusLongPress,
         onMessageStatusTap: widget.onMessageStatusTap,
-        onMessageTap: (content, tappedMessage) {
+        onMessageTap: (context, tappedMessage) {
           if (tappedMessage is types.ImageMessage &&
               widget.disableImageGallery != true) {
             _onImagePressed(tappedMessage);
           }
 
-          widget.onMessageTap?.call(content, tappedMessage);
+          widget.onMessageTap?.call(context, tappedMessage);
         },
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,

@@ -38,10 +38,10 @@ PODS:
     - Flutter
   - open_file (0.0.1):
     - Flutter
-  - SDWebImage (5.12.1):
-    - SDWebImage/Core (= 5.12.1)
-  - SDWebImage/Core (5.12.1)
-  - SwiftyGif (5.4.1)
+  - SDWebImage (5.12.2):
+    - SDWebImage/Core (= 5.12.2)
+  - SDWebImage/Core (5.12.2)
+  - SwiftyGif (5.4.2)
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -78,8 +78,8 @@ SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   image_picker: 9aa50e1d8cdacdbed739e925b7eea16d014367e6
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
-  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
-  SwiftyGif: 6895c887f5551618a3c5dd3ecb512419105bacca
+  SDWebImage: 240e5c12b592fb1268c1d03b8c90d90e8c2ffe82
+  SwiftyGif: dec758a9dd3d278e5a855dbf279bf062c923c387
   url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c

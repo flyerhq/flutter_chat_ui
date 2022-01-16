@@ -60,7 +60,9 @@ abstract class ChatTheme {
     required this.errorIcon,
     required this.inputBackgroundColor,
     required this.inputBorderRadius,
+    this.inputContainerDecoration,
     required this.inputPadding,
+    required this.inputMargin,
     required this.inputTextColor,
     this.inputTextCursorColor,
     required this.inputTextDecoration,
@@ -125,8 +127,14 @@ abstract class ChatTheme {
   /// Top border radius of the bottom bar where text field is
   final BorderRadius inputBorderRadius;
 
-  /// Insets of the bottom bar where text field is
+  /// Decoration of the container wrapping the text field
+  final Decoration? inputContainerDecoration;
+
+  /// Inner insets of the bottom bar where text field is
   final EdgeInsetsGeometry inputPadding;
+
+  /// Outer insets of the bottom bar where text field is
+  final EdgeInsetsGeometry inputMargin;
 
   /// Color of the text field's text and attachment/send buttons
   final Color inputTextColor;
@@ -260,7 +268,9 @@ class DefaultChatTheme extends ChatTheme {
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
-    EdgeInsetsGeometry inputPadding = EdgeInsets.zero,
+    Decoration? inputContainerDecoration,
+    EdgeInsetsGeometry inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
+    EdgeInsetsGeometry inputMargin = EdgeInsets.zero,
     Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
@@ -360,7 +370,9 @@ class DefaultChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
+          inputContainerDecoration: inputContainerDecoration,
           inputPadding: inputPadding,
+          inputMargin: inputMargin,
           inputTextColor: inputTextColor,
           inputTextCursorColor: inputTextCursorColor,
           inputTextDecoration: inputTextDecoration,
@@ -428,7 +440,9 @@ class DarkChatTheme extends ChatTheme {
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
+    Decoration? inputContainerDecoration,
     EdgeInsetsGeometry inputPadding = EdgeInsets.zero,
+    EdgeInsetsGeometry inputMargin = const EdgeInsets.fromLTRB(24, 20, 24, 20),
     Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
@@ -528,14 +542,16 @@ class DarkChatTheme extends ChatTheme {
           errorIcon: errorIcon,
           inputBackgroundColor: inputBackgroundColor,
           inputBorderRadius: inputBorderRadius,
-          messageInsetsHorizontal: messageInsetsHorizontal,
-          messageInsetsVertical: messageInsetsVertical,
+          inputContainerDecoration: inputContainerDecoration,
           inputPadding: inputPadding,
+          inputMargin: inputMargin,
           inputTextColor: inputTextColor,
           inputTextCursorColor: inputTextCursorColor,
           inputTextDecoration: inputTextDecoration,
           inputTextStyle: inputTextStyle,
           messageBorderRadius: messageBorderRadius,
+          messageInsetsHorizontal: messageInsetsHorizontal,
+          messageInsetsVertical: messageInsetsVertical,
           primaryColor: primaryColor,
           receivedEmojiMessageTextStyle: receivedEmojiMessageTextStyle,
           receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,

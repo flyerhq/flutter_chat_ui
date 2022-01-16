@@ -97,7 +97,84 @@ class _InputState extends State<Input> {
     });
   }
 
-  Widget _leftWidget() {
+  Widget _inputBuilder() {
+    final _query = MediaQuery.of(context);
+
+    return Focus(
+      autofocus: true,
+      child: Padding(
+        padding: InheritedChatTheme.of(context).theme.inputMargin,
+        child: Material(
+          borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
+          color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+          child: Container(
+            decoration:
+                InheritedChatTheme.of(context).theme.inputContainerDecoration,
+            padding: InheritedChatTheme.of(context).theme.inputPadding.add(
+                  EdgeInsets.fromLTRB(
+                    _query.padding.left,
+                    0,
+                    _query.padding.right,
+                    _query.viewInsets.bottom + _query.padding.bottom,
+                  ),
+                ),
+            child: Row(
+              children: [
+                if (widget.onAttachmentPressed != null) _leftWidgetBuilder(),
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    cursorColor: InheritedChatTheme.of(context)
+                        .theme
+                        .inputTextCursorColor,
+                    decoration: InheritedChatTheme.of(context)
+                        .theme
+                        .inputTextDecoration
+                        .copyWith(
+                          hintStyle: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextStyle
+                              .copyWith(
+                                color: InheritedChatTheme.of(context)
+                                    .theme
+                                    .inputTextColor
+                                    .withOpacity(0.5),
+                              ),
+                          hintText:
+                              InheritedL10n.of(context).l10n.inputPlaceholder,
+                        ),
+                    focusNode: _inputFocusNode,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 5,
+                    minLines: 1,
+                    onChanged: widget.onTextChanged,
+                    onTap: widget.onTextFieldTap,
+                    style: InheritedChatTheme.of(context)
+                        .theme
+                        .inputTextStyle
+                        .copyWith(
+                          color: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextColor,
+                        ),
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                ),
+                Visibility(
+                  visible: _sendButtonVisible,
+                  child: SendButton(
+                    onPressed: _handleSendPressed,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _leftWidgetBuilder() {
     if (widget.isAttachmentUploading == true) {
       return Container(
         height: 24,
@@ -118,108 +195,44 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    final _query = MediaQuery.of(context);
+    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return GestureDetector(
       onTap: () => _inputFocusNode.requestFocus(),
-      child: Shortcuts(
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.enter): const SendMessageIntent(),
-          LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
-              const NewLineIntent(),
-          LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
-              const NewLineIntent(),
-        },
-        child: Actions(
-          actions: {
-            SendMessageIntent: CallbackAction<SendMessageIntent>(
-              onInvoke: (SendMessageIntent intent) => _handleSendPressed(),
-            ),
-            NewLineIntent: CallbackAction<NewLineIntent>(
-              onInvoke: (NewLineIntent intent) {
-                final _newValue = '${_textController.text}\r\n';
-                _textController.value = TextEditingValue(
-                  text: _newValue,
-                  selection: TextSelection.fromPosition(
-                    TextPosition(offset: _newValue.length),
-                  ),
-                );
+      child: isAndroid || isIOS
+          ? _inputBuilder()
+          : Shortcuts(
+              shortcuts: {
+                LogicalKeySet(LogicalKeyboardKey.enter):
+                    const SendMessageIntent(),
+                LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
+                    const NewLineIntent(),
+                LogicalKeySet(
+                        LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
+                    const NewLineIntent(),
               },
-            ),
-          },
-          child: Focus(
-            autofocus: true,
-            child: Padding(
-              padding: InheritedChatTheme.of(context).theme.inputPadding,
-              child: Material(
-                borderRadius:
-                    InheritedChatTheme.of(context).theme.inputBorderRadius,
-                color:
-                    InheritedChatTheme.of(context).theme.inputBackgroundColor,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(
-                    24 + _query.padding.left,
-                    20,
-                    24 + _query.padding.right,
-                    20 + _query.viewInsets.bottom + _query.padding.bottom,
+              child: Actions(
+                actions: {
+                  SendMessageIntent: CallbackAction<SendMessageIntent>(
+                    onInvoke: (SendMessageIntent intent) =>
+                        _handleSendPressed(),
                   ),
-                  child: Row(
-                    children: [
-                      if (widget.onAttachmentPressed != null) _leftWidget(),
-                      Expanded(
-                        child: TextField(
-                          controller: _textController,
-                          cursorColor: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextCursorColor,
-                          decoration: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextDecoration
-                              .copyWith(
-                                hintStyle: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextStyle
-                                    .copyWith(
-                                      color: InheritedChatTheme.of(context)
-                                          .theme
-                                          .inputTextColor
-                                          .withOpacity(0.5),
-                                    ),
-                                hintText: InheritedL10n.of(context)
-                                    .l10n
-                                    .inputPlaceholder,
-                              ),
-                          focusNode: _inputFocusNode,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          minLines: 1,
-                          onChanged: widget.onTextChanged,
-                          onTap: widget.onTextFieldTap,
-                          style: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextStyle
-                              .copyWith(
-                                color: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextColor,
-                              ),
-                          textCapitalization: TextCapitalization.sentences,
+                  NewLineIntent: CallbackAction<NewLineIntent>(
+                    onInvoke: (NewLineIntent intent) {
+                      final _newValue = '${_textController.text}\r\n';
+                      _textController.value = TextEditingValue(
+                        text: _newValue,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(offset: _newValue.length),
                         ),
-                      ),
-                      Visibility(
-                        visible: _sendButtonVisible,
-                        child: SendButton(
-                          onPressed: _handleSendPressed,
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                ),
+                },
+                child: _inputBuilder(),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
