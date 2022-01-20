@@ -441,8 +441,8 @@ class DarkChatTheme extends ChatTheme {
       top: Radius.circular(20),
     ),
     Decoration? inputContainerDecoration,
-    EdgeInsetsGeometry inputPadding = EdgeInsets.zero,
-    EdgeInsetsGeometry inputMargin = const EdgeInsets.fromLTRB(24, 20, 24, 20),
+    EdgeInsetsGeometry inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
+    EdgeInsetsGeometry inputMargin = EdgeInsets.zero,
     Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
