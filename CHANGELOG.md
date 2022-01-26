@@ -1,3 +1,10 @@
+## 1.5.5
+
+- Fix dark theme. Thanks @garv-shah for the PR!
+- Fix keyboard that pushes TextField to the top in mobile browsers. Thanks @jiangyubao for reporting!
+- Add `onMessageDoubleTap`. Thanks @leeyisoft for the PR!
+- Update dependencies
+
 ## 1.5.4
 
 - **BREAKING CHANGE**: Rename `inputPadding` theme key to `inputMargin` (outer insets) and add `inputPadding` (inner insets, previously were hardcoded) 
