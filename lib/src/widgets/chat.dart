@@ -28,7 +28,7 @@ class Chat extends StatefulWidget {
   final BoxDecoration? suggestionListDecoration;
 
   /// Creates a chat widget
-  const Chat({
+  Chat({
     Key? key,
     this.mentions,
     this.bubbleBuilder,
@@ -64,7 +64,7 @@ class Chat extends StatefulWidget {
     this.onTextFieldTap,
     this.scrollPhysics,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
-    this.showUserAvatars = false,
+    bool Function(types.Message message)? showUserAvatars,
     this.showUserNames = false,
     this.textMessageBuilder,
     this.theme = const DefaultChatTheme(),
@@ -72,7 +72,9 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.suggestionListDecoration,
-  }) : super(key: key);
+  }) : super(key: key) {
+    this.showUserAvatars = showUserAvatars ?? (message) => false;
+  }
 
   /// See [Message.bubbleBuilder]
   final Widget Function(
@@ -204,7 +206,7 @@ class Chat extends StatefulWidget {
   final SendButtonVisibilityMode sendButtonVisibilityMode;
 
   /// See [Message.showUserAvatars]
-  final bool showUserAvatars;
+  late final bool Function(types.Message message) showUserAvatars;
 
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
@@ -359,7 +361,7 @@ class _ChatState extends State<Chat> {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
       final _messageWidth =
-          widget.showUserAvatars && message.author.id != widget.user.id
+          widget.showUserAvatars(message) && message.author.id != widget.user.id
               ? min(constraints.maxWidth * 0.72, 440).floor()
               : min(constraints.maxWidth * 0.78, 440).floor();
 
@@ -390,7 +392,7 @@ class _ChatState extends State<Chat> {
         showAvatar: map['nextMessageInGroup'] == false,
         showName: map['showName'] == true,
         showStatus: map['showStatus'] == true,
-        showUserAvatars: widget.showUserAvatars,
+        showUserAvatars: widget.showUserAvatars(message),
         textMessageBuilder: widget.textMessageBuilder,
         usePreviewData: widget.usePreviewData,
       );
