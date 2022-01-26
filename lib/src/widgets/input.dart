@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -99,6 +100,14 @@ class _InputState extends State<Input> {
 
   Widget _inputBuilder() {
     final _query = MediaQuery.of(context);
+    final _safeAreaInsets = kIsWeb
+        ? EdgeInsets.zero
+        : EdgeInsets.fromLTRB(
+            _query.padding.left,
+            0,
+            _query.padding.right,
+            _query.viewInsets.bottom + _query.padding.bottom,
+          );
 
     return Focus(
       autofocus: true,
@@ -110,14 +119,10 @@ class _InputState extends State<Input> {
           child: Container(
             decoration:
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
-            padding: InheritedChatTheme.of(context).theme.inputPadding.add(
-                  EdgeInsets.fromLTRB(
-                    _query.padding.left,
-                    0,
-                    _query.padding.right,
-                    _query.viewInsets.bottom + _query.padding.bottom,
-                  ),
-                ),
+            padding: InheritedChatTheme.of(context)
+                .theme
+                .inputPadding
+                .add(_safeAreaInsets),
             child: Row(
               children: [
                 if (widget.onAttachmentPressed != null) _leftWidgetBuilder(),
