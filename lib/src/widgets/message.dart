@@ -25,11 +25,11 @@ class Message extends StatelessWidget {
     required this.message,
     required this.messageWidth,
     this.onAvatarTap,
+    this.onMessageDoubleTap,
     this.onMessageLongPress,
     this.onMessageStatusLongPress,
     this.onMessageStatusTap,
     this.onMessageTap,
-    this.onMessageDoubleTap,
     this.onPreviewDataFetched,
     required this.roundBorder,
     required this.showAvatar,
@@ -80,6 +80,9 @@ class Message extends StatelessWidget {
   // Called when uses taps on an avatar
   final void Function(types.User)? onAvatarTap;
 
+  /// Called when user double taps on any message
+  final void Function(BuildContext context, types.Message)? onMessageDoubleTap;
+
   /// Called when user makes a long press on any message
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
@@ -92,9 +95,6 @@ class Message extends StatelessWidget {
 
   /// Called when user taps on any message
   final void Function(BuildContext context, types.Message)? onMessageTap;
-
-  /// Called when user double taps on any message
-  final void Function(BuildContext context, types.Message)? onMessageDoubleTap;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -320,8 +320,8 @@ class Message extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 GestureDetector(
-                  onLongPress: () => onMessageLongPress?.call(context, message),
                   onDoubleTap: () => onMessageDoubleTap?.call(context, message),
+                  onLongPress: () => onMessageLongPress?.call(context, message),
                   onTap: () => onMessageTap?.call(context, message),
                   child: _bubbleBuilder(
                     context,
