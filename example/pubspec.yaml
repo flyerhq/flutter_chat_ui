@@ -37,7 +37,7 @@ dependencies:
   file_picker: ^4.3.2
   flutter_chat_ui:
     path: ../
-  image_picker: ^0.8.4+4
+  image_picker: ^0.8.4+5
   intl: ^0.17.0
   mime: ^1.0.1
   open_file: ^3.2.1
