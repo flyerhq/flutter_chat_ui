@@ -23,7 +23,6 @@ import 'message.dart';
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
-
   /// suggestion list decoration for flutter mentions
   final BoxDecoration? suggestionListDecoration;
 
@@ -72,9 +71,11 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.suggestionListDecoration,
+    this.messageAlignment,
   }) : super(key: key) {
     this.showUserAvatars = showUserAvatars ?? (message) => false;
   }
+  Alignment? Function(types.Message message)? messageAlignment;
 
   /// See [Message.bubbleBuilder]
   final Widget Function(
@@ -367,6 +368,7 @@ class _ChatState extends State<Chat> {
 
       return Message(
         key: ValueKey(message.id),
+        messageAlignment: widget.messageAlignment,
         bubbleBuilder: widget.bubbleBuilder,
         customMessageBuilder: widget.customMessageBuilder,
         emojiEnlargementBehavior: widget.emojiEnlargementBehavior,

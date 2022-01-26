@@ -36,6 +36,7 @@ class Message extends StatelessWidget {
     required this.showUserAvatars,
     this.textMessageBuilder,
     required this.usePreviewData,
+    this.messageAlignment,
   }) : super(key: key);
 
   /// Customize the default bubble using this function. `child` is a content
@@ -48,6 +49,8 @@ class Message extends StatelessWidget {
     required types.Message message,
     required bool nextMessageInGroup,
   })? bubbleBuilder;
+
+  final Alignment? Function(types.Message message)? messageAlignment;
 
   /// Build a custom message inside predefined bubble
   final Widget Function(types.CustomMessage, {required int messageWidth})?
@@ -294,9 +297,16 @@ class Message extends StatelessWidget {
       topRight: Radius.circular(_messageBorderRadius),
     );
 
+    Alignment _getAlignMent() {
+      return _currentUserIsAuthor
+          ? Alignment.centerRight
+          : Alignment.centerLeft;
+    }
+
     return Container(
-      alignment:
-          _currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: messageAlignment != null
+          ? messageAlignment!(message) ?? _getAlignMent()
+          : _getAlignMent(),
       margin: const EdgeInsets.only(
         bottom: 4,
         left: 20,
