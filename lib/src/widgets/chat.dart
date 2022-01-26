@@ -54,6 +54,7 @@ class Chat extends StatefulWidget {
     this.onMessageStatusLongPress,
     this.onMessageStatusTap,
     this.onMessageTap,
+    this.onMessageDoubleTap,
     this.onPreviewDataFetched,
     required this.onSendPressed,
     this.onTextChanged,
@@ -179,6 +180,8 @@ class Chat extends StatefulWidget {
 
   /// See [Message.onMessageTap]
   final void Function(BuildContext context, types.Message)? onMessageTap;
+
+  final void Function(BuildContext context, types.Message)? onMessageDoubleTap;
 
   /// See [Message.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -378,6 +381,11 @@ class _ChatState extends State<Chat> {
           }
 
           widget.onMessageTap?.call(context, tappedMessage);
+        },
+        onMessageDoubleTap: (content, tappedMessage) {
+          if (widget.onMessageDoubleTap != null) {
+            widget.onMessageDoubleTap?.call(content, tappedMessage);
+          }
         },
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,
