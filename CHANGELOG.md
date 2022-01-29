@@ -1,3 +1,7 @@
+## 1.5.6
+
+- Add `sendButtonMargin` to the theme. Thanks @damian-kaczmarek for the PR!
+
 ## 1.5.5
 
 - Fix dark theme. Thanks @garv-shah for the PR!
