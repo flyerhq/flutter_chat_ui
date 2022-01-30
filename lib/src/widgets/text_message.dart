@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexLink;
+import 'package:flutter_markdown/flutter_markdown.dart';
+
 import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
@@ -105,6 +107,13 @@ class TextMessage extends StatelessWidget {
     final color =
         getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
     final name = getUserName(message.author);
+    final textStyle = user.id == message.author.id
+        ? enlargeEmojis
+            ? theme.sentEmojiMessageTextStyle
+            : theme.sentMessageBodyTextStyle
+        : enlargeEmojis
+            ? theme.receivedEmojiMessageTextStyle
+            : theme.receivedMessageBodyTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,16 +128,17 @@ class TextMessage extends StatelessWidget {
               style: theme.userNameTextStyle.copyWith(color: color),
             ),
           ),
-        SelectableText(
-          message.text,
-          style: user.id == message.author.id
-              ? enlargeEmojis
-                  ? theme.sentEmojiMessageTextStyle
-                  : theme.sentMessageBodyTextStyle
-              : enlargeEmojis
-                  ? theme.receivedEmojiMessageTextStyle
-                  : theme.receivedMessageBodyTextStyle,
-          textWidthBasis: TextWidthBasis.longestLine,
+        MarkdownBody(
+          data: message.text,
+          selectable: true,
+          softLineBreak: true,
+          styleSheet: MarkdownStyleSheet(
+            p: textStyle,
+            listBullet: textStyle,
+            tableBody: textStyle,
+            tableHead: textStyle.copyWith(fontWeight: FontWeight.bold),
+            tableBorder: TableBorder.all(color: Colors.white),
+          ),
         ),
       ],
     );
