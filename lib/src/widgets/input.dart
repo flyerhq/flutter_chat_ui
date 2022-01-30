@@ -32,7 +32,8 @@ class Input extends StatefulWidget {
     required this.onSendPressed,
     this.onTextChanged,
     this.onTextFieldTap,
-    required this.sendButtonVisibilityMode, this.suggestionListDecoration,
+    required this.sendButtonVisibilityMode,
+    this.suggestionListDecoration,
   }) : super(key: key);
 
   /// See [AttachmentButton.onPressed]
@@ -68,7 +69,7 @@ class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
   final TextEditingController _textController = TextEditingController();
-
+  final _mentionsKey = GlobalKey<FlutterMentionsState>();
   @override
   void initState() {
     super.initState();
@@ -93,6 +94,9 @@ class _InputState extends State<Input> {
       final _partialText = types.PartialText(text: trimmedText);
       widget.onSendPressed(_partialText);
       _textController.clear();
+
+      /// also clear mentions
+      _mentionsKey.currentState?.controller?.clear();
     }
   }
 
@@ -122,108 +126,93 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
-    return GestureDetector(
-      onTap: () => _inputFocusNode.requestFocus(),
-      child: Shortcuts(
-        shortcuts: {
-          LogicalKeySet(LogicalKeyboardKey.enter): const SendMessageIntent(),
-          LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
-              const NewLineIntent(),
-          LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
-              const NewLineIntent(),
-        },
-        child: Actions(
-          actions: {
-            SendMessageIntent: CallbackAction<SendMessageIntent>(
-              onInvoke: (SendMessageIntent intent) => _handleSendPressed(),
-            ),
-            NewLineIntent: CallbackAction<NewLineIntent>(
-              onInvoke: (NewLineIntent intent) {
-                final _newValue = '${_textController.text}\r\n';
-                _textController.value = TextEditingValue(
-                  text: _newValue,
-                  selection: TextSelection.fromPosition(
-                    TextPosition(offset: _newValue.length),
-                  ),
-                );
-              },
-            ),
-          },
-          child: Focus(
-            child: Padding(
-              padding: InheritedChatTheme.of(context).theme.inputPadding,
-              child: Material(
-                borderRadius:
-                    InheritedChatTheme.of(context).theme.inputBorderRadius,
-                color:
-                    InheritedChatTheme.of(context).theme.inputBackgroundColor,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(
-                    24 + _query.padding.left,
-                    20,
-                    24 + _query.padding.right,
-                    20 + _query.viewInsets.bottom + _query.padding.bottom,
-                  ),
-                  child: Row(
-                    children: [
-                      if (widget.onAttachmentPressed != null) _leftWidget(),
-                      Expanded(
-                        child: FlutterMentions(
-                          appendSpaceOnAdd: true,
-                          onSubmitted: (value) => _handleSendPressed(),
-                          autofocus: true,
-                          cursorColor: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextCursorColor,
-                          decoration: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextDecoration
-                              .copyWith(
-                                hintStyle: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextStyle
-                                    .copyWith(
-                                      color: InheritedChatTheme.of(context)
-                                          .theme
-                                          .inputTextColor
-                                          .withOpacity(0.5),
-                                    ),
-                                hintText: InheritedL10n.of(context)
-                                    .l10n
-                                    .inputPlaceholder,
-                              ),
-                          suggestionListDecoration: widget.suggestionListDecoration,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          minLines: 1,
-                          onMentionAdd: (val) =>
-                              _textController.text += "${val['id']}",
-                          onMarkupChanged: (val) => _textController.text = val,
-                          onTap: widget.onTextFieldTap,
-                          style: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextStyle
-                              .copyWith(
-                                color: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextColor,
-                              ),
-                          suggestionPosition: SuggestionPosition.Top,
-                          textCapitalization: TextCapitalization.sentences,
-                          mentions: widget.mentions?.isNotEmpty == true
-                              ? widget.mentions!
-                              : [Mention(trigger: '@')],
-                        ),
-                      ),
-                      Visibility(
-                        visible: _sendButtonVisible,
-                        child: SendButton(
-                          onPressed: _handleSendPressed,
-                        ),
-                      ),
-                    ],
-                  ),
+    return Shortcuts(
+      shortcuts: {
+        LogicalKeySet(LogicalKeyboardKey.enter): const SendMessageIntent(),
+        LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
+            const NewLineIntent(),
+        LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
+            const NewLineIntent(),
+      },
+      child: Actions(
+        actions: {
+          SendMessageIntent: CallbackAction<SendMessageIntent>(
+            onInvoke: (SendMessageIntent intent) => _handleSendPressed(),
+          ),
+          NewLineIntent: CallbackAction<NewLineIntent>(
+            onInvoke: (NewLineIntent intent) {
+              final _newValue = '${_textController.text}\r\n';
+              _textController.value = TextEditingValue(
+                text: _newValue,
+                selection: TextSelection.fromPosition(
+                  TextPosition(offset: _newValue.length),
                 ),
+              );
+            },
+          ),
+        },
+        child: Focus(
+          child: Padding(
+            padding: InheritedChatTheme.of(context).theme.inputPadding,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(
+                  24 + _query.padding.left, 20, 24 + _query.padding.right, 20),
+              child: Row(
+                children: [
+                  if (widget.onAttachmentPressed != null) _leftWidget(),
+                  Expanded(
+                    child: FlutterMentions(
+                      appendSpaceOnAdd: true,
+                      onSubmitted: (value) => _handleSendPressed(),
+                      autofocus: true,
+                      cursorColor: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextCursorColor,
+                      decoration: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextDecoration
+                          .copyWith(
+                            hintStyle: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextStyle
+                                .copyWith(
+                                  color: InheritedChatTheme.of(context)
+                                      .theme
+                                      .inputTextColor
+                                      .withOpacity(0.5),
+                                ),
+                            hintText:
+                                InheritedL10n.of(context).l10n.inputPlaceholder,
+                            fillColor:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.white
+                                    : const Color.fromARGB(255, 42, 57, 66),
+                          ),
+                      suggestionListDecoration: widget.suggestionListDecoration,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
+                      onMentionAdd: (val) =>
+                          _textController.text += "${val['id']}",
+                      onMarkupChanged: (val) => _textController.text = val,
+                      onTap: widget.onTextFieldTap,
+                      suggestionPosition: SuggestionPosition.Top,
+                      textCapitalization: TextCapitalization.sentences,
+                      mentions: widget.mentions?.isNotEmpty == true
+                          ? widget.mentions!
+                          : [Mention(trigger: '@')],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Visibility(
+                    visible: _sendButtonVisible,
+                    child: SendButton(
+                      onPressed: _handleSendPressed,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
