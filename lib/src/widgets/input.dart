@@ -162,6 +162,7 @@ class _InputState extends State<Input> {
                   if (widget.onAttachmentPressed != null) _leftWidget(),
                   Expanded(
                     child: FlutterMentions(
+                      key: _mentionsKey,
                       appendSpaceOnAdd: true,
                       onSubmitted: (value) => _handleSendPressed(),
                       autofocus: true,
