@@ -73,6 +73,27 @@ class ChatL10nEs extends ChatL10n {
         );
 }
 
+/// German l10n which extends [ChatL10n]
+@immutable
+class ChatL10nDe extends ChatL10n {
+  /// Creates German l10n. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nDe({
+    String attachmentButtonAccessibilityLabel = 'Medien versenden',
+    String emptyChatPlaceholder = 'Noch keine Nachrichten vorhanden',
+    String fileButtonAccessibilityLabel = 'Datei',
+    String inputPlaceholder = 'Nachricht',
+    String sendButtonAccessibilityLabel = 'Senden',
+  }) : super(
+    attachmentButtonAccessibilityLabel: attachmentButtonAccessibilityLabel,
+    emptyChatPlaceholder: emptyChatPlaceholder,
+    fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+    inputPlaceholder: inputPlaceholder,
+    sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+  );
+}
+
 /// Korean l10n which extends [ChatL10n]
 @immutable
 class ChatL10nKo extends ChatL10n {
