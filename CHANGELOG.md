@@ -1,6 +1,7 @@
 ## 1.5.6
 
 - Add `sendButtonMargin` to the theme. Thanks @damian-kaczmarek for the PR!
+- Add German localization. Thanks @felixgabler for the PR!
 
 ## 1.5.5
 
@@ -204,7 +205,7 @@ Theme migration guide:
 
 - Fix various URL preview bugs (see https://pub.dev/packages/flutter_link_previewer/changelog)
 - Add an option to disable URL preview. Thanks @Elementarereigniss for the PR!
-- Add portugese localization. Thanks @BerkSpar for the PR!
+- Add Portugese localization. Thanks @BerkSpar for the PR!
 - Update dependencies
 
 ## 1.0.2
