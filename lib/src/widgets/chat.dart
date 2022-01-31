@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/models/unseen_banner.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -61,6 +62,9 @@ class Chat extends StatefulWidget {
     this.onTextChanged,
     this.onTextFieldTap,
     this.scrollPhysics,
+    this.scrollToUnseenDelay = const Duration(milliseconds: 150),
+    this.scrollToUnseenDuration = const Duration(milliseconds: 350),
+    this.scrollToUnseenOnOpen = false,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
     this.showUserNames = false,
@@ -204,6 +208,15 @@ class Chat extends StatefulWidget {
   /// See [ChatList.scrollPhysics]
   final ScrollPhysics? scrollPhysics;
 
+  /// Duration to wait after open until the scrolling starts
+  final Duration scrollToUnseenDelay;
+
+  /// Duration for the animation of the scrolling
+  final Duration scrollToUnseenDuration;
+
+  /// Whether to scroll to the first unseen message on open
+  final bool scrollToUnseenOnOpen;
+
   /// See [Input.sendButtonVisibilityMode]
   final SendButtonVisibilityMode sendButtonVisibilityMode;
 
@@ -249,6 +262,7 @@ class _ChatState extends State<Chat> {
   List<PreviewImage> _gallery = [];
   int _imageViewIndex = 0;
   bool _isImageViewVisible = false;
+  final GlobalKey _unseenBannerKey = GlobalKey();
 
   @override
   void initState() {
@@ -276,6 +290,27 @@ class _ChatState extends State<Chat> {
 
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
+
+      if (widget.scrollToUnseenOnOpen) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+          if (mounted) {
+            await Future.delayed(widget.scrollToUnseenDelay);
+            _scrollToFirstUnseen();
+          }
+        });
+      }
+    }
+  }
+
+  void _scrollToFirstUnseen() {
+    final context = _unseenBannerKey.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        curve: Curves.easeIn,
+        duration: widget.scrollToUnseenDuration,
+        alignment: 1,
+      );
     }
   }
 
@@ -356,6 +391,19 @@ class _ChatState extends State<Chat> {
     } else if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
+      );
+    } else if (object is UnseenBanner) {
+      return Container(
+        key: _unseenBannerKey,
+        alignment: Alignment.center,
+        color: Colors.grey,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        margin: const EdgeInsets.only(bottom: 16),
+        child: Text(
+          'Unseen messages',
+          style:
+              widget.theme.dateDividerTextStyle.copyWith(color: Colors.white),
+        ),
       );
     } else {
       final map = object as Map<String, Object>;

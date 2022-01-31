@@ -1,12 +1,15 @@
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
+
 import './models/date_header.dart';
 import './models/emoji_enlargement_behavior.dart';
 import './models/message_spacer.dart';
 import './models/preview_image.dart';
+import 'models/unseen_banner.dart';
 
 /// Returns text representation of a provided bytes value (e.g. 1kB, 1GB)
 String formatBytes(int size, [int fractionDigits = 2]) {
@@ -84,8 +87,8 @@ bool isConsistsOfEmojis(
   return multiEmojiRegExp.hasMatch(message.text);
 }
 
-/// Parses provided messages to chat messages (with headers and spacers) and
-/// returns them with a gallery
+/// Parses provided messages to chat messages (with headers, unseen banner
+/// and spacers) and returns them with a gallery
 List<Object> calculateChatMessages(
   List<types.Message> messages,
   types.User user, {
@@ -101,6 +104,7 @@ List<Object> calculateChatMessages(
   final gallery = <PreviewImage>[];
 
   var shouldShowName = false;
+  var hasEncounteredUnseenMessage = false;
 
   for (var i = messages.length - 1; i >= 0; i--) {
     final isFirst = i == messages.length - 1;
@@ -140,6 +144,12 @@ List<Object> calculateChatMessages(
         showName = true;
         shouldShowName = false;
       }
+    }
+
+    if (message.status == types.Status.delivered &&
+        !hasEncounteredUnseenMessage) {
+      hasEncounteredUnseenMessage = true;
+      chatMessages.insert(0, const UnseenBanner());
     }
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {

@@ -49,7 +49,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleAtachmentPressed() {
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -189,11 +189,12 @@ class _ChatPageState extends State<ChatPage> {
         bottom: false,
         child: Chat(
           messages: _messages,
-          onAttachmentPressed: _handleAtachmentPressed,
+          onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
           user: _user,
+          scrollToUnseenOnOpen: true,
         ),
       ),
     );

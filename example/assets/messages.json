@@ -7,7 +7,7 @@
     },
     "createdAt": 1598438797000,
     "id": "e7a673e9-86eb-4572-936f-2882b0183cdc",
-    "status": "seen",
+    "status": "delivered",
     "text": "https://flyer.chat",
     "type": "text"
   },
@@ -19,7 +19,7 @@
     },
     "createdAt": 1598438795000,
     "id": "e7a673e9-86eb-4572-936f-2882b0183cda",
-    "status": "seen",
+    "status": "delivered",
     "text": "Dolore labore ipsum aspernatur. Omnis minima reprehenderit perspiciatis sunt rerum facilis consequatur omnis. Rerum totam est eos dolores quia qui aut. Rerum aperiam alias placeat odit non enim corporis unde molestiae. Aspernatur unde praesentium eum ut laudantium ea enim.",
     "type": "text"
   },
@@ -31,7 +31,7 @@
     },
     "createdAt": 1598438794000,
     "id": "dc1a5e87-bd4e-46b0-9cb4-7d9abeda5ef8",
-    "status": "seen",
+    "status": "delivered",
     "text": "Ut modi corporis consequuntur dolorem omnis asperiores unde voluptatem et.",
     "type": "text"
   },
@@ -43,8 +43,20 @@
     },
     "createdAt": 1598438793000,
     "id": "2a202811-7d48-4ae9-8323-d764a56031dc",
-    "status": "seen",
+    "status": "delivered",
     "text": "Voluptatem voluptatum eos aut voluptatem occaecati. Quia ducimus vero molestiae molestiae illum illo nisi autem. Labore consectetur expedita illum consequatur inventore consequatur quasi voluptatem. Perspiciatis ut reprehenderit officiis animi voluptas.",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "John",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
+    "createdAt": 1598438792500,
+    "id": "4a202811-7d48-4ae9-8323-d764a56031ds",
+    "status": "delivered",
+    "text": "FIRST UNSEEN\n\nVoluptatem voluptatum eos aut voluptatem occaecati. Quia ducimus vero molestiae molestiae illum illo nisi autem. Labore consectetur expedita illum consequatur inventore consequatur quasi voluptatem. Perspiciatis ut reprehenderit officiis animi voluptas.",
     "type": "text"
   },
   {
