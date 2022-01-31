@@ -31,6 +31,7 @@ class Message extends StatelessWidget {
     this.onMessageStatusTap,
     this.onMessageTap,
     this.onPreviewDataFetched,
+    this.resolveAuthor,
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
@@ -100,6 +101,11 @@ class Message extends StatelessWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
+  /// Use this to override the author information provided by the message with
+  /// the latest user information. Will be passed the message.author.id.
+  /// Will use [Message.author] if it returns null.
+  final types.User? Function(String id)? resolveAuthor;
+
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
 
@@ -125,19 +131,19 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
-  Widget _avatarBuilder(BuildContext context) {
+  Widget _avatarBuilder(BuildContext context, types.User author) {
     final color = getUserAvatarNameColor(
-      message.author,
+      author,
       InheritedChatTheme.of(context).theme.userAvatarNameColors,
     );
-    final hasImage = message.author.imageUrl != null;
-    final initials = getUserInitials(message.author);
+    final hasImage = author.imageUrl != null;
+    final initials = getUserInitials(author);
 
     return showAvatar
         ? Container(
             margin: const EdgeInsets.only(right: 8),
             child: GestureDetector(
-              onTap: () => onAvatarTap?.call(message.author),
+              onTap: () => onAvatarTap?.call(author),
               child: CircleAvatar(
                 backgroundColor: hasImage
                     ? InheritedChatTheme.of(context)
@@ -145,7 +151,7 @@ class Message extends StatelessWidget {
                         .userAvatarImageBackgroundColor
                     : color,
                 backgroundImage:
-                    hasImage ? NetworkImage(message.author.imageUrl!) : null,
+                    hasImage ? NetworkImage(author.imageUrl!) : null,
                 radius: 16,
                 child: !hasImage
                     ? Text(
@@ -163,18 +169,19 @@ class Message extends StatelessWidget {
 
   Widget _bubbleBuilder(
     BuildContext context,
+    types.User author,
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
     bool enlargeEmojis,
   ) {
     return bubbleBuilder != null
         ? bubbleBuilder!(
-            _messageBuilder(),
+            _messageBuilder(author),
             message: message,
             nextMessageInGroup: roundBorder,
           )
         : enlargeEmojis && hideBackgroundOnEmojiMessages
-            ? _messageBuilder()
+            ? _messageBuilder(author)
             : Container(
                 decoration: BoxDecoration(
                   borderRadius: borderRadius,
@@ -185,12 +192,12 @@ class Message extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: borderRadius,
-                  child: _messageBuilder(),
+                  child: _messageBuilder(author),
                 ),
               );
   }
 
-  Widget _messageBuilder() {
+  Widget _messageBuilder(types.User author) {
     switch (message.type) {
       case types.MessageType.custom:
         final customMessage = message as types.CustomMessage;
@@ -216,6 +223,7 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : TextMessage(
+                author: author,
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
@@ -299,6 +307,7 @@ class Message extends StatelessWidget {
       topLeft: Radius.circular(_messageBorderRadius),
       topRight: Radius.circular(_messageBorderRadius),
     );
+    final author = resolveAuthor?.call(message.author.id) ?? message.author;
 
     return Container(
       alignment:
@@ -311,7 +320,8 @@ class Message extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(context),
+          if (!_currentUserIsAuthor && showUserAvatars)
+            _avatarBuilder(context, author),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),
@@ -325,6 +335,7 @@ class Message extends StatelessWidget {
                   onTap: () => onMessageTap?.call(context, message),
                   child: _bubbleBuilder(
                     context,
+                    author,
                     _borderRadius,
                     _currentUserIsAuthor,
                     _enlargeEmojis,

@@ -12,6 +12,7 @@ class TextMessage extends StatelessWidget {
   /// Creates a text message widget from a [types.TextMessage] class
   const TextMessage({
     Key? key,
+    required this.author,
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
     required this.message,
@@ -19,6 +20,9 @@ class TextMessage extends StatelessWidget {
     required this.usePreviewData,
     required this.showName,
   }) : super(key: key);
+
+  /// Either resolved through [Message.resolveAuthor] or user from message.
+  final types.User author;
 
   /// See [Message.emojiEnlargementBehavior]
   final EmojiEnlargementBehavior emojiEnlargementBehavior;

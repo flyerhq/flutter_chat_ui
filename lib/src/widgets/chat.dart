@@ -59,6 +59,7 @@ class Chat extends StatefulWidget {
     required this.onSendPressed,
     this.onTextChanged,
     this.onTextFieldTap,
+    this.resolveAuthor,
     this.scrollPhysics,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
@@ -196,6 +197,9 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onTextFieldTap]
   final void Function()? onTextFieldTap;
+
+  /// See [Message.resolveAuthor]
+  final types.User? Function(String id)? resolveAuthor;
 
   /// See [ChatList.scrollPhysics]
   final ScrollPhysics? scrollPhysics;
@@ -385,6 +389,7 @@ class _ChatState extends State<Chat> {
           widget.onMessageTap?.call(context, tappedMessage);
         },
         onPreviewDataFetched: _onPreviewDataFetched,
+        resolveAuthor: widget.resolveAuthor,
         roundBorder: map['nextMessageInGroup'] == true,
         showAvatar: map['nextMessageInGroup'] == false,
         showName: map['showName'] == true,
