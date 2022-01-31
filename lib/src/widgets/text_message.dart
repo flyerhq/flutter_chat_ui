@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
@@ -117,6 +119,9 @@ class TextMessage extends StatelessWidget {
     final boldTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyBoldTextStyle
         : theme.receivedMessageBodyBoldTextStyle;
+    final codeTextStyle = user.id == message.author.id
+        ? theme.sentMessageBodyCodeTextStyle
+        : theme.receivedMessageBodyCodeTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,6 +164,16 @@ class TextMessage extends StatelessWidget {
               ),
               renderText: ({required String str, required String pattern}) {
                 return {'display': str.replaceAll('~', '')};
+              },
+            ),
+            MatchText(
+              pattern: '`(.*?)`',
+              style: codeTextStyle ??
+                  bodyTextStyle.copyWith(
+                    fontFamily: Platform.isIOS ? 'Courier' : 'monospace',
+                  ),
+              renderText: ({required String str, required String pattern}) {
+                return {'display': str.replaceAll('`', '')};
               },
             ),
           ],
