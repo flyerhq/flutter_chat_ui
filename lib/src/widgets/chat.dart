@@ -55,6 +55,7 @@ class Chat extends StatefulWidget {
     this.onMessageStatusLongPress,
     this.onMessageStatusTap,
     this.onMessageTap,
+    this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.onSendPressed,
     this.onTextChanged,
@@ -183,6 +184,9 @@ class Chat extends StatefulWidget {
 
   /// See [Message.onMessageTap]
   final void Function(BuildContext context, types.Message)? onMessageTap;
+
+  /// See [Message.onMessageVisibilityChanged]
+  final void Function(types.Message, bool visible)? onMessageVisibilityChanged;
 
   /// See [Message.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -384,6 +388,7 @@ class _ChatState extends State<Chat> {
 
           widget.onMessageTap?.call(context, tappedMessage);
         },
+        onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,
         showAvatar: map['nextMessageInGroup'] == false,
