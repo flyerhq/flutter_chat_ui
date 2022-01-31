@@ -74,6 +74,7 @@ abstract class ChatTheme {
     required this.receivedEmojiMessageTextStyle,
     this.receivedMessageBodyLinkTextStyle,
     required this.receivedMessageBodyTextStyle,
+    this.receivedMessageBodyBoldTextStyle,
     required this.receivedMessageCaptionTextStyle,
     required this.receivedMessageDocumentIconColor,
     required this.receivedMessageLinkDescriptionTextStyle,
@@ -86,6 +87,7 @@ abstract class ChatTheme {
     required this.sentEmojiMessageTextStyle,
     this.sentMessageBodyLinkTextStyle,
     required this.sentMessageBodyTextStyle,
+    this.sentMessageBodyBoldTextStyle,
     required this.sentMessageCaptionTextStyle,
     required this.sentMessageDocumentIconColor,
     required this.sentMessageLinkDescriptionTextStyle,
@@ -175,6 +177,10 @@ abstract class ChatTheme {
   /// of received messages
   final TextStyle receivedMessageBodyTextStyle;
 
+  /// Body text style used for displaying bold text on received text messages.
+  /// Default to a bold version of [receivedMessageBodyTextStyle].
+  final TextStyle? receivedMessageBodyBoldTextStyle;
+
   /// Caption text style used for displaying secondary info (e.g. file size)
   /// on different types of received messages
   final TextStyle receivedMessageCaptionTextStyle;
@@ -214,6 +220,10 @@ abstract class ChatTheme {
   /// Body text style used for displaying text on different types
   /// of sent messages
   final TextStyle sentMessageBodyTextStyle;
+
+  /// Body text style used for displaying bold text on sent text messages.
+  /// Defaults to a bold version of [sentMessageBodyTextStyle].
+  final TextStyle? sentMessageBodyBoldTextStyle;
 
   /// Caption text style used for displaying secondary info (e.g. file size)
   /// on different types of sent messages

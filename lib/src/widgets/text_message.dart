@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexLink;
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
@@ -107,13 +107,16 @@ class TextMessage extends StatelessWidget {
     final color =
         getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
     final name = getUserName(message.author);
-    final textStyle = user.id == message.author.id
+    final bodyTextStyle = user.id == message.author.id
         ? enlargeEmojis
             ? theme.sentEmojiMessageTextStyle
             : theme.sentMessageBodyTextStyle
         : enlargeEmojis
             ? theme.receivedEmojiMessageTextStyle
             : theme.receivedMessageBodyTextStyle;
+    final boldTextStyle = user.id == message.author.id
+        ? theme.sentMessageBodyBoldTextStyle
+        : theme.receivedMessageBodyBoldTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,17 +131,37 @@ class TextMessage extends StatelessWidget {
               style: theme.userNameTextStyle.copyWith(color: color),
             ),
           ),
-        MarkdownBody(
-          data: message.text,
+        ParsedText(
+          text: message.text,
           selectable: true,
-          softLineBreak: true,
-          styleSheet: MarkdownStyleSheet(
-            p: textStyle,
-            listBullet: textStyle,
-            tableBody: textStyle,
-            tableHead: textStyle.copyWith(fontWeight: FontWeight.bold),
-            tableBorder: TableBorder.all(color: Colors.white),
-          ),
+          style: bodyTextStyle,
+          regexOptions: const RegexOptions(multiLine: true, dotAll: true),
+          parse: [
+            MatchText(
+              pattern: '(\\*\\*|\\*)(.*?)(\\*\\*|\\*)',
+              style: boldTextStyle ??
+                  bodyTextStyle.copyWith(fontWeight: FontWeight.bold),
+              renderText: ({required String str, required String pattern}) {
+                return {'display': str.replaceAll(RegExp('(\\*\\*|\\*)'), '')};
+              },
+            ),
+            MatchText(
+              pattern: '_(.*?)_',
+              style: bodyTextStyle.copyWith(fontStyle: FontStyle.italic),
+              renderText: ({required String str, required String pattern}) {
+                return {'display': str.replaceAll('_', '')};
+              },
+            ),
+            MatchText(
+              pattern: '~(.*?)~',
+              style: bodyTextStyle.copyWith(
+                decoration: TextDecoration.lineThrough,
+              ),
+              renderText: ({required String str, required String pattern}) {
+                return {'display': str.replaceAll('~', '')};
+              },
+            ),
+          ],
         ),
       ],
     );
