@@ -6,6 +6,7 @@ import 'package:flutter_chat_ui/src/models/unseen_banner.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
@@ -253,16 +254,17 @@ class Chat extends StatefulWidget {
   final types.User user;
 
   @override
-  _ChatState createState() => _ChatState();
+  ChatState createState() => ChatState();
 }
 
 /// [Chat] widget state
-class _ChatState extends State<Chat> {
+class ChatState extends State<Chat> {
+  static const int _unseenMessageBannerIndex = 1;
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
   int _imageViewIndex = 0;
   bool _isImageViewVisible = false;
-  final GlobalKey _unseenBannerKey = GlobalKey();
+  final AutoScrollController _scrollController = AutoScrollController();
 
   @override
   void initState() {
@@ -295,24 +297,26 @@ class _ChatState extends State<Chat> {
         WidgetsBinding.instance?.addPostFrameCallback((_) async {
           if (mounted) {
             await Future.delayed(widget.scrollToUnseenDelay);
-            _scrollToFirstUnseen();
+            scrollToFirstUnseen();
           }
         });
       }
     }
   }
 
-  void _scrollToFirstUnseen() {
-    final context = _unseenBannerKey.currentContext;
-    if (context != null) {
-      Scrollable.ensureVisible(
-        context,
-        curve: Curves.easeIn,
-        duration: widget.scrollToUnseenDuration,
-        alignment: 1,
-      );
-    }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
+
+  /// Scroll to the unseen message banner
+  void scrollToFirstUnseen() =>
+      _scrollController.scrollToIndex(_unseenMessageBannerIndex);
+
+  /// Scroll to the message with the specified [id]
+  void scrollToMessage(String id) =>
+      _scrollController.scrollToIndex(id.hashCode);
 
   Widget _emptyStateBuilder() {
     return widget.emptyState ??
@@ -393,16 +397,20 @@ class _ChatState extends State<Chat> {
         height: object.height,
       );
     } else if (object is UnseenBanner) {
-      return Container(
-        key: _unseenBannerKey,
-        alignment: Alignment.center,
-        color: Colors.grey,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        margin: const EdgeInsets.only(bottom: 16),
-        child: Text(
-          'Unseen messages',
-          style:
-              widget.theme.dateDividerTextStyle.copyWith(color: Colors.white),
+      return AutoScrollTag(
+        key: const Key('unseen_banner'),
+        index: _unseenMessageBannerIndex,
+        controller: _scrollController,
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.grey,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          margin: const EdgeInsets.only(bottom: 16),
+          child: Text(
+            'Unseen messages',
+            style:
+                widget.theme.dateDividerTextStyle.copyWith(color: Colors.white),
+          ),
         ),
       );
     } else {
@@ -413,38 +421,44 @@ class _ChatState extends State<Chat> {
               ? min(constraints.maxWidth * 0.72, 440).floor()
               : min(constraints.maxWidth * 0.78, 440).floor();
 
-      return Message(
-        key: ValueKey(message.id),
-        bubbleBuilder: widget.bubbleBuilder,
-        customMessageBuilder: widget.customMessageBuilder,
-        emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
-        fileMessageBuilder: widget.fileMessageBuilder,
-        hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
-        imageMessageBuilder: widget.imageMessageBuilder,
-        message: message,
-        messageWidth: _messageWidth,
-        onAvatarTap: widget.onAvatarTap,
-        onMessageDoubleTap: widget.onMessageDoubleTap,
-        onMessageLongPress: widget.onMessageLongPress,
-        onMessageStatusLongPress: widget.onMessageStatusLongPress,
-        onMessageStatusTap: widget.onMessageStatusTap,
-        onMessageTap: (context, tappedMessage) {
-          if (tappedMessage is types.ImageMessage &&
-              widget.disableImageGallery != true) {
-            _onImagePressed(tappedMessage);
-          }
+      return AutoScrollTag(
+        key: Key(message.id),
+        // By using the hashCode as index we can jump to a message using its ID.
+        // Otherwise, we would have to keep track of a map from ID to index.
+        index: message.id.hashCode,
+        controller: _scrollController,
+        child: Message(
+          bubbleBuilder: widget.bubbleBuilder,
+          customMessageBuilder: widget.customMessageBuilder,
+          emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
+          fileMessageBuilder: widget.fileMessageBuilder,
+          hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
+          imageMessageBuilder: widget.imageMessageBuilder,
+          message: message,
+          messageWidth: _messageWidth,
+          onAvatarTap: widget.onAvatarTap,
+          onMessageDoubleTap: widget.onMessageDoubleTap,
+          onMessageLongPress: widget.onMessageLongPress,
+          onMessageStatusLongPress: widget.onMessageStatusLongPress,
+          onMessageStatusTap: widget.onMessageStatusTap,
+          onMessageTap: (context, tappedMessage) {
+            if (tappedMessage is types.ImageMessage &&
+                widget.disableImageGallery != true) {
+              _onImagePressed(tappedMessage);
+            }
 
-          widget.onMessageTap?.call(context, tappedMessage);
-        },
-        onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
-        onPreviewDataFetched: _onPreviewDataFetched,
-        roundBorder: map['nextMessageInGroup'] == true,
-        showAvatar: map['nextMessageInGroup'] == false,
-        showName: map['showName'] == true,
-        showStatus: map['showStatus'] == true,
-        showUserAvatars: widget.showUserAvatars,
-        textMessageBuilder: widget.textMessageBuilder,
-        usePreviewData: widget.usePreviewData,
+            widget.onMessageTap?.call(context, tappedMessage);
+          },
+          onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
+          onPreviewDataFetched: _onPreviewDataFetched,
+          roundBorder: map['nextMessageInGroup'] == true,
+          showAvatar: map['nextMessageInGroup'] == false,
+          showName: map['showName'] == true,
+          showStatus: map['showStatus'] == true,
+          showUserAvatars: widget.showUserAvatars,
+          textMessageBuilder: widget.textMessageBuilder,
+          usePreviewData: widget.usePreviewData,
+        ),
       );
     }
   }
@@ -512,6 +526,7 @@ class _ChatState extends State<Chat> {
                                   onEndReached: widget.onEndReached,
                                   onEndReachedThreshold:
                                       widget.onEndReachedThreshold,
+                                  scrollController: _scrollController,
                                   scrollPhysics: widget.scrollPhysics,
                                 ),
                               ),

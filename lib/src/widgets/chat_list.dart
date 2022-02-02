@@ -1,6 +1,7 @@
 import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 
@@ -14,6 +15,7 @@ class ChatList extends StatefulWidget {
     required this.items,
     this.onEndReached,
     this.onEndReachedThreshold,
+    required this.scrollController,
     this.scrollPhysics,
   }) : super(key: key);
 
@@ -39,6 +41,9 @@ class ChatList extends StatefulWidget {
   /// next page when scrolled through about 3/4 of the available content.
   final double? onEndReachedThreshold;
 
+  /// Scroll controller for the main [CustomScrollView]
+  final ScrollController scrollController;
+
   /// Determines the physics of the scroll view
   final ScrollPhysics? scrollPhysics;
 
@@ -53,7 +58,6 @@ class _ChatListState extends State<ChatList>
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
-  final _scrollController = ScrollController();
 
   late final AnimationController _controller = AnimationController(vsync: this);
 
@@ -81,7 +85,6 @@ class _ChatListState extends State<ChatList>
     super.dispose();
 
     _controller.dispose();
-    _scrollController.dispose();
   }
 
   void _calculateDiffs(List<Object> oldList) async {
@@ -165,8 +168,8 @@ class _ChatListState extends State<ChatList>
             // Delay to give some time for Flutter to calculate new
             // size after new message was added
             Future.delayed(const Duration(milliseconds: 100), () {
-              if (_scrollController.hasClients) {
-                _scrollController.animateTo(
+              if (widget.scrollController.hasClients) {
+                widget.scrollController.animateTo(
                   0,
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInQuad,
@@ -214,7 +217,7 @@ class _ChatListState extends State<ChatList>
         return false;
       },
       child: CustomScrollView(
-        controller: _scrollController,
+        controller: widget.scrollController,
         physics: widget.scrollPhysics,
         reverse: true,
         slivers: [
