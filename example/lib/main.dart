@@ -188,6 +188,7 @@ class _ChatPageState extends State<ChatPage> {
       body: SafeArea(
         bottom: false,
         child: Chat(
+          firstUnseenMessageID: '4a202811-7d48-4ae9-8323-d764a56031ds',
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,

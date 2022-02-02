@@ -96,6 +96,7 @@ List<Object> calculateChatMessages(
   DateFormat? dateFormat,
   required int dateHeaderThreshold,
   String? dateLocale,
+  String? firstUnseenMessageID,
   required int groupMessagesThreshold,
   required bool showUserNames,
   DateFormat? timeFormat,
@@ -104,7 +105,6 @@ List<Object> calculateChatMessages(
   final gallery = <PreviewImage>[];
 
   var shouldShowName = false;
-  var hasEncounteredUnseenMessage = false;
 
   for (var i = messages.length - 1; i >= 0; i--) {
     final isFirst = i == messages.length - 1;
@@ -146,9 +146,7 @@ List<Object> calculateChatMessages(
       }
     }
 
-    if (message.status == types.Status.delivered &&
-        !hasEncounteredUnseenMessage) {
-      hasEncounteredUnseenMessage = true;
+    if (message.id == firstUnseenMessageID) {
       chatMessages.insert(0, const UnseenBanner());
     }
 

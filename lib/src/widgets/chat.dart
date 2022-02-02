@@ -41,6 +41,7 @@ class Chat extends StatefulWidget {
     this.emojiEnlargementBehavior = EmojiEnlargementBehavior.multi,
     this.emptyState,
     this.fileMessageBuilder,
+    this.firstUnseenMessageID,
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
     this.imageMessageBuilder,
@@ -133,6 +134,10 @@ class Chat extends StatefulWidget {
   /// See [Message.fileMessageBuilder]
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
+
+  /// Will show an unseen messages banner above this message and scroll to this
+  /// banner on [ChatState.scrollToFirstUnseen].
+  final String? firstUnseenMessageID;
 
   /// Time (in ms) between two messages when we will visually group them.
   /// Default value is 1 minute, 60000 ms. When time between two messages
@@ -286,6 +291,7 @@ class ChatState extends State<Chat> {
         dateFormat: widget.dateFormat,
         dateHeaderThreshold: widget.dateHeaderThreshold,
         dateLocale: widget.dateLocale,
+        firstUnseenMessageID: widget.firstUnseenMessageID,
         groupMessagesThreshold: widget.groupMessagesThreshold,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
