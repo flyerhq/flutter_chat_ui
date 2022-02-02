@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/models/unseen_banner.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
+import 'package:flutter_chat_ui/src/widgets/unseen_message_banner.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -401,17 +402,7 @@ class ChatState extends State<Chat> {
         key: const Key('unseen_banner'),
         index: _unseenMessageBannerIndex,
         controller: _scrollController,
-        child: Container(
-          alignment: Alignment.center,
-          color: Colors.grey,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Text(
-            'Unseen messages',
-            style:
-                widget.theme.dateDividerTextStyle.copyWith(color: Colors.white),
-          ),
-        ),
+        child: const UnseenMessageBanner(),
       );
     } else {
       final map = object as Map<String, Object>;
