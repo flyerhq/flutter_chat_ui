@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
-import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -214,7 +212,7 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Future<void> _onEndReached() async{
+  Future<void> _onEndReached() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))

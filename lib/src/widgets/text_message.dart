@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, REGEX_LINK;
+
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
@@ -104,7 +105,20 @@ class TextMessage extends StatelessWidget {
                   .copyWith(color: color),
             ),
           ),
-        SelectableText(
+
+        /// To Bypass Text Selection on Long Press
+        /// replaces with Normal [Text] widget as below
+        /*SelectableText(
+          message.text,
+          enableInteractiveSelection: false,
+          style: user.id == message.author.id
+              ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
+              : InheritedChatTheme.of(context)
+                  .theme
+                  .receivedMessageBodyTextStyle,
+          textWidthBasis: TextWidthBasis.longestLine,
+        ),*/
+        Text(
           message.text,
           style: user.id == message.author.id
               ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
