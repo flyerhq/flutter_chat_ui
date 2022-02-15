@@ -106,8 +106,7 @@ class TextMessage extends StatelessWidget {
     bool enlargeEmojis,
   ) {
     final theme = InheritedChatTheme.of(context).theme;
-    final color =
-        getUserAvatarNameColor(author, theme.userAvatarNameColors);
+    final color = getUserAvatarNameColor(author, theme.userAvatarNameColors);
     final name = getUserName(author);
 
     return Column(
