@@ -110,7 +110,7 @@ class TextMessage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showName)
+        if (showName && name.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 6),
             child: Text(

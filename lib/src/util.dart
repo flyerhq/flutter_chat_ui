@@ -177,8 +177,7 @@ List<Object> calculateChatMessages(
       'nextMessageInGroup': nextMessageInGroup,
       'showName': notMyMessage &&
           showUserNames &&
-          showName &&
-          getUserName(message.author).isNotEmpty,
+          showName,
       'showStatus': true,
     });
 
