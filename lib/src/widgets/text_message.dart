@@ -107,8 +107,8 @@ class TextMessage extends StatelessWidget {
   ) {
     final theme = InheritedChatTheme.of(context).theme;
     final color =
-        getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
-    final name = getUserName(message.author);
+        getUserAvatarNameColor(author, theme.userAvatarNameColors);
+    final name = getUserName(author);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +125,7 @@ class TextMessage extends StatelessWidget {
           ),
         SelectableText(
           message.text,
-          style: user.id == message.author.id
+          style: user.id == author.id
               ? enlargeEmojis
                   ? theme.sentEmojiMessageTextStyle
                   : theme.sentMessageBodyTextStyle
