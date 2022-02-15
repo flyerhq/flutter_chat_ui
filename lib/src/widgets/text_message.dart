@@ -54,25 +54,25 @@ class TextMessage extends StatelessWidget {
     double width,
     BuildContext context,
   ) {
-    final bodyTextStyle = user.id == message.author.id
+    final bodyTextStyle = user.id == author.id
         ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
         : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle;
-    final linkDescriptionTextStyle = user.id == message.author.id
+    final linkDescriptionTextStyle = user.id == author.id
         ? InheritedChatTheme.of(context)
             .theme
             .sentMessageLinkDescriptionTextStyle
         : InheritedChatTheme.of(context)
             .theme
             .receivedMessageLinkDescriptionTextStyle;
-    final linkTitleTextStyle = user.id == message.author.id
+    final linkTitleTextStyle = user.id == author.id
         ? InheritedChatTheme.of(context).theme.sentMessageLinkTitleTextStyle
         : InheritedChatTheme.of(context)
             .theme
             .receivedMessageLinkTitleTextStyle;
 
-    final color = getUserAvatarNameColor(message.author,
+    final color = getUserAvatarNameColor(author,
         InheritedChatTheme.of(context).theme.userAvatarNameColors);
-    final name = getUserName(message.author);
+    final name = getUserName(author);
 
     return LinkPreview(
       enableAnimation: true,
