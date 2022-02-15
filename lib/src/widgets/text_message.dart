@@ -70,8 +70,8 @@ class TextMessage extends StatelessWidget {
             .theme
             .receivedMessageLinkTitleTextStyle;
 
-    final color = getUserAvatarNameColor(author,
-        InheritedChatTheme.of(context).theme.userAvatarNameColors);
+    final color = getUserAvatarNameColor(
+        author, InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final name = getUserName(author);
 
     return LinkPreview(
