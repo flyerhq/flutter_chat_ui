@@ -180,7 +180,7 @@ List<Object> calculateChatMessages(
           showUserNames &&
           showName &&
           getUserName(message.author).isNotEmpty,
-      'showStatus': true,
+      'showStatus': message.showStatus,
     });
 
     if (!nextMessageInGroup) {
