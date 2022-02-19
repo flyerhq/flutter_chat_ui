@@ -83,6 +83,16 @@ class _InputState extends State<Input> {
     super.dispose();
   }
 
+  void _handleNewLine() {
+    final _newValue = '${_textController.text}\r\n';
+    _textController.value = TextEditingValue(
+      text: _newValue,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: _newValue.length),
+      ),
+    );
+  }
+
   void _handleSendPressed() {
     final trimmedText = _textController.text.trim();
     if (trimmedText != '') {
@@ -224,15 +234,7 @@ class _InputState extends State<Input> {
                         _handleSendPressed(),
                   ),
                   NewLineIntent: CallbackAction<NewLineIntent>(
-                    onInvoke: (NewLineIntent intent) {
-                      final _newValue = '${_textController.text}\r\n';
-                      _textController.value = TextEditingValue(
-                        text: _newValue,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(offset: _newValue.length),
-                        ),
-                      );
-                    },
+                    onInvoke: (NewLineIntent intent) => _handleNewLine(),
                   ),
                 },
                 child: _inputBuilder(),
