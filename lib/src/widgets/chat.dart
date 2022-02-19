@@ -30,6 +30,7 @@ class Chat extends StatefulWidget {
     this.bubbleBuilder,
     this.customBottomWidget,
     this.customDateHeaderText,
+    this.dateHeaderBuilder,
     this.customMessageBuilder,
     this.dateFormat,
     this.dateHeaderThreshold = 900000,
@@ -88,7 +89,10 @@ class Chat extends StatefulWidget {
   /// all default date headers, so you must handle all cases yourself, like
   /// for example today, yesterday and before. Or you can just return the same
   /// date header for any message.
-  final String Function(DateTime)? customDateHeaderText;
+  final String Function(DateTime dateTime)? customDateHeaderText;
+
+  /// Custom date header builder gives ability to customize date header widget
+  final Widget Function(DateTime dateTime)? dateHeaderBuilder;
 
   /// See [Message.customMessageBuilder]
   final Widget Function(types.CustomMessage, {required int messageWidth})?
@@ -341,14 +345,18 @@ class _ChatState extends State<Chat> {
 
   Widget _messageBuilder(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
-      return Container(
-        alignment: Alignment.center,
-        margin: widget.theme.dateDividerMargin,
-        child: Text(
-          object.text,
-          style: widget.theme.dateDividerTextStyle,
-        ),
-      );
+      if (widget.dateHeaderBuilder != null) {
+        return widget.dateHeaderBuilder!(object.dateTime);
+      } else {
+        return Container(
+          alignment: Alignment.center,
+          margin: widget.theme.dateDividerMargin,
+          child: Text(
+            object.text,
+            style: widget.theme.dateDividerTextStyle,
+          ),
+        );
+      }
     } else if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
