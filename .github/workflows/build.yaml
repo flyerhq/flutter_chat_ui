@@ -14,12 +14,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup Flutter environment
-        uses: subosito/flutter-action@v1
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
       - name: Install dependencies
         run: flutter pub get
 
-      - run: flutter format -n . --set-exit-if-changed
+      - run: flutter format . --set-exit-if-changed
       - run: flutter analyze --no-pub
