@@ -92,7 +92,7 @@ class Chat extends StatefulWidget {
   final String Function(DateTime dateTime)? customDateHeaderText;
 
   /// Custom date header builder gives ability to customize date header widget
-  final Widget Function(DateTime dateTime)? dateHeaderBuilder;
+  final Widget Function(DateHeader dateHeader)? dateHeaderBuilder;
 
   /// See [Message.customMessageBuilder]
   final Widget Function(types.CustomMessage, {required int messageWidth})?
@@ -346,7 +346,7 @@ class _ChatState extends State<Chat> {
   Widget _messageBuilder(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
       if (widget.dateHeaderBuilder != null) {
-        return widget.dateHeaderBuilder!(object.dateTime);
+        return widget.dateHeaderBuilder!(object);
       } else {
         return Container(
           alignment: Alignment.center,
