@@ -146,6 +146,10 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void _handleMessageVisibilityChanged(types.Message message, bool visible) {
+    debugPrint('${message.id} is${visible ? '' : ' not'} visible');
+  }
+
   void _handlePreviewDataFetched(
     types.TextMessage message,
     types.PreviewData previewData,
@@ -191,6 +195,7 @@ class _ChatPageState extends State<ChatPage> {
           messages: _messages,
           onAttachmentPressed: _handleAtachmentPressed,
           onMessageTap: _handleMessageTap,
+          onMessageVisibilityChanged: _handleMessageVisibilityChanged,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
           user: _user,

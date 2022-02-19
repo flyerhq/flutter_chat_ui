@@ -20,6 +20,7 @@ dependencies:
   intl: ^0.17.0
   meta: ^1.7.0
   photo_view: ^0.13.0
+  visibility_detector: ^0.2.2
 
 dev_dependencies:
   flutter_lints: ^1.0.4

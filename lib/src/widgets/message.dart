@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
@@ -30,6 +31,7 @@ class Message extends StatelessWidget {
     this.onMessageStatusLongPress,
     this.onMessageStatusTap,
     this.onMessageTap,
+    this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.roundBorder,
     required this.showAvatar,
@@ -95,6 +97,9 @@ class Message extends StatelessWidget {
 
   /// Called when user taps on any message
   final void Function(BuildContext context, types.Message)? onMessageTap;
+
+  /// Called when the message's visibility changes
+  final void Function(types.Message, bool visible)? onMessageVisibilityChanged;
 
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -323,12 +328,25 @@ class Message extends StatelessWidget {
                   onDoubleTap: () => onMessageDoubleTap?.call(context, message),
                   onLongPress: () => onMessageLongPress?.call(context, message),
                   onTap: () => onMessageTap?.call(context, message),
-                  child: _bubbleBuilder(
-                    context,
-                    _borderRadius,
-                    _currentUserIsAuthor,
-                    _enlargeEmojis,
-                  ),
+                  child: onMessageVisibilityChanged != null
+                      ? VisibilityDetector(
+                          key: Key(message.id),
+                          onVisibilityChanged: (visibilityInfo) =>
+                              onMessageVisibilityChanged!(message,
+                                  visibilityInfo.visibleFraction > 0.1),
+                          child: _bubbleBuilder(
+                            context,
+                            _borderRadius,
+                            _currentUserIsAuthor,
+                            _enlargeEmojis,
+                          ),
+                        )
+                      : _bubbleBuilder(
+                          context,
+                          _borderRadius,
+                          _currentUserIsAuthor,
+                          _enlargeEmojis,
+                        ),
                 ),
               ],
             ),
