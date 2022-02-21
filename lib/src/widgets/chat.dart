@@ -60,6 +60,8 @@ class Chat extends StatefulWidget {
     required this.onSendPressed,
     this.onTextChanged,
     this.onTextFieldTap,
+    this.openOnPreviewImageTap = false,
+    this.openOnPreviewTitleTap = false,
     this.scrollPhysics,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
@@ -200,6 +202,12 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onTextFieldTap]
   final void Function()? onTextFieldTap;
+
+  /// See [Message.openOnPreviewImageTap]
+  final bool openOnPreviewImageTap;
+
+  /// See [Message.openOnPreviewTitleTap]
+  final bool openOnPreviewTitleTap;
 
   /// See [ChatList.scrollPhysics]
   final ScrollPhysics? scrollPhysics;
@@ -390,6 +398,8 @@ class _ChatState extends State<Chat> {
         },
         onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
         onPreviewDataFetched: _onPreviewDataFetched,
+        openOnPreviewImageTap: widget.openOnPreviewImageTap,
+        openOnPreviewTitleTap: widget.openOnPreviewTitleTap,
         roundBorder: map['nextMessageInGroup'] == true,
         showAvatar: map['nextMessageInGroup'] == false,
         showName: map['showName'] == true,

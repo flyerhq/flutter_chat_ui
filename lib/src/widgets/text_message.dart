@@ -15,6 +15,8 @@ class TextMessage extends StatelessWidget {
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
     required this.message,
+    required this.openOnPreviewImageTap,
+    required this.openOnPreviewTitleTap,
     this.onPreviewDataFetched,
     required this.usePreviewData,
     required this.showName,
@@ -32,6 +34,12 @@ class TextMessage extends StatelessWidget {
   /// See [LinkPreview.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// See [LinkPreview.openOnPreviewImageTap]
+  final bool openOnPreviewImageTap;
+
+  /// See [LinkPreview.openOnPreviewTitleTap]
+  final bool openOnPreviewTitleTap;
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
@@ -84,6 +92,8 @@ class TextMessage extends StatelessWidget {
       metadataTextStyle: linkDescriptionTextStyle,
       metadataTitleStyle: linkTitleTextStyle,
       onPreviewDataFetched: _onPreviewDataFetched,
+      openOnPreviewImageTap: openOnPreviewImageTap,
+      openOnPreviewTitleTap: openOnPreviewTitleTap,
       padding: EdgeInsets.symmetric(
         horizontal:
             InheritedChatTheme.of(context).theme.messageInsetsHorizontal,

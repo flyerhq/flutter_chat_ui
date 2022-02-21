@@ -33,6 +33,8 @@ class Message extends StatelessWidget {
     this.onMessageTap,
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
+    required this.openOnPreviewImageTap,
+    required this.openOnPreviewTitleTap,
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
@@ -104,6 +106,12 @@ class Message extends StatelessWidget {
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// See [TextMessage.openOnPreviewImageTap]
+  final bool openOnPreviewImageTap;
+
+  /// See [TextMessage.openOnPreviewTitleTap]
+  final bool openOnPreviewTitleTap;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
@@ -225,6 +233,8 @@ class Message extends StatelessWidget {
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
                 onPreviewDataFetched: onPreviewDataFetched,
+                openOnPreviewImageTap: openOnPreviewImageTap,
+                openOnPreviewTitleTap: openOnPreviewTitleTap,
                 showName: showName,
                 usePreviewData: usePreviewData,
               );
