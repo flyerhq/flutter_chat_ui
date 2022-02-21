@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
-    show LinkPreview, regexLink;
+    show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
@@ -54,12 +55,6 @@ class TextMessage extends StatelessWidget {
     double width,
     BuildContext context,
   ) {
-    final bodyLinkTextStyle = user.id == message.author.id
-        ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle
-        : InheritedChatTheme.of(context).theme.receivedMessageBodyLinkTextStyle;
-    final bodyTextStyle = user.id == message.author.id
-        ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
-        : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle;
     final linkDescriptionTextStyle = user.id == message.author.id
         ? InheritedChatTheme.of(context)
             .theme
@@ -73,18 +68,9 @@ class TextMessage extends StatelessWidget {
             .theme
             .receivedMessageLinkTitleTextStyle;
 
-    final color = getUserAvatarNameColor(message.author,
-        InheritedChatTheme.of(context).theme.userAvatarNameColors);
-    final name = getUserName(message.author);
-
     return LinkPreview(
       enableAnimation: true,
-      header: showName ? name : null,
-      headerStyle: InheritedChatTheme.of(context)
-          .theme
-          .userNameTextStyle
-          .copyWith(color: color),
-      linkStyle: bodyLinkTextStyle ?? bodyTextStyle,
+      textWidget: _textWidgetBuilder(user, context, false),
       metadataTextStyle: linkDescriptionTextStyle,
       metadataTitleStyle: linkTitleTextStyle,
       onPreviewDataFetched: _onPreviewDataFetched,
@@ -95,7 +81,6 @@ class TextMessage extends StatelessWidget {
       ),
       previewData: message.previewData,
       text: message.text,
-      textStyle: bodyTextStyle,
       width: width,
     );
   }
@@ -122,6 +107,9 @@ class TextMessage extends StatelessWidget {
     final codeTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyCodeTextStyle
         : theme.receivedMessageBodyCodeTextStyle;
+    final bodyLinkTextStyle = user.id == message.author.id
+        ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle
+        : InheritedChatTheme.of(context).theme.receivedMessageBodyLinkTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +131,29 @@ class TextMessage extends StatelessWidget {
           regexOptions: const RegexOptions(multiLine: true, dotAll: true),
           parse: [
             MatchText(
+              pattern: regexEmail,
+              onTap: (mail) async {
+                final url = 'mailto:$mail';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+              style: bodyLinkTextStyle ??
+                  bodyTextStyle.copyWith(decoration: TextDecoration.underline),
+            ),
+            MatchText(
+              pattern: regexLink,
+              onTap: (url) async {
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+              style: bodyLinkTextStyle ??
+                  bodyTextStyle.copyWith(decoration: TextDecoration.underline),
+            ),
+            MatchText(
               pattern: '(\\*\\*|\\*)(.*?)(\\*\\*|\\*)',
+              onTap: (_) {},
               style: boldTextStyle ??
                   bodyTextStyle.copyWith(fontWeight: FontWeight.bold),
               renderText: ({required String str, required String pattern}) {
@@ -152,6 +162,7 @@ class TextMessage extends StatelessWidget {
             ),
             MatchText(
               pattern: '_(.*?)_',
+              onTap: (_) {},
               style: bodyTextStyle.copyWith(fontStyle: FontStyle.italic),
               renderText: ({required String str, required String pattern}) {
                 return {'display': str.replaceAll('_', '')};
@@ -159,6 +170,7 @@ class TextMessage extends StatelessWidget {
             ),
             MatchText(
               pattern: '~(.*?)~',
+              onTap: (_) {},
               style: bodyTextStyle.copyWith(
                 decoration: TextDecoration.lineThrough,
               ),
@@ -168,6 +180,7 @@ class TextMessage extends StatelessWidget {
             ),
             MatchText(
               pattern: '`(.*?)`',
+              onTap: (_) {},
               style: codeTextStyle ??
                   bodyTextStyle.copyWith(
                     fontFamily: Platform.isIOS ? 'Courier' : 'monospace',
