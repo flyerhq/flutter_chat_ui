@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexLink;
+
 import '../models/emoji_enlargement_behavior.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
@@ -15,9 +16,8 @@ class TextMessage extends StatelessWidget {
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
     required this.message,
-    required this.openOnPreviewImageTap,
-    required this.openOnPreviewTitleTap,
     this.onPreviewDataFetched,
+    this.previewTapOptions = const PreviewTapOptions(),
     required this.usePreviewData,
     required this.showName,
   }) : super(key: key);
@@ -35,11 +35,8 @@ class TextMessage extends StatelessWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// See [LinkPreview.openOnPreviewImageTap]
-  final bool openOnPreviewImageTap;
-
-  /// See [LinkPreview.openOnPreviewTitleTap]
-  final bool openOnPreviewTitleTap;
+  /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap]
+  final PreviewTapOptions previewTapOptions;
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
@@ -92,8 +89,8 @@ class TextMessage extends StatelessWidget {
       metadataTextStyle: linkDescriptionTextStyle,
       metadataTitleStyle: linkTitleTextStyle,
       onPreviewDataFetched: _onPreviewDataFetched,
-      openOnPreviewImageTap: openOnPreviewImageTap,
-      openOnPreviewTitleTap: openOnPreviewTitleTap,
+      openOnPreviewImageTap: previewTapOptions.openOnImageTap,
+      openOnPreviewTitleTap: previewTapOptions.openOnTitleTap,
       padding: EdgeInsets.symmetric(
         horizontal:
             InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
@@ -172,4 +169,15 @@ class TextMessage extends StatelessWidget {
       child: _textWidgetBuilder(_user, context, _enlargeEmojis),
     );
   }
+}
+
+@immutable
+class PreviewTapOptions {
+  const PreviewTapOptions({
+    this.openOnImageTap = false,
+    this.openOnTitleTap = false,
+  });
+
+  final bool openOnImageTap;
+  final bool openOnTitleTap;
 }
