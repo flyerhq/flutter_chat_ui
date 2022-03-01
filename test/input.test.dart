@@ -30,6 +30,30 @@ void main() {
     });
 
     testWidgets(
+      'The SendButton should always be invisible when sendButtonVisibilityMode is set to SendButtonVisibilityMode.hided',
+      (WidgetTester tester) async {
+        // Build the Chat widget.
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Material(
+              child: Chat(
+                messages: const [],
+                onSendPressed: (types.PartialText message) {},
+                sendButtonVisibilityMode: SendButtonVisibilityMode.hided,
+                user:
+                const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
+              ),
+            ),
+          ),
+        );
+        // Trigger a frame.
+        await tester.pump();
+
+        // The SendButton should not exist in the widget tree.
+        expect(find.byType(SendButton), findsNothing);
+    });
+
+    testWidgets(
         'The SendButton should be invisible only when sendButtonVisibilityMode is not specified and the TextField is empty',
         (WidgetTester tester) async {
       // Build the Chat widget.
