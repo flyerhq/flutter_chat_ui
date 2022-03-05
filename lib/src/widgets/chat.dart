@@ -69,6 +69,8 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
+    this.onCloseGalleryPressed,
+    this.showGalleryCloseButton = true,
   }) : super(key: key);
 
   /// See [Message.bubbleBuilder]
@@ -239,6 +241,10 @@ class Chat extends StatefulWidget {
   /// See [InheritedUser.user]
   final types.User user;
 
+  final void Function()? onCloseGalleryPressed;
+
+  final bool showGalleryCloseButton;
+
   @override
   _ChatState createState() => _ChatState();
 }
@@ -295,33 +301,38 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _imageGalleryBuilder() {
-    return Dismissible(
-      key: const Key('photo_view_gallery'),
-      direction: DismissDirection.down,
-      onDismissed: (direction) => _onCloseGalleryPressed(),
-      child: Stack(
-        children: [
-          PhotoViewGallery.builder(
-            builder: (BuildContext context, int index) =>
-                PhotoViewGalleryPageOptions(
-              imageProvider: Conditional().getProvider(_gallery[index].uri),
+    return InkWell(
+      onTap: _onCloseGalleryPressed,
+      child: Dismissible(
+        key: const Key('photo_view_gallery'),
+        direction: DismissDirection.down,
+        onDismissed: (direction) => _onCloseGalleryPressed(),
+        child: Stack(
+          children: [
+            PhotoViewGallery.builder(
+              builder: (BuildContext context, int index) =>
+                  PhotoViewGalleryPageOptions(
+                imageProvider: Conditional().getProvider(_gallery[index].uri),
+              ),
+              itemCount: _gallery.length,
+              loadingBuilder: (context, event) =>
+                  _imageGalleryLoadingBuilder(context, event),
+              onPageChanged: _onPageChanged,
+              pageController: PageController(initialPage: _imageViewIndex),
+              scrollPhysics: const ClampingScrollPhysics(),
             ),
-            itemCount: _gallery.length,
-            loadingBuilder: (context, event) =>
-                _imageGalleryLoadingBuilder(context, event),
-            onPageChanged: _onPageChanged,
-            pageController: PageController(initialPage: _imageViewIndex),
-            scrollPhysics: const ClampingScrollPhysics(),
-          ),
-          Positioned(
-            right: 16,
-            top: 56,
-            child: CloseButton(
-              color: Colors.white,
-              onPressed: _onCloseGalleryPressed,
-            ),
-          ),
-        ],
+            widget.showGalleryCloseButton
+                ? Positioned(
+                    right: 16,
+                    top: 56,
+                    child: CloseButton(
+                      color: Colors.white,
+                      onPressed: _onCloseGalleryPressed,
+                    ),
+                  )
+                : Spacer(),
+          ],
+        ),
       ),
     );
   }
@@ -376,7 +387,15 @@ class _ChatState extends State<Chat> {
         message: message,
         messageWidth: _messageWidth,
         onAvatarTap: widget.onAvatarTap,
-        onMessageDoubleTap: widget.onMessageDoubleTap,
+        // onMessageDoubleTap: widget.onMessageDoubleTap,
+        onMessageDoubleTap: (context, tappedMessage) {
+          if (tappedMessage is types.ImageMessage &&
+              widget.disableImageGallery != true) {
+            _onImagePressed(tappedMessage);
+          }
+
+          widget.onMessageDoubleTap?.call(context, tappedMessage);
+        },
         onMessageLongPress: widget.onMessageLongPress,
         onMessageStatusLongPress: widget.onMessageStatusLongPress,
         onMessageStatusTap: widget.onMessageStatusTap,
@@ -405,6 +424,7 @@ class _ChatState extends State<Chat> {
     setState(() {
       _isImageViewVisible = false;
     });
+    widget.onCloseGalleryPressed?.call();
   }
 
   void _onImagePressed(types.ImageMessage message) {
