@@ -71,6 +71,7 @@ class Chat extends StatefulWidget {
     this.textMessageBuilder,
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
+    this.userBuilder,
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
@@ -222,6 +223,10 @@ class Chat extends StatefulWidget {
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
+
+  /// This is to allow custom user builder
+  /// By using this we can fetch newest user info based on id
+  final Widget Function(String userId)? userBuilder;
 
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
@@ -417,6 +422,7 @@ class _ChatState extends State<Chat> {
         showUserAvatars: widget.showUserAvatars,
         textMessageBuilder: widget.textMessageBuilder,
         usePreviewData: widget.usePreviewData,
+        userBuilder: widget.userBuilder,
       );
     }
   }
