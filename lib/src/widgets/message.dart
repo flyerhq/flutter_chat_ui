@@ -39,7 +39,7 @@ class Message extends StatelessWidget {
     required this.showStatus,
     required this.showUserAvatars,
     this.textMessageBuilder,
-    this.userBuilder,
+    this.avatarBuilder,
     required this.usePreviewData,
   }) : super(key: key);
 
@@ -123,7 +123,7 @@ class Message extends StatelessWidget {
 
   /// This is to allow custom user builder
   /// By using this we can fetch newest user info based on id
-  final Widget Function(String userId)? userBuilder;
+  final Widget Function(String userId)? avatarBuilder;
 
   /// Build a text message inside predefined bubble.
   final Widget Function(
@@ -144,8 +144,8 @@ class Message extends StatelessWidget {
     final initials = getUserInitials(message.author);
 
     return showAvatar
-        ? userBuilder != null
-            ? userBuilder!(message.author.id)
+        ? avatarBuilder != null
+            ? avatarBuilder!(message.author.id)
             : Container(
                 margin: const EdgeInsets.only(right: 8),
                 child: GestureDetector(
