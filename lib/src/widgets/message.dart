@@ -39,6 +39,7 @@ class Message extends StatelessWidget {
     required this.showStatus,
     required this.showUserAvatars,
     this.textMessageBuilder,
+    this.userBuilder,
     required this.usePreviewData,
   }) : super(key: key);
 
@@ -120,6 +121,10 @@ class Message extends StatelessWidget {
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
 
+  /// This is to allow custom user builder
+  /// By using this we can fetch newest user info based on id
+  final Widget Function(String userId)? userBuilder;
+
   /// Build a text message inside predefined bubble.
   final Widget Function(
     types.TextMessage, {
@@ -139,30 +144,33 @@ class Message extends StatelessWidget {
     final initials = getUserInitials(message.author);
 
     return showAvatar
-        ? Container(
-            margin: const EdgeInsets.only(right: 8),
-            child: GestureDetector(
-              onTap: () => onAvatarTap?.call(message.author),
-              child: CircleAvatar(
-                backgroundColor: hasImage
-                    ? InheritedChatTheme.of(context)
-                        .theme
-                        .userAvatarImageBackgroundColor
-                    : color,
-                backgroundImage:
-                    hasImage ? NetworkImage(message.author.imageUrl!) : null,
-                radius: 16,
-                child: !hasImage
-                    ? Text(
-                        initials,
-                        style: InheritedChatTheme.of(context)
+        ? userBuilder != null
+            ? userBuilder!(message.author.id)
+            : Container(
+                margin: const EdgeInsets.only(right: 8),
+                child: GestureDetector(
+                  onTap: () => onAvatarTap?.call(message.author),
+                  child: CircleAvatar(
+                    backgroundColor: hasImage
+                        ? InheritedChatTheme.of(context)
                             .theme
-                            .userAvatarTextStyle,
-                      )
-                    : null,
-              ),
-            ),
-          )
+                            .userAvatarImageBackgroundColor
+                        : color,
+                    backgroundImage: hasImage
+                        ? NetworkImage(message.author.imageUrl!)
+                        : null,
+                    radius: 16,
+                    child: !hasImage
+                        ? Text(
+                            initials,
+                            style: InheritedChatTheme.of(context)
+                                .theme
+                                .userAvatarTextStyle,
+                          )
+                        : null,
+                  ),
+                ),
+              )
         : const SizedBox(width: 40);
   }
 
