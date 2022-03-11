@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 import '../models/send_button_visibility_mode.dart';
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
@@ -118,6 +119,10 @@ class _InputState extends State<Input> {
             _query.padding.right,
             _query.viewInsets.bottom + _query.padding.bottom,
           );
+    final _textPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(right: 0);
+    final _buttonPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(left: 12);
 
     return Focus(
       autofocus: true,
@@ -129,56 +134,57 @@ class _InputState extends State<Input> {
           child: Container(
             decoration:
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
-            padding: InheritedChatTheme.of(context)
-                .theme
-                .inputPadding
-                .add(_safeAreaInsets),
+            padding: _safeAreaInsets,
             child: Row(
               children: [
                 if (widget.onAttachmentPressed != null) _leftWidgetBuilder(),
                 Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    cursorColor: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextCursorColor,
-                    decoration: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextDecoration
-                        .copyWith(
-                          hintStyle: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextStyle
-                              .copyWith(
-                                color: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextColor
-                                    .withOpacity(0.5),
-                              ),
-                          hintText:
-                              InheritedL10n.of(context).l10n.inputPlaceholder,
-                        ),
-                    focusNode: _inputFocusNode,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    minLines: 1,
-                    onChanged: widget.onTextChanged,
-                    onTap: widget.onTextFieldTap,
-                    style: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextStyle
-                        .copyWith(
-                          color: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextColor,
-                        ),
-                    textCapitalization: TextCapitalization.sentences,
+                  child: Padding(
+                    padding: _textPadding,
+                    child: TextField(
+                      controller: _textController,
+                      cursorColor: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextCursorColor,
+                      decoration: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextDecoration
+                          .copyWith(
+                            hintStyle: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextStyle
+                                .copyWith(
+                                  color: InheritedChatTheme.of(context)
+                                      .theme
+                                      .inputTextColor
+                                      .withOpacity(0.5),
+                                ),
+                            hintText:
+                                InheritedL10n.of(context).l10n.inputPlaceholder,
+                          ),
+                      focusNode: _inputFocusNode,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
+                      onChanged: widget.onTextChanged,
+                      onTap: widget.onTextFieldTap,
+                      style: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextStyle
+                          .copyWith(
+                            color: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextColor,
+                          ),
+                      textCapitalization: TextCapitalization.sentences,
+                    ),
                   ),
                 ),
                 Visibility(
                   visible: _sendButtonVisible,
                   child: SendButton(
                     onPressed: _handleSendPressed,
+                    padding: _buttonPadding,
                   ),
                 ),
               ],
