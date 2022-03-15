@@ -330,7 +330,7 @@ class _ChatState extends State<Chat> {
                       onPressed: _onCloseGalleryPressed,
                     ),
                   )
-                : Spacer(),
+                : const SizedBox.shrink(),
           ],
         ),
       ),
