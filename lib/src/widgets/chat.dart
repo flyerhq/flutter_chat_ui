@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
@@ -8,7 +9,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
-import '../conditional/conditional.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
@@ -312,7 +312,9 @@ class _ChatState extends State<Chat> {
             PhotoViewGallery.builder(
               builder: (BuildContext context, int index) =>
                   PhotoViewGalleryPageOptions(
-                imageProvider: Conditional().getProvider(_gallery[index].uri),
+                imageProvider: CachedNetworkImageProvider(
+                  _gallery[index].uri,
+                ),
               ),
               itemCount: _gallery.length,
               loadingBuilder: (context, event) =>
