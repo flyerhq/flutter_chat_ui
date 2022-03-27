@@ -135,7 +135,7 @@ class _InputState extends State<Input> {
                 .add(_safeAreaInsets),
             child: Row(
               children: [
-                if (widget.onAttachmentPressed != null) _leftWidgetBuilder(),
+                if (widget.onAttachmentPressed != null) _leadingWidgetBuilder(),
                 Expanded(
                   child: TextField(
                     controller: _textController,
@@ -189,7 +189,7 @@ class _InputState extends State<Input> {
     );
   }
 
-  Widget _leftWidgetBuilder() {
+  Widget _leadingWidgetBuilder() {
     if (widget.isAttachmentUploading == true) {
       return Container(
         height: 24,
