@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 
@@ -18,7 +19,7 @@ class SendButton extends StatelessWidget {
     return Container(
       height: 24,
       margin: InheritedChatTheme.of(context).theme.sendButtonMargin ??
-          const EdgeInsets.only(left: 16),
+          const EdgeInsetsDirectional.only(start: 16),
       width: 24,
       child: IconButton(
         icon: InheritedChatTheme.of(context).theme.sendButtonIcon ??

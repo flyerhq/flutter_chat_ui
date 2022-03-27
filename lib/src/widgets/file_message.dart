@@ -52,8 +52,8 @@ class FileMessage extends StatelessWidget {
             ),
             Flexible(
               child: Container(
-                margin: const EdgeInsets.only(
-                  left: 16,
+                margin: const EdgeInsetsDirectional.only(
+                  start: 16,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

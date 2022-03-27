@@ -17,7 +17,7 @@ class AttachmentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 24,
-      margin: const EdgeInsets.only(right: 16),
+      margin: const EdgeInsetsDirectional.only(end: 16),
       width: 24,
       child: IconButton(
         icon: InheritedChatTheme.of(context).theme.attachmentButtonIcon != null

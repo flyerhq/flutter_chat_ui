@@ -193,7 +193,7 @@ class _InputState extends State<Input> {
     if (widget.isAttachmentUploading == true) {
       return Container(
         height: 24,
-        margin: const EdgeInsets.only(right: 16),
+        margin: const EdgeInsetsDirectional.only(end: 16),
         width: 24,
         child: CircularProgressIndicator(
           backgroundColor: Colors.transparent,
