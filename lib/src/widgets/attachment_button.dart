@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 
@@ -8,30 +9,28 @@ class AttachmentButton extends StatelessWidget {
   const AttachmentButton({
     Key? key,
     this.onPressed,
+    this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
   /// Callback for attachment button tap event
   final void Function()? onPressed;
 
+  /// Padding around the icon button
+  final EdgeInsets padding;
+
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 24,
-      margin: const EdgeInsets.only(right: 16),
-      width: 24,
-      child: IconButton(
-        icon: InheritedChatTheme.of(context).theme.attachmentButtonIcon != null
-            ? InheritedChatTheme.of(context).theme.attachmentButtonIcon!
-            : Image.asset(
-                'assets/icon-attachment.png',
-                color: InheritedChatTheme.of(context).theme.inputTextColor,
-                package: 'flutter_chat_ui',
-              ),
+  Widget build(BuildContext context) => IconButton(
+        splashRadius: 24,
+        constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+        icon: InheritedChatTheme.of(context).theme.attachmentButtonIcon ??
+            Image.asset(
+              'assets/icon-attachment.png',
+              color: InheritedChatTheme.of(context).theme.inputTextColor,
+              package: 'flutter_chat_ui',
+            ),
         onPressed: onPressed,
-        padding: EdgeInsets.zero,
+        padding: padding,
         tooltip:
             InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
-      ),
-    );
-  }
+      );
 }

@@ -119,10 +119,21 @@ class _InputState extends State<Input> {
             _query.padding.right,
             _query.viewInsets.bottom + _query.padding.bottom,
           );
-    final _textPadding =
-        InheritedChatTheme.of(context).theme.inputPadding.copyWith(right: 0);
-    final _buttonPadding =
-        InheritedChatTheme.of(context).theme.inputPadding.copyWith(left: 12);
+    final _textPadding = InheritedChatTheme.of(context)
+        .theme
+        .inputPadding
+        .copyWith(
+              right: 0,
+              left: widget.onAttachmentPressed != null ? 0 : null,
+            );
+    final _attachmentButtonPadding = InheritedChatTheme.of(context)
+        .theme
+        .inputPadding
+        .copyWith(right: 0);
+    final _sendButtonPadding = InheritedChatTheme.of(context)
+        .theme
+        .inputPadding
+        .copyWith(left: 12);
 
     return Focus(
       autofocus: true,
@@ -137,7 +148,10 @@ class _InputState extends State<Input> {
             padding: _safeAreaInsets,
             child: Row(
               children: [
-                if (widget.onAttachmentPressed != null) _leftWidgetBuilder(),
+                if (widget.onAttachmentPressed != null) ...[
+                  _leftWidgetBuilder(_attachmentButtonPadding),
+                  const SizedBox(width: 16),
+                ],
                 Expanded(
                   child: Padding(
                     padding: _textPadding,
@@ -184,7 +198,7 @@ class _InputState extends State<Input> {
                   visible: _sendButtonVisible,
                   child: SendButton(
                     onPressed: _handleSendPressed,
-                    padding: _buttonPadding,
+                    padding: _sendButtonPadding,
                   ),
                 ),
               ],
@@ -195,11 +209,11 @@ class _InputState extends State<Input> {
     );
   }
 
-  Widget _leftWidgetBuilder() {
+  Widget _leftWidgetBuilder(EdgeInsets attachmentButtonPadding) {
     if (widget.isAttachmentUploading == true) {
       return Container(
+        padding: attachmentButtonPadding,
         height: 24,
-        margin: const EdgeInsets.only(right: 16),
         width: 24,
         child: CircularProgressIndicator(
           backgroundColor: Colors.transparent,
@@ -210,7 +224,10 @@ class _InputState extends State<Input> {
         ),
       );
     } else {
-      return AttachmentButton(onPressed: widget.onAttachmentPressed);
+      return AttachmentButton(
+        onPressed: widget.onAttachmentPressed,
+        padding: attachmentButtonPadding,
+      );
     }
   }
 
