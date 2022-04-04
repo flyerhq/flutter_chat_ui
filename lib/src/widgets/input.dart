@@ -119,21 +119,15 @@ class _InputState extends State<Input> {
             _query.padding.right,
             _query.viewInsets.bottom + _query.padding.bottom,
           );
-    final _textPadding = InheritedChatTheme.of(context)
-        .theme
-        .inputPadding
-        .copyWith(
+    final _textPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(
               right: 0,
               left: widget.onAttachmentPressed != null ? 0 : null,
             );
-    final _attachmentButtonPadding = InheritedChatTheme.of(context)
-        .theme
-        .inputPadding
-        .copyWith(right: 0);
-    final _sendButtonPadding = InheritedChatTheme.of(context)
-        .theme
-        .inputPadding
-        .copyWith(left: 12);
+    final _attachmentButtonPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(right: 0);
+    final _sendButtonPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(left: 12);
 
     return Focus(
       autofocus: true,
