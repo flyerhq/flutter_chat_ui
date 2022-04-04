@@ -149,7 +149,11 @@ class _InputState extends State<Input> {
             child: Row(
               children: [
                 if (widget.onAttachmentPressed != null) ...[
-                  _leftWidgetBuilder(_attachmentButtonPadding),
+                  AttachmentButton(
+                    isLoading: widget.isAttachmentUploading ?? false,
+                    onPressed: widget.onAttachmentPressed,
+                    padding: _attachmentButtonPadding,
+                  ),
                   const SizedBox(width: 16),
                 ],
                 Expanded(
@@ -207,28 +211,6 @@ class _InputState extends State<Input> {
         ),
       ),
     );
-  }
-
-  Widget _leftWidgetBuilder(EdgeInsets attachmentButtonPadding) {
-    if (widget.isAttachmentUploading == true) {
-      return Container(
-        padding: attachmentButtonPadding,
-        height: 24,
-        width: 24,
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.transparent,
-          strokeWidth: 1.5,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            InheritedChatTheme.of(context).theme.inputTextColor,
-          ),
-        ),
-      );
-    } else {
-      return AttachmentButton(
-        onPressed: widget.onAttachmentPressed,
-        padding: attachmentButtonPadding,
-      );
-    }
   }
 
   @override
