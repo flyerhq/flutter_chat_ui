@@ -4,7 +4,7 @@
 - Add `receivedMessageBodyLinkTextStyle` and `sentMessageBodyLinkTextStyle` to the theme. Thanks @felixgabler for the PR!
 - Add `sendButtonMargin` to the theme. Thanks @damian-kaczmarek for the PR!
 - Add German localization. Thanks @felixgabler for the PR!
-- Update to Flutter 2.10.2. Requires Dart >= 2.16.0.
+- Update to Flutter 2.10.4. Requires Dart >= 2.16.0.
 
 ## 1.5.5
 
