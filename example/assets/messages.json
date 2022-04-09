@@ -8,6 +8,18 @@
     "createdAt": 1598438797000,
     "id": "e7a673e9-86eb-4572-936f-2882b0183cdc",
     "status": "seen",
+    "text": "**bold** _italic_ ~strikethrough~ `code`\nhttps://link-test.com test@email.com",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "John",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
+    "createdAt": 1598438797000,
+    "id": "e7a673e9-86eb-4572-936f-2882b0183cdc",
+    "status": "seen",
     "text": "https://flyer.chat",
     "type": "text"
   },
