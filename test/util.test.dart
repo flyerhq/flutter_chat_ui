@@ -120,14 +120,14 @@ void main() {
                 'message': imageMessage,
                 'nextMessageInGroup': false,
                 'showName': false,
-                'showStatus': imageMessage.showStatus,
+                'showStatus': true
               },
               const MessageSpacer(height: 12.0, id: '1'),
               {
                 'message': message,
                 'nextMessageInGroup': false,
                 'showName': false,
-                'showStatus': message.showStatus
+                'showStatus': true
               }
             ],
             [const PreviewImage(id: '2', uri: 'https://some.image')]

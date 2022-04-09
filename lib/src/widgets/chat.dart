@@ -30,9 +30,9 @@ class Chat extends StatefulWidget {
     this.bubbleBuilder,
     this.customBottomWidget,
     this.customDateHeaderText,
-    this.dateHeaderBuilder,
     this.customMessageBuilder,
     this.dateFormat,
+    this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
     this.dateLocale,
     this.disableImageGallery,
@@ -90,10 +90,7 @@ class Chat extends StatefulWidget {
   /// all default date headers, so you must handle all cases yourself, like
   /// for example today, yesterday and before. Or you can just return the same
   /// date header for any message.
-  final String Function(DateTime dateTime)? customDateHeaderText;
-
-  /// Custom date header builder gives ability to customize date header widget
-  final Widget Function(DateHeader dateHeader)? dateHeaderBuilder;
+  final String Function(DateTime)? customDateHeaderText;
 
   /// See [Message.customMessageBuilder]
   final Widget Function(types.CustomMessage, {required int messageWidth})?
@@ -105,6 +102,9 @@ class Chat extends StatefulWidget {
   /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
   /// for more customization.
   final DateFormat? dateFormat;
+
+  /// Custom date header builder gives ability to customize date header widget
+  final Widget Function(DateHeader)? dateHeaderBuilder;
 
   /// Time (in ms) between two messages when we will render a date header.
   /// Default value is 15 minutes, 900000 ms. When time between two messages

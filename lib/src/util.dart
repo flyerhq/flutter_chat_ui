@@ -180,7 +180,7 @@ List<Object> calculateChatMessages(
           showUserNames &&
           showName &&
           getUserName(message.author).isNotEmpty,
-      'showStatus': message.showStatus,
+      'showStatus': message.showStatus ?? true,
     });
 
     if (!nextMessageInGroup) {
@@ -197,13 +197,14 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
-          dateTime: DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
+          dateTime:
+              DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
           text: customDateHeaderText != null
               ? customDateHeaderText(
-                  DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
+                  DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!),
                 )
               : getVerboseDateTimeRepresentation(
-                  DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
+                  DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!),
                   dateFormat: dateFormat,
                   dateLocale: dateLocale,
                   timeFormat: timeFormat,
