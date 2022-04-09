@@ -1,5 +1,6 @@
 ## 1.5.6
 
+- Add markdown support. Thanks @felixgabler for the PR!
 - Add `onMessageVisibilityChanged` handler. Thanks @felixgabler for the PR!
 - Add `receivedMessageBodyLinkTextStyle` and `sentMessageBodyLinkTextStyle` to the theme. Thanks @felixgabler for the PR!
 - Add `sendButtonMargin` to the theme. Thanks @damian-kaczmarek for the PR!
