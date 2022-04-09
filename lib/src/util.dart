@@ -158,6 +158,7 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
+          dateTime: DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
           text: customDateHeaderText != null
               ? customDateHeaderText(
                   DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
@@ -179,7 +180,7 @@ List<Object> calculateChatMessages(
           showUserNames &&
           showName &&
           getUserName(message.author).isNotEmpty,
-      'showStatus': true,
+      'showStatus': message.showStatus,
     });
 
     if (!nextMessageInGroup) {
@@ -196,6 +197,7 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
+          dateTime: DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
           text: customDateHeaderText != null
               ? customDateHeaderText(
                   DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),

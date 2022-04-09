@@ -425,6 +425,10 @@ This is how it would look like
 
 Use the `customMessageBuilder` function to build whatever message you want. To store the data use a `metadata` map of the `CustomMessage`. You can have multiple different custom messages, you will need to identify them based on some property inside the `metadata` and build accordingly.
 
+## Custom date header
+
+Use the `dateHeaderBuilde` to build your custom widget for date header.
+
 ## Pagination
 
 Use `onEndReached`, `onEndReachedThreshold` and `isLastPage` parameters to control pagination. To learn more see [API reference](https://pub.dev/documentation/flutter_chat_ui/latest/flutter_chat_ui/ChatList-class.html). Here is a simple example based on a [basic usage](basic-usage):
