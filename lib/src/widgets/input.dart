@@ -69,11 +69,14 @@ class _InputState extends State<Input> {
   void initState() {
     super.initState();
 
-    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
-      _sendButtonVisible = _textController.text.trim() != '';
-      _textController.addListener(_handleTextControllerChange);
-    } else {
-      _sendButtonVisible = true;
+    _handleSendButtonVisibilityModeChange();
+  }
+
+  @override
+  void didUpdateWidget(covariant Input oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.sendButtonVisibilityMode != oldWidget.sendButtonVisibilityMode) {
+      _handleSendButtonVisibilityModeChange();
     }
   }
 
@@ -92,6 +95,19 @@ class _InputState extends State<Input> {
         TextPosition(offset: _newValue.length),
       ),
     );
+  }
+
+  void _handleSendButtonVisibilityModeChange() {
+    _textController.removeListener(_handleTextControllerChange);
+    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.hided) {
+      _sendButtonVisible = false;
+    } else if (widget.sendButtonVisibilityMode ==
+        SendButtonVisibilityMode.editing) {
+      _sendButtonVisible = _textController.text.trim() != '';
+      _textController.addListener(_handleTextControllerChange);
+    } else {
+      _sendButtonVisible = true;
+    }
   }
 
   void _handleSendPressed() {
