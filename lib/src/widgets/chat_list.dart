@@ -8,15 +8,16 @@ import 'inherited_user.dart';
 /// Animated list which handles automatic animations and pagination
 class ChatList extends StatefulWidget {
   /// Creates a chat list widget
-  const ChatList({
-    Key? key,
-    this.isLastPage,
-    required this.itemBuilder,
-    required this.items,
-    this.onEndReached,
-    this.onEndReachedThreshold,
-    this.scrollPhysics,
-  }) : super(key: key);
+  const ChatList(
+      {Key? key,
+      this.isLastPage,
+      required this.itemBuilder,
+      required this.items,
+      this.onEndReached,
+      this.onEndReachedThreshold,
+      this.scrollPhysics,
+      this.scrollController})
+      : super(key: key);
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -43,6 +44,9 @@ class ChatList extends StatefulWidget {
   /// Determines the physics of the scroll view
   final ScrollPhysics? scrollPhysics;
 
+  /// Used to control the chat list scroll view
+  final ScrollController? scrollController;
+
   @override
   _ChatListState createState() => _ChatListState();
 }
@@ -54,7 +58,7 @@ class _ChatListState extends State<ChatList>
   final GlobalKey<SliverAnimatedListState> _listKey =
       GlobalKey<SliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
-  final _scrollController = ScrollController();
+  late ScrollController _scrollController;
 
   late final AnimationController _controller = AnimationController(vsync: this);
 
@@ -66,7 +70,7 @@ class _ChatListState extends State<ChatList>
   @override
   void initState() {
     super.initState();
-
+    _scrollController = widget.scrollController ?? ScrollController();
     didUpdateWidget(widget);
   }
 

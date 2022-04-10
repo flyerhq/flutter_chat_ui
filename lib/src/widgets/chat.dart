@@ -73,6 +73,7 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
+    this.scrollController,
   }) : super(key: key);
 
   /// See [Message.bubbleBuilder]
@@ -251,6 +252,9 @@ class Chat extends StatefulWidget {
 
   /// See [InheritedUser.user]
   final types.User user;
+
+  /// See [ChatList.scrollController]
+  final ScrollController? scrollController;
 
   @override
   _ChatState createState() => _ChatState();
@@ -485,6 +489,7 @@ class _ChatState extends State<Chat> {
                                   onEndReachedThreshold:
                                       widget.onEndReachedThreshold,
                                   scrollPhysics: widget.scrollPhysics,
+                                  scrollController: widget.scrollController,
                                 ),
                               ),
                             ),
