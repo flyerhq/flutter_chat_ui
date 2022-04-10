@@ -72,8 +72,6 @@ class _InputState extends State<Input> {
     if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
       _sendButtonVisible = _textController.text.trim() != '';
       _textController.addListener(_handleTextControllerChange);
-    } else {
-      _sendButtonVisible = true;
     }
   }
 
@@ -110,6 +108,11 @@ class _InputState extends State<Input> {
   }
 
   Widget _inputBuilder() {
+
+    if (widget.sendButtonVisibilityMode != SendButtonVisibilityMode.editing) {
+      _sendButtonVisible = widget.sendButtonVisibilityMode == SendButtonVisibilityMode.always;
+    }
+
     final _query = MediaQuery.of(context);
     final _safeAreaInsets = kIsWeb
         ? EdgeInsets.zero
