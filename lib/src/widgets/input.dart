@@ -69,9 +69,14 @@ class _InputState extends State<Input> {
   void initState() {
     super.initState();
 
-    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
-      _sendButtonVisible = _textController.text.trim() != '';
-      _textController.addListener(_handleTextControllerChange);
+    _handleSendButtonVisibilityModeChange();
+  }
+
+  @override
+  void didUpdateWidget(covariant Input oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.sendButtonVisibilityMode != oldWidget.sendButtonVisibilityMode) {
+      _handleSendButtonVisibilityModeChange();
     }
   }
 
@@ -92,6 +97,19 @@ class _InputState extends State<Input> {
     );
   }
 
+  void _handleSendButtonVisibilityModeChange() {
+    _textController.removeListener(_handleTextControllerChange);
+    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.hided) {
+      _sendButtonVisible = false;
+    } else if (widget.sendButtonVisibilityMode ==
+        SendButtonVisibilityMode.editing) {
+      _sendButtonVisible = _textController.text.trim() != '';
+      _textController.addListener(_handleTextControllerChange);
+    } else {
+      _sendButtonVisible = true;
+    }
+  }
+
   void _handleSendPressed() {
     final trimmedText = _textController.text.trim();
     if (trimmedText != '') {
@@ -108,11 +126,6 @@ class _InputState extends State<Input> {
   }
 
   Widget _inputBuilder() {
-
-    if (widget.sendButtonVisibilityMode != SendButtonVisibilityMode.editing) {
-      _sendButtonVisible = widget.sendButtonVisibilityMode == SendButtonVisibilityMode.always;
-    }
-
     final _query = MediaQuery.of(context);
     final _safeAreaInsets = kIsWeb
         ? EdgeInsets.zero
