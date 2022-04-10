@@ -135,6 +135,15 @@ class _InputState extends State<Input> {
             _query.padding.right,
             _query.viewInsets.bottom + _query.padding.bottom,
           );
+    final _textPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(
+              right: 0,
+              left: widget.onAttachmentPressed != null ? 0 : null,
+            );
+    final _attachmentButtonPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(right: 0);
+    final _sendButtonPadding =
+        InheritedChatTheme.of(context).theme.inputPadding.copyWith(left: 12);
 
     return Focus(
       autofocus: true,
@@ -146,56 +155,64 @@ class _InputState extends State<Input> {
           child: Container(
             decoration:
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
-            padding: InheritedChatTheme.of(context)
-                .theme
-                .inputPadding
-                .add(_safeAreaInsets),
+            padding: _safeAreaInsets,
             child: Row(
               children: [
-                if (widget.onAttachmentPressed != null) _leftWidgetBuilder(),
+                if (widget.onAttachmentPressed != null) ...[
+                  AttachmentButton(
+                    isLoading: widget.isAttachmentUploading ?? false,
+                    onPressed: widget.onAttachmentPressed,
+                    padding: _attachmentButtonPadding,
+                  ),
+                  const SizedBox(width: 16),
+                ],
                 Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    cursorColor: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextCursorColor,
-                    decoration: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextDecoration
-                        .copyWith(
-                          hintStyle: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextStyle
-                              .copyWith(
-                                color: InheritedChatTheme.of(context)
-                                    .theme
-                                    .inputTextColor
-                                    .withOpacity(0.5),
-                              ),
-                          hintText:
-                              InheritedL10n.of(context).l10n.inputPlaceholder,
-                        ),
-                    focusNode: _inputFocusNode,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    minLines: 1,
-                    onChanged: widget.onTextChanged,
-                    onTap: widget.onTextFieldTap,
-                    style: InheritedChatTheme.of(context)
-                        .theme
-                        .inputTextStyle
-                        .copyWith(
-                          color: InheritedChatTheme.of(context)
-                              .theme
-                              .inputTextColor,
-                        ),
-                    textCapitalization: TextCapitalization.sentences,
+                  child: Padding(
+                    padding: _textPadding,
+                    child: TextField(
+                      controller: _textController,
+                      cursorColor: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextCursorColor,
+                      decoration: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextDecoration
+                          .copyWith(
+                            hintStyle: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextStyle
+                                .copyWith(
+                                  color: InheritedChatTheme.of(context)
+                                      .theme
+                                      .inputTextColor
+                                      .withOpacity(0.5),
+                                ),
+                            hintText:
+                                InheritedL10n.of(context).l10n.inputPlaceholder,
+                          ),
+                      focusNode: _inputFocusNode,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
+                      onChanged: widget.onTextChanged,
+                      onTap: widget.onTextFieldTap,
+                      style: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextStyle
+                          .copyWith(
+                            color: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextColor,
+                          ),
+                      textCapitalization: TextCapitalization.sentences,
+                    ),
                   ),
                 ),
                 Visibility(
                   visible: _sendButtonVisible,
                   child: SendButton(
                     onPressed: _handleSendPressed,
+                    padding: _sendButtonPadding,
                   ),
                 ),
               ],
@@ -204,25 +221,6 @@ class _InputState extends State<Input> {
         ),
       ),
     );
-  }
-
-  Widget _leftWidgetBuilder() {
-    if (widget.isAttachmentUploading == true) {
-      return Container(
-        height: 24,
-        margin: const EdgeInsets.only(right: 16),
-        width: 24,
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.transparent,
-          strokeWidth: 1.5,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            InheritedChatTheme.of(context).theme.inputTextColor,
-          ),
-        ),
-      );
-    } else {
-      return AttachmentButton(onPressed: widget.onAttachmentPressed);
-    }
   }
 
   @override

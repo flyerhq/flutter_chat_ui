@@ -108,7 +108,7 @@ abstract class ChatTheme {
   final Color backgroundColor;
 
   /// Margin around date dividers
-  final EdgeInsetsGeometry dateDividerMargin;
+  final EdgeInsets dateDividerMargin;
 
   /// Text style of the date dividers
   final TextStyle dateDividerTextStyle;
@@ -138,10 +138,10 @@ abstract class ChatTheme {
   final Decoration? inputContainerDecoration;
 
   /// Outer insets of the bottom bar where text field is
-  final EdgeInsetsGeometry inputMargin;
+  final EdgeInsets inputMargin;
 
   /// Inner insets of the bottom bar where text field is
-  final EdgeInsetsGeometry inputPadding;
+  final EdgeInsets inputPadding;
 
   /// Color of the text field's text and attachment/send buttons
   final Color inputTextColor;
@@ -211,7 +211,7 @@ abstract class ChatTheme {
   final Widget? sendButtonIcon;
 
   /// Margin of send button
-  final EdgeInsetsGeometry? sendButtonMargin;
+  final EdgeInsets? sendButtonMargin;
 
   /// Icon for message's `sending` status. For the best look use size of 10.
   final Widget? sendingIcon;
@@ -250,7 +250,7 @@ abstract class ChatTheme {
   final TextStyle sentMessageLinkTitleTextStyle;
 
   /// Padding around status icons
-  final EdgeInsetsGeometry statusIconPadding;
+  final EdgeInsets statusIconPadding;
 
   /// Color used as a background for user avatar if an image is provided.
   /// Visible if the image has some transparent parts.
@@ -278,7 +278,7 @@ class DefaultChatTheme extends ChatTheme {
   const DefaultChatTheme({
     Widget? attachmentButtonIcon,
     Color backgroundColor = neutral7,
-    EdgeInsetsGeometry dateDividerMargin = const EdgeInsets.only(
+    EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
     ),
@@ -303,8 +303,8 @@ class DefaultChatTheme extends ChatTheme {
       top: Radius.circular(20),
     ),
     Decoration? inputContainerDecoration,
-    EdgeInsetsGeometry inputMargin = EdgeInsets.zero,
-    EdgeInsetsGeometry inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
+    EdgeInsets inputMargin = EdgeInsets.zero,
+    EdgeInsets inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
     Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
@@ -353,7 +353,7 @@ class DefaultChatTheme extends ChatTheme {
     Color secondaryColor = secondary,
     Widget? seenIcon,
     Widget? sendButtonIcon,
-    EdgeInsetsGeometry? sendButtonMargin,
+    EdgeInsets? sendButtonMargin,
     Widget? sendingIcon,
     TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle? sentMessageBodyBoldTextStyle,
@@ -384,8 +384,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    EdgeInsetsGeometry statusIconPadding =
-        const EdgeInsets.symmetric(horizontal: 4),
+    EdgeInsets statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
@@ -464,7 +463,7 @@ class DarkChatTheme extends ChatTheme {
   const DarkChatTheme({
     Widget? attachmentButtonIcon,
     Color backgroundColor = dark,
-    EdgeInsetsGeometry dateDividerMargin = const EdgeInsets.only(
+    EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
     ),
@@ -489,8 +488,8 @@ class DarkChatTheme extends ChatTheme {
       top: Radius.circular(20),
     ),
     Decoration? inputContainerDecoration,
-    EdgeInsetsGeometry inputMargin = EdgeInsets.zero,
-    EdgeInsetsGeometry inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
+    EdgeInsets inputMargin = EdgeInsets.zero,
+    EdgeInsets inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
     Color inputTextColor = neutral7,
     Color? inputTextCursorColor,
     InputDecoration inputTextDecoration = const InputDecoration(
@@ -539,7 +538,7 @@ class DarkChatTheme extends ChatTheme {
     Color secondaryColor = secondaryDark,
     Widget? seenIcon,
     Widget? sendButtonIcon,
-    EdgeInsetsGeometry? sendButtonMargin,
+    EdgeInsets? sendButtonMargin,
     Widget? sendingIcon,
     TextStyle sentEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     TextStyle? sentMessageBodyBoldTextStyle,
@@ -570,8 +569,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    EdgeInsetsGeometry statusIconPadding =
-        const EdgeInsets.symmetric(horizontal: 4),
+    EdgeInsets statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
     Color userAvatarImageBackgroundColor = Colors.transparent,
     List<Color> userAvatarNameColors = colors,
     TextStyle userAvatarTextStyle = const TextStyle(
