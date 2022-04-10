@@ -4,7 +4,9 @@ import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../models/emoji_enlargement_behavior.dart';
+import '../models/preview_tap_options.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
@@ -18,7 +20,7 @@ class TextMessage extends StatelessWidget {
     required this.hideBackgroundOnEmojiMessages,
     required this.message,
     this.onPreviewDataFetched,
-    this.previewTapOptions = const PreviewTapOptions(),
+    required this.previewTapOptions,
     required this.usePreviewData,
     required this.showName,
   }) : super(key: key);
@@ -224,15 +226,4 @@ class TextMessage extends StatelessWidget {
       child: _textWidgetBuilder(_user, context, _enlargeEmojis),
     );
   }
-}
-
-@immutable
-class PreviewTapOptions {
-  const PreviewTapOptions({
-    this.openOnImageTap = false,
-    this.openOnTitleTap = false,
-  });
-
-  final bool openOnImageTap;
-  final bool openOnTitleTap;
 }

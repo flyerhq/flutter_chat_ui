@@ -13,6 +13,7 @@ import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
+import '../models/preview_tap_options.dart';
 import '../models/send_button_visibility_mode.dart';
 import '../util.dart';
 import 'chat_list.dart';

@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
+
 import './models/date_header.dart';
 import './models/emoji_enlargement_behavior.dart';
 import './models/message_spacer.dart';

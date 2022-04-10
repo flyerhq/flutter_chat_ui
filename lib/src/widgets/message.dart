@@ -3,14 +3,13 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
+import '../models/preview_tap_options.dart';
 import '../util.dart';
 import 'file_message.dart';
 import 'image_message.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'text_message.dart';
-
-export 'text_message.dart' show PreviewTapOptions;
 
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
@@ -35,7 +34,7 @@ class Message extends StatelessWidget {
     this.onMessageTap,
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
-    this.previewTapOptions = const PreviewTapOptions(),
+    required this.previewTapOptions,
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
