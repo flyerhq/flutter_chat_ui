@@ -1,8 +1,9 @@
 ## 1.5.6
 
 - Add markdown support. Thanks @felixgabler for the PR!
+- Add Arabic localization and RTL support. Thanks @Faaatman for the PR!
 - Increase send button tapable area. Thanks @felixgabler for the PR!
-- Add new `hided` send button visibility mode. Thanks @fernandobatels for the PR!
+- Add new `hidden` send button visibility mode. Thanks @fernandobatels for the PR!
 - Add `previewTapOptions` that allow to configure to open link preview when tapped on preview's image or title. Thanks @felixgabler for the PR!
 - Add `dateHeaderBuilder`. Thanks @arsamme for the PR!
 - Add `onMessageVisibilityChanged` handler. Thanks @felixgabler for the PR!

@@ -30,7 +30,7 @@ void main() {
     });
 
     testWidgets(
-        'The SendButton should always be invisible when sendButtonVisibilityMode is set to SendButtonVisibilityMode.hided',
+        'The SendButton should always be invisible when sendButtonVisibilityMode is set to SendButtonVisibilityMode.hidden',
         (WidgetTester tester) async {
       // Build the Chat widget.
       await tester.pumpWidget(
