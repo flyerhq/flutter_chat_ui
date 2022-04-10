@@ -8,16 +8,16 @@ import 'inherited_user.dart';
 /// Animated list which handles automatic animations and pagination
 class ChatList extends StatefulWidget {
   /// Creates a chat list widget
-  const ChatList(
-      {Key? key,
-      this.isLastPage,
-      required this.itemBuilder,
-      required this.items,
-      this.onEndReached,
-      this.onEndReachedThreshold,
-      this.scrollPhysics,
-      this.scrollController})
-      : super(key: key);
+  const ChatList({
+    Key? key,
+    this.isLastPage,
+    required this.itemBuilder,
+    required this.items,
+    this.onEndReached,
+    this.onEndReachedThreshold,
+    this.scrollController,
+    this.scrollPhysics,
+  }) : super(key: key);
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -41,11 +41,11 @@ class ChatList extends StatefulWidget {
   /// next page when scrolled through about 3/4 of the available content.
   final double? onEndReachedThreshold;
 
-  /// Determines the physics of the scroll view
-  final ScrollPhysics? scrollPhysics;
-
   /// Used to control the chat list scroll view
   final ScrollController? scrollController;
+
+  /// Determines the physics of the scroll view
+  final ScrollPhysics? scrollPhysics;
 
   @override
   _ChatListState createState() => _ChatListState();
@@ -70,6 +70,7 @@ class _ChatListState extends State<ChatList>
   @override
   void initState() {
     super.initState();
+
     _scrollController = widget.scrollController ?? ScrollController();
     didUpdateWidget(widget);
   }

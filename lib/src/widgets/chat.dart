@@ -64,6 +64,7 @@ class Chat extends StatefulWidget {
     this.onTextChanged,
     this.onTextFieldTap,
     this.previewTapOptions = const PreviewTapOptions(),
+    this.scrollController,
     this.scrollPhysics,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
@@ -73,7 +74,6 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
-    this.scrollController,
   }) : super(key: key);
 
   /// See [Message.bubbleBuilder]
@@ -215,6 +215,9 @@ class Chat extends StatefulWidget {
   /// See [Message.previewTapOptions]
   final PreviewTapOptions previewTapOptions;
 
+  /// See [ChatList.scrollController]
+  final ScrollController? scrollController;
+
   /// See [ChatList.scrollPhysics]
   final ScrollPhysics? scrollPhysics;
 
@@ -252,9 +255,6 @@ class Chat extends StatefulWidget {
 
   /// See [InheritedUser.user]
   final types.User user;
-
-  /// See [ChatList.scrollController]
-  final ScrollController? scrollController;
 
   @override
   _ChatState createState() => _ChatState();
@@ -488,8 +488,8 @@ class _ChatState extends State<Chat> {
                                   onEndReached: widget.onEndReached,
                                   onEndReachedThreshold:
                                       widget.onEndReachedThreshold,
-                                  scrollPhysics: widget.scrollPhysics,
                                   scrollController: widget.scrollController,
+                                  scrollPhysics: widget.scrollPhysics,
                                 ),
                               ),
                             ),
