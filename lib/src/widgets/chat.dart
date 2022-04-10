@@ -28,6 +28,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget
   const Chat({
     Key? key,
+    this.avatarBuilder,
     this.bubbleBuilder,
     this.customBottomWidget,
     this.customDateHeaderText,
@@ -48,6 +49,7 @@ class Chat extends StatefulWidget {
     this.isTextMessageTextSelectable = true,
     this.l10n = const ChatL10nEn(),
     required this.messages,
+    this.nameBuilder,
     this.onAttachmentPressed,
     this.onAvatarTap,
     this.onBackgroundTap,
@@ -71,10 +73,12 @@ class Chat extends StatefulWidget {
     this.textMessageBuilder,
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
-    this.avatarBuilder,
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
+
+  /// See [Message.avatarBuilder]
+  final Widget Function(String userId)? avatarBuilder;
 
   /// See [Message.bubbleBuilder]
   final Widget Function(
@@ -165,6 +169,9 @@ class Chat extends StatefulWidget {
   /// List of [types.Message] to render in the chat widget
   final List<types.Message> messages;
 
+  /// See [Message.nameBuilder]
+  final Widget Function(String userId)? nameBuilder;
+
   /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;
 
@@ -223,10 +230,6 @@ class Chat extends StatefulWidget {
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
-
-  /// This is to allow custom user builder
-  /// By using this we can fetch newest user info based on id
-  final Widget Function(String userId)? avatarBuilder;
 
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
@@ -390,6 +393,7 @@ class _ChatState extends State<Chat> {
 
       return Message(
         key: ValueKey(message.id),
+        avatarBuilder: widget.avatarBuilder,
         bubbleBuilder: widget.bubbleBuilder,
         customMessageBuilder: widget.customMessageBuilder,
         emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
@@ -399,6 +403,7 @@ class _ChatState extends State<Chat> {
         isTextMessageTextSelectable: widget.isTextMessageTextSelectable,
         message: message,
         messageWidth: _messageWidth,
+        nameBuilder: widget.nameBuilder,
         onAvatarTap: widget.onAvatarTap,
         onMessageDoubleTap: widget.onMessageDoubleTap,
         onMessageLongPress: widget.onMessageLongPress,
@@ -422,7 +427,6 @@ class _ChatState extends State<Chat> {
         showUserAvatars: widget.showUserAvatars,
         textMessageBuilder: widget.textMessageBuilder,
         usePreviewData: widget.usePreviewData,
-        avatarBuilder: widget.avatarBuilder,
       );
     }
   }

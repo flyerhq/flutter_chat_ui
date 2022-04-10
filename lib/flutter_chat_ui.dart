@@ -9,6 +9,8 @@ export 'src/util.dart' show formatBytes, isConsistsOfEmojis;
 export 'src/widgets/attachment_button.dart';
 export 'src/widgets/chat.dart';
 export 'src/widgets/chat_list.dart';
+export 'src/widgets/chat_user_avatar.dart';
+export 'src/widgets/chat_user_name_header.dart';
 export 'src/widgets/file_message.dart';
 export 'src/widgets/image_message.dart';
 export 'src/widgets/input.dart';
