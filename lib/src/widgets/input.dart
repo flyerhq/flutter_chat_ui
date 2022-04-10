@@ -99,7 +99,7 @@ class _InputState extends State<Input> {
 
   void _handleSendButtonVisibilityModeChange() {
     _textController.removeListener(_handleTextControllerChange);
-    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.hided) {
+    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.hidden) {
       _sendButtonVisible = false;
     } else if (widget.sendButtonVisibilityMode ==
         SendButtonVisibilityMode.editing) {
