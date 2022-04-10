@@ -8,5 +8,5 @@ enum SendButtonVisibilityMode {
   editing,
 
   /// Always hide the [SendButton] regardless of the [TextField] state.
-  hided,
+  hidden,
 }
