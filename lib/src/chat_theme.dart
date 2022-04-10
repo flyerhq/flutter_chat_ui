@@ -50,6 +50,7 @@ abstract class ChatTheme {
   /// Creates a new chat theme based on provided colors and text styles.
   const ChatTheme({
     required this.attachmentButtonIcon,
+    required this.attachmentButtonMargin,
     required this.backgroundColor,
     required this.dateDividerMargin,
     required this.dateDividerTextStyle,
@@ -103,6 +104,9 @@ abstract class ChatTheme {
 
   /// Icon for select attachment button
   final Widget? attachmentButtonIcon;
+
+  /// Margin of attachment button
+  final EdgeInsets? attachmentButtonMargin;
 
   /// Used as a background color of a chat widget
   final Color backgroundColor;
@@ -277,6 +281,7 @@ class DefaultChatTheme extends ChatTheme {
   /// which extends [ChatTheme]
   const DefaultChatTheme({
     Widget? attachmentButtonIcon,
+    EdgeInsets? attachmentButtonMargin,
     Color backgroundColor = neutral7,
     EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
@@ -400,6 +405,7 @@ class DefaultChatTheme extends ChatTheme {
     ),
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
+          attachmentButtonMargin: attachmentButtonMargin,
           backgroundColor: backgroundColor,
           dateDividerMargin: dateDividerMargin,
           dateDividerTextStyle: dateDividerTextStyle,
@@ -462,6 +468,7 @@ class DarkChatTheme extends ChatTheme {
   /// which extends [ChatTheme]
   const DarkChatTheme({
     Widget? attachmentButtonIcon,
+    EdgeInsets? attachmentButtonMargin,
     Color backgroundColor = dark,
     EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
@@ -585,6 +592,7 @@ class DarkChatTheme extends ChatTheme {
     ),
   }) : super(
           attachmentButtonIcon: attachmentButtonIcon,
+          attachmentButtonMargin: attachmentButtonMargin,
           backgroundColor: backgroundColor,
           dateDividerMargin: dateDividerMargin,
           dateDividerTextStyle: dateDividerTextStyle,
