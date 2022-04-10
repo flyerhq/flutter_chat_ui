@@ -45,6 +45,7 @@ class Chat extends StatefulWidget {
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
+    this.isTextMessageTextSelectable = true,
     this.l10n = const ChatL10nEn(),
     required this.messages,
     this.onAttachmentPressed,
@@ -151,6 +152,9 @@ class Chat extends StatefulWidget {
 
   /// See [ChatList.isLastPage]
   final bool? isLastPage;
+
+  /// See [Message.isTextMessageTextSelectable]
+  final bool isTextMessageTextSelectable;
 
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
   /// existing one, like the default [ChatL10nEn]. You can customize only
@@ -387,6 +391,7 @@ class _ChatState extends State<Chat> {
         fileMessageBuilder: widget.fileMessageBuilder,
         hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
         imageMessageBuilder: widget.imageMessageBuilder,
+        isTextMessageTextSelectable: widget.isTextMessageTextSelectable,
         message: message,
         messageWidth: _messageWidth,
         onAvatarTap: widget.onAvatarTap,

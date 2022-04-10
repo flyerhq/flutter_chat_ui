@@ -18,6 +18,7 @@ class TextMessage extends StatelessWidget {
     Key? key,
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
+    required this.isTextMessageTextSelectable,
     required this.message,
     this.onPreviewDataFetched,
     required this.previewTapOptions,
@@ -30,6 +31,9 @@ class TextMessage extends StatelessWidget {
 
   /// See [Message.hideBackgroundOnEmojiMessages]
   final bool hideBackgroundOnEmojiMessages;
+
+  /// Whether user can tap and hold to select a text content
+  final bool isTextMessageTextSelectable;
 
   /// [types.TextMessage]
   final types.TextMessage message;
@@ -189,7 +193,7 @@ class TextMessage extends StatelessWidget {
             ),
           ],
           regexOptions: const RegexOptions(multiLine: true, dotAll: true),
-          selectable: true,
+          selectable: isTextMessageTextSelectable,
           style: bodyTextStyle,
           text: message.text,
           textWidthBasis: TextWidthBasis.longestLine,

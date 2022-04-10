@@ -24,6 +24,7 @@ class Message extends StatelessWidget {
     this.fileMessageBuilder,
     required this.hideBackgroundOnEmojiMessages,
     this.imageMessageBuilder,
+    required this.isTextMessageTextSelectable,
     required this.message,
     required this.messageWidth,
     this.onAvatarTap,
@@ -74,6 +75,9 @@ class Message extends StatelessWidget {
   /// Build an image message inside predefined bubble
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
+
+  /// See [TextMessage.isTextMessageTextSelectable]
+  final bool isTextMessageTextSelectable;
 
   /// Any message type
   final types.Message message;
@@ -228,6 +232,7 @@ class Message extends StatelessWidget {
             : TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                isTextMessageTextSelectable: isTextMessageTextSelectable,
                 message: textMessage,
                 onPreviewDataFetched: onPreviewDataFetched,
                 previewTapOptions: previewTapOptions,
