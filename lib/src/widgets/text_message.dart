@@ -218,9 +218,7 @@ class TextMessage extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: _enlargeEmojis && hideBackgroundOnEmojiMessages
-            ? 0.0
-            : _theme.messageInsetsHorizontal,
+        horizontal: _theme.messageInsetsHorizontal,
         vertical: _theme.messageInsetsVertical,
       ),
       child: _textWidgetBuilder(_user, context, _enlargeEmojis),
