@@ -24,31 +24,35 @@ class AttachmentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      constraints: const BoxConstraints(minHeight: 24, minWidth: 24),
-      icon: isLoading
-          ? SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.transparent,
-                strokeWidth: 1.5,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  InheritedChatTheme.of(context).theme.inputTextColor,
+    return Container(
+      margin: InheritedChatTheme.of(context).theme.attachmentButtonMargin ??
+          const EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+      child: IconButton(
+        constraints: const BoxConstraints(minHeight: 24, minWidth: 24),
+        icon: isLoading
+            ? SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.transparent,
+                  strokeWidth: 1.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    InheritedChatTheme.of(context).theme.inputTextColor,
+                  ),
                 ),
-              ),
-            )
-          : InheritedChatTheme.of(context).theme.attachmentButtonIcon ??
-              Image.asset(
-                'assets/icon-attachment.png',
-                color: InheritedChatTheme.of(context).theme.inputTextColor,
-                package: 'flutter_chat_ui',
-              ),
-      onPressed: isLoading ? null : onPressed,
-      padding: padding,
-      splashRadius: 24,
-      tooltip:
-          InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
+              )
+            : InheritedChatTheme.of(context).theme.attachmentButtonIcon ??
+                Image.asset(
+                  'assets/icon-attachment.png',
+                  color: InheritedChatTheme.of(context).theme.inputTextColor,
+                  package: 'flutter_chat_ui',
+                ),
+        onPressed: isLoading ? null : onPressed,
+        padding: padding,
+        splashRadius: 24,
+        tooltip:
+            InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
+      ),
     );
   }
 }

@@ -157,14 +157,12 @@ class _InputState extends State<Input> {
             padding: _safeAreaInsets,
             child: Row(
               children: [
-                if (widget.onAttachmentPressed != null) ...[
-                  const SizedBox(width: 8),
+                if (widget.onAttachmentPressed != null)
                   AttachmentButton(
                     isLoading: widget.isAttachmentUploading ?? false,
                     onPressed: widget.onAttachmentPressed,
                     padding: _buttonPadding,
                   ),
-                ],
                 Expanded(
                   child: Padding(
                     padding: _textPadding,
