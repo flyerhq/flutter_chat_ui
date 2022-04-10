@@ -32,6 +32,7 @@ class Chat extends StatefulWidget {
     this.customDateHeaderText,
     this.customMessageBuilder,
     this.dateFormat,
+    this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
     this.dateLocale,
     this.disableImageGallery,
@@ -102,6 +103,9 @@ class Chat extends StatefulWidget {
   /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
   /// for more customization.
   final DateFormat? dateFormat;
+
+  /// Custom date header builder gives ability to customize date header widget
+  final Widget Function(DateHeader)? dateHeaderBuilder;
 
   /// Time (in ms) between two messages when we will render a date header.
   /// Default value is 15 minutes, 900000 ms. When time between two messages
@@ -349,14 +353,18 @@ class _ChatState extends State<Chat> {
 
   Widget _messageBuilder(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
-      return Container(
-        alignment: Alignment.center,
-        margin: widget.theme.dateDividerMargin,
-        child: Text(
-          object.text,
-          style: widget.theme.dateDividerTextStyle,
-        ),
-      );
+      if (widget.dateHeaderBuilder != null) {
+        return widget.dateHeaderBuilder!(object);
+      } else {
+        return Container(
+          alignment: Alignment.center,
+          margin: widget.theme.dateDividerMargin,
+          child: Text(
+            object.text,
+            style: widget.theme.dateDividerTextStyle,
+          ),
+        );
+      }
     } else if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
