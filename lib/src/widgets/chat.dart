@@ -78,7 +78,7 @@ class Chat extends StatefulWidget {
   }) : super(key: key);
 
   /// See [Message.avatarBuilder]
-  final Widget Function(String userId)? avatarBuilder;
+  final Widget? Function(String userId)? avatarBuilder;
 
   /// See [Message.bubbleBuilder]
   final Widget Function(
@@ -170,7 +170,7 @@ class Chat extends StatefulWidget {
   final List<types.Message> messages;
 
   /// See [Message.nameBuilder]
-  final Widget Function(String userId)? nameBuilder;
+  final Widget? Function(String userId)? nameBuilder;
 
   /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;

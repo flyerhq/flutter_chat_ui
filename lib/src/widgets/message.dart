@@ -50,7 +50,7 @@ class Message extends StatelessWidget {
 
   /// This is to allow custom user avatar builder
   /// By using this we can fetch newest user info based on id
-  final Widget Function(String userId)? avatarBuilder;
+  final Widget? Function(String userId)? avatarBuilder;
 
   /// Customize the default bubble using this function. `child` is a content
   /// you should render inside your bubble, `message` is a current message
@@ -93,7 +93,7 @@ class Message extends StatelessWidget {
   final int messageWidth;
 
   /// See [TextMessage.nameBuilder]
-  final Widget Function(String userId)? nameBuilder;
+  final Widget? Function(String userId)? nameBuilder;
 
   /// See [ChatUserAvatar.onAvatarTap]
   final void Function(types.User)? onAvatarTap;
