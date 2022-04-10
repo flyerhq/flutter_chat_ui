@@ -323,8 +323,8 @@ class _ChatState extends State<Chat> {
             scrollPhysics: const ClampingScrollPhysics(),
           ),
           Positioned.directional(
-            textDirection: Directionality.of(context),
             end: 16,
+            textDirection: Directionality.of(context),
             top: 56,
             child: CloseButton(
               color: Colors.white,

@@ -27,7 +27,7 @@ class FileMessage extends StatelessWidget {
     return Semantics(
       label: InheritedL10n.of(context).l10n.fileButtonAccessibilityLabel,
       child: Container(
-        padding: EdgeInsets.fromLTRB(
+        padding: EdgeInsetsDirectional.fromSTEB(
           InheritedChatTheme.of(context).theme.messageInsetsVertical,
           InheritedChatTheme.of(context).theme.messageInsetsVertical,
           InheritedChatTheme.of(context).theme.messageInsetsHorizontal,

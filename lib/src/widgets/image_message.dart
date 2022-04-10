@@ -95,7 +95,7 @@ class _ImageMessageState extends State<ImageMessage> {
           children: [
             Container(
               height: 64,
-              margin: EdgeInsets.fromLTRB(
+              margin: EdgeInsetsDirectional.fromSTEB(
                 InheritedChatTheme.of(context).theme.messageInsetsVertical,
                 InheritedChatTheme.of(context).theme.messageInsetsVertical,
                 16,
@@ -112,7 +112,7 @@ class _ImageMessageState extends State<ImageMessage> {
             ),
             Flexible(
               child: Container(
-                margin: EdgeInsets.fromLTRB(
+                margin: EdgeInsetsDirectional.fromSTEB(
                   0,
                   InheritedChatTheme.of(context).theme.messageInsetsVertical,
                   InheritedChatTheme.of(context).theme.messageInsetsHorizontal,

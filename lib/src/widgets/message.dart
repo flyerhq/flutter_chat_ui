@@ -299,16 +299,18 @@ class Message extends StatelessWidget {
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
     final _borderRadius = BorderRadiusDirectional.only(
+      bottomEnd: Radius.circular(
+        _currentUserIsAuthor
+            ? roundBorder
+                ? _messageBorderRadius
+                : 0
+            : _messageBorderRadius,
+      ),
       bottomStart: Radius.circular(
         _currentUserIsAuthor || roundBorder ? _messageBorderRadius : 0,
       ),
-      bottomEnd: Radius.circular(_currentUserIsAuthor
-          ? roundBorder
-              ? _messageBorderRadius
-              : 0
-          : _messageBorderRadius),
-      topStart: Radius.circular(_messageBorderRadius),
       topEnd: Radius.circular(_messageBorderRadius),
+      topStart: Radius.circular(_messageBorderRadius),
     );
 
     return Container(

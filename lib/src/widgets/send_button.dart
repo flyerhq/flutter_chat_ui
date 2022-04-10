@@ -22,7 +22,7 @@ class SendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: InheritedChatTheme.of(context).theme.sendButtonMargin ??
-          const EdgeInsets.fromLTRB(0, 0, 8, 0),
+          const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
       child: IconButton(
         constraints: const BoxConstraints(minHeight: 24, minWidth: 24),
         icon: InheritedChatTheme.of(context).theme.sendButtonIcon ??

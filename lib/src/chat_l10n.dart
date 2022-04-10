@@ -29,6 +29,28 @@ abstract class ChatL10n {
   final String sendButtonAccessibilityLabel;
 }
 
+/// Arabic l10n which extends [ChatL10n]
+@immutable
+class ChatL10nAr extends ChatL10n {
+  /// Creates Arabic l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nAr({
+    String attachmentButtonAccessibilityLabel = 'إرسال الوسائط',
+    String emptyChatPlaceholder = 'لا يوجد رسائل هنا بعد',
+    String fileButtonAccessibilityLabel = 'ملف',
+    String inputPlaceholder = 'الرسالة',
+    String sendButtonAccessibilityLabel = 'إرسال',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
+}
+
 /// German l10n which extends [ChatL10n]
 @immutable
 class ChatL10nDe extends ChatL10n {
@@ -261,28 +283,6 @@ class ChatL10nZhTW extends ChatL10n {
     String fileButtonAccessibilityLabel = '檔案',
     String inputPlaceholder = '輸入訊息',
     String sendButtonAccessibilityLabel = '傳送',
-  }) : super(
-          attachmentButtonAccessibilityLabel:
-              attachmentButtonAccessibilityLabel,
-          emptyChatPlaceholder: emptyChatPlaceholder,
-          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
-          inputPlaceholder: inputPlaceholder,
-          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
-        );
-}
-
-/// Arabic l10n which extends [ChatL10n]
-@immutable
-class ChatL10nAr extends ChatL10n {
-  /// Creates Arabic l10n. Use this constructor if you want to
-  /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
-  const ChatL10nAr({
-    String attachmentButtonAccessibilityLabel = 'أرسل الملفات',
-    String emptyChatPlaceholder = 'لا توجد رسائل',
-    String fileButtonAccessibilityLabel = 'ملف',
-    String inputPlaceholder = 'رسالة',
-    String sendButtonAccessibilityLabel = 'أرسل',
   }) : super(
           attachmentButtonAccessibilityLabel:
               attachmentButtonAccessibilityLabel,
