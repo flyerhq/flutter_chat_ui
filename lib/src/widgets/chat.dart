@@ -322,8 +322,9 @@ class _ChatState extends State<Chat> {
             pageController: PageController(initialPage: _imageViewIndex),
             scrollPhysics: const ClampingScrollPhysics(),
           ),
-          Positioned(
-            right: 16,
+          Positioned.directional(
+            textDirection: Directionality.of(context),
+            end: 16,
             top: 56,
             child: CloseButton(
               color: Colors.white,

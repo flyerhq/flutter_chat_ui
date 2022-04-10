@@ -145,7 +145,7 @@ class Message extends StatelessWidget {
 
     return showAvatar
         ? Container(
-            margin: const EdgeInsets.only(right: 8),
+            margin: const EdgeInsetsDirectional.only(end: 8),
             child: GestureDetector(
               onTap: () => onAvatarTap?.call(message.author),
               child: CircleAvatar(
@@ -298,25 +298,26 @@ class Message extends StatelessWidget {
                 emojiEnlargementBehavior, message as types.TextMessage);
     final _messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
-    final _borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(
+    final _borderRadius = BorderRadiusDirectional.only(
+      bottomStart: Radius.circular(
         _currentUserIsAuthor || roundBorder ? _messageBorderRadius : 0,
       ),
-      bottomRight: Radius.circular(_currentUserIsAuthor
+      bottomEnd: Radius.circular(_currentUserIsAuthor
           ? roundBorder
               ? _messageBorderRadius
               : 0
           : _messageBorderRadius),
-      topLeft: Radius.circular(_messageBorderRadius),
-      topRight: Radius.circular(_messageBorderRadius),
+      topStart: Radius.circular(_messageBorderRadius),
+      topEnd: Radius.circular(_messageBorderRadius),
     );
 
     return Container(
-      alignment:
-          _currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
-      margin: const EdgeInsets.only(
+      alignment: _currentUserIsAuthor
+          ? AlignmentDirectional.centerEnd
+          : AlignmentDirectional.centerStart,
+      margin: const EdgeInsetsDirectional.only(
         bottom: 4,
-        left: 20,
+        start: 20,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -342,14 +343,14 @@ class Message extends StatelessWidget {
                                   visibilityInfo.visibleFraction > 0.1),
                           child: _bubbleBuilder(
                             context,
-                            _borderRadius,
+                            _borderRadius.resolve(Directionality.of(context)),
                             _currentUserIsAuthor,
                             _enlargeEmojis,
                           ),
                         )
                       : _bubbleBuilder(
                           context,
-                          _borderRadius,
+                          _borderRadius.resolve(Directionality.of(context)),
                           _currentUserIsAuthor,
                           _enlargeEmojis,
                         ),

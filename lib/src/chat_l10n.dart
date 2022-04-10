@@ -270,3 +270,25 @@ class ChatL10nZhTW extends ChatL10n {
           sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
         );
 }
+
+/// Arabic l10n which extends [ChatL10n]
+@immutable
+class ChatL10nAr extends ChatL10n {
+  /// Creates Arabic l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nAr({
+    String attachmentButtonAccessibilityLabel = 'أرسل الملفات',
+    String emptyChatPlaceholder = 'لا توجد رسائل',
+    String fileButtonAccessibilityLabel = 'ملف',
+    String inputPlaceholder = 'رسالة',
+    String sendButtonAccessibilityLabel = 'أرسل',
+  }) : super(
+          attachmentButtonAccessibilityLabel:
+              attachmentButtonAccessibilityLabel,
+          emptyChatPlaceholder: emptyChatPlaceholder,
+          fileButtonAccessibilityLabel: fileButtonAccessibilityLabel,
+          inputPlaceholder: inputPlaceholder,
+          sendButtonAccessibilityLabel: sendButtonAccessibilityLabel,
+        );
+}
