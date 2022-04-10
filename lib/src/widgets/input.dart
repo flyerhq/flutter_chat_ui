@@ -127,6 +127,10 @@ class _InputState extends State<Input> {
 
   Widget _inputBuilder() {
     final _query = MediaQuery.of(context);
+    final _buttonPadding = InheritedChatTheme.of(context)
+        .theme
+        .inputPadding
+        .copyWith(left: 16, right: 16);
     final _safeAreaInsets = kIsWeb
         ? EdgeInsets.zero
         : EdgeInsets.fromLTRB(
@@ -140,10 +144,6 @@ class _InputState extends State<Input> {
               right: 0,
               left: widget.onAttachmentPressed != null ? 0 : null,
             );
-    final _attachmentButtonPadding =
-        InheritedChatTheme.of(context).theme.inputPadding.copyWith(right: 0);
-    final _sendButtonPadding =
-        InheritedChatTheme.of(context).theme.inputPadding.copyWith(left: 12);
 
     return Focus(
       autofocus: true,
@@ -159,12 +159,12 @@ class _InputState extends State<Input> {
             child: Row(
               children: [
                 if (widget.onAttachmentPressed != null) ...[
+                  const SizedBox(width: 8),
                   AttachmentButton(
                     isLoading: widget.isAttachmentUploading ?? false,
                     onPressed: widget.onAttachmentPressed,
-                    padding: _attachmentButtonPadding,
+                    padding: _buttonPadding,
                   ),
-                  const SizedBox(width: 16),
                 ],
                 Expanded(
                   child: Padding(
@@ -212,7 +212,7 @@ class _InputState extends State<Input> {
                   visible: _sendButtonVisible,
                   child: SendButton(
                     onPressed: _handleSendPressed,
-                    padding: _sendButtonPadding,
+                    padding: _buttonPadding,
                   ),
                 ),
               ],
