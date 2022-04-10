@@ -18,14 +18,18 @@ class ChatUserNameHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = InheritedChatTheme.of(context).theme;
     final color = getUserAvatarNameColor(author, theme.userAvatarNameColors);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Text(
-        getUserName(author),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: theme.userNameTextStyle.copyWith(color: color),
-      ),
-    );
+    final name = getUserName(author);
+
+    return name.isEmpty
+        ? const SizedBox()
+        : Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.userNameTextStyle.copyWith(color: color),
+            ),
+          );
   }
 }
