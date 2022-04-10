@@ -8,6 +8,7 @@
 - Add `receivedMessageBodyBoldTextStyle`, `receivedMessageBodyCodeTextStyle`, `receivedMessageBodyLinkTextStyle` and `sentMessageBodyBoldTextStyle`, `sentMessageBodyCodeTextStyle`, `sentMessageBodyLinkTextStyle` to the theme. Thanks @felixgabler for the PR!
 - Add `sendButtonMargin` to the theme. Thanks @damian-kaczmarek for the PR!
 - Add German localization. Thanks @felixgabler for the PR!
+- Fix emoji only horizontal margin. Thanks @munkius for the PR!
 - Update to Flutter 2.10.4. Requires Dart >= 2.16.0.
 
 ## 1.5.5
