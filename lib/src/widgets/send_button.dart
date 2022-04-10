@@ -9,19 +9,22 @@ class SendButton extends StatelessWidget {
   const SendButton({
     Key? key,
     required this.onPressed,
+    this.padding = EdgeInsets.zero,
   }) : super(key: key);
 
   /// Callback for send button tap event
   final void Function() onPressed;
 
+  /// Padding around the button
+  final EdgeInsets padding;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 24,
       margin: InheritedChatTheme.of(context).theme.sendButtonMargin ??
-          const EdgeInsetsDirectional.only(start: 16),
-      width: 24,
+          const EdgeInsets.fromLTRB(0, 0, 8, 0),
       child: IconButton(
+        constraints: const BoxConstraints(minHeight: 24, minWidth: 24),
         icon: InheritedChatTheme.of(context).theme.sendButtonIcon ??
             Image.asset(
               'assets/icon-send.png',
@@ -29,7 +32,8 @@ class SendButton extends StatelessWidget {
               package: 'flutter_chat_ui',
             ),
         onPressed: onPressed,
-        padding: EdgeInsets.zero,
+        padding: padding,
+        splashRadius: 24,
         tooltip: InheritedL10n.of(context).l10n.sendButtonAccessibilityLabel,
       ),
     );

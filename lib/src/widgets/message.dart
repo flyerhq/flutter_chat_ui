@@ -3,6 +3,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
+import '../models/preview_tap_options.dart';
 import '../util.dart';
 import 'file_message.dart';
 import 'image_message.dart';
@@ -33,6 +34,7 @@ class Message extends StatelessWidget {
     this.onMessageTap,
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
+    required this.previewTapOptions,
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
@@ -104,6 +106,9 @@ class Message extends StatelessWidget {
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// See [TextMessage.previewTapOptions]
+  final PreviewTapOptions previewTapOptions;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
@@ -225,6 +230,7 @@ class Message extends StatelessWidget {
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
                 onPreviewDataFetched: onPreviewDataFetched,
+                previewTapOptions: previewTapOptions,
                 showName: showName,
                 usePreviewData: usePreviewData,
               );
