@@ -10,6 +10,8 @@ import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'text_message.dart';
 
+export 'text_message.dart' show PreviewTapOptions;
+
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
 /// a nice look on larger screens.
@@ -33,6 +35,7 @@ class Message extends StatelessWidget {
     this.onMessageTap,
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
+    this.previewTapOptions = const PreviewTapOptions(),
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
@@ -104,6 +107,9 @@ class Message extends StatelessWidget {
   /// See [TextMessage.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// See [TextMessage.previewTapOptions]
+  final PreviewTapOptions previewTapOptions;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
@@ -225,6 +231,7 @@ class Message extends StatelessWidget {
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
                 onPreviewDataFetched: onPreviewDataFetched,
+                previewTapOptions: previewTapOptions,
                 showName: showName,
                 usePreviewData: usePreviewData,
               );

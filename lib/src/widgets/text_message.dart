@@ -18,6 +18,7 @@ class TextMessage extends StatelessWidget {
     required this.hideBackgroundOnEmojiMessages,
     required this.message,
     this.onPreviewDataFetched,
+    this.previewTapOptions = const PreviewTapOptions(),
     required this.usePreviewData,
     required this.showName,
   }) : super(key: key);
@@ -34,6 +35,9 @@ class TextMessage extends StatelessWidget {
   /// See [LinkPreview.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap]
+  final PreviewTapOptions previewTapOptions;
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
@@ -70,6 +74,8 @@ class TextMessage extends StatelessWidget {
       metadataTextStyle: linkDescriptionTextStyle,
       metadataTitleStyle: linkTitleTextStyle,
       onPreviewDataFetched: _onPreviewDataFetched,
+      openOnPreviewImageTap: previewTapOptions.openOnImageTap,
+      openOnPreviewTitleTap: previewTapOptions.openOnTitleTap,
       padding: EdgeInsets.symmetric(
         horizontal:
             InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
@@ -218,4 +224,15 @@ class TextMessage extends StatelessWidget {
       child: _textWidgetBuilder(_user, context, _enlargeEmojis),
     );
   }
+}
+
+@immutable
+class PreviewTapOptions {
+  const PreviewTapOptions({
+    this.openOnImageTap = false,
+    this.openOnTitleTap = false,
+  });
+
+  final bool openOnImageTap;
+  final bool openOnTitleTap;
 }
