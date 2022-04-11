@@ -45,6 +45,7 @@ class Message extends StatelessWidget {
     required this.showStatus,
     required this.showUserAvatars,
     this.textMessageBuilder,
+    this.avatarBuilder,
     required this.usePreviewData,
   }) : super(key: key);
 
@@ -138,6 +139,10 @@ class Message extends StatelessWidget {
 
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
+
+  /// This is to allow custom user builder
+  /// By using this we can fetch newest user info based on id
+  final Widget Function(String userId)? avatarBuilder;
 
   /// Build a text message inside predefined bubble.
   final Widget Function(

@@ -66,6 +66,7 @@ class Chat extends StatefulWidget {
     this.onTextChanged,
     this.onTextFieldTap,
     this.previewTapOptions = const PreviewTapOptions(),
+    this.scrollController,
     this.scrollPhysics,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
@@ -73,6 +74,7 @@ class Chat extends StatefulWidget {
     this.textMessageBuilder,
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
+    this.avatarBuilder,
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
@@ -222,6 +224,9 @@ class Chat extends StatefulWidget {
   /// See [Message.previewTapOptions]
   final PreviewTapOptions previewTapOptions;
 
+  /// See [ChatList.scrollController]
+  final ScrollController? scrollController;
+
   /// See [ChatList.scrollPhysics]
   final ScrollPhysics? scrollPhysics;
 
@@ -230,6 +235,10 @@ class Chat extends StatefulWidget {
 
   /// See [Message.showUserAvatars]
   final bool showUserAvatars;
+
+  /// This is to allow custom user builder
+  /// By using this we can fetch newest user info based on id
+  final Widget Function(String userId)? avatarBuilder;
 
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
@@ -427,6 +436,7 @@ class _ChatState extends State<Chat> {
         showUserAvatars: widget.showUserAvatars,
         textMessageBuilder: widget.textMessageBuilder,
         usePreviewData: widget.usePreviewData,
+        avatarBuilder: widget.avatarBuilder,
       );
     }
   }
@@ -494,6 +504,7 @@ class _ChatState extends State<Chat> {
                                   onEndReached: widget.onEndReached,
                                   onEndReachedThreshold:
                                       widget.onEndReachedThreshold,
+                                  scrollController: widget.scrollController,
                                   scrollPhysics: widget.scrollPhysics,
                                 ),
                               ),
