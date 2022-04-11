@@ -8,9 +8,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/preview_tap_options.dart';
 import '../util.dart';
-import 'chat_user_name_header.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
+import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview
 class TextMessage extends StatelessWidget {
@@ -129,7 +129,7 @@ class TextMessage extends StatelessWidget {
       children: [
         if (showName)
           nameBuilder?.call(message.author.id) ??
-              ChatUserNameHeader(author: message.author),
+              UserName(author: message.author),
         ParsedText(
           parse: [
             MatchText(

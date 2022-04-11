@@ -4,10 +4,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 
-/// Render the user's name as a message heading according to theme
-class ChatUserNameHeader extends StatelessWidget {
+/// Renders user's name as a message heading according to the theme
+class UserName extends StatelessWidget {
   /// Creates user name
-  const ChatUserNameHeader({
+  const UserName({
     Key? key,
     required this.author,
   }) : super(key: key);

@@ -4,10 +4,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 
-/// Render the user's image or initials next to a message
-class ChatUserAvatar extends StatelessWidget {
+/// Renders user's avatar or initials next to a message
+class UserAvatar extends StatelessWidget {
   /// Creates user avatar
-  const ChatUserAvatar({
+  const UserAvatar({
     Key? key,
     required this.author,
     this.onAvatarTap,
@@ -16,7 +16,7 @@ class ChatUserAvatar extends StatelessWidget {
   /// Author to show image and name initials from
   final types.User author;
 
-  /// Called when uses taps on an avatar
+  /// Called when user taps on an avatar
   final void Function(types.User)? onAvatarTap;
 
   @override

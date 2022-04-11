@@ -5,12 +5,12 @@ import 'package:visibility_detector/visibility_detector.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/preview_tap_options.dart';
 import '../util.dart';
-import 'chat_user_avatar.dart';
 import 'file_message.dart';
 import 'image_message.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'text_message.dart';
+import 'user_avatar.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
@@ -95,7 +95,7 @@ class Message extends StatelessWidget {
   /// See [TextMessage.nameBuilder]
   final Widget Function(String userId)? nameBuilder;
 
-  /// See [ChatUserAvatar.onAvatarTap]
+  /// See [UserAvatar.onAvatarTap]
   final void Function(types.User)? onAvatarTap;
 
   /// Called when user double taps on any message
@@ -151,7 +151,7 @@ class Message extends StatelessWidget {
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
-          ChatUserAvatar(author: message.author, onAvatarTap: onAvatarTap)
+          UserAvatar(author: message.author, onAvatarTap: onAvatarTap)
       : const SizedBox(width: 40);
 
   Widget _bubbleBuilder(
