@@ -6,6 +6,7 @@ import 'inherited_chat_theme.dart';
 
 /// Render the user's name as a message heading according to theme
 class ChatUserNameHeader extends StatelessWidget {
+  /// Creates user name
   const ChatUserNameHeader({
     Key? key,
     required this.author,

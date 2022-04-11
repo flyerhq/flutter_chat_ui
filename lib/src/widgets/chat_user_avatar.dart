@@ -6,6 +6,7 @@ import 'inherited_chat_theme.dart';
 
 /// Render the user's image or initials next to a message
 class ChatUserAvatar extends StatelessWidget {
+  /// Creates user avatar
   const ChatUserAvatar({
     Key? key,
     required this.author,

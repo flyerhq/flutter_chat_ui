@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/widgets/chat_user_avatar.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/preview_tap_options.dart';
 import '../util.dart';
+import 'chat_user_avatar.dart';
 import 'file_message.dart';
 import 'image_message.dart';
 import 'inherited_chat_theme.dart';
@@ -45,13 +45,12 @@ class Message extends StatelessWidget {
     required this.showStatus,
     required this.showUserAvatars,
     this.textMessageBuilder,
-    this.avatarBuilder,
     required this.usePreviewData,
   }) : super(key: key);
 
   /// This is to allow custom user avatar builder
   /// By using this we can fetch newest user info based on id
-  final Widget? Function(String userId)? avatarBuilder;
+  final Widget Function(String userId)? avatarBuilder;
 
   /// Customize the default bubble using this function. `child` is a content
   /// you should render inside your bubble, `message` is a current message
@@ -94,7 +93,7 @@ class Message extends StatelessWidget {
   final int messageWidth;
 
   /// See [TextMessage.nameBuilder]
-  final Widget? Function(String userId)? nameBuilder;
+  final Widget Function(String userId)? nameBuilder;
 
   /// See [ChatUserAvatar.onAvatarTap]
   final void Function(types.User)? onAvatarTap;
@@ -139,10 +138,6 @@ class Message extends StatelessWidget {
 
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
-
-  /// This is to allow custom user builder
-  /// By using this we can fetch newest user info based on id
-  final Widget Function(String userId)? avatarBuilder;
 
   /// Build a text message inside predefined bubble.
   final Widget Function(
