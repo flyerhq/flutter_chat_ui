@@ -50,7 +50,7 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 ### Requirements
 
-`Dart >=2.14.0` and `Flutter >=2.0.0`
+`Dart >=2.16.0` and `Flutter >=2.0.0`
 
 Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
 

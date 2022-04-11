@@ -124,7 +124,7 @@ import 'package:open_file/open_file.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
-  void _handleMessageTap(types.Message message) async {
+  void _handleMessageTap(BuildContext context, types.Message message) async {
     if (message is types.FileMessage) {
       await OpenFile.open(message.uri);
     }
@@ -324,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _handleMessageTap(types.Message message) async {
+  void _handleMessageTap(BuildContext context, types.Message message) async {
     if (message is types.FileMessage) {
       await OpenFile.open(message.uri);
     }

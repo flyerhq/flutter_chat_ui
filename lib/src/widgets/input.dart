@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -68,16 +69,24 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
-  final TextEditingController _textController = TextEditingController();
+  late final TextEditingController _textController;
   final _mentionsKey = GlobalKey<FlutterMentionsState>();
+  String _valueWithMarkup = '';
+
   @override
   void initState() {
     super.initState();
-    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
-      _sendButtonVisible = _textController.text.trim() != '';
-      _textController.addListener(_handleTextControllerChange);
-    } else {
-      _sendButtonVisible = true;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      _textController = _mentionsKey.currentState!.controller!;
+      _handleSendButtonVisibilityModeChange();
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant Input oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.sendButtonVisibilityMode != oldWidget.sendButtonVisibilityMode) {
+      _handleSendButtonVisibilityModeChange();
     }
   }
 
@@ -88,87 +97,102 @@ class _InputState extends State<Input> {
     super.dispose();
   }
 
+  void _handleNewLine() {
+    final _newValue = '${_textController.text}\r\n';
+    _textController.value = TextEditingValue(
+      text: _newValue,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: _newValue.length),
+      ),
+    );
+  }
+
+  void _handleSendButtonVisibilityModeChange() {
+    _textController.removeListener(_handleTextControllerChange);
+    if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.hidden) {
+      _sendButtonVisible = false;
+    } else if (widget.sendButtonVisibilityMode ==
+        SendButtonVisibilityMode.editing) {
+      _sendButtonVisible = _textController.text.trim() != '';
+      _textController.addListener(_handleTextControllerChange);
+    } else {
+      _sendButtonVisible = true;
+    }
+  }
+
   void _handleSendPressed() {
-    final trimmedText = _textController.text.trim();
+    final trimmedText = _valueWithMarkup.trim();
     if (trimmedText != '') {
       final _partialText = types.PartialText(text: trimmedText);
       widget.onSendPressed(_partialText);
       _textController.clear();
-
-      /// also clear mentions
-      _mentionsKey.currentState?.controller?.clear();
+      _valueWithMarkup = '';
     }
   }
 
   void _handleTextControllerChange() {
-    setState(() => _sendButtonVisible = _textController.text.trim() != '');
+    setState(() {
+      _sendButtonVisible = _textController.text.trim() != '';
+    });
   }
 
-  Widget _leftWidget() {
-    if (widget.isAttachmentUploading == true) {
-      return Container(
-        height: 24,
-        margin: const EdgeInsets.only(right: 16),
-        width: 24,
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.transparent,
-          strokeWidth: 1.5,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            InheritedChatTheme.of(context).theme.inputTextColor,
-          ),
-        ),
-      );
-    } else {
-      return AttachmentButton(onPressed: widget.onAttachmentPressed);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _inputBuilder() {
     final _query = MediaQuery.of(context);
-    return Shortcuts(
-      shortcuts: {
-        LogicalKeySet(LogicalKeyboardKey.enter): const SendMessageIntent(),
-        LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
-            const NewLineIntent(),
-        LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
-            const NewLineIntent(),
-      },
-      child: Actions(
-        actions: {
-          SendMessageIntent: CallbackAction<SendMessageIntent>(
-            onInvoke: (SendMessageIntent intent) => _handleSendPressed(),
-          ),
-          NewLineIntent: CallbackAction<NewLineIntent>(
-            onInvoke: (NewLineIntent intent) {
-              final _newValue = '${_textController.text}\r\n';
-              _textController.value = TextEditingValue(
-                text: _newValue,
-                selection: TextSelection.fromPosition(
-                  TextPosition(offset: _newValue.length),
-                ),
-              );
-            },
-          ),
-        },
-        child: Focus(
-          child: Padding(
-            padding: InheritedChatTheme.of(context).theme.inputPadding,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(
-                  24 + _query.padding.left, 20, 24 + _query.padding.right, 20),
-              child: Row(
-                children: [
-                  if (widget.onAttachmentPressed != null) _leftWidget(),
-                  Expanded(
+    final _buttonPadding = InheritedChatTheme.of(context)
+        .theme
+        .inputPadding
+        .copyWith(left: 16, right: 16);
+    final _safeAreaInsets = kIsWeb
+        ? EdgeInsets.zero
+        : EdgeInsets.fromLTRB(
+            _query.padding.left,
+            0,
+            _query.padding.right,
+            _query.viewInsets.bottom + _query.padding.bottom,
+          );
+    final _textPadding = InheritedChatTheme.of(context)
+        .theme
+        .inputPadding
+        .copyWith(left: 0, right: 0);
+
+    return Focus(
+      autofocus: true,
+      child: Padding(
+        padding: InheritedChatTheme.of(context).theme.inputMargin,
+        child: Material(
+          borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
+          color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+          child: Container(
+            decoration:
+                InheritedChatTheme.of(context).theme.inputContainerDecoration,
+            padding: _safeAreaInsets,
+            child: Row(
+              children: [
+                if (widget.onAttachmentPressed != null)
+                  AttachmentButton(
+                    isLoading: widget.isAttachmentUploading ?? false,
+                    onPressed: widget.onAttachmentPressed,
+                    padding: _buttonPadding,
+                  ),
+                Expanded(
+                  child: Padding(
+                    padding: _textPadding,
                     child: FlutterMentions(
                       key: _mentionsKey,
-                      appendSpaceOnAdd: true,
-                      onSubmitted: (value) => _handleSendPressed(),
-                      autofocus: true,
+                      suggestionPosition: SuggestionPosition.Top,
+                      textCapitalization: TextCapitalization.sentences,
+                      mentions: widget.mentions?.isNotEmpty == true
+                          ? widget.mentions!
+                          : [Mention(trigger: '@')],
+                      onMarkupChanged: (val) => _valueWithMarkup = val,
+                      suggestionListDecoration: widget.suggestionListDecoration,
                       cursorColor: InheritedChatTheme.of(context)
                           .theme
                           .inputTextCursorColor,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
+                      onTap: widget.onTextFieldTap,
                       decoration: InheritedChatTheme.of(context)
                           .theme
                           .inputTextDecoration
@@ -189,36 +213,72 @@ class _InputState extends State<Input> {
                                     ? Colors.white
                                     : const Color.fromARGB(255, 42, 57, 66),
                           ),
-                      suggestionListDecoration: widget.suggestionListDecoration,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      minLines: 1,
-                      onMentionAdd: (val) =>
-                          _textController.text += "${val['id']}",
-                      onMarkupChanged: (val) => _textController.text = val,
-                      onTap: widget.onTextFieldTap,
-                      suggestionPosition: SuggestionPosition.Top,
-                      textCapitalization: TextCapitalization.sentences,
-                      mentions: widget.mentions?.isNotEmpty == true
-                          ? widget.mentions!
-                          : [Mention(trigger: '@')],
+                      focusNode: _inputFocusNode,
+                      onChanged: widget.onTextChanged,
+                      appendSpaceOnAdd: true,
+                      onSubmitted: (value) => _handleSendPressed(),
+                      autofocus: true,
+                      style: InheritedChatTheme.of(context)
+                          .theme
+                          .inputTextStyle
+                          .copyWith(
+                            color: InheritedChatTheme.of(context)
+                                .theme
+                                .inputTextColor,
+                          ),
                     ),
                   ),
-                  SizedBox(
-                    width: 8,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Visibility(
+                  visible: _sendButtonVisible,
+                  child: SendButton(
+                    onPressed: _handleSendPressed,
+                    padding: _buttonPadding,
                   ),
-                  Visibility(
-                    visible: _sendButtonVisible,
-                    child: SendButton(
-                      onPressed: _handleSendPressed,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+    return GestureDetector(
+      onTap: () => _inputFocusNode.requestFocus(),
+      child: isAndroid || isIOS
+          ? _inputBuilder()
+          : Shortcuts(
+              shortcuts: {
+                LogicalKeySet(LogicalKeyboardKey.enter):
+                    const SendMessageIntent(),
+                LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
+                    const NewLineIntent(),
+                LogicalKeySet(
+                        LogicalKeyboardKey.enter, LogicalKeyboardKey.shift):
+                    const NewLineIntent(),
+              },
+              child: Actions(
+                actions: {
+                  SendMessageIntent: CallbackAction<SendMessageIntent>(
+                    onInvoke: (SendMessageIntent intent) =>
+                        _handleSendPressed(),
+                  ),
+                  NewLineIntent: CallbackAction<NewLineIntent>(
+                    onInvoke: (NewLineIntent intent) => _handleNewLine(),
+                  ),
+                },
+                child: _inputBuilder(),
+              ),
+            ),
     );
   }
 }
