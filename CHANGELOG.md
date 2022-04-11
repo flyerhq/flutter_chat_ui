@@ -1,3 +1,11 @@
+## 1.5.7
+
+- Add scroller controller as a parameter. Thanks @Faaatman for the PR!
+- Make attachment button margin configurable. Thanks @felixgabler for the PR!
+- Add `avatarBuilder` and `nameBuilder` methods to resolve user updates and render correct avatars and names. Thanks @dariuspo and @felixgabler for the PR!
+- Fix broken text paddings. Thanks @AdrKacz for reporting!
+- Update dependencies
+
 ## 1.5.6
 
 - Add markdown support. Thanks @felixgabler for the PR!
