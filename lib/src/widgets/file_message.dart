@@ -12,14 +12,10 @@ class FileMessage extends StatelessWidget {
   const FileMessage({
     Key? key,
     required this.message,
-    this.isLoading = false,
   }) : super(key: key);
 
   /// [types.FileMessage]
   final types.FileMessage message;
-
-  /// Show a loading spinner around the file icon.
-  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +46,7 @@ class FileMessage extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  if (isLoading)
+                  if (message.isLoading ?? false)
                     Positioned.fill(
                       child: CircularProgressIndicator(
                         color: _color,

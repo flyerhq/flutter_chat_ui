@@ -24,7 +24,6 @@ class Message extends StatelessWidget {
     this.customMessageBuilder,
     required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
-    this.fileMessageLoadingId,
     required this.hideBackgroundOnEmojiMessages,
     this.imageMessageBuilder,
     required this.isTextMessageTextSelectable,
@@ -76,9 +75,6 @@ class Message extends StatelessWidget {
   /// Build a file message inside predefined bubble
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
-
-  /// If set, will show a loading spinner around the specified message's icon.
-  final String? fileMessageLoadingId;
 
   /// Hide background for messages containing only emojis.
   final bool hideBackgroundOnEmojiMessages;
@@ -198,10 +194,7 @@ class Message extends StatelessWidget {
         final fileMessage = message as types.FileMessage;
         return fileMessageBuilder != null
             ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
-            : FileMessage(
-                message: fileMessage,
-                isLoading: fileMessageLoadingId == message.id,
-              );
+            : FileMessage(message: fileMessage);
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
