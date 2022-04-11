@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/chat_user_name_header.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
@@ -20,6 +21,7 @@ class TextMessage extends StatelessWidget {
     required this.hideBackgroundOnEmojiMessages,
     required this.isTextMessageTextSelectable,
     required this.message,
+    this.nameBuilder,
     this.onPreviewDataFetched,
     required this.previewTapOptions,
     required this.usePreviewData,
@@ -37,6 +39,10 @@ class TextMessage extends StatelessWidget {
 
   /// [types.TextMessage]
   final types.TextMessage message;
+
+  /// This is to allow custom user name builder
+  /// By using this we can fetch newest user info based on id
+  final Widget? Function(String userId)? nameBuilder;
 
   /// See [LinkPreview.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -101,9 +107,6 @@ class TextMessage extends StatelessWidget {
   ) {
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     final theme = InheritedChatTheme.of(context).theme;
-    final color =
-        getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
-    final name = getUserName(message.author);
     final bodyLinkTextStyle = user.id == message.author.id
         ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle
         : InheritedChatTheme.of(context).theme.receivedMessageBodyLinkTextStyle;
@@ -125,15 +128,8 @@ class TextMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showName)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.userNameTextStyle.copyWith(color: color),
-            ),
-          ),
+          nameBuilder?.call(message.author.id) ??
+              ChatUserNameHeader(author: message.author),
         ParsedText(
           parse: [
             MatchText(

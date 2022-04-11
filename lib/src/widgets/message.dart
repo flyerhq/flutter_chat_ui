@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/chat_user_avatar.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
@@ -18,6 +19,7 @@ class Message extends StatelessWidget {
   /// Creates a particular message from any message type
   const Message({
     Key? key,
+    this.avatarBuilder,
     this.bubbleBuilder,
     this.customMessageBuilder,
     required this.emojiEnlargementBehavior,
@@ -27,6 +29,7 @@ class Message extends StatelessWidget {
     required this.isTextMessageTextSelectable,
     required this.message,
     required this.messageWidth,
+    this.nameBuilder,
     this.onAvatarTap,
     this.onMessageDoubleTap,
     this.onMessageLongPress,
@@ -45,6 +48,10 @@ class Message extends StatelessWidget {
     this.avatarBuilder,
     required this.usePreviewData,
   }) : super(key: key);
+
+  /// This is to allow custom user avatar builder
+  /// By using this we can fetch newest user info based on id
+  final Widget? Function(String userId)? avatarBuilder;
 
   /// Customize the default bubble using this function. `child` is a content
   /// you should render inside your bubble, `message` is a current message
@@ -86,7 +93,10 @@ class Message extends StatelessWidget {
   /// Maximum message width
   final int messageWidth;
 
-  // Called when uses taps on an avatar
+  /// See [TextMessage.nameBuilder]
+  final Widget? Function(String userId)? nameBuilder;
+
+  /// See [ChatUserAvatar.onAvatarTap]
   final void Function(types.User)? onAvatarTap;
 
   /// Called when user double taps on any message
@@ -144,44 +154,10 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
-  Widget _avatarBuilder(BuildContext context) {
-    final color = getUserAvatarNameColor(
-      message.author,
-      InheritedChatTheme.of(context).theme.userAvatarNameColors,
-    );
-    final hasImage = message.author.imageUrl != null;
-    final initials = getUserInitials(message.author);
-
-    return showAvatar
-        ? avatarBuilder != null
-            ? avatarBuilder!(message.author.id)
-            : Container(
-                margin: const EdgeInsetsDirectional.only(end: 8),
-                child: GestureDetector(
-                  onTap: () => onAvatarTap?.call(message.author),
-                  child: CircleAvatar(
-                    backgroundColor: hasImage
-                        ? InheritedChatTheme.of(context)
-                            .theme
-                            .userAvatarImageBackgroundColor
-                        : color,
-                    backgroundImage: hasImage
-                        ? NetworkImage(message.author.imageUrl!)
-                        : null,
-                    radius: 16,
-                    child: !hasImage
-                        ? Text(
-                            initials,
-                            style: InheritedChatTheme.of(context)
-                                .theme
-                                .userAvatarTextStyle,
-                          )
-                        : null,
-                  ),
-                ),
-              )
-        : const SizedBox(width: 40);
-  }
+  Widget _avatarBuilder() => showAvatar
+      ? avatarBuilder?.call(message.author.id) ??
+          ChatUserAvatar(author: message.author, onAvatarTap: onAvatarTap)
+      : const SizedBox(width: 40);
 
   Widget _bubbleBuilder(
     BuildContext context,
@@ -242,6 +218,7 @@ class Message extends StatelessWidget {
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 isTextMessageTextSelectable: isTextMessageTextSelectable,
                 message: textMessage,
+                nameBuilder: nameBuilder,
                 onPreviewDataFetched: onPreviewDataFetched,
                 previewTapOptions: previewTapOptions,
                 showName: showName,
@@ -338,7 +315,7 @@ class Message extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(context),
+          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),
