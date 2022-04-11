@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import '../chat_theme.dart';
 
 /// Used to make provided [ChatTheme] class available through the whole package
