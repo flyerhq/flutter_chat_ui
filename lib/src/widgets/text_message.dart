@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/replied_message.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
@@ -17,6 +18,7 @@ class TextMessage extends StatelessWidget {
   /// Creates a text message widget from a [types.TextMessage] class
   const TextMessage({
     Key? key,
+    this.customReplyMessageBuilder,
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
     required this.isTextMessageTextSelectable,
@@ -26,7 +28,11 @@ class TextMessage extends StatelessWidget {
     required this.previewTapOptions,
     required this.usePreviewData,
     required this.showName,
+    required this.showUserNameForRepliedMessage,
   }) : super(key: key);
+
+  /// Allows you to replace the default ReplyMessage widget
+  final Widget Function(types.Message)? customReplyMessageBuilder;
 
   /// See [Message.emojiEnlargementBehavior]
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
@@ -53,6 +59,9 @@ class TextMessage extends StatelessWidget {
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
+
+  /// Show user name for replied message.
+  final bool showUserNameForRepliedMessage;
 
   /// Enables link (URL) preview
   final bool usePreviewData;
@@ -127,6 +136,14 @@ class TextMessage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (message.repliedMessage != null)
+          customReplyMessageBuilder != null
+              ? customReplyMessageBuilder!(message.repliedMessage!)
+              : RepliedMessage(
+                  messageAuthorId: message.author.id,
+                  repliedMessage: message.repliedMessage,
+                  showUserNames: showUserNameForRepliedMessage,
+                ),
         if (showName)
           nameBuilder?.call(message.author.id) ??
               UserName(author: message.author),

@@ -28,6 +28,9 @@ const neutral0 = Color(0xff1d1c21);
 /// N2
 const neutral2 = Color(0xff9e9cab);
 
+/// N2 with opacity
+const neutral2WithOpacity = Color(0x339e9cab);
+
 /// N7
 const neutral7 = Color(0xffffffff);
 
@@ -52,6 +55,9 @@ abstract class ChatTheme {
     required this.attachmentButtonIcon,
     required this.attachmentButtonMargin,
     required this.backgroundColor,
+    required this.closableRepliedMessageBoxDecoration,
+    required this.closableRepliedMessageImageMargin,
+    required this.closableRepliedMessagePadding,
     required this.dateDividerMargin,
     required this.dateDividerTextStyle,
     required this.deliveredIcon,
@@ -81,6 +87,10 @@ abstract class ChatTheme {
     required this.receivedMessageDocumentIconColor,
     required this.receivedMessageLinkDescriptionTextStyle,
     required this.receivedMessageLinkTitleTextStyle,
+    required this.repliedMessageImageMargin,
+    required this.repliedMessagePadding,
+    required this.repliedMessageReceivedBoxDecoration,
+    required this.repliedMessageSentBoxDecoration,
     required this.secondaryColor,
     required this.seenIcon,
     required this.sendButtonIcon,
@@ -110,6 +120,15 @@ abstract class ChatTheme {
 
   /// Used as a background color of a chat widget
   final Color backgroundColor;
+
+  /// Decoration for closable replied message container rendered inside [Input]
+  final Decoration closableRepliedMessageBoxDecoration;
+
+  /// Margin for closable replied message image rendered inside [Input]
+  final EdgeInsets closableRepliedMessageImageMargin;
+
+  /// Padding for closable replied message container rendered inside [Input]
+  final EdgeInsets closableRepliedMessagePadding;
 
   /// Margin around date dividers
   final EdgeInsets dateDividerMargin;
@@ -205,6 +224,18 @@ abstract class ChatTheme {
   /// Text style used for displaying link title on received messages
   final TextStyle receivedMessageLinkTitleTextStyle;
 
+  /// Margin for replied message image rendered inside message bubble
+  final EdgeInsets repliedMessageImageMargin;
+
+  /// Padding for replied message container rendered inside message bubble
+  final EdgeInsets repliedMessagePadding;
+
+  /// Decoration for replied message container rendered inside received message bubble
+  final Decoration repliedMessageReceivedBoxDecoration;
+
+  /// Decoration for replied message container rendered inside sent message bubble
+  final Decoration repliedMessageSentBoxDecoration;
+
   /// Secondary color, used as a background of received messages
   final Color secondaryColor;
 
@@ -283,6 +314,16 @@ class DefaultChatTheme extends ChatTheme {
     Widget? attachmentButtonIcon,
     EdgeInsets? attachmentButtonMargin,
     Color backgroundColor = neutral7,
+    Decoration closableRepliedMessageBoxDecoration = const BoxDecoration(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+      color: neutral2WithOpacity,
+    ),
+    EdgeInsets closableRepliedMessageImageMargin =
+        const EdgeInsets.only(left: 16),
+    EdgeInsets closableRepliedMessagePadding =
+        const EdgeInsets.fromLTRB(16, 12, 16, 12),
     EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
@@ -355,6 +396,24 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    EdgeInsets repliedMessageImageMargin = const EdgeInsets.only(right: 16),
+    EdgeInsets repliedMessagePadding = const EdgeInsets.fromLTRB(16, 0, 16, 0),
+    Decoration repliedMessageReceivedBoxDecoration = const BoxDecoration(
+      border: Border(
+        left: BorderSide(
+          width: 2,
+          color: primary,
+        ),
+      ),
+    ),
+    Decoration repliedMessageSentBoxDecoration = const BoxDecoration(
+      border: Border(
+        left: BorderSide(
+          width: 2,
+          color: neutral7,
+        ),
+      ),
+    ),
     Color secondaryColor = secondary,
     Widget? seenIcon,
     Widget? sendButtonIcon,
@@ -407,6 +466,10 @@ class DefaultChatTheme extends ChatTheme {
           attachmentButtonIcon: attachmentButtonIcon,
           attachmentButtonMargin: attachmentButtonMargin,
           backgroundColor: backgroundColor,
+          closableRepliedMessageBoxDecoration:
+              closableRepliedMessageBoxDecoration,
+          closableRepliedMessageImageMargin: closableRepliedMessageImageMargin,
+          closableRepliedMessagePadding: closableRepliedMessagePadding,
           dateDividerMargin: dateDividerMargin,
           dateDividerTextStyle: dateDividerTextStyle,
           deliveredIcon: deliveredIcon,
@@ -437,6 +500,11 @@ class DefaultChatTheme extends ChatTheme {
           receivedMessageLinkDescriptionTextStyle:
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
+          repliedMessageImageMargin: repliedMessageImageMargin,
+          repliedMessagePadding: repliedMessagePadding,
+          repliedMessageReceivedBoxDecoration:
+              repliedMessageReceivedBoxDecoration,
+          repliedMessageSentBoxDecoration: repliedMessageSentBoxDecoration,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
@@ -470,6 +538,16 @@ class DarkChatTheme extends ChatTheme {
     Widget? attachmentButtonIcon,
     EdgeInsets? attachmentButtonMargin,
     Color backgroundColor = dark,
+    EdgeInsets closableRepliedMessageImageMargin =
+        const EdgeInsets.only(left: 16),
+    EdgeInsets closableRepliedMessagePadding =
+        const EdgeInsets.fromLTRB(16, 12, 16, 12),
+    Decoration closableRepliedMessageBoxDecoration = const BoxDecoration(
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+      color: neutral2WithOpacity,
+    ),
     EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
@@ -542,6 +620,24 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
+    EdgeInsets repliedMessageImageMargin = const EdgeInsets.only(right: 16),
+    EdgeInsets repliedMessagePadding = const EdgeInsets.fromLTRB(16, 0, 16, 0),
+    Decoration repliedMessageReceivedBoxDecoration = const BoxDecoration(
+      border: Border(
+        left: BorderSide(
+          width: 2,
+          color: neutral7,
+        ),
+      ),
+    ),
+    Decoration repliedMessageSentBoxDecoration = const BoxDecoration(
+      border: Border(
+        left: BorderSide(
+          width: 2,
+          color: neutral7,
+        ),
+      ),
+    ),
     Color secondaryColor = secondaryDark,
     Widget? seenIcon,
     Widget? sendButtonIcon,
@@ -594,6 +690,10 @@ class DarkChatTheme extends ChatTheme {
           attachmentButtonIcon: attachmentButtonIcon,
           attachmentButtonMargin: attachmentButtonMargin,
           backgroundColor: backgroundColor,
+          closableRepliedMessageBoxDecoration:
+              closableRepliedMessageBoxDecoration,
+          closableRepliedMessageImageMargin: closableRepliedMessageImageMargin,
+          closableRepliedMessagePadding: closableRepliedMessagePadding,
           dateDividerMargin: dateDividerMargin,
           dateDividerTextStyle: dateDividerTextStyle,
           deliveredIcon: deliveredIcon,
@@ -624,6 +724,11 @@ class DarkChatTheme extends ChatTheme {
           receivedMessageLinkDescriptionTextStyle:
               receivedMessageLinkDescriptionTextStyle,
           receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
+          repliedMessageImageMargin: repliedMessageImageMargin,
+          repliedMessagePadding: repliedMessagePadding,
+          repliedMessageReceivedBoxDecoration:
+              repliedMessageReceivedBoxDecoration,
+          repliedMessageSentBoxDecoration: repliedMessageSentBoxDecoration,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,

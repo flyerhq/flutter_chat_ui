@@ -5,17 +5,26 @@ import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
+import 'replied_message.dart';
 
 /// A class that represents file message widget
 class FileMessage extends StatelessWidget {
   /// Creates a file message widget based on a [types.FileMessage]
   const FileMessage({
     Key? key,
+    this.customReplyMessageBuilder,
     required this.message,
+    required this.showUserNameForRepliedMessage,
   }) : super(key: key);
+
+  /// Allows you to replace the default ReplyMessage widget
+  final Widget Function(types.Message)? customReplyMessageBuilder;
 
   /// [types.FileMessage]
   final types.FileMessage message;
+
+  /// Show user name for replied message.
+  final bool showUserNameForRepliedMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -33,61 +42,75 @@ class FileMessage extends StatelessWidget {
           InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
           InheritedChatTheme.of(context).theme.messageInsetsVertical,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: _color.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(21),
-              ),
-              height: 42,
-              width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon != null
-                  ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : Image.asset(
-                      'assets/icon-document.png',
-                      color: _color,
-                      package: 'flutter_chat_ui',
+            if (message.repliedMessage != null)
+              customReplyMessageBuilder != null
+                  ? customReplyMessageBuilder!(message.repliedMessage!)
+                  : RepliedMessage(
+                      messageAuthorId: message.author.id,
+                      repliedMessage: message.repliedMessage,
+                      showUserNames: showUserNameForRepliedMessage,
                     ),
-            ),
-            Flexible(
-              child: Container(
-                margin: const EdgeInsetsDirectional.only(
-                  start: 16,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: _color.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(21),
+                  ),
+                  height: 42,
+                  width: 42,
+                  child:
+                      InheritedChatTheme.of(context).theme.documentIcon != null
+                          ? InheritedChatTheme.of(context).theme.documentIcon!
+                          : Image.asset(
+                              'assets/icon-document.png',
+                              color: _color,
+                              package: 'flutter_chat_ui',
+                            ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      message.name,
-                      style: _user.id == message.author.id
-                          ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context)
-                              .theme
-                              .receivedMessageBodyTextStyle,
-                      textWidthBasis: TextWidthBasis.longestLine,
+                Flexible(
+                  child: Container(
+                    margin: const EdgeInsetsDirectional.only(
+                      start: 16,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 4,
-                      ),
-                      child: Text(
-                        formatBytes(message.size.truncate()),
-                        style: _user.id == message.author.id
-                            ? InheritedChatTheme.of(context)
-                                .theme
-                                .sentMessageCaptionTextStyle
-                            : InheritedChatTheme.of(context)
-                                .theme
-                                .receivedMessageCaptionTextStyle,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          message.name,
+                          style: _user.id == message.author.id
+                              ? InheritedChatTheme.of(context)
+                                  .theme
+                                  .sentMessageBodyTextStyle
+                              : InheritedChatTheme.of(context)
+                                  .theme
+                                  .receivedMessageBodyTextStyle,
+                          textWidthBasis: TextWidthBasis.longestLine,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                            top: 4,
+                          ),
+                          child: Text(
+                            formatBytes(message.size.truncate()),
+                            style: _user.id == message.author.id
+                                ? InheritedChatTheme.of(context)
+                                    .theme
+                                    .sentMessageCaptionTextStyle
+                                : InheritedChatTheme.of(context)
+                                    .theme
+                                    .receivedMessageCaptionTextStyle,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

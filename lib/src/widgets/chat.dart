@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
+import 'package:flutter_chat_ui/src/widgets/inherited_replied_message.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -32,7 +33,9 @@ class Chat extends StatefulWidget {
     this.bubbleBuilder,
     this.customBottomWidget,
     this.customDateHeaderText,
+    this.customInputReplyMessageBuilder,
     this.customMessageBuilder,
+    this.customReplyMessageBuilder,
     this.dateFormat,
     this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
@@ -101,9 +104,15 @@ class Chat extends StatefulWidget {
   /// date header for any message.
   final String Function(DateTime)? customDateHeaderText;
 
+  /// Allows you to replace the default ReplyMessage widget inside Input widget
+  final Widget Function(types.Message)? customInputReplyMessageBuilder;
+
   /// See [Message.customMessageBuilder]
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
+
+  /// Allows you to replace the default ReplyMessage widget inside Message widget
+  final Widget Function(types.Message)? customReplyMessageBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
@@ -212,7 +221,8 @@ class Chat extends StatefulWidget {
       onPreviewDataFetched;
 
   /// See [Input.onSendPressed]
-  final void Function(types.PartialText) onSendPressed;
+  final void Function(types.PartialText, {types.Message? repliedMessage})
+      onSendPressed;
 
   /// See [Input.onTextChanged]
   final void Function(String)? onTextChanged;
@@ -274,6 +284,7 @@ class _ChatState extends State<Chat> {
   List<PreviewImage> _gallery = [];
   int _imageViewIndex = 0;
   bool _isImageViewVisible = false;
+  types.Message? _repliedMessage;
 
   @override
   void initState() {
@@ -411,6 +422,7 @@ class _ChatState extends State<Chat> {
         onAvatarTap: widget.onAvatarTap,
         onMessageDoubleTap: widget.onMessageDoubleTap,
         onMessageLongPress: widget.onMessageLongPress,
+        onMessageReply: _onMessageReply,
         onMessageStatusLongPress: widget.onMessageStatusLongPress,
         onMessageStatusTap: widget.onMessageStatusTap,
         onMessageTap: (context, tappedMessage) {
@@ -429,10 +441,17 @@ class _ChatState extends State<Chat> {
         showName: map['showName'] == true,
         showStatus: map['showStatus'] == true,
         showUserAvatars: widget.showUserAvatars,
+        showUserNameForRepliedMessage: widget.showUserNames,
         textMessageBuilder: widget.textMessageBuilder,
         usePreviewData: widget.usePreviewData,
       );
     }
+  }
+
+  void _onCancelReplyPressed() {
+    setState(() {
+      _repliedMessage = null;
+    });
   }
 
   void _onCloseGalleryPressed() {
@@ -450,6 +469,12 @@ class _ChatState extends State<Chat> {
     });
   }
 
+  void _onMessageReply(BuildContext context, types.Message? message) {
+    setState(() {
+      _repliedMessage = message?.copyWith();
+    });
+  }
+
   void _onPageChanged(int index) {
     setState(() {
       _imageViewIndex = index;
@@ -463,62 +488,77 @@ class _ChatState extends State<Chat> {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
+  void _onSendPressed(types.PartialText message,
+      {types.Message? repliedMessage}) {
+    setState(() {
+      _repliedMessage = null;
+    });
+    widget.onSendPressed(message, repliedMessage: repliedMessage);
+  }
+
   @override
   Widget build(BuildContext context) {
     return InheritedUser(
       user: widget.user,
-      child: InheritedChatTheme(
-        theme: widget.theme,
-        child: InheritedL10n(
-          l10n: widget.l10n,
-          child: Stack(
-            children: [
-              Container(
-                color: widget.theme.backgroundColor,
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: widget.messages.isEmpty
-                          ? SizedBox.expand(
-                              child: _emptyStateBuilder(),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                widget.onBackgroundTap?.call();
-                              },
-                              child: LayoutBuilder(
-                                builder: (BuildContext context,
-                                        BoxConstraints constraints) =>
-                                    ChatList(
-                                  isLastPage: widget.isLastPage,
-                                  itemBuilder: (item, index) =>
-                                      _messageBuilder(item, constraints),
-                                  items: _chatMessages,
-                                  onEndReached: widget.onEndReached,
-                                  onEndReachedThreshold:
-                                      widget.onEndReachedThreshold,
-                                  scrollController: widget.scrollController,
-                                  scrollPhysics: widget.scrollPhysics,
+      child: InheritedRepliedMessage(
+        repliedMessage: _repliedMessage,
+        child: InheritedChatTheme(
+          theme: widget.theme,
+          child: InheritedL10n(
+            l10n: widget.l10n,
+            child: Stack(
+              children: [
+                Container(
+                  color: widget.theme.backgroundColor,
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: widget.messages.isEmpty
+                            ? SizedBox.expand(
+                                child: _emptyStateBuilder(),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  widget.onBackgroundTap?.call();
+                                },
+                                child: LayoutBuilder(
+                                  builder: (BuildContext context,
+                                          BoxConstraints constraints) =>
+                                      ChatList(
+                                    isLastPage: widget.isLastPage,
+                                    itemBuilder: (item, index) =>
+                                        _messageBuilder(item, constraints),
+                                    items: _chatMessages,
+                                    onEndReached: widget.onEndReached,
+                                    onEndReachedThreshold:
+                                        widget.onEndReachedThreshold,
+                                    scrollController: widget.scrollController,
+                                    scrollPhysics: widget.scrollPhysics,
+                                  ),
                                 ),
                               ),
-                            ),
-                    ),
-                    widget.customBottomWidget ??
-                        Input(
-                          isAttachmentUploading: widget.isAttachmentUploading,
-                          onAttachmentPressed: widget.onAttachmentPressed,
-                          onSendPressed: widget.onSendPressed,
-                          onTextChanged: widget.onTextChanged,
-                          onTextFieldTap: widget.onTextFieldTap,
-                          sendButtonVisibilityMode:
-                              widget.sendButtonVisibilityMode,
-                        ),
-                  ],
+                      ),
+                      widget.customBottomWidget ??
+                          Input(
+                            customInputReplyMessageBuilder:
+                                widget.customInputReplyMessageBuilder,
+                            isAttachmentUploading: widget.isAttachmentUploading,
+                            onAttachmentPressed: widget.onAttachmentPressed,
+                            onCancelReplyPressed: _onCancelReplyPressed,
+                            onSendPressed: _onSendPressed,
+                            onTextChanged: widget.onTextChanged,
+                            onTextFieldTap: widget.onTextFieldTap,
+                            sendButtonVisibilityMode:
+                                widget.sendButtonVisibilityMode,
+                            showUserNameForRepliedMessage: widget.showUserNames,
+                          ),
+                    ],
+                  ),
                 ),
-              ),
-              if (_isImageViewVisible) _imageGalleryBuilder(),
-            ],
+                if (_isImageViewVisible) _imageGalleryBuilder(),
+              ],
+            ),
           ),
         ),
       ),

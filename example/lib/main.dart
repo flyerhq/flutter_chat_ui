@@ -160,11 +160,15 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) {
+  void _handleSendPressed(
+    types.PartialText message, {
+    types.Message? repliedMessage,
+  }) {
     final textMessage = types.TextMessage(
       author: _user,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
+      repliedMessage: repliedMessage,
       text: message.text,
     );
 
