@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
@@ -23,6 +25,7 @@ class Message extends StatelessWidget {
     this.avatarBuilder,
     this.bubbleBuilder,
     this.customMessageBuilder,
+    this.customReplyMessageBuilder,
     required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
     required this.hideBackgroundOnEmojiMessages,
@@ -34,6 +37,7 @@ class Message extends StatelessWidget {
     this.onAvatarTap,
     this.onMessageDoubleTap,
     this.onMessageLongPress,
+    required this.onMessageReply,
     this.onMessageStatusLongPress,
     this.onMessageStatusTap,
     this.onMessageTap,
@@ -45,6 +49,7 @@ class Message extends StatelessWidget {
     required this.showName,
     required this.showStatus,
     required this.showUserAvatars,
+    required this.showUserNameForRepliedMessage,
     this.textMessageBuilder,
     required this.usePreviewData,
   }) : super(key: key);
@@ -67,6 +72,9 @@ class Message extends StatelessWidget {
   /// Build a custom message inside predefined bubble
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
+
+  /// Allows you to replace the default ReplyMessage widget inside Message widget
+  final Widget Function(types.Message)? customReplyMessageBuilder;
 
   /// Controls the enlargement behavior of the emojis in the
   /// [types.TextMessage].
@@ -105,6 +113,9 @@ class Message extends StatelessWidget {
   /// Called when user makes a long press on any message
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
+  /// Called when user makes a long press on any message
+  final void Function(BuildContext context, types.Message?) onMessageReply;
+
   /// Called when user makes a long press on status icon in any message
   final void Function(BuildContext context, types.Message)?
       onMessageStatusLongPress;
@@ -139,6 +150,9 @@ class Message extends StatelessWidget {
 
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
+
+  /// Show user name for replied message.
+  final bool showUserNameForRepliedMessage;
 
   /// Build a text message inside predefined bubble.
   final Widget Function(
@@ -195,12 +209,19 @@ class Message extends StatelessWidget {
         final fileMessage = message as types.FileMessage;
         return fileMessageBuilder != null
             ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
-            : FileMessage(message: fileMessage);
+            : FileMessage(
+                message: fileMessage,
+                showUserNameForRepliedMessage: showUserNameForRepliedMessage,
+              );
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
             ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
-            : ImageMessage(message: imageMessage, messageWidth: messageWidth);
+            : ImageMessage(
+                message: imageMessage,
+                messageWidth: messageWidth,
+                showUserNameForRepliedMessage: showUserNameForRepliedMessage,
+              );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
         return textMessageBuilder != null
@@ -219,6 +240,7 @@ class Message extends StatelessWidget {
                 previewTapOptions: previewTapOptions,
                 showName: showName,
                 usePreviewData: usePreviewData,
+                showUserNameForRepliedMessage: showUserNameForRepliedMessage,
               );
       default:
         return const SizedBox();
@@ -276,6 +298,7 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
+    late final Function() _closePane;
     final _user = InheritedUser.of(context).user;
     final _currentUserIsAuthor = _user.id == message.author.id;
     final _enlargeEmojis =
@@ -300,67 +323,116 @@ class Message extends StatelessWidget {
       topStart: Radius.circular(_messageBorderRadius),
     );
 
-    return Container(
-      alignment: _currentUserIsAuthor
-          ? AlignmentDirectional.centerEnd
-          : AlignmentDirectional.centerStart,
-      margin: EdgeInsetsDirectional.only(
-        bottom: 4,
-        end: kIsWeb ? 0 : _query.padding.right,
-        start: 20 + (kIsWeb ? 0 : _query.padding.left),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: messageWidth.toDouble(),
+    // NOTE: Replace Listener with some other widget to ignore vertical swipe gesture
+    return Listener(
+      onPointerUp: (event) {
+        HapticFeedback.vibrate();
+        _closePane();
+        onMessageReply.call(context, message);
+      },
+      child: Slidable(
+        endActionPane: ActionPane(
+          closeThreshold: 0.9999999,
+          extentRatio: 0.25,
+          motion: const ScrollMotion(),
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: _currentUserIsAuthor ? 30 : 0),
+              decoration: BoxDecoration(
+                color: InheritedChatTheme.of(context)
+                    .theme
+                    .receivedMessageDocumentIconColor
+                    .withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              height: 24,
+              width: 24,
+              child: InheritedChatTheme.of(context).theme.documentIcon != null
+                  ? InheritedChatTheme.of(context).theme.documentIcon!
+                  : Image.asset(
+                      'assets/icon-reply.png',
+                      color: InheritedChatTheme.of(context)
+                          .theme
+                          .receivedMessageDocumentIconColor,
+                      package: 'flutter_chat_ui',
+                    ),
             ),
-            child: Column(
+          ],
+        ),
+        child: Builder(builder: (context) {
+          _closePane = () {
+            Slidable.of(context)?.close();
+          };
+          return Container(
+            alignment: _currentUserIsAuthor
+                ? AlignmentDirectional.centerEnd
+                : AlignmentDirectional.centerStart,
+            margin: EdgeInsetsDirectional.only(
+              bottom: 4,
+              end: kIsWeb ? 0 : _query.padding.right,
+              start: 20 + (kIsWeb ? 0 : _query.padding.left),
+            ),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  onDoubleTap: () => onMessageDoubleTap?.call(context, message),
-                  onLongPress: () => onMessageLongPress?.call(context, message),
-                  onTap: () => onMessageTap?.call(context, message),
-                  child: onMessageVisibilityChanged != null
-                      ? VisibilityDetector(
-                          key: Key(message.id),
-                          onVisibilityChanged: (visibilityInfo) =>
-                              onMessageVisibilityChanged!(message,
-                                  visibilityInfo.visibleFraction > 0.1),
-                          child: _bubbleBuilder(
-                            context,
-                            _borderRadius.resolve(Directionality.of(context)),
-                            _currentUserIsAuthor,
-                            _enlargeEmojis,
-                          ),
-                        )
-                      : _bubbleBuilder(
-                          context,
-                          _borderRadius.resolve(Directionality.of(context)),
-                          _currentUserIsAuthor,
-                          _enlargeEmojis,
-                        ),
+                if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: messageWidth.toDouble(),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onDoubleTap: () =>
+                            onMessageDoubleTap?.call(context, message),
+                        onLongPress: () =>
+                            onMessageLongPress?.call(context, message),
+                        onTap: () => onMessageTap?.call(context, message),
+                        child: onMessageVisibilityChanged != null
+                            ? VisibilityDetector(
+                                key: Key(message.id),
+                                onVisibilityChanged: (visibilityInfo) =>
+                                    onMessageVisibilityChanged!(message,
+                                        visibilityInfo.visibleFraction > 0.1),
+                                child: _bubbleBuilder(
+                                  context,
+                                  _borderRadius
+                                      .resolve(Directionality.of(context)),
+                                  _currentUserIsAuthor,
+                                  _enlargeEmojis,
+                                ),
+                              )
+                            : _bubbleBuilder(
+                                context,
+                                _borderRadius
+                                    .resolve(Directionality.of(context)),
+                                _currentUserIsAuthor,
+                                _enlargeEmojis,
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
+                if (_currentUserIsAuthor)
+                  Padding(
+                    padding:
+                        InheritedChatTheme.of(context).theme.statusIconPadding,
+                    child: showStatus
+                        ? GestureDetector(
+                            onLongPress: () => onMessageStatusLongPress?.call(
+                                context, message),
+                            onTap: () =>
+                                onMessageStatusTap?.call(context, message),
+                            child: _statusBuilder(context),
+                          )
+                        : null,
+                  ),
               ],
             ),
-          ),
-          if (_currentUserIsAuthor)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () =>
-                          onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: _statusBuilder(context),
-                    )
-                  : null,
-            ),
-        ],
+          );
+        }),
       ),
     );
   }

@@ -18,6 +18,7 @@ dependencies:
   flutter_chat_types: ^3.3.4
   flutter_link_previewer: ^2.6.6
   flutter_parsed_text: ^2.2.1
+  flutter_slidable: ^1.2.0
   intl: ^0.17.0
   meta: ^1.7.0
   photo_view: ^0.13.0
@@ -35,17 +36,23 @@ flutter:
     - packages/flutter_chat_ui/assets/icon-delivered.png
     - packages/flutter_chat_ui/assets/icon-document.png
     - packages/flutter_chat_ui/assets/icon-error.png
+    - packages/flutter_chat_ui/assets/icon-reply.png
     - packages/flutter_chat_ui/assets/icon-seen.png
     - packages/flutter_chat_ui/assets/icon-send.png
+    - packages/flutter_chat_ui/assets/icon-x.png
     - packages/flutter_chat_ui/assets/2.0x/icon-attachment.png
     - packages/flutter_chat_ui/assets/2.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/2.0x/icon-document.png
     - packages/flutter_chat_ui/assets/2.0x/icon-error.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-reply.png
     - packages/flutter_chat_ui/assets/2.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/2.0x/icon-send.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-x.png
     - packages/flutter_chat_ui/assets/3.0x/icon-attachment.png
     - packages/flutter_chat_ui/assets/3.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/3.0x/icon-document.png
     - packages/flutter_chat_ui/assets/3.0x/icon-error.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-reply.png
     - packages/flutter_chat_ui/assets/3.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-x.png

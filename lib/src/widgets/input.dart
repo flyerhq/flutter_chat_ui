@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/src/widgets/inherited_replied_message.dart';
+import 'package:flutter_chat_ui/src/widgets/replied_message.dart';
 
 import '../models/send_button_visibility_mode.dart';
 import 'attachment_button.dart';
@@ -23,16 +25,25 @@ class Input extends StatefulWidget {
   /// Creates [Input] widget
   const Input({
     Key? key,
+    this.customInputReplyMessageBuilder,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
+    required this.onCancelReplyPressed,
     required this.onSendPressed,
     this.onTextChanged,
     this.onTextFieldTap,
     required this.sendButtonVisibilityMode,
+    required this.showUserNameForRepliedMessage,
   }) : super(key: key);
+
+  /// Allows you to replace the default ReplyMessage widget
+  final Widget Function(types.Message)? customInputReplyMessageBuilder;
 
   /// See [AttachmentButton.onPressed]
   final void Function()? onAttachmentPressed;
+
+  /// See [RepliedMessage.onCancelReplyPressed]
+  final void Function() onCancelReplyPressed;
 
   /// Whether attachment is uploading. Will replace attachment button with a
   /// [CircularProgressIndicator]. Since we don't have libraries for
@@ -42,7 +53,8 @@ class Input extends StatefulWidget {
 
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
-  final void Function(types.PartialText) onSendPressed;
+  final void Function(types.PartialText, {types.Message? repliedMessage})
+      onSendPressed;
 
   /// Will be called whenever the text inside [TextField] changes
   final void Function(String)? onTextChanged;
@@ -54,6 +66,9 @@ class Input extends StatefulWidget {
   /// [TextField] state inside the [Input] widget.
   /// Defaults to [SendButtonVisibilityMode.editing].
   final SendButtonVisibilityMode sendButtonVisibilityMode;
+
+  /// Show user names for replied messages.
+  final bool showUserNameForRepliedMessage;
 
   @override
   _InputState createState() => _InputState();
@@ -114,7 +129,8 @@ class _InputState extends State<Input> {
     final trimmedText = _textController.text.trim();
     if (trimmedText != '') {
       final _partialText = types.PartialText(text: trimmedText);
-      widget.onSendPressed(_partialText);
+      widget.onSendPressed(_partialText,
+          repliedMessage: InheritedRepliedMessage.of(context).repliedMessage!);
       _textController.clear();
     }
   }
@@ -163,62 +179,81 @@ class _InputState extends State<Input> {
             decoration:
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
             padding: _safeAreaInsets,
-            child: Row(
+            child: Column(
               children: [
-                if (widget.onAttachmentPressed != null)
-                  AttachmentButton(
-                    isLoading: widget.isAttachmentUploading ?? false,
-                    onPressed: widget.onAttachmentPressed,
-                    padding: _buttonPadding,
-                  ),
-                Expanded(
-                  child: Padding(
-                    padding: _textPadding,
-                    child: TextField(
-                      controller: _textController,
-                      cursorColor: InheritedChatTheme.of(context)
-                          .theme
-                          .inputTextCursorColor,
-                      decoration: InheritedChatTheme.of(context)
-                          .theme
-                          .inputTextDecoration
-                          .copyWith(
-                            hintStyle: InheritedChatTheme.of(context)
-                                .theme
-                                .inputTextStyle
-                                .copyWith(
-                                  color: InheritedChatTheme.of(context)
-                                      .theme
-                                      .inputTextColor
-                                      .withOpacity(0.5),
-                                ),
-                            hintText:
-                                InheritedL10n.of(context).l10n.inputPlaceholder,
+                if (InheritedRepliedMessage.of(context).repliedMessage != null)
+                  widget.customInputReplyMessageBuilder != null
+                      ? widget.customInputReplyMessageBuilder!(
+                          InheritedRepliedMessage.of(context).repliedMessage!,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                          child: RepliedMessage(
+                            onCancelReplyPressed: widget.onCancelReplyPressed,
+                            repliedMessage: InheritedRepliedMessage.of(context)
+                                .repliedMessage,
+                            showUserNames: widget.showUserNameForRepliedMessage,
                           ),
-                      focusNode: _inputFocusNode,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      minLines: 1,
-                      onChanged: widget.onTextChanged,
-                      onTap: widget.onTextFieldTap,
-                      style: InheritedChatTheme.of(context)
-                          .theme
-                          .inputTextStyle
-                          .copyWith(
-                            color: InheritedChatTheme.of(context)
-                                .theme
-                                .inputTextColor,
-                          ),
-                      textCapitalization: TextCapitalization.sentences,
+                        ),
+                Row(
+                  children: [
+                    if (widget.onAttachmentPressed != null)
+                      AttachmentButton(
+                        isLoading: widget.isAttachmentUploading ?? false,
+                        onPressed: widget.onAttachmentPressed,
+                        padding: _buttonPadding,
+                      ),
+                    Expanded(
+                      child: Padding(
+                        padding: _textPadding,
+                        child: TextField(
+                          controller: _textController,
+                          cursorColor: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextCursorColor,
+                          decoration: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextDecoration
+                              .copyWith(
+                                hintStyle: InheritedChatTheme.of(context)
+                                    .theme
+                                    .inputTextStyle
+                                    .copyWith(
+                                      color: InheritedChatTheme.of(context)
+                                          .theme
+                                          .inputTextColor
+                                          .withOpacity(0.5),
+                                    ),
+                                hintText: InheritedL10n.of(context)
+                                    .l10n
+                                    .inputPlaceholder,
+                              ),
+                          focusNode: _inputFocusNode,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          minLines: 1,
+                          onChanged: widget.onTextChanged,
+                          onTap: widget.onTextFieldTap,
+                          style: InheritedChatTheme.of(context)
+                              .theme
+                              .inputTextStyle
+                              .copyWith(
+                                color: InheritedChatTheme.of(context)
+                                    .theme
+                                    .inputTextColor,
+                              ),
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Visibility(
-                  visible: _sendButtonVisible,
-                  child: SendButton(
-                    onPressed: _handleSendPressed,
-                    padding: _buttonPadding,
-                  ),
+                    Visibility(
+                      visible: _sendButtonVisible,
+                      child: SendButton(
+                        onPressed: _handleSendPressed,
+                        padding: _buttonPadding,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
