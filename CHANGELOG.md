@@ -1,3 +1,9 @@
+## 1.5.8
+
+- Fix emoji messages. Thanks @felixgabler for the PR!
+- Add loading spinner support for the file message. Thanks @felixgabler for the PR!
+- Include safe area insets inside chat itself. No need to wrap in `SafeArea` anymore. Thanks @AdrKacz for reporting!
+
 ## 1.5.7
 
 - Add scroller controller as a parameter. Thanks @Faaatman for the PR!
