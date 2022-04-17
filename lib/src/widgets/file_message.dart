@@ -43,13 +43,25 @@ class FileMessage extends StatelessWidget {
               ),
               height: 42,
               width: 42,
-              child: InheritedChatTheme.of(context).theme.documentIcon != null
-                  ? InheritedChatTheme.of(context).theme.documentIcon!
-                  : Image.asset(
-                      'assets/icon-document.png',
-                      color: _color,
-                      package: 'flutter_chat_ui',
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (message.isLoading ?? false)
+                    Positioned.fill(
+                      child: CircularProgressIndicator(
+                        color: _color,
+                        strokeWidth: 2,
+                      ),
                     ),
+                  InheritedChatTheme.of(context).theme.documentIcon != null
+                      ? InheritedChatTheme.of(context).theme.documentIcon!
+                      : Image.asset(
+                          'assets/icon-document.png',
+                          color: _color,
+                          package: 'flutter_chat_ui',
+                        ),
+                ],
+              ),
             ),
             Flexible(
               child: Container(
