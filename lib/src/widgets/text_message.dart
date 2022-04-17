@@ -113,15 +113,15 @@ class TextMessage extends StatelessWidget {
     final bodyTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyTextStyle
         : theme.receivedMessageBodyTextStyle;
-    final emojiTextStyle = user.id == message.author.id
-        ? theme.sentEmojiMessageTextStyle
-        : theme.receivedEmojiMessageTextStyle;
     final boldTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyBoldTextStyle
         : theme.receivedMessageBodyBoldTextStyle;
     final codeTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyCodeTextStyle
         : theme.receivedMessageBodyCodeTextStyle;
+    final emojiTextStyle = user.id == message.author.id
+        ? theme.sentEmojiMessageTextStyle
+        : theme.receivedEmojiMessageTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +147,8 @@ class TextMessage extends StatelessWidget {
                 pattern: regexEmail,
                 style: bodyLinkTextStyle ??
                     bodyTextStyle.copyWith(
-                        decoration: TextDecoration.underline),
+                      decoration: TextDecoration.underline,
+                    ),
               ),
               MatchText(
                 onTap: (url) async {
@@ -158,7 +159,8 @@ class TextMessage extends StatelessWidget {
                 pattern: regexLink,
                 style: bodyLinkTextStyle ??
                     bodyTextStyle.copyWith(
-                        decoration: TextDecoration.underline),
+                      decoration: TextDecoration.underline,
+                    ),
               ),
               MatchText(
                 pattern: '(\\*\\*|\\*)(.*?)(\\*\\*|\\*)',
