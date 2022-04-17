@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
@@ -274,6 +275,7 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _query = MediaQuery.of(context);
     final _user = InheritedUser.of(context).user;
     final _currentUserIsAuthor = _user.id == message.author.id;
     final _enlargeEmojis =
@@ -302,9 +304,10 @@ class Message extends StatelessWidget {
       alignment: _currentUserIsAuthor
           ? AlignmentDirectional.centerEnd
           : AlignmentDirectional.centerStart,
-      margin: const EdgeInsetsDirectional.only(
+      margin: EdgeInsetsDirectional.only(
         bottom: 4,
-        start: 20,
+        end: kIsWeb ? 0 : _query.padding.right,
+        start: 20 + (kIsWeb ? 0 : _query.padding.left),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

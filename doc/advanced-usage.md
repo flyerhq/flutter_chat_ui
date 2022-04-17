@@ -44,12 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
-          // ...
-          onAttachmentPressed: _handleImageSelection,
-        ),
+      body: Chat(
+        // ...
+        onAttachmentPressed: _handleImageSelection,
       ),
     );
   }
@@ -100,12 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
-          // ...
-          onAttachmentPressed: _handleFileSelection,
-        ),
+      body: Chat(
+        // ...
+        onAttachmentPressed: _handleFileSelection,
       ),
     );
   }
@@ -133,12 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
-          // ...
-          onMessageTap: _handleMessageTap,
-        ),
+      body: Chat(
+        // ...
+        onMessageTap: _handleMessageTap,
       ),
     );
   }
@@ -169,12 +160,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
-          // ...
-          onPreviewDataFetched: _handlePreviewDataFetched,
-        ),
+      body: Chat(
+        // ...
+        onPreviewDataFetched: _handlePreviewDataFetched,
       ),
     );
   }
@@ -358,16 +346,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
-          messages: _messages,
-          onAttachmentPressed: _handleAtachmentPressed,
-          onMessageTap: _handleMessageTap,
-          onPreviewDataFetched: _handlePreviewDataFetched,
-          onSendPressed: _handleSendPressed,
-          user: _user,
-        ),
+      body: Chat(
+        messages: _messages,
+        onAttachmentPressed: _handleAtachmentPressed,
+        onMessageTap: _handleMessageTap,
+        onPreviewDataFetched: _handlePreviewDataFetched,
+        onSendPressed: _handleSendPressed,
+        user: _user,
       ),
     );
   }
@@ -406,12 +391,9 @@ Widget _bubbleBuilder(
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    body: SafeArea(
-      bottom: false,
-      child: Chat(
-        // ...
-        bubbleBuilder: _bubbleBuilder,
-      ),
+    body: Chat(
+      // ...
+      bubbleBuilder: _bubbleBuilder,
     ),
   );
 }
@@ -467,12 +449,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Chat(
-          // ...
-          onEndReached: _handleEndReached,
-        ),
+      body: Chat(
+        // ...
+        onEndReached: _handleEndReached,
       ),
     );
   }
