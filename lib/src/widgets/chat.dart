@@ -6,6 +6,7 @@ import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:flutter_chat_ui/src/widgets/inherited_replied_message.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:swipeable_tile/swipeable_tile.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
@@ -69,6 +70,7 @@ class Chat extends StatefulWidget {
     this.onTextChanged,
     this.onTextFieldTap,
     this.previewTapOptions = const PreviewTapOptions(),
+    this.replySwipeDirection = ReplySwipeDirection.endToStart,
     this.scrollController,
     this.scrollPhysics,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
@@ -232,6 +234,9 @@ class Chat extends StatefulWidget {
 
   /// See [Message.previewTapOptions]
   final PreviewTapOptions previewTapOptions;
+
+  /// See [ReplySwipeDirection]
+  final ReplySwipeDirection replySwipeDirection;
 
   /// See [ChatList.scrollController]
   final ScrollController? scrollController;
@@ -436,6 +441,10 @@ class _ChatState extends State<Chat> {
         onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
         onPreviewDataFetched: _onPreviewDataFetched,
         previewTapOptions: widget.previewTapOptions,
+        replySwipeDirection:
+            widget.replySwipeDirection == ReplySwipeDirection.endToStart
+                ? SwipeDirection.endToStart
+                : SwipeDirection.startToEnd,
         roundBorder: map['nextMessageInGroup'] == true,
         showAvatar: map['nextMessageInGroup'] == false,
         showName: map['showName'] == true,

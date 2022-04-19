@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:swipe_to/swipe_to.dart';
+import 'package:swipeable_tile/swipeable_tile.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../models/emoji_enlargement_behavior.dart';
@@ -44,6 +44,7 @@ class Message extends StatelessWidget {
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.previewTapOptions,
+    required this.replySwipeDirection,
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
@@ -135,6 +136,9 @@ class Message extends StatelessWidget {
 
   /// See [TextMessage.previewTapOptions]
   final PreviewTapOptions previewTapOptions;
+
+  /// Swipe direction for reply message feature
+  final SwipeDirection replySwipeDirection;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
@@ -322,32 +326,84 @@ class Message extends StatelessWidget {
       topStart: Radius.circular(_messageBorderRadius),
     );
 
-    return SwipeTo(
-      onRightSwipe: () {
-        HapticFeedback.vibrate();
+    return SwipeableTile.swipeToTigger(
+      behavior: HitTestBehavior.translucent,
+      isEelevated: false,
+      color: InheritedChatTheme.of(context).theme.backgroundColor,
+      swipeThreshold: 0.4,
+      direction: replySwipeDirection,
+      onSwiped: (_) {
         onMessageReply(context, message);
       },
-      rightSwipeWidget: Container(
-        margin: const EdgeInsets.only(left: 20),
-        decoration: BoxDecoration(
-          color: InheritedChatTheme.of(context)
-              .theme
-              .receivedMessageDocumentIconColor
-              .withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        height: 24,
-        width: 24,
-        child: InheritedChatTheme.of(context).theme.documentIcon != null
-            ? InheritedChatTheme.of(context).theme.documentIcon!
-            : Image.asset(
-                'assets/icon-reply.png',
-                color: InheritedChatTheme.of(context)
-                    .theme
-                    .receivedMessageDocumentIconColor,
-                package: 'flutter_chat_ui',
+      backgroundBuilder: (
+        _,
+        SwipeDirection direction,
+        AnimationController progress,
+      ) {
+        bool vibrated = false;
+        return AnimatedBuilder(
+          animation: progress,
+          builder: (_, __) {
+            if (progress.value > 0.9999 && !vibrated) {
+              HapticFeedback.vibrate();
+              vibrated = true;
+            } else if (progress.value < 0.9999) {
+              vibrated = false;
+            }
+            return Container(
+              alignment: replySwipeDirection == SwipeDirection.endToStart
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              child: Padding(
+                padding: replySwipeDirection == SwipeDirection.endToStart
+                    ? const EdgeInsets.only(right: 32.0)
+                    : const EdgeInsets.only(left: 32.0),
+                child: Transform.scale(
+                  scale: Tween<double>(
+                    begin: 0.0,
+                    end: 1.2,
+                  )
+                      .animate(
+                        CurvedAnimation(
+                          parent: progress,
+                          curve: const Interval(0.5, 1.0, curve: Curves.linear),
+                        ),
+                      )
+                      .value,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: InheritedChatTheme.of(context)
+                          .theme
+                          .receivedMessageDocumentIconColor
+                          .withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    height: 24,
+                    width: 24,
+                    child: InheritedChatTheme.of(context).theme.replyIcon !=
+                            null
+                        ? InheritedChatTheme.of(context).theme.replyIcon!
+                        : Transform.scale(
+                            scaleX:
+                                replySwipeDirection == SwipeDirection.endToStart
+                                    ? 1
+                                    : -1,
+                            child: Image.asset(
+                              'assets/icon-reply.png',
+                              color: InheritedChatTheme.of(context)
+                                  .theme
+                                  .receivedMessageDocumentIconColor,
+                              package: 'flutter_chat_ui',
+                            ),
+                          ),
+                  ),
+                ),
               ),
-      ),
+            );
+          },
+        );
+      },
+      key: UniqueKey(),
       child: Container(
         alignment: _currentUserIsAuthor
             ? AlignmentDirectional.centerEnd

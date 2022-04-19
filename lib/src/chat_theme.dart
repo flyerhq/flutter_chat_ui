@@ -91,6 +91,7 @@ abstract class ChatTheme {
     required this.repliedMessagePadding,
     required this.repliedMessageReceivedBoxDecoration,
     required this.repliedMessageSentBoxDecoration,
+    required this.replyIcon,
     required this.secondaryColor,
     required this.seenIcon,
     required this.sendButtonIcon,
@@ -235,6 +236,9 @@ abstract class ChatTheme {
 
   /// Decoration for replied message container rendered inside sent message bubble
   final Decoration repliedMessageSentBoxDecoration;
+
+  /// Icon inside file message
+  final Widget? replyIcon;
 
   /// Secondary color, used as a background of received messages
   final Color secondaryColor;
@@ -414,6 +418,7 @@ class DefaultChatTheme extends ChatTheme {
         ),
       ),
     ),
+    Widget? replyIcon,
     Color secondaryColor = secondary,
     Widget? seenIcon,
     Widget? sendButtonIcon,
@@ -505,6 +510,7 @@ class DefaultChatTheme extends ChatTheme {
           repliedMessageReceivedBoxDecoration:
               repliedMessageReceivedBoxDecoration,
           repliedMessageSentBoxDecoration: repliedMessageSentBoxDecoration,
+          replyIcon: replyIcon,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,
@@ -638,6 +644,7 @@ class DarkChatTheme extends ChatTheme {
         ),
       ),
     ),
+    Widget? replyIcon,
     Color secondaryColor = secondaryDark,
     Widget? seenIcon,
     Widget? sendButtonIcon,
@@ -729,6 +736,7 @@ class DarkChatTheme extends ChatTheme {
           repliedMessageReceivedBoxDecoration:
               repliedMessageReceivedBoxDecoration,
           repliedMessageSentBoxDecoration: repliedMessageSentBoxDecoration,
+          replyIcon: replyIcon,
           secondaryColor: secondaryColor,
           seenIcon: seenIcon,
           sendButtonIcon: sendButtonIcon,

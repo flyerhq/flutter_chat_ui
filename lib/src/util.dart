@@ -10,6 +10,17 @@ import './models/emoji_enlargement_behavior.dart';
 import './models/message_spacer.dart';
 import './models/preview_image.dart';
 
+/// Swipe direction for swipe to reply feature
+enum ReplySwipeDirection {
+  /// Swipe to reply can be swiped by dragging in the reverse of the
+  /// reading direction (e.g., from right to left in left-to-right languages).
+  endToStart,
+
+  /// Swipe to reply can be swiped by dragging in the reading direction
+  /// (e.g., from left to right in left-to-right languages).
+  startToEnd,
+}
+
 /// Returns text representation of a provided bytes value (e.g. 1kB, 1GB)
 String formatBytes(int size, [int fractionDigits = 2]) {
   if (size <= 0) return '0 B';
