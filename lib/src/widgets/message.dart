@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
@@ -10,6 +11,7 @@ import 'image_message.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'text_message.dart';
+import 'user_avatar.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
@@ -18,6 +20,7 @@ class Message extends StatelessWidget {
   /// Creates a particular message from any message type
   const Message({
     Key? key,
+    this.avatarBuilder,
     this.bubbleBuilder,
     this.customMessageBuilder,
     required this.emojiEnlargementBehavior,
@@ -27,6 +30,7 @@ class Message extends StatelessWidget {
     required this.isTextMessageTextSelectable,
     required this.message,
     required this.messageWidth,
+    this.nameBuilder,
     this.onAvatarTap,
     this.onMessageDoubleTap,
     this.onMessageLongPress,
@@ -45,6 +49,10 @@ class Message extends StatelessWidget {
     required this.usePreviewData,
     this.messageAlignment,
   }) : super(key: key);
+
+  /// This is to allow custom user avatar builder
+  /// By using this we can fetch newest user info based on id
+  final Widget Function(String userId)? avatarBuilder;
 
   /// Customize the default bubble using this function. `child` is a content
   /// you should render inside your bubble, `message` is a current message
@@ -88,7 +96,10 @@ class Message extends StatelessWidget {
   /// Maximum message width
   final int messageWidth;
 
-  // Called when uses taps on an avatar
+  /// See [TextMessage.nameBuilder]
+  final Widget Function(String userId)? nameBuilder;
+
+  /// See [UserAvatar.onAvatarTap]
   final void Function(types.User)? onAvatarTap;
 
   /// Called when user double taps on any message
@@ -142,41 +153,11 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
-  Widget _avatarBuilder(BuildContext context) {
-    final color = getUserAvatarNameColor(
-      message.author,
-      InheritedChatTheme.of(context).theme.userAvatarNameColors,
-    );
-    final hasImage = message.author.imageUrl != null;
-    final initials = getUserInitials(message.author);
 
-    return showAvatar
-        ? Container(
-            margin: const EdgeInsetsDirectional.only(end: 8),
-            child: GestureDetector(
-              onTap: () => onAvatarTap?.call(message.author),
-              child: CircleAvatar(
-                backgroundColor: hasImage
-                    ? InheritedChatTheme.of(context)
-                        .theme
-                        .userAvatarImageBackgroundColor
-                    : color,
-                backgroundImage:
-                    hasImage ? NetworkImage(message.author.imageUrl!) : null,
-                radius: 16,
-                child: !hasImage
-                    ? Text(
-                        initials,
-                        style: InheritedChatTheme.of(context)
-                            .theme
-                            .userAvatarTextStyle,
-                      )
-                    : null,
-              ),
-            ),
-          )
-        : const SizedBox(width: 40);
-  }
+  Widget _avatarBuilder() => showAvatar
+      ? avatarBuilder?.call(message.author.id) ??
+          UserAvatar(author: message.author, onAvatarTap: onAvatarTap)
+      : const SizedBox(width: 40);
 
   Widget _bubbleBuilder(
     BuildContext context,
@@ -237,6 +218,7 @@ class Message extends StatelessWidget {
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 isTextMessageTextSelectable: isTextMessageTextSelectable,
                 message: textMessage,
+                nameBuilder: nameBuilder,
                 onPreviewDataFetched: onPreviewDataFetched,
                 previewTapOptions: previewTapOptions,
                 showName: showName,
@@ -297,6 +279,7 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _query = MediaQuery.of(context);
     final _user = InheritedUser.of(context).user;
     final _currentUserIsAuthor = _user.id == message.author.id;
     final _enlargeEmojis =
@@ -329,15 +312,16 @@ class Message extends StatelessWidget {
 
     return Container(
       alignment: messageAlignment?.call(message) ?? _getAlignment(),
-      margin: const EdgeInsetsDirectional.only(
+      margin: EdgeInsetsDirectional.only(
         bottom: 4,
-        start: 20,
+        end: kIsWeb ? 0 : _query.padding.right,
+        start: 20 + (kIsWeb ? 0 : _query.padding.left),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(context),
+          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),

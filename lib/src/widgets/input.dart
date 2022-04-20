@@ -80,6 +80,7 @@ class _InputState extends State<Input> {
       _textController = _mentionsKey.currentState!.controller!;
       _handleSendButtonVisibilityModeChange();
     });
+    _handleSendButtonVisibilityModeChange();
   }
 
   @override
@@ -153,7 +154,15 @@ class _InputState extends State<Input> {
     final _textPadding = InheritedChatTheme.of(context)
         .theme
         .inputPadding
-        .copyWith(left: 0, right: 0);
+        .copyWith(left: 0, right: 0)
+        .add(
+          EdgeInsetsDirectional.fromSTEB(
+            widget.onAttachmentPressed != null ? 0 : 24,
+            0,
+            _sendButtonVisible ? 0 : 24,
+            0,
+          ),
+        );
 
     return Focus(
       autofocus: true,
