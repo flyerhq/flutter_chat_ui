@@ -86,7 +86,9 @@ class Chat extends StatefulWidget {
   }) : super(key: key) {
     this.showUserAvatars = showUserAvatars ?? (message) => false;
   }
-  Alignment? Function(types.Message message)? messageAlignment;
+
+  /// Custom alignment of message
+  final Alignment? Function(types.Message message)? messageAlignment;
 
   /// See [Message.avatarBuilder]
   final Widget Function(String userId)? avatarBuilder;
