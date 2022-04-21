@@ -20,8 +20,10 @@ void main() {
                 text: 'text',
               )
             ],
-            onSendPressed: (types.PartialText message,
-                {types.Message? repliedMessage}) {},
+            onSendPressed: (
+              types.PartialText message, {
+              types.Message? repliedMessage,
+            }) {},
             user: const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
           ),
         ),
@@ -56,8 +58,10 @@ void main() {
             onPreviewDataFetched:
                 (types.TextMessage message, types.PreviewData previewData) =>
                     {},
-            onSendPressed: (types.PartialText message,
-                {types.Message? repliedMessage}) {},
+            onSendPressed: (
+              types.PartialText message, {
+              types.Message? repliedMessage,
+            }) {},
             user: const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
           ),
         ),
@@ -125,8 +129,10 @@ void main() {
                 text: 'https://flutter.dev/',
               )
             ],
-            onSendPressed: (types.PartialText message,
-                {types.Message? repliedMessage}) {},
+            onSendPressed: (
+              types.PartialText message, {
+              types.Message? repliedMessage,
+            }) {},
             onPreviewDataFetched:
                 (types.TextMessage message, types.PreviewData previewData) =>
                     {},

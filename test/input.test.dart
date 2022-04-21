@@ -14,8 +14,10 @@ void main() {
           home: Material(
             child: Chat(
               messages: const [],
-              onSendPressed: (types.PartialText message,
-                  {types.Message? repliedMessage}) {},
+              onSendPressed: (
+                types.PartialText message, {
+                types.Message? repliedMessage,
+              }) {},
               sendButtonVisibilityMode: SendButtonVisibilityMode.always,
               user:
                   const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
@@ -39,8 +41,10 @@ void main() {
           home: Material(
             child: Chat(
               messages: const [],
-              onSendPressed: (types.PartialText message,
-                  {types.Message? repliedMessage}) {},
+              onSendPressed: (
+                types.PartialText message, {
+                types.Message? repliedMessage,
+              }) {},
               sendButtonVisibilityMode: SendButtonVisibilityMode.hidden,
               user:
                   const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
@@ -64,8 +68,10 @@ void main() {
           home: Material(
             child: Chat(
               messages: const [],
-              onSendPressed: (types.PartialText message,
-                  {types.Message? repliedMessage}) {},
+              onSendPressed: (
+                types.PartialText message, {
+                types.Message? repliedMessage,
+              }) {},
               user:
                   const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
             ),
@@ -88,8 +94,10 @@ void main() {
           home: Material(
             child: Chat(
               messages: const [],
-              onSendPressed: (types.PartialText message,
-                  {types.Message? repliedMessage}) {},
+              onSendPressed: (
+                types.PartialText message, {
+                types.Message? repliedMessage,
+              }) {},
               user:
                   const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
             ),
@@ -118,8 +126,10 @@ void main() {
           home: Material(
             child: Chat(
               messages: const [],
-              onSendPressed: (types.PartialText message,
-                      {types.Message? repliedMessage}) =>
+              onSendPressed: (
+                types.PartialText message, {
+                types.Message? repliedMessage,
+              }) =>
                   isCalled = true,
               user:
                   const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
@@ -160,8 +170,10 @@ void main() {
             child: Chat(
               messages: const [],
               onAttachmentPressed: () => isCalled = true,
-              onSendPressed: (types.PartialText message,
-                  {types.Message? repliedMessage}) {},
+              onSendPressed: (
+                types.PartialText message, {
+                types.Message? repliedMessage,
+              }) {},
               user:
                   const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
             ),

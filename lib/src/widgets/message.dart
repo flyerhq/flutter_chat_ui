@@ -330,7 +330,7 @@ class Message extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       isEelevated: false,
       color: InheritedChatTheme.of(context).theme.backgroundColor,
-      swipeThreshold: 0.4,
+      swipeThreshold: 0.3,
       direction: replySwipeDirection,
       onSwiped: (_) {
         onMessageReply(context, message);
@@ -366,7 +366,7 @@ class Message extends StatelessWidget {
                       .animate(
                         CurvedAnimation(
                           parent: progress,
-                          curve: const Interval(0.5, 1.0, curve: Curves.linear),
+                          curve: const Interval(0.3, 1.0, curve: Curves.linear),
                         ),
                       )
                       .value,
@@ -380,22 +380,16 @@ class Message extends StatelessWidget {
                     ),
                     height: 24,
                     width: 24,
-                    child: InheritedChatTheme.of(context).theme.replyIcon !=
-                            null
-                        ? InheritedChatTheme.of(context).theme.replyIcon!
-                        : Transform.scale(
-                            scaleX:
-                                replySwipeDirection == SwipeDirection.endToStart
-                                    ? 1
-                                    : -1,
-                            child: Image.asset(
-                              'assets/icon-reply.png',
-                              color: InheritedChatTheme.of(context)
-                                  .theme
-                                  .receivedMessageDocumentIconColor,
-                              package: 'flutter_chat_ui',
-                            ),
-                          ),
+                    child:
+                        InheritedChatTheme.of(context).theme.replyIcon != null
+                            ? InheritedChatTheme.of(context).theme.replyIcon!
+                            : Image.asset(
+                                'assets/icon-reply.png',
+                                color: InheritedChatTheme.of(context)
+                                    .theme
+                                    .receivedMessageDocumentIconColor,
+                                package: 'flutter_chat_ui',
+                              ),
                   ),
                 ),
               ),

@@ -28,14 +28,14 @@ const neutral0 = Color(0xff1d1c21);
 /// N2
 const neutral2 = Color(0xff9e9cab);
 
-/// N2 with opacity
-const neutral2WithOpacity = Color(0x339e9cab);
-
 /// N7
 const neutral7 = Color(0xffffffff);
 
-/// N7 with opacity
-const neutral7WithOpacity = Color(0x80ffffff);
+/// N7 with 12% opacity
+const neutral7With12Opacity = Color(0x1fffffff);
+
+/// N7 with 50% opacity
+const neutral7With50Opacity = Color(0x80ffffff);
 
 /// Primary
 const primary = Color(0xff6f61e8);
@@ -322,7 +322,7 @@ class DefaultChatTheme extends ChatTheme {
       borderRadius: BorderRadius.all(
         Radius.circular(8),
       ),
-      color: neutral2WithOpacity,
+      color: neutral7With12Opacity,
     ),
     EdgeInsets closableRepliedMessageImageMargin =
         const EdgeInsets.only(left: 16),
@@ -435,7 +435,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
-      color: neutral7WithOpacity,
+      color: neutral7With50Opacity,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -552,7 +552,7 @@ class DarkChatTheme extends ChatTheme {
       borderRadius: BorderRadius.all(
         Radius.circular(8),
       ),
-      color: neutral2WithOpacity,
+      color: neutral7With12Opacity,
     ),
     EdgeInsets dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
@@ -608,7 +608,7 @@ class DarkChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle receivedMessageCaptionTextStyle = const TextStyle(
-      color: neutral7WithOpacity,
+      color: neutral7With50Opacity,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
@@ -661,7 +661,7 @@ class DarkChatTheme extends ChatTheme {
       height: 1.5,
     ),
     TextStyle sentMessageCaptionTextStyle = const TextStyle(
-      color: neutral7WithOpacity,
+      color: neutral7With50Opacity,
       fontSize: 12,
       fontWeight: FontWeight.w500,
       height: 1.333,
