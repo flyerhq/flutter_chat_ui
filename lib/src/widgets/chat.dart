@@ -512,7 +512,8 @@ class _ChatState extends State<Chat> {
                                     onEndReached: widget.onEndReached,
                                     onEndReachedThreshold:
                                         widget.onEndReachedThreshold,
-                                    scrollController: widget.scrollController,scrollPhysics: widget.scrollPhysics,
+                                    scrollController: widget.scrollController,
+                                    scrollPhysics: widget.scrollPhysics,
                                   ),
                                 ),
                               ),

@@ -153,7 +153,6 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
-
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
           UserAvatar(author: message.author, onAvatarTap: onAvatarTap)

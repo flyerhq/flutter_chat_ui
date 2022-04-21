@@ -233,15 +233,19 @@ class _ChatPageState extends State<ChatPage> {
         bottom: false,
         child: Chat(
           messages: _messages,
-          suggestionListDecoration: BoxDecoration(color: Theme.of(context).canvasColor),
+          suggestionListDecoration:
+              BoxDecoration(color: Theme.of(context).canvasColor),
           onAttachmentPressed: _handleAtachmentPressed,
           mentions: [
             /// This is a sample of a mention.
             Mention(
+
                 /// trigger mention list when user types @
                 trigger: '@',
+
                 /// data source for mention list
                 data: _mentionsData,
+
                 /// builder for the mention list
                 suggestionBuilder: (l) {
                   return ListTile(
