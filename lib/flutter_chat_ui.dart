@@ -16,3 +16,5 @@ export 'src/widgets/message.dart';
 export 'src/widgets/send_button.dart';
 export 'src/widgets/text_message.dart';
 export 'package:flutter_mentions/flutter_mentions.dart' show Mention;
+export 'src/widgets/user_avatar.dart';
+export 'src/widgets/user_name.dart';

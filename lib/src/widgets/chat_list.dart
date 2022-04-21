@@ -1,4 +1,5 @@
 import 'package:diffutil_dart/diffutil.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -189,6 +190,8 @@ class _ChatListState extends State<ChatList>
 
   @override
   Widget build(BuildContext context) {
+    final _query = MediaQuery.of(context);
+
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (widget.onEndReached == null || widget.isLastPage == true) {
@@ -234,8 +237,8 @@ class _ChatListState extends State<ChatList>
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.only(
-              top: 16,
+            padding: EdgeInsets.only(
+              top: 16 + (kIsWeb ? 0 : _query.padding.top),
             ),
             sliver: SliverToBoxAdapter(
               child: SizeTransition(

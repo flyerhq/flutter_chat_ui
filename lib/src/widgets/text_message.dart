@@ -10,6 +10,7 @@ import '../models/preview_tap_options.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
+import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview
 class TextMessage extends StatelessWidget {
@@ -20,6 +21,7 @@ class TextMessage extends StatelessWidget {
     required this.hideBackgroundOnEmojiMessages,
     required this.isTextMessageTextSelectable,
     required this.message,
+    this.nameBuilder,
     this.onPreviewDataFetched,
     required this.previewTapOptions,
     required this.usePreviewData,
@@ -37,6 +39,10 @@ class TextMessage extends StatelessWidget {
 
   /// [types.TextMessage]
   final types.TextMessage message;
+
+  /// This is to allow custom user name builder
+  /// By using this we can fetch newest user info based on id
+  final Widget Function(String userId)? nameBuilder;
 
   /// See [LinkPreview.onPreviewDataFetched]
   final void Function(types.TextMessage, types.PreviewData)?
@@ -101,103 +107,104 @@ class TextMessage extends StatelessWidget {
   ) {
     final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     final theme = InheritedChatTheme.of(context).theme;
-    final color =
-        getUserAvatarNameColor(message.author, theme.userAvatarNameColors);
-    final name = getUserName(message.author);
     final bodyLinkTextStyle = user.id == message.author.id
         ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle
         : InheritedChatTheme.of(context).theme.receivedMessageBodyLinkTextStyle;
     final bodyTextStyle = user.id == message.author.id
-        ? enlargeEmojis
-            ? theme.sentEmojiMessageTextStyle
-            : theme.sentMessageBodyTextStyle
-        : enlargeEmojis
-            ? theme.receivedEmojiMessageTextStyle
-            : theme.receivedMessageBodyTextStyle;
+        ? theme.sentMessageBodyTextStyle
+        : theme.receivedMessageBodyTextStyle;
     final boldTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyBoldTextStyle
         : theme.receivedMessageBodyBoldTextStyle;
     final codeTextStyle = user.id == message.author.id
         ? theme.sentMessageBodyCodeTextStyle
         : theme.receivedMessageBodyCodeTextStyle;
+    final emojiTextStyle = user.id == message.author.id
+        ? theme.sentEmojiMessageTextStyle
+        : theme.receivedEmojiMessageTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showName)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.userNameTextStyle.copyWith(color: color),
-            ),
-          ),
-        ParsedText(
-          parse: [
-            MatchText(
-              onTap: (mail) async {
-                final url = 'mailto:$mail';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                }
-              },
-              pattern: regexEmail,
-              style: bodyLinkTextStyle ??
-                  bodyTextStyle.copyWith(decoration: TextDecoration.underline),
-            ),
-            MatchText(
-              onTap: (url) async {
-                if (await canLaunch(url)) {
-                  await launch(url);
-                }
-              },
-              pattern: regexLink,
-              style: bodyLinkTextStyle ??
-                  bodyTextStyle.copyWith(decoration: TextDecoration.underline),
-            ),
-            MatchText(
-              pattern: '(\\*\\*|\\*)(.*?)(\\*\\*|\\*)',
-              style: boldTextStyle ??
-                  bodyTextStyle.copyWith(fontWeight: FontWeight.bold),
-              renderText: ({required String str, required String pattern}) {
-                return {'display': str.replaceAll(RegExp('(\\*\\*|\\*)'), '')};
-              },
-            ),
-            MatchText(
-              pattern: '_(.*?)_',
-              style: bodyTextStyle.copyWith(fontStyle: FontStyle.italic),
-              renderText: ({required String str, required String pattern}) {
-                return {'display': str.replaceAll('_', '')};
-              },
-            ),
-            MatchText(
-              pattern: '~(.*?)~',
-              style: bodyTextStyle.copyWith(
-                decoration: TextDecoration.lineThrough,
+          nameBuilder?.call(message.author.id) ??
+              UserName(author: message.author),
+        if (enlargeEmojis)
+          if (isTextMessageTextSelectable)
+            SelectableText(message.text, style: emojiTextStyle)
+          else
+            Text(message.text, style: emojiTextStyle)
+        else
+          ParsedText(
+            parse: [
+              MatchText(
+                onTap: (mail) async {
+                  final url = 'mailto:$mail';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  }
+                },
+                pattern: regexEmail,
+                style: bodyLinkTextStyle ??
+                    bodyTextStyle.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
               ),
-              renderText: ({required String str, required String pattern}) {
-                return {'display': str.replaceAll('~', '')};
-              },
-            ),
-            MatchText(
-              pattern: '`(.*?)`',
-              style: codeTextStyle ??
-                  bodyTextStyle.copyWith(
-                    fontFamily: isIOS ? 'Courier' : 'monospace',
-                  ),
-              renderText: ({required String str, required String pattern}) {
-                return {'display': str.replaceAll('`', '')};
-              },
-            ),
-          ],
-          regexOptions: const RegexOptions(multiLine: true, dotAll: true),
-          selectable: isTextMessageTextSelectable,
-          style: bodyTextStyle,
-          text: message.text,
-          textWidthBasis: TextWidthBasis.longestLine,
-        ),
+              MatchText(
+                onTap: (url) async {
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  }
+                },
+                pattern: regexLink,
+                style: bodyLinkTextStyle ??
+                    bodyTextStyle.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+              ),
+              MatchText(
+                pattern: '(\\*\\*|\\*)(.*?)(\\*\\*|\\*)',
+                style: boldTextStyle ??
+                    bodyTextStyle.copyWith(fontWeight: FontWeight.bold),
+                renderText: ({required String str, required String pattern}) {
+                  return {
+                    'display': str.replaceAll(RegExp('(\\*\\*|\\*)'), '')
+                  };
+                },
+              ),
+              MatchText(
+                pattern: '_(.*?)_',
+                style: bodyTextStyle.copyWith(fontStyle: FontStyle.italic),
+                renderText: ({required String str, required String pattern}) {
+                  return {'display': str.replaceAll('_', '')};
+                },
+              ),
+              MatchText(
+                pattern: '~(.*?)~',
+                style: bodyTextStyle.copyWith(
+                  decoration: TextDecoration.lineThrough,
+                ),
+                renderText: ({required String str, required String pattern}) {
+                  return {'display': str.replaceAll('~', '')};
+                },
+              ),
+              MatchText(
+                pattern: '`(.*?)`',
+                style: codeTextStyle ??
+                    bodyTextStyle.copyWith(
+                      fontFamily: isIOS ? 'Courier' : 'monospace',
+                    ),
+                renderText: ({required String str, required String pattern}) {
+                  return {'display': str.replaceAll('`', '')};
+                },
+              ),
+            ],
+            regexOptions: const RegexOptions(multiLine: true, dotAll: true),
+            selectable: isTextMessageTextSelectable,
+            style: bodyTextStyle,
+            text: message.text,
+            textWidthBasis: TextWidthBasis.longestLine,
+          ),
       ],
     );
   }
