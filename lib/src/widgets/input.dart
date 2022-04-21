@@ -77,10 +77,10 @@ class _InputState extends State<Input> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      // get _textController after the first frame from mentions
       _textController = _mentionsKey.currentState!.controller!;
       _handleSendButtonVisibilityModeChange();
     });
-    _handleSendButtonVisibilityModeChange();
   }
 
   @override
