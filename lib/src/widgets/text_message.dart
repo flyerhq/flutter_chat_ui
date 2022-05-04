@@ -161,7 +161,7 @@ class TextMessage extends StatelessWidget {
                   }
                   final url = Uri.tryParse(urlText);
                   if (url != null && await canLaunchUrl(url)) {
-                    await launchUrl(url);
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
                   }
                 },
                 pattern: regexLink,
