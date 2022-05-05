@@ -227,6 +227,11 @@ class _InputState extends State<Input> {
                       appendSpaceOnAdd: true,
                       onSubmitted: (value) => _handleSendPressed(),
                       autofocus: true,
+                      onMentionAdd: (data) {
+                        // focus the text field after adding a mention
+                        // because the focus gets lost
+                        _inputFocusNode.requestFocus();
+                      },
                       style: InheritedChatTheme.of(context)
                           .theme
                           .inputTextStyle
