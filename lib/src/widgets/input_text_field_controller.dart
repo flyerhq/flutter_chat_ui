@@ -1,19 +1,17 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+
+import 'pattern_style.dart';
 
 /// Controller for the [TextField] on [Input] widget
 /// To highlighting the matches for pattern
 class InputTextFieldController extends TextEditingController {
   /// A map of style to apply to the text pattern
-  final Map<RegExp, TextStyle> _patternStyle = {
-    RegExp('(\\*\\*|\\*)(.*?)(\\*\\*|\\*)'):
-        const TextStyle(fontWeight: FontWeight.bold),
-    RegExp('_(.*?)_'): const TextStyle(fontStyle: FontStyle.italic),
-    RegExp('~(.*?)~'): const TextStyle(decoration: TextDecoration.lineThrough),
-    RegExp('`(.*?)`'):
-        const TextStyle(fontFeatures: [FontFeature.tabularFigures()]),
-  };
+  final List<PatternStyle> _listPatternStyle = [
+    PatternStyle.bold,
+    PatternStyle.italic,
+    PatternStyle.lineThrough,
+    PatternStyle.code,
+  ];
 
   @override
   TextSpan buildTextSpan({
@@ -22,11 +20,13 @@ class InputTextFieldController extends TextEditingController {
     required bool withComposing,
   }) {
     return TextSpan(text: text, style: style).splitMapJoin(
-      RegExp(_patternStyle.keys.map((it) => it.pattern).join('|')),
+      RegExp(_listPatternStyle.map((it) => it.regExp.pattern).join('|')),
       onMatch: (match) {
         final text = match[0]!;
-        final key = _patternStyle.keys.firstWhere((it) => it.hasMatch(text));
-        return TextSpan(text: text, style: _patternStyle[key]);
+        final style = _listPatternStyle
+            .firstWhere((element) => element.regExp.hasMatch(text))
+            .textStyle;
+        return TextSpan(text: text, style: style);
       },
     );
   }
