@@ -6,10 +6,10 @@ import '../chat_l10n.dart';
 class InheritedL10n extends InheritedWidget {
   /// Creates [InheritedWidget] from a provided [ChatL10n] class
   const InheritedL10n({
-    Key? key,
+    super.key,
     required this.l10n,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   /// Represents localized copy
   final ChatL10n l10n;

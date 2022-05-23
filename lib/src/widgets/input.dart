@@ -22,14 +22,14 @@ class SendMessageIntent extends Intent {
 class Input extends StatefulWidget {
   /// Creates [Input] widget
   const Input({
-    Key? key,
+    super.key,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
     required this.onSendPressed,
     this.onTextChanged,
     this.onTextFieldTap,
     required this.sendButtonVisibilityMode,
-  }) : super(key: key);
+  });
 
   /// See [AttachmentButton.onPressed]
   final void Function()? onAttachmentPressed;
@@ -56,7 +56,7 @@ class Input extends StatefulWidget {
   final SendButtonVisibilityMode sendButtonVisibilityMode;
 
   @override
-  _InputState createState() => _InputState();
+  State<Input> createState() => _InputState();
 }
 
 /// [Input] widget state
@@ -88,11 +88,11 @@ class _InputState extends State<Input> {
   }
 
   void _handleNewLine() {
-    final _newValue = '${_textController.text}\r\n';
+    final newValue = '${_textController.text}\r\n';
     _textController.value = TextEditingValue(
-      text: _newValue,
+      text: newValue,
       selection: TextSelection.fromPosition(
-        TextPosition(offset: _newValue.length),
+        TextPosition(offset: newValue.length),
       ),
     );
   }
@@ -113,8 +113,8 @@ class _InputState extends State<Input> {
   void _handleSendPressed() {
     final trimmedText = _textController.text.trim();
     if (trimmedText != '') {
-      final _partialText = types.PartialText(text: trimmedText);
-      widget.onSendPressed(_partialText);
+      final partialText = types.PartialText(text: trimmedText);
+      widget.onSendPressed(partialText);
       _textController.clear();
     }
   }
@@ -126,20 +126,20 @@ class _InputState extends State<Input> {
   }
 
   Widget _inputBuilder() {
-    final _query = MediaQuery.of(context);
-    final _buttonPadding = InheritedChatTheme.of(context)
+    final query = MediaQuery.of(context);
+    final buttonPadding = InheritedChatTheme.of(context)
         .theme
         .inputPadding
         .copyWith(left: 16, right: 16);
-    final _safeAreaInsets = kIsWeb
+    final safeAreaInsets = kIsWeb
         ? EdgeInsets.zero
         : EdgeInsets.fromLTRB(
-            _query.padding.left,
+            query.padding.left,
             0,
-            _query.padding.right,
-            _query.viewInsets.bottom + _query.padding.bottom,
+            query.padding.right,
+            query.viewInsets.bottom + query.padding.bottom,
           );
-    final _textPadding = InheritedChatTheme.of(context)
+    final textPadding = InheritedChatTheme.of(context)
         .theme
         .inputPadding
         .copyWith(left: 0, right: 0)
@@ -162,18 +162,18 @@ class _InputState extends State<Input> {
           child: Container(
             decoration:
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
-            padding: _safeAreaInsets,
+            padding: safeAreaInsets,
             child: Row(
               children: [
                 if (widget.onAttachmentPressed != null)
                   AttachmentButton(
                     isLoading: widget.isAttachmentUploading ?? false,
                     onPressed: widget.onAttachmentPressed,
-                    padding: _buttonPadding,
+                    padding: buttonPadding,
                   ),
                 Expanded(
                   child: Padding(
-                    padding: _textPadding,
+                    padding: textPadding,
                     child: TextField(
                       controller: _textController,
                       cursorColor: InheritedChatTheme.of(context)
@@ -217,7 +217,7 @@ class _InputState extends State<Input> {
                   visible: _sendButtonVisible,
                   child: SendButton(
                     onPressed: _handleSendPressed,
-                    padding: _buttonPadding,
+                    padding: buttonPadding,
                   ),
                 ),
               ],

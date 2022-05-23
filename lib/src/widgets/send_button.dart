@@ -7,10 +7,10 @@ import 'inherited_l10n.dart';
 class SendButton extends StatelessWidget {
   /// Creates send button widget
   const SendButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.padding = EdgeInsets.zero,
-  }) : super(key: key);
+  });
 
   /// Callback for send button tap event
   final void Function() onPressed;
