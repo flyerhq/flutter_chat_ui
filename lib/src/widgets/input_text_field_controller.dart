@@ -19,39 +19,23 @@ class InputTextFieldController extends TextEditingController {
     TextStyle? style,
     required bool withComposing,
   }) {
-    return TextSpan(text: text, style: style).splitMapJoin(
+    final children = <TextSpan>[];
+
+    text.splitMapJoin(
       RegExp(_listPatternStyle.map((it) => it.regExp.pattern).join('|')),
       onMatch: (match) {
         final text = match[0]!;
         final style = _listPatternStyle
             .firstWhere((element) => element.regExp.hasMatch(text))
             .textStyle;
-        return TextSpan(text: text, style: style);
-      },
-    );
-  }
-}
 
-extension _TextSpanX on TextSpan {
-  TextSpan splitMapJoin(
-    Pattern pattern, {
-    TextSpan Function(Match)? onMatch,
-    TextSpan Function(TextSpan)? onNonMatch,
-  }) {
-    final children = <TextSpan>[];
-
-    toPlainText().splitMapJoin(
-      pattern,
-      onMatch: (match) {
         final span = TextSpan(text: match.group(0), style: style);
-        final updated = onMatch?.call(match);
-        children.add(updated ?? span);
+        children.add(span);
         return span.toPlainText();
       },
       onNonMatch: (text) {
         final span = TextSpan(text: text, style: style);
-        final updatedSpan = onNonMatch?.call(span);
-        children.add(updatedSpan ?? span);
+        children.add(span);
         return span.toPlainText();
       },
     );
