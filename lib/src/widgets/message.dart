@@ -25,6 +25,7 @@ class Message extends StatelessWidget {
     this.customMessageBuilder,
     required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
+    this.headers,
     required this.hideBackgroundOnEmojiMessages,
     this.imageMessageBuilder,
     required this.isTextMessageTextSelectable,
@@ -76,6 +77,9 @@ class Message extends StatelessWidget {
   /// Build a file message inside predefined bubble
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
+
+  /// See [UserAvatar.headers]
+  final Map<String, String>? headers;
 
   /// Hide background for messages containing only emojis.
   final bool hideBackgroundOnEmojiMessages;
@@ -152,7 +156,7 @@ class Message extends StatelessWidget {
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
-          UserAvatar(author: message.author, onAvatarTap: onAvatarTap)
+          UserAvatar(author: message.author, headers: headers, onAvatarTap: onAvatarTap)
       : const SizedBox(width: 40);
 
   Widget _bubbleBuilder(

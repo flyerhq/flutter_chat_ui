@@ -10,6 +10,7 @@ class UserAvatar extends StatelessWidget {
   const UserAvatar({
     Key? key,
     required this.author,
+    this.headers,
     this.onAvatarTap,
   }) : super(key: key);
 
@@ -18,6 +19,9 @@ class UserAvatar extends StatelessWidget {
 
   /// Called when user taps on an avatar
   final void Function(types.User)? onAvatarTap;
+
+  /// Headers to use when fetching image
+  final Map<String, String>? headers;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class UserAvatar extends StatelessWidget {
                   .theme
                   .userAvatarImageBackgroundColor
               : color,
-          backgroundImage: hasImage ? NetworkImage(author.imageUrl!) : null,
+          backgroundImage: hasImage ? NetworkImage(author.imageUrl!, headers: headers) : null,
           radius: 16,
           child: !hasImage
               ? Text(
