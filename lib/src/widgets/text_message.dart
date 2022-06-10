@@ -154,10 +154,17 @@ class TextMessage extends StatelessWidget {
                     ),
               ),
               MatchText(
-                onTap: (url) async {
-                  final uri = Uri.dataFromString(url);
-                  if (await canLaunchUrl(uri)) {
-                    await launchUrl(uri);
+                onTap: (urlText) async {
+                  final protocolIdentifierRegex = RegExp(
+                    r'^((http|ftp|https):\/\/)',
+                    caseSensitive: false,
+                  );
+                  if (!urlText.startsWith(protocolIdentifierRegex)) {
+                    urlText = "https://" + urlText;
+                  }
+                  final url = Uri.tryParse(urlText);
+                  if (url != null && await canLaunchUrl(url)) {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
                   }
                 },
                 pattern: regexLink,
