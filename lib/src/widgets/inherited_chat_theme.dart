@@ -6,10 +6,10 @@ import '../chat_theme.dart';
 class InheritedChatTheme extends InheritedWidget {
   /// Creates [InheritedWidget] from a provided [ChatTheme] class
   const InheritedChatTheme({
-    Key? key,
+    super.key,
     required this.theme,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   /// Represents chat theme
   final ChatTheme theme;

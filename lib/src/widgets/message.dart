@@ -19,7 +19,7 @@ import 'user_avatar.dart';
 class Message extends StatelessWidget {
   /// Creates a particular message from any message type
   const Message({
-    Key? key,
+    super.key,
     this.avatarBuilder,
     this.bubbleBuilder,
     this.customMessageBuilder,
@@ -47,7 +47,7 @@ class Message extends StatelessWidget {
     required this.showUserAvatars,
     this.textMessageBuilder,
     required this.usePreviewData,
-  }) : super(key: key);
+  });
 
   /// This is to allow custom user avatar builder
   /// By using this we can fetch newest user info based on id
@@ -275,45 +275,45 @@ class Message extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _query = MediaQuery.of(context);
-    final _user = InheritedUser.of(context).user;
-    final _currentUserIsAuthor = _user.id == message.author.id;
-    final _enlargeEmojis =
+    final query = MediaQuery.of(context);
+    final user = InheritedUser.of(context).user;
+    final currentUserIsAuthor = user.id == message.author.id;
+    final enlargeEmojis =
         emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
             isConsistsOfEmojis(
                 emojiEnlargementBehavior, message as types.TextMessage);
-    final _messageBorderRadius =
+    final messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
-    final _borderRadius = BorderRadiusDirectional.only(
+    final borderRadius = BorderRadiusDirectional.only(
       bottomEnd: Radius.circular(
-        _currentUserIsAuthor
+        currentUserIsAuthor
             ? roundBorder
-                ? _messageBorderRadius
+                ? messageBorderRadius
                 : 0
-            : _messageBorderRadius,
+            : messageBorderRadius,
       ),
       bottomStart: Radius.circular(
-        _currentUserIsAuthor || roundBorder ? _messageBorderRadius : 0,
+        currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
       ),
-      topEnd: Radius.circular(_messageBorderRadius),
-      topStart: Radius.circular(_messageBorderRadius),
+      topEnd: Radius.circular(messageBorderRadius),
+      topStart: Radius.circular(messageBorderRadius),
     );
 
     return Container(
-      alignment: _currentUserIsAuthor
+      alignment: currentUserIsAuthor
           ? AlignmentDirectional.centerEnd
           : AlignmentDirectional.centerStart,
       margin: EdgeInsetsDirectional.only(
         bottom: 4,
-        end: kIsWeb ? 0 : _query.padding.right,
-        start: 20 + (kIsWeb ? 0 : _query.padding.left),
+        end: kIsWeb ? 0 : query.padding.right,
+        start: 20 + (kIsWeb ? 0 : query.padding.left),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!_currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+          if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),
@@ -333,22 +333,22 @@ class Message extends StatelessWidget {
                                   visibilityInfo.visibleFraction > 0.1),
                           child: _bubbleBuilder(
                             context,
-                            _borderRadius.resolve(Directionality.of(context)),
-                            _currentUserIsAuthor,
-                            _enlargeEmojis,
+                            borderRadius.resolve(Directionality.of(context)),
+                            currentUserIsAuthor,
+                            enlargeEmojis,
                           ),
                         )
                       : _bubbleBuilder(
                           context,
-                          _borderRadius.resolve(Directionality.of(context)),
-                          _currentUserIsAuthor,
-                          _enlargeEmojis,
+                          borderRadius.resolve(Directionality.of(context)),
+                          currentUserIsAuthor,
+                          enlargeEmojis,
                         ),
                 ),
               ],
             ),
           ),
-          if (_currentUserIsAuthor)
+          if (currentUserIsAuthor)
             Padding(
               padding: InheritedChatTheme.of(context).theme.statusIconPadding,
               child: showStatus

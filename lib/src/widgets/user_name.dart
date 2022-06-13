@@ -8,9 +8,9 @@ import 'inherited_chat_theme.dart';
 class UserName extends StatelessWidget {
   /// Creates user name
   const UserName({
-    Key? key,
+    super.key,
     required this.author,
-  }) : super(key: key);
+  });
 
   /// Author to show name from
   final types.User author;

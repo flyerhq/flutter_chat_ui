@@ -16,7 +16,7 @@ import 'user_name.dart';
 class TextMessage extends StatelessWidget {
   /// Creates a text message widget from a [types.TextMessage] class
   const TextMessage({
-    Key? key,
+    super.key,
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
     required this.isTextMessageTextSelectable,
@@ -26,7 +26,7 @@ class TextMessage extends StatelessWidget {
     required this.previewTapOptions,
     required this.usePreviewData,
     required this.showName,
-  }) : super(key: key);
+  });
 
   /// See [Message.emojiEnlargementBehavior]
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
@@ -219,28 +219,28 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _enlargeEmojis =
+    final enlargeEmojis =
         emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
             isConsistsOfEmojis(emojiEnlargementBehavior, message);
-    final _theme = InheritedChatTheme.of(context).theme;
-    final _user = InheritedUser.of(context).user;
-    final _width = MediaQuery.of(context).size.width;
+    final theme = InheritedChatTheme.of(context).theme;
+    final user = InheritedUser.of(context).user;
+    final width = MediaQuery.of(context).size.width;
 
     if (usePreviewData && onPreviewDataFetched != null) {
       final urlRegexp = RegExp(regexLink, caseSensitive: false);
       final matches = urlRegexp.allMatches(message.text);
 
       if (matches.isNotEmpty) {
-        return _linkPreview(_user, _width, context);
+        return _linkPreview(user, width, context);
       }
     }
 
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: _theme.messageInsetsHorizontal,
-        vertical: _theme.messageInsetsVertical,
+        horizontal: theme.messageInsetsHorizontal,
+        vertical: theme.messageInsetsVertical,
       ),
-      child: _textWidgetBuilder(_user, context, _enlargeEmojis),
+      child: _textWidgetBuilder(user, context, enlargeEmojis),
     );
   }
 }

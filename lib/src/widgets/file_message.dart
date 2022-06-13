@@ -10,17 +10,17 @@ import 'inherited_user.dart';
 class FileMessage extends StatelessWidget {
   /// Creates a file message widget based on a [types.FileMessage]
   const FileMessage({
-    Key? key,
+    super.key,
     required this.message,
-  }) : super(key: key);
+  });
 
   /// [types.FileMessage]
   final types.FileMessage message;
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
-    final _color = _user.id == message.author.id
+    final user = InheritedUser.of(context).user;
+    final color = user.id == message.author.id
         ? InheritedChatTheme.of(context).theme.sentMessageDocumentIconColor
         : InheritedChatTheme.of(context).theme.receivedMessageDocumentIconColor;
 
@@ -38,7 +38,7 @@ class FileMessage extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: _color.withOpacity(0.2),
+                color: color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(21),
               ),
               height: 42,
@@ -49,7 +49,7 @@ class FileMessage extends StatelessWidget {
                   if (message.isLoading ?? false)
                     Positioned.fill(
                       child: CircularProgressIndicator(
-                        color: _color,
+                        color: color,
                         strokeWidth: 2,
                       ),
                     ),
@@ -57,7 +57,7 @@ class FileMessage extends StatelessWidget {
                       ? InheritedChatTheme.of(context).theme.documentIcon!
                       : Image.asset(
                           'assets/icon-document.png',
-                          color: _color,
+                          color: color,
                           package: 'flutter_chat_ui',
                         ),
                 ],
@@ -73,7 +73,7 @@ class FileMessage extends StatelessWidget {
                   children: [
                     Text(
                       message.name,
-                      style: _user.id == message.author.id
+                      style: user.id == message.author.id
                           ? InheritedChatTheme.of(context)
                               .theme
                               .sentMessageBodyTextStyle
@@ -88,7 +88,7 @@ class FileMessage extends StatelessWidget {
                       ),
                       child: Text(
                         formatBytes(message.size.truncate()),
-                        style: _user.id == message.author.id
+                        style: user.id == message.author.id
                             ? InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageCaptionTextStyle
