@@ -76,6 +76,7 @@ class Chat extends StatefulWidget {
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
+    this.userAgent,
   });
 
   /// See [Message.avatarBuilder]
@@ -264,6 +265,9 @@ class Chat extends StatefulWidget {
   /// See [InheritedUser.user]
   final types.User user;
 
+  /// See [Message.userAgent]
+  final String? userAgent;
+
   @override
   State<Chat> createState() => _ChatState();
 }
@@ -431,6 +435,7 @@ class _ChatState extends State<Chat> {
         showUserAvatars: widget.showUserAvatars,
         textMessageBuilder: widget.textMessageBuilder,
         usePreviewData: widget.usePreviewData,
+        userAgent: widget.userAgent,
       );
     }
   }

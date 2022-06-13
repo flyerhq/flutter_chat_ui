@@ -47,6 +47,7 @@ class Message extends StatelessWidget {
     required this.showUserAvatars,
     this.textMessageBuilder,
     required this.usePreviewData,
+    this.userAgent,
   });
 
   /// This is to allow custom user avatar builder
@@ -150,6 +151,9 @@ class Message extends StatelessWidget {
   /// See [TextMessage.usePreviewData]
   final bool usePreviewData;
 
+  /// See [TextMessage.userAgent]
+  final String? userAgent;
+
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
           UserAvatar(author: message.author, onAvatarTap: onAvatarTap)
@@ -219,6 +223,7 @@ class Message extends StatelessWidget {
                 previewTapOptions: previewTapOptions,
                 showName: showName,
                 usePreviewData: usePreviewData,
+                userAgent: userAgent,
               );
       default:
         return const SizedBox();

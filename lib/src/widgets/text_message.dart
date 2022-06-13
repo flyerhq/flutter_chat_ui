@@ -24,8 +24,9 @@ class TextMessage extends StatelessWidget {
     this.nameBuilder,
     this.onPreviewDataFetched,
     required this.previewTapOptions,
-    required this.usePreviewData,
     required this.showName,
+    required this.usePreviewData,
+    this.userAgent,
   });
 
   /// See [Message.emojiEnlargementBehavior]
@@ -56,6 +57,9 @@ class TextMessage extends StatelessWidget {
 
   /// Enables link (URL) preview
   final bool usePreviewData;
+
+  /// User agent to fetch preview data with
+  final String? userAgent;
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
     if (message.previewData == null) {
@@ -96,6 +100,7 @@ class TextMessage extends StatelessWidget {
       previewData: message.previewData,
       text: message.text,
       textWidget: _textWidgetBuilder(user, context, false),
+      userAgent: userAgent,
       width: width,
     );
   }
@@ -157,7 +162,7 @@ class TextMessage extends StatelessWidget {
                     caseSensitive: false,
                   );
                   if (!urlText.startsWith(protocolIdentifierRegex)) {
-                    urlText = "https://" + urlText;
+                    urlText = "https://$urlText";
                   }
                   final url = Uri.tryParse(urlText);
                   if (url != null && await canLaunchUrl(url)) {
