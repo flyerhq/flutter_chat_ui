@@ -139,9 +139,9 @@ class TextMessage extends StatelessWidget {
             parse: [
               MatchText(
                 onTap: (mail) async {
-                  final url = 'mailto:$mail';
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                  final url = Uri(scheme: 'mailto', path: mail);
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
                   }
                 },
                 pattern: regexEmail,
@@ -151,9 +151,17 @@ class TextMessage extends StatelessWidget {
                     ),
               ),
               MatchText(
-                onTap: (url) async {
-                  if (await canLaunch(url)) {
-                    await launch(url);
+                onTap: (urlText) async {
+                  final protocolIdentifierRegex = RegExp(
+                    r'^((http|ftp|https):\/\/)',
+                    caseSensitive: false,
+                  );
+                  if (!urlText.startsWith(protocolIdentifierRegex)) {
+                    urlText = "https://" + urlText;
+                  }
+                  final url = Uri.tryParse(urlText);
+                  if (url != null && await canLaunchUrl(url)) {
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
                   }
                 },
                 pattern: regexLink,
