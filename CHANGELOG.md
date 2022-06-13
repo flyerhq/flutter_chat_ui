@@ -1,3 +1,8 @@
+## 1.6.0
+
+- Update to Flutter 3. Thanks @felixgabler for the PR!
+- Fix link preview open link. Thanks @felixgabler for the PR!
+
 ## 1.5.8
 
 - Fix emoji messages. Thanks @felixgabler for the PR!

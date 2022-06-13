@@ -157,7 +157,7 @@ class TextMessage extends StatelessWidget {
                     caseSensitive: false,
                   );
                   if (!urlText.startsWith(protocolIdentifierRegex)) {
-                    urlText = "https://" + urlText;
+                    urlText = "https://$urlText";
                   }
                   final url = Uri.tryParse(urlText);
                   if (url != null && await canLaunchUrl(url)) {
