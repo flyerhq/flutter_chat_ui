@@ -33,9 +33,9 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.4
-  file_picker: ^4.5.1
-  flutter_chat_types: ^3.3.4
+  cupertino_icons: ^1.0.5
+  file_picker: ^4.6.1
+  flutter_chat_types: ^3.4.1
   flutter_chat_ui:
     path: ../
   image_picker: ^0.8.5+3
@@ -58,7 +58,7 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
-# The following section is specific to Flutter.
+# The following section is specific to Flutter packages.
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -71,7 +71,7 @@ flutter:
     - messages.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
+  # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
