@@ -5,10 +5,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 class InheritedUser extends InheritedWidget {
   /// Creates [InheritedWidget] from a provided [types.User] class
   const InheritedUser({
-    Key? key,
+    super.key,
     required this.user,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   /// Represents current logged in user. Used to determine message's author.
   final types.User user;

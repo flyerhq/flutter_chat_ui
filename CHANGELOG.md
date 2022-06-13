@@ -1,3 +1,9 @@
+## 1.6.0
+
+- **BREAKING CHANGE**: `copyWith` on messages works differently (keeping previous values unless set to null), and sometimes casting to a specific message type is required. Please check your codebase if you're using it. Thanks!
+- Update to Flutter 3. Thanks @felixgabler for the PR!
+- Fix link preview open link. Thanks @felixgabler for the PR!
+
 ## 1.5.8
 
 - Fix emoji messages. Thanks @felixgabler for the PR!

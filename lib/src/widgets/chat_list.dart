@@ -10,7 +10,7 @@ import 'inherited_user.dart';
 class ChatList extends StatefulWidget {
   /// Creates a chat list widget
   const ChatList({
-    Key? key,
+    super.key,
     this.isLastPage,
     required this.itemBuilder,
     required this.items,
@@ -18,7 +18,7 @@ class ChatList extends StatefulWidget {
     this.onEndReachedThreshold,
     this.scrollController,
     this.scrollPhysics,
-  }) : super(key: key);
+  });
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -49,7 +49,7 @@ class ChatList extends StatefulWidget {
   final ScrollPhysics? scrollPhysics;
 
   @override
-  _ChatListState createState() => _ChatListState();
+  State<ChatList> createState() => _ChatListState();
 }
 
 /// [ChatList] widget state
@@ -190,8 +190,6 @@ class _ChatListState extends State<ChatList>
 
   @override
   Widget build(BuildContext context) {
-    final _query = MediaQuery.of(context);
-
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (widget.onEndReached == null || widget.isLastPage == true) {
@@ -238,7 +236,7 @@ class _ChatListState extends State<ChatList>
           ),
           SliverPadding(
             padding: EdgeInsets.only(
-              top: 16 + (kIsWeb ? 0 : _query.padding.top),
+              top: 16 + (kIsWeb ? 0 : MediaQuery.of(context).padding.top),
             ),
             sliver: SliverToBoxAdapter(
               child: SizeTransition(

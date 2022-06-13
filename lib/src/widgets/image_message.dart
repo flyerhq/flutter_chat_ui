@@ -13,10 +13,10 @@ import 'inherited_user.dart';
 class ImageMessage extends StatefulWidget {
   /// Creates an image message widget based on [types.ImageMessage]
   const ImageMessage({
-    Key? key,
+    super.key,
     required this.message,
     required this.messageWidth,
-  }) : super(key: key);
+  });
 
   /// [types.ImageMessage]
   final types.ImageMessage message;
@@ -25,7 +25,7 @@ class ImageMessage extends StatefulWidget {
   final int messageWidth;
 
   @override
-  _ImageMessageState createState() => _ImageMessageState();
+  State<ImageMessage> createState() => _ImageMessageState();
 }
 
 /// [ImageMessage] widget state
@@ -77,7 +77,7 @@ class _ImageMessageState extends State<ImageMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
+    final user = InheritedUser.of(context).user;
 
     if (_size.aspectRatio == 0) {
       return Container(
@@ -87,7 +87,7 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return Container(
-        color: _user.id == widget.message.author.id
+        color: user.id == widget.message.author.id
             ? InheritedChatTheme.of(context).theme.primaryColor
             : InheritedChatTheme.of(context).theme.secondaryColor,
         child: Row(
@@ -123,7 +123,7 @@ class _ImageMessageState extends State<ImageMessage> {
                   children: [
                     Text(
                       widget.message.name,
-                      style: _user.id == widget.message.author.id
+                      style: user.id == widget.message.author.id
                           ? InheritedChatTheme.of(context)
                               .theme
                               .sentMessageBodyTextStyle
@@ -138,7 +138,7 @@ class _ImageMessageState extends State<ImageMessage> {
                       ),
                       child: Text(
                         formatBytes(widget.message.size.truncate()),
-                        style: _user.id == widget.message.author.id
+                        style: user.id == widget.message.author.id
                             ? InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageCaptionTextStyle

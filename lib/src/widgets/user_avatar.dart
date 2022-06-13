@@ -8,10 +8,10 @@ import 'inherited_chat_theme.dart';
 class UserAvatar extends StatelessWidget {
   /// Creates user avatar
   const UserAvatar({
-    Key? key,
+    super.key,
     required this.author,
     this.onAvatarTap,
-  }) : super(key: key);
+  });
 
   /// Author to show image and name initials from
   final types.User author;

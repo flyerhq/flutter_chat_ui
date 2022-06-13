@@ -7,11 +7,11 @@ import 'inherited_l10n.dart';
 class AttachmentButton extends StatelessWidget {
   /// Creates attachment button widget
   const AttachmentButton({
-    Key? key,
+    super.key,
     this.isLoading = false,
     this.onPressed,
     this.padding = EdgeInsets.zero,
-  }) : super(key: key);
+  });
 
   /// Show a loading indicator instead of the button
   final bool isLoading;
