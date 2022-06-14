@@ -10,6 +10,7 @@ import '../models/preview_tap_options.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
+import 'pattern_style.dart';
 import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview
@@ -110,7 +111,6 @@ class TextMessage extends StatelessWidget {
     BuildContext context,
     bool enlargeEmojis,
   ) {
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     final theme = InheritedChatTheme.of(context).theme;
     final bodyLinkTextStyle = user.id == message.author.id
         ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle
@@ -176,39 +176,45 @@ class TextMessage extends StatelessWidget {
                     ),
               ),
               MatchText(
-                pattern: '(\\*\\*|\\*)(.*?)(\\*\\*|\\*)',
+                pattern: PatternStyle.bold.pattern,
                 style: boldTextStyle ??
-                    bodyTextStyle.copyWith(fontWeight: FontWeight.bold),
+                    bodyTextStyle.merge(PatternStyle.bold.textStyle),
                 renderText: ({required String str, required String pattern}) {
                   return {
-                    'display': str.replaceAll(RegExp('(\\*\\*|\\*)'), '')
+                    'display': str.replaceAll(
+                        PatternStyle.bold.from, PatternStyle.bold.replace)
                   };
                 },
               ),
               MatchText(
-                pattern: '_(.*?)_',
-                style: bodyTextStyle.copyWith(fontStyle: FontStyle.italic),
+                pattern: PatternStyle.italic.pattern,
+                style: bodyTextStyle.merge(PatternStyle.italic.textStyle),
                 renderText: ({required String str, required String pattern}) {
-                  return {'display': str.replaceAll('_', '')};
+                  return {
+                    'display': str.replaceAll(
+                        PatternStyle.italic.from, PatternStyle.italic.replace)
+                  };
                 },
               ),
               MatchText(
-                pattern: '~(.*?)~',
-                style: bodyTextStyle.copyWith(
-                  decoration: TextDecoration.lineThrough,
-                ),
+                pattern: PatternStyle.lineThrough.pattern,
+                style: bodyTextStyle.merge(PatternStyle.lineThrough.textStyle),
                 renderText: ({required String str, required String pattern}) {
-                  return {'display': str.replaceAll('~', '')};
+                  return {
+                    'display': str.replaceAll(PatternStyle.lineThrough.from,
+                        PatternStyle.lineThrough.replace)
+                  };
                 },
               ),
               MatchText(
-                pattern: '`(.*?)`',
+                pattern: PatternStyle.code.pattern,
                 style: codeTextStyle ??
-                    bodyTextStyle.copyWith(
-                      fontFamily: isIOS ? 'Courier' : 'monospace',
-                    ),
+                    bodyTextStyle.merge(PatternStyle.code.textStyle),
                 renderText: ({required String str, required String pattern}) {
-                  return {'display': str.replaceAll('`', '')};
+                  return {
+                    'display': str.replaceAll(
+                        PatternStyle.code.from, PatternStyle.code.replace)
+                  };
                 },
               ),
             ],

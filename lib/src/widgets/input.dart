@@ -7,6 +7,7 @@ import '../models/send_button_visibility_mode.dart';
 import 'attachment_button.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
+import 'input_text_field_controller.dart';
 import 'send_button.dart';
 
 class NewLineIntent extends Intent {
@@ -63,7 +64,7 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
-  final _textController = TextEditingController();
+  final _textController = InputTextFieldController();
 
   @override
   void initState() {
