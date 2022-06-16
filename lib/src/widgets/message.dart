@@ -17,7 +17,7 @@ import 'user_avatar.dart';
 /// messages and status. Sets maximum width for a message for
 /// a nice look on larger screens.
 class Message extends StatelessWidget {
-  /// Creates a particular message from any message type
+  /// Creates a particular message from any message type.
   const Message({
     super.key,
     this.avatarBuilder,
@@ -65,7 +65,7 @@ class Message extends StatelessWidget {
     required bool nextMessageInGroup,
   })? bubbleBuilder;
 
-  /// Build a custom message inside predefined bubble
+  /// Build a custom message inside predefined bubble.
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
 
@@ -74,56 +74,56 @@ class Message extends StatelessWidget {
   /// Defaults to [EmojiEnlargementBehavior.multi].
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
 
-  /// Build a file message inside predefined bubble
+  /// Build a file message inside predefined bubble.
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
 
   /// Hide background for messages containing only emojis.
   final bool hideBackgroundOnEmojiMessages;
 
-  /// Build an image message inside predefined bubble
+  /// Build an image message inside predefined bubble.
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
 
-  /// See [TextMessage.isTextMessageTextSelectable]
+  /// See [TextMessage.isTextMessageTextSelectable].
   final bool isTextMessageTextSelectable;
 
-  /// Any message type
+  /// Any message type.
   final types.Message message;
 
-  /// Maximum message width
+  /// Maximum message width.
   final int messageWidth;
 
-  /// See [TextMessage.nameBuilder]
+  /// See [TextMessage.nameBuilder].
   final Widget Function(String userId)? nameBuilder;
 
-  /// See [UserAvatar.onAvatarTap]
+  /// See [UserAvatar.onAvatarTap].
   final void Function(types.User)? onAvatarTap;
 
-  /// Called when user double taps on any message
+  /// Called when user double taps on any message.
   final void Function(BuildContext context, types.Message)? onMessageDoubleTap;
 
-  /// Called when user makes a long press on any message
+  /// Called when user makes a long press on any message.
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
-  /// Called when user makes a long press on status icon in any message
+  /// Called when user makes a long press on status icon in any message.
   final void Function(BuildContext context, types.Message)?
       onMessageStatusLongPress;
 
-  /// Called when user taps on status icon in any message
+  /// Called when user taps on status icon in any message.
   final void Function(BuildContext context, types.Message)? onMessageStatusTap;
 
-  /// Called when user taps on any message
+  /// Called when user taps on any message.
   final void Function(BuildContext context, types.Message)? onMessageTap;
 
-  /// Called when the message's visibility changes
+  /// Called when the message's visibility changes.
   final void Function(types.Message, bool visible)? onMessageVisibilityChanged;
 
-  /// See [TextMessage.onPreviewDataFetched]
+  /// See [TextMessage.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// See [TextMessage.previewTapOptions]
+  /// See [TextMessage.previewTapOptions].
   final PreviewTapOptions previewTapOptions;
 
   /// Rounds border of the message to visually group messages together.
@@ -132,10 +132,10 @@ class Message extends StatelessWidget {
   /// Show user avatar for the received message. Useful for a group chat.
   final bool showAvatar;
 
-  /// See [TextMessage.showName]
+  /// See [TextMessage.showName].
   final bool showName;
 
-  /// Show message's status
+  /// Show message's status.
   final bool showStatus;
 
   /// Show user avatars for received messages. Useful for a group chat.
@@ -148,11 +148,107 @@ class Message extends StatelessWidget {
     required bool showName,
   })? textMessageBuilder;
 
-  /// See [TextMessage.usePreviewData]
+  /// See [TextMessage.usePreviewData].
   final bool usePreviewData;
 
-  /// See [TextMessage.userAgent]
+  /// See [TextMessage.userAgent].
   final String? userAgent;
+
+  @override
+  Widget build(BuildContext context) {
+    final query = MediaQuery.of(context);
+    final user = InheritedUser.of(context).user;
+    final currentUserIsAuthor = user.id == message.author.id;
+    final enlargeEmojis =
+        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
+            message is types.TextMessage &&
+            isConsistsOfEmojis(
+              emojiEnlargementBehavior,
+              message as types.TextMessage,
+            );
+    final messageBorderRadius =
+        InheritedChatTheme.of(context).theme.messageBorderRadius;
+    final borderRadius = BorderRadiusDirectional.only(
+      bottomEnd: Radius.circular(
+        currentUserIsAuthor
+            ? roundBorder
+                ? messageBorderRadius
+                : 0
+            : messageBorderRadius,
+      ),
+      bottomStart: Radius.circular(
+        currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
+      ),
+      topEnd: Radius.circular(messageBorderRadius),
+      topStart: Radius.circular(messageBorderRadius),
+    );
+
+    return Container(
+      alignment: currentUserIsAuthor
+          ? AlignmentDirectional.centerEnd
+          : AlignmentDirectional.centerStart,
+      margin: EdgeInsetsDirectional.only(
+        bottom: 4,
+        end: kIsWeb ? 0 : query.padding.right,
+        start: 20 + (kIsWeb ? 0 : query.padding.left),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: messageWidth.toDouble(),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onDoubleTap: () => onMessageDoubleTap?.call(context, message),
+                  onLongPress: () => onMessageLongPress?.call(context, message),
+                  onTap: () => onMessageTap?.call(context, message),
+                  child: onMessageVisibilityChanged != null
+                      ? VisibilityDetector(
+                          key: Key(message.id),
+                          onVisibilityChanged: (visibilityInfo) =>
+                              onMessageVisibilityChanged!(
+                            message,
+                            visibilityInfo.visibleFraction > 0.1,
+                          ),
+                          child: _bubbleBuilder(
+                            context,
+                            borderRadius.resolve(Directionality.of(context)),
+                            currentUserIsAuthor,
+                            enlargeEmojis,
+                          ),
+                        )
+                      : _bubbleBuilder(
+                          context,
+                          borderRadius.resolve(Directionality.of(context)),
+                          currentUserIsAuthor,
+                          enlargeEmojis,
+                        ),
+                ),
+              ],
+            ),
+          ),
+          if (currentUserIsAuthor)
+            Padding(
+              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+              child: showStatus
+                  ? GestureDetector(
+                      onLongPress: () =>
+                          onMessageStatusLongPress?.call(context, message),
+                      onTap: () => onMessageStatusTap?.call(context, message),
+                      child: _statusBuilder(context),
+                    )
+                  : null,
+            ),
+        ],
+      ),
+    );
+  }
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
@@ -164,29 +260,28 @@ class Message extends StatelessWidget {
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
     bool enlargeEmojis,
-  ) {
-    return bubbleBuilder != null
-        ? bubbleBuilder!(
-            _messageBuilder(),
-            message: message,
-            nextMessageInGroup: roundBorder,
-          )
-        : enlargeEmojis && hideBackgroundOnEmojiMessages
-            ? _messageBuilder()
-            : Container(
-                decoration: BoxDecoration(
-                  borderRadius: borderRadius,
-                  color: !currentUserIsAuthor ||
-                          message.type == types.MessageType.image
-                      ? InheritedChatTheme.of(context).theme.secondaryColor
-                      : InheritedChatTheme.of(context).theme.primaryColor,
-                ),
-                child: ClipRRect(
-                  borderRadius: borderRadius,
-                  child: _messageBuilder(),
-                ),
-              );
-  }
+  ) =>
+      bubbleBuilder != null
+          ? bubbleBuilder!(
+              _messageBuilder(),
+              message: message,
+              nextMessageInGroup: roundBorder,
+            )
+          : enlargeEmojis && hideBackgroundOnEmojiMessages
+              ? _messageBuilder()
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius,
+                    color: !currentUserIsAuthor ||
+                            message.type == types.MessageType.image
+                        ? InheritedChatTheme.of(context).theme.secondaryColor
+                        : InheritedChatTheme.of(context).theme.primaryColor,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: borderRadius,
+                    child: _messageBuilder(),
+                  ),
+                );
 
   Widget _messageBuilder() {
     switch (message.type) {
@@ -276,97 +371,5 @@ class Message extends StatelessWidget {
       default:
         return const SizedBox();
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final query = MediaQuery.of(context);
-    final user = InheritedUser.of(context).user;
-    final currentUserIsAuthor = user.id == message.author.id;
-    final enlargeEmojis =
-        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
-            message is types.TextMessage &&
-            isConsistsOfEmojis(
-                emojiEnlargementBehavior, message as types.TextMessage);
-    final messageBorderRadius =
-        InheritedChatTheme.of(context).theme.messageBorderRadius;
-    final borderRadius = BorderRadiusDirectional.only(
-      bottomEnd: Radius.circular(
-        currentUserIsAuthor
-            ? roundBorder
-                ? messageBorderRadius
-                : 0
-            : messageBorderRadius,
-      ),
-      bottomStart: Radius.circular(
-        currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
-      ),
-      topEnd: Radius.circular(messageBorderRadius),
-      topStart: Radius.circular(messageBorderRadius),
-    );
-
-    return Container(
-      alignment: currentUserIsAuthor
-          ? AlignmentDirectional.centerEnd
-          : AlignmentDirectional.centerStart,
-      margin: EdgeInsetsDirectional.only(
-        bottom: 4,
-        end: kIsWeb ? 0 : query.padding.right,
-        start: 20 + (kIsWeb ? 0 : query.padding.left),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: messageWidth.toDouble(),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onDoubleTap: () => onMessageDoubleTap?.call(context, message),
-                  onLongPress: () => onMessageLongPress?.call(context, message),
-                  onTap: () => onMessageTap?.call(context, message),
-                  child: onMessageVisibilityChanged != null
-                      ? VisibilityDetector(
-                          key: Key(message.id),
-                          onVisibilityChanged: (visibilityInfo) =>
-                              onMessageVisibilityChanged!(message,
-                                  visibilityInfo.visibleFraction > 0.1),
-                          child: _bubbleBuilder(
-                            context,
-                            borderRadius.resolve(Directionality.of(context)),
-                            currentUserIsAuthor,
-                            enlargeEmojis,
-                          ),
-                        )
-                      : _bubbleBuilder(
-                          context,
-                          borderRadius.resolve(Directionality.of(context)),
-                          currentUserIsAuthor,
-                          enlargeEmojis,
-                        ),
-                ),
-              ],
-            ),
-          ),
-          if (currentUserIsAuthor)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () =>
-                          onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: _statusBuilder(context),
-                    )
-                  : null,
-            ),
-        ],
-      ),
-    );
   }
 }

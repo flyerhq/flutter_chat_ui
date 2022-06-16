@@ -10,13 +10,13 @@ class DateHeader extends Equatable {
     required this.text,
   });
 
-  /// Equatable props
-  @override
-  List<Object> get props => [text];
-
-  /// Message date
+  /// Message date.
   final DateTime dateTime;
 
-  /// Text to show in a header
+  /// Text to show in a header.
   final String text;
+
+  /// Equatable props.
+  @override
+  List<Object> get props => [text];
 }

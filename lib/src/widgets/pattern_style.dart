@@ -2,44 +2,44 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PatternStyle {
-  final RegExp regExp;
+  PatternStyle(this.from, this.regExp, this.replace, this.textStyle);
+
   final Pattern from;
+  final RegExp regExp;
   final String replace;
   final TextStyle textStyle;
-
-  PatternStyle(this.regExp, this.from, this.replace, this.textStyle);
 
   String get pattern => regExp.pattern;
 
   static PatternStyle get bold => PatternStyle(
-        RegExp('(\\*\\*|\\*)(.*?)(\\*\\*|\\*)'),
         RegExp('(\\*\\*|\\*)'),
+        RegExp('(\\*\\*|\\*)(.*?)(\\*\\*|\\*)'),
         '',
         const TextStyle(fontWeight: FontWeight.bold),
       );
 
-  static PatternStyle get italic => PatternStyle(
-        RegExp('_(.*?)_'),
-        '_',
-        '',
-        const TextStyle(fontStyle: FontStyle.italic),
-      );
-
-  static PatternStyle get lineThrough => PatternStyle(
-        RegExp('~(.*?)~'),
-        '~',
-        '',
-        const TextStyle(decoration: TextDecoration.lineThrough),
-      );
-
   static PatternStyle get code => PatternStyle(
-        RegExp('`(.*?)`'),
         '`',
+        RegExp('`(.*?)`'),
         '',
         TextStyle(
           fontFamily: defaultTargetPlatform == TargetPlatform.iOS
               ? 'Courier'
               : 'monospace',
         ),
+      );
+
+  static PatternStyle get italic => PatternStyle(
+        '_',
+        RegExp('_(.*?)_'),
+        '',
+        const TextStyle(fontStyle: FontStyle.italic),
+      );
+
+  static PatternStyle get lineThrough => PatternStyle(
+        '~',
+        RegExp('~(.*?)~'),
+        '',
+        const TextStyle(decoration: TextDecoration.lineThrough),
       );
 }

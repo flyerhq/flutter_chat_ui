@@ -10,13 +10,13 @@ class PreviewImage extends Equatable {
     required this.uri,
   });
 
-  /// Equatable props
-  @override
-  List<Object> get props => [id, uri];
-
-  /// Unique ID of the image
+  /// Unique ID of the image.
   final String id;
 
-  /// Image's URI
+  /// Image's URI.
   final String uri;
+
+  /// Equatable props.
+  @override
+  List<Object> get props => [id, uri];
 }

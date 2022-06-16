@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_ui/src/models/message_spacer.dart';
 import 'package:flutter_chat_ui/src/models/preview_image.dart';
 import 'package:flutter_chat_ui/src/util.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -19,30 +19,29 @@ void main() {
 
   group('getUserAvatarNameColor', () {
     test('returns correct avatar color', () {
-      types.User user =
-          const types.User(firstName: 'John', id: '1', lastName: 'Doe');
+      const user = types.User(firstName: 'John', id: '1', lastName: 'Doe');
       expect(getUserAvatarNameColor(user, colors), const Color(0xff66e0da));
     });
   });
 
   group('getUserInitials', () {
     test('returns correct user initials', () {
-      types.User user =
-          const types.User(firstName: 'John', id: '1', lastName: 'Doe');
+      const user = types.User(firstName: 'John', id: '1', lastName: 'Doe');
       expect(getUserInitials(user), 'JD');
     });
   });
 
   group('getUserName', () {
-    test('returns correct user name when first name and last name provided',
-        () {
-      types.User user =
-          const types.User(firstName: 'John', id: '1', lastName: 'Doe');
-      expect(getUserName(user), 'John Doe');
-    });
+    test(
+      'returns correct user name when first name and last name provided',
+      () {
+        const user = types.User(firstName: 'John', id: '1', lastName: 'Doe');
+        expect(getUserName(user), 'John Doe');
+      },
+    );
 
     test('returns correct user name when only first name provided', () {
-      types.User user = const types.User(
+      const user = types.User(
         firstName: 'John',
         id: '1',
       );
@@ -50,7 +49,7 @@ void main() {
     });
 
     test('returns correct user name when only last name provided', () {
-      types.User user = const types.User(id: '1', lastName: 'Doe');
+      const user = types.User(id: '1', lastName: 'Doe');
       expect(getUserName(user), 'Doe');
     });
   });
@@ -66,7 +65,7 @@ void main() {
 
   group('isConsistsOfEmojis', () {
     test('returns false if text doesnt contain emoji', () {
-      types.TextMessage message = const types.TextMessage(
+      const message = types.TextMessage(
         author: types.User(id: '1'),
         id: '1',
         text: 'test',
@@ -78,7 +77,7 @@ void main() {
     });
 
     test('returns true if text contains emoji', () {
-      types.TextMessage message = const types.TextMessage(
+      const message = types.TextMessage(
         author: types.User(id: '1'),
         id: '1',
         text: '😊',
@@ -92,13 +91,13 @@ void main() {
 
   group('calculateChatMessages', () {
     test('correctly returns calculated chat messages', () {
-      types.User user = const types.User(id: '1');
-      types.TextMessage message = types.TextMessage(
+      const user = types.User(id: '1');
+      const message = types.TextMessage(
         author: user,
         id: '1',
         text: 'test',
       );
-      types.ImageMessage imageMessage = types.ImageMessage(
+      const imageMessage = types.ImageMessage(
         author: user,
         id: '2',
         name: 'test image',
@@ -106,32 +105,33 @@ void main() {
         uri: 'https://some.image',
       );
       expect(
-          calculateChatMessages(
-            [imageMessage, message],
-            user,
-            dateHeaderThreshold: 1000,
-            groupMessagesThreshold: 1000,
-            showUserNames: true,
-          ),
+        calculateChatMessages(
+          [imageMessage, message],
+          user,
+          dateHeaderThreshold: 1000,
+          groupMessagesThreshold: 1000,
+          showUserNames: true,
+        ),
+        [
           [
-            [
-              const MessageSpacer(height: 12.0, id: '2'),
-              {
-                'message': imageMessage,
-                'nextMessageInGroup': false,
-                'showName': false,
-                'showStatus': true
-              },
-              const MessageSpacer(height: 12.0, id: '1'),
-              {
-                'message': message,
-                'nextMessageInGroup': false,
-                'showName': false,
-                'showStatus': true
-              }
-            ],
-            [const PreviewImage(id: '2', uri: 'https://some.image')]
-          ]);
+            const MessageSpacer(height: 12.0, id: '2'),
+            {
+              'message': imageMessage,
+              'nextMessageInGroup': false,
+              'showName': false,
+              'showStatus': true,
+            },
+            const MessageSpacer(height: 12.0, id: '1'),
+            {
+              'message': message,
+              'nextMessageInGroup': false,
+              'showName': false,
+              'showStatus': true,
+            },
+          ],
+          [const PreviewImage(id: '2', uri: 'https://some.image')],
+        ],
+      );
     });
   });
 }

@@ -11,10 +11,10 @@ environment:
   flutter: ">=2.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   diffutil_dart: ^3.0.0
   equatable: ^2.0.3
+  flutter:
+    sdk: flutter
   flutter_chat_types: ^3.4.1
   flutter_link_previewer: ^3.0.0
   flutter_parsed_text: ^2.2.1
@@ -25,6 +25,7 @@ dependencies:
   visibility_detector: ^0.3.3
 
 dev_dependencies:
+  dart_code_metrics: ^4.15.2
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter

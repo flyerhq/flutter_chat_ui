@@ -11,6 +11,6 @@ abstract class Conditional {
   /// `dart:html` is available, otherwise it will throw an unsupported error.
   factory Conditional() => createConditional();
 
-  /// Returns an appropriate platform ImageProvider for specified URI
+  /// Returns an appropriate platform ImageProvider for specified URI.
   ImageProvider getProvider(String uri);
 }

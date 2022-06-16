@@ -4,15 +4,15 @@ import 'package:meta/meta.dart';
 /// of a preview. By default link preview opens only when tapped on a link itself.
 @immutable
 class PreviewTapOptions {
-  /// Creates preview tap options config
+  /// Creates preview tap options config.
   const PreviewTapOptions({
     this.openOnImageTap = false,
     this.openOnTitleTap = false,
   });
 
-  /// Open link preview when tapped on preview's image
+  /// Open link preview when tapped on preview's image.
   final bool openOnImageTap;
 
-  /// Open link preview when tapped on preview's title and description
+  /// Open link preview when tapped on preview's title and description.
   final bool openOnTitleTap;
 }

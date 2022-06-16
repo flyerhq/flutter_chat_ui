@@ -13,9 +13,9 @@ import 'inherited_user.dart';
 import 'pattern_style.dart';
 import 'user_name.dart';
 
-/// A class that represents text message widget with optional link preview
+/// A class that represents text message widget with optional link preview.
 class TextMessage extends StatelessWidget {
-  /// Creates a text message widget from a [types.TextMessage] class
+  /// Creates a text message widget from a [types.TextMessage] class.
   const TextMessage({
     super.key,
     required this.emojiEnlargementBehavior,
@@ -30,42 +30,63 @@ class TextMessage extends StatelessWidget {
     this.userAgent,
   });
 
-  /// See [Message.emojiEnlargementBehavior]
+  /// See [Message.emojiEnlargementBehavior].
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
 
-  /// See [Message.hideBackgroundOnEmojiMessages]
+  /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
 
-  /// Whether user can tap and hold to select a text content
+  /// Whether user can tap and hold to select a text content.
   final bool isTextMessageTextSelectable;
 
-  /// [types.TextMessage]
+  /// [types.TextMessage].
   final types.TextMessage message;
 
   /// This is to allow custom user name builder
   /// By using this we can fetch newest user info based on id
   final Widget Function(String userId)? nameBuilder;
 
-  /// See [LinkPreview.onPreviewDataFetched]
+  /// See [LinkPreview.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap]
+  /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap].
   final PreviewTapOptions previewTapOptions;
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
 
-  /// Enables link (URL) preview
+  /// Enables link (URL) preview.
   final bool usePreviewData;
 
-  /// User agent to fetch preview data with
+  /// User agent to fetch preview data with.
   final String? userAgent;
 
-  void _onPreviewDataFetched(types.PreviewData previewData) {
-    if (message.previewData == null) {
-      onPreviewDataFetched?.call(message, previewData);
+  @override
+  Widget build(BuildContext context) {
+    final enlargeEmojis =
+        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
+            isConsistsOfEmojis(emojiEnlargementBehavior, message);
+    final theme = InheritedChatTheme.of(context).theme;
+    final user = InheritedUser.of(context).user;
+    final width = MediaQuery.of(context).size.width;
+
+    if (usePreviewData && onPreviewDataFetched != null) {
+      final urlRegexp = RegExp(regexLink, caseSensitive: false);
+      final matches = urlRegexp.allMatches(message.text);
+
+      if (matches.isNotEmpty) {
+        return _linkPreview(user, width, context);
+      }
     }
+
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: theme.messageInsetsHorizontal,
+        vertical: theme.messageInsetsVertical,
+      ),
+      child: _textWidgetBuilder(user, context, enlargeEmojis),
+    );
   }
 
   Widget _linkPreview(
@@ -104,6 +125,12 @@ class TextMessage extends StatelessWidget {
       userAgent: userAgent,
       width: width,
     );
+  }
+
+  void _onPreviewDataFetched(types.PreviewData previewData) {
+    if (message.previewData == null) {
+      onPreviewDataFetched?.call(message, previewData);
+    }
   }
 
   Widget _textWidgetBuilder(
@@ -162,7 +189,7 @@ class TextMessage extends StatelessWidget {
                     caseSensitive: false,
                   );
                   if (!urlText.startsWith(protocolIdentifierRegex)) {
-                    urlText = "https://$urlText";
+                    urlText = 'https://$urlText';
                   }
                   final url = Uri.tryParse(urlText);
                   if (url != null && await canLaunchUrl(url)) {
@@ -179,42 +206,46 @@ class TextMessage extends StatelessWidget {
                 pattern: PatternStyle.bold.pattern,
                 style: boldTextStyle ??
                     bodyTextStyle.merge(PatternStyle.bold.textStyle),
-                renderText: ({required String str, required String pattern}) {
-                  return {
-                    'display': str.replaceAll(
-                        PatternStyle.bold.from, PatternStyle.bold.replace)
-                  };
+                renderText: ({required String str, required String pattern}) =>
+                    {
+                  'display': str.replaceAll(
+                    PatternStyle.bold.from,
+                    PatternStyle.bold.replace,
+                  ),
                 },
               ),
               MatchText(
                 pattern: PatternStyle.italic.pattern,
                 style: bodyTextStyle.merge(PatternStyle.italic.textStyle),
-                renderText: ({required String str, required String pattern}) {
-                  return {
-                    'display': str.replaceAll(
-                        PatternStyle.italic.from, PatternStyle.italic.replace)
-                  };
+                renderText: ({required String str, required String pattern}) =>
+                    {
+                  'display': str.replaceAll(
+                    PatternStyle.italic.from,
+                    PatternStyle.italic.replace,
+                  ),
                 },
               ),
               MatchText(
                 pattern: PatternStyle.lineThrough.pattern,
                 style: bodyTextStyle.merge(PatternStyle.lineThrough.textStyle),
-                renderText: ({required String str, required String pattern}) {
-                  return {
-                    'display': str.replaceAll(PatternStyle.lineThrough.from,
-                        PatternStyle.lineThrough.replace)
-                  };
+                renderText: ({required String str, required String pattern}) =>
+                    {
+                  'display': str.replaceAll(
+                    PatternStyle.lineThrough.from,
+                    PatternStyle.lineThrough.replace,
+                  ),
                 },
               ),
               MatchText(
                 pattern: PatternStyle.code.pattern,
                 style: codeTextStyle ??
                     bodyTextStyle.merge(PatternStyle.code.textStyle),
-                renderText: ({required String str, required String pattern}) {
-                  return {
-                    'display': str.replaceAll(
-                        PatternStyle.code.from, PatternStyle.code.replace)
-                  };
+                renderText: ({required String str, required String pattern}) =>
+                    {
+                  'display': str.replaceAll(
+                    PatternStyle.code.from,
+                    PatternStyle.code.replace,
+                  ),
                 },
               ),
             ],
@@ -225,33 +256,6 @@ class TextMessage extends StatelessWidget {
             textWidthBasis: TextWidthBasis.longestLine,
           ),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final enlargeEmojis =
-        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
-            isConsistsOfEmojis(emojiEnlargementBehavior, message);
-    final theme = InheritedChatTheme.of(context).theme;
-    final user = InheritedUser.of(context).user;
-    final width = MediaQuery.of(context).size.width;
-
-    if (usePreviewData && onPreviewDataFetched != null) {
-      final urlRegexp = RegExp(regexLink, caseSensitive: false);
-      final matches = urlRegexp.allMatches(message.text);
-
-      if (matches.isNotEmpty) {
-        return _linkPreview(user, width, context);
-      }
-    }
-
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: theme.messageInsetsHorizontal,
-        vertical: theme.messageInsetsVertical,
-      ),
-      child: _textWidgetBuilder(user, context, enlargeEmojis),
     );
   }
 }

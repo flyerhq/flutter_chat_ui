@@ -15,6 +15,14 @@ import 'package:image_picker/image_picker.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onAttachmentPressed: _handleImageSelection,
+      ),
+    );
+
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
@@ -39,16 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       _addMessage(message);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onAttachmentPressed: _handleImageSelection,
-      ),
-    );
   }
 }
 ```
@@ -75,6 +73,14 @@ import 'package:file_picker/file_picker.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onAttachmentPressed: _handleFileSelection,
+      ),
+    );
+
   void _handleFileSelection() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.any,
@@ -93,16 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _addMessage(message);
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onAttachmentPressed: _handleFileSelection,
-      ),
-    );
-  }
 }
 ```
 
@@ -118,20 +114,18 @@ import 'package:open_file/open_file.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
-  void _handleMessageTap(BuildContext context, types.Message message) async {
-    if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
-    }
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: Chat(
         // ...
         onMessageTap: _handleMessageTap,
       ),
     );
+
+  void _handleMessageTap(BuildContext _, types.Message message) async {
+    if (message is types.FileMessage) {
+      await OpenFile.open(message.uri);
+    }
   }
 }
 ```
@@ -143,6 +137,14 @@ Link preview works automatically, we created a separate package for that, you ca
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
   // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onPreviewDataFetched: _handlePreviewDataFetched,
+      ),
+    );
+
   void _handlePreviewDataFetched(
     types.TextMessage message,
     types.PreviewData previewData,
@@ -152,21 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
       previewData: previewData,
     );
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _messages[index] = updatedMessage;
       });
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onPreviewDataFetched: _handlePreviewDataFetched,
-      ),
-    );
   }
 }
 ```
@@ -178,17 +170,18 @@ Now to choose between images and files from a single button we will use `showMod
 ```dart
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 
-// For the testing purposes, you should probably use https://pub.dev/packages/uuid
+// For the testing purposes, you should probably use https://pub.dev/packages/uuid.
 String randomString() {
-  var random = Random.secure();
-  var values = List<int>.generate(16, (i) => random.nextInt(255));
+  final random = Random.secure();
+  final values = List<int>.generate(16, (i) => random.nextInt(255));
   return base64UrlEncode(values);
 }
 
@@ -197,26 +190,36 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
-    );
-  }
+  Widget build(BuildContext context) => const MaterialApp(
+        home: MyHomePage(),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<types.Message> _messages = [];
+  final List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: Chat(
+          messages: _messages,
+          onAttachmentPressed: _handleAtachmentPressed,
+          onMessageTap: _handleMessageTap,
+          onPreviewDataFetched: _handlePreviewDataFetched,
+          onSendPressed: _handleSendPressed,
+          user: _user,
+        ),
+      );
 
   void _addMessage(types.Message message) {
     setState(() {
@@ -227,45 +230,43 @@ class _MyHomePageState extends State<MyHomePage> {
   void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: SizedBox(
-            height: 144,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _handleImageSelection();
-                  },
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Photo'),
-                  ),
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: 144,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleImageSelection();
+                },
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Photo'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _handleFileSelection();
-                  },
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('File'),
-                  ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleFileSelection();
+                },
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('File'),
                 ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Cancel'),
-                  ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Cancel'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -314,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _handleMessageTap(BuildContext context, types.Message message) async {
+  void _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.FileMessage) {
       await OpenFile.open(message.uri);
     }
@@ -329,7 +330,7 @@ class _MyHomePageState extends State<MyHomePage> {
       previewData: previewData,
     );
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _messages[index] = updatedMessage;
       });
@@ -346,20 +347,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _addMessage(textMessage);
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
-        onMessageTap: _handleMessageTap,
-        onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
-        user: _user,
-      ),
-    );
-  }
 }
 ```
 
@@ -370,37 +357,34 @@ Let's use the [bubble](https://pub.dev/packages/bubble) package as an example (v
 ```dart
 import 'package:bubble/bubble.dart';
 
-Widget _bubbleBuilder(
-  Widget child, {
-  required message,
-  required nextMessageInGroup,
-}) {
-  return Bubble(
-    child: child,
-    color: _user.id != message.author.id ||
-            message.type == types.MessageType.image
-        ? const Color(0xfff5f5f7)
-        : const Color(0xff6f61e8),
-    margin: nextMessageInGroup
-        ? const BubbleEdges.symmetric(horizontal: 6)
-        : null,
-    nip: nextMessageInGroup
-        ? BubbleNip.no
-        : _user.id != message.author.id
-            ? BubbleNip.leftBottom
-            : BubbleNip.rightBottom,
-  );
-}
-
 @override
-Widget build(BuildContext context) {
-  return Scaffold(
+Widget build(BuildContext context) => Scaffold(
     body: Chat(
       // ...
       bubbleBuilder: _bubbleBuilder,
     ),
   );
-}
+
+Widget _bubbleBuilder(
+  Widget child, {
+  required message,
+  required nextMessageInGroup,
+}) =>
+    Bubble(
+      child: child,
+      color: _user.id != message.author.id ||
+              message.type == types.MessageType.image
+          ? const Color(0xfff5f5f7)
+          : const Color(0xff6f61e8),
+      margin: nextMessageInGroup
+          ? const BubbleEdges.symmetric(horizontal: 6)
+          : null,
+      nip: nextMessageInGroup
+          ? BubbleNip.no
+          : _user.id != message.author.id
+              ? BubbleNip.leftBottom
+              : BubbleNip.rightBottom,
+    );
 ```
 
 This is how it would look like
@@ -428,6 +412,14 @@ class _MyHomePageState extends State<MyHomePage> {
     _handleEndReached();
   }
 
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onEndReached: _handleEndReached,
+      ),
+    );
+
   Future<void> _handleEndReached() async {
     final uri = Uri.parse(
       'https://api.instantwebtools.net/v1/passenger?page=$_page&size=20',
@@ -448,16 +440,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _messages = [..._messages, ...messages];
       _page = _page + 1;
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onEndReached: _handleEndReached,
-      ),
-    );
   }
 }
 ```

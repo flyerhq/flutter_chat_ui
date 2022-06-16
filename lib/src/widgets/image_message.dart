@@ -11,28 +11,28 @@ import 'inherited_user.dart';
 /// if the image is narrow, renders image in form of a file if aspect
 /// ratio is very small or very big.
 class ImageMessage extends StatefulWidget {
-  /// Creates an image message widget based on [types.ImageMessage]
+  /// Creates an image message widget based on [types.ImageMessage].
   const ImageMessage({
     super.key,
     required this.message,
     required this.messageWidth,
   });
 
-  /// [types.ImageMessage]
+  /// [types.ImageMessage].
   final types.ImageMessage message;
 
-  /// Maximum message width
+  /// Maximum message width.
   final int messageWidth;
 
   @override
   State<ImageMessage> createState() => _ImageMessageState();
 }
 
-/// [ImageMessage] widget state
+/// [ImageMessage] widget state.
 class _ImageMessageState extends State<ImageMessage> {
   ImageProvider? _image;
+  Size _size = Size.zero;
   ImageStream? _stream;
-  Size _size = const Size(0, 0);
 
   @override
   void initState() {
@@ -47,26 +47,6 @@ class _ImageMessageState extends State<ImageMessage> {
     if (_size.isEmpty) {
       _getImage();
     }
-  }
-
-  void _getImage() {
-    final oldImageStream = _stream;
-    _stream = _image?.resolve(createLocalImageConfiguration(context));
-    if (_stream?.key == oldImageStream?.key) {
-      return;
-    }
-    final listener = ImageStreamListener(_updateImage);
-    oldImageStream?.removeListener(listener);
-    _stream?.addListener(listener);
-  }
-
-  void _updateImage(ImageInfo info, bool _) {
-    setState(() {
-      _size = Size(
-        info.image.width.toDouble(),
-        info.image.height.toDouble(),
-      );
-    });
   }
 
   @override
@@ -169,5 +149,25 @@ class _ImageMessageState extends State<ImageMessage> {
         ),
       );
     }
+  }
+
+  void _getImage() {
+    final oldImageStream = _stream;
+    _stream = _image?.resolve(createLocalImageConfiguration(context));
+    if (_stream?.key == oldImageStream?.key) {
+      return;
+    }
+    final listener = ImageStreamListener(_updateImage);
+    oldImageStream?.removeListener(listener);
+    _stream?.addListener(listener);
+  }
+
+  void _updateImage(ImageInfo info, bool _) {
+    setState(() {
+      _size = Size(
+        info.image.width.toDouble(),
+        info.image.height.toDouble(),
+      );
+    });
   }
 }

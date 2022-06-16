@@ -7,7 +7,7 @@ import 'base_conditional.dart';
 /// Used from conditional imports, matches the definition in `conditional_stub.dart`.
 BaseConditional createConditional() => BrowserConditional();
 
-/// A conditional for browser
+/// A conditional for browser.
 class BrowserConditional extends BaseConditional {
   /// Returns [NetworkImage] if URI starts with http
   /// otherwise returns transparent image
@@ -21,7 +21,7 @@ class BrowserConditional extends BaseConditional {
   }
 }
 
-/// Transparent image data
+/// Transparent image data.
 final kTransparentImage = Uint8List.fromList(
   <int>[
     0x89,

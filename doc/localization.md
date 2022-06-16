@@ -31,15 +31,13 @@ You can override anything from some defined l10n or create a new one from scratc
 
 ```dart
 @override
-Widget build(BuildContext context) {
-  return Scaffold(
+Widget build(BuildContext context) => Scaffold(
     body: Chat(
       l10n: const ChatL10nEn(
         inputPlaceholder: 'Here',
       ),
     ),
   );
-}
 ```
 
 If you created a l10n from scratch just pass it to the `l10n` parameter. To see all available l10ns, check [API reference](https://pub.dev/documentation/flutter_chat_ui/latest/flutter_chat_ui/ChatL10n-class.html).

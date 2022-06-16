@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// Extend this class if you want to create a custom l10n.
 @immutable
 abstract class ChatL10n {
-  /// Creates a new chat l10n based on provided copy
+  /// Creates a new chat l10n based on provided copy.
   const ChatL10n({
     required this.attachmentButtonAccessibilityLabel,
     required this.emptyChatPlaceholder,
@@ -13,23 +13,23 @@ abstract class ChatL10n {
     required this.sendButtonAccessibilityLabel,
   });
 
-  /// Accessibility label (hint) for the attachment button
+  /// Accessibility label (hint) for the attachment button.
   final String attachmentButtonAccessibilityLabel;
 
-  /// Placeholder when there are no messages
+  /// Placeholder when there are no messages.
   final String emptyChatPlaceholder;
 
-  /// Accessibility label (hint) for the tap action on file message
+  /// Accessibility label (hint) for the tap action on file message.
   final String fileButtonAccessibilityLabel;
 
-  /// Placeholder for the text field
+  /// Placeholder for the text field.
   final String inputPlaceholder;
 
-  /// Accessibility label (hint) for the send button
+  /// Accessibility label (hint) for the send button.
   final String sendButtonAccessibilityLabel;
 }
 
-/// Arabic l10n which extends [ChatL10n]
+/// Arabic l10n which extends [ChatL10n].
 @immutable
 class ChatL10nAr extends ChatL10n {
   /// Creates Arabic l10n. Use this constructor if you want to
@@ -44,7 +44,7 @@ class ChatL10nAr extends ChatL10n {
   });
 }
 
-/// German l10n which extends [ChatL10n]
+/// German l10n which extends [ChatL10n].
 @immutable
 class ChatL10nDe extends ChatL10n {
   /// Creates German l10n. Use this constructor if you want to
@@ -59,7 +59,7 @@ class ChatL10nDe extends ChatL10n {
   });
 }
 
-/// English l10n which extends [ChatL10n]
+/// English l10n which extends [ChatL10n].
 @immutable
 class ChatL10nEn extends ChatL10n {
   /// Creates English l10n. Use this constructor if you want to
@@ -74,7 +74,7 @@ class ChatL10nEn extends ChatL10n {
   });
 }
 
-/// Spanish l10n which extends [ChatL10n]
+/// Spanish l10n which extends [ChatL10n].
 @immutable
 class ChatL10nEs extends ChatL10n {
   /// Creates Spanish l10n. Use this constructor if you want to
@@ -89,7 +89,7 @@ class ChatL10nEs extends ChatL10n {
   });
 }
 
-/// Korean l10n which extends [ChatL10n]
+/// Korean l10n which extends [ChatL10n].
 @immutable
 class ChatL10nKo extends ChatL10n {
   /// Creates Korean l10n. Use this constructor if you want to
@@ -104,7 +104,7 @@ class ChatL10nKo extends ChatL10n {
   });
 }
 
-/// Polish l10n which extends [ChatL10n]
+/// Polish l10n which extends [ChatL10n].
 @immutable
 class ChatL10nPl extends ChatL10n {
   /// Creates Polish l10n. Use this constructor if you want to
@@ -119,7 +119,7 @@ class ChatL10nPl extends ChatL10n {
   });
 }
 
-/// Portuguese l10n which extends [ChatL10n]
+/// Portuguese l10n which extends [ChatL10n].
 @immutable
 class ChatL10nPt extends ChatL10n {
   /// Creates Portuguese l10n. Use this constructor if you want to
@@ -134,7 +134,7 @@ class ChatL10nPt extends ChatL10n {
   });
 }
 
-/// Russian l10n which extends [ChatL10n]
+/// Russian l10n which extends [ChatL10n].
 @immutable
 class ChatL10nRu extends ChatL10n {
   /// Creates Russian l10n. Use this constructor if you want to
@@ -149,7 +149,7 @@ class ChatL10nRu extends ChatL10n {
   });
 }
 
-/// Turkish l10n which extends [ChatL10n]
+/// Turkish l10n which extends [ChatL10n].
 @immutable
 class ChatL10nTr extends ChatL10n {
   /// Creates Turkish l10n. Use this constructor if you want to
@@ -164,7 +164,7 @@ class ChatL10nTr extends ChatL10n {
   });
 }
 
-/// Ukrainian l10n which extends [ChatL10n]
+/// Ukrainian l10n which extends [ChatL10n].
 @immutable
 class ChatL10nUk extends ChatL10n {
   /// Creates Ukrainian l10n. Use this constructor if you want to
@@ -179,7 +179,7 @@ class ChatL10nUk extends ChatL10n {
   });
 }
 
-/// Simplified Chinese l10n which extends [ChatL10n]
+/// Simplified Chinese l10n which extends [ChatL10n].
 @immutable
 class ChatL10nZhCN extends ChatL10n {
   /// Creates Simplified Chinese l10n. Use this constructor if you want to
@@ -194,7 +194,7 @@ class ChatL10nZhCN extends ChatL10n {
   });
 }
 
-/// Traditional Chinese l10n which extends [ChatL10n]
+/// Traditional Chinese l10n which extends [ChatL10n].
 @immutable
 class ChatL10nZhTW extends ChatL10n {
   /// Creates Traditional Chinese l10n. Use this constructor if you want to

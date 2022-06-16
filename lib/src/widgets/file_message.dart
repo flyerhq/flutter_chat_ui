@@ -6,15 +6,15 @@ import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
 
-/// A class that represents file message widget
+/// A class that represents file message widget.
 class FileMessage extends StatelessWidget {
-  /// Creates a file message widget based on a [types.FileMessage]
+  /// Creates a file message widget based on a [types.FileMessage].
   const FileMessage({
     super.key,
     required this.message,
   });
 
-  /// [types.FileMessage]
+  /// [types.FileMessage].
   final types.FileMessage message;
 
   @override

@@ -5,7 +5,7 @@ import 'pattern_style.dart';
 /// Controller for the [TextField] on [Input] widget
 /// To highlighting the matches for pattern
 class InputTextFieldController extends TextEditingController {
-  /// A map of style to apply to the text pattern
+  /// A map of style to apply to the text pattern.
   final List<PatternStyle> _listPatternStyle = [
     PatternStyle.bold,
     PatternStyle.italic,

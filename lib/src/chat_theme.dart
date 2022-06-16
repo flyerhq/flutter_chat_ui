@@ -16,31 +16,31 @@ const colors = [
   Color(0xffc78ae5),
 ];
 
-/// Dark
+/// Dark.
 const dark = Color(0xff1f1c38);
 
-/// Error
+/// Error.
 const error = Color(0xffff6767);
 
-/// N0
+/// N0.
 const neutral0 = Color(0xff1d1c21);
 
-/// N2
+/// N2.
 const neutral2 = Color(0xff9e9cab);
 
-/// N7
+/// N7.
 const neutral7 = Color(0xffffffff);
 
-/// N7 with opacity
+/// N7 with opacity.
 const neutral7WithOpacity = Color(0x80ffffff);
 
-/// Primary
+/// Primary.
 const primary = Color(0xff6f61e8);
 
-/// Secondary
+/// Secondary.
 const secondary = Color(0xfff5f5f7);
 
-/// Secondary dark
+/// Secondary dark.
 const secondaryDark = Color(0xff2b2250);
 
 /// Base chat theme containing all required properties to make a theme.
@@ -102,77 +102,77 @@ abstract class ChatTheme {
     required this.userNameTextStyle,
   });
 
-  /// Icon for select attachment button
+  /// Icon for select attachment button.
   final Widget? attachmentButtonIcon;
 
-  /// Margin of attachment button
+  /// Margin of attachment button.
   final EdgeInsets? attachmentButtonMargin;
 
-  /// Used as a background color of a chat widget
+  /// Used as a background color of a chat widget.
   final Color backgroundColor;
 
-  /// Margin around date dividers
+  /// Margin around date dividers.
   final EdgeInsets dateDividerMargin;
 
-  /// Text style of the date dividers
+  /// Text style of the date dividers.
   final TextStyle dateDividerTextStyle;
 
   /// Icon for message's `delivered` status. For the best look use size of 16.
   final Widget? deliveredIcon;
 
-  /// Icon inside file message
+  /// Icon inside file message.
   final Widget? documentIcon;
 
-  /// Text style of the empty chat placeholder
+  /// Text style of the empty chat placeholder.
   final TextStyle emptyChatPlaceholderTextStyle;
 
-  /// Color to indicate something bad happened (usually - shades of red)
+  /// Color to indicate something bad happened (usually - shades of red).
   final Color errorColor;
 
   /// Icon for message's `error` status. For the best look use size of 16.
   final Widget? errorIcon;
 
-  /// Color of the bottom bar where text field is
+  /// Color of the bottom bar where text field is.
   final Color inputBackgroundColor;
 
-  /// Top border radius of the bottom bar where text field is
+  /// Top border radius of the bottom bar where text field is.
   final BorderRadius inputBorderRadius;
 
-  /// Decoration of the container wrapping the text field
+  /// Decoration of the container wrapping the text field.
   final Decoration? inputContainerDecoration;
 
-  /// Outer insets of the bottom bar where text field is
+  /// Outer insets of the bottom bar where text field is.
   final EdgeInsets inputMargin;
 
-  /// Inner insets of the bottom bar where text field is
+  /// Inner insets of the bottom bar where text field is.
   final EdgeInsets inputPadding;
 
-  /// Color of the text field's text and attachment/send buttons
+  /// Color of the text field's text and attachment/send buttons.
   final Color inputTextColor;
 
-  /// Color of the text field's cursor
+  /// Color of the text field's cursor.
   final Color? inputTextCursorColor;
 
-  /// Decoration of the input text field
+  /// Decoration of the input text field.
   final InputDecoration inputTextDecoration;
 
   /// Text style of the message input. To change the color use [inputTextColor].
   final TextStyle inputTextStyle;
 
-  /// Border radius of message container
+  /// Border radius of message container.
   final double messageBorderRadius;
 
-  /// Horizontal message bubble insets
+  /// Horizontal message bubble insets.
   final double messageInsetsHorizontal;
 
-  /// Vertical message bubble insets
+  /// Vertical message bubble insets.
   final double messageInsetsVertical;
 
   /// Primary color of the chat used as a background of sent messages
   /// and statuses
   final Color primaryColor;
 
-  /// Text style used for displaying emojis on text messages
+  /// Text style used for displaying emojis on text messages.
   final TextStyle receivedEmojiMessageTextStyle;
 
   /// Body text style used for displaying bold text on received text messages.
@@ -199,28 +199,28 @@ abstract class ChatTheme {
   /// [documentIcon] is used.
   final Color receivedMessageDocumentIconColor;
 
-  /// Text style used for displaying link description on received messages
+  /// Text style used for displaying link description on received messages.
   final TextStyle receivedMessageLinkDescriptionTextStyle;
 
-  /// Text style used for displaying link title on received messages
+  /// Text style used for displaying link title on received messages.
   final TextStyle receivedMessageLinkTitleTextStyle;
 
-  /// Secondary color, used as a background of received messages
+  /// Secondary color, used as a background of received messages.
   final Color secondaryColor;
 
   /// Icon for message's `seen` status. For the best look use size of 16.
   final Widget? seenIcon;
 
-  /// Icon for send button
+  /// Icon for send button.
   final Widget? sendButtonIcon;
 
-  /// Margin of send button
+  /// Margin of send button.
   final EdgeInsets? sendButtonMargin;
 
   /// Icon for message's `sending` status. For the best look use size of 10.
   final Widget? sendingIcon;
 
-  /// Text style used for displaying emojis on text messages
+  /// Text style used for displaying emojis on text messages.
   final TextStyle sentEmojiMessageTextStyle;
 
   /// Body text style used for displaying bold text on sent text messages.
@@ -247,13 +247,13 @@ abstract class ChatTheme {
   /// [documentIcon] is used.
   final Color sentMessageDocumentIconColor;
 
-  /// Text style used for displaying link description on sent messages
+  /// Text style used for displaying link description on sent messages.
   final TextStyle sentMessageLinkDescriptionTextStyle;
 
-  /// Text style used for displaying link title on sent messages
+  /// Text style used for displaying link title on sent messages.
   final TextStyle sentMessageLinkTitleTextStyle;
 
-  /// Padding around status icons
+  /// Padding around status icons.
   final EdgeInsets statusIconPadding;
 
   /// Color used as a background for user avatar if an image is provided.
@@ -273,7 +273,7 @@ abstract class ChatTheme {
   final TextStyle userNameTextStyle;
 }
 
-/// Default chat theme which extends [ChatTheme]
+/// Default chat theme which extends [ChatTheme].
 @immutable
 class DefaultChatTheme extends ChatTheme {
   /// Creates a default chat theme. Use this constructor if you want to
@@ -406,7 +406,7 @@ class DefaultChatTheme extends ChatTheme {
   });
 }
 
-/// Dark chat theme which extends [ChatTheme]
+/// Dark chat theme which extends [ChatTheme].
 @immutable
 class DarkChatTheme extends ChatTheme {
   /// Creates a dark chat theme. Use this constructor if you want to
