@@ -369,7 +369,7 @@ class Message extends StatelessWidget {
                 ),
               );
       default:
-        return const SizedBox();
+        return const SizedBox(width: 8);
     }
   }
 }
