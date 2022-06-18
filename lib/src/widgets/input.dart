@@ -181,7 +181,7 @@ class _InputState extends State<Input> {
         .inputPadding
         .copyWith(left: 0, right: 0)
         .add(
-          EdgeInsetsDirectional.fromSTEB(
+          EdgeInsets.fromLTRB(
             widget.onAttachmentPressed != null ? 0 : 24,
             0,
             _sendButtonVisible ? 0 : 24,
@@ -201,6 +201,7 @@ class _InputState extends State<Input> {
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
             padding: safeAreaInsets,
             child: Row(
+              textDirection: TextDirection.ltr,
               children: [
                 if (widget.onAttachmentPressed != null)
                   AttachmentButton(

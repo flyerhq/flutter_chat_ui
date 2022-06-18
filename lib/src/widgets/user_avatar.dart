@@ -29,7 +29,7 @@ class UserAvatar extends StatelessWidget {
     final initials = getUserInitials(author);
 
     return Container(
-      margin: const EdgeInsetsDirectional.only(end: 8),
+      margin: const EdgeInsets.only(right: 8),
       child: GestureDetector(
         onTap: () => onAvatarTap?.call(author),
         child: CircleAvatar(

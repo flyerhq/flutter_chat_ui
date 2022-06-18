@@ -168,33 +168,33 @@ class Message extends StatelessWidget {
             );
     final messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
-    final borderRadius = BorderRadiusDirectional.only(
-      bottomEnd: Radius.circular(
+    final borderRadius = BorderRadius.only(
+      bottomLeft: Radius.circular(
+        currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
+      ),
+      bottomRight: Radius.circular(
         currentUserIsAuthor
             ? roundBorder
                 ? messageBorderRadius
                 : 0
             : messageBorderRadius,
       ),
-      bottomStart: Radius.circular(
-        currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
-      ),
-      topEnd: Radius.circular(messageBorderRadius),
-      topStart: Radius.circular(messageBorderRadius),
+      topLeft: Radius.circular(messageBorderRadius),
+      topRight: Radius.circular(messageBorderRadius),
     );
 
     return Container(
-      alignment: currentUserIsAuthor
-          ? AlignmentDirectional.centerEnd
-          : AlignmentDirectional.centerStart,
-      margin: EdgeInsetsDirectional.only(
+      alignment:
+          currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
+      margin: EdgeInsets.only(
         bottom: 4,
-        end: kIsWeb ? 0 : query.padding.right,
-        start: 20 + (kIsWeb ? 0 : query.padding.left),
+        left: 20 + (kIsWeb ? 0 : query.padding.left),
+        right: kIsWeb ? 0 : query.padding.right,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
+        textDirection: TextDirection.ltr,
         children: [
           if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
           ConstrainedBox(
