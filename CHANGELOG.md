@@ -1,3 +1,9 @@
+## 1.6.2
+
+- Code refactor
+- Update documentation about opening files
+- Fixes RTL layout. Thanks @Yahllil for reporting!
+
 ## 1.6.1
 
 - Add bold, italic, strikethrough & code style to the input. Thanks @hareshgediya for the PR!

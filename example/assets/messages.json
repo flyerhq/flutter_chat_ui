@@ -2,164 +2,132 @@
   {
     "author": {
       "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+      "id": "4c2307ba-3d40-442f-b1ff-b271f63904ca",
+      "lastName": "Doe"
     },
-    "createdAt": 1598438796000,
-    "id": "9dcc55c2-2a28-492e-817b-aa81feec86d7",
+    "createdAt": 1655648404000,
+    "id": "c67ed376-52bf-4d4e-ba2a-7a0f8467b22a",
     "status": "seen",
-    "text": "**bold** _italic_ ~strikethrough~ `code`\nhttps://flyer.chat flyer.chat alexdemchenko@yahoo.com",
+    "text": "Ooowww ☺️",
     "type": "text"
   },
   {
     "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+      "firstName": "Janice",
+      "id": "e52552f4-835d-4dbe-ba77-b076e659774d",
+      "imageUrl": "https://i.pravatar.cc/300?u=e52552f4-835d-4dbe-ba77-b076e659774d",
+      "lastName": "King"
     },
-    "createdAt": 1598438795000,
-    "id": "e7a673e9-86eb-4572-936f-2882b0183cda",
-    "status": "seen",
-    "text": "Dolore labore ipsum aspernatur. Omnis minima reprehenderit perspiciatis sunt rerum facilis consequatur omnis. Rerum totam est eos dolores quia qui aut. Rerum aperiam alias placeat odit non enim corporis unde molestiae. Aspernatur unde praesentium eum ut laudantium ea enim.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1598438794000,
-    "id": "dc1a5e87-bd4e-46b0-9cb4-7d9abeda5ef8",
-    "status": "seen",
-    "text": "Ut modi corporis consequuntur dolorem omnis asperiores unde voluptatem et.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1598438793000,
-    "id": "2a202811-7d48-4ae9-8323-d764a56031dc",
-    "status": "seen",
-    "text": "Voluptatem voluptatum eos aut voluptatem occaecati. Quia ducimus vero molestiae molestiae illum illo nisi autem. Labore consectetur expedita illum consequatur inventore consequatur quasi voluptatem. Perspiciatis ut reprehenderit officiis animi voluptas.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "Jane",
-      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
-      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
-    },
-    "createdAt": 1598438792000,
-    "id": "0371b8f4-314a-448e-85ba-9c7dc5ed7a1e",
-    "status": "seen",
-    "text": "Qui ut nihil facilis quos.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1598438791000,
-    "id": "db334c22-1fc4-4951-86b2-1eb7f7262743",
-    "status": "seen",
-    "text": "Voluptatem ducimus quo vel sunt. Vitae illum recusandae fuga eum adipisci cumque nam dolor. Aut quia et ducimus a et voluptatibus quo saepe. Vel qui ipsum assumenda quibusdam necessitatibus. Et omnis consectetur ad quod fugiat placeat omnis eligendi aut. Deleniti aspernatur corrupti beatae est et cumque architecto cumque et.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "Jane",
-      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
-      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
-    },
-    "createdAt": 1598438790000,
-    "id": "f61a1924-e043-409f-9051-78ebfc68507a",
-    "status": "seen",
-    "text": "Est maxime accusantium commodi voluptatem sed. Ut nemo vero ut voluptas qui. Eaque nulla quia pariatur sed qui iure. Odit expedita voluptas quia consequuntur consequatur qui laudantium. Iusto ut voluptatem. Omnis et eos asperiores modi totam quisquam nemo.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "Jane",
-      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
-      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
-    },
-    "createdAt": 1598438789000,
-    "id": "d46ffcb1-9340-4c60-8b8c-c9d17539b0c7",
-    "status": "seen",
-    "text": "Fugit sed tenetur eaque perferendis est impedit.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1598438788000,
-    "id": "b23e5907-6d8b-4134-8cf3-c6dd34fc42d2",
-    "status": "seen",
-    "text": "Hic iure corrupti aut delectus tempore.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "Jane",
-      "id": "06c33e8b-e835-4736-80f4-63f44b66666c",
-      "imageUrl": "https://avatars.githubusercontent.com/u/33809426?v=4"
-    },
-    "createdAt": 1598438787000,
-    "id": "83093c75-2efb-47bc-84d6-37dbc53bb5de",
-    "status": "seen",
-    "text": "Doloremque dolor aliquam totam dolor suscipit qui.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1598438786000,
-    "id": "8fa70836-3309-4d09-a777-4d9603e1f123",
-    "status": "seen",
-    "text": "Architecto quaerat nulla ipsa facilis cum quasi fuga voluptate.",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1598438785000,
-    "height": 600,
-    "id": "8fa70836-3309-4d09-a777-4d9603e1f124",
-    "name": "image",
-    "size": 59645,
+    "createdAt": 1655648403000,
+    "height": 1280,
+    "id": "02797655-4d73-402e-a319-50fde79e2bc4",
+    "name": "madrid",
+    "size": 585000,
     "status": "seen",
     "type": "image",
-    "uri": "https://hcti.io/v1/image/c1ea794e-32c7-4516-bd0f-8b835e8a2f2e",
-    "width": 1128
+    "uri": "https://source.unsplash.com/WBGjg0DsO_g/1920x1280",
+    "width": 1920
+  },
+  {
+    "author": {
+      "firstName": "Janice",
+      "id": "e52552f4-835d-4dbe-ba77-b076e659774d",
+      "imageUrl": "https://i.pravatar.cc/300?u=e52552f4-835d-4dbe-ba77-b076e659774d",
+      "lastName": "King"
+    },
+    "createdAt": 1655648402000,
+    "id": "4e048753-2d60-4144-bc28-9967050aaf12",
+    "status": "seen",
+    "text": "What a _wonderful_ sunset! 😻",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "Matthew",
+      "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
+      "lastName": "White"
+    },
+    "createdAt": 1655648401000,
+    "id": "64747b28-df19-4a0c-8c47-316dc3546e3c",
+    "status": "seen",
+    "text": "Here you go buddy! 💪",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "Matthew",
+      "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
+      "lastName": "White"
+    },
+    "createdAt": 1655648400000,
+    "id": "6a1a4351-cf05-4d0c-9d0f-47ed378b6112",
+    "mimeType": "application/pdf",
+    "name": "city_guide-madrid.pdf",
+    "size": 10550000,
+    "status": "seen",
+    "type": "file",
+    "uri": "https://www.esmadrid.com/sites/default/files/documentos/madrid_imprescindible_2016_ing_web_0.pdf"
   },
   {
     "author": {
       "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+      "id": "4c2307ba-3d40-442f-b1ff-b271f63904ca",
+      "lastName": "Doe"
     },
-    "createdAt": 1598438784000,
-    "id": "8fa70836-3309-4d09-a777-4d9603e1f125",
-    "mimeType": "image/jpg",
-    "name": "image.jpg",
-    "size": 59645,
+    "createdAt": 1655624464000,
+    "id": "38681a33-2563-42aa-957b-cfc12f791d16",
     "status": "seen",
-    "type": "file",
-    "uri": "https://hcti.io/v1/image/c1ea794e-32c7-4516-bd0f-8b835e8a2f2e"
+    "text": "Matt, where is my Madrid guide?",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "Matthew",
+      "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
+      "lastName": "White"
+    },
+    "createdAt": 1655624463000,
+    "id": "113bb2e8-f74e-42cd-aa30-4085a0f52c58",
+    "status": "seen",
+    "text": "Definitely joining the whitelist 😂",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "Janice",
+      "id": "e52552f4-835d-4dbe-ba77-b076e659774d",
+      "imageUrl": "https://i.pravatar.cc/300?u=e52552f4-835d-4dbe-ba77-b076e659774d",
+      "lastName": "King"
+    },
+    "createdAt": 1655624462000,
+    "id": "22212d42-1252-4641-9786-d6f83b2ce4a8",
+    "status": "seen",
+    "text": "Matt, what do you think?",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "Janice",
+      "id": "e52552f4-835d-4dbe-ba77-b076e659774d",
+      "imageUrl": "https://i.pravatar.cc/300?u=e52552f4-835d-4dbe-ba77-b076e659774d",
+      "lastName": "King"
+    },
+    "createdAt": 1655624461000,
+    "id": "afc2269a-374b-4382-8864-b3b60d1e8cd7",
+    "status": "seen",
+    "text": "~I'm broke already haha~ Cool art though! Need to follow them",
+    "type": "text"
+  },
+  {
+    "author": {
+      "firstName": "John",
+      "id": "4c2307ba-3d40-442f-b1ff-b271f63904ca",
+      "lastName": "Doe"
+    },
+    "createdAt": 1655624460000,
+    "id": "634b2f0b-2486-4bfe-b36d-1c7d6313c7b3",
+    "status": "seen",
+    "text": "Guys! What do you think about this collection? thereverseland.com 😍",
+    "type": "text"
   }
 ]

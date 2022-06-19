@@ -1,5 +1,7 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+
 import 'base_conditional.dart';
 
 /// Create a [BrowserConditional].

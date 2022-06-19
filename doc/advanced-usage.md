@@ -130,6 +130,76 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
+### Opening a file from a remote URL
+
+In the previous example, only local files on the device can be opened. If we want to support opening a file from the remote URL, we need to download it first. To do that, we'd need [http](https://pub.dev/packages/http) and [path_provider](https://pub.dev/packages/path_provider). Please keep in mind, that this is just an example, and there are other, maybe better ways to download files, like [dio](https://pub.dev/packages/dio). Let's modify our `_handleMessageTap` function:
+
+```dart
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+
+class _MyHomePageState extends State<MyHomePage> {
+  // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onMessageTap: _handleMessageTap,
+      ),
+    );
+
+  void _handleMessageTap(BuildContext _, types.Message message) async {
+    if (message is types.FileMessage) {
+      var localPath = message.uri;
+
+      if (message.uri.startsWith('http')) {
+        try {
+          // Update tapped file message to show loading spinner
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+
+          final client = http.Client();
+          final request = await client.get(Uri.parse(message.uri));
+          final bytes = request.bodyBytes;
+          final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          localPath = '$documentsDir/${message.name}';
+
+          if (!File(localPath).existsSync()) {
+            final file = File(localPath);
+            await file.writeAsBytes(bytes);
+          }
+        } finally {
+          // In case of error or success, reset loading spinner
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+        }
+      }
+
+      await OpenFile.open(localPath);
+    }
+  }
+}
+```
+
 ## Link preview
 
 Link preview works automatically, we created a separate package for that, you can found it [here](https://pub.dev/packages/flutter_link_previewer). It can be disabled by setting `usePreviewData` to false. Usually, however, you'll want to save the preview data so it stays the same, you can do that using `onPreviewDataFetched` callback:
@@ -154,10 +224,8 @@ class _MyHomePageState extends State<MyHomePage> {
       previewData: previewData,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
+    setState(() {
+      _messages[index] = updatedMessage;
     });
   }
 }
@@ -169,14 +237,17 @@ Now to choose between images and files from a single button we will use `showMod
 
 ```dart
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 // For the testing purposes, you should probably use https://pub.dev/packages/uuid.
 String randomString() {
@@ -207,7 +278,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -242,7 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _handleImageSelection();
                 },
                 child: const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   child: Text('Photo'),
                 ),
               ),
@@ -252,14 +323,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   _handleFileSelection();
                 },
                 child: const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   child: Text('File'),
                 ),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   child: Text('Cancel'),
                 ),
               ),
@@ -317,7 +388,46 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
+      var localPath = message.uri;
+
+      if (message.uri.startsWith('http')) {
+        try {
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+
+          final client = http.Client();
+          final request = await client.get(Uri.parse(message.uri));
+          final bytes = request.bodyBytes;
+          final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          localPath = '$documentsDir/${message.name}';
+
+          if (!File(localPath).existsSync()) {
+            final file = File(localPath);
+            await file.writeAsBytes(bytes);
+          }
+        } finally {
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+        }
+      }
+
+      await OpenFile.open(localPath);
     }
   }
 
@@ -330,10 +440,8 @@ class _MyHomePageState extends State<MyHomePage> {
       previewData: previewData,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
+    setState(() {
+      _messages[index] = updatedMessage;
     });
   }
 

@@ -36,10 +36,12 @@ dependencies:
   flutter_chat_types: ^3.4.1
   flutter_chat_ui:
     path: ../
+  http: ^0.13.4
   image_picker: ^0.8.5+3
   intl: ^0.17.0
   mime: ^1.0.2
   open_file: ^3.2.1
+  path_provider: ^2.0.11
   uuid: ^3.0.6
 
 dev_dependencies:
