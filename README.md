@@ -15,6 +15,12 @@
 <br>
 
 <p align="center">
+  🇺🇦🇺🇦 We are Ukrainians. If you enjoy our work, please <a href="https://u24.gov.ua">consider donating</a> to help save our country. 🇺🇦🇺🇦
+</p>
+
+<br>
+
+<p align="center">
   <a href="https://pub.dartlang.org/packages/flutter_chat_ui">
     <img alt="Pub" src="https://img.shields.io/pub/v/flutter_chat_ui" />
   </a>
