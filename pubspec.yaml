@@ -15,8 +15,8 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.4.2
-  flutter_link_previewer: ^3.0.0
+  flutter_chat_types: ^3.4.3
+  flutter_link_previewer: ^3.0.1
   flutter_parsed_text: ^2.2.1
   intl: ^0.17.0
   meta: ^1.7.0

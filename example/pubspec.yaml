@@ -33,7 +33,7 @@ dependencies:
   file_picker: ^4.6.1
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.4.1
+  flutter_chat_types: ^3.4.3
   flutter_chat_ui:
     path: ../
   http: ^0.13.4
