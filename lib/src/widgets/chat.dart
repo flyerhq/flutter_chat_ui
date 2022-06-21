@@ -107,7 +107,7 @@ class Chat extends StatefulWidget {
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
 
-  /// See [Message.customStatusBuilder]
+  /// See [Message.customStatusBuilder].
   final Widget Function(types.Message message, {required BuildContext context})?
       customStatusBuilder;
 
