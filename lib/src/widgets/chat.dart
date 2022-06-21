@@ -463,6 +463,7 @@ class _ChatState extends State<Chat> {
         avatarBuilder: widget.avatarBuilder,
         bubbleBuilder: widget.bubbleBuilder,
         customMessageBuilder: widget.customMessageBuilder,
+        customStatusBuilder: widget.customStatusBuilder,
         emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
         fileMessageBuilder: widget.fileMessageBuilder,
         hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
