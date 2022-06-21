@@ -23,6 +23,7 @@ class Message extends StatelessWidget {
     this.avatarBuilder,
     this.bubbleBuilder,
     this.customMessageBuilder,
+    this.customStatusBuilder,
     required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
     required this.hideBackgroundOnEmojiMessages,
@@ -68,6 +69,10 @@ class Message extends StatelessWidget {
   /// Build a custom message inside predefined bubble.
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
+
+  /// Build a custom status widgets.
+  final Widget Function(types.Message message, {required BuildContext context})?
+      customStatusBuilder;
 
   /// Controls the enlargement behavior of the emojis in the
   /// [types.TextMessage].
@@ -241,7 +246,9 @@ class Message extends StatelessWidget {
                       onLongPress: () =>
                           onMessageStatusLongPress?.call(context, message),
                       onTap: () => onMessageStatusTap?.call(context, message),
-                      child: _statusBuilder(context),
+                      child: customStatusBuilder != null
+                          ? customStatusBuilder!(message, context: context)
+                          : _statusBuilder(context),
                     )
                   : null,
             ),

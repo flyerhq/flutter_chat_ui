@@ -33,6 +33,7 @@ class Chat extends StatefulWidget {
     this.customBottomWidget,
     this.customDateHeaderText,
     this.customMessageBuilder,
+    this.customStatusBuilder,
     this.dateFormat,
     this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
@@ -105,6 +106,10 @@ class Chat extends StatefulWidget {
   /// See [Message.customMessageBuilder].
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
+
+  /// See [Message.customStatusBuilder].
+  final Widget Function(types.Message message, {required BuildContext context})?
+      customStatusBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
@@ -458,6 +463,7 @@ class _ChatState extends State<Chat> {
         avatarBuilder: widget.avatarBuilder,
         bubbleBuilder: widget.bubbleBuilder,
         customMessageBuilder: widget.customMessageBuilder,
+        customStatusBuilder: widget.customStatusBuilder,
         emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
         fileMessageBuilder: widget.fileMessageBuilder,
         hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
