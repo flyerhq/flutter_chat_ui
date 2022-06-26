@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../models/bubble_rtl_alignment.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/preview_tap_options.dart';
 import '../util.dart';
@@ -22,6 +23,7 @@ class Message extends StatelessWidget {
     super.key,
     this.avatarBuilder,
     this.bubbleBuilder,
+    this.bubbleRtlAlignment,
     this.customMessageBuilder,
     this.customStatusBuilder,
     required this.emojiEnlargementBehavior,
@@ -65,6 +67,10 @@ class Message extends StatelessWidget {
     required types.Message message,
     required bool nextMessageInGroup,
   })? bubbleBuilder;
+
+  /// Determine the alignment of the bubble for RTL languages. Has no effect
+  /// for the LTR languages.
+  final BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Build a custom message inside predefined bubble.
   final Widget Function(types.CustomMessage, {required int messageWidth})?
@@ -173,33 +179,61 @@ class Message extends StatelessWidget {
             );
     final messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
-    final borderRadius = BorderRadius.only(
-      bottomLeft: Radius.circular(
-        currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
-      ),
-      bottomRight: Radius.circular(
-        currentUserIsAuthor
-            ? roundBorder
-                ? messageBorderRadius
-                : 0
-            : messageBorderRadius,
-      ),
-      topLeft: Radius.circular(messageBorderRadius),
-      topRight: Radius.circular(messageBorderRadius),
-    );
+    final borderRadius = bubbleRtlAlignment == BubbleRtlAlignment.left
+        ? BorderRadiusDirectional.only(
+            bottomEnd: Radius.circular(
+              currentUserIsAuthor
+                  ? roundBorder
+                      ? messageBorderRadius
+                      : 0
+                  : messageBorderRadius,
+            ),
+            bottomStart: Radius.circular(
+              currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
+            ),
+            topEnd: Radius.circular(messageBorderRadius),
+            topStart: Radius.circular(messageBorderRadius),
+          )
+        : BorderRadius.only(
+            bottomLeft: Radius.circular(
+              currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
+            ),
+            bottomRight: Radius.circular(
+              currentUserIsAuthor
+                  ? roundBorder
+                      ? messageBorderRadius
+                      : 0
+                  : messageBorderRadius,
+            ),
+            topLeft: Radius.circular(messageBorderRadius),
+            topRight: Radius.circular(messageBorderRadius),
+          );
 
     return Container(
-      alignment:
-          currentUserIsAuthor ? Alignment.centerRight : Alignment.centerLeft,
-      margin: EdgeInsets.only(
-        bottom: 4,
-        left: 20 + (kIsWeb ? 0 : query.padding.left),
-        right: kIsWeb ? 0 : query.padding.right,
-      ),
+      alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
+          ? currentUserIsAuthor
+              ? AlignmentDirectional.centerEnd
+              : AlignmentDirectional.centerStart
+          : currentUserIsAuthor
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
+      margin: bubbleRtlAlignment == BubbleRtlAlignment.left
+          ? EdgeInsetsDirectional.only(
+              bottom: 4,
+              end: kIsWeb ? 0 : query.padding.right,
+              start: 20 + (kIsWeb ? 0 : query.padding.left),
+            )
+          : EdgeInsets.only(
+              bottom: 4,
+              left: 20 + (kIsWeb ? 0 : query.padding.left),
+              right: kIsWeb ? 0 : query.padding.right,
+            ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
-        textDirection: TextDirection.ltr,
+        textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
+            ? null
+            : TextDirection.ltr,
         children: [
           if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
           ConstrainedBox(
@@ -259,7 +293,11 @@ class Message extends StatelessWidget {
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
-          UserAvatar(author: message.author, onAvatarTap: onAvatarTap)
+          UserAvatar(
+            author: message.author,
+            bubbleRtlAlignment: bubbleRtlAlignment,
+            onAvatarTap: onAvatarTap,
+          )
       : const SizedBox(width: 40);
 
   Widget _bubbleBuilder(

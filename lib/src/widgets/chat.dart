@@ -8,6 +8,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
+import '../models/bubble_rtl_alignment.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
@@ -30,6 +31,7 @@ class Chat extends StatefulWidget {
     super.key,
     this.avatarBuilder,
     this.bubbleBuilder,
+    this.bubbleRtlAlignment = BubbleRtlAlignment.right,
     this.customBottomWidget,
     this.customDateHeaderText,
     this.customMessageBuilder,
@@ -89,6 +91,9 @@ class Chat extends StatefulWidget {
     required types.Message message,
     required bool nextMessageInGroup,
   })? bubbleBuilder;
+
+  /// See [Message.bubbleRtlAlignment].
+  final BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Allows you to replace the default Input widget e.g. if you want to create
   /// a channel view.
@@ -462,6 +467,7 @@ class _ChatState extends State<Chat> {
         key: ValueKey(message.id),
         avatarBuilder: widget.avatarBuilder,
         bubbleBuilder: widget.bubbleBuilder,
+        bubbleRtlAlignment: widget.bubbleRtlAlignment,
         customMessageBuilder: widget.customMessageBuilder,
         customStatusBuilder: widget.customStatusBuilder,
         emojiEnlargementBehavior: widget.emojiEnlargementBehavior,

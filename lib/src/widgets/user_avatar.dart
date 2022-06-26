@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+import '../models/bubble_rtl_alignment.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 
@@ -10,11 +11,15 @@ class UserAvatar extends StatelessWidget {
   const UserAvatar({
     super.key,
     required this.author,
+    this.bubbleRtlAlignment,
     this.onAvatarTap,
   });
 
   /// Author to show image and name initials from.
   final types.User author;
+
+  /// See [Message.bubbleRtlAlignment].
+  final BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Called when user taps on an avatar.
   final void Function(types.User)? onAvatarTap;
@@ -29,7 +34,9 @@ class UserAvatar extends StatelessWidget {
     final initials = getUserInitials(author);
 
     return Container(
-      margin: const EdgeInsets.only(right: 8),
+      margin: bubbleRtlAlignment == BubbleRtlAlignment.left
+          ? const EdgeInsetsDirectional.only(end: 8)
+          : const EdgeInsets.only(right: 8),
       child: GestureDetector(
         onTap: () => onAvatarTap?.call(author),
         child: CircleAvatar(
