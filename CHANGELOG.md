@@ -1,3 +1,8 @@
+## 1.6.3
+
+- Added an option to align sent bubbles to the right or left for RTL languages. Thanks @Faaatman for reporting! Use `bubbleRtlAlignment`.
+- Add `customStatusBuilder`. Thanks @skllll06 for the PR!
+
 ## 1.6.2
 
 - Code refactor
