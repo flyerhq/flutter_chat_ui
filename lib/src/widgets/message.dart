@@ -49,6 +49,7 @@ class Message extends StatelessWidget {
     required this.showStatus,
     required this.showUserAvatars,
     this.textMessageBuilder,
+    required this.textMessageOptions,
     required this.usePreviewData,
     this.userAgent,
   });
@@ -158,6 +159,9 @@ class Message extends StatelessWidget {
     required int messageWidth,
     required bool showName,
   })? textMessageBuilder;
+
+  /// See [TextMessage.options].
+  final TextMessageOptions textMessageOptions;
 
   /// See [TextMessage.usePreviewData].
   final bool usePreviewData;
@@ -360,6 +364,7 @@ class Message extends StatelessWidget {
                 message: textMessage,
                 nameBuilder: nameBuilder,
                 onPreviewDataFetched: onPreviewDataFetched,
+                options: textMessageOptions,
                 previewTapOptions: previewTapOptions,
                 showName: showName,
                 usePreviewData: usePreviewData,

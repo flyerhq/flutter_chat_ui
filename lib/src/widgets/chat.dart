@@ -22,6 +22,7 @@ import 'inherited_l10n.dart';
 import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
+import 'text_message.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
@@ -75,6 +76,7 @@ class Chat extends StatefulWidget {
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.textMessageBuilder,
+    this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
     this.usePreviewData = true,
@@ -256,6 +258,9 @@ class Chat extends StatefulWidget {
     required int messageWidth,
     required bool showName,
   })? textMessageBuilder;
+
+  /// See [Message.textMessageOptions].
+  final TextMessageOptions textMessageOptions;
 
   /// Chat theme. Extend [ChatTheme] class to create your own theme or use
   /// existing one, like the [DefaultChatTheme]. You can customize only certain
@@ -500,6 +505,7 @@ class _ChatState extends State<Chat> {
         showStatus: map['showStatus'] == true,
         showUserAvatars: widget.showUserAvatars,
         textMessageBuilder: widget.textMessageBuilder,
+        textMessageOptions: widget.textMessageOptions,
         usePreviewData: widget.usePreviewData,
         userAgent: widget.userAgent,
       );
