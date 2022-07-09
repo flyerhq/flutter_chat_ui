@@ -24,6 +24,7 @@ class TextMessage extends StatelessWidget {
     required this.message,
     this.nameBuilder,
     this.onPreviewDataFetched,
+    this.options = const TextMessageOptions(),
     required this.previewTapOptions,
     required this.showName,
     required this.usePreviewData,
@@ -49,6 +50,8 @@ class TextMessage extends StatelessWidget {
   /// See [LinkPreview.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
+
+  final TextMessageOptions options;
 
   /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap].
   final PreviewTapOptions previewTapOptions;
@@ -111,6 +114,7 @@ class TextMessage extends StatelessWidget {
       enableAnimation: true,
       metadataTextStyle: linkDescriptionTextStyle,
       metadataTitleStyle: linkTitleTextStyle,
+      onLinkPressed: options.onLinkPressed,
       onPreviewDataFetched: _onPreviewDataFetched,
       openOnPreviewImageTap: previewTapOptions.openOnImageTap,
       openOnPreviewTitleTap: previewTapOptions.openOnTitleTap,
@@ -191,9 +195,16 @@ class TextMessage extends StatelessWidget {
                   if (!urlText.startsWith(protocolIdentifierRegex)) {
                     urlText = 'https://$urlText';
                   }
-                  final url = Uri.tryParse(urlText);
-                  if (url != null && await canLaunchUrl(url)) {
-                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  if (options.onLinkPressed != null) {
+                    options.onLinkPressed!(urlText);
+                  } else {
+                    final url = Uri.tryParse(urlText);
+                    if (url != null && await canLaunchUrl(url)) {
+                      await launchUrl(
+                        url,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    }
                   }
                 },
                 pattern: regexLink,
@@ -258,4 +269,14 @@ class TextMessage extends StatelessWidget {
       ],
     );
   }
+}
+
+@immutable
+class TextMessageOptions {
+  const TextMessageOptions({
+    this.onLinkPressed,
+  });
+
+  /// Custom link press handler.
+  final void Function(String)? onLinkPressed;
 }
