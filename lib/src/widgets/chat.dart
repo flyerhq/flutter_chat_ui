@@ -51,6 +51,7 @@ class Chat extends StatefulWidget {
     this.isAttachmentUploading,
     this.isLastPage,
     this.isTextMessageTextSelectable = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.l10n = const ChatL10nEn(),
     required this.messages,
     this.nameBuilder,
@@ -174,6 +175,9 @@ class Chat extends StatefulWidget {
 
   /// See [Message.isTextMessageTextSelectable].
   final bool isTextMessageTextSelectable;
+
+  /// See [ChatList.keyboardDismissBehavior].
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
   /// existing one, like the default [ChatL10nEn]. You can customize only
@@ -356,6 +360,8 @@ class _ChatState extends State<Chat> {
                                     itemBuilder: (item, index) =>
                                         _messageBuilder(item, constraints),
                                     items: _chatMessages,
+                                    keyboardDismissBehavior:
+                                        widget.keyboardDismissBehavior,
                                     onEndReached: widget.onEndReached,
                                     onEndReachedThreshold:
                                         widget.onEndReachedThreshold,

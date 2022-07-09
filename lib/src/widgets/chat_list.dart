@@ -14,6 +14,7 @@ class ChatList extends StatefulWidget {
     this.isLastPage,
     required this.itemBuilder,
     required this.items,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.onEndReached,
     this.onEndReachedThreshold,
     this.scrollController,
@@ -34,6 +35,9 @@ class ChatList extends StatefulWidget {
   /// Used for pagination (infinite scroll). Called when user scrolls
   /// to the very end of the list (minus [onEndReachedThreshold]).
   final Future<void> Function()? onEndReached;
+
+  /// A representation of how a [ScrollView] should dismiss the on-screen keyboard.
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// Can be anything from 0 to 1, where 0 is immediate load of the next page
@@ -125,6 +129,7 @@ class _ChatListState extends State<ChatList>
         },
         child: CustomScrollView(
           controller: _scrollController,
+          keyboardDismissBehavior: widget.keyboardDismissBehavior,
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
