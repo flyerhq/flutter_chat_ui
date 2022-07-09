@@ -51,6 +51,7 @@ class TextMessage extends StatelessWidget {
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
+  /// Customisation options for the [TextMessage].
   final TextMessageOptions options;
 
   /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap].
