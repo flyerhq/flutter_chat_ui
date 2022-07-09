@@ -76,6 +76,7 @@ class Chat extends StatefulWidget {
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
     this.showUserNames = false,
+    this.textEditingController,
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
@@ -256,6 +257,9 @@ class Chat extends StatefulWidget {
   /// shown only on text messages.
   final bool showUserNames;
 
+  /// See [Input.textEditingController].
+  final TextEditingController? textEditingController;
+
   /// See [Message.textMessageBuilder].
   final Widget Function(
     types.TextMessage, {
@@ -380,6 +384,7 @@ class _ChatState extends State<Chat> {
                             onTextFieldTap: widget.onTextFieldTap,
                             sendButtonVisibilityMode:
                                 widget.sendButtonVisibilityMode,
+                            textEditingController: widget.textEditingController,
                           ),
                     ],
                   ),

@@ -30,6 +30,7 @@ class Input extends StatefulWidget {
     this.onTextChanged,
     this.onTextFieldTap,
     required this.sendButtonVisibilityMode,
+    this.textEditingController,
   });
 
   /// Whether attachment is uploading. Will replace attachment button with a
@@ -56,6 +57,14 @@ class Input extends StatefulWidget {
   /// Defaults to [SendButtonVisibilityMode.editing].
   final SendButtonVisibilityMode sendButtonVisibilityMode;
 
+  /// Custom [TextEditingController]. If not provided, defaults to the
+  /// [InputTextFieldController], which extends [TextEditingController] and has
+  /// additional fatures like markdown support. If you want to keep additional
+  /// features but still need some methods from the default [TextEditingController],
+  /// you can create your own [InputTextFieldController] (imported from this lib)
+  /// and pass it here.
+  final TextEditingController? textEditingController;
+
   @override
   State<Input> createState() => _InputState();
 }
@@ -64,12 +73,14 @@ class Input extends StatefulWidget {
 class _InputState extends State<Input> {
   final _inputFocusNode = FocusNode();
   bool _sendButtonVisible = false;
-  final _textController = InputTextFieldController();
+  late TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
 
+    _textController =
+        widget.textEditingController ?? InputTextFieldController();
     _handleSendButtonVisibilityModeChange();
   }
 

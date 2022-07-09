@@ -13,6 +13,7 @@ export 'src/widgets/chat_list.dart';
 export 'src/widgets/file_message.dart';
 export 'src/widgets/image_message.dart';
 export 'src/widgets/input.dart';
+export 'src/widgets/input_text_field_controller.dart';
 export 'src/widgets/message.dart';
 export 'src/widgets/send_button.dart';
 export 'src/widgets/text_message.dart';
