@@ -28,38 +28,43 @@ class ImageGallery extends StatelessWidget {
   final ImageGalleryOptions options;
 
   @override
-  Widget build(BuildContext context) => Dismissible(
-        key: const Key('photo_view_gallery'),
-        direction: DismissDirection.down,
-        onDismissed: (direction) => onClosePressed(),
-        child: Stack(
-          children: [
-            PhotoViewGallery.builder(
-              builder: (BuildContext context, int index) =>
-                  PhotoViewGalleryPageOptions(
-                imageProvider: Conditional().getProvider(images[index].uri),
-                minScale: options.minScale,
-                maxScale: options.maxScale,
+  Widget build(BuildContext context) => WillPopScope(
+    onWillPop: () async {
+      onClosePressed();
+      return false;
+    },
+    child: Dismissible(
+          key: const Key('photo_view_gallery'),
+          direction: DismissDirection.down,
+          onDismissed: (direction) => onClosePressed(),
+          child: Stack(
+            children: [
+              PhotoViewGallery.builder(
+                builder: (BuildContext context, int index) =>
+                    PhotoViewGalleryPageOptions(
+                  imageProvider: Conditional().getProvider(images[index].uri),
+                  minScale: options.minScale,
+                  maxScale: options.maxScale,
+                ),
+                itemCount: images.length,
+                loadingBuilder: (context, event) =>
+                    _imageGalleryLoadingBuilder(event),
+                pageController: pageController,
+                scrollPhysics: const ClampingScrollPhysics(),
               ),
-              itemCount: images.length,
-              loadingBuilder: (context, event) =>
-                  _imageGalleryLoadingBuilder(event),
-              onPageChanged: (_) {},
-              pageController: pageController,
-              scrollPhysics: const ClampingScrollPhysics(),
-            ),
-            Positioned.directional(
-              end: 16,
-              textDirection: Directionality.of(context),
-              top: 56,
-              child: CloseButton(
-                color: Colors.white,
-                onPressed: onClosePressed,
+              Positioned.directional(
+                end: 16,
+                textDirection: Directionality.of(context),
+                top: 56,
+                child: CloseButton(
+                  color: Colors.white,
+                  onPressed: onClosePressed,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      );
+  );
 
   Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
         child: SizedBox(
