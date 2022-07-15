@@ -11,6 +11,7 @@ export 'src/widgets/attachment_button.dart';
 export 'src/widgets/chat.dart';
 export 'src/widgets/chat_list.dart';
 export 'src/widgets/file_message.dart';
+export 'src/widgets/image_gallery.dart';
 export 'src/widgets/image_message.dart';
 export 'src/widgets/input.dart';
 export 'src/widgets/input_text_field_controller.dart';

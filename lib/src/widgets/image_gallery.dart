@@ -4,17 +4,28 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../conditional/conditional.dart';
 import '../models/preview_image.dart';
 
+export 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
+
 class ImageGallery extends StatelessWidget {
   const ImageGallery({
     super.key,
     required this.images,
     required this.pageController,
     required this.onClosePressed,
+    this.options = const ImageGalleryOptions(),
   });
 
+  /// Images to show in the gallery.
   final List<PreviewImage> images;
+
+  /// Page controller for the image pages.
   final PageController pageController;
+
+  /// Triggered when the gallery is swiped down or closed via the icon.
   final VoidCallback onClosePressed;
+
+  /// Customisation options for the gallery.
+  final ImageGalleryOptions options;
 
   @override
   Widget build(BuildContext context) => Dismissible(
@@ -27,6 +38,8 @@ class ImageGallery extends StatelessWidget {
               builder: (BuildContext context, int index) =>
                   PhotoViewGalleryPageOptions(
                 imageProvider: Conditional().getProvider(images[index].uri),
+                minScale: options.minScale,
+                maxScale: options.maxScale,
               ),
               itemCount: images.length,
               loadingBuilder: (context, event) =>
@@ -49,14 +62,27 @@ class ImageGallery extends StatelessWidget {
       );
 
   Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
-    child: SizedBox(
-      width: 20,
-      height: 20,
-      child: CircularProgressIndicator(
-        value: event == null || event.expectedTotalBytes == null
-            ? 0
-            : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
-      ),
-    ),
-  );
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            value: event == null || event.expectedTotalBytes == null
+                ? 0
+                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+          ),
+        ),
+      );
+}
+
+class ImageGalleryOptions {
+  const ImageGalleryOptions({
+    this.minScale,
+    this.maxScale,
+  });
+
+  /// See [PhotoViewGalleryPageOptions.minScale].
+  final dynamic minScale;
+
+  /// See [PhotoViewGalleryPageOptions.maxScale].
+  final dynamic maxScale;
 }
