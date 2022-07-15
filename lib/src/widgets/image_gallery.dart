@@ -10,16 +10,13 @@ class ImageGallery extends StatelessWidget {
   const ImageGallery({
     super.key,
     required this.images,
-    required this.pageController,
     required this.onClosePressed,
     this.options = const ImageGalleryOptions(),
+    required this.pageController,
   });
 
   /// Images to show in the gallery.
   final List<PreviewImage> images;
-
-  /// Page controller for the image pages.
-  final PageController pageController;
 
   /// Triggered when the gallery is swiped down or closed via the icon.
   final VoidCallback onClosePressed;
@@ -27,13 +24,16 @@ class ImageGallery extends StatelessWidget {
   /// Customisation options for the gallery.
   final ImageGalleryOptions options;
 
+  /// Page controller for the image pages.
+  final PageController pageController;
+
   @override
   Widget build(BuildContext context) => WillPopScope(
-    onWillPop: () async {
-      onClosePressed();
-      return false;
-    },
-    child: Dismissible(
+        onWillPop: () async {
+          onClosePressed();
+          return false;
+        },
+        child: Dismissible(
           key: const Key('photo_view_gallery'),
           direction: DismissDirection.down,
           onDismissed: (direction) => onClosePressed(),
@@ -64,7 +64,7 @@ class ImageGallery extends StatelessWidget {
             ],
           ),
         ),
-  );
+      );
 
   Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
         child: SizedBox(
@@ -81,13 +81,13 @@ class ImageGallery extends StatelessWidget {
 
 class ImageGalleryOptions {
   const ImageGalleryOptions({
-    this.minScale,
     this.maxScale,
+    this.minScale,
   });
-
-  /// See [PhotoViewGalleryPageOptions.minScale].
-  final dynamic minScale;
 
   /// See [PhotoViewGalleryPageOptions.maxScale].
   final dynamic maxScale;
+
+  /// See [PhotoViewGalleryPageOptions.minScale].
+  final dynamic minScale;
 }
