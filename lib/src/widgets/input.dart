@@ -264,6 +264,9 @@ class _InputState extends State<Input> {
                 ),
                 Visibility(
                   visible: _sendButtonVisible,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
                   child: SendButton(
                     onPressed: _handleSendPressed,
                     padding: buttonPadding,
