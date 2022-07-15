@@ -503,6 +503,7 @@ class _ChatState extends State<Chat> {
       _isImageViewVisible = false;
     });
     _galleryPageController?.dispose();
+    _galleryPageController = null;
   }
 
   void _onImagePressed(types.ImageMessage message) {
