@@ -100,6 +100,13 @@ abstract class ChatTheme {
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
+    required this.typingBubbleColor,
+    required this.typingBubbleCirclesColor,
+    required this.typingCirclesForwardDuration,
+    required this.typingCirclesReverseDuration,
+    required this.typingBubbleBorder,
+    required this.countBubbleColor,
+    required this.countColor,
   });
 
   /// Icon for select attachment button.
@@ -271,6 +278,31 @@ abstract class ChatTheme {
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
+
+  /// Background color for typing indicator bubble.
+  /// Defaults to [primary]
+  final Color typingBubbleColor;
+
+  ///  Animated typing bubble circles color.
+  /// Defaults to [secondary]
+  final Color typingBubbleCirclesColor;
+
+  /// To control forward animation duration of typing animated circles.
+  /// Defaults to 1000ms
+  final Duration typingCirclesForwardDuration;
+
+  /// To control reverse animation duration of typing animated circles.
+  /// Defaults to 1000ms
+  final Duration typingCirclesReverseDuration;
+
+  /// Bubble border of typing indicator.
+  final BorderRadius typingBubbleBorder;
+
+  /// Typing indicator count color. If more than users are typing.
+  final Color countBubbleColor;
+
+  /// Typing indicator count color.
+  final Color countColor;
 }
 
 /// Default chat theme which extends [ChatTheme].
@@ -403,6 +435,13 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    super.typingBubbleColor = primary,
+    super.typingBubbleCirclesColor = secondary,
+    super.typingCirclesForwardDuration = const Duration(milliseconds: 1000),
+    super.typingCirclesReverseDuration = const Duration(milliseconds: 1000),
+    super.typingBubbleBorder = const BorderRadius.all(Radius.circular(27.0)),
+    super.countBubbleColor = primary,
+    super.countColor = secondary,
   });
 }
 
@@ -536,5 +575,12 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    super.typingBubbleColor = secondaryDark,
+    super.typingBubbleCirclesColor = secondary,
+    super.typingCirclesForwardDuration = const Duration(milliseconds: 1000),
+    super.typingCirclesReverseDuration = const Duration(milliseconds: 1000),
+    super.typingBubbleBorder = const BorderRadius.all(Radius.circular(27.0)),
+    super.countBubbleColor = secondaryDark,
+    super.countColor = secondary,
   });
 }

@@ -23,6 +23,7 @@ import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
 import 'text_message.dart';
+import 'typing_indicator.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
@@ -84,6 +85,7 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    required this.showTypingIndicator,
   });
 
   /// See [Message.avatarBuilder].
@@ -291,6 +293,10 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
+  /// Typing Indicator for chat. It will not be shown unless users are added.
+  /// Max length of users shown is 2. Above that will show count bubble.
+  final List<types.User> showTypingIndicator;
+
   @override
   State<Chat> createState() => _ChatState();
 }
@@ -305,7 +311,6 @@ class _ChatState extends State<Chat> {
   @override
   void initState() {
     super.initState();
-
     didUpdateWidget(widget);
   }
 
@@ -375,6 +380,16 @@ class _ChatState extends State<Chat> {
                                 ),
                               ),
                       ),
+                      widget.showTypingIndicator.isNotEmpty
+                          ? TypingIndicator(
+                              author: widget.showTypingIndicator,
+                              forwardDuration: widget.theme
+                                  .typingCirclesForwardDuration.inMilliseconds,
+                              reverseDuration: widget.theme
+                                  .typingCirclesReverseDuration.inMilliseconds,
+                              bubbleAlignment: widget.bubbleRtlAlignment!,
+                            )
+                          : Container(),
                       widget.customBottomWidget ??
                           Input(
                             isAttachmentUploading: widget.isAttachmentUploading,
