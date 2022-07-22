@@ -23,7 +23,6 @@ void main() {
             ],
             onSendPressed: (types.PartialText message) => {},
             user: const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c'),
-            showTypingIndicator: const [],
           ),
         ),
       ),

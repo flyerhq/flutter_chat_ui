@@ -280,19 +280,18 @@ abstract class ChatTheme {
   final TextStyle userNameTextStyle;
 
   /// Background color for typing indicator bubble.
-  /// Defaults to [primary]
   final Color typingBubbleColor;
 
   ///  Animated typing bubble circles color.
-  /// Defaults to [secondary]
+
   final Color typingBubbleCirclesColor;
 
   /// To control forward animation duration of typing animated circles.
-  /// Defaults to 1000ms
+  /// Defaults to 800ms
   final Duration typingCirclesForwardDuration;
 
   /// To control reverse animation duration of typing animated circles.
-  /// Defaults to 1000ms
+  /// Defaults to 800ms
   final Duration typingCirclesReverseDuration;
 
   /// Bubble border of typing indicator.
@@ -435,8 +434,8 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    super.typingBubbleColor = primary,
-    super.typingBubbleCirclesColor = secondary,
+    super.typingBubbleColor = secondary,
+    super.typingBubbleCirclesColor = neutral2,
     super.typingCirclesForwardDuration = const Duration(milliseconds: 1000),
     super.typingCirclesReverseDuration = const Duration(milliseconds: 1000),
     super.typingBubbleBorder = const BorderRadius.all(Radius.circular(27.0)),
@@ -577,8 +576,8 @@ class DarkChatTheme extends ChatTheme {
     ),
     super.typingBubbleColor = secondaryDark,
     super.typingBubbleCirclesColor = secondary,
-    super.typingCirclesForwardDuration = const Duration(milliseconds: 1000),
-    super.typingCirclesReverseDuration = const Duration(milliseconds: 1000),
+    super.typingCirclesForwardDuration = const Duration(milliseconds: 800),
+    super.typingCirclesReverseDuration = const Duration(milliseconds: 800),
     super.typingBubbleBorder = const BorderRadius.all(Radius.circular(27.0)),
     super.countBubbleColor = secondaryDark,
     super.countColor = secondary,

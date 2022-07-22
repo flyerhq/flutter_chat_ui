@@ -36,8 +36,14 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
-  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
-
+  final _user = const types.User(
+    id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
+  );
+  final _typingUser = const types.User(
+    id: '771c85be-40fe-46f9-830c-5753c3677da4',
+    firstName: 'Lorem',
+    lastName: 'Ipsum',
+  );
   @override
   void initState() {
     super.initState();
@@ -55,7 +61,7 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
-          showTypingIndicator: const [],
+          showTypingIndicator: [_typingUser],
         ),
       );
 

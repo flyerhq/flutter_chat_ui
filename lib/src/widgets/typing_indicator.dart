@@ -109,6 +109,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
                                 : widget.author.length,
                             (index) => UserAvatar(
                               author: widget.author[index],
+                              bubbleRtlAlignment: widget.bubbleAlignment,
                             ),
                           ),
                         ),

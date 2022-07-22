@@ -85,7 +85,7 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
-    required this.showTypingIndicator,
+    this.showTypingIndicator = const [],
   });
 
   /// See [Message.avatarBuilder].
@@ -293,8 +293,9 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
-  /// Typing Indicator for chat. It will not be shown unless users are added.
-  /// Max length of users shown is 2. Above that will show count bubble.
+  /// Optional typing indicator for chat. By default it is empty list which hides the indicator.
+  /// Shows animated bubble along with maximum 2 avatars. Will show additional small count bubble, if more than 2 users typing.
+  /// You can customize only certain properties, see [ChatTheme].
   final List<types.User> showTypingIndicator;
 
   @override

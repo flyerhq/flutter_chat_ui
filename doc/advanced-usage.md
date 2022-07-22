@@ -555,3 +555,8 @@ class _MyHomePageState extends State<MyHomePage> {
 ## User avatars & names
 
 To show user avatars & names use `showUserAvatars` and `showUserNames` parameters. Can be used separately. By default, the chat will select one of 10 provided colors as an avatar background and name text color. Color is calculated based on the user's `id` hash code, so it is unique in different rooms. To modify provided colors use `userAvatarNameColors` parameter in [theme](themes). If you want to have one color for everyone, just pass this color as a single item in the `userAvatarNameColors` list.
+
+## Typing Indicator
+To show typing indicator, you can use `showTypingIndicator` optional parameter which takes [User.types] list. By default its empty list which hides the indicator. Typing indicator supports displaying upto 2 users avatars actively typing along with animated bubble. Above that will show additional count bubble. You can set customization of typing indicator, see [theme](themes).
+
+
