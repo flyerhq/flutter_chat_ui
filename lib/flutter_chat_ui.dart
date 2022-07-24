@@ -4,6 +4,7 @@ export 'src/chat_l10n.dart';
 export 'src/chat_theme.dart';
 export 'src/models/bubble_rtl_alignment.dart';
 export 'src/models/emoji_enlargement_behavior.dart';
+export 'src/models/input_clear_mode.dart';
 export 'src/models/preview_tap_options.dart';
 export 'src/models/send_button_visibility_mode.dart';
 export 'src/util.dart' show formatBytes, isConsistsOfEmojis;

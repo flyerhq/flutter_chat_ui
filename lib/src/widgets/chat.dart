@@ -13,7 +13,6 @@ import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/preview_tap_options.dart';
-import '../models/send_button_visibility_mode.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'image_gallery.dart';
@@ -52,6 +51,7 @@ class Chat extends StatefulWidget {
       minScale: PhotoViewComputedScale.contained,
     ),
     this.imageMessageBuilder,
+    this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
     this.isTextMessageTextSelectable = true,
@@ -72,15 +72,11 @@ class Chat extends StatefulWidget {
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.onTextChanged,
-    this.onTextFieldTap,
     this.previewTapOptions = const PreviewTapOptions(),
     this.scrollController,
     this.scrollPhysics,
-    this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
     this.showUserNames = false,
-    this.textEditingController,
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
@@ -175,6 +171,9 @@ class Chat extends StatefulWidget {
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
 
+  /// See [Input.options].
+  final InputOptions inputOptions;
+
   /// See [Input.isAttachmentUploading].
   final bool? isAttachmentUploading;
 
@@ -239,12 +238,6 @@ class Chat extends StatefulWidget {
   /// See [Input.onSendPressed].
   final void Function(types.PartialText) onSendPressed;
 
-  /// See [Input.onTextChanged].
-  final void Function(String)? onTextChanged;
-
-  /// See [Input.onTextFieldTap].
-  final VoidCallback? onTextFieldTap;
-
   /// See [Message.previewTapOptions].
   final PreviewTapOptions previewTapOptions;
 
@@ -254,18 +247,12 @@ class Chat extends StatefulWidget {
   /// See [ChatList.scrollPhysics].
   final ScrollPhysics? scrollPhysics;
 
-  /// See [Input.sendButtonVisibilityMode].
-  final SendButtonVisibilityMode sendButtonVisibilityMode;
-
   /// See [Message.showUserAvatars].
   final bool showUserAvatars;
 
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
   final bool showUserNames;
-
-  /// See [Input.textEditingController].
-  final TextEditingController? textEditingController;
 
   /// See [Message.textMessageBuilder].
   final Widget Function(
@@ -393,11 +380,7 @@ class _ChatState extends State<Chat> {
                             isAttachmentUploading: widget.isAttachmentUploading,
                             onAttachmentPressed: widget.onAttachmentPressed,
                             onSendPressed: widget.onSendPressed,
-                            onTextChanged: widget.onTextChanged,
-                            onTextFieldTap: widget.onTextFieldTap,
-                            sendButtonVisibilityMode:
-                                widget.sendButtonVisibilityMode,
-                            textEditingController: widget.textEditingController,
+                            options: widget.inputOptions,
                           ),
                     ],
                   ),

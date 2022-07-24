@@ -13,9 +13,11 @@ void main() {
           MaterialApp(
             home: Material(
               child: Chat(
+                inputOptions: const InputOptions(
+                  sendButtonVisibilityMode: SendButtonVisibilityMode.always,
+                ),
                 messages: const [],
                 onSendPressed: (types.PartialText message) {},
-                sendButtonVisibilityMode: SendButtonVisibilityMode.always,
                 user: const types.User(
                   id: '06c33e8b-e835-4736-80f4-63f44b66666c',
                 ),
@@ -39,9 +41,11 @@ void main() {
           MaterialApp(
             home: Material(
               child: Chat(
+                inputOptions: const InputOptions(
+                  sendButtonVisibilityMode: SendButtonVisibilityMode.hidden,
+                ),
                 messages: const [],
                 onSendPressed: (types.PartialText message) {},
-                sendButtonVisibilityMode: SendButtonVisibilityMode.hidden,
                 user: const types.User(
                   id: '06c33e8b-e835-4736-80f4-63f44b66666c',
                 ),
