@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -9,14 +9,6 @@ import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'input_text_field_controller.dart';
 import 'send_button.dart';
-
-class NewLineIntent extends Intent {
-  const NewLineIntent();
-}
-
-class SendMessageIntent extends Intent {
-  const SendMessageIntent();
-}
 
 /// A class that represents bottom bar widget with a text field, attachment and
 /// send buttons inside. By default hides send button when text field is empty.
@@ -71,7 +63,25 @@ class Input extends StatefulWidget {
 
 /// [Input] widget state.
 class _InputState extends State<Input> {
-  final _inputFocusNode = FocusNode();
+  late final _inputFocusNode = FocusNode(
+    onKeyEvent: (node, event) {
+      if (event.physicalKey == PhysicalKeyboardKey.enter &&
+          !HardwareKeyboard.instance.physicalKeysPressed.any(
+            (el) => <PhysicalKeyboardKey>{
+              PhysicalKeyboardKey.shiftLeft,
+              PhysicalKeyboardKey.shiftRight,
+            }.contains(el),
+          )) {
+        if (event is KeyDownEvent) {
+          _handleSendPressed();
+        }
+        return KeyEventResult.handled;
+      } else {
+        return KeyEventResult.ignored;
+      }
+    },
+  );
+
   bool _sendButtonVisible = false;
   late TextEditingController _textController;
 
@@ -100,50 +110,10 @@ class _InputState extends State<Input> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final isAndroid = defaultTargetPlatform == TargetPlatform.android;
-    final isIOS = defaultTargetPlatform == TargetPlatform.iOS;
-
-    return GestureDetector(
-      onTap: () => _inputFocusNode.requestFocus(),
-      child: isAndroid || isIOS
-          ? _inputBuilder()
-          : Shortcuts(
-              shortcuts: {
-                LogicalKeySet(LogicalKeyboardKey.enter):
-                    const SendMessageIntent(),
-                LogicalKeySet(LogicalKeyboardKey.enter, LogicalKeyboardKey.alt):
-                    const NewLineIntent(),
-                LogicalKeySet(
-                  LogicalKeyboardKey.enter,
-                  LogicalKeyboardKey.shift,
-                ): const NewLineIntent(),
-              },
-              child: Actions(
-                actions: {
-                  SendMessageIntent: CallbackAction<SendMessageIntent>(
-                    onInvoke: (SendMessageIntent intent) =>
-                        _handleSendPressed(),
-                  ),
-                  NewLineIntent: CallbackAction<NewLineIntent>(
-                    onInvoke: (NewLineIntent intent) => _handleNewLine(),
-                  ),
-                },
-                child: _inputBuilder(),
-              ),
-            ),
-    );
-  }
-
-  void _handleNewLine() {
-    final newValue = '${_textController.text}\r\n';
-    _textController.value = TextEditingValue(
-      text: newValue,
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: newValue.length),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () => _inputFocusNode.requestFocus(),
+        child: _inputBuilder(),
+      );
 
   void _handleSendButtonVisibilityModeChange() {
     _textController.removeListener(_handleTextControllerChange);
