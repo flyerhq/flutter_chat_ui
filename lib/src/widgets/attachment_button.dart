@@ -17,7 +17,7 @@ class AttachmentButton extends StatelessWidget {
   final bool isLoading;
 
   /// Callback for attachment button tap event.
-  final void Function()? onPressed;
+  final VoidCallback? onPressed;
 
   /// Padding around the button.
   final EdgeInsets padding;

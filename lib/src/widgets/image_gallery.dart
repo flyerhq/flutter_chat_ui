@@ -4,8 +4,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../conditional/conditional.dart';
 import '../models/preview_image.dart';
 
-export 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
-
 class ImageGallery extends StatelessWidget {
   const ImageGallery({
     super.key,

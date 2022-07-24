@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
@@ -198,13 +199,13 @@ class Chat extends StatefulWidget {
   final Widget Function(String userId)? nameBuilder;
 
   /// See [Input.onAttachmentPressed].
-  final void Function()? onAttachmentPressed;
+  final VoidCallback? onAttachmentPressed;
 
   /// See [Message.onAvatarTap].
   final void Function(types.User)? onAvatarTap;
 
   /// Called when user taps on background.
-  final void Function()? onBackgroundTap;
+  final VoidCallback? onBackgroundTap;
 
   /// See [ChatList.onEndReached].
   final Future<void> Function()? onEndReached;
@@ -242,7 +243,7 @@ class Chat extends StatefulWidget {
   final void Function(String)? onTextChanged;
 
   /// See [Input.onTextFieldTap].
-  final void Function()? onTextFieldTap;
+  final VoidCallback? onTextFieldTap;
 
   /// See [Message.previewTapOptions].
   final PreviewTapOptions previewTapOptions;
@@ -507,10 +508,10 @@ class _ChatState extends State<Chat> {
   }
 
   void _onImagePressed(types.ImageMessage message) {
-    final initialIndex = _gallery.indexWhere(
+    final initialPage = _gallery.indexWhere(
       (element) => element.id == message.id && element.uri == message.uri,
     );
-    _galleryPageController = PageController(initialPage: initialIndex);
+    _galleryPageController = PageController(initialPage: initialPage);
     setState(() {
       _isImageViewVisible = true;
     });

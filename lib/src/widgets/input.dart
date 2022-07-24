@@ -40,7 +40,7 @@ class Input extends StatefulWidget {
   final bool? isAttachmentUploading;
 
   /// See [AttachmentButton.onPressed].
-  final void Function()? onAttachmentPressed;
+  final VoidCallback? onAttachmentPressed;
 
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
@@ -50,7 +50,7 @@ class Input extends StatefulWidget {
   final void Function(String)? onTextChanged;
 
   /// Will be called on [TextField] tap.
-  final void Function()? onTextFieldTap;
+  final VoidCallback? onTextFieldTap;
 
   /// Controls the visibility behavior of the [SendButton] based on the
   /// [TextField] state inside the [Input] widget.
@@ -263,10 +263,10 @@ class _InputState extends State<Input> {
                   ),
                 ),
                 Visibility(
-                  visible: _sendButtonVisible,
-                  maintainSize: true,
                   maintainAnimation: true,
+                  maintainSize: true,
                   maintainState: true,
+                  visible: _sendButtonVisible,
                   child: SendButton(
                     onPressed: _handleSendPressed,
                     padding: buttonPadding,
