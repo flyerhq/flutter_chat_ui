@@ -1,3 +1,15 @@
+## 1.6.4
+
+- **BREAKING CHANGE**: Add `InputOptions`. `onTextChanged`, `onTextFieldTap` and `sendButtonVisibilityMode` are now under `InputOptions` class, just move the same values to `inputOptions: InputOptions()`.
+- Add `inputClearMode` to `InputOptions`. Allows you to disable automatic text field clear on submit.
+- Add `textEditingController` to `InputOptions`. Allows you to provide a custom editing contoller, but preferably use `InputTextFieldController` we export from the library, if you want to use it to programmatically clear text field or similar.
+- Add `keyboardDismissBehavior`.
+- Improve image gallery - code optimizations and close button fix. Thanks @felixgabler for the PR!
+- Fix input container changing its size. Thanks @joj3000 for the PR!
+- Fix enter key not moving text to a new line on web. Thanks @UmairSaqibBhutta for reporting!
+- Add `TextMessageOptions`. Thanks @felixgabler for the PR!
+- Update dependencies
+
 ## 1.6.3
 
 - Added an option to align sent bubbles to the right or left for RTL languages. Thanks @Faaatman for reporting! Use `bubbleRtlAlignment`.
