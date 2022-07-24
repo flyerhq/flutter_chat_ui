@@ -3,11 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
-import '../conditional/conditional.dart';
 import '../models/bubble_rtl_alignment.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
@@ -17,6 +15,7 @@ import '../models/preview_tap_options.dart';
 import '../models/send_button_visibility_mode.dart';
 import '../util.dart';
 import 'chat_list.dart';
+import 'image_gallery.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
@@ -47,6 +46,10 @@ class Chat extends StatefulWidget {
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
+    this.imageGalleryOptions = const ImageGalleryOptions(
+      maxScale: PhotoViewComputedScale.covered,
+      minScale: PhotoViewComputedScale.contained,
+    ),
     this.imageMessageBuilder,
     this.isAttachmentUploading,
     this.isLastPage,
@@ -163,6 +166,9 @@ class Chat extends StatefulWidget {
 
   /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
+
+  /// See [ImageGallery.options].
+  final ImageGalleryOptions imageGalleryOptions;
 
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -299,7 +305,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
-  int _imageViewIndex = 0;
+  PageController? _galleryPageController;
   bool _isImageViewVisible = false;
 
   @override
@@ -329,6 +335,12 @@ class _ChatState extends State<Chat> {
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
     }
+  }
+
+  @override
+  void dispose() {
+    _galleryPageController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -389,7 +401,13 @@ class _ChatState extends State<Chat> {
                     ],
                   ),
                 ),
-                if (_isImageViewVisible) _imageGalleryBuilder(),
+                if (_isImageViewVisible)
+                  ImageGallery(
+                    images: _gallery,
+                    pageController: _galleryPageController!,
+                    onClosePressed: _onCloseGalleryPressed,
+                    options: widget.imageGalleryOptions,
+                  ),
               ],
             ),
           ),
@@ -407,49 +425,6 @@ class _ChatState extends State<Chat> {
           widget.l10n.emptyChatPlaceholder,
           style: widget.theme.emptyChatPlaceholderTextStyle,
           textAlign: TextAlign.center,
-        ),
-      );
-
-  Widget _imageGalleryBuilder() => Dismissible(
-        key: const Key('photo_view_gallery'),
-        direction: DismissDirection.down,
-        onDismissed: (direction) => _onCloseGalleryPressed(),
-        child: Stack(
-          children: [
-            PhotoViewGallery.builder(
-              builder: (BuildContext context, int index) =>
-                  PhotoViewGalleryPageOptions(
-                imageProvider: Conditional().getProvider(_gallery[index].uri),
-              ),
-              itemCount: _gallery.length,
-              loadingBuilder: (context, event) =>
-                  _imageGalleryLoadingBuilder(event),
-              onPageChanged: _onPageChanged,
-              pageController: PageController(initialPage: _imageViewIndex),
-              scrollPhysics: const ClampingScrollPhysics(),
-            ),
-            Positioned.directional(
-              end: 16,
-              textDirection: Directionality.of(context),
-              top: 56,
-              child: CloseButton(
-                color: Colors.white,
-                onPressed: _onCloseGalleryPressed,
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
-        child: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            value: event == null || event.expectedTotalBytes == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
-          ),
         ),
       );
 
@@ -527,20 +502,17 @@ class _ChatState extends State<Chat> {
     setState(() {
       _isImageViewVisible = false;
     });
+    _galleryPageController?.dispose();
+    _galleryPageController = null;
   }
 
   void _onImagePressed(types.ImageMessage message) {
+    final initialIndex = _gallery.indexWhere(
+      (element) => element.id == message.id && element.uri == message.uri,
+    );
+    _galleryPageController = PageController(initialPage: initialIndex);
     setState(() {
-      _imageViewIndex = _gallery.indexWhere(
-        (element) => element.id == message.id && element.uri == message.uri,
-      );
       _isImageViewVisible = true;
-    });
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _imageViewIndex = index;
     });
   }
 
