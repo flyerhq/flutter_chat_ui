@@ -293,9 +293,9 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
-  /// Optional typing indicator for chat. By default it is empty list which hides the indicator.
-  /// Shows animated bubble along with maximum 2 avatars. Will show additional small count bubble, if more than 2 users typing.
-  /// You can customize only certain properties, see [ChatTheme].
+  /// Optional typing indicator for chat. By default it is empty list which hides the indicator,
+  /// shows animated speech bubble along with the support of multiple users typing text.
+  /// You can customize only certain properties, see [TypingIndicatorTheme].
   final List<types.User> showTypingIndicator;
 
   @override
@@ -384,10 +384,6 @@ class _ChatState extends State<Chat> {
                       widget.showTypingIndicator.isNotEmpty
                           ? TypingIndicator(
                               author: widget.showTypingIndicator,
-                              forwardDuration: widget.theme
-                                  .typingCirclesForwardDuration.inMilliseconds,
-                              reverseDuration: widget.theme
-                                  .typingCirclesReverseDuration.inMilliseconds,
                               bubbleAlignment: widget.bubbleRtlAlignment!,
                             )
                           : Container(),

@@ -7,21 +7,13 @@ class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
     super.key,
     required this.author,
-    required this.forwardDuration,
-    required this.reverseDuration,
     required this.bubbleAlignment,
   });
 
-  /// See [types.User].
+  /// Author(s) which will be showed for typing in chat. See [types.User].
   final List<types.User> author;
 
-  /// See [ChatTheme.typingCirclesForwardDuration].
-  final int forwardDuration;
-
-  /// See [ChatTheme.typingCirclesReverseDuration].
-  final int reverseDuration;
-
-  /// See [Chat.bubbleRtlAlignment].
+  /// See [Message.bubbleRtlAlignment].
   final BubbleRtlAlignment bubbleAlignment;
 
   @override
@@ -59,8 +51,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
       vsync: this,
       lowerBound: 0.0,
       upperBound: 1.0,
-      duration: Duration(milliseconds: widget.forwardDuration),
-      reverseDuration: Duration(milliseconds: widget.reverseDuration),
+      duration: const Duration(milliseconds: 800),
+      reverseDuration: const Duration(milliseconds: 800),
     )
       ..repeat()
       ..addListener(() {
@@ -114,33 +106,6 @@ class _TypingIndicatorState extends State<TypingIndicator>
                           ),
                         ),
                       ),
-                      widget.author.length > 2
-                          ? Positioned(
-                              right: 0.0,
-                              bottom: 12.0,
-                              child: Container(
-                                height: 18.0,
-                                width: 18.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: InheritedChatTheme.of(context)
-                                      .theme
-                                      .countBubbleColor,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '+${widget.author.length - 2}',
-                                    textScaleFactor: 0.7,
-                                    style: TextStyle(
-                                      color: InheritedChatTheme.of(context)
-                                          .theme
-                                          .countColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container(),
                     ],
                   )
                 : Container(),
@@ -150,9 +115,14 @@ class _TypingIndicatorState extends State<TypingIndicator>
               height: 28.0,
               width: 56.0,
               decoration: BoxDecoration(
-                borderRadius:
-                    InheritedChatTheme.of(context).theme.typingBubbleBorder,
-                color: InheritedChatTheme.of(context).theme.typingBubbleColor,
+                borderRadius: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .bubbleBorder,
+                color: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .bubbleColor,
               ),
               child: Wrap(
                 alignment: WrapAlignment.center,
@@ -161,19 +131,22 @@ class _TypingIndicatorState extends State<TypingIndicator>
                   AnimatedCircles(
                     circlesColor: InheritedChatTheme.of(context)
                         .theme
-                        .typingBubbleCirclesColor,
+                        .typingIndicatorTheme
+                        .animatedCirclesColor,
                     animationOffset: _firstCircleOffsetAnimation,
                   ),
                   AnimatedCircles(
                     circlesColor: InheritedChatTheme.of(context)
                         .theme
-                        .typingBubbleCirclesColor,
+                        .typingIndicatorTheme
+                        .animatedCirclesColor,
                     animationOffset: _secondCircleOffsetAnimation,
                   ),
                   AnimatedCircles(
                     circlesColor: InheritedChatTheme.of(context)
                         .theme
-                        .typingBubbleCirclesColor,
+                        .typingIndicatorTheme
+                        .animatedCirclesColor,
                     animationOffset: _thirdCircleOffsetAnimation,
                   ),
                 ],
@@ -281,4 +254,28 @@ class AnimatedCircles extends StatelessWidget {
           ),
         ),
       );
+}
+
+@immutable
+class TypingIndicatorTheme {
+  /// Defaults according to [DefaultChatTheme] and [DarkChatTheme].
+  /// See [ChatTheme.typingIndicatorTheme] to customize your own.
+  const TypingIndicatorTheme({
+    required this.bubbleColor,
+    required this.animatedCirclesColor,
+    required this.bubbleBorder,
+    required this.multipleUserTextColor,
+  });
+
+  /// Bubble color for [TypingIndicator].
+  final Color bubbleColor;
+
+  /// Three Animated dots color for [TypingIndicator].
+  final Color animatedCirclesColor;
+
+  /// Bubble border for [TypingIndicator].
+  final BorderRadius bubbleBorder;
+
+  /// Multiple users text color for [TypingIndicator].
+  final Color multipleUserTextColor;
 }

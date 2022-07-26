@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/typing_indicator.dart';
+
 // For internal usage only. Use values from theme itself.
 
 /// See [ChatTheme.userAvatarNameColors]
@@ -100,13 +102,7 @@ abstract class ChatTheme {
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
-    required this.typingBubbleColor,
-    required this.typingBubbleCirclesColor,
-    required this.typingCirclesForwardDuration,
-    required this.typingCirclesReverseDuration,
-    required this.typingBubbleBorder,
-    required this.countBubbleColor,
-    required this.countColor,
+    required this.typingIndicatorTheme,
   });
 
   /// Icon for select attachment button.
@@ -279,29 +275,8 @@ abstract class ChatTheme {
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
 
-  /// Background color for typing indicator bubble.
-  final Color typingBubbleColor;
-
-  ///  Animated typing bubble circles color.
-
-  final Color typingBubbleCirclesColor;
-
-  /// To control forward animation duration of typing animated circles.
-  /// Defaults to 800ms
-  final Duration typingCirclesForwardDuration;
-
-  /// To control reverse animation duration of typing animated circles.
-  /// Defaults to 800ms
-  final Duration typingCirclesReverseDuration;
-
-  /// Bubble border of typing indicator.
-  final BorderRadius typingBubbleBorder;
-
-  /// Typing indicator count color. If more than users are typing.
-  final Color countBubbleColor;
-
-  /// Typing indicator count color.
-  final Color countColor;
+  /// Theme for typing indicator. See [TypingIndicator].
+  final TypingIndicatorTheme typingIndicatorTheme;
 }
 
 /// Default chat theme which extends [ChatTheme].
@@ -434,13 +409,12 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    super.typingBubbleColor = secondary,
-    super.typingBubbleCirclesColor = neutral2,
-    super.typingCirclesForwardDuration = const Duration(milliseconds: 1000),
-    super.typingCirclesReverseDuration = const Duration(milliseconds: 1000),
-    super.typingBubbleBorder = const BorderRadius.all(Radius.circular(27.0)),
-    super.countBubbleColor = primary,
-    super.countColor = secondary,
+    super.typingIndicatorTheme = const TypingIndicatorTheme(
+      bubbleColor: primary,
+      animatedCirclesColor: secondary,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      multipleUserTextColor: neutral0,
+    ),
   });
 }
 
@@ -574,12 +548,11 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
-    super.typingBubbleColor = secondaryDark,
-    super.typingBubbleCirclesColor = secondary,
-    super.typingCirclesForwardDuration = const Duration(milliseconds: 800),
-    super.typingCirclesReverseDuration = const Duration(milliseconds: 800),
-    super.typingBubbleBorder = const BorderRadius.all(Radius.circular(27.0)),
-    super.countBubbleColor = secondaryDark,
-    super.countColor = secondary,
+    super.typingIndicatorTheme = const TypingIndicatorTheme(
+      bubbleColor: secondaryDark,
+      animatedCirclesColor: secondary,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      multipleUserTextColor: secondary,
+    ),
   });
 }
