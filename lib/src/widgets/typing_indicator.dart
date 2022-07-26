@@ -264,7 +264,7 @@ class TypingIndicatorTheme {
     required this.bubbleColor,
     required this.animatedCirclesColor,
     required this.bubbleBorder,
-    required this.multipleUserTextColor,
+    required this.multipleUserTextStyle,
   });
 
   /// Bubble color for [TypingIndicator].
@@ -276,6 +276,6 @@ class TypingIndicatorTheme {
   /// Bubble border for [TypingIndicator].
   final BorderRadius bubbleBorder;
 
-  /// Multiple users text color for [TypingIndicator].
-  final Color multipleUserTextColor;
+  /// Multiple users text style for [TypingIndicator].
+  final TextStyle multipleUserTextStyle;
 }

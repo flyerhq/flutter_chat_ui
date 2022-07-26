@@ -413,7 +413,11 @@ class DefaultChatTheme extends ChatTheme {
       bubbleColor: primary,
       animatedCirclesColor: secondary,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
-      multipleUserTextColor: neutral0,
+      multipleUserTextStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w800,
+        color: neutral0,
+      ),
     ),
   });
 }
@@ -552,7 +556,11 @@ class DarkChatTheme extends ChatTheme {
       bubbleColor: secondaryDark,
       animatedCirclesColor: secondary,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
-      multipleUserTextColor: secondary,
+      multipleUserTextStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w800,
+        color: secondary,
+      ),
     ),
   });
 }
