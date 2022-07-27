@@ -27,6 +27,9 @@ const error = Color(0xffff6767);
 /// N0.
 const neutral0 = Color(0xff1d1c21);
 
+/// N1.
+const neutral1 = Color(0xff615e6e);
+
 /// N2.
 const neutral2 = Color(0xff9e9cab);
 
@@ -410,14 +413,15 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.typingIndicatorTheme = const TypingIndicatorTheme(
-      bubbleColor: primary,
-      animatedCirclesColor: secondary,
+      bubbleColor: neutral7,
+      animatedCirclesColor: neutral1,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       multipleUserTextStyle: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w800,
-        color: neutral0,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: neutral2,
       ),
+      animatedCircleSize: 5.0,
     ),
   });
 }
@@ -553,14 +557,15 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.typingIndicatorTheme = const TypingIndicatorTheme(
-      bubbleColor: secondaryDark,
-      animatedCirclesColor: secondary,
+      bubbleColor: dark,
+      animatedCirclesColor: neutral7,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       multipleUserTextStyle: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w800,
-        color: secondary,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: neutral2,
       ),
+      animatedCircleSize: 5.0,
     ),
   });
 }
