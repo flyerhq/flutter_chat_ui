@@ -158,7 +158,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
   void _showIndicator() {
     _appearanceController
       ..duration = const Duration(milliseconds: 500)
-      ..forward(from: 0.0);
+      ..forward();
   }
 
   Animation<Offset> _firstCircleOffset() => TweenSequence<Offset>(
