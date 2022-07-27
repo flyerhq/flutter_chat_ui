@@ -89,10 +89,9 @@ class _ChatListState extends State<ChatList>
 
   @override
   void dispose() {
-    super.dispose();
-
     _controller.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override

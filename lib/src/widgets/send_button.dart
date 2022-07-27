@@ -13,7 +13,7 @@ class SendButton extends StatelessWidget {
   });
 
   /// Callback for send button tap event.
-  final void Function() onPressed;
+  final VoidCallback onPressed;
 
   /// Padding around the button.
   final EdgeInsets padding;
