@@ -274,7 +274,7 @@ class _AnimatedMessageState extends State<AnimatedMessage>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 300),
     );
 
     _animation = CurvedAnimation(
