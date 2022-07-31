@@ -439,7 +439,6 @@ class _ChatState extends State<Chat> {
               : min(constraints.maxWidth * 0.78, 440).floor();
 
       return Message(
-        key: ValueKey(message.id),
         avatarBuilder: widget.avatarBuilder,
         bubbleBuilder: widget.bubbleBuilder,
         bubbleRtlAlignment: widget.bubbleRtlAlignment,

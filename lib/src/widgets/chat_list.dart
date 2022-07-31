@@ -59,6 +59,7 @@ class ChatList extends StatefulWidget {
 /// [ChatList] widget state.
 class _ChatListState extends State<ChatList>
     with SingleTickerProviderStateMixin {
+  final Set<String> seenIds = {};
   late final Animation<double> _animation = CurvedAnimation(
     curve: Curves.easeOutQuad,
     parent: _controller,
@@ -67,9 +68,6 @@ class _ChatListState extends State<ChatList>
   late final AnimationController _controller = AnimationController(vsync: this);
 
   bool _isNextPageLoading = false;
-  final GlobalKey<SliverAnimatedListState> _listKey =
-      GlobalKey<SliverAnimatedListState>();
-  late List<Object> _oldData = List.from(widget.items);
   late ScrollController _scrollController;
 
   @override
@@ -77,6 +75,11 @@ class _ChatListState extends State<ChatList>
     super.initState();
 
     _scrollController = widget.scrollController ?? ScrollController();
+    for (final item in widget.items) {
+      _mapMessage(item, (message) {
+        seenIds.add(message.id);
+      });
+    }
     didUpdateWidget(widget);
   }
 
@@ -84,7 +87,7 @@ class _ChatListState extends State<ChatList>
   void didUpdateWidget(covariant ChatList oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _calculateDiffs(oldWidget.items);
+    _scrollToBottomIfNeeded(oldWidget.items);
   }
 
   @override
@@ -134,11 +137,34 @@ class _ChatListState extends State<ChatList>
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
-              sliver: SliverAnimatedList(
-                initialItemCount: widget.items.length,
-                key: _listKey,
-                itemBuilder: (_, index, animation) =>
-                    _newMessageBuilder(index, animation),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final item = widget.items[index];
+                    final animate = _mapMessage(
+                          item,
+                          (message) => seenIds.add(message.id), // returns true if item not yet in the set
+                        ) ??
+                        false;
+                    return AnimatedMessage(
+                      key: _valueKeyForItem(item),
+                      child: widget.itemBuilder(item, index),
+                      animate: animate,
+                    );
+                  },
+                  findChildIndexCallback: (Key key) {
+                    if (key is ValueKey<Object>) {
+                      final newIndex = widget.items.indexWhere(
+                        (v) => _valueKeyForItem(v) == key,
+                      );
+                      if (newIndex != -1) {
+                        return newIndex;
+                      }
+                    }
+                    return null;
+                  },
+                  childCount: widget.items.length,
+                ),
               ),
             ),
             SliverPadding(
@@ -178,99 +204,101 @@ class _ChatListState extends State<ChatList>
         ),
       );
 
-  void _calculateDiffs(List<Object> oldList) async {
-    final diffResult = calculateListDiff<Object>(
-      oldList,
-      widget.items,
-      equalityChecker: (item1, item2) {
-        if (item1 is Map<String, Object> && item2 is Map<String, Object>) {
-          final message1 = item1['message']! as types.Message;
-          final message2 = item2['message']! as types.Message;
-
-          return message1.id == message2.id;
-        } else {
-          return item1 == item2;
-        }
-      },
-    );
-
-    for (final update in diffResult.getUpdates(batch: false)) {
-      update.when(
-        insert: (pos, count) {
-          _listKey.currentState?.insertItem(pos);
-        },
-        remove: (pos, count) {
-          final item = oldList[pos];
-          _listKey.currentState?.removeItem(
-            pos,
-            (_, animation) => _removedMessageBuilder(item, animation),
-          );
-        },
-        change: (pos, payload) {},
-        move: (from, to) {},
-      );
-    }
-
-    _scrollToBottomIfNeeded(oldList);
-
-    _oldData = List.from(widget.items);
-  }
-
-  Widget _newMessageBuilder(int index, Animation<double> animation) {
-    try {
-      final item = _oldData[index];
-
-      return SizeTransition(
-        axisAlignment: -1,
-        sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
-        child: widget.itemBuilder(item, index),
-      );
-    } catch (e) {
-      return const SizedBox();
-    }
-  }
-
-  Widget _removedMessageBuilder(Object item, Animation<double> animation) =>
-      SizeTransition(
-        axisAlignment: -1,
-        sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
-        child: FadeTransition(
-          opacity: animation.drive(CurveTween(curve: Curves.easeInQuad)),
-          child: widget.itemBuilder(item, null),
-        ),
-      );
-
   // Hacky solution to reconsider.
   void _scrollToBottomIfNeeded(List<Object> oldList) {
     try {
       // Take index 1 because there is always a spacer on index 0.
       final oldItem = oldList[1];
       final item = widget.items[1];
-
-      if (oldItem is Map<String, Object> && item is Map<String, Object>) {
-        final oldMessage = oldItem['message']! as types.Message;
-        final message = item['message']! as types.Message;
-
-        // Compare items to fire only on newly added messages.
-        if (oldMessage != message) {
-          // Run only for sent message.
-          if (message.author.id == InheritedUser.of(context).user.id) {
-            // Delay to give some time for Flutter to calculate new
-            // size after new message was added
-            Future.delayed(const Duration(milliseconds: 100), () {
-              if (_scrollController.hasClients) {
-                _scrollController.animateTo(
-                  0,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInQuad,
-                );
-              }
-            });
+      _mapMessage(
+        oldItem,
+        (oldMessage) => _mapMessage(item, (message) {
+          // Compare items to fire only on newly added messages.
+          if (oldMessage != message) {
+            // Run only for sent message.
+            if (message.author.id == InheritedUser.of(context).user.id) {
+              // Delay to give some time for Flutter to calculate new
+              // size after new message was added
+              Future.delayed(const Duration(milliseconds: 100), () {
+                if (_scrollController.hasClients) {
+                  _scrollController.animateTo(
+                    0,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInQuad,
+                  );
+                }
+              });
+            }
           }
-        }
-      }
+        }),
+      );
     } catch (e) {
       // Do nothing if there are no items.
     }
   }
+
+  Key? _valueKeyForItem(Object item) =>
+      _mapMessage(item, (message) => ValueKey(message.id));
+
+  T? _mapMessage<T>(Object maybeMessage, T Function(types.Message) f) {
+    if (maybeMessage is Map<String, Object>) {
+      return f(maybeMessage['message'] as types.Message);
+    }
+    return null;
+  }
+}
+
+class AnimatedMessage extends StatefulWidget {
+  final bool animate; // just show the message without animation if set to false
+
+  const AnimatedMessage({
+    super.key,
+    required this.child,
+    this.animate = true,
+  });
+
+  final Widget child;
+
+  @override
+  _AnimatedMessageState createState() => _AnimatedMessageState();
+}
+
+class _AnimatedMessageState extends State<AnimatedMessage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    );
+
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutQuad,
+    );
+
+    if (widget.animate) {
+      _controller.forward();
+    } else {
+      _controller.value = 1;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => SizeTransition(
+        axisAlignment: -1,
+        sizeFactor: _animation,
+        child: widget.child,
+      );
 }
