@@ -84,7 +84,10 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    this.onCloseGalleryPressed,
   });
+
+  final void Function()? onCloseGalleryPressed;
 
   /// See [Message.avatarBuilder].
   final Widget Function(String userId)? avatarBuilder;
@@ -454,7 +457,6 @@ class _ChatState extends State<Chat> {
         messageWidth: messageWidth,
         nameBuilder: widget.nameBuilder,
         onAvatarTap: widget.onAvatarTap,
-        onMessageDoubleTap: widget.onMessageDoubleTap,
         onMessageLongPress: widget.onMessageLongPress,
         onMessageStatusLongPress: widget.onMessageStatusLongPress,
         onMessageStatusTap: widget.onMessageStatusTap,
@@ -465,6 +467,14 @@ class _ChatState extends State<Chat> {
           }
 
           widget.onMessageTap?.call(context, tappedMessage);
+        },
+        onMessageDoubleTap: (context, tappedMessage) {
+          if (tappedMessage is types.ImageMessage &&
+              widget.disableImageGallery != true) {
+            _onImagePressed(tappedMessage);
+          }
+
+          widget.onMessageDoubleTap?.call(context, tappedMessage);
         },
         onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
         onPreviewDataFetched: _onPreviewDataFetched,
@@ -488,6 +498,10 @@ class _ChatState extends State<Chat> {
     });
     _galleryPageController?.dispose();
     _galleryPageController = null;
+
+    if (widget.onCloseGalleryPressed != null) {
+      widget.onCloseGalleryPressed?.call();
+    }
   }
 
   void _onImagePressed(types.ImageMessage message) {
