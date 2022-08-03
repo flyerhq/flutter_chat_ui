@@ -20,3 +20,27 @@ class UnseenMessageBanner extends StatelessWidget {
         ),
       );
 }
+
+@immutable
+class ScrollToUnseenOptions {
+  const ScrollToUnseenOptions({
+    this.lastSeenMessageID,
+    this.scrollDelay = const Duration(milliseconds: 150),
+    this.scrollDuration = const Duration(milliseconds: 350),
+    this.scrollOnOpen = false,
+  });
+
+  /// Will show an unseen messages banner after this message if there are more
+  /// messages to come and will scroll to this banner on
+  /// [ChatState.scrollToFirstUnseen].
+  final String? lastSeenMessageID;
+
+  /// Duration to wait after open until the scrolling starts.
+  final Duration scrollDelay;
+
+  /// Duration for the animation of the scrolling.
+  final Duration scrollDuration;
+
+  /// Whether to scroll to the first unseen message on open.
+  final bool scrollOnOpen;
+}

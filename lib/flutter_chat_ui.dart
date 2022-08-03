@@ -19,5 +19,6 @@ export 'src/widgets/input_text_field_controller.dart';
 export 'src/widgets/message.dart';
 export 'src/widgets/send_button.dart';
 export 'src/widgets/text_message.dart';
+export 'src/widgets/unseen_message_banner.dart';
 export 'src/widgets/user_avatar.dart';
 export 'src/widgets/user_name.dart';

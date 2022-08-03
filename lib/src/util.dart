@@ -105,7 +105,7 @@ List<Object> calculateChatMessages(
   DateFormat? dateFormat,
   required int dateHeaderThreshold,
   String? dateLocale,
-  String? firstUnseenMessageID,
+  String? lastSeenMessageID,
   required int groupMessagesThreshold,
   required bool showUserNames,
   DateFormat? timeFormat,
@@ -153,10 +153,6 @@ List<Object> calculateChatMessages(
         showName = true;
         shouldShowName = false;
       }
-    }
-
-    if (message.id == firstUnseenMessageID) {
-      chatMessages.insert(0, const UnseenBanner());
     }
 
     if (messageHasCreatedAt && nextMessageHasCreatedAt) {
@@ -225,6 +221,10 @@ List<Object> calculateChatMessages(
                 ),
         ),
       );
+    }
+
+    if (message.id == lastSeenMessageID && !isLast) {
+      chatMessages.insert(0, const UnseenBanner());
     }
 
     if (message is types.ImageMessage) {

@@ -47,13 +47,15 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Chat(
-          firstUnseenMessageID: '4a202811-7d48-4ae9-8323-d764a56031ds',
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
-          scrollToUnseenOnOpen: true,
+          scrollToUnseenOptions: const ScrollToUnseenOptions(
+            lastSeenMessageID: '6a1a4351-cf05-4d0c-9d0f-47ed378b6112',
+            scrollOnOpen: true,
+          ),
           showUserAvatars: true,
           showUserNames: true,
           user: _user,

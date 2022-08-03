@@ -47,7 +47,6 @@ class Chat extends StatefulWidget {
     this.emojiEnlargementBehavior = EmojiEnlargementBehavior.multi,
     this.emptyState,
     this.fileMessageBuilder,
-    this.firstUnseenMessageID,
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
     this.imageGalleryOptions = const ImageGalleryOptions(
@@ -79,9 +78,7 @@ class Chat extends StatefulWidget {
     this.previewTapOptions = const PreviewTapOptions(),
     this.scrollController,
     this.scrollPhysics,
-    this.scrollToUnseenDelay = const Duration(milliseconds: 150),
-    this.scrollToUnseenDuration = const Duration(milliseconds: 350),
-    this.scrollToUnseenOnOpen = false,
+    this.scrollToUnseenOptions = const ScrollToUnseenOptions(),
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.textMessageBuilder,
@@ -162,10 +159,6 @@ class Chat extends StatefulWidget {
   /// See [Message.fileMessageBuilder].
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
-
-  /// Will show an unseen messages banner above this message and scroll to this
-  /// banner on [ChatState.scrollToFirstUnseen].
-  final String? firstUnseenMessageID;
 
   /// Time (in ms) between two messages when we will visually group them.
   /// Default value is 1 minute, 60000 ms. When time between two messages
@@ -259,14 +252,8 @@ class Chat extends StatefulWidget {
   /// See [ChatList.scrollPhysics].
   final ScrollPhysics? scrollPhysics;
 
-  /// Duration to wait after open until the scrolling starts.
-  final Duration scrollToUnseenDelay;
-
-  /// Duration for the animation of the scrolling.
-  final Duration scrollToUnseenDuration;
-
-  /// Whether to scroll to the first unseen message on open.
-  final bool scrollToUnseenOnOpen;
+  /// Controls if and how the chat should scroll to the newest unseen message.
+  final ScrollToUnseenOptions scrollToUnseenOptions;
 
   /// See [Message.showUserAvatars].
   final bool showUserAvatars;
@@ -338,7 +325,7 @@ class ChatState extends State<Chat> {
         dateFormat: widget.dateFormat,
         dateHeaderThreshold: widget.dateHeaderThreshold,
         dateLocale: widget.dateLocale,
-        firstUnseenMessageID: widget.firstUnseenMessageID,
+        lastSeenMessageID: widget.scrollToUnseenOptions.lastSeenMessageID,
         groupMessagesThreshold: widget.groupMessagesThreshold,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
@@ -347,10 +334,10 @@ class ChatState extends State<Chat> {
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
 
-      if (widget.scrollToUnseenOnOpen) {
+      if (widget.scrollToUnseenOptions.scrollOnOpen) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (mounted) {
-            await Future.delayed(widget.scrollToUnseenDelay);
+            await Future.delayed(widget.scrollToUnseenOptions.scrollDelay);
             scrollToFirstUnseen();
           }
         });
