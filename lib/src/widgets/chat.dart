@@ -50,6 +50,7 @@ class Chat extends StatefulWidget {
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
     this.imageMessageBuilder,
+    this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
     this.isTextMessageTextSelectable = true,
@@ -171,6 +172,9 @@ class Chat extends StatefulWidget {
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
+
+  /// See [Input.options].
+  final InputOptions inputOptions;
 
   /// See [Input.isAttachmentUploading].
   final bool? isAttachmentUploading;
@@ -399,11 +403,7 @@ class _ChatState extends State<Chat> {
                             isAttachmentUploading: widget.isAttachmentUploading,
                             onAttachmentPressed: widget.onAttachmentPressed,
                             onSendPressed: widget.onSendPressed,
-                            onTextChanged: widget.onTextChanged,
-                            onTextFieldTap: widget.onTextFieldTap,
-                            sendButtonVisibilityMode:
-                                widget.sendButtonVisibilityMode,
-                            textEditingController: widget.textEditingController,
+                            options: widget.inputOptions,
                           ),
                     ],
                   ),
