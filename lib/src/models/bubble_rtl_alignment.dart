@@ -1,0 +1,4 @@
+enum BubbleRtlAlignment {
+  left,
+  right,
+}

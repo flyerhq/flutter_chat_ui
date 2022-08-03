@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'conditional_stub.dart'
     if (dart.library.io) 'io_conditional.dart'
     if (dart.library.html) 'browser_conditional.dart';
@@ -11,6 +12,6 @@ abstract class Conditional {
   /// `dart:html` is available, otherwise it will throw an unsupported error.
   factory Conditional() => createConditional();
 
-  /// Returns an appropriate platform ImageProvider for specified URI
+  /// Returns an appropriate platform ImageProvider for specified URI.
   ImageProvider getProvider(String uri);
 }

@@ -1,10 +1,65 @@
+## 1.6.4
+
+- **BREAKING CHANGE**: Add `InputOptions`. `onTextChanged`, `onTextFieldTap` and `sendButtonVisibilityMode` are now under `InputOptions` class, just move the same values to `inputOptions: InputOptions()`.
+- Add `inputClearMode` to `InputOptions`. Allows you to disable automatic text field clear on submit.
+- Add `textEditingController` to `InputOptions`. Allows you to provide a custom editing contoller, but preferably use `InputTextFieldController` we export from the library, if you want to use it to programmatically clear text field or similar.
+- Add `keyboardDismissBehavior`.
+- Improve image gallery - code optimizations and close button fix. Thanks @felixgabler for the PR!
+- Fix input container changing its size. Thanks @joj3000 for the PR!
+- Fix enter key not moving text to a new line on web. Thanks @UmairSaqibBhutta for reporting!
+- Add `TextMessageOptions`. Thanks @felixgabler for the PR!
+- Update dependencies
+
+## 1.6.3
+
+- Added an option to align sent bubbles to the right or left for RTL languages. Thanks @Faaatman for reporting! Use `bubbleRtlAlignment`.
+- Add `customStatusBuilder`. Thanks @skllll06 for the PR!
+
+## 1.6.2
+
+- Code refactor
+- Update documentation about opening files
+- Fixes RTL layout. Thanks @Yahllil for reporting!
+
+## 1.6.1
+
+- Add bold, italic, strikethrough & code style to the input. Thanks @hareshgediya for the PR!
+- Add user agent option for preview data fetching. Thanks @felixgabler for the PR!
+
+## 1.6.0
+
+- **BREAKING CHANGE**: `copyWith` on messages works differently (keeping previous values unless set to null), and sometimes casting to a specific message type is required. Please check your codebase if you're using it. Thanks!
+- Update to Flutter 3. Thanks @felixgabler for the PR!
+- Fix link preview open link. Thanks @felixgabler for the PR!
+
+## 1.5.8
+
+- Fix emoji messages. Thanks @felixgabler for the PR!
+- Add loading spinner support for the file message. Thanks @felixgabler for the PR!
+- Include safe area insets inside chat itself. No need to wrap in `SafeArea` anymore. Thanks @AdrKacz for reporting!
+
+## 1.5.7
+
+- Add scroller controller as a parameter. Thanks @Faaatman for the PR!
+- Make attachment button margin configurable. Thanks @felixgabler for the PR!
+- Add `avatarBuilder` and `nameBuilder` methods to resolve user updates and render correct avatars and names. Thanks @dariuspo and @felixgabler for the PR!
+- Fix broken text paddings. Thanks @AdrKacz for reporting!
+- Update dependencies
+
 ## 1.5.6
 
+- Add markdown support. Thanks @felixgabler for the PR!
+- Add Arabic localization and RTL support. Thanks @Faaatman for the PR!
+- Increase send button tapable area. Thanks @felixgabler for the PR!
+- Add new `hidden` send button visibility mode. Thanks @fernandobatels for the PR!
+- Add `previewTapOptions` that allow to configure to open link preview when tapped on preview's image or title. Thanks @felixgabler for the PR!
+- Add `dateHeaderBuilder`. Thanks @arsamme for the PR!
 - Add `onMessageVisibilityChanged` handler. Thanks @felixgabler for the PR!
-- Add `receivedMessageBodyLinkTextStyle` and `sentMessageBodyLinkTextStyle` to the theme. Thanks @felixgabler for the PR!
+- Add `receivedMessageBodyBoldTextStyle`, `receivedMessageBodyCodeTextStyle`, `receivedMessageBodyLinkTextStyle` and `sentMessageBodyBoldTextStyle`, `sentMessageBodyCodeTextStyle`, `sentMessageBodyLinkTextStyle` to the theme. Thanks @felixgabler for the PR!
 - Add `sendButtonMargin` to the theme. Thanks @damian-kaczmarek for the PR!
 - Add German localization. Thanks @felixgabler for the PR!
-- Update to Flutter 2.10.2. Requires Dart >= 2.16.0.
+- Fix emoji only horizontal margin. Thanks @munkius for the PR!
+- Update to Flutter 2.10.4. Requires Dart >= 2.16.0.
 
 ## 1.5.5
 

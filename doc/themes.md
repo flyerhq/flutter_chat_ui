@@ -7,15 +7,13 @@ You can override anything from some defined theme or create a new one from scrat
 
 ```dart
 @override
-Widget build(BuildContext context) {
-  return Scaffold(
+Widget build(BuildContext context) => Scaffold(
     body: Chat(
       theme: const DefaultChatTheme(
         inputBackgroundColor: Colors.red,
       ),
     ),
   );
-}
 ```
 
 If you created a theme from scratch just pass it to the `theme` parameter. We also provide `DarkChatTheme` implementation, you can pass it to the `theme` parameter.

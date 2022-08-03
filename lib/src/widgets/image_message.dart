@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 import '../conditional/conditional.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
@@ -10,28 +11,28 @@ import 'inherited_user.dart';
 /// if the image is narrow, renders image in form of a file if aspect
 /// ratio is very small or very big.
 class ImageMessage extends StatefulWidget {
-  /// Creates an image message widget based on [types.ImageMessage]
+  /// Creates an image message widget based on [types.ImageMessage].
   const ImageMessage({
-    Key? key,
+    super.key,
     required this.message,
     required this.messageWidth,
-  }) : super(key: key);
+  });
 
-  /// [types.ImageMessage]
+  /// [types.ImageMessage].
   final types.ImageMessage message;
 
-  /// Maximum message width
+  /// Maximum message width.
   final int messageWidth;
 
   @override
-  _ImageMessageState createState() => _ImageMessageState();
+  State<ImageMessage> createState() => _ImageMessageState();
 }
 
-/// [ImageMessage] widget state
+/// [ImageMessage] widget state.
 class _ImageMessageState extends State<ImageMessage> {
   ImageProvider? _image;
+  Size _size = Size.zero;
   ImageStream? _stream;
-  Size _size = const Size(0, 0);
 
   @override
   void initState() {
@@ -48,26 +49,6 @@ class _ImageMessageState extends State<ImageMessage> {
     }
   }
 
-  void _getImage() {
-    final oldImageStream = _stream;
-    _stream = _image?.resolve(createLocalImageConfiguration(context));
-    if (_stream?.key == oldImageStream?.key) {
-      return;
-    }
-    final listener = ImageStreamListener(_updateImage);
-    oldImageStream?.removeListener(listener);
-    _stream?.addListener(listener);
-  }
-
-  void _updateImage(ImageInfo info, bool _) {
-    setState(() {
-      _size = Size(
-        info.image.width.toDouble(),
-        info.image.height.toDouble(),
-      );
-    });
-  }
-
   @override
   void dispose() {
     _stream?.removeListener(ImageStreamListener(_updateImage));
@@ -76,7 +57,7 @@ class _ImageMessageState extends State<ImageMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final _user = InheritedUser.of(context).user;
+    final user = InheritedUser.of(context).user;
 
     if (_size.aspectRatio == 0) {
       return Container(
@@ -86,7 +67,7 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return Container(
-        color: _user.id == widget.message.author.id
+        color: user.id == widget.message.author.id
             ? InheritedChatTheme.of(context).theme.primaryColor
             : InheritedChatTheme.of(context).theme.secondaryColor,
         child: Row(
@@ -94,7 +75,7 @@ class _ImageMessageState extends State<ImageMessage> {
           children: [
             Container(
               height: 64,
-              margin: EdgeInsets.fromLTRB(
+              margin: EdgeInsetsDirectional.fromSTEB(
                 InheritedChatTheme.of(context).theme.messageInsetsVertical,
                 InheritedChatTheme.of(context).theme.messageInsetsVertical,
                 16,
@@ -111,7 +92,7 @@ class _ImageMessageState extends State<ImageMessage> {
             ),
             Flexible(
               child: Container(
-                margin: EdgeInsets.fromLTRB(
+                margin: EdgeInsetsDirectional.fromSTEB(
                   0,
                   InheritedChatTheme.of(context).theme.messageInsetsVertical,
                   InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
@@ -122,7 +103,7 @@ class _ImageMessageState extends State<ImageMessage> {
                   children: [
                     Text(
                       widget.message.name,
-                      style: _user.id == widget.message.author.id
+                      style: user.id == widget.message.author.id
                           ? InheritedChatTheme.of(context)
                               .theme
                               .sentMessageBodyTextStyle
@@ -137,7 +118,7 @@ class _ImageMessageState extends State<ImageMessage> {
                       ),
                       child: Text(
                         formatBytes(widget.message.size.truncate()),
-                        style: _user.id == widget.message.author.id
+                        style: user.id == widget.message.author.id
                             ? InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageCaptionTextStyle
@@ -168,5 +149,25 @@ class _ImageMessageState extends State<ImageMessage> {
         ),
       );
     }
+  }
+
+  void _getImage() {
+    final oldImageStream = _stream;
+    _stream = _image?.resolve(createLocalImageConfiguration(context));
+    if (_stream?.key == oldImageStream?.key) {
+      return;
+    }
+    final listener = ImageStreamListener(_updateImage);
+    oldImageStream?.removeListener(listener);
+    _stream?.addListener(listener);
+  }
+
+  void _updateImage(ImageInfo info, bool _) {
+    setState(() {
+      _size = Size(
+        info.image.width.toDouble(),
+        info.image.height.toDouble(),
+      );
+    });
   }
 }

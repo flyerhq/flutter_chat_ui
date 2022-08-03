@@ -3,38 +3,44 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/models/unseen_banner.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
 import 'package:flutter_chat_ui/src/widgets/unseen_message_banner.dart';
 import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view_gallery.dart';
+import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
-import '../conditional/conditional.dart';
+import '../models/bubble_rtl_alignment.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
-import '../models/send_button_visibility_mode.dart';
+import '../models/preview_tap_options.dart';
 import '../util.dart';
 import 'chat_list.dart';
+import 'image_gallery.dart';
 import 'inherited_chat_theme.dart';
+import 'inherited_l10n.dart';
 import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
+import 'text_message.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
-  /// Creates a chat widget
+  /// Creates a chat widget.
   const Chat({
-    Key? key,
+    super.key,
+    this.avatarBuilder,
     this.bubbleBuilder,
+    this.bubbleRtlAlignment = BubbleRtlAlignment.right,
     this.customBottomWidget,
     this.customDateHeaderText,
     this.customMessageBuilder,
+    this.customStatusBuilder,
     this.dateFormat,
+    this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
     this.dateLocale,
     this.disableImageGallery,
@@ -44,11 +50,19 @@ class Chat extends StatefulWidget {
     this.firstUnseenMessageID,
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
+    this.imageGalleryOptions = const ImageGalleryOptions(
+      maxScale: PhotoViewComputedScale.covered,
+      minScale: PhotoViewComputedScale.contained,
+    ),
     this.imageMessageBuilder,
+    this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
+    this.isTextMessageTextSelectable = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.l10n = const ChatL10nEn(),
     required this.messages,
+    this.nameBuilder,
     this.onAttachmentPressed,
     this.onAvatarTap,
     this.onBackgroundTap,
@@ -62,28 +76,35 @@ class Chat extends StatefulWidget {
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.onTextChanged,
-    this.onTextFieldTap,
+    this.previewTapOptions = const PreviewTapOptions(),
+    this.scrollController,
     this.scrollPhysics,
     this.scrollToUnseenDelay = const Duration(milliseconds: 150),
     this.scrollToUnseenDuration = const Duration(milliseconds: 350),
     this.scrollToUnseenOnOpen = false,
-    this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.textMessageBuilder,
+    this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
     this.usePreviewData = true,
     required this.user,
-  }) : super(key: key);
+    this.userAgent,
+  });
 
-  /// See [Message.bubbleBuilder]
+  /// See [Message.avatarBuilder].
+  final Widget Function(String userId)? avatarBuilder;
+
+  /// See [Message.bubbleBuilder].
   final Widget Function(
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
   })? bubbleBuilder;
+
+  /// See [Message.bubbleRtlAlignment].
+  final BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Allows you to replace the default Input widget e.g. if you want to create
   /// a channel view.
@@ -98,9 +119,13 @@ class Chat extends StatefulWidget {
   /// date header for any message.
   final String Function(DateTime)? customDateHeaderText;
 
-  /// See [Message.customMessageBuilder]
+  /// See [Message.customMessageBuilder].
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
+
+  /// See [Message.customStatusBuilder].
+  final Widget Function(types.Message message, {required BuildContext context})?
+      customStatusBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
@@ -108,6 +133,9 @@ class Chat extends StatefulWidget {
   /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
   /// for more customization.
   final DateFormat? dateFormat;
+
+  /// Custom date header builder gives ability to customize date header widget.
+  final Widget Function(DateHeader)? dateHeaderBuilder;
 
   /// Time (in ms) between two messages when we will render a date header.
   /// Default value is 15 minutes, 900000 ms. When time between two messages
@@ -123,7 +151,7 @@ class Chat extends StatefulWidget {
   /// Disable automatic image preview on tap.
   final bool? disableImageGallery;
 
-  /// See [Message.emojiEnlargementBehavior]
+  /// See [Message.emojiEnlargementBehavior].
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
 
   /// Allows you to change what the user sees when there are no messages.
@@ -131,7 +159,7 @@ class Chat extends StatefulWidget {
   /// in this case.
   final Widget? emptyState;
 
-  /// See [Message.fileMessageBuilder]
+  /// See [Message.fileMessageBuilder].
   final Widget Function(types.FileMessage, {required int messageWidth})?
       fileMessageBuilder;
 
@@ -144,102 +172,117 @@ class Chat extends StatefulWidget {
   /// is lower than this threshold, they will be visually grouped.
   final int groupMessagesThreshold;
 
-  /// See [Message.hideBackgroundOnEmojiMessages]
+  /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
 
-  /// See [Message.imageMessageBuilder]
+  /// See [ImageGallery.options].
+  final ImageGalleryOptions imageGalleryOptions;
+
+  /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
 
-  /// See [Input.isAttachmentUploading]
+  /// See [Input.options].
+  final InputOptions inputOptions;
+
+  /// See [Input.isAttachmentUploading].
   final bool? isAttachmentUploading;
 
-  /// See [ChatList.isLastPage]
+  /// See [ChatList.isLastPage].
   final bool? isLastPage;
+
+  /// See [Message.isTextMessageTextSelectable].
+  final bool isTextMessageTextSelectable;
+
+  /// See [ChatList.keyboardDismissBehavior].
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
   /// Localized copy. Extend [ChatL10n] class to create your own copy or use
   /// existing one, like the default [ChatL10nEn]. You can customize only
   /// certain properties, see more here [ChatL10nEn].
   final ChatL10n l10n;
 
-  /// List of [types.Message] to render in the chat widget
+  /// List of [types.Message] to render in the chat widget.
   final List<types.Message> messages;
 
-  /// See [Input.onAttachmentPressed]
-  final void Function()? onAttachmentPressed;
+  /// See [Message.nameBuilder].
+  final Widget Function(String userId)? nameBuilder;
 
-  /// See [Message.onAvatarTap]
+  /// See [Input.onAttachmentPressed].
+  final VoidCallback? onAttachmentPressed;
+
+  /// See [Message.onAvatarTap].
   final void Function(types.User)? onAvatarTap;
 
-  /// Called when user taps on background
-  final void Function()? onBackgroundTap;
+  /// Called when user taps on background.
+  final VoidCallback? onBackgroundTap;
 
-  /// See [ChatList.onEndReached]
+  /// See [ChatList.onEndReached].
   final Future<void> Function()? onEndReached;
 
-  /// See [ChatList.onEndReachedThreshold]
+  /// See [ChatList.onEndReachedThreshold].
   final double? onEndReachedThreshold;
 
-  /// See [Message.onMessageDoubleTap]
+  /// See [Message.onMessageDoubleTap].
   final void Function(BuildContext context, types.Message)? onMessageDoubleTap;
 
-  /// See [Message.onMessageLongPress]
+  /// See [Message.onMessageLongPress].
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
-  /// See [Message.onMessageStatusLongPress]
+  /// See [Message.onMessageStatusLongPress].
   final void Function(BuildContext context, types.Message)?
       onMessageStatusLongPress;
 
-  /// See [Message.onMessageStatusTap]
+  /// See [Message.onMessageStatusTap].
   final void Function(BuildContext context, types.Message)? onMessageStatusTap;
 
-  /// See [Message.onMessageTap]
+  /// See [Message.onMessageTap].
   final void Function(BuildContext context, types.Message)? onMessageTap;
 
-  /// See [Message.onMessageVisibilityChanged]
+  /// See [Message.onMessageVisibilityChanged].
   final void Function(types.Message, bool visible)? onMessageVisibilityChanged;
 
-  /// See [Message.onPreviewDataFetched]
+  /// See [Message.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
-  /// See [Input.onSendPressed]
+  /// See [Input.onSendPressed].
   final void Function(types.PartialText) onSendPressed;
 
-  /// See [Input.onTextChanged]
-  final void Function(String)? onTextChanged;
+  /// See [Message.previewTapOptions].
+  final PreviewTapOptions previewTapOptions;
 
-  /// See [Input.onTextFieldTap]
-  final void Function()? onTextFieldTap;
+  /// See [ChatList.scrollController].
+  final ScrollController? scrollController;
 
-  /// See [ChatList.scrollPhysics]
+  /// See [ChatList.scrollPhysics].
   final ScrollPhysics? scrollPhysics;
 
-  /// Duration to wait after open until the scrolling starts
+  /// Duration to wait after open until the scrolling starts.
   final Duration scrollToUnseenDelay;
 
-  /// Duration for the animation of the scrolling
+  /// Duration for the animation of the scrolling.
   final Duration scrollToUnseenDuration;
 
-  /// Whether to scroll to the first unseen message on open
+  /// Whether to scroll to the first unseen message on open.
   final bool scrollToUnseenOnOpen;
 
-  /// See [Input.sendButtonVisibilityMode]
-  final SendButtonVisibilityMode sendButtonVisibilityMode;
-
-  /// See [Message.showUserAvatars]
+  /// See [Message.showUserAvatars].
   final bool showUserAvatars;
 
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
   final bool showUserNames;
 
-  /// See [Message.textMessageBuilder]
+  /// See [Message.textMessageBuilder].
   final Widget Function(
     types.TextMessage, {
     required int messageWidth,
     required bool showName,
   })? textMessageBuilder;
+
+  /// See [Message.textMessageOptions].
+  final TextMessageOptions textMessageOptions;
 
   /// Chat theme. Extend [ChatTheme] class to create your own theme or use
   /// existing one, like the [DefaultChatTheme]. You can customize only certain
@@ -253,22 +296,25 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? timeFormat;
 
-  /// See [Message.usePreviewData]
+  /// See [Message.usePreviewData].
   final bool usePreviewData;
 
-  /// See [InheritedUser.user]
+  /// See [InheritedUser.user].
   final types.User user;
 
+  /// See [Message.userAgent].
+  final String? userAgent;
+
   @override
-  ChatState createState() => ChatState();
+  State<Chat> createState() => ChatState();
 }
 
-/// [Chat] widget state
+/// [Chat] widget state.
 class ChatState extends State<Chat> {
   static const int _unseenMessageBannerIndex = 1;
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
-  int _imageViewIndex = 0;
+  PageController? _galleryPageController;
   bool _isImageViewVisible = false;
   final AutoScrollController _scrollController = AutoScrollController();
 
@@ -313,92 +359,114 @@ class ChatState extends State<Chat> {
 
   @override
   void dispose() {
+    _galleryPageController?.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
-  /// Scroll to the unseen message banner
+  /// Scroll to the unseen message banner.
   void scrollToFirstUnseen() =>
       _scrollController.scrollToIndex(_unseenMessageBannerIndex);
 
-  /// Scroll to the message with the specified [id]
+  /// Scroll to the message with the specified [id].
   void scrollToMessage(String id) =>
       _scrollController.scrollToIndex(id.hashCode);
 
-  Widget _emptyStateBuilder() {
-    return widget.emptyState ??
-        Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.symmetric(
-            horizontal: 24,
-          ),
-          child: Text(
-            widget.l10n.emptyChatPlaceholder,
-            style: widget.theme.emptyChatPlaceholderTextStyle,
-            textAlign: TextAlign.center,
-          ),
-        );
-  }
-
-  Widget _imageGalleryBuilder() {
-    return Dismissible(
-      key: const Key('photo_view_gallery'),
-      direction: DismissDirection.down,
-      onDismissed: (direction) => _onCloseGalleryPressed(),
-      child: Stack(
-        children: [
-          PhotoViewGallery.builder(
-            builder: (BuildContext context, int index) =>
-                PhotoViewGalleryPageOptions(
-              imageProvider: Conditional().getProvider(_gallery[index].uri),
+  @override
+  Widget build(BuildContext context) => InheritedUser(
+        user: widget.user,
+        child: InheritedChatTheme(
+          theme: widget.theme,
+          child: InheritedL10n(
+            l10n: widget.l10n,
+            child: Stack(
+              children: [
+                Container(
+                  color: widget.theme.backgroundColor,
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: widget.messages.isEmpty
+                            ? SizedBox.expand(
+                                child: _emptyStateBuilder(),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  widget.onBackgroundTap?.call();
+                                },
+                                child: LayoutBuilder(
+                                  builder: (
+                                    BuildContext context,
+                                    BoxConstraints constraints,
+                                  ) =>
+                                      ChatList(
+                                    isLastPage: widget.isLastPage,
+                                    itemBuilder: (item, index) =>
+                                        _messageBuilder(item, constraints),
+                                    items: _chatMessages,
+                                    keyboardDismissBehavior:
+                                        widget.keyboardDismissBehavior,
+                                    onEndReached: widget.onEndReached,
+                                    onEndReachedThreshold:
+                                        widget.onEndReachedThreshold,
+                                    scrollController: widget.scrollController,
+                                    scrollPhysics: widget.scrollPhysics,
+                                  ),
+                                ),
+                              ),
+                      ),
+                      widget.customBottomWidget ??
+                          Input(
+                            isAttachmentUploading: widget.isAttachmentUploading,
+                            onAttachmentPressed: widget.onAttachmentPressed,
+                            onSendPressed: widget.onSendPressed,
+                            options: widget.inputOptions,
+                          ),
+                    ],
+                  ),
+                ),
+                if (_isImageViewVisible)
+                  ImageGallery(
+                    images: _gallery,
+                    pageController: _galleryPageController!,
+                    onClosePressed: _onCloseGalleryPressed,
+                    options: widget.imageGalleryOptions,
+                  ),
+              ],
             ),
-            itemCount: _gallery.length,
-            loadingBuilder: (context, event) =>
-                _imageGalleryLoadingBuilder(context, event),
-            onPageChanged: _onPageChanged,
-            pageController: PageController(initialPage: _imageViewIndex),
-            scrollPhysics: const ClampingScrollPhysics(),
           ),
-          Positioned(
-            right: 16,
-            top: 56,
-            child: CloseButton(
-              color: Colors.white,
-              onPressed: _onCloseGalleryPressed,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _imageGalleryLoadingBuilder(
-    BuildContext context,
-    ImageChunkEvent? event,
-  ) {
-    return Center(
-      child: SizedBox(
-        width: 20,
-        height: 20,
-        child: CircularProgressIndicator(
-          value: event == null || event.expectedTotalBytes == null
-              ? 0
-              : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
         ),
-      ),
-    );
-  }
+      );
+
+  Widget _emptyStateBuilder() =>
+      widget.emptyState ??
+      Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.symmetric(
+          horizontal: 24,
+        ),
+        child: Text(
+          widget.l10n.emptyChatPlaceholder,
+          style: widget.theme.emptyChatPlaceholderTextStyle,
+          textAlign: TextAlign.center,
+        ),
+      );
 
   Widget _messageBuilder(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
-      return Container(
-        alignment: Alignment.center,
-        margin: widget.theme.dateDividerMargin,
-        child: Text(
-          object.text,
-          style: widget.theme.dateDividerTextStyle,
-        ),
-      );
+      if (widget.dateHeaderBuilder != null) {
+        return widget.dateHeaderBuilder!(object);
+      } else {
+        return Container(
+          alignment: Alignment.center,
+          margin: widget.theme.dateDividerMargin,
+          child: Text(
+            object.text,
+            style: widget.theme.dateDividerTextStyle,
+          ),
+        );
+      }
     } else if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
@@ -413,7 +481,7 @@ class ChatState extends State<Chat> {
     } else {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
-      final _messageWidth =
+      final messageWidth =
           widget.showUserAvatars && message.author.id != widget.user.id
               ? min(constraints.maxWidth * 0.72, 440).floor()
               : min(constraints.maxWidth * 0.78, 440).floor();
@@ -425,14 +493,19 @@ class ChatState extends State<Chat> {
         index: message.id.hashCode,
         controller: _scrollController,
         child: Message(
+          avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
+          bubbleRtlAlignment: widget.bubbleRtlAlignment,
           customMessageBuilder: widget.customMessageBuilder,
+          customStatusBuilder: widget.customStatusBuilder,
           emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
           fileMessageBuilder: widget.fileMessageBuilder,
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
           imageMessageBuilder: widget.imageMessageBuilder,
+          isTextMessageTextSelectable: widget.isTextMessageTextSelectable,
           message: message,
-          messageWidth: _messageWidth,
+          messageWidth: messageWidth,
+          nameBuilder: widget.nameBuilder,
           onAvatarTap: widget.onAvatarTap,
           onMessageDoubleTap: widget.onMessageDoubleTap,
           onMessageLongPress: widget.onMessageLongPress,
@@ -448,13 +521,16 @@ class ChatState extends State<Chat> {
           },
           onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
           onPreviewDataFetched: _onPreviewDataFetched,
+          previewTapOptions: widget.previewTapOptions,
           roundBorder: map['nextMessageInGroup'] == true,
           showAvatar: map['nextMessageInGroup'] == false,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
           showUserAvatars: widget.showUserAvatars,
           textMessageBuilder: widget.textMessageBuilder,
+          textMessageOptions: widget.textMessageOptions,
           usePreviewData: widget.usePreviewData,
+          userAgent: widget.userAgent,
         ),
       );
     }
@@ -464,20 +540,17 @@ class ChatState extends State<Chat> {
     setState(() {
       _isImageViewVisible = false;
     });
+    _galleryPageController?.dispose();
+    _galleryPageController = null;
   }
 
   void _onImagePressed(types.ImageMessage message) {
+    final initialPage = _gallery.indexWhere(
+      (element) => element.id == message.id && element.uri == message.uri,
+    );
+    _galleryPageController = PageController(initialPage: initialPage);
     setState(() {
-      _imageViewIndex = _gallery.indexWhere(
-        (element) => element.id == message.id && element.uri == message.uri,
-      );
       _isImageViewVisible = true;
-    });
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _imageViewIndex = index;
     });
   }
 
@@ -486,67 +559,5 @@ class ChatState extends State<Chat> {
     types.PreviewData previewData,
   ) {
     widget.onPreviewDataFetched?.call(message, previewData);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InheritedUser(
-      user: widget.user,
-      child: InheritedChatTheme(
-        theme: widget.theme,
-        child: InheritedL10n(
-          l10n: widget.l10n,
-          child: Stack(
-            children: [
-              Container(
-                color: widget.theme.backgroundColor,
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: widget.messages.isEmpty
-                          ? SizedBox.expand(
-                              child: _emptyStateBuilder(),
-                            )
-                          : GestureDetector(
-                              onTap: () {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                widget.onBackgroundTap?.call();
-                              },
-                              child: LayoutBuilder(
-                                builder: (BuildContext context,
-                                        BoxConstraints constraints) =>
-                                    ChatList(
-                                  isLastPage: widget.isLastPage,
-                                  itemBuilder: (item, index) =>
-                                      _messageBuilder(item, constraints),
-                                  items: _chatMessages,
-                                  onEndReached: widget.onEndReached,
-                                  onEndReachedThreshold:
-                                      widget.onEndReachedThreshold,
-                                  scrollController: _scrollController,
-                                  scrollPhysics: widget.scrollPhysics,
-                                ),
-                              ),
-                            ),
-                    ),
-                    widget.customBottomWidget ??
-                        Input(
-                          isAttachmentUploading: widget.isAttachmentUploading,
-                          onAttachmentPressed: widget.onAttachmentPressed,
-                          onSendPressed: widget.onSendPressed,
-                          onTextChanged: widget.onTextChanged,
-                          onTextFieldTap: widget.onTextFieldTap,
-                          sendButtonVisibilityMode:
-                              widget.sendButtonVisibilityMode,
-                        ),
-                  ],
-                ),
-              ),
-              if (_isImageViewVisible) _imageGalleryBuilder(),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
