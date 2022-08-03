@@ -15,35 +15,38 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.4.3
+  flutter_chat_types: ^3.4.4
   flutter_link_previewer: ^3.0.1
   flutter_parsed_text: ^2.2.1
   intl: ^0.17.0
   meta: ^1.7.0
   photo_view: ^0.14.0
-  url_launcher: ^6.1.4
+  url_launcher: ^6.1.5
   visibility_detector: ^0.3.3
 
 dev_dependencies:
-  dart_code_metrics: ^4.16.0
+  dart_code_metrics: ^4.17.0
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 
 flutter:
   assets:
+    - packages/flutter_chat_ui/assets/icon-arrow.png
     - packages/flutter_chat_ui/assets/icon-attachment.png
     - packages/flutter_chat_ui/assets/icon-delivered.png
     - packages/flutter_chat_ui/assets/icon-document.png
     - packages/flutter_chat_ui/assets/icon-error.png
     - packages/flutter_chat_ui/assets/icon-seen.png
     - packages/flutter_chat_ui/assets/icon-send.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-arrow.png
     - packages/flutter_chat_ui/assets/2.0x/icon-attachment.png
     - packages/flutter_chat_ui/assets/2.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/2.0x/icon-document.png
     - packages/flutter_chat_ui/assets/2.0x/icon-error.png
     - packages/flutter_chat_ui/assets/2.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/2.0x/icon-send.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-arrow.png
     - packages/flutter_chat_ui/assets/3.0x/icon-attachment.png
     - packages/flutter_chat_ui/assets/3.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/3.0x/icon-document.png
