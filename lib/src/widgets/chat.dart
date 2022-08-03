@@ -15,6 +15,7 @@ import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/preview_tap_options.dart';
 import '../models/send_button_visibility_mode.dart';
+import '../models/typing_indicator_mode.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'inherited_chat_theme.dart';
@@ -86,6 +87,7 @@ class Chat extends StatefulWidget {
     required this.user,
     this.userAgent,
     this.showTypingIndicator = const [],
+    this.indicatorMode = TypingIndicatorMode.text,
   });
 
   /// See [Message.avatarBuilder].
@@ -298,6 +300,10 @@ class Chat extends StatefulWidget {
   /// You can customize only certain properties, see [TypingIndicatorTheme].
   final List<types.User> showTypingIndicator;
 
+  /// Used to toggle [TypingIndicator] mode between text, avatar or both.
+  /// Defaults to [TypingIndicatorMode.text].
+  final TypingIndicatorMode indicatorMode;
+
   @override
   State<Chat> createState() => _ChatState();
 }
@@ -385,6 +391,7 @@ class _ChatState extends State<Chat> {
                           ? TypingIndicator(
                               author: widget.showTypingIndicator,
                               bubbleAlignment: widget.bubbleRtlAlignment!,
+                              indicatorMode: widget.indicatorMode,
                             )
                           : Container(),
                       widget.customBottomWidget ??

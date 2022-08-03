@@ -415,6 +415,8 @@ class DefaultChatTheme extends ChatTheme {
     super.typingIndicatorTheme = const TypingIndicatorTheme(
       bubbleColor: neutral7,
       animatedCirclesColor: neutral1,
+      countAvatarColor: primary,
+      countTextColor: secondary,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       multipleUserTextStyle: TextStyle(
         fontSize: 12,
@@ -559,6 +561,8 @@ class DarkChatTheme extends ChatTheme {
     super.typingIndicatorTheme = const TypingIndicatorTheme(
       bubbleColor: dark,
       animatedCirclesColor: neutral7,
+      countAvatarColor: primary,
+      countTextColor: secondary,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       multipleUserTextStyle: TextStyle(
         fontSize: 12,
