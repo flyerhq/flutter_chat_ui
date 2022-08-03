@@ -46,7 +46,8 @@ class ChatList extends StatefulWidget {
   /// next page when scrolled through about 3/4 of the available content.
   final double? onEndReachedThreshold;
 
-  /// Scroll controller for the main [CustomScrollView].
+  /// Scroll controller for the main [CustomScrollView]. Also used to auto scroll
+  /// to specific messages.
   final ScrollController scrollController;
 
   /// Determines the physics of the scroll view.

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'inherited_chat_theme.dart';
 
 class UnseenMessageBanner extends StatelessWidget {
-  const UnseenMessageBanner({Key? key}) : super(key: key);
+  const UnseenMessageBanner({super.key});
 
   @override
   Widget build(BuildContext context) => Container(

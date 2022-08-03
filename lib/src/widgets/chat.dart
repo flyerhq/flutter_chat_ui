@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/src/models/unseen_banner.dart';
-import 'package:flutter_chat_ui/src/widgets/unseen_message_banner.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -16,6 +14,7 @@ import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/preview_tap_options.dart';
+import '../models/unseen_banner.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'image_gallery.dart';
@@ -25,6 +24,7 @@ import 'inherited_user.dart';
 import 'input.dart';
 import 'message.dart';
 import 'text_message.dart';
+import 'unseen_message_banner.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
@@ -253,6 +253,7 @@ class Chat extends StatefulWidget {
   final PreviewTapOptions previewTapOptions;
 
   /// See [ChatList.scrollController].
+  /// If provided, you cannot use the scroll to message functionality anymore.
   final ScrollController? scrollController;
 
   /// See [ChatList.scrollPhysics].
@@ -347,7 +348,7 @@ class ChatState extends State<Chat> {
       _gallery = result[1] as List<PreviewImage>;
 
       if (widget.scrollToUnseenOnOpen) {
-        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (mounted) {
             await Future.delayed(widget.scrollToUnseenDelay);
             scrollToFirstUnseen();
@@ -410,7 +411,8 @@ class ChatState extends State<Chat> {
                                     onEndReached: widget.onEndReached,
                                     onEndReachedThreshold:
                                         widget.onEndReachedThreshold,
-                                    scrollController: widget.scrollController,
+                                    scrollController: widget.scrollController ??
+                                        _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
                                   ),
                                 ),
