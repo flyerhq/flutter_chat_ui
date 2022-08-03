@@ -164,6 +164,7 @@ List<Object> calculateChatMessages(
               DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
+          message.id != lastSeenMessageID &&
           nextMessage.createdAt! - message.createdAt! <= groupMessagesThreshold;
     }
 

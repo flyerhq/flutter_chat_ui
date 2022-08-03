@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'inherited_chat_theme.dart';
+import 'inherited_l10n.dart';
 
 class UnseenMessageBanner extends StatelessWidget {
   const UnseenMessageBanner({super.key});
@@ -8,15 +9,18 @@ class UnseenMessageBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         alignment: Alignment.center,
-        color: Colors.grey,
+        color: InheritedChatTheme.of(context)
+            .theme
+            .unseenMessagesBannerTheme
+            .color,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: const EdgeInsets.only(bottom: 24, top: 8),
         child: Text(
-          'Unseen messages',
+          InheritedL10n.of(context).l10n.unseenMessagesBannerLabel,
           style: InheritedChatTheme.of(context)
               .theme
-              .dateDividerTextStyle
-              .copyWith(color: Colors.white),
+              .unseenMessagesBannerTheme
+              .textStyle,
         ),
       );
 }
