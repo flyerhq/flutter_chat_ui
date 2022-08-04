@@ -33,10 +33,10 @@ dependencies:
   file_picker: ^4.6.1
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.4.3
+  flutter_chat_types: ^3.4.4
   flutter_chat_ui:
     path: ../
-  http: ^0.13.4
+  http: ^0.13.5
   image_picker: ^0.8.5+3
   intl: ^0.17.0
   mime: ^1.0.2
@@ -45,7 +45,7 @@ dependencies:
   uuid: ^3.0.6
 
 dev_dependencies:
-  dart_code_metrics: ^4.16.0
+  dart_code_metrics: ^4.17.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
