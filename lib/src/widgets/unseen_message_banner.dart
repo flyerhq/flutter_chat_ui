@@ -30,7 +30,7 @@ class ScrollToUnseenOptions {
   const ScrollToUnseenOptions({
     this.lastSeenMessageID,
     this.scrollDelay = const Duration(milliseconds: 150),
-    this.scrollDuration = const Duration(milliseconds: 350),
+    this.scrollDuration = const Duration(milliseconds: 250),
     this.scrollOnOpen = false,
   });
 

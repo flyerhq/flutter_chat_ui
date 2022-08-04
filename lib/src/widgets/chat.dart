@@ -353,12 +353,17 @@ class ChatState extends State<Chat> {
   }
 
   /// Scroll to the unseen message banner.
-  void scrollToFirstUnseen() =>
-      _scrollController.scrollToIndex(_unseenMessageBannerIndex);
+  void scrollToFirstUnseen() => _scrollController.scrollToIndex(
+        _unseenMessageBannerIndex,
+        duration: widget.scrollToUnseenOptions.scrollDuration,
+      );
 
   /// Scroll to the message with the specified [id].
-  void scrollToMessage(String id) =>
-      _scrollController.scrollToIndex(id.hashCode);
+  void scrollToMessage(String id, {Duration? duration}) =>
+      _scrollController.scrollToIndex(
+        id.hashCode,
+        duration: duration ?? scrollAnimationDuration,
+      );
 
   @override
   Widget build(BuildContext context) => InheritedUser(
