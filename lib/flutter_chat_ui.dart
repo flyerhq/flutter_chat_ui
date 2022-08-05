@@ -1,5 +1,7 @@
 library flutter_chat_ui;
 
+export 'package:scroll_to_index/scroll_to_index.dart' show AutoScrollController;
+
 export 'src/chat_l10n.dart';
 export 'src/chat_theme.dart';
 export 'src/models/bubble_rtl_alignment.dart';

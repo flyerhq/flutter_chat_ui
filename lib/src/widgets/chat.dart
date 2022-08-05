@@ -247,7 +247,7 @@ class Chat extends StatefulWidget {
 
   /// See [ChatList.scrollController].
   /// If provided, you cannot use the scroll to message functionality anymore.
-  final ScrollController? scrollController;
+  final AutoScrollController? scrollController;
 
   /// See [ChatList.scrollPhysics].
   final ScrollPhysics? scrollPhysics;
@@ -304,11 +304,13 @@ class ChatState extends State<Chat> {
   List<PreviewImage> _gallery = [];
   PageController? _galleryPageController;
   bool _isImageViewVisible = false;
-  final AutoScrollController _scrollController = AutoScrollController();
+  late final AutoScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+
+    _scrollController = widget.scrollController ?? AutoScrollController();
 
     didUpdateWidget(widget);
   }
@@ -403,8 +405,7 @@ class ChatState extends State<Chat> {
                                     onEndReached: widget.onEndReached,
                                     onEndReachedThreshold:
                                         widget.onEndReachedThreshold,
-                                    scrollController: widget.scrollController ??
-                                        _scrollController,
+                                    scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
                                   ),
                                 ),
