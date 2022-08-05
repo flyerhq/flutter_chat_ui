@@ -39,6 +39,7 @@ class Chat extends StatefulWidget {
     this.customDateHeaderText,
     this.customMessageBuilder,
     this.customStatusBuilder,
+    this.customIndicatorBuilder,
     this.dateFormat,
     this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
@@ -88,7 +89,7 @@ class Chat extends StatefulWidget {
     required this.user,
     this.userAgent,
     this.showTypingIndicator = const [],
-    this.indicatorMode = TypingIndicatorMode.text,
+    this.typingIndicatorMode = TypingIndicatorMode.text,
   });
 
   /// See [Message.avatarBuilder].
@@ -124,6 +125,9 @@ class Chat extends StatefulWidget {
   /// See [Message.customStatusBuilder].
   final Widget Function(types.Message message, {required BuildContext context})?
       customStatusBuilder;
+
+  /// Allows you to replace default indicator widget.
+  final Widget? customIndicatorBuilder;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
@@ -306,7 +310,7 @@ class Chat extends StatefulWidget {
 
   /// Used to toggle [TypingIndicator] mode between text, avatar or both.
   /// Defaults to [TypingIndicatorMode.text].
-  final TypingIndicatorMode indicatorMode;
+  final TypingIndicatorMode typingIndicatorMode;
 
   @override
   State<Chat> createState() => _ChatState();
@@ -392,11 +396,12 @@ class _ChatState extends State<Chat> {
                               ),
                       ),
                       widget.showTypingIndicator.isNotEmpty
-                          ? TypingIndicator(
-                              author: widget.showTypingIndicator,
-                              bubbleAlignment: widget.bubbleRtlAlignment!,
-                              indicatorMode: widget.indicatorMode,
-                            )
+                          ? widget.customIndicatorBuilder ??
+                              TypingIndicator(
+                                author: widget.showTypingIndicator,
+                                bubbleAlignment: widget.bubbleRtlAlignment!,
+                                indicatorMode: widget.typingIndicatorMode,
+                              )
                           : Container(),
                       widget.customBottomWidget ??
                           Input(
