@@ -482,7 +482,7 @@ class ChatState extends State<Chat> {
               : min(constraints.maxWidth * 0.78, 440).floor();
 
       return AutoScrollTag(
-        key: Key(message.id),
+        key: Key('scroll-${message.id}'),
         // By using the hashCode as index we can jump to a message using its ID.
         // Otherwise, we would have to keep track of a map from ID to index.
         index: message.id.hashCode,
