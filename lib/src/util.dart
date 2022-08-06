@@ -9,6 +9,7 @@ import './models/date_header.dart';
 import './models/emoji_enlargement_behavior.dart';
 import './models/message_spacer.dart';
 import './models/preview_image.dart';
+import 'models/unseen_banner.dart';
 
 /// Returns text representation of a provided bytes value (e.g. 1kB, 1GB).
 String formatBytes(int size, [int fractionDigits = 2]) {
@@ -95,8 +96,8 @@ bool isConsistsOfEmojis(
   return multiEmojiRegExp.hasMatch(message.text);
 }
 
-/// Parses provided messages to chat messages (with headers and spacers) and
-/// returns them with a gallery
+/// Parses provided messages to chat messages (with headers, unseen banner
+/// and spacers) and returns them with a gallery
 List<Object> calculateChatMessages(
   List<types.Message> messages,
   types.User user, {
@@ -104,6 +105,7 @@ List<Object> calculateChatMessages(
   DateFormat? dateFormat,
   required int dateHeaderThreshold,
   String? dateLocale,
+  String? lastSeenMessageID,
   required int groupMessagesThreshold,
   required bool showUserNames,
   DateFormat? timeFormat,
@@ -162,6 +164,7 @@ List<Object> calculateChatMessages(
               DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
+          message.id != lastSeenMessageID &&
           nextMessage.createdAt! - message.createdAt! <= groupMessagesThreshold;
     }
 
@@ -219,6 +222,10 @@ List<Object> calculateChatMessages(
                 ),
         ),
       );
+    }
+
+    if (message.id == lastSeenMessageID && !isLast) {
+      chatMessages.insert(0, const UnseenBanner());
     }
 
     if (message is types.ImageMessage) {

@@ -5,6 +5,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
+import 'patched_sliver_animated_list.dart';
 
 /// Animated list that handles automatic animations and pagination.
 class ChatList extends StatefulWidget {
@@ -17,7 +18,7 @@ class ChatList extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.onEndReached,
     this.onEndReachedThreshold,
-    this.scrollController,
+    required this.scrollController,
     this.scrollPhysics,
   });
 
@@ -46,8 +47,9 @@ class ChatList extends StatefulWidget {
   /// next page when scrolled through about 3/4 of the available content.
   final double? onEndReachedThreshold;
 
-  /// Used to control the chat list scroll view.
-  final ScrollController? scrollController;
+  /// Scroll controller for the main [CustomScrollView]. Also used to auto scroll
+  /// to specific messages.
+  final ScrollController scrollController;
 
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
@@ -67,16 +69,14 @@ class _ChatListState extends State<ChatList>
   late final AnimationController _controller = AnimationController(vsync: this);
 
   bool _isNextPageLoading = false;
-  final GlobalKey<SliverAnimatedListState> _listKey =
-      GlobalKey<SliverAnimatedListState>();
+  final GlobalKey<PatchedSliverAnimatedListState> _listKey =
+      GlobalKey<PatchedSliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
-  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
 
-    _scrollController = widget.scrollController ?? ScrollController();
     didUpdateWidget(widget);
   }
 
@@ -90,7 +90,6 @@ class _ChatListState extends State<ChatList>
   @override
   void dispose() {
     _controller.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -127,14 +126,25 @@ class _ChatListState extends State<ChatList>
           return false;
         },
         child: CustomScrollView(
-          controller: _scrollController,
+          controller: widget.scrollController,
           keyboardDismissBehavior: widget.keyboardDismissBehavior,
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
-              sliver: SliverAnimatedList(
+              sliver: PatchedSliverAnimatedList(
+                findChildIndexCallback: (Key key) {
+                  if (key is ValueKey<Object>) {
+                    final newIndex = widget.items.indexWhere(
+                      (v) => _valueKeyForItem(v) == key,
+                    );
+                    if (newIndex != -1) {
+                      return newIndex;
+                    }
+                  }
+                  return null;
+                },
                 initialItemCount: widget.items.length,
                 key: _listKey,
                 itemBuilder: (_, index, animation) =>
@@ -221,6 +231,7 @@ class _ChatListState extends State<ChatList>
       final item = _oldData[index];
 
       return SizeTransition(
+        key: _valueKeyForItem(item),
         axisAlignment: -1,
         sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
         child: widget.itemBuilder(item, index),
@@ -232,6 +243,7 @@ class _ChatListState extends State<ChatList>
 
   Widget _removedMessageBuilder(Object item, Animation<double> animation) =>
       SizeTransition(
+        key: _valueKeyForItem(item),
         axisAlignment: -1,
         sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
         child: FadeTransition(
@@ -258,8 +270,8 @@ class _ChatListState extends State<ChatList>
             // Delay to give some time for Flutter to calculate new
             // size after new message was added
             Future.delayed(const Duration(milliseconds: 100), () {
-              if (_scrollController.hasClients) {
-                _scrollController.animateTo(
+              if (widget.scrollController.hasClients) {
+                widget.scrollController.animateTo(
                   0,
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInQuad,
@@ -272,5 +284,15 @@ class _ChatListState extends State<ChatList>
     } catch (e) {
       // Do nothing if there are no items.
     }
+  }
+
+  Key? _valueKeyForItem(Object item) =>
+      _mapMessage(item, (message) => ValueKey(message.id));
+
+  T? _mapMessage<T>(Object maybeMessage, T Function(types.Message) f) {
+    if (maybeMessage is Map<String, Object>) {
+      return f(maybeMessage['message'] as types.Message);
+    }
+    return null;
   }
 }
