@@ -40,7 +40,7 @@ class Chat extends StatefulWidget {
     this.customDateHeaderText,
     this.customMessageBuilder,
     this.customStatusBuilder,
-    this.customTypingIndicatorBuilder,
+    this.customTypingIndicator,
     this.dateFormat,
     this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
@@ -128,7 +128,7 @@ class Chat extends StatefulWidget {
       customStatusBuilder;
 
   /// Allows you to replace default [TypingIndicator] widget.
-  final Widget? customTypingIndicatorBuilder;
+  final Widget? customTypingIndicator;
 
   /// Allows you to customize the date format. IMPORTANT: only for the date,
   /// do not return time here. See [timeFormat] to customize the time format.
@@ -420,13 +420,12 @@ class ChatState extends State<Chat> {
                                 ),
                               ),
                       ),
-                      widget.typingIndicatorOptions.typingUsers.isNotEmpty
-                          ? widget.customTypingIndicatorBuilder ??
-                              TypingIndicator(
-                                options: widget.typingIndicatorOptions,
-                                bubbleAlignment: widget.bubbleRtlAlignment!,
-                              )
-                          : const SizedBox(),
+                      if (widget.typingIndicatorOptions.typingUsers.isNotEmpty)
+                        widget.customTypingIndicator ??
+                            TypingIndicator(
+                              options: widget.typingIndicatorOptions,
+                              bubbleAlignment: widget.bubbleRtlAlignment!,
+                            ),
                       widget.customBottomWidget ??
                           Input(
                             isAttachmentUploading: widget.isAttachmentUploading,
