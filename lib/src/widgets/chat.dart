@@ -14,7 +14,6 @@ import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/preview_tap_options.dart';
-import '../models/typing_indicator_mode.dart';
 import '../models/unseen_banner.dart';
 import '../util.dart';
 import 'chat_list.dart';
@@ -84,12 +83,11 @@ class Chat extends StatefulWidget {
     this.scrollToUnseenOptions = const ScrollToUnseenOptions(),
     this.showUserAvatars = false,
     this.showUserNames = false,
-    this.showTypingIndicator = const [],
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
-    this.typingIndicatorMode = TypingIndicatorMode.text,
+    this.typingIndicatorOptions = const TypingIndicatorOptions(),
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
@@ -270,11 +268,6 @@ class Chat extends StatefulWidget {
   /// shown only on text messages.
   final bool showUserNames;
 
-  /// Optional typing indicator for chat. By default it is empty list which hides the indicator,
-  /// shows animated speech bubble along with the support of multiple users typing text.
-  /// You can customize only certain properties, see [TypingIndicatorTheme].
-  final List<types.User> showTypingIndicator;
-
   /// See [Message.textMessageBuilder].
   final Widget Function(
     types.TextMessage, {
@@ -297,9 +290,8 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? timeFormat;
 
-  /// Used to toggle [TypingIndicator] mode between text, avatar or both.
-  /// Defaults to [TypingIndicatorMode.text].
-  final TypingIndicatorMode typingIndicatorMode;
+  /// See [TypingIndicatorOptions].
+  final TypingIndicatorOptions typingIndicatorOptions;
 
   /// See [Message.usePreviewData].
   final bool usePreviewData;
@@ -428,14 +420,13 @@ class ChatState extends State<Chat> {
                                 ),
                               ),
                       ),
-                      widget.showTypingIndicator.isNotEmpty
+                      widget.typingIndicatorOptions.authors.isNotEmpty
                           ? widget.customTypingIndicatorBuilder ??
                               TypingIndicator(
-                                author: widget.showTypingIndicator,
+                                options: widget.typingIndicatorOptions,
                                 bubbleAlignment: widget.bubbleRtlAlignment!,
-                                indicatorMode: widget.typingIndicatorMode,
                               )
-                          : Container(),
+                          : const SizedBox(),
                       widget.customBottomWidget ??
                           Input(
                             isAttachmentUploading: widget.isAttachmentUploading,

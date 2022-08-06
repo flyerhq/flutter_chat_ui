@@ -101,12 +101,12 @@ abstract class ChatTheme {
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
     required this.statusIconPadding,
+    required this.typingIndicatorTheme,
     required this.unseenMessagesBannerTheme,
     required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
-    required this.typingIndicatorTheme,
   });
 
   /// Icon for select attachment button.
@@ -263,6 +263,9 @@ abstract class ChatTheme {
   /// Padding around status icons.
   final EdgeInsets statusIconPadding;
 
+  /// Theme for typing indicator. See [TypingIndicator].
+  final TypingIndicatorTheme typingIndicatorTheme;
+
   /// Theme for the unseen messages banner.
   final UnseenMessagesBannerTheme unseenMessagesBannerTheme;
 
@@ -281,9 +284,6 @@ abstract class ChatTheme {
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
-
-  /// Theme for typing indicator. See [TypingIndicator].
-  final TypingIndicatorTheme typingIndicatorTheme;
 }
 
 /// Default chat theme which extends [ChatTheme].
@@ -403,6 +403,19 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.typingIndicatorTheme = const TypingIndicatorTheme(
+      bubbleColor: neutral7,
+      animatedCirclesColor: neutral1,
+      countAvatarColor: primary,
+      countTextColor: secondary,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      multipleUserTextStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: neutral2,
+      ),
+      animatedCircleSize: 5.0,
+    ),
     super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
       color: secondary,
       textStyle: TextStyle(
@@ -424,19 +437,6 @@ class DefaultChatTheme extends ChatTheme {
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
-    ),
-    super.typingIndicatorTheme = const TypingIndicatorTheme(
-      bubbleColor: neutral7,
-      animatedCirclesColor: neutral1,
-      countAvatarColor: primary,
-      countTextColor: secondary,
-      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
-      multipleUserTextStyle: TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: neutral2,
-      ),
-      animatedCircleSize: 5.0,
     ),
   });
 }
@@ -558,6 +558,19 @@ class DarkChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.typingIndicatorTheme = const TypingIndicatorTheme(
+      bubbleColor: dark,
+      animatedCirclesColor: neutral7,
+      countAvatarColor: primary,
+      countTextColor: secondary,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      multipleUserTextStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: neutral2,
+      ),
+      animatedCircleSize: 5.0,
+    ),
     super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
       color: secondaryDark,
       textStyle: TextStyle(
@@ -579,19 +592,6 @@ class DarkChatTheme extends ChatTheme {
       fontSize: 12,
       fontWeight: FontWeight.w800,
       height: 1.333,
-    ),
-    super.typingIndicatorTheme = const TypingIndicatorTheme(
-      bubbleColor: dark,
-      animatedCirclesColor: neutral7,
-      countAvatarColor: primary,
-      countTextColor: secondary,
-      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
-      multipleUserTextStyle: TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: neutral2,
-      ),
-      animatedCircleSize: 5.0,
     ),
   });
 }

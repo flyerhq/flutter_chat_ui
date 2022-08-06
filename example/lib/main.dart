@@ -65,7 +65,11 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
-          showTypingIndicator: [_typingUser],
+          typingIndicatorOptions: TypingIndicatorOptions(
+            authors: [_typingUser],
+            animationSpeed: const Duration(milliseconds: 500),
+            typingMode: TypingIndicatorMode.text,
+          ),
         ),
       );
 
