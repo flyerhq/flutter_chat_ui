@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'inherited_chat_theme.dart';
-import 'inherited_l10n.dart';
+import 'state/inherited_chat_theme.dart';
+import 'state/inherited_l10n.dart';
 
 class UnseenMessageBanner extends StatelessWidget {
   const UnseenMessageBanner({super.key});

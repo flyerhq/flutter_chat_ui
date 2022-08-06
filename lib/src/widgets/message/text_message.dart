@@ -5,12 +5,12 @@ import 'package:flutter_link_previewer/flutter_link_previewer.dart'
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../models/emoji_enlargement_behavior.dart';
-import '../models/preview_tap_options.dart';
-import '../util.dart';
-import 'inherited_chat_theme.dart';
-import 'inherited_user.dart';
-import 'pattern_style.dart';
+
+import '../../models/emoji_enlargement_behavior.dart';
+import '../../models/pattern_style.dart';
+import '../../util.dart';
+import '../state/inherited_chat_theme.dart';
+import '../state/inherited_user.dart';
 import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview.
@@ -280,4 +280,21 @@ class TextMessageOptions {
 
   /// Custom link press handler.
   final void Function(String)? onLinkPressed;
+}
+
+/// Options that allow to open link preview when tapped on image or a title
+/// of a preview. By default link preview opens only when tapped on a link itself.
+@immutable
+class PreviewTapOptions {
+  /// Creates preview tap options config.
+  const PreviewTapOptions({
+    this.openOnImageTap = false,
+    this.openOnTitleTap = false,
+  });
+
+  /// Open link preview when tapped on preview's image.
+  final bool openOnImageTap;
+
+  /// Open link preview when tapped on preview's title and description.
+  final bool openOnTitleTap;
 }
