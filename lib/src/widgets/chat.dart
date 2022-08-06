@@ -290,7 +290,7 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? timeFormat;
 
-  /// See [TypingIndicatorOptions].
+  /// Used to show typing users with indicator. See [TypingIndicatorOptions].
   final TypingIndicatorOptions typingIndicatorOptions;
 
   /// See [Message.usePreviewData].
@@ -420,7 +420,7 @@ class ChatState extends State<Chat> {
                                 ),
                               ),
                       ),
-                      widget.typingIndicatorOptions.authors.isNotEmpty
+                      widget.typingIndicatorOptions.typingUsers.isNotEmpty
                           ? widget.customTypingIndicatorBuilder ??
                               TypingIndicator(
                                 options: widget.typingIndicatorOptions,

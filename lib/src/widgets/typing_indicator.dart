@@ -29,6 +29,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
   late Animation<Offset> _firstCircleOffsetAnimation;
   late Animation<Offset> _secondCircleOffsetAnimation;
   late Animation<Offset> _thirdCircleOffsetAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +42,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
           setState(() {});
         }
       });
+
     _indicatorSpaceAnimation = CurvedAnimation(
       parent: _appearanceController,
       curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
@@ -49,6 +51,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
       begin: 0.0,
       end: 60.0,
     ));
+
     _animatedCirclesController = AnimationController(
       vsync: this,
       lowerBound: 0.0,
@@ -200,15 +203,15 @@ class _TypingIndicatorState extends State<TypingIndicator>
         ],
       ).animate(CurvedAnimation(
         parent: _animatedCirclesController,
-        curve: _animationInterval(
+        curve: Interval(
           startInterval,
           endInterval,
-          Curves.linear,
+          curve: Curves.linear,
         ),
-        reverseCurve: _animationInterval(
+        reverseCurve: Interval(
           startInterval,
           endInterval,
-          Curves.linear,
+          curve: Curves.linear,
         ),
       ));
 }
@@ -229,14 +232,14 @@ class TypingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sWidth = _getStackingWidth(
-      widget.options.authors,
+      widget.options.typingUsers,
       MediaQuery.of(context).size.width,
     );
     if (mode == TypingIndicatorMode.text) {
       return SizedBox(
         width: sWidth,
         child: Text(
-          _multiUserTextBuilder(widget.options.authors),
+          _multiUserTextBuilder(widget.options.typingUsers),
           style: InheritedChatTheme.of(context)
               .theme
               .typingIndicatorTheme
@@ -248,7 +251,7 @@ class TypingWidget extends StatelessWidget {
         width: sWidth,
         child: AvatarHandler(
           context: context,
-          author: widget.options.authors,
+          author: widget.options.typingUsers,
         ),
       );
     } else {
@@ -258,12 +261,12 @@ class TypingWidget extends StatelessWidget {
             width: sWidth,
             child: AvatarHandler(
               context: context,
-              author: widget.options.authors,
+              author: widget.options.typingUsers,
             ),
           ),
           const SizedBox(width: 10),
           Text(
-            _multiUserTextBuilder(widget.options.authors),
+            _multiUserTextBuilder(widget.options.typingUsers),
             style: InheritedChatTheme.of(context)
                 .theme
                 .typingIndicatorTheme
@@ -271,6 +274,30 @@ class TypingWidget extends StatelessWidget {
           ),
         ],
       );
+    }
+  }
+
+  /// Handler for multi user typing text.
+  String _multiUserTextBuilder(List<types.User> author) {
+    if (author.isEmpty) {
+      return '';
+    } else if (author.length == 1) {
+      return '${author.first.firstName} is typing';
+    } else if (author.length == 2) {
+      return '${author.first.firstName} and ${author[1].firstName}';
+    } else {
+      return '${author.first.firstName} and ${author.length - 1} others';
+    }
+  }
+
+  /// Used to specify width of stacking avatars based on number of authors.
+  double _getStackingWidth(List<types.User> author, double indicatorWidth) {
+    if (author.length == 1) {
+      return indicatorWidth * 0.06;
+    } else if (author.length == 2) {
+      return indicatorWidth * 0.11;
+    } else {
+      return indicatorWidth * 0.15;
     }
   }
 }
@@ -409,53 +436,21 @@ class AnimatedCircles extends StatelessWidget {
       );
 }
 
-/// Handler for multi user typing text.
-String _multiUserTextBuilder(List<types.User> author) {
-  if (author.isEmpty) {
-    return '';
-  } else if (author.length == 1) {
-    return '${author.first.firstName} is typing';
-  } else if (author.length == 2) {
-    return '${author.first.firstName} and ${author[1].firstName}';
-  } else {
-    return '${author.first.firstName} and ${author.length - 1} others';
-  }
-}
-
-/// Used to specify width of stacking avatars based on number of authors.
-double _getStackingWidth(List<types.User> author, double indicatorWidth) {
-  if (author.length == 1) {
-    return indicatorWidth * 0.06;
-  } else if (author.length == 2) {
-    return indicatorWidth * 0.11;
-  } else {
-    return indicatorWidth * 0.15;
-  }
-}
-
-/// Animation Interval for circles.
-Interval _animationInterval(
-  double startInterval,
-  double endInterval,
-  Curve curve,
-) =>
-    Interval(startInterval, endInterval, curve: curve);
-
 @immutable
 class TypingIndicatorOptions {
   const TypingIndicatorOptions({
-    this.authors = const [],
     this.animationSpeed = const Duration(milliseconds: 500),
+    this.typingUsers = const [],
     this.typingMode = TypingIndicatorMode.text,
   });
-
-  /// Author(s) for [TypingIndicator].
-  /// By default its empty list which hides the indicator, see [types.User].
-  final List<types.User> authors;
 
   /// Animation speed for circles.
   /// Defaults to 500 ms.
   final Duration animationSpeed;
+
+  /// Author(s) for [TypingIndicator].
+  /// By default its empty list which hides the indicator, see [types.User].
+  final List<types.User> typingUsers;
 
   /// Typing mode for [TypingIndicator]. See [TypingIndicatorMode].
   final TypingIndicatorMode typingMode;
