@@ -6,21 +6,19 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
-import '../conditional/conditional.dart';
 import '../models/bubble_rtl_alignment.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/preview_tap_options.dart';
-import '../models/send_button_visibility_mode.dart';
 import '../models/typing_indicator_mode.dart';
 import '../models/unseen_banner.dart';
 import '../util.dart';
 import 'chat_list.dart';
+import 'image_gallery.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
 import 'inherited_user.dart';
@@ -54,6 +52,10 @@ class Chat extends StatefulWidget {
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
+    this.imageGalleryOptions = const ImageGalleryOptions(
+      maxScale: PhotoViewComputedScale.covered,
+      minScale: PhotoViewComputedScale.contained,
+    ),
     this.imageMessageBuilder,
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
@@ -76,24 +78,21 @@ class Chat extends StatefulWidget {
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.onTextChanged,
-    this.onTextFieldTap,
     this.previewTapOptions = const PreviewTapOptions(),
     this.scrollController,
     this.scrollPhysics,
     this.scrollToUnseenOptions = const ScrollToUnseenOptions(),
     this.showUserAvatars = false,
     this.showUserNames = false,
-    this.textEditingController,
+    this.showTypingIndicator = const [],
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
+    this.typingIndicatorMode = TypingIndicatorMode.text,
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
-    this.showTypingIndicator = const [],
-    this.typingIndicatorMode = TypingIndicatorMode.text,
   });
 
   /// See [Message.avatarBuilder].
@@ -177,6 +176,9 @@ class Chat extends StatefulWidget {
   /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
 
+  /// See [ImageGallery.options].
+  final ImageGalleryOptions imageGalleryOptions;
+
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
@@ -208,13 +210,13 @@ class Chat extends StatefulWidget {
   final Widget Function(String userId)? nameBuilder;
 
   /// See [Input.onAttachmentPressed].
-  final void Function()? onAttachmentPressed;
+  final VoidCallback? onAttachmentPressed;
 
   /// See [Message.onAvatarTap].
   final void Function(types.User)? onAvatarTap;
 
   /// Called when user taps on background.
-  final void Function()? onBackgroundTap;
+  final VoidCallback? onBackgroundTap;
 
   /// See [ChatList.onEndReached].
   final Future<void> Function()? onEndReached;
@@ -248,12 +250,6 @@ class Chat extends StatefulWidget {
   /// See [Input.onSendPressed].
   final void Function(types.PartialText) onSendPressed;
 
-  /// See [Input.onTextChanged].
-  final void Function(String)? onTextChanged;
-
-  /// See [Input.onTextFieldTap].
-  final void Function()? onTextFieldTap;
-
   /// See [Message.previewTapOptions].
   final PreviewTapOptions previewTapOptions;
 
@@ -274,8 +270,10 @@ class Chat extends StatefulWidget {
   /// shown only on text messages.
   final bool showUserNames;
 
-  /// See [Input.textEditingController].
-  final TextEditingController? textEditingController;
+  /// Optional typing indicator for chat. By default it is empty list which hides the indicator,
+  /// shows animated speech bubble along with the support of multiple users typing text.
+  /// You can customize only certain properties, see [TypingIndicatorTheme].
+  final List<types.User> showTypingIndicator;
 
   /// See [Message.textMessageBuilder].
   final Widget Function(
@@ -299,6 +297,10 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? timeFormat;
 
+  /// Used to toggle [TypingIndicator] mode between text, avatar or both.
+  /// Defaults to [TypingIndicatorMode.text].
+  final TypingIndicatorMode typingIndicatorMode;
+
   /// See [Message.usePreviewData].
   final bool usePreviewData;
 
@@ -307,15 +309,6 @@ class Chat extends StatefulWidget {
 
   /// See [Message.userAgent].
   final String? userAgent;
-
-  /// Optional typing indicator for chat. By default it is empty list which hides the indicator,
-  /// shows animated speech bubble along with the support of multiple users typing text.
-  /// You can customize only certain properties, see [TypingIndicatorTheme].
-  final List<types.User> showTypingIndicator;
-
-  /// Used to toggle [TypingIndicator] mode between text, avatar or both.
-  /// Defaults to [TypingIndicatorMode.text].
-  final TypingIndicatorMode typingIndicatorMode;
 
   @override
   State<Chat> createState() => ChatState();
@@ -326,7 +319,7 @@ class ChatState extends State<Chat> {
   static const int _unseenMessageBannerIndex = 1;
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
-  int _imageViewIndex = 0;
+  PageController? _galleryPageController;
   bool _isImageViewVisible = false;
   late final AutoScrollController _scrollController;
 
@@ -392,7 +385,6 @@ class ChatState extends State<Chat> {
       );
 
   @override
-
   Widget build(BuildContext context) => InheritedUser(
         user: widget.user,
         child: InheritedChatTheme(
@@ -454,7 +446,13 @@ class ChatState extends State<Chat> {
                     ],
                   ),
                 ),
-                if (_isImageViewVisible) _imageGalleryBuilder(),
+                if (_isImageViewVisible)
+                  ImageGallery(
+                    images: _gallery,
+                    pageController: _galleryPageController!,
+                    onClosePressed: _onCloseGalleryPressed,
+                    options: widget.imageGalleryOptions,
+                  ),
               ],
             ),
           ),
@@ -472,49 +470,6 @@ class ChatState extends State<Chat> {
           widget.l10n.emptyChatPlaceholder,
           style: widget.theme.emptyChatPlaceholderTextStyle,
           textAlign: TextAlign.center,
-        ),
-      );
-
-  Widget _imageGalleryBuilder() => Dismissible(
-        key: const Key('photo_view_gallery'),
-        direction: DismissDirection.down,
-        onDismissed: (direction) => _onCloseGalleryPressed(),
-        child: Stack(
-          children: [
-            PhotoViewGallery.builder(
-              builder: (BuildContext context, int index) =>
-                  PhotoViewGalleryPageOptions(
-                imageProvider: Conditional().getProvider(_gallery[index].uri),
-              ),
-              itemCount: _gallery.length,
-              loadingBuilder: (context, event) =>
-                  _imageGalleryLoadingBuilder(event),
-              onPageChanged: _onPageChanged,
-              pageController: PageController(initialPage: _imageViewIndex),
-              scrollPhysics: const ClampingScrollPhysics(),
-            ),
-            Positioned.directional(
-              end: 16,
-              textDirection: Directionality.of(context),
-              top: 56,
-              child: CloseButton(
-                color: Colors.white,
-                onPressed: _onCloseGalleryPressed,
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
-        child: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            value: event == null || event.expectedTotalBytes == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
-          ),
         ),
       );
 
@@ -605,20 +560,17 @@ class ChatState extends State<Chat> {
     setState(() {
       _isImageViewVisible = false;
     });
+    _galleryPageController?.dispose();
+    _galleryPageController = null;
   }
 
   void _onImagePressed(types.ImageMessage message) {
+    final initialPage = _gallery.indexWhere(
+      (element) => element.id == message.id && element.uri == message.uri,
+    );
+    _galleryPageController = PageController(initialPage: initialPage);
     setState(() {
-      _imageViewIndex = _gallery.indexWhere(
-        (element) => element.id == message.id && element.uri == message.uri,
-      );
       _isImageViewVisible = true;
-    });
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _imageViewIndex = index;
     });
   }
 
