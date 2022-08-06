@@ -404,17 +404,17 @@ class DefaultChatTheme extends ChatTheme {
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
     super.typingIndicatorTheme = const TypingIndicatorTheme(
-      bubbleColor: neutral7,
       animatedCirclesColor: neutral1,
+      animatedCircleSize: 5.0,
+      bubbleColor: neutral7,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       countAvatarColor: primary,
       countTextColor: secondary,
-      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       multipleUserTextStyle: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: neutral2,
       ),
-      animatedCircleSize: 5.0,
     ),
     super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
       color: secondary,
@@ -559,17 +559,17 @@ class DarkChatTheme extends ChatTheme {
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
     super.typingIndicatorTheme = const TypingIndicatorTheme(
-      bubbleColor: dark,
       animatedCirclesColor: neutral7,
+      animatedCircleSize: 5.0,
+      bubbleColor: dark,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       countAvatarColor: primary,
       countTextColor: secondary,
-      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
       multipleUserTextStyle: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: neutral2,
       ),
-      animatedCircleSize: 5.0,
     ),
     super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
       color: secondaryDark,
