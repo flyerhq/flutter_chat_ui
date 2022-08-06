@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/unseen_message_banner.dart';
+
 // For internal usage only. Use values from theme itself.
 
 /// See [ChatTheme.userAvatarNameColors]
@@ -559,18 +561,4 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
   });
-}
-
-@immutable
-class UnseenMessagesBannerTheme {
-  const UnseenMessagesBannerTheme({
-    required this.color,
-    required this.textStyle,
-  });
-
-  /// Background color of the banner.
-  final Color color;
-
-  /// Text style for the unseen message banner text.
-  final TextStyle textStyle;
 }

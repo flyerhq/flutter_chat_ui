@@ -48,3 +48,17 @@ class ScrollToUnseenOptions {
   /// Whether to scroll to the first unseen message on open.
   final bool scrollOnOpen;
 }
+
+@immutable
+class UnseenMessagesBannerTheme {
+  const UnseenMessagesBannerTheme({
+    required this.color,
+    required this.textStyle,
+  });
+
+  /// Background color of the banner.
+  final Color color;
+
+  /// Text style for the unseen message banner text.
+  final TextStyle textStyle;
+}
