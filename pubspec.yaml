@@ -21,6 +21,7 @@ dependencies:
   intl: ^0.17.0
   meta: ^1.7.0
   photo_view: ^0.14.0
+  scroll_to_index: ^3.0.1
   url_launcher: ^6.1.5
   visibility_detector: ^0.3.3
 

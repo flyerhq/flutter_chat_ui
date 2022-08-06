@@ -11,6 +11,7 @@ abstract class ChatL10n {
     required this.fileButtonAccessibilityLabel,
     required this.inputPlaceholder,
     required this.sendButtonAccessibilityLabel,
+    required this.unseenMessagesBannerLabel,
   });
 
   /// Accessibility label (hint) for the attachment button.
@@ -27,6 +28,9 @@ abstract class ChatL10n {
 
   /// Accessibility label (hint) for the send button.
   final String sendButtonAccessibilityLabel;
+
+  /// Label for the unseen messages banner.
+  final String unseenMessagesBannerLabel;
 }
 
 /// Arabic l10n which extends [ChatL10n].
@@ -41,6 +45,7 @@ class ChatL10nAr extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'ملف',
     super.inputPlaceholder = 'الرسالة',
     super.sendButtonAccessibilityLabel = 'إرسال',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -56,6 +61,7 @@ class ChatL10nDe extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Datei',
     super.inputPlaceholder = 'Nachricht',
     super.sendButtonAccessibilityLabel = 'Senden',
+    super.unseenMessagesBannerLabel = 'Ungelesene Nachrichten',
   });
 }
 
@@ -71,6 +77,7 @@ class ChatL10nEn extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'File',
     super.inputPlaceholder = 'Message',
     super.sendButtonAccessibilityLabel = 'Send',
+    super.unseenMessagesBannerLabel = 'Unread messages',
   });
 }
 
@@ -86,6 +93,7 @@ class ChatL10nEs extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Archivo',
     super.inputPlaceholder = 'Mensaje',
     super.sendButtonAccessibilityLabel = 'Enviar',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -101,6 +109,7 @@ class ChatL10nKo extends ChatL10n {
     super.fileButtonAccessibilityLabel = '파일',
     super.inputPlaceholder = '메시지',
     super.sendButtonAccessibilityLabel = '보내기',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -116,6 +125,7 @@ class ChatL10nPl extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Plik',
     super.inputPlaceholder = 'Napisz wiadomość',
     super.sendButtonAccessibilityLabel = 'Wyślij',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -131,6 +141,7 @@ class ChatL10nPt extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Arquivo',
     super.inputPlaceholder = 'Mensagem',
     super.sendButtonAccessibilityLabel = 'Enviar',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -146,6 +157,7 @@ class ChatL10nRu extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Файл',
     super.inputPlaceholder = 'Сообщение',
     super.sendButtonAccessibilityLabel = 'Отправить',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -161,6 +173,7 @@ class ChatL10nTr extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Dosya',
     super.inputPlaceholder = 'Mesaj yazın',
     super.sendButtonAccessibilityLabel = 'Gönder',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -176,6 +189,7 @@ class ChatL10nUk extends ChatL10n {
     super.fileButtonAccessibilityLabel = 'Файл',
     super.inputPlaceholder = 'Повідомлення',
     super.sendButtonAccessibilityLabel = 'Надіслати',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -191,6 +205,7 @@ class ChatL10nZhCN extends ChatL10n {
     super.fileButtonAccessibilityLabel = '文件',
     super.inputPlaceholder = '输入消息',
     super.sendButtonAccessibilityLabel = '发送',
+    super.unseenMessagesBannerLabel = '?',
   });
 }
 
@@ -206,5 +221,6 @@ class ChatL10nZhTW extends ChatL10n {
     super.fileButtonAccessibilityLabel = '檔案',
     super.inputPlaceholder = '輸入訊息',
     super.sendButtonAccessibilityLabel = '傳送',
+    super.unseenMessagesBannerLabel = '?',
   });
 }

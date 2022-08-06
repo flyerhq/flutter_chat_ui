@@ -18,7 +18,7 @@ class ChatList extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.onEndReached,
     this.onEndReachedThreshold,
-    this.scrollController,
+    required this.scrollController,
     this.scrollPhysics,
   });
 
@@ -47,8 +47,9 @@ class ChatList extends StatefulWidget {
   /// next page when scrolled through about 3/4 of the available content.
   final double? onEndReachedThreshold;
 
-  /// Used to control the chat list scroll view.
-  final ScrollController? scrollController;
+  /// Scroll controller for the main [CustomScrollView]. Also used to auto scroll
+  /// to specific messages.
+  final ScrollController scrollController;
 
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
@@ -71,13 +72,11 @@ class _ChatListState extends State<ChatList>
   final GlobalKey<PatchedSliverAnimatedListState> _listKey =
       GlobalKey<PatchedSliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
-  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
 
-    _scrollController = widget.scrollController ?? ScrollController();
     didUpdateWidget(widget);
   }
 
@@ -91,7 +90,6 @@ class _ChatListState extends State<ChatList>
   @override
   void dispose() {
     _controller.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -128,7 +126,7 @@ class _ChatListState extends State<ChatList>
           return false;
         },
         child: CustomScrollView(
-          controller: _scrollController,
+          controller: widget.scrollController,
           keyboardDismissBehavior: widget.keyboardDismissBehavior,
           physics: widget.scrollPhysics,
           reverse: true,
@@ -272,8 +270,8 @@ class _ChatListState extends State<ChatList>
             // Delay to give some time for Flutter to calculate new
             // size after new message was added
             Future.delayed(const Duration(milliseconds: 100), () {
-              if (_scrollController.hasClients) {
-                _scrollController.animateTo(
+              if (widget.scrollController.hasClients) {
+                widget.scrollController.animateTo(
                   0,
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInQuad,

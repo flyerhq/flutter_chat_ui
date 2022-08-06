@@ -55,11 +55,23 @@
   },
   {
     "author": {
+      "firstName": "John",
+      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
+      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
+    },
+    "createdAt": 1655648402000,
+    "id": "4a202811-7d48-4ae9-8323-d764a56031ds",
+    "status": "seen",
+    "text": "FIRST UNSEEN\n\nVoluptatem voluptatum eos aut voluptatem occaecati. Quia ducimus vero molestiae molestiae illum illo nisi autem. Labore consectetur expedita illum consequatur inventore consequatur quasi voluptatem. Perspiciatis ut reprehenderit officiis animi voluptas.",
+    "type": "text"
+  },
+  {
+    "author": {
       "firstName": "Matthew",
       "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
       "lastName": "White"
     },
-    "createdAt": 1655648400000,
+    "createdAt": 1655648403000,
     "id": "6a1a4351-cf05-4d0c-9d0f-47ed378b6112",
     "mimeType": "application/pdf",
     "name": "city_guide-madrid.pdf",

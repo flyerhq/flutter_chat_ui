@@ -96,6 +96,7 @@ abstract class ChatTheme {
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
     required this.statusIconPadding,
+    required this.unseenMessagesBannerTheme,
     required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
@@ -256,6 +257,9 @@ abstract class ChatTheme {
   /// Padding around status icons.
   final EdgeInsets statusIconPadding;
 
+  /// Theme for the unseen messages banner.
+  final UnseenMessagesBannerTheme unseenMessagesBannerTheme;
+
   /// Color used as a background for user avatar if an image is provided.
   /// Visible if the image has some transparent parts.
   final Color userAvatarImageBackgroundColor;
@@ -390,6 +394,15 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
+      color: secondary,
+      textStyle: TextStyle(
+        color: neutral2,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        height: 1.333,
+      ),
+    ),
     super.userAvatarImageBackgroundColor = Colors.transparent,
     super.userAvatarNameColors = colors,
     super.userAvatarTextStyle = const TextStyle(
@@ -523,6 +536,15 @@ class DarkChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
+      color: secondaryDark,
+      textStyle: TextStyle(
+        color: neutral7WithOpacity,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        height: 1.333,
+      ),
+    ),
     super.userAvatarImageBackgroundColor = Colors.transparent,
     super.userAvatarNameColors = colors,
     super.userAvatarTextStyle = const TextStyle(
@@ -537,4 +559,18 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
   });
+}
+
+@immutable
+class UnseenMessagesBannerTheme {
+  const UnseenMessagesBannerTheme({
+    required this.color,
+    required this.textStyle,
+  });
+
+  /// Background color of the banner.
+  final Color color;
+
+  /// Text style for the unseen message banner text.
+  final TextStyle textStyle;
 }

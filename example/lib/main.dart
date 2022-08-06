@@ -48,10 +48,14 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) => Scaffold(
         body: Chat(
           messages: _messages,
-          onAttachmentPressed: _handleAtachmentPressed,
+          onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
+          scrollToUnseenOptions: const ScrollToUnseenOptions(
+            lastSeenMessageID: '6a1a4351-cf05-4d0c-9d0f-47ed378b6112',
+            scrollOnOpen: true,
+          ),
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
@@ -64,7 +68,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleAtachmentPressed() {
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => SafeArea(
