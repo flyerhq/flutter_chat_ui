@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scroll_to_index/scroll_to_index.dart'
+    show scrollAnimationDuration;
 
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
@@ -30,7 +32,7 @@ class ScrollToUnseenOptions {
   const ScrollToUnseenOptions({
     this.lastSeenMessageID,
     this.scrollDelay = const Duration(milliseconds: 150),
-    this.scrollDuration = const Duration(milliseconds: 250),
+    this.scrollDuration = scrollAnimationDuration,
     this.scrollOnOpen = false,
   });
 
