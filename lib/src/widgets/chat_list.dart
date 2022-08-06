@@ -135,15 +135,11 @@ class _ChatListState extends State<ChatList>
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
-              sliver: PatchedSliverAnimatedList( // TODO: replace with SliverAnimatedList https://github.com/flutter/flutter/pull/108710
-                initialItemCount: widget.items.length,
-                key: _listKey,
-                itemBuilder: (_, index, animation) =>
-                    _newMessageBuilder(index, animation),
+              sliver: PatchedSliverAnimatedList(
                 findChildIndexCallback: (Key key) {
                   if (key is ValueKey<Object>) {
                     final newIndex = widget.items.indexWhere(
-                          (v) => _valueKeyForItem(v) == key,
+                      (v) => _valueKeyForItem(v) == key,
                     );
                     if (newIndex != -1) {
                       return newIndex;
@@ -151,6 +147,10 @@ class _ChatListState extends State<ChatList>
                   }
                   return null;
                 },
+                initialItemCount: widget.items.length,
+                key: _listKey,
+                itemBuilder: (_, index, animation) =>
+                    _newMessageBuilder(index, animation),
               ),
             ),
             SliverPadding(
