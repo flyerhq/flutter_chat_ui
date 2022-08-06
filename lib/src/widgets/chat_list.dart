@@ -5,6 +5,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
+import 'patched_sliver_animated_list.dart';
 
 /// Animated list that handles automatic animations and pagination.
 class ChatList extends StatefulWidget {
@@ -68,8 +69,8 @@ class _ChatListState extends State<ChatList>
   late final AnimationController _controller = AnimationController(vsync: this);
 
   bool _isNextPageLoading = false;
-  final GlobalKey<SliverAnimatedListState> _listKey =
-      GlobalKey<SliverAnimatedListState>();
+  final GlobalKey<PatchedSliverAnimatedListState> _listKey =
+      GlobalKey<PatchedSliverAnimatedListState>();
   late List<Object> _oldData = List.from(widget.items);
 
   @override
@@ -132,7 +133,18 @@ class _ChatListState extends State<ChatList>
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
-              sliver: SliverAnimatedList(
+              sliver: PatchedSliverAnimatedList(
+                findChildIndexCallback: (Key key) {
+                  if (key is ValueKey<Object>) {
+                    final newIndex = widget.items.indexWhere(
+                      (v) => _valueKeyForItem(v) == key,
+                    );
+                    if (newIndex != -1) {
+                      return newIndex;
+                    }
+                  }
+                  return null;
+                },
                 initialItemCount: widget.items.length,
                 key: _listKey,
                 itemBuilder: (_, index, animation) =>
@@ -219,6 +231,7 @@ class _ChatListState extends State<ChatList>
       final item = _oldData[index];
 
       return SizeTransition(
+        key: _valueKeyForItem(item),
         axisAlignment: -1,
         sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
         child: widget.itemBuilder(item, index),
@@ -230,6 +243,7 @@ class _ChatListState extends State<ChatList>
 
   Widget _removedMessageBuilder(Object item, Animation<double> animation) =>
       SizeTransition(
+        key: _valueKeyForItem(item),
         axisAlignment: -1,
         sizeFactor: animation.drive(CurveTween(curve: Curves.easeInQuad)),
         child: FadeTransition(
@@ -270,5 +284,15 @@ class _ChatListState extends State<ChatList>
     } catch (e) {
       // Do nothing if there are no items.
     }
+  }
+
+  Key? _valueKeyForItem(Object item) =>
+      _mapMessage(item, (message) => ValueKey(message.id));
+
+  T? _mapMessage<T>(Object maybeMessage, T Function(types.Message) f) {
+    if (maybeMessage is Map<String, Object>) {
+      return f(maybeMessage['message'] as types.Message);
+    }
+    return null;
   }
 }
