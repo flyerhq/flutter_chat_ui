@@ -313,6 +313,15 @@ class ChatState extends State<Chat> {
     _scrollController = widget.scrollController ?? AutoScrollController();
 
     didUpdateWidget(widget);
+
+    if (_chatMessages.isNotEmpty && widget.scrollToUnseenOptions.scrollOnOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (mounted) {
+          await Future.delayed(widget.scrollToUnseenOptions.scrollDelay);
+          scrollToFirstUnseen();
+        }
+      });
+    }
   }
 
   @override
@@ -335,15 +344,6 @@ class ChatState extends State<Chat> {
 
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
-
-      if (widget.scrollToUnseenOptions.scrollOnOpen) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          if (mounted) {
-            await Future.delayed(widget.scrollToUnseenOptions.scrollDelay);
-            scrollToFirstUnseen();
-          }
-        });
-      }
     }
   }
 
