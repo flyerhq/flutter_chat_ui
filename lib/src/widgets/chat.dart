@@ -17,12 +17,12 @@ import '../models/unseen_banner.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'image_gallery.dart';
-import 'state/inherited_chat_theme.dart';
-import 'state/inherited_l10n.dart';
-import 'state/inherited_user.dart';
 import 'input/input.dart';
 import 'message/message.dart';
 import 'message/text_message.dart';
+import 'state/inherited_chat_theme.dart';
+import 'state/inherited_l10n.dart';
+import 'state/inherited_user.dart';
 import 'unseen_message_banner.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
