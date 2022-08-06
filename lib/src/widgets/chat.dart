@@ -19,6 +19,7 @@ import 'chat_list.dart';
 import 'image_gallery.dart';
 import 'input/input.dart';
 import 'message/message.dart';
+import 'message/system_message.dart';
 import 'message/text_message.dart';
 import 'state/inherited_chat_theme.dart';
 import 'state/inherited_l10n.dart';
@@ -80,6 +81,7 @@ class Chat extends StatefulWidget {
     this.scrollToUnseenOptions = const ScrollToUnseenOptions(),
     this.showUserAvatars = false,
     this.showUserNames = false,
+    this.systemMessageBuilder,
     this.textMessageBuilder,
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
@@ -260,6 +262,10 @@ class Chat extends StatefulWidget {
   /// Show user names for received messages. Useful for a group chat. Will be
   /// shown only on text messages.
   final bool showUserNames;
+
+  /// Builds a system message outside of any bubble.
+  final Widget Function(types.Message)?
+      systemMessageBuilder; // TODO: replace with SystemMessage.
 
   /// See [Message.textMessageBuilder].
   final Widget Function(
@@ -449,18 +455,15 @@ class ChatState extends State<Chat> {
 
   Widget _messageBuilder(Object object, BoxConstraints constraints) {
     if (object is DateHeader) {
-      if (widget.dateHeaderBuilder != null) {
-        return widget.dateHeaderBuilder!(object);
-      } else {
-        return Container(
-          alignment: Alignment.center,
-          margin: widget.theme.dateDividerMargin,
-          child: Text(
-            object.text,
-            style: widget.theme.dateDividerTextStyle,
-          ),
-        );
-      }
+      return widget.dateHeaderBuilder?.call(object) ??
+          Container(
+            alignment: Alignment.center,
+            margin: widget.theme.dateDividerMargin,
+            child: Text(
+              object.text,
+              style: widget.theme.dateDividerTextStyle,
+            ),
+          );
     } else if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
@@ -475,6 +478,13 @@ class ChatState extends State<Chat> {
     } else {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
+
+      if (message.type == types.MessageType.system) {
+        // TODO: replace with type check.
+        return widget.systemMessageBuilder?.call(message) ??
+            SystemMessage(message: message);
+      }
+
       final messageWidth =
           widget.showUserAvatars && message.author.id != widget.user.id
               ? min(constraints.maxWidth * 0.72, 440).floor()
