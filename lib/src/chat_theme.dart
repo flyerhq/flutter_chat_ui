@@ -406,6 +406,8 @@ class DefaultChatTheme extends ChatTheme {
       margin: EdgeInsets.only(
         bottom: 24,
         top: 8,
+        left: 8,
+        right: 8,
       ),
       textStyle: TextStyle(
         color: neutral2,
@@ -560,6 +562,8 @@ class DarkChatTheme extends ChatTheme {
       margin: EdgeInsets.only(
         bottom: 24,
         top: 8,
+        left: 8,
+        right: 8,
       ),
       textStyle: TextStyle(
         color: neutral7,

@@ -9,14 +9,14 @@ class SystemMessage extends StatelessWidget {
     required this.message,
   });
 
-  final types.Message message; // TODO: replace with SystemMessage.
+  final types.SystemMessage message;
 
   @override
   Widget build(BuildContext context) => Container(
         alignment: Alignment.center,
         margin: InheritedChatTheme.of(context).theme.systemMessageTheme.margin,
         child: Text(
-          'Matthew joined the chat', // TODO: replace with SystemMessage text.
+          message.text,
           style:
               InheritedChatTheme.of(context).theme.systemMessageTheme.textStyle,
         ),
