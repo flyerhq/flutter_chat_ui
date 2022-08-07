@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../state/inherited_chat_theme.dart';
 
@@ -9,14 +8,14 @@ class SystemMessage extends StatelessWidget {
     required this.message,
   });
 
-  final types.SystemMessage message;
+  final String message;
 
   @override
   Widget build(BuildContext context) => Container(
         alignment: Alignment.center,
         margin: InheritedChatTheme.of(context).theme.systemMessageTheme.margin,
         child: Text(
-          message.text,
+          message,
           style:
               InheritedChatTheme.of(context).theme.systemMessageTheme.textStyle,
         ),

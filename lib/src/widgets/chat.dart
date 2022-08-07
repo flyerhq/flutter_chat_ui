@@ -264,8 +264,7 @@ class Chat extends StatefulWidget {
   final bool showUserNames;
 
   /// Builds a system message outside of any bubble.
-  final Widget Function(types.SystemMessage)?
-      systemMessageBuilder;
+  final Widget Function(types.SystemMessage)? systemMessageBuilder;
 
   /// See [Message.textMessageBuilder].
   final Widget Function(
@@ -481,7 +480,7 @@ class ChatState extends State<Chat> {
 
       if (message is types.SystemMessage) {
         return widget.systemMessageBuilder?.call(message) ??
-            SystemMessage(message: message);
+            SystemMessage(message: message.text);
       }
 
       final messageWidth =
