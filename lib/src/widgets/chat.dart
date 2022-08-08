@@ -299,11 +299,17 @@ class Chat extends StatefulWidget {
 
 /// [Chat] widget state.
 class ChatState extends State<Chat> {
-  static const int _unseenMessageBannerIndex = 1;
+  /// Used to get the correct auto scroll index from [_autoScrollIndexByID].
+  static const String _unseenMessageBannerID = 'unseen_banner_id';
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
   PageController? _galleryPageController;
   bool _isImageViewVisible = false;
+
+  bool _hasScrolledToUnseenOnOpen = false;
+
+  /// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
+  final Map<String, int> _autoScrollIndexByID = {};
   late final AutoScrollController _scrollController;
 
   @override
@@ -336,14 +342,8 @@ class ChatState extends State<Chat> {
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
 
-      if (widget.scrollToUnseenOptions.scrollOnOpen) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          if (mounted) {
-            await Future.delayed(widget.scrollToUnseenOptions.scrollDelay);
-            scrollToFirstUnseen();
-          }
-        });
-      }
+      _refreshAutoScrollMapping();
+      _maybeScrollToFirstUnseen();
     }
   }
 
@@ -356,14 +356,14 @@ class ChatState extends State<Chat> {
 
   /// Scroll to the unseen message banner.
   void scrollToFirstUnseen() => _scrollController.scrollToIndex(
-        _unseenMessageBannerIndex,
+        _autoScrollIndexByID[_unseenMessageBannerID]!,
         duration: widget.scrollToUnseenOptions.scrollDuration,
       );
 
   /// Scroll to the message with the specified [id].
   void scrollToMessage(String id, {Duration? duration}) =>
       _scrollController.scrollToIndex(
-        id.hashCode,
+        _autoScrollIndexByID[id]!,
         duration: duration ?? scrollAnimationDuration,
       );
 
@@ -397,8 +397,12 @@ class ChatState extends State<Chat> {
                                   ) =>
                                       ChatList(
                                     isLastPage: widget.isLastPage,
-                                    itemBuilder: (item, index) =>
-                                        _messageBuilder(item, constraints),
+                                    itemBuilder: (Object item, int? index) =>
+                                        _messageBuilder(
+                                      item,
+                                      constraints,
+                                      index,
+                                    ),
                                     items: _chatMessages,
                                     keyboardDismissBehavior:
                                         widget.keyboardDismissBehavior,
@@ -448,7 +452,12 @@ class ChatState extends State<Chat> {
         ),
       );
 
-  Widget _messageBuilder(Object object, BoxConstraints constraints) {
+  /// We need the index for auto scrolling because it will scroll until it reaches an index higher or equal that what it is scrolling towards. Index will be null for removed messages. Can just set to -1 for auto scroll.
+  Widget _messageBuilder(
+    Object object,
+    BoxConstraints constraints,
+    int? index,
+  ) {
     if (object is DateHeader) {
       if (widget.dateHeaderBuilder != null) {
         return widget.dateHeaderBuilder!(object);
@@ -469,7 +478,7 @@ class ChatState extends State<Chat> {
     } else if (object is UnseenBanner) {
       return AutoScrollTag(
         key: const Key('unseen_banner'),
-        index: _unseenMessageBannerIndex,
+        index: index ?? -1,
         controller: _scrollController,
         child: const UnseenMessageBanner(),
       );
@@ -483,9 +492,7 @@ class ChatState extends State<Chat> {
 
       return AutoScrollTag(
         key: Key('scroll-${message.id}'),
-        // By using the hashCode as index we can jump to a message using its ID.
-        // Otherwise, we would have to keep track of a map from ID to index.
-        index: message.id.hashCode,
+        index: index ?? -1,
         controller: _scrollController,
         child: Message(
           avatarBuilder: widget.avatarBuilder,
@@ -528,6 +535,37 @@ class ChatState extends State<Chat> {
           userAgent: widget.userAgent,
         ),
       );
+    }
+  }
+
+  /// Updates the [_autoScrollIndexByID] mapping with the latest messages.
+  void _refreshAutoScrollMapping() {
+    _autoScrollIndexByID.clear();
+    var i = 0;
+    for (final object in _chatMessages) {
+      if (object is UnseenBanner) {
+        _autoScrollIndexByID[_unseenMessageBannerID] = i;
+      } else if (object is Map<String, Object>) {
+        final message = object['message']! as types.Message;
+        _autoScrollIndexByID[message.id] = i;
+      }
+      i++;
+    }
+  }
+
+  /// Only scroll to first unseen if there are messages and it is the first open.
+  void _maybeScrollToFirstUnseen() {
+    if (widget.scrollToUnseenOptions.scrollOnOpen &&
+        _chatMessages.isNotEmpty &&
+        !_hasScrolledToUnseenOnOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (mounted) {
+          await Future.delayed(widget.scrollToUnseenOptions.scrollDelay);
+          debugPrint('scrolling now');
+          scrollToFirstUnseen();
+        }
+      });
+      _hasScrolledToUnseenOnOpen = true;
     }
   }
 
