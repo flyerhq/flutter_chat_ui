@@ -47,22 +47,10 @@
       "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
       "lastName": "White"
     },
-    "createdAt": 1655648400000,
+    "createdAt": 1655648401000,
     "id": "64747b28-df19-4a0c-8c47-316dc3546e3c",
     "status": "seen",
     "text": "Here you go buddy! 💪",
-    "type": "text"
-  },
-  {
-    "author": {
-      "firstName": "John",
-      "id": "b4878b96-efbc-479a-8291-474ef323dec7",
-      "imageUrl": "https://avatars.githubusercontent.com/u/14123304?v=4"
-    },
-    "createdAt": 1655648399000,
-    "id": "4a202811-7d48-4ae9-8323-d764a56031ds",
-    "status": "seen",
-    "text": "FIRST UNSEEN\n\nVoluptatem voluptatum eos aut voluptatem occaecati. Quia ducimus vero molestiae molestiae illum illo nisi autem. Labore consectetur expedita illum consequatur inventore consequatur quasi voluptatem. Perspiciatis ut reprehenderit officiis animi voluptas.",
     "type": "text"
   },
   {
@@ -71,7 +59,7 @@
       "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
       "lastName": "White"
     },
-    "createdAt": 1655648398000,
+    "createdAt": 1655648400000,
     "id": "6a1a4351-cf05-4d0c-9d0f-47ed378b6112",
     "mimeType": "application/pdf",
     "name": "city_guide-madrid.pdf",
@@ -86,7 +74,7 @@
       "id": "4c2307ba-3d40-442f-b1ff-b271f63904ca",
       "lastName": "Doe"
     },
-    "createdAt": 1655648397000,
+    "createdAt": 1655624464000,
     "id": "38681a33-2563-42aa-957b-cfc12f791d16",
     "status": "seen",
     "text": "Matt, where is my Madrid guide?",
