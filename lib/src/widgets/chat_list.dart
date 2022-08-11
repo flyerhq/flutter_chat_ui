@@ -3,9 +3,11 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+import '../models/bubble_rtl_alignment.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'patched_sliver_animated_list.dart';
+import 'typing_indicator.dart';
 
 /// Animated list that handles automatic animations and pagination.
 class ChatList extends StatefulWidget {
@@ -15,12 +17,18 @@ class ChatList extends StatefulWidget {
     this.isLastPage,
     required this.itemBuilder,
     required this.items,
+    required this.bubbleRtlAlignment,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.onEndReached,
     this.onEndReachedThreshold,
     required this.scrollController,
     this.scrollPhysics,
+    this.typingIndicatorOptions,
   });
+
+  /// Used to set alignment of typing indicator.
+  /// See [BubbleRtlAlignment].
+  final BubbleRtlAlignment bubbleRtlAlignment;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -53,6 +61,10 @@ class ChatList extends StatefulWidget {
 
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
+
+  /// Used to build typing indicator according to options.
+  /// See [TypingIndicatorOptions].
+  final TypingIndicatorOptions? typingIndicatorOptions;
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -131,6 +143,24 @@ class _ChatListState extends State<ChatList>
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
+            if (widget.typingIndicatorOptions!.typingUsers.isNotEmpty)
+              widget.typingIndicatorOptions!.customTypingIndicator != null
+                  ? SliverPadding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      sliver: SliverToBoxAdapter(
+                        child: widget
+                            .typingIndicatorOptions!.customTypingIndicator,
+                      ),
+                    )
+                  : SliverPadding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      sliver: SliverToBoxAdapter(
+                        child: TypingIndicator(
+                          bubbleAlignment: widget.bubbleRtlAlignment,
+                          options: widget.typingIndicatorOptions!,
+                        ),
+                      ),
+                    ),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: PatchedSliverAnimatedList(

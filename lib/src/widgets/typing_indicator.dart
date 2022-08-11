@@ -90,6 +90,12 @@ class _TypingIndicatorState extends State<TypingIndicator>
   }
 
   @override
+  void deactivate() {
+    _appearanceController.reverse();
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
     _appearanceController.dispose();
     _animatedCirclesController.dispose();
@@ -440,6 +446,7 @@ class AnimatedCircles extends StatelessWidget {
 class TypingIndicatorOptions {
   const TypingIndicatorOptions({
     this.animationSpeed = const Duration(milliseconds: 500),
+    this.customTypingIndicator,
     this.typingUsers = const [],
     this.typingMode = TypingIndicatorMode.text,
   });
@@ -447,6 +454,9 @@ class TypingIndicatorOptions {
   /// Animation speed for circles.
   /// Defaults to 500 ms.
   final Duration animationSpeed;
+
+  /// Allows to set custom [TypingIndicator].
+  final Widget? customTypingIndicator;
 
   /// Author(s) for [TypingIndicator].
   /// By default its empty list which hides the indicator, see [types.User].

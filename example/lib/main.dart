@@ -44,6 +44,7 @@ class _ChatPageState extends State<ChatPage> {
     firstName: 'Lorem',
     lastName: 'Ipsum',
   );
+
   @override
   void initState() {
     super.initState();

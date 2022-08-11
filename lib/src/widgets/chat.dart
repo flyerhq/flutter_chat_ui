@@ -416,17 +416,14 @@ class ChatState extends State<Chat> {
                                         widget.onEndReachedThreshold,
                                     scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
+                                    typingIndicatorOptions:
+                                        widget.typingIndicatorOptions,
+                                    bubbleRtlAlignment:
+                                        widget.bubbleRtlAlignment!,
                                   ),
                                 ),
                               ),
                       ),
-                      widget.typingIndicatorOptions.typingUsers.isNotEmpty
-                          ? widget.customTypingIndicatorBuilder ??
-                              TypingIndicator(
-                                options: widget.typingIndicatorOptions,
-                                bubbleAlignment: widget.bubbleRtlAlignment!,
-                              )
-                          : const SizedBox(),
                       widget.customBottomWidget ??
                           Input(
                             isAttachmentUploading: widget.isAttachmentUploading,
