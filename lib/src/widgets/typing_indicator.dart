@@ -67,21 +67,18 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
     _firstCircleOffsetAnimation = _circleOffset(
       Offset.zero,
-      const Offset(0.0, -0.90),
-      0.0,
-      1.0,
+      const Offset(0.0, -0.9),
+      const Interval(0.0, 1.0, curve: Curves.linear),
     );
     _secondCircleOffsetAnimation = _circleOffset(
       Offset.zero,
-      const Offset(0.0, -0.80),
-      0.30,
-      1.0,
+      const Offset(0.0, -0.8),
+      const Interval(0.3, 1.0, curve: Curves.linear),
     );
     _thirdCircleOffsetAnimation = _circleOffset(
       Offset.zero,
-      const Offset(0.0, -0.90),
-      0.45,
-      1.0,
+      const Offset(0.0, -0.9),
+      const Interval(0.45, 1.0, curve: Curves.linear),
     );
 
     if (mounted) {
@@ -187,8 +184,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
   Animation<Offset> _circleOffset(
     Offset? start,
     Offset? end,
-    double startInterval,
-    double endInterval,
+    Interval animationInterval,
   ) =>
       TweenSequence<Offset>(
         <TweenSequenceItem<Offset>>[
@@ -209,16 +205,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
         ],
       ).animate(CurvedAnimation(
         parent: _animatedCirclesController,
-        curve: Interval(
-          startInterval,
-          endInterval,
-          curve: Curves.linear,
-        ),
-        reverseCurve: Interval(
-          startInterval,
-          endInterval,
-          curve: Curves.linear,
-        ),
+        curve: animationInterval,
+        reverseCurve: animationInterval,
       ));
 }
 
