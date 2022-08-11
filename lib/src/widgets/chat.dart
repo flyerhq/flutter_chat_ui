@@ -14,7 +14,7 @@ import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/preview_tap_options.dart';
-import '../models/unseen_banner.dart';
+import '../models/unread_header_data.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'image_gallery.dart';
@@ -26,6 +26,7 @@ import 'message.dart';
 import 'text_message.dart';
 import 'typing_indicator.dart';
 import 'unseen_message_banner.dart';
+import 'unread_header.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
@@ -80,7 +81,7 @@ class Chat extends StatefulWidget {
     this.previewTapOptions = const PreviewTapOptions(),
     this.scrollController,
     this.scrollPhysics,
-    this.scrollToUnseenOptions = const ScrollToUnseenOptions(),
+    this.scrollToUnreadOptions = const ScrollToUnreadOptions(),
     this.showUserAvatars = false,
     this.showUserNames = false,
     this.textMessageBuilder,
@@ -252,14 +253,14 @@ class Chat extends StatefulWidget {
   final PreviewTapOptions previewTapOptions;
 
   /// See [ChatList.scrollController].
-  /// If provided, you cannot use the scroll to message functionality anymore.
+  /// If provided, you cannot use the scroll to message functionality.
   final AutoScrollController? scrollController;
 
   /// See [ChatList.scrollPhysics].
   final ScrollPhysics? scrollPhysics;
 
-  /// Controls if and how the chat should scroll to the newest unseen message.
-  final ScrollToUnseenOptions scrollToUnseenOptions;
+  /// Controls if and how the chat should scroll to the newest unread message.
+  final ScrollToUnreadOptions scrollToUnreadOptions;
 
   /// See [Message.showUserAvatars].
   final bool showUserAvatars;
@@ -308,11 +309,17 @@ class Chat extends StatefulWidget {
 
 /// [Chat] widget state.
 class ChatState extends State<Chat> {
-  static const int _unseenMessageBannerIndex = 1;
+  /// Used to get the correct auto scroll index from [_autoScrollIndexById].
+  static const String _unreadHeaderId = 'unread_header_id';
+
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
   PageController? _galleryPageController;
+  bool _hadScrolledToUnreadOnOpen = false;
   bool _isImageViewVisible = false;
+
+  /// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
+  final Map<String, int> _autoScrollIndexById = {};
   late final AutoScrollController _scrollController;
 
   @override
@@ -336,8 +343,8 @@ class ChatState extends State<Chat> {
         dateFormat: widget.dateFormat,
         dateHeaderThreshold: widget.dateHeaderThreshold,
         dateLocale: widget.dateLocale,
-        lastSeenMessageID: widget.scrollToUnseenOptions.lastSeenMessageID,
         groupMessagesThreshold: widget.groupMessagesThreshold,
+        lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
       );
@@ -345,14 +352,8 @@ class ChatState extends State<Chat> {
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
 
-      if (widget.scrollToUnseenOptions.scrollOnOpen) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          if (mounted) {
-            await Future.delayed(widget.scrollToUnseenOptions.scrollDelay);
-            scrollToFirstUnseen();
-          }
-        });
-      }
+      _refreshAutoScrollMapping();
+      _maybeScrollToFirstUnread();
     }
   }
 
@@ -363,16 +364,16 @@ class ChatState extends State<Chat> {
     super.dispose();
   }
 
-  /// Scroll to the unseen message banner.
-  void scrollToFirstUnseen() => _scrollController.scrollToIndex(
-        _unseenMessageBannerIndex,
-        duration: widget.scrollToUnseenOptions.scrollDuration,
+  /// Scroll to the unread header.
+  void scrollToUnreadHeader() => _scrollController.scrollToIndex(
+        _autoScrollIndexById[_unreadHeaderId]!,
+        duration: widget.scrollToUnreadOptions.scrollDuration,
       );
 
   /// Scroll to the message with the specified [id].
   void scrollToMessage(String id, {Duration? duration}) =>
       _scrollController.scrollToIndex(
-        id.hashCode,
+        _autoScrollIndexById[id]!,
         duration: duration ?? scrollAnimationDuration,
       );
 
@@ -406,8 +407,12 @@ class ChatState extends State<Chat> {
                                   ) =>
                                       ChatList(
                                     isLastPage: widget.isLastPage,
-                                    itemBuilder: (item, index) =>
-                                        _messageBuilder(item, constraints),
+                                    itemBuilder: (Object item, int? index) =>
+                                        _messageBuilder(
+                                      item,
+                                      constraints,
+                                      index,
+                                    ),
                                     items: _chatMessages,
                                     keyboardDismissBehavior:
                                         widget.keyboardDismissBehavior,
@@ -463,7 +468,27 @@ class ChatState extends State<Chat> {
         ),
       );
 
-  Widget _messageBuilder(Object object, BoxConstraints constraints) {
+  /// Only scroll to first unread if there are messages and it is the first open.
+  void _maybeScrollToFirstUnread() {
+    if (widget.scrollToUnreadOptions.scrollOnOpen &&
+        _chatMessages.isNotEmpty &&
+        !_hadScrolledToUnreadOnOpen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (mounted) {
+          await Future.delayed(widget.scrollToUnreadOptions.scrollDelay);
+          scrollToUnreadHeader();
+        }
+      });
+      _hadScrolledToUnreadOnOpen = true;
+    }
+  }
+
+  /// We need the index for auto scrolling because it will scroll until it reaches an index higher or equal that what it is scrolling towards. Index will be null for removed messages. Can just set to -1 for auto scroll.
+  Widget _messageBuilder(
+    Object object,
+    BoxConstraints constraints,
+    int? index,
+  ) {
     if (object is DateHeader) {
       if (widget.dateHeaderBuilder != null) {
         return widget.dateHeaderBuilder!(object);
@@ -481,12 +506,14 @@ class ChatState extends State<Chat> {
       return SizedBox(
         height: object.height,
       );
-    } else if (object is UnseenBanner) {
+    } else if (object is UnreadHeaderData) {
       return AutoScrollTag(
-        key: const Key('unseen_banner'),
-        index: _unseenMessageBannerIndex,
         controller: _scrollController,
-        child: const UnseenMessageBanner(),
+        index: index ?? -1,
+        key: const Key('unread_header'),
+        child: UnreadHeader(
+          marginTop: object.marginTop,
+        ),
       );
     } else {
       final map = object as Map<String, Object>;
@@ -497,11 +524,9 @@ class ChatState extends State<Chat> {
               : min(constraints.maxWidth * 0.78, 440).floor();
 
       return AutoScrollTag(
-        key: Key('scroll-${message.id}'),
-        // By using the hashCode as index we can jump to a message using its ID.
-        // Otherwise, we would have to keep track of a map from ID to index.
-        index: message.id.hashCode,
         controller: _scrollController,
+        index: index ?? -1,
+        key: Key('scroll-${message.id}'),
         child: Message(
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
@@ -569,5 +594,20 @@ class ChatState extends State<Chat> {
     types.PreviewData previewData,
   ) {
     widget.onPreviewDataFetched?.call(message, previewData);
+  }
+
+  /// Updates the [_autoScrollIndexById] mapping with the latest messages.
+  void _refreshAutoScrollMapping() {
+    _autoScrollIndexById.clear();
+    var i = 0;
+    for (final object in _chatMessages) {
+      if (object is UnreadHeaderData) {
+        _autoScrollIndexById[_unreadHeaderId] = i;
+      } else if (object is Map<String, Object>) {
+        final message = object['message']! as types.Message;
+        _autoScrollIndexById[message.id] = i;
+      }
+      i++;
+    }
   }
 }
