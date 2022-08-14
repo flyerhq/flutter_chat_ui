@@ -555,3 +555,47 @@ class _MyHomePageState extends State<MyHomePage> {
 ## User avatars & names
 
 To show user avatars & names use `showUserAvatars` and `showUserNames` parameters. Can be used separately. By default, the chat will select one of 10 provided colors as an avatar background and name text color. Color is calculated based on the user's `id` hash code, so it is unique in different rooms. To modify provided colors use `userAvatarNameColors` parameter in [theme](themes). If you want to have one color for everyone, just pass this color as a single item in the `userAvatarNameColors` list.
+
+## Scroll to the first unread
+
+### Without pagination
+
+Just pass this parameter to the `Chat` widget. You need to pass last read message ID (banner will be shown automatically, after the message with the same ID).
+
+```dart
+scrollToUnreadOptions: const ScrollToUnreadOptions(
+  lastReadMessageId: 'lastReadMessageId',
+  scrollOnOpen: true,
+)
+```
+
+### With pagination
+
+You will need to use `GlobalKey` to do this. First, create a `GlobalKey` for the `ChatState`
+
+```dart
+final GlobalKey<ChatState> _chatKey = GlobalKey();
+```
+
+and pass it to the `Chat` widget.
+
+```dart
+Chat(
+  key: _chatKey,
+  // ...
+)
+```
+
+Now, you still need to pass `scrollToUnreadOptions` with the `lastReadMessageId`, but keep the `scrollOnOpen` parameter as a default `false`. In your pagination code (in the example I have in [pagination section](#pagination) that would be end of the `_handleEndReached` function) you need to keep fetching pages until you find a page that contains `lastReadMessageId`, then using the `_chatKey` you will be able to scroll to the first unread message.
+
+```dart
+if (_messages.where((e) => e.id == 'lastReadMessageId').isEmpty) {
+  // Recursively call to fetch more pages
+  await _handleEndReached();
+} else {
+  // Give some delay for the library to calculate correct indices
+  Future.delayed(const Duration(milliseconds: 20), () {
+    _chatKey.currentState?.scrollToUnreadHeader();
+  });
+}
+```
