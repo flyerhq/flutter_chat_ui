@@ -4,7 +4,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_ui/src/models/date_header.dart';
 import 'package:flutter_chat_ui/src/models/message_spacer.dart';
 import 'package:flutter_chat_ui/src/models/preview_image.dart';
-import 'package:flutter_chat_ui/src/models/unseen_banner.dart';
+import 'package:flutter_chat_ui/src/models/unread_header_data.dart';
 import 'package:flutter_chat_ui/src/util.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -136,8 +136,8 @@ void main() {
       );
     });
 
-    group('Unseen message banner', () {
-      test('correctly adds unread messages banner if last seen specified', () {
+    group('Unread header', () {
+      test('correctly adds unread messages header if last seen specified', () {
         const user = types.User(id: '1');
         const message = types.TextMessage(
           author: user,
@@ -157,8 +157,8 @@ void main() {
             user,
             dateHeaderThreshold: 1000,
             groupMessagesThreshold: 1000,
+            lastReadMessageId: message.id,
             showUserNames: true,
-            lastSeenMessageID: message.id,
           ),
           [
             [
@@ -169,7 +169,7 @@ void main() {
                 'showName': false,
                 'showStatus': true,
               },
-              const UnseenBanner(),
+              const UnreadHeaderData(),
               const MessageSpacer(height: 12.0, id: '1'),
               {
                 'message': message,
@@ -183,7 +183,7 @@ void main() {
         );
       });
 
-      test('does not add unread messages banner if last message', () {
+      test('does not add unread messages header if last message', () {
         const user = types.User(id: '1');
         const message = types.TextMessage(
           author: user,
@@ -203,8 +203,8 @@ void main() {
             user,
             dateHeaderThreshold: 1000,
             groupMessagesThreshold: 1000,
+            lastReadMessageId: imageMessage.id,
             showUserNames: true,
-            lastSeenMessageID: imageMessage.id,
           ),
           [
             [
@@ -229,7 +229,7 @@ void main() {
       });
 
       test(
-        'does not group messages closer together if unseen messages banner in between',
+        'does not group messages closer together if unread header is in between',
         () {
           const user = types.User(id: '1');
           const message = types.TextMessage(
@@ -252,8 +252,8 @@ void main() {
               user,
               dateHeaderThreshold: 1000,
               groupMessagesThreshold: 1000,
+              lastReadMessageId: message.id,
               showUserNames: true,
-              lastSeenMessageID: message.id,
             ),
             [
               [
@@ -264,7 +264,7 @@ void main() {
                   'showName': false,
                   'showStatus': true,
                 },
-                const UnseenBanner(),
+                const UnreadHeaderData(),
                 const MessageSpacer(height: 12.0, id: '1'),
                 {
                   'message': message,

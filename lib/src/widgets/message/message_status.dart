@@ -3,12 +3,15 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../state/inherited_chat_theme.dart';
 
+/// A class that represents a message status.
 class MessageStatus extends StatelessWidget {
+  /// Creates a message status widget.
   const MessageStatus({
     super.key,
     required this.status,
   });
 
+  /// Status of the message.
   final types.Status? status;
 
   @override

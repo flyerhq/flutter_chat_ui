@@ -42,7 +42,6 @@ class Message extends StatelessWidget {
     this.onMessageTap,
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
-    required this.previewTapOptions,
     required this.roundBorder,
     required this.showAvatar,
     required this.showName,
@@ -134,9 +133,6 @@ class Message extends StatelessWidget {
   /// See [TextMessage.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
-
-  /// See [TextMessage.previewTapOptions].
-  final PreviewTapOptions previewTapOptions;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
@@ -357,7 +353,6 @@ class Message extends StatelessWidget {
                 nameBuilder: nameBuilder,
                 onPreviewDataFetched: onPreviewDataFetched,
                 options: textMessageOptions,
-                previewTapOptions: previewTapOptions,
                 showName: showName,
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,

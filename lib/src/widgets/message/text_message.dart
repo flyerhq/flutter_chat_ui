@@ -24,7 +24,6 @@ class TextMessage extends StatelessWidget {
     this.nameBuilder,
     this.onPreviewDataFetched,
     this.options = const TextMessageOptions(),
-    required this.previewTapOptions,
     required this.showName,
     required this.usePreviewData,
     this.userAgent,
@@ -52,9 +51,6 @@ class TextMessage extends StatelessWidget {
 
   /// Customisation options for the [TextMessage].
   final TextMessageOptions options;
-
-  /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap].
-  final PreviewTapOptions previewTapOptions;
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
@@ -116,8 +112,8 @@ class TextMessage extends StatelessWidget {
       metadataTitleStyle: linkTitleTextStyle,
       onLinkPressed: options.onLinkPressed,
       onPreviewDataFetched: _onPreviewDataFetched,
-      openOnPreviewImageTap: previewTapOptions.openOnImageTap,
-      openOnPreviewTitleTap: previewTapOptions.openOnTitleTap,
+      openOnPreviewImageTap: options.openOnPreviewImageTap,
+      openOnPreviewTitleTap: options.openOnPreviewTitleTap,
       padding: EdgeInsets.symmetric(
         horizontal:
             InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
@@ -275,25 +271,16 @@ class TextMessage extends StatelessWidget {
 class TextMessageOptions {
   const TextMessageOptions({
     this.onLinkPressed,
+    this.openOnPreviewImageTap = false,
+    this.openOnPreviewTitleTap = false,
   });
 
   /// Custom link press handler.
   final void Function(String)? onLinkPressed;
-}
 
-/// Options that allow to open link preview when tapped on image or a title
-/// of a preview. By default link preview opens only when tapped on a link itself.
-@immutable
-class PreviewTapOptions {
-  /// Creates preview tap options config.
-  const PreviewTapOptions({
-    this.openOnImageTap = false,
-    this.openOnTitleTap = false,
-  });
+  /// See [LinkPreview.openOnPreviewImageTap].
+  final bool openOnPreviewImageTap;
 
-  /// Open link preview when tapped on preview's image.
-  final bool openOnImageTap;
-
-  /// Open link preview when tapped on preview's title and description.
-  final bool openOnTitleTap;
+  /// See [LinkPreview.openOnPreviewTitleTap].
+  final bool openOnPreviewTitleTap;
 }

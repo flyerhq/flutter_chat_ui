@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/message/system_message.dart';
-import 'widgets/unseen_message_banner.dart';
+import 'widgets/unread_header.dart';
 
 // For internal usage only. Use values from theme itself.
 
@@ -100,7 +100,7 @@ abstract class ChatTheme {
     required this.sentMessageLinkTitleTextStyle,
     required this.statusIconPadding,
     required this.systemMessageTheme,
-    required this.unseenMessagesBannerTheme,
+    required this.unreadHeaderTheme,
     required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
@@ -265,8 +265,8 @@ abstract class ChatTheme {
   /// is provided.
   final SystemMessageTheme systemMessageTheme;
 
-  /// Theme for the unseen messages banner.
-  final UnseenMessagesBannerTheme unseenMessagesBannerTheme;
+  /// Theme for the unread header.
+  final UnreadHeaderTheme unreadHeaderTheme;
 
   /// Color used as a background for user avatar if an image is provided.
   /// Visible if the image has some transparent parts.
@@ -416,7 +416,7 @@ class DefaultChatTheme extends ChatTheme {
         height: 1.333,
       ),
     ),
-    super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
+    super.unreadHeaderTheme = const UnreadHeaderTheme(
       color: secondary,
       textStyle: TextStyle(
         color: neutral2,
@@ -572,7 +572,7 @@ class DarkChatTheme extends ChatTheme {
         height: 1.333,
       ),
     ),
-    super.unseenMessagesBannerTheme = const UnseenMessagesBannerTheme(
+    super.unreadHeaderTheme = const UnreadHeaderTheme(
       color: secondaryDark,
       textStyle: TextStyle(
         color: neutral7WithOpacity,

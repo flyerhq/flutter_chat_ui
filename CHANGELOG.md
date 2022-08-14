@@ -1,3 +1,7 @@
+## 1.6.5
+
+- **BREAKING CHANGE**: `PreviewTapOptions` -> `TextMessageOptions`
+
 ## 1.6.4
 
 - **BREAKING CHANGE**: Add `InputOptions`. `onTextChanged`, `onTextFieldTap` and `sendButtonVisibilityMode` are now under `InputOptions` class, just move the same values to `inputOptions: InputOptions()`.
