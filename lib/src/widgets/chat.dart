@@ -500,21 +500,17 @@ class ChatState extends State<Chat> {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
 
+      final Widget messageWidget;
       if (message is types.SystemMessage) {
-        return widget.systemMessageBuilder?.call(message) ??
+        messageWidget = widget.systemMessageBuilder?.call(message) ??
             SystemMessage(message: message.text);
-      }
+      } else {
+        final messageWidth =
+            widget.showUserAvatars && message.author.id != widget.user.id
+                ? min(constraints.maxWidth * 0.72, 440).floor()
+                : min(constraints.maxWidth * 0.78, 440).floor();
 
-      final messageWidth =
-          widget.showUserAvatars && message.author.id != widget.user.id
-              ? min(constraints.maxWidth * 0.72, 440).floor()
-              : min(constraints.maxWidth * 0.78, 440).floor();
-
-      return AutoScrollTag(
-        controller: _scrollController,
-        index: index ?? -1,
-        key: Key('scroll-${message.id}'),
-        child: Message(
+        messageWidget = Message(
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
           bubbleRtlAlignment: widget.bubbleRtlAlignment,
@@ -552,7 +548,14 @@ class ChatState extends State<Chat> {
           textMessageOptions: widget.textMessageOptions,
           usePreviewData: widget.usePreviewData,
           userAgent: widget.userAgent,
-        ),
+        );
+      }
+
+      return AutoScrollTag(
+        controller: _scrollController,
+        index: index ?? -1,
+        key: Key('scroll-${message.id}'),
+        child: messageWidget,
       );
     }
   }
