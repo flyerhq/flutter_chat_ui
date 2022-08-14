@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-import 'inherited_chat_theme.dart';
-import 'inherited_user.dart';
 import 'patched_sliver_animated_list.dart';
+import 'state/inherited_chat_theme.dart';
+import 'state/inherited_user.dart';
 
 /// Animated list that handles automatic animations and pagination.
 class ChatList extends StatefulWidget {
