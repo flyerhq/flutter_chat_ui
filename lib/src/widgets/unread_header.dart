@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart'
     show scrollAnimationDuration;
 
-import 'inherited_chat_theme.dart';
-import 'inherited_l10n.dart';
+import 'state/inherited_chat_theme.dart';
+import 'state/inherited_l10n.dart';
 
 class UnreadHeader extends StatelessWidget {
   const UnreadHeader({super.key, this.marginTop});

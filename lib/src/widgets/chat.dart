@@ -13,17 +13,16 @@ import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
-import '../models/preview_tap_options.dart';
 import '../models/unread_header_data.dart';
 import '../util.dart';
 import 'chat_list.dart';
 import 'image_gallery.dart';
-import 'inherited_chat_theme.dart';
-import 'inherited_l10n.dart';
-import 'inherited_user.dart';
-import 'input.dart';
-import 'message.dart';
-import 'text_message.dart';
+import 'input/input.dart';
+import 'message/message.dart';
+import 'message/text_message.dart';
+import 'state/inherited_chat_theme.dart';
+import 'state/inherited_l10n.dart';
+import 'state/inherited_user.dart';
 import 'typing_indicator.dart';
 import 'unread_header.dart';
 
@@ -77,7 +76,6 @@ class Chat extends StatefulWidget {
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.onSendPressed,
-    this.previewTapOptions = const PreviewTapOptions(),
     this.scrollController,
     this.scrollPhysics,
     this.scrollToUnreadOptions = const ScrollToUnreadOptions(),
@@ -247,9 +245,6 @@ class Chat extends StatefulWidget {
 
   /// See [Input.onSendPressed].
   final void Function(types.PartialText) onSendPressed;
-
-  /// See [Message.previewTapOptions].
-  final PreviewTapOptions previewTapOptions;
 
   /// See [ChatList.scrollController].
   /// If provided, you cannot use the scroll to message functionality.
@@ -553,7 +548,6 @@ class ChatState extends State<Chat> {
           },
           onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
           onPreviewDataFetched: _onPreviewDataFetched,
-          previewTapOptions: widget.previewTapOptions,
           roundBorder: map['nextMessageInGroup'] == true,
           showAvatar: map['nextMessageInGroup'] == false,
           showName: map['showName'] == true,
