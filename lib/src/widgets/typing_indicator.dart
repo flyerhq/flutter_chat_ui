@@ -9,12 +9,17 @@ class TypingIndicator extends StatefulWidget {
     super.key,
     required this.bubbleAlignment,
     this.options = const TypingIndicatorOptions(),
+    required this.showIndicator,
   });
-
-  final TypingIndicatorOptions options;
 
   /// See [Message.bubbleRtlAlignment].
   final BubbleRtlAlignment bubbleAlignment;
+
+  /// See [TypingIndicatorOptions].
+  final TypingIndicatorOptions options;
+
+  /// Used to hide indicator when the [options.typingUsers] is empty.
+  final bool showIndicator;
 
   @override
   State<TypingIndicator> createState() => _TypingIndicatorState();
@@ -36,12 +41,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
     _appearanceController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
-    )..addListener(() {
-        // Safe check.
-        if (mounted) {
-          setState(() {});
-        }
-      });
+    );
 
     _indicatorSpaceAnimation = CurvedAnimation(
       parent: _appearanceController,
@@ -57,13 +57,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
       lowerBound: 0.0,
       upperBound: 1.0,
       duration: widget.options.animationSpeed,
-    )
-      ..repeat()
-      ..addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
+    )..repeat();
 
     _firstCircleOffsetAnimation = _circleOffset(
       Offset.zero,
@@ -81,15 +75,22 @@ class _TypingIndicatorState extends State<TypingIndicator>
       const Interval(0.45, 1.0, curve: Curves.linear),
     );
 
-    if (mounted) {
+    if (widget.showIndicator) {
       _appearanceController.forward();
     }
   }
 
   @override
-  void deactivate() {
-    _appearanceController.reverse();
-    super.deactivate();
+  void didUpdateWidget(TypingIndicator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.showIndicator != oldWidget.showIndicator) {
+      if (widget.showIndicator) {
+        _appearanceController.forward();
+      } else {
+        _appearanceController.reverse();
+      }
+    }
   }
 
   @override
@@ -112,21 +113,19 @@ class _TypingIndicatorState extends State<TypingIndicator>
               : MainAxisAlignment.end,
           children: <Widget>[
             widget.bubbleAlignment == BubbleRtlAlignment.left
-                ? Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 12),
-                      child: TypingWidget(
-                        widget: widget,
-                        context: context,
-                        mode: widget.options.typingMode,
-                      ),
+                ? Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    child: TypingWidget(
+                      widget: widget,
+                      context: context,
+                      mode: widget.options.typingMode,
                     ),
                   )
                 : const SizedBox(),
             Container(
               margin: widget.bubbleAlignment == BubbleRtlAlignment.right
                   ? const EdgeInsets.fromLTRB(24, 24, 0, 24)
-                  : const EdgeInsets.fromLTRB(24, 24, 0, 24),
+                  : const EdgeInsets.fromLTRB(0, 24, 24, 24),
               decoration: BoxDecoration(
                 borderRadius: InheritedChatTheme.of(context)
                     .theme
@@ -165,14 +164,12 @@ class _TypingIndicatorState extends State<TypingIndicator>
               ),
             ),
             widget.bubbleAlignment == BubbleRtlAlignment.right
-                ? Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 12),
-                      child: TypingWidget(
-                        widget: widget,
-                        context: context,
-                        mode: widget.options.typingMode,
-                      ),
+                ? Container(
+                    margin: const EdgeInsets.only(left: 12),
+                    child: TypingWidget(
+                      widget: widget,
+                      context: context,
+                      mode: widget.options.typingMode,
                     ),
                   )
                 : const SizedBox(),
@@ -231,7 +228,6 @@ class TypingWidget extends StatelessWidget {
     );
     if (mode == TypingIndicatorMode.text) {
       return SizedBox(
-        width: sWidth,
         child: Text(
           _multiUserTextBuilder(widget.options.typingUsers),
           style: InheritedChatTheme.of(context)

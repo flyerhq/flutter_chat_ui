@@ -143,24 +143,25 @@ class _ChatListState extends State<ChatList>
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
-            if (widget.typingIndicatorOptions!.typingUsers.isNotEmpty)
-              widget.typingIndicatorOptions!.customTypingIndicator != null
-                  ? SliverPadding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      sliver: SliverToBoxAdapter(
-                        child: widget
-                            .typingIndicatorOptions!.customTypingIndicator,
-                      ),
-                    )
-                  : SliverPadding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      sliver: SliverToBoxAdapter(
-                        child: TypingIndicator(
-                          bubbleAlignment: widget.bubbleRtlAlignment,
-                          options: widget.typingIndicatorOptions!,
-                        ),
+            widget.typingIndicatorOptions!.customTypingIndicator != null
+                ? SliverPadding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    sliver: SliverToBoxAdapter(
+                      child:
+                          widget.typingIndicatorOptions!.customTypingIndicator,
+                    ),
+                  )
+                : SliverPadding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    sliver: SliverToBoxAdapter(
+                      child: TypingIndicator(
+                        bubbleAlignment: widget.bubbleRtlAlignment,
+                        options: widget.typingIndicatorOptions!,
+                        showIndicator: widget
+                            .typingIndicatorOptions!.typingUsers.isNotEmpty,
                       ),
                     ),
+                  ),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: PatchedSliverAnimatedList(

@@ -25,7 +25,6 @@ import 'input.dart';
 import 'message.dart';
 import 'text_message.dart';
 import 'typing_indicator.dart';
-import 'unseen_message_banner.dart';
 import 'unread_header.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
@@ -429,15 +428,6 @@ class ChatState extends State<Chat> {
                                 ),
                               ),
                       ),
-<<<<<<< HEAD
-=======
-                      if (widget.typingIndicatorOptions.typingUsers.isNotEmpty)
-                        widget.customTypingIndicator ??
-                            TypingIndicator(
-                              options: widget.typingIndicatorOptions,
-                              bubbleAlignment: widget.bubbleRtlAlignment!,
-                            ),
->>>>>>> a17ee1d0cd85921af8eb987ca42e418b288ed3f6
                       widget.customBottomWidget ??
                           Input(
                             isAttachmentUploading: widget.isAttachmentUploading,
