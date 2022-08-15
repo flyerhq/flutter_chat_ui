@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pattern_style.dart';
+import '../../models/pattern_style.dart';
 
 /// Controller for the [TextField] on [Input] widget
 /// To highlighting the matches for pattern

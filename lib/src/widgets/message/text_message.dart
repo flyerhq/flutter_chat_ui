@@ -5,12 +5,11 @@ import 'package:flutter_link_previewer/flutter_link_previewer.dart'
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../models/emoji_enlargement_behavior.dart';
-import '../models/preview_tap_options.dart';
-import '../util.dart';
-import 'inherited_chat_theme.dart';
-import 'inherited_user.dart';
-import 'pattern_style.dart';
+import '../../models/emoji_enlargement_behavior.dart';
+import '../../models/pattern_style.dart';
+import '../../util.dart';
+import '../state/inherited_chat_theme.dart';
+import '../state/inherited_user.dart';
 import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview.
@@ -25,7 +24,6 @@ class TextMessage extends StatelessWidget {
     this.nameBuilder,
     this.onPreviewDataFetched,
     this.options = const TextMessageOptions(),
-    required this.previewTapOptions,
     required this.showName,
     required this.usePreviewData,
     this.userAgent,
@@ -53,9 +51,6 @@ class TextMessage extends StatelessWidget {
 
   /// Customisation options for the [TextMessage].
   final TextMessageOptions options;
-
-  /// See [LinkPreview.openOnPreviewImageTap] and [LinkPreview.openOnPreviewTitleTap].
-  final PreviewTapOptions previewTapOptions;
 
   /// Show user name for the received message. Useful for a group chat.
   final bool showName;
@@ -117,8 +112,8 @@ class TextMessage extends StatelessWidget {
       metadataTitleStyle: linkTitleTextStyle,
       onLinkPressed: options.onLinkPressed,
       onPreviewDataFetched: _onPreviewDataFetched,
-      openOnPreviewImageTap: previewTapOptions.openOnImageTap,
-      openOnPreviewTitleTap: previewTapOptions.openOnTitleTap,
+      openOnPreviewImageTap: options.openOnPreviewImageTap,
+      openOnPreviewTitleTap: options.openOnPreviewTitleTap,
       padding: EdgeInsets.symmetric(
         horizontal:
             InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
@@ -276,8 +271,16 @@ class TextMessage extends StatelessWidget {
 class TextMessageOptions {
   const TextMessageOptions({
     this.onLinkPressed,
+    this.openOnPreviewImageTap = false,
+    this.openOnPreviewTitleTap = false,
   });
 
   /// Custom link press handler.
   final void Function(String)? onLinkPressed;
+
+  /// See [LinkPreview.openOnPreviewImageTap].
+  final bool openOnPreviewImageTap;
+
+  /// See [LinkPreview.openOnPreviewTitleTap].
+  final bool openOnPreviewTitleTap;
 }
