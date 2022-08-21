@@ -77,7 +77,7 @@ class _ChatListState extends State<ChatList>
     curve: Curves.easeOutQuad,
     parent: _controller,
   );
-
+  bool _indicatorOnScrollStatus = false;
   late final AnimationController _controller = AnimationController(vsync: this);
 
   bool _isNextPageLoading = false;
@@ -109,6 +109,16 @@ class _ChatListState extends State<ChatList>
   Widget build(BuildContext context) =>
       NotificationListener<ScrollNotification>(
         onNotification: (notification) {
+          if (notification.metrics.pixels > 10.0 && !_indicatorOnScrollStatus) {
+            setState(() {
+              _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
+            });
+          } else if (notification.metrics.pixels == 0.0 &&
+              _indicatorOnScrollStatus) {
+            setState(() {
+              _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
+            });
+          }
           if (widget.onEndReached == null || widget.isLastPage == true) {
             return false;
           }
@@ -143,25 +153,19 @@ class _ChatListState extends State<ChatList>
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
-            widget.typingIndicatorOptions!.customTypingIndicator != null
-                ? SliverPadding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    sliver: SliverToBoxAdapter(
-                      child:
-                          widget.typingIndicatorOptions!.customTypingIndicator,
+            SliverPadding(
+              padding: const EdgeInsets.only(bottom: 4),
+              sliver: SliverToBoxAdapter(
+                child: widget.typingIndicatorOptions?.customTypingIndicator ??
+                    TypingIndicator(
+                      bubbleAlignment: widget.bubbleRtlAlignment,
+                      options: widget.typingIndicatorOptions!,
+                      showIndicator: (widget
+                              .typingIndicatorOptions!.typingUsers.isNotEmpty &&
+                          !_indicatorOnScrollStatus),
                     ),
-                  )
-                : SliverPadding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    sliver: SliverToBoxAdapter(
-                      child: TypingIndicator(
-                        bubbleAlignment: widget.bubbleRtlAlignment,
-                        options: widget.typingIndicatorOptions!,
-                        showIndicator: widget
-                            .typingIndicatorOptions!.typingUsers.isNotEmpty,
-                      ),
-                    ),
-                  ),
+              ),
+            ),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: PatchedSliverAnimatedList(
