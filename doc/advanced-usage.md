@@ -15,6 +15,14 @@ import 'package:image_picker/image_picker.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onAttachmentPressed: _handleImageSelection,
+      ),
+    );
+
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
@@ -39,16 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
       _addMessage(message);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onAttachmentPressed: _handleImageSelection,
-      ),
-    );
   }
 }
 ```
@@ -75,6 +73,14 @@ import 'package:file_picker/file_picker.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onAttachmentPressed: _handleFileSelection,
+      ),
+    );
+
   void _handleFileSelection() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.any,
@@ -93,16 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _addMessage(message);
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onAttachmentPressed: _handleFileSelection,
-      ),
-    );
-  }
 }
 ```
 
@@ -118,20 +114,88 @@ import 'package:open_file/open_file.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
-  void _handleMessageTap(BuildContext context, types.Message message) async {
-    if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
-    }
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: Chat(
         // ...
         onMessageTap: _handleMessageTap,
       ),
     );
+
+  void _handleMessageTap(BuildContext _, types.Message message) async {
+    if (message is types.FileMessage) {
+      await OpenFile.open(message.uri);
+    }
+  }
+}
+```
+
+### Opening a file from a remote URL
+
+In the previous example, only local files on the device can be opened. If we want to support opening a file from the remote URL, we need to download it first. To do that, we'd need [http](https://pub.dev/packages/http) and [path_provider](https://pub.dev/packages/path_provider). Please keep in mind, that this is just an example, and there are other, maybe better ways to download files, like [dio](https://pub.dev/packages/dio). Let's modify our `_handleMessageTap` function:
+
+```dart
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+
+class _MyHomePageState extends State<MyHomePage> {
+  // ...
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onMessageTap: _handleMessageTap,
+      ),
+    );
+
+  void _handleMessageTap(BuildContext _, types.Message message) async {
+    if (message is types.FileMessage) {
+      var localPath = message.uri;
+
+      if (message.uri.startsWith('http')) {
+        try {
+          // Update tapped file message to show loading spinner
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+
+          final client = http.Client();
+          final request = await client.get(Uri.parse(message.uri));
+          final bytes = request.bodyBytes;
+          final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          localPath = '$documentsDir/${message.name}';
+
+          if (!File(localPath).existsSync()) {
+            final file = File(localPath);
+            await file.writeAsBytes(bytes);
+          }
+        } finally {
+          // In case of error or success, reset loading spinner
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+        }
+      }
+
+      await OpenFile.open(localPath);
+    }
   }
 }
 ```
@@ -143,28 +207,26 @@ Link preview works automatically, we created a separate package for that, you ca
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
   // ...
-  void _handlePreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = _messages[index].copyWith(previewData: previewData);
-
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: Chat(
         // ...
         onPreviewDataFetched: _handlePreviewDataFetched,
       ),
     );
+
+  void _handlePreviewDataFetched(
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
+    final index = _messages.indexWhere((element) => element.id == message.id);
+    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+      previewData: previewData,
+    );
+
+    setState(() {
+      _messages[index] = updatedMessage;
+    });
   }
 }
 ```
@@ -175,18 +237,22 @@ Now to choose between images and files from a single button we will use `showMod
 
 ```dart
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
-// For the testing purposes, you should probably use https://pub.dev/packages/uuid
+// For the testing purposes, you should probably use https://pub.dev/packages/uuid.
 String randomString() {
-  var random = Random.secure();
-  var values = List<int>.generate(16, (i) => random.nextInt(255));
+  final random = Random.secure();
+  final values = List<int>.generate(16, (i) => random.nextInt(255));
   return base64UrlEncode(values);
 }
 
@@ -195,26 +261,36 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
-    );
-  }
+  Widget build(BuildContext context) => const MaterialApp(
+        home: MyHomePage(),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  final List<types.Message> _messages = [];
+  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: Chat(
+          messages: _messages,
+          onAttachmentPressed: _handleAttachmentPressed,
+          onMessageTap: _handleMessageTap,
+          onPreviewDataFetched: _handlePreviewDataFetched,
+          onSendPressed: _handleSendPressed,
+          user: _user,
+        ),
+      );
 
   void _addMessage(types.Message message) {
     setState(() {
@@ -222,48 +298,46 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _handleAtachmentPressed() {
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: SizedBox(
-            height: 144,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _handleImageSelection();
-                  },
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Photo'),
-                  ),
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: 144,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleImageSelection();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Photo'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _handleFileSelection();
-                  },
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('File'),
-                  ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleFileSelection();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('File'),
                 ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Cancel'),
-                  ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Cancel'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -312,9 +386,48 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _handleMessageTap(BuildContext context, types.Message message) async {
+  void _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
+      var localPath = message.uri;
+
+      if (message.uri.startsWith('http')) {
+        try {
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+
+          final client = http.Client();
+          final request = await client.get(Uri.parse(message.uri));
+          final bytes = request.bodyBytes;
+          final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          localPath = '$documentsDir/${message.name}';
+
+          if (!File(localPath).existsSync()) {
+            final file = File(localPath);
+            await file.writeAsBytes(bytes);
+          }
+        } finally {
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+        }
+      }
+
+      await OpenFile.open(localPath);
     }
   }
 
@@ -323,12 +436,12 @@ class _MyHomePageState extends State<MyHomePage> {
     types.PreviewData previewData,
   ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = _messages[index].copyWith(previewData: previewData);
+    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+      previewData: previewData,
+    );
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
+    setState(() {
+      _messages[index] = updatedMessage;
     });
   }
 
@@ -342,20 +455,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _addMessage(textMessage);
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
-        onMessageTap: _handleMessageTap,
-        onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
-        user: _user,
-      ),
-    );
-  }
 }
 ```
 
@@ -366,37 +465,34 @@ Let's use the [bubble](https://pub.dev/packages/bubble) package as an example (v
 ```dart
 import 'package:bubble/bubble.dart';
 
-Widget _bubbleBuilder(
-  Widget child, {
-  required message,
-  required nextMessageInGroup,
-}) {
-  return Bubble(
-    child: child,
-    color: _user.id != message.author.id ||
-            message.type == types.MessageType.image
-        ? const Color(0xfff5f5f7)
-        : const Color(0xff6f61e8),
-    margin: nextMessageInGroup
-        ? const BubbleEdges.symmetric(horizontal: 6)
-        : null,
-    nip: nextMessageInGroup
-        ? BubbleNip.no
-        : _user.id != message.author.id
-            ? BubbleNip.leftBottom
-            : BubbleNip.rightBottom,
-  );
-}
-
 @override
-Widget build(BuildContext context) {
-  return Scaffold(
+Widget build(BuildContext context) => Scaffold(
     body: Chat(
       // ...
       bubbleBuilder: _bubbleBuilder,
     ),
   );
-}
+
+Widget _bubbleBuilder(
+  Widget child, {
+  required message,
+  required nextMessageInGroup,
+}) =>
+    Bubble(
+      child: child,
+      color: _user.id != message.author.id ||
+              message.type == types.MessageType.image
+          ? const Color(0xfff5f5f7)
+          : const Color(0xff6f61e8),
+      margin: nextMessageInGroup
+          ? const BubbleEdges.symmetric(horizontal: 6)
+          : null,
+      nip: nextMessageInGroup
+          ? BubbleNip.no
+          : _user.id != message.author.id
+              ? BubbleNip.leftBottom
+              : BubbleNip.rightBottom,
+    );
 ```
 
 This is how it would look like
@@ -424,6 +520,14 @@ class _MyHomePageState extends State<MyHomePage> {
     _handleEndReached();
   }
 
+  @override
+  Widget build(BuildContext context) => Scaffold(
+      body: Chat(
+        // ...
+        onEndReached: _handleEndReached,
+      ),
+    );
+
   Future<void> _handleEndReached() async {
     final uri = Uri.parse(
       'https://api.instantwebtools.net/v1/passenger?page=$_page&size=20',
@@ -445,19 +549,53 @@ class _MyHomePageState extends State<MyHomePage> {
       _page = _page + 1;
     });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        // ...
-        onEndReached: _handleEndReached,
-      ),
-    );
-  }
 }
 ```
 
 ## User avatars & names
 
 To show user avatars & names use `showUserAvatars` and `showUserNames` parameters. Can be used separately. By default, the chat will select one of 10 provided colors as an avatar background and name text color. Color is calculated based on the user's `id` hash code, so it is unique in different rooms. To modify provided colors use `userAvatarNameColors` parameter in [theme](themes). If you want to have one color for everyone, just pass this color as a single item in the `userAvatarNameColors` list.
+
+## Scroll to the first unread
+
+### Without pagination
+
+Just pass this parameter to the `Chat` widget. You need to pass last read message ID (banner will be shown automatically, after the message with the same ID).
+
+```dart
+scrollToUnreadOptions: const ScrollToUnreadOptions(
+  lastReadMessageId: 'lastReadMessageId',
+  scrollOnOpen: true,
+)
+```
+
+### With pagination
+
+You will need to use `GlobalKey` to do this. First, create a `GlobalKey` for the `ChatState`
+
+```dart
+final GlobalKey<ChatState> _chatKey = GlobalKey();
+```
+
+and pass it to the `Chat` widget.
+
+```dart
+Chat(
+  key: _chatKey,
+  // ...
+)
+```
+
+Now, you still need to pass `scrollToUnreadOptions` with the `lastReadMessageId`, but keep the `scrollOnOpen` parameter as a default `false`. In your pagination code (in the example I have in [pagination section](#pagination) that would be end of the `_handleEndReached` function) you need to keep fetching pages until you find a page that contains `lastReadMessageId`, then using the `_chatKey` you will be able to scroll to the first unread message.
+
+```dart
+if (_messages.where((e) => e.id == 'lastReadMessageId').isEmpty) {
+  // Recursively call to fetch more pages
+  await _handleEndReached();
+} else {
+  // Give some delay for the library to calculate correct indices
+  Future.delayed(const Duration(milliseconds: 20), () {
+    _chatKey.currentState?.scrollToUnreadHeader();
+  });
+}
+```

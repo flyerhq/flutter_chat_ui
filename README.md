@@ -15,6 +15,12 @@
 <br>
 
 <p align="center">
+  🇺🇦🇺🇦 We are Ukrainians. If you enjoy our work, please <a href="https://u24.gov.ua">consider donating</a> to help save our country. 🇺🇦🇺🇦
+</p>
+
+<br>
+
+<p align="center">
   <a href="https://pub.dartlang.org/packages/flutter_chat_ui">
     <img alt="Pub" src="https://img.shields.io/pub/v/flutter_chat_ui" />
   </a>
@@ -30,7 +36,7 @@
 
 <p align="center">
   <a href="https://flyer.chat">
-    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/121787953-a6121500-cbc9-11eb-83ff-db0435d2cd57.png" />
+    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/174447563-c7f9d268-711a-4cd8-a582-7645d359b0c8.jpg" />
   </a>
 </p>
 
@@ -50,7 +56,7 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 ### Requirements
 
-`Dart >=2.16.0` and `Flutter >=2.0.0`
+`Dart >=2.17.0` and `Flutter >=2.0.0`
 
 Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
 
