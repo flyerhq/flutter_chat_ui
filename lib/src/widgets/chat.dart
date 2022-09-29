@@ -242,7 +242,7 @@ class Chat extends StatefulWidget {
 
   /// See [ChatList.scrollController].
   /// If provided, you cannot use the scroll to message functionality.
-  final AutoScrollController? scrollController;
+  final ScrollController scrollController;
 
   /// See [ChatList.scrollPhysics].
   final ScrollPhysics? scrollPhysics;
