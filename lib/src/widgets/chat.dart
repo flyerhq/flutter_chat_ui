@@ -261,7 +261,6 @@ class Chat extends StatefulWidget {
   final Widget Function(
     types.TextMessage, {
     required int messageWidth,
-    required bool showName,
   })? textMessageBuilder;
 
   /// See [Message.textMessageOptions].

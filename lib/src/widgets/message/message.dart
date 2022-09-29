@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../../flutter_chat_ui.dart';
 import '../../models/bubble_rtl_alignment.dart';
 import '../../models/emoji_enlargement_behavior.dart';
 import '../../util.dart';
@@ -153,7 +154,6 @@ class Message extends StatelessWidget {
   final Widget Function(
     types.TextMessage, {
     required int messageWidth,
-    required bool showName,
   })? textMessageBuilder;
 
   /// See [TextMessage.options].
@@ -233,8 +233,12 @@ class Message extends StatelessWidget {
               maxWidth: messageWidth.toDouble(),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: !currentUserIsAuthor
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.end,
               children: [
+                  if(showName) nameBuilder?.call(message.author.id) ??
+                    UserName(author: message.author),
                 GestureDetector(
                   onDoubleTap: () => onMessageDoubleTap?.call(context, message),
                   onLongPress: () => onMessageLongPress?.call(context, message),
@@ -343,7 +347,6 @@ class Message extends StatelessWidget {
             ? textMessageBuilder!(
                 textMessage,
                 messageWidth: messageWidth,
-                showName: showName,
               )
             : TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
@@ -353,7 +356,6 @@ class Message extends StatelessWidget {
                 nameBuilder: nameBuilder,
                 onPreviewDataFetched: onPreviewDataFetched,
                 options: textMessageOptions,
-                showName: showName,
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,
               );
