@@ -184,7 +184,9 @@ class TextMessageText extends StatelessWidget {
     this.boldTextStyle,
     this.codeTextStyle,
     required this.bodyTextStyle,
-    required this.options,
+    this.maxLines,
+    this.options = const TextMessageOptions(),
+    this.overflow = TextOverflow.clip,
     required this.text,
   });
 
@@ -200,8 +202,14 @@ class TextMessageText extends StatelessWidget {
   /// Regular style to use for any unmatched text. Also used as basis for the fallback options.
   final TextStyle bodyTextStyle;
 
+  /// See [ParsedText.maxLines].
+  final int? maxLines;
+
   /// See [TextMessage.options].
   final TextMessageOptions options;
+
+  /// See [ParsedText.overflow].
+  final TextOverflow overflow;
 
   /// Text that is shown as markdown.
   final String text;
@@ -292,6 +300,8 @@ class TextMessageText extends StatelessWidget {
             },
           ),
         ],
+        maxLines: maxLines,
+        overflow: overflow,
         regexOptions: const RegexOptions(multiLine: true, dotAll: true),
         selectable: options.isTextSelectable,
         style: bodyTextStyle,
