@@ -287,8 +287,8 @@ class Message extends StatelessWidget {
       ? avatarBuilder?.call(message.author.id) ??
           UserAvatar(
             author: message.author,
-            imageHeaders: imageHeaders,
             bubbleRtlAlignment: bubbleRtlAlignment,
+            imageHeaders: imageHeaders,
             onAvatarTap: onAvatarTap,
           )
       : const SizedBox(width: 40);
