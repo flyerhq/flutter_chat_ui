@@ -169,8 +169,11 @@ class Chat extends StatefulWidget {
   final ImageGalleryOptions imageGalleryOptions;
 
   /// See [Message.imageMessageBuilder].
-  final Widget Function(types.ImageMessage, {required int messageWidth})?
-      imageMessageBuilder;
+  final Widget Function(
+    types.ImageMessage, {
+    required int messageWidth,
+    Map<String, String>? headers,
+  })? imageMessageBuilder;
 
   /// See [Input.options].
   final InputOptions inputOptions;
