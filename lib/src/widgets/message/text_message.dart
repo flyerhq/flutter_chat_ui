@@ -19,7 +19,6 @@ class TextMessage extends StatelessWidget {
     super.key,
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
-    required this.isTextMessageTextSelectable,
     required this.message,
     this.nameBuilder,
     this.onPreviewDataFetched,
@@ -34,9 +33,6 @@ class TextMessage extends StatelessWidget {
 
   /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
-
-  /// Whether user can tap and hold to select a text content.
-  final bool isTextMessageTextSelectable;
 
   /// [types.TextMessage].
   final types.TextMessage message;
@@ -162,118 +158,169 @@ class TextMessage extends StatelessWidget {
           nameBuilder?.call(message.author.id) ??
               UserName(author: message.author),
         if (enlargeEmojis)
-          if (isTextMessageTextSelectable)
+          if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)
           else
             Text(message.text, style: emojiTextStyle)
         else
-          ParsedText(
-            parse: [
-              MatchText(
-                onTap: (mail) async {
-                  final url = Uri(scheme: 'mailto', path: mail);
-                  if (await canLaunchUrl(url)) {
-                    await launchUrl(url);
-                  }
-                },
-                pattern: regexEmail,
-                style: bodyLinkTextStyle ??
-                    bodyTextStyle.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-              ),
-              MatchText(
-                onTap: (urlText) async {
-                  final protocolIdentifierRegex = RegExp(
-                    r'^((http|ftp|https):\/\/)',
-                    caseSensitive: false,
-                  );
-                  if (!urlText.startsWith(protocolIdentifierRegex)) {
-                    urlText = 'https://$urlText';
-                  }
-                  if (options.onLinkPressed != null) {
-                    options.onLinkPressed!(urlText);
-                  } else {
-                    final url = Uri.tryParse(urlText);
-                    if (url != null && await canLaunchUrl(url)) {
-                      await launchUrl(
-                        url,
-                        mode: LaunchMode.externalApplication,
-                      );
-                    }
-                  }
-                },
-                pattern: regexLink,
-                style: bodyLinkTextStyle ??
-                    bodyTextStyle.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
-              ),
-              MatchText(
-                pattern: PatternStyle.bold.pattern,
-                style: boldTextStyle ??
-                    bodyTextStyle.merge(PatternStyle.bold.textStyle),
-                renderText: ({required String str, required String pattern}) =>
-                    {
-                  'display': str.replaceAll(
-                    PatternStyle.bold.from,
-                    PatternStyle.bold.replace,
-                  ),
-                },
-              ),
-              MatchText(
-                pattern: PatternStyle.italic.pattern,
-                style: bodyTextStyle.merge(PatternStyle.italic.textStyle),
-                renderText: ({required String str, required String pattern}) =>
-                    {
-                  'display': str.replaceAll(
-                    PatternStyle.italic.from,
-                    PatternStyle.italic.replace,
-                  ),
-                },
-              ),
-              MatchText(
-                pattern: PatternStyle.lineThrough.pattern,
-                style: bodyTextStyle.merge(PatternStyle.lineThrough.textStyle),
-                renderText: ({required String str, required String pattern}) =>
-                    {
-                  'display': str.replaceAll(
-                    PatternStyle.lineThrough.from,
-                    PatternStyle.lineThrough.replace,
-                  ),
-                },
-              ),
-              MatchText(
-                pattern: PatternStyle.code.pattern,
-                style: codeTextStyle ??
-                    bodyTextStyle.merge(PatternStyle.code.textStyle),
-                renderText: ({required String str, required String pattern}) =>
-                    {
-                  'display': str.replaceAll(
-                    PatternStyle.code.from,
-                    PatternStyle.code.replace,
-                  ),
-                },
-              ),
-            ],
-            regexOptions: const RegexOptions(multiLine: true, dotAll: true),
-            selectable: isTextMessageTextSelectable,
-            style: bodyTextStyle,
+          TextMessageText(
+            bodyLinkTextStyle: bodyLinkTextStyle,
+            bodyTextStyle: bodyTextStyle,
+            boldTextStyle: boldTextStyle,
+            codeTextStyle: codeTextStyle,
+            options: options,
             text: message.text,
-            textWidthBasis: TextWidthBasis.longestLine,
           ),
       ],
     );
   }
 }
 
+/// Widget to reuse the markdown capabilities, e.g., for previews.
+class TextMessageText extends StatelessWidget {
+  const TextMessageText({
+    super.key,
+    this.bodyLinkTextStyle,
+    this.boldTextStyle,
+    this.codeTextStyle,
+    required this.bodyTextStyle,
+    this.maxLines,
+    this.options = const TextMessageOptions(),
+    this.overflow = TextOverflow.clip,
+    required this.text,
+  });
+
+  /// Style to apply to anything that matches a link.
+  final TextStyle? bodyLinkTextStyle;
+
+  /// Style to apply to anything that matches bold markdown.
+  final TextStyle? boldTextStyle;
+
+  /// Style to apply to anything that matches code markdown.
+  final TextStyle? codeTextStyle;
+
+  /// Regular style to use for any unmatched text. Also used as basis for the fallback options.
+  final TextStyle bodyTextStyle;
+
+  /// See [ParsedText.maxLines].
+  final int? maxLines;
+
+  /// See [TextMessage.options].
+  final TextMessageOptions options;
+
+  /// See [ParsedText.overflow].
+  final TextOverflow overflow;
+
+  /// Text that is shown as markdown.
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => ParsedText(
+        parse: [
+          MatchText(
+            onTap: (mail) async {
+              final url = Uri(scheme: 'mailto', path: mail);
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url);
+              }
+            },
+            pattern: regexEmail,
+            style: bodyLinkTextStyle ??
+                bodyTextStyle.copyWith(
+                  decoration: TextDecoration.underline,
+                ),
+          ),
+          MatchText(
+            onTap: (urlText) async {
+              final protocolIdentifierRegex = RegExp(
+                r'^((http|ftp|https):\/\/)',
+                caseSensitive: false,
+              );
+              if (!urlText.startsWith(protocolIdentifierRegex)) {
+                urlText = 'https://$urlText';
+              }
+              if (options.onLinkPressed != null) {
+                options.onLinkPressed!(urlText);
+              } else {
+                final url = Uri.tryParse(urlText);
+                if (url != null && await canLaunchUrl(url)) {
+                  await launchUrl(
+                    url,
+                    mode: LaunchMode.externalApplication,
+                  );
+                }
+              }
+            },
+            pattern: regexLink,
+            style: bodyLinkTextStyle ??
+                bodyTextStyle.copyWith(
+                  decoration: TextDecoration.underline,
+                ),
+          ),
+          MatchText(
+            pattern: PatternStyle.bold.pattern,
+            style: boldTextStyle ??
+                bodyTextStyle.merge(PatternStyle.bold.textStyle),
+            renderText: ({required String str, required String pattern}) => {
+              'display': str.replaceAll(
+                PatternStyle.bold.from,
+                PatternStyle.bold.replace,
+              ),
+            },
+          ),
+          MatchText(
+            pattern: PatternStyle.italic.pattern,
+            style: bodyTextStyle.merge(PatternStyle.italic.textStyle),
+            renderText: ({required String str, required String pattern}) => {
+              'display': str.replaceAll(
+                PatternStyle.italic.from,
+                PatternStyle.italic.replace,
+              ),
+            },
+          ),
+          MatchText(
+            pattern: PatternStyle.lineThrough.pattern,
+            style: bodyTextStyle.merge(PatternStyle.lineThrough.textStyle),
+            renderText: ({required String str, required String pattern}) => {
+              'display': str.replaceAll(
+                PatternStyle.lineThrough.from,
+                PatternStyle.lineThrough.replace,
+              ),
+            },
+          ),
+          MatchText(
+            pattern: PatternStyle.code.pattern,
+            style: codeTextStyle ??
+                bodyTextStyle.merge(PatternStyle.code.textStyle),
+            renderText: ({required String str, required String pattern}) => {
+              'display': str.replaceAll(
+                PatternStyle.code.from,
+                PatternStyle.code.replace,
+              ),
+            },
+          ),
+        ],
+        maxLines: maxLines,
+        overflow: overflow,
+        regexOptions: const RegexOptions(multiLine: true, dotAll: true),
+        selectable: options.isTextSelectable,
+        style: bodyTextStyle,
+        text: text,
+        textWidthBasis: TextWidthBasis.longestLine,
+      );
+}
+
 @immutable
 class TextMessageOptions {
   const TextMessageOptions({
+    this.isTextSelectable = true,
     this.onLinkPressed,
     this.openOnPreviewImageTap = false,
     this.openOnPreviewTitleTap = false,
   });
+
+  /// Whether user can tap and hold to select a text content.
+  final bool isTextSelectable;
 
   /// Custom link press handler.
   final void Function(String)? onLinkPressed;

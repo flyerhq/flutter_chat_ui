@@ -56,7 +56,6 @@ class Chat extends StatefulWidget {
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
-    this.isTextMessageTextSelectable = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.l10n = const ChatL10nEn(),
     required this.messages,
@@ -181,9 +180,6 @@ class Chat extends StatefulWidget {
 
   /// See [ChatList.isLastPage].
   final bool? isLastPage;
-
-  /// See [Message.isTextMessageTextSelectable].
-  final bool isTextMessageTextSelectable;
 
   /// See [ChatList.keyboardDismissBehavior].
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
@@ -516,7 +512,6 @@ class ChatState extends State<Chat> {
           fileMessageBuilder: widget.fileMessageBuilder,
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
           imageMessageBuilder: widget.imageMessageBuilder,
-          isTextMessageTextSelectable: widget.isTextMessageTextSelectable,
           message: message,
           messageWidth: messageWidth,
           nameBuilder: widget.nameBuilder,
