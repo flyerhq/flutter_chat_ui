@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../../flutter_chat_ui.dart';
+import '../../models/bubble_rtl_alignment.dart';
+import '../../models/emoji_enlargement_behavior.dart';
+import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
+import 'file_message.dart';
+import 'image_message.dart';
+import 'message_status.dart';
+import 'text_message.dart';
+import 'user_avatar.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
@@ -22,6 +29,7 @@ class Message extends StatelessWidget {
     required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
     required this.hideBackgroundOnEmojiMessages,
+    this.imageHeaders,
     this.imageMessageBuilder,
     required this.message,
     required this.messageWidth,
@@ -84,12 +92,12 @@ class Message extends StatelessWidget {
   /// Hide background for messages containing only emojis.
   final bool hideBackgroundOnEmojiMessages;
 
+  /// See [Chat.imageHeaders].
+  final Map<String, String>? imageHeaders;
+
   /// Build an image message inside predefined bubble.
-  final Widget Function(
-    types.ImageMessage, {
-    required int messageWidth,
-    Map<String, String>? headers,
-  })? imageMessageBuilder;
+  final Widget Function(types.ImageMessage, {required int messageWidth})?
+      imageMessageBuilder;
 
   /// Any message type.
   final types.Message message;
@@ -150,9 +158,6 @@ class Message extends StatelessWidget {
 
   /// See [TextMessage.options].
   final TextMessageOptions textMessageOptions;
-
-  /// Options for ImageMessage.
-  final ImageGalleryOptions imageGalleryOptions;
 
   /// See [TextMessage.usePreviewData].
   final bool usePreviewData;
@@ -282,6 +287,7 @@ class Message extends StatelessWidget {
       ? avatarBuilder?.call(message.author.id) ??
           UserAvatar(
             author: message.author,
+            imageHeaders: imageHeaders,
             bubbleRtlAlignment: bubbleRtlAlignment,
             onAvatarTap: onAvatarTap,
           )
@@ -330,13 +336,12 @@ class Message extends StatelessWidget {
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
-            ? imageMessageBuilder!(imageMessage,
-                messageWidth: messageWidth,
-                headers: imageGalleryOptions.headers)
+            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
             : ImageMessage(
+                imageHeaders: imageHeaders,
                 message: imageMessage,
                 messageWidth: messageWidth,
-                headers: imageGalleryOptions.headers);
+              );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
         return textMessageBuilder != null

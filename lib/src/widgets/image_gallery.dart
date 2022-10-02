@@ -7,11 +7,15 @@ import '../models/preview_image.dart';
 class ImageGallery extends StatelessWidget {
   const ImageGallery({
     super.key,
+    this.imageHeaders,
     required this.images,
     required this.onClosePressed,
     this.options = const ImageGalleryOptions(),
     required this.pageController,
   });
+
+  /// See [Chat.imageHeaders].
+  final Map<String, String>? imageHeaders;
 
   /// Images to show in the gallery.
   final List<PreviewImage> images;
@@ -38,13 +42,18 @@ class ImageGallery extends StatelessWidget {
           child: Stack(
             children: [
               PhotoViewGallery.builder(
-                builder: (BuildContext context, int index) => PhotoViewGalleryPageOptions(
-                  imageProvider: Conditional().getProvider(images[index].uri, headers: options.headers),
+                builder: (BuildContext context, int index) =>
+                    PhotoViewGalleryPageOptions(
+                  imageProvider: Conditional().getProvider(
+                    images[index].uri,
+                    headers: imageHeaders,
+                  ),
                   minScale: options.minScale,
                   maxScale: options.maxScale,
                 ),
                 itemCount: images.length,
-                loadingBuilder: (context, event) => _imageGalleryLoadingBuilder(event),
+                loadingBuilder: (context, event) =>
+                    _imageGalleryLoadingBuilder(event),
                 pageController: pageController,
                 scrollPhysics: const ClampingScrollPhysics(),
               ),
@@ -79,11 +88,7 @@ class ImageGalleryOptions {
   const ImageGalleryOptions({
     this.maxScale,
     this.minScale,
-    this.headers,
   });
-
-  /// Headers used for NetworkImage.
-  final Map<String, String>? headers;
 
   /// See [PhotoViewGalleryPageOptions.maxScale].
   final dynamic maxScale;
