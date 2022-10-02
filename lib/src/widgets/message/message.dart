@@ -29,6 +29,7 @@ class Message extends StatelessWidget {
     required this.emojiEnlargementBehavior,
     this.fileMessageBuilder,
     required this.hideBackgroundOnEmojiMessages,
+    this.imageHeaders,
     this.imageMessageBuilder,
     required this.message,
     required this.messageWidth,
@@ -90,6 +91,9 @@ class Message extends StatelessWidget {
 
   /// Hide background for messages containing only emojis.
   final bool hideBackgroundOnEmojiMessages;
+
+  /// See [Chat.imageHeaders].
+  final Map<String, String>? imageHeaders;
 
   /// Build an image message inside predefined bubble.
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -283,6 +287,7 @@ class Message extends StatelessWidget {
       ? avatarBuilder?.call(message.author.id) ??
           UserAvatar(
             author: message.author,
+            imageHeaders: imageHeaders,
             bubbleRtlAlignment: bubbleRtlAlignment,
             onAvatarTap: onAvatarTap,
           )
@@ -332,7 +337,11 @@ class Message extends StatelessWidget {
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
             ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
-            : ImageMessage(message: imageMessage, messageWidth: messageWidth);
+            : ImageMessage(
+                imageHeaders: imageHeaders,
+                message: imageMessage,
+                messageWidth: messageWidth,
+              );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
         return textMessageBuilder != null

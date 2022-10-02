@@ -12,6 +12,7 @@ class UserAvatar extends StatelessWidget {
     super.key,
     required this.author,
     this.bubbleRtlAlignment,
+    this.imageHeaders,
     this.onAvatarTap,
   });
 
@@ -20,6 +21,9 @@ class UserAvatar extends StatelessWidget {
 
   /// See [Message.bubbleRtlAlignment].
   final BubbleRtlAlignment? bubbleRtlAlignment;
+
+  /// See [Chat.imageHeaders].
+  final Map<String, String>? imageHeaders;
 
   /// Called when user taps on an avatar.
   final void Function(types.User)? onAvatarTap;
@@ -45,7 +49,9 @@ class UserAvatar extends StatelessWidget {
                   .theme
                   .userAvatarImageBackgroundColor
               : color,
-          backgroundImage: hasImage ? NetworkImage(author.imageUrl!) : null,
+          backgroundImage: hasImage
+              ? NetworkImage(author.imageUrl!, headers: imageHeaders)
+              : null,
           radius: 16,
           child: !hasImage
               ? Text(

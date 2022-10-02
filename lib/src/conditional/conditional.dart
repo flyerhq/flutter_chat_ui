@@ -13,5 +13,5 @@ abstract class Conditional {
   factory Conditional() => createConditional();
 
   /// Returns an appropriate platform ImageProvider for specified URI.
-  ImageProvider getProvider(String uri);
+  ImageProvider getProvider(String uri, {Map<String, String>? headers});
 }

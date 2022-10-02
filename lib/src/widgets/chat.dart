@@ -52,6 +52,7 @@ class Chat extends StatefulWidget {
       maxScale: PhotoViewComputedScale.covered,
       minScale: PhotoViewComputedScale.contained,
     ),
+    this.imageHeaders,
     this.imageMessageBuilder,
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
@@ -167,6 +168,9 @@ class Chat extends StatefulWidget {
 
   /// See [ImageGallery.options].
   final ImageGalleryOptions imageGalleryOptions;
+
+  /// Headers passed to all network images used in the chat.
+  final Map<String, String>? imageHeaders;
 
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -418,6 +422,7 @@ class ChatState extends State<Chat> {
                 ),
                 if (_isImageViewVisible)
                   ImageGallery(
+                    imageHeaders: widget.imageHeaders,
                     images: _gallery,
                     pageController: _galleryPageController!,
                     onClosePressed: _onCloseGalleryPressed,
@@ -511,6 +516,7 @@ class ChatState extends State<Chat> {
           emojiEnlargementBehavior: widget.emojiEnlargementBehavior,
           fileMessageBuilder: widget.fileMessageBuilder,
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
+          imageHeaders: widget.imageHeaders,
           imageMessageBuilder: widget.imageMessageBuilder,
           message: message,
           messageWidth: messageWidth,

@@ -14,9 +14,13 @@ class ImageMessage extends StatefulWidget {
   /// Creates an image message widget based on [types.ImageMessage].
   const ImageMessage({
     super.key,
+    this.imageHeaders,
     required this.message,
     required this.messageWidth,
   });
+
+  /// See [Chat.imageHeaders].
+  final Map<String, String>? imageHeaders;
 
   /// [types.ImageMessage].
   final types.ImageMessage message;
@@ -37,7 +41,10 @@ class _ImageMessageState extends State<ImageMessage> {
   @override
   void initState() {
     super.initState();
-    _image = Conditional().getProvider(widget.message.uri);
+    _image = Conditional().getProvider(
+      widget.message.uri,
+      headers: widget.imageHeaders,
+    );
     _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
   }
 
