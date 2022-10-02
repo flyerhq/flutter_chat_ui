@@ -16,10 +16,14 @@ class ImageMessage extends StatefulWidget {
     super.key,
     required this.message,
     required this.messageWidth,
+    this.headers,
   });
 
   /// [types.ImageMessage].
   final types.ImageMessage message;
+
+  /// Headers used for Network image.
+  final Map<String, String>? headers;
 
   /// Maximum message width.
   final int messageWidth;
@@ -37,7 +41,7 @@ class _ImageMessageState extends State<ImageMessage> {
   @override
   void initState() {
     super.initState();
-    _image = Conditional().getProvider(widget.message.uri);
+    _image = Conditional().getProvider(widget.message.uri, headers: widget.headers);
     _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
   }
 
@@ -104,12 +108,8 @@ class _ImageMessageState extends State<ImageMessage> {
                     Text(
                       widget.message.name,
                       style: user.id == widget.message.author.id
-                          ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context)
-                              .theme
-                              .receivedMessageBodyTextStyle,
+                          ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
+                          : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
@@ -119,12 +119,8 @@ class _ImageMessageState extends State<ImageMessage> {
                       child: Text(
                         formatBytes(widget.message.size.truncate()),
                         style: user.id == widget.message.author.id
-                            ? InheritedChatTheme.of(context)
-                                .theme
-                                .sentMessageCaptionTextStyle
-                            : InheritedChatTheme.of(context)
-                                .theme
-                                .receivedMessageCaptionTextStyle,
+                            ? InheritedChatTheme.of(context).theme.sentMessageCaptionTextStyle
+                            : InheritedChatTheme.of(context).theme.receivedMessageCaptionTextStyle,
                       ),
                     ),
                   ],

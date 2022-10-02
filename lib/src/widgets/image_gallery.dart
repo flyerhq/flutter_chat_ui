@@ -38,15 +38,13 @@ class ImageGallery extends StatelessWidget {
           child: Stack(
             children: [
               PhotoViewGallery.builder(
-                builder: (BuildContext context, int index) =>
-                    PhotoViewGalleryPageOptions(
-                  imageProvider: Conditional().getProvider(images[index].uri),
+                builder: (BuildContext context, int index) => PhotoViewGalleryPageOptions(
+                  imageProvider: Conditional().getProvider(images[index].uri, headers: options.headers),
                   minScale: options.minScale,
                   maxScale: options.maxScale,
                 ),
                 itemCount: images.length,
-                loadingBuilder: (context, event) =>
-                    _imageGalleryLoadingBuilder(event),
+                loadingBuilder: (context, event) => _imageGalleryLoadingBuilder(event),
                 pageController: pageController,
                 scrollPhysics: const ClampingScrollPhysics(),
               ),
@@ -81,7 +79,11 @@ class ImageGalleryOptions {
   const ImageGalleryOptions({
     this.maxScale,
     this.minScale,
+    this.headers,
   });
+
+  /// Headers used for NetworkImage.
+  final Map<String, String>? headers;
 
   /// See [PhotoViewGalleryPageOptions.maxScale].
   final dynamic maxScale;
