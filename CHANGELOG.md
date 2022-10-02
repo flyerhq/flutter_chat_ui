@@ -2,6 +2,10 @@
 
 - **BREAKING CHANGE**: `PreviewTapOptions` -> `TextMessageOptions`
 - **BREAKING CHANGE**: `isTextMessageTextSelectable` -> `TextMessageOptions.isTextSelectable`
+- Add unread messages banner and scroll to the first unread. Thanks @felixgabler for the PR!
+- Fix every message re-render on new message added. Thanks @otto-dev for the PR!
+- Refactor code to make Flyer chat more accessible for contributions. Thanks @felixgabler for the PR!
+- Add `imageHeaders`. Allows to pass headers to all images used in the chat. Thanks @marinkobabic for the PR!
 - Update to Flutter 3.3.3
 
 ## 1.6.4
