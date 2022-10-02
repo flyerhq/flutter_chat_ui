@@ -12,13 +12,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: '>=2.17.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,22 +32,22 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
-  file_picker: ^4.6.1
+  file_picker: ^5.2.0+1
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.4.4
+  flutter_chat_types: ^3.5.0
   flutter_chat_ui:
     path: ../
   http: ^0.13.5
   image_picker: ^0.8.5+3
   intl: ^0.17.0
   mime: ^1.0.2
-  open_file: ^3.2.1
+  open_filex: ^4.1.1
   path_provider: ^2.0.11
   uuid: ^3.0.6
 
 dev_dependencies:
-  dart_code_metrics: ^4.17.0
+  dart_code_metrics: ^4.19.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
