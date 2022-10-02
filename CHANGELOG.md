@@ -1,6 +1,7 @@
 ## 1.6.5
 
 - **BREAKING CHANGE**: `PreviewTapOptions` -> `TextMessageOptions`
+- **BREAKING CHANGE**: `isTextMessageTextSelectable` -> `TextMessageOptions.isTextSelectable`
 - Update to Flutter 3.3.3
 
 ## 1.6.4

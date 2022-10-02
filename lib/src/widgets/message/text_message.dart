@@ -181,9 +181,9 @@ class TextMessageText extends StatelessWidget {
   const TextMessageText({
     super.key,
     this.bodyLinkTextStyle,
+    required this.bodyTextStyle,
     this.boldTextStyle,
     this.codeTextStyle,
-    required this.bodyTextStyle,
     this.maxLines,
     this.options = const TextMessageOptions(),
     this.overflow = TextOverflow.clip,
@@ -193,14 +193,14 @@ class TextMessageText extends StatelessWidget {
   /// Style to apply to anything that matches a link.
   final TextStyle? bodyLinkTextStyle;
 
+  /// Regular style to use for any unmatched text. Also used as basis for the fallback options.
+  final TextStyle bodyTextStyle;
+
   /// Style to apply to anything that matches bold markdown.
   final TextStyle? boldTextStyle;
 
   /// Style to apply to anything that matches code markdown.
   final TextStyle? codeTextStyle;
-
-  /// Regular style to use for any unmatched text. Also used as basis for the fallback options.
-  final TextStyle bodyTextStyle;
 
   /// See [ParsedText.maxLines].
   final int? maxLines;
