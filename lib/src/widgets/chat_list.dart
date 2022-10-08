@@ -20,6 +20,7 @@ class ChatList extends StatefulWidget {
     this.onEndReachedThreshold,
     required this.scrollController,
     this.scrollPhysics,
+    this.bottomWidget,
   });
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
@@ -53,6 +54,9 @@ class ChatList extends StatefulWidget {
 
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
+
+  /// A custom widget at the bottom of the list.
+  final Widget? bottomWidget;
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -131,6 +135,8 @@ class _ChatListState extends State<ChatList>
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
+            if (widget.bottomWidget != null)
+              SliverToBoxAdapter(child: widget.bottomWidget),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: PatchedSliverAnimatedList(

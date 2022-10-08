@@ -86,6 +86,7 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    this.listBottomWidget,
   });
 
   /// See [Message.avatarBuilder].
@@ -288,6 +289,10 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
+  /// See [ChatList.bottomWidget].
+  /// For a custom chat input please use [customBottomWidget] instead.
+  final Widget? listBottomWidget;
+
   @override
   State<Chat> createState() => ChatState();
 }
@@ -406,6 +411,7 @@ class ChatState extends State<Chat> {
                                         widget.onEndReachedThreshold,
                                     scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
+                                    bottomWidget: widget.listBottomWidget,
                                   ),
                                 ),
                               ),
