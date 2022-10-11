@@ -42,6 +42,7 @@ class Chat extends StatefulWidget {
     this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
     this.dateLocale,
+    this.dateIsUtc = false,
     this.disableImageGallery,
     this.emojiEnlargementBehavior = EmojiEnlargementBehavior.multi,
     this.emptyState,
@@ -142,6 +143,9 @@ class Chat extends StatefulWidget {
   /// date formatting in your app before passing any locale here, otherwise
   /// an error will be thrown. Also see [customDateHeaderText], [dateFormat], [timeFormat].
   final String? dateLocale;
+
+  /// Use utc time to convert message milliseconds to date.
+  final bool dateIsUtc;
 
   /// Disable automatic image preview on tap.
   final bool? disableImageGallery;
@@ -328,6 +332,7 @@ class ChatState extends State<Chat> {
         dateFormat: widget.dateFormat,
         dateHeaderThreshold: widget.dateHeaderThreshold,
         dateLocale: widget.dateLocale,
+        dateIsUtc: widget.dateIsUtc,
         groupMessagesThreshold: widget.groupMessagesThreshold,
         lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
         showUserNames: widget.showUserNames,
