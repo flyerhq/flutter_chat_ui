@@ -31,6 +31,7 @@ class Message extends StatelessWidget {
     required this.hideBackgroundOnEmojiMessages,
     this.imageHeaders,
     this.imageMessageBuilder,
+    this.audioMessageBuilder,
     required this.message,
     required this.messageWidth,
     this.nameBuilder,
@@ -98,6 +99,10 @@ class Message extends StatelessWidget {
   /// Build an image message inside predefined bubble.
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
+
+  /// Build an audio message.
+  final Widget Function(types.AudioMessage, {required int messageWidth})?
+      audioMessageBuilder;
 
   /// Any message type.
   final types.Message message;
@@ -361,6 +366,11 @@ class Message extends StatelessWidget {
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,
               );
+      case types.MessageType.audio:
+        final audioMessage = message as types.AudioMessage;
+        return audioMessageBuilder != null
+            ? audioMessageBuilder!(audioMessage, messageWidth: messageWidth)
+            : const SizedBox();
       default:
         return const SizedBox();
     }
