@@ -54,6 +54,7 @@ class Chat extends StatefulWidget {
     ),
     this.imageHeaders,
     this.imageMessageBuilder,
+    this.audioMessageBuilder,
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
@@ -175,6 +176,10 @@ class Chat extends StatefulWidget {
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
+
+  /// See [Message.audioMessageBuilder].
+  final Widget Function(types.AudioMessage, {required int messageWidth})?
+      audioMessageBuilder;
 
   /// See [Input.options].
   final InputOptions inputOptions;
@@ -518,6 +523,7 @@ class ChatState extends State<Chat> {
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
           imageHeaders: widget.imageHeaders,
           imageMessageBuilder: widget.imageMessageBuilder,
+          audioMessageBuilder: widget.audioMessageBuilder,
           message: message,
           messageWidth: messageWidth,
           nameBuilder: widget.nameBuilder,
