@@ -209,7 +209,7 @@ List<Object> calculateChatMessages(
       'showStatus': message.showStatus ?? true,
     });
 
-    if (!nextMessageInGroup) {
+    if (!nextMessageInGroup && message.type != types.MessageType.system) {
       chatMessages.insert(
         0,
         MessageSpacer(
