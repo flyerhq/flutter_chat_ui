@@ -1,3 +1,9 @@
+## 1.6.6
+
+- Add `audioMessageBuilder` (no default implementation yet). Thanks @marinkobabic for the PR!
+- Add `videoMessageBuilder` (no default implementation yet)
+- Update dependencies. Requires Dart >= 2.18.0.
+
 ## 1.6.5
 
 - **BREAKING CHANGE**: `PreviewTapOptions` -> `TextMessageOptions`

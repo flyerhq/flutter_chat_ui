@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,22 +32,22 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
-  file_picker: ^5.2.0+1
+  file_picker: ^5.2.2
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.5.0
+  flutter_chat_types: ^3.6.0
   flutter_chat_ui:
     path: ../
   http: ^0.13.5
-  image_picker: ^0.8.5+3
+  image_picker: ^0.8.6
   intl: ^0.17.0
   mime: ^1.0.2
-  open_filex: ^4.1.1
+  open_filex: ^4.2.2
   path_provider: ^2.0.11
   uuid: ^3.0.6
 
 dev_dependencies:
-  dart_code_metrics: ^4.19.1
+  dart_code_metrics: ^4.21.3
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
