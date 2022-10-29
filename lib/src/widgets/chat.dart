@@ -31,6 +31,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget.
   const Chat({
     super.key,
+    this.audioMessageBuilder,
     this.avatarBuilder,
     this.bubbleBuilder,
     this.bubbleRtlAlignment = BubbleRtlAlignment.right,
@@ -41,6 +42,7 @@ class Chat extends StatefulWidget {
     this.dateFormat,
     this.dateHeaderBuilder,
     this.dateHeaderThreshold = 900000,
+    this.dateIsUtc = false,
     this.dateLocale,
     this.disableImageGallery,
     this.emojiEnlargementBehavior = EmojiEnlargementBehavior.multi,
@@ -59,6 +61,7 @@ class Chat extends StatefulWidget {
     this.isLastPage,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.l10n = const ChatL10nEn(),
+    this.listBottomWidget,
     required this.messages,
     this.nameBuilder,
     this.onAttachmentPressed,
@@ -86,8 +89,12 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
-    this.listBottomWidget,
+    this.videoMessageBuilder,
   });
+
+  /// See [Message.audioMessageBuilder].
+  final Widget Function(types.AudioMessage, {required int messageWidth})?
+      audioMessageBuilder;
 
   /// See [Message.avatarBuilder].
   final Widget Function(String userId)? avatarBuilder;
@@ -138,6 +145,9 @@ class Chat extends StatefulWidget {
   /// is higher than this threshold, date header will be rendered. Also,
   /// not related to this value, date header will be rendered on every new day.
   final int dateHeaderThreshold;
+
+  /// Use utc time to convert message milliseconds to date.
+  final bool dateIsUtc;
 
   /// Locale will be passed to the `Intl` package. Make sure you initialized
   /// date formatting in your app before passing any locale here, otherwise
@@ -193,6 +203,10 @@ class Chat extends StatefulWidget {
   /// existing one, like the default [ChatL10nEn]. You can customize only
   /// certain properties, see more here [ChatL10nEn].
   final ChatL10n l10n;
+  
+  /// See [ChatList.bottomWidget].
+  /// For a custom chat input use [customBottomWidget] instead.
+  final Widget? listBottomWidget;
 
   /// List of [types.Message] to render in the chat widget.
   final List<types.Message> messages;
@@ -289,9 +303,9 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
-  /// See [ChatList.bottomWidget].
-  /// For a custom chat input please use [customBottomWidget] instead.
-  final Widget? listBottomWidget;
+  /// See [Message.videoMessageBuilder].
+  final Widget Function(types.VideoMessage, {required int messageWidth})?
+      videoMessageBuilder;
 
   @override
   State<Chat> createState() => ChatState();
@@ -332,6 +346,7 @@ class ChatState extends State<Chat> {
         customDateHeaderText: widget.customDateHeaderText,
         dateFormat: widget.dateFormat,
         dateHeaderThreshold: widget.dateHeaderThreshold,
+        dateIsUtc: widget.dateIsUtc,
         dateLocale: widget.dateLocale,
         groupMessagesThreshold: widget.groupMessagesThreshold,
         lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
@@ -514,6 +529,7 @@ class ChatState extends State<Chat> {
         index: index ?? -1,
         key: Key('scroll-${message.id}'),
         child: Message(
+          audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
           bubbleRtlAlignment: widget.bubbleRtlAlignment,
@@ -551,6 +567,7 @@ class ChatState extends State<Chat> {
           textMessageOptions: widget.textMessageOptions,
           usePreviewData: widget.usePreviewData,
           userAgent: widget.userAgent,
+          videoMessageBuilder: widget.videoMessageBuilder,
         ),
       );
     }
