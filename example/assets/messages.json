@@ -43,21 +43,11 @@
   },
   {
     "author": {
-      "id": "system"
-    },
-    "createdAt": 1655648401000,
-    "id": "74747b28-df19-4g0c-8c47-316dc3546e29",
-    "status": "seen",
-    "text": "Matthew joined the chat",
-    "type": "system"
-  },
-  {
-    "author": {
       "firstName": "Matthew",
       "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
       "lastName": "White"
     },
-    "createdAt": 1655648400000,
+    "createdAt": 1655648401000,
     "id": "64747b28-df19-4a0c-8c47-316dc3546e3c",
     "status": "seen",
     "text": "Here you go buddy! 💪",
@@ -69,7 +59,7 @@
       "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
       "lastName": "White"
     },
-    "createdAt": 1655648399000,
+    "createdAt": 1655648400000,
     "id": "6a1a4351-cf05-4d0c-9d0f-47ed378b6112",
     "mimeType": "application/pdf",
     "name": "city_guide-madrid.pdf",
@@ -84,7 +74,7 @@
       "id": "4c2307ba-3d40-442f-b1ff-b271f63904ca",
       "lastName": "Doe"
     },
-    "createdAt": 1655648397000,
+    "createdAt": 1655624464000,
     "id": "38681a33-2563-42aa-957b-cfc12f791d16",
     "status": "seen",
     "text": "Matt, where is my Madrid guide?",

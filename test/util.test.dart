@@ -283,52 +283,6 @@ void main() {
           );
         },
       );
-
-      test('does not add spacer after system message', () {
-        const systemMessage = types.SystemMessage(
-          id: '1',
-          text: 'Someone joined the chat',
-          createdAt: 1655648402000,
-        );
-        const user = types.User(id: '1');
-        const message = types.TextMessage(
-          author: user,
-          id: '2',
-          text: 'test',
-          createdAt: 1655648404000,
-        );
-        expect(
-          calculateChatMessages(
-            [message, systemMessage],
-            user,
-            dateHeaderThreshold: 1000,
-            groupMessagesThreshold: 1000,
-            showUserNames: true,
-          ),
-          [
-            [
-              {
-                'message': message,
-                'nextMessageInGroup': false,
-                'showName': false,
-                'showStatus': true,
-              },
-              {
-                'message': systemMessage,
-                'nextMessageInGroup': false,
-                'showName': false,
-                'showStatus': true,
-              },
-              DateHeader(
-                dateTime:
-                    DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
-                text: 'Jun 19, 16:20',
-              ),
-            ],
-            [],
-          ],
-        );
-      });
     });
   });
 }

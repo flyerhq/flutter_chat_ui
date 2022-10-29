@@ -524,7 +524,7 @@ class ChatState extends State<Chat> {
       final message = map['message']! as types.Message;
 
       final Widget messageWidget;
-      
+
       if (message is types.SystemMessage) {
         messageWidget = widget.systemMessageBuilder?.call(message) ??
             SystemMessage(message: message.text);
@@ -573,7 +573,7 @@ class ChatState extends State<Chat> {
           textMessageOptions: widget.textMessageOptions,
           usePreviewData: widget.usePreviewData,
           userAgent: widget.userAgent,
-          videoMessageBuilder: widget.videoMessageBuilder,          
+          videoMessageBuilder: widget.videoMessageBuilder,
         );
       }
 
@@ -581,7 +581,7 @@ class ChatState extends State<Chat> {
         controller: _scrollController,
         index: index ?? -1,
         key: Key('scroll-${message.id}'),
-        child: messageWidget
+        child: messageWidget,
       );
     }
   }
