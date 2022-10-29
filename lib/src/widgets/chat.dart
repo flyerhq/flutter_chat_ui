@@ -31,6 +31,7 @@ class Chat extends StatefulWidget {
   /// Creates a chat widget.
   const Chat({
     super.key,
+    this.audioMessageBuilder,
     this.avatarBuilder,
     this.bubbleBuilder,
     this.bubbleRtlAlignment = BubbleRtlAlignment.right,
@@ -54,7 +55,6 @@ class Chat extends StatefulWidget {
     ),
     this.imageHeaders,
     this.imageMessageBuilder,
-    this.audioMessageBuilder,
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
@@ -87,7 +87,12 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    this.videoMessageBuilder,
   });
+
+  /// See [Message.audioMessageBuilder].
+  final Widget Function(types.AudioMessage, {required int messageWidth})?
+      audioMessageBuilder;
 
   /// See [Message.avatarBuilder].
   final Widget Function(String userId)? avatarBuilder;
@@ -176,10 +181,6 @@ class Chat extends StatefulWidget {
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
-
-  /// See [Message.audioMessageBuilder].
-  final Widget Function(types.AudioMessage, {required int messageWidth})?
-      audioMessageBuilder;
 
   /// See [Input.options].
   final InputOptions inputOptions;
@@ -292,6 +293,10 @@ class Chat extends StatefulWidget {
 
   /// See [Message.userAgent].
   final String? userAgent;
+
+  /// See [Message.videoMessageBuilder].
+  final Widget Function(types.VideoMessage, {required int messageWidth})?
+      videoMessageBuilder;
 
   @override
   State<Chat> createState() => ChatState();
@@ -513,6 +518,7 @@ class ChatState extends State<Chat> {
         index: index ?? -1,
         key: Key('scroll-${message.id}'),
         child: Message(
+          audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
           bubbleRtlAlignment: widget.bubbleRtlAlignment,
@@ -523,7 +529,6 @@ class ChatState extends State<Chat> {
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
           imageHeaders: widget.imageHeaders,
           imageMessageBuilder: widget.imageMessageBuilder,
-          audioMessageBuilder: widget.audioMessageBuilder,
           message: message,
           messageWidth: messageWidth,
           nameBuilder: widget.nameBuilder,
@@ -551,6 +556,7 @@ class ChatState extends State<Chat> {
           textMessageOptions: widget.textMessageOptions,
           usePreviewData: widget.usePreviewData,
           userAgent: widget.userAgent,
+          videoMessageBuilder: widget.videoMessageBuilder,
         ),
       );
     }
