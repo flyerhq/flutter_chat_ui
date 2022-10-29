@@ -3,6 +3,7 @@
 - Add `audioMessageBuilder` (no default implementation yet). Thanks @marinkobabic for the PR!
 - Add `videoMessageBuilder` (no default implementation yet).
 - Add `dateIsUtc` to use UTC time for parsing dates inside the chat. Thanks @marinkobabic for the PR!
+- Fix unnecessary scrolls to the bottom. Thanks @MaddinMade for the PR!
 - Add custom text matchers to the `TextMessageOptions`. Thanks @jld3103 for the PR!
 - Update dependencies. Requires Dart >= 2.18.0.
 
