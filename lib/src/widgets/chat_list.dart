@@ -1,5 +1,4 @@
 import 'package:diffutil_dart/diffutil.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -21,6 +20,7 @@ class ChatList extends StatefulWidget {
     this.onEndReachedThreshold,
     required this.scrollController,
     this.scrollPhysics,
+    required this.useTopSafeAreaInset,
   });
 
   /// A custom widget at the bottom of the list.
@@ -57,6 +57,9 @@ class ChatList extends StatefulWidget {
 
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
+
+  /// Whether to use top safe area inset for the list.
+  final bool useTopSafeAreaInset;
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -159,7 +162,10 @@ class _ChatListState extends State<ChatList>
             ),
             SliverPadding(
               padding: EdgeInsets.only(
-                top: 16 + (kIsWeb ? 0 : MediaQuery.of(context).padding.top),
+                top: 16 +
+                    (widget.useTopSafeAreaInset
+                        ? MediaQuery.of(context).padding.top
+                        : 0),
               ),
               sliver: SliverToBoxAdapter(
                 child: SizeTransition(

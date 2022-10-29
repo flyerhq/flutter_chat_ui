@@ -91,6 +91,7 @@ class Chat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
+    this.useTopSafeAreaInset,
     this.videoMessageBuilder,
   });
 
@@ -309,6 +310,9 @@ class Chat extends StatefulWidget {
   /// See [Message.userAgent].
   final String? userAgent;
 
+  /// See [ChatList.useTopSafeAreaInset].
+  final bool? useTopSafeAreaInset;
+
   /// See [Message.videoMessageBuilder].
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
@@ -438,6 +442,8 @@ class ChatState extends State<Chat> {
                                         widget.onEndReachedThreshold,
                                     scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
+                                    useTopSafeAreaInset:
+                                        widget.useTopSafeAreaInset ?? isMobile,
                                   ),
                                 ),
                               ),

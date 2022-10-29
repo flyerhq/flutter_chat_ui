@@ -8,6 +8,7 @@
 - Add custom text matchers to the `TextMessageOptions`. Thanks @jld3103 for the PR!
 - Add `listBottomWidget`. Thanks @MaddinMade for the PR!
 - Fix scroll to unread when no unread messages exist. Thans @jld3103 for the PR!
+- Add `useTopSafeAreaInset` to the `Chat` widget, by default enabled on mobile platforms. Use it to disable top safe area inset. Thanks @jld3103 for reporting!
 - Update dependencies. Requires Dart >= 2.18.0.
 
 ## 1.6.5

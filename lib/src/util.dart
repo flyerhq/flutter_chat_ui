@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 
@@ -95,6 +96,9 @@ bool isConsistsOfEmojis(
 
   return multiEmojiRegExp.hasMatch(message.text);
 }
+
+final isMobile = defaultTargetPlatform == TargetPlatform.android ||
+    defaultTargetPlatform == TargetPlatform.iOS;
 
 /// Parses provided messages to chat messages (with headers and spacers)
 /// and returns them with a gallery.

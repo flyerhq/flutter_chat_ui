@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
@@ -222,13 +221,13 @@ class Message extends StatelessWidget {
       margin: bubbleRtlAlignment == BubbleRtlAlignment.left
           ? EdgeInsetsDirectional.only(
               bottom: 4,
-              end: kIsWeb ? 0 : query.padding.right,
-              start: 20 + (kIsWeb ? 0 : query.padding.left),
+              end: isMobile ? query.padding.right : 0,
+              start: 20 + (isMobile ? query.padding.left : 0),
             )
           : EdgeInsets.only(
               bottom: 4,
-              left: 20 + (kIsWeb ? 0 : query.padding.left),
-              right: kIsWeb ? 0 : query.padding.right,
+              left: 20 + (isMobile ? query.padding.left : 0),
+              right: isMobile ? query.padding.right : 0,
             ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

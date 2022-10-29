@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../../models/input_clear_mode.dart';
 import '../../models/send_button_visibility_mode.dart';
+import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_l10n.dart';
 import 'attachment_button.dart';
@@ -136,14 +136,14 @@ class _InputState extends State<Input> {
         .theme
         .inputPadding
         .copyWith(left: 16, right: 16);
-    final safeAreaInsets = kIsWeb
-        ? EdgeInsets.zero
-        : EdgeInsets.fromLTRB(
+    final safeAreaInsets = isMobile
+        ? EdgeInsets.fromLTRB(
             query.padding.left,
             0,
             query.padding.right,
             query.viewInsets.bottom + query.padding.bottom,
-          );
+          )
+        : EdgeInsets.zero;
     final textPadding = InheritedChatTheme.of(context)
         .theme
         .inputPadding
