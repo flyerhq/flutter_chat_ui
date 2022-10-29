@@ -378,7 +378,7 @@ class ChatState extends State<Chat> {
   /// Scroll to the unread header.
   void scrollToUnreadHeader() {
     final unreadHeaderIndex = _autoScrollIndexById[_unreadHeaderId];
-    if (unreadHeaderIndex != null){
+    if (unreadHeaderIndex != null) {
       _scrollController.scrollToIndex(
         unreadHeaderIndex,
         duration: widget.scrollToUnreadOptions.scrollDuration,
