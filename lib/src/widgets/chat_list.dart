@@ -12,6 +12,7 @@ class ChatList extends StatefulWidget {
   /// Creates a chat list widget.
   const ChatList({
     super.key,
+    this.bottomWidget,
     this.isLastPage,
     required this.itemBuilder,
     required this.items,
@@ -20,8 +21,10 @@ class ChatList extends StatefulWidget {
     this.onEndReachedThreshold,
     required this.scrollController,
     this.scrollPhysics,
-    this.bottomWidget,
   });
+
+  /// A custom widget at the bottom of the list.
+  final Widget? bottomWidget;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -54,9 +57,6 @@ class ChatList extends StatefulWidget {
 
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
-
-  /// A custom widget at the bottom of the list.
-  final Widget? bottomWidget;
 
   @override
   State<ChatList> createState() => _ChatListState();

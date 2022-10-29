@@ -110,7 +110,8 @@ class Chat extends StatefulWidget {
   final BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Allows you to replace the default Input widget e.g. if you want to create
-  /// a channel view.
+  /// a channel view. If you're looking for the bottom widget added to the chat
+  /// list, see [listBottomWidget] instead.
   final Widget? customBottomWidget;
 
   /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
@@ -203,9 +204,9 @@ class Chat extends StatefulWidget {
   /// existing one, like the default [ChatL10nEn]. You can customize only
   /// certain properties, see more here [ChatL10nEn].
   final ChatL10n l10n;
-  
-  /// See [ChatList.bottomWidget].
-  /// For a custom chat input use [customBottomWidget] instead.
+
+  /// See [ChatList.bottomWidget]. For a custom chat input
+  /// use [customBottomWidget] instead.
   final Widget? listBottomWidget;
 
   /// List of [types.Message] to render in the chat widget.
@@ -411,6 +412,7 @@ class ChatState extends State<Chat> {
                                     BoxConstraints constraints,
                                   ) =>
                                       ChatList(
+                                    bottomWidget: widget.listBottomWidget,
                                     isLastPage: widget.isLastPage,
                                     itemBuilder: (Object item, int? index) =>
                                         _messageBuilder(
@@ -426,7 +428,6 @@ class ChatState extends State<Chat> {
                                         widget.onEndReachedThreshold,
                                     scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
-                                    bottomWidget: widget.listBottomWidget,
                                   ),
                                 ),
                               ),
