@@ -36,7 +36,7 @@
 
 <p align="center">
   <a href="https://flyer.chat">
-    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/174447563-c7f9d268-711a-4cd8-a582-7645d359b0c8.jpg" />
+    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/193468140-91942302-2332-4cb1-8504-61b8892d828b.jpg" />
   </a>
 </p>
 
@@ -56,7 +56,7 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 ### Requirements
 
-`Dart >=2.17.0` and `Flutter >=2.0.0`
+`Dart >=2.18.0` and `Flutter >=2.0.0`
 
 Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
 

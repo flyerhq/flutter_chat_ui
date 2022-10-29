@@ -12,6 +12,7 @@ class ChatList extends StatefulWidget {
   /// Creates a chat list widget.
   const ChatList({
     super.key,
+    this.bottomWidget,
     this.isLastPage,
     required this.itemBuilder,
     required this.items,
@@ -21,6 +22,9 @@ class ChatList extends StatefulWidget {
     required this.scrollController,
     this.scrollPhysics,
   });
+
+  /// A custom widget at the bottom of the list.
+  final Widget? bottomWidget;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -131,6 +135,8 @@ class _ChatListState extends State<ChatList>
           physics: widget.scrollPhysics,
           reverse: true,
           slivers: [
+            if (widget.bottomWidget != null)
+              SliverToBoxAdapter(child: widget.bottomWidget),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: PatchedSliverAnimatedList(
@@ -264,7 +270,7 @@ class _ChatListState extends State<ChatList>
         final message = item['message']! as types.Message;
 
         // Compare items to fire only on newly added messages.
-        if (oldMessage != message) {
+        if (oldMessage.id != message.id) {
           // Run only for sent message.
           if (message.author.id == InheritedUser.of(context).user.id) {
             // Delay to give some time for Flutter to calculate new
