@@ -26,7 +26,6 @@ class TextMessage extends StatelessWidget {
     required this.showName,
     required this.usePreviewData,
     this.userAgent,
-    this.textMatchers = const [],
   });
 
   /// See [Message.emojiEnlargementBehavior].
@@ -57,9 +56,6 @@ class TextMessage extends StatelessWidget {
 
   /// User agent to fetch preview data with.
   final String? userAgent;
-
-  /// Additional matchers to parse the text.
-  final List<MatchText> textMatchers;
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +170,6 @@ class TextMessage extends StatelessWidget {
             codeTextStyle: codeTextStyle,
             options: options,
             text: message.text,
-            textMatchers: textMatchers,
           ),
       ],
     );
@@ -193,7 +188,6 @@ class TextMessageText extends StatelessWidget {
     this.options = const TextMessageOptions(),
     this.overflow = TextOverflow.clip,
     required this.text,
-    this.textMatchers = const [],
   });
 
   /// Style to apply to anything that matches a link.
@@ -220,13 +214,10 @@ class TextMessageText extends StatelessWidget {
   /// Text that is shown as markdown.
   final String text;
 
-  /// Additional matchers to parse the text.
-  final List<MatchText> textMatchers;
-
   @override
   Widget build(BuildContext context) => ParsedText(
         parse: [
-          ...textMatchers,
+          ...options.matchers,
           MatchText(
             onTap: (mail) async {
               final url = Uri(scheme: 'mailto', path: mail);
@@ -327,6 +318,7 @@ class TextMessageOptions {
     this.onLinkPressed,
     this.openOnPreviewImageTap = false,
     this.openOnPreviewTitleTap = false,
+    this.matchers = const [],
   });
 
   /// Whether user can tap and hold to select a text content.
@@ -340,4 +332,7 @@ class TextMessageOptions {
 
   /// See [LinkPreview.openOnPreviewTitleTap].
   final bool openOnPreviewTitleTap;
+
+  /// Additional matchers to parse the text.
+  final List<MatchText> matchers;
 }
