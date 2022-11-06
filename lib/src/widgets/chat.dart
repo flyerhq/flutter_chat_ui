@@ -24,6 +24,7 @@ import 'message/text_message.dart';
 import 'state/inherited_chat_theme.dart';
 import 'state/inherited_l10n.dart';
 import 'state/inherited_user.dart';
+import 'typing_indicator.dart';
 import 'unread_header.dart';
 
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
@@ -88,6 +89,7 @@ class Chat extends StatefulWidget {
     this.textMessageOptions = const TextMessageOptions(),
     this.theme = const DefaultChatTheme(),
     this.timeFormat,
+    this.typingIndicatorOptions = const TypingIndicatorOptions(),
     this.usePreviewData = true,
     required this.user,
     this.userAgent,
@@ -301,6 +303,9 @@ class Chat extends StatefulWidget {
   /// for more customization.
   final DateFormat? timeFormat;
 
+  /// Used to show typing users with indicator. See [TypingIndicatorOptions].
+  final TypingIndicatorOptions typingIndicatorOptions;
+
   /// See [Message.usePreviewData].
   final bool usePreviewData;
 
@@ -427,6 +432,8 @@ class ChatState extends State<Chat> {
                                   ) =>
                                       ChatList(
                                     bottomWidget: widget.listBottomWidget,
+                                    bubbleRtlAlignment:
+                                        widget.bubbleRtlAlignment!,
                                     isLastPage: widget.isLastPage,
                                     itemBuilder: (Object item, int? index) =>
                                         _messageBuilder(
@@ -442,6 +449,8 @@ class ChatState extends State<Chat> {
                                         widget.onEndReachedThreshold,
                                     scrollController: _scrollController,
                                     scrollPhysics: widget.scrollPhysics,
+                                    typingIndicatorOptions:
+                                        widget.typingIndicatorOptions,
                                     useTopSafeAreaInset:
                                         widget.useTopSafeAreaInset ?? isMobile,
                                   ),
