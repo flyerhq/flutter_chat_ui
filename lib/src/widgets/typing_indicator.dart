@@ -226,7 +226,7 @@ class TypingWidget extends StatelessWidget {
       widget.options.typingUsers,
       MediaQuery.of(context).size.width,
     );
-    if (mode == TypingIndicatorMode.text) {
+    if (mode == TypingIndicatorMode.name) {
       return SizedBox(
         child: Text(
           _multiUserTextBuilder(widget.options.typingUsers),
@@ -431,8 +431,8 @@ class TypingIndicatorOptions {
   const TypingIndicatorOptions({
     this.animationSpeed = const Duration(milliseconds: 500),
     this.customTypingIndicator,
+    this.typingMode = TypingIndicatorMode.name,
     this.typingUsers = const [],
-    this.typingMode = TypingIndicatorMode.text,
   });
 
   /// Animation speed for circles.
@@ -442,12 +442,12 @@ class TypingIndicatorOptions {
   /// Allows to set custom [TypingIndicator].
   final Widget? customTypingIndicator;
 
+  /// Typing mode for [TypingIndicator]. See [TypingIndicatorMode].
+  final TypingIndicatorMode typingMode;
+
   /// Author(s) for [TypingIndicator].
   /// By default its empty list which hides the indicator, see [types.User].
   final List<types.User> typingUsers;
-
-  /// Typing mode for [TypingIndicator]. See [TypingIndicatorMode].
-  final TypingIndicatorMode typingMode;
 }
 
 @immutable
@@ -457,8 +457,8 @@ class TypingIndicatorTheme {
   const TypingIndicatorTheme({
     required this.animatedCirclesColor,
     required this.animatedCircleSize,
-    required this.bubbleColor,
     required this.bubbleBorder,
+    required this.bubbleColor,
     required this.countAvatarColor,
     required this.countTextColor,
     required this.multipleUserTextStyle,
@@ -470,11 +470,11 @@ class TypingIndicatorTheme {
   /// Animated Circle Size for [TypingIndicator].
   final double animatedCircleSize;
 
-  /// Bubble color for [TypingIndicator].
-  final Color bubbleColor;
-
   /// Bubble border for [TypingIndicator].
   final BorderRadius bubbleBorder;
+
+  /// Bubble color for [TypingIndicator].
+  final Color bubbleColor;
 
   /// Count Avatar color for [TypingIndicator].
   final Color countAvatarColor;

@@ -39,11 +39,6 @@ class _ChatPageState extends State<ChatPage> {
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
-  final _typingUser = const types.User(
-    id: '771c85be-40fe-46f9-830c-5753c3677da4',
-    firstName: 'Lorem',
-    lastName: 'Ipsum',
-  );
 
   @override
   void initState() {
@@ -54,7 +49,6 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Chat(
-          bubbleRtlAlignment: BubbleRtlAlignment.right,
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,
@@ -63,11 +57,6 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
-          typingIndicatorOptions: TypingIndicatorOptions(
-            animationSpeed: const Duration(milliseconds: 500),
-            typingUsers: [_typingUser],
-            typingMode: TypingIndicatorMode.text,
-          ),
         ),
       );
 

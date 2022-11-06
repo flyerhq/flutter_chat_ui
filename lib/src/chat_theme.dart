@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/typing_indicator.dart';
 import 'widgets/message/system_message.dart';
+import 'widgets/typing_indicator.dart';
 import 'widgets/unread_header.dart';
 
 // For internal usage only. Use values from theme itself.
@@ -427,8 +427,8 @@ class DefaultChatTheme extends ChatTheme {
     super.typingIndicatorTheme = const TypingIndicatorTheme(
       animatedCirclesColor: neutral1,
       animatedCircleSize: 5.0,
-      bubbleColor: neutral7,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      bubbleColor: neutral7,
       countAvatarColor: primary,
       countTextColor: secondary,
       multipleUserTextStyle: TextStyle(
@@ -596,8 +596,8 @@ class DarkChatTheme extends ChatTheme {
     super.typingIndicatorTheme = const TypingIndicatorTheme(
       animatedCirclesColor: neutral7,
       animatedCircleSize: 5.0,
-      bubbleColor: dark,
       bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      bubbleColor: dark,
       countAvatarColor: primary,
       countTextColor: secondary,
       multipleUserTextStyle: TextStyle(

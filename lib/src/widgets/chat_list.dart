@@ -84,9 +84,9 @@ class _ChatListState extends State<ChatList>
     curve: Curves.easeOutQuad,
     parent: _controller,
   );
-  bool _indicatorOnScrollStatus = false;
   late final AnimationController _controller = AnimationController(vsync: this);
 
+  bool _indicatorOnScrollStatus = false;
   bool _isNextPageLoading = false;
   final GlobalKey<PatchedSliverAnimatedListState> _listKey =
       GlobalKey<PatchedSliverAnimatedListState>();
@@ -126,6 +126,7 @@ class _ChatListState extends State<ChatList>
               _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
             });
           }
+
           if (widget.onEndReached == null || widget.isLastPage == true) {
             return false;
           }

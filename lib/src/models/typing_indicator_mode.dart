@@ -1,11 +1,11 @@
-/// Used to toggle the display of avatars, text or both on [TypingIndicator].
+/// Used to toggle the display of avatars, names or both on [TypingIndicator].
 enum TypingIndicatorMode {
-  /// Show [Text] for typing users.
-  text,
-
-  /// Show [UserAvatar] instead of text for typing users.
+  /// Show avatars of typing users.
   avatar,
 
-  /// Show both [Text] and [UserAvatar] for typing users.
+  /// Show both avatars and names for typing users.
   both,
+
+  /// Show names of typing users.
+  name,
 }
