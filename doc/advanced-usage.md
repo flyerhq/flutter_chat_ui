@@ -106,11 +106,11 @@ Similar to the text message, you will need to create a file message using data f
 
 ### Opening a file
 
-Right now, nothing will happen when a user taps on a file message, we will need to add another dependency. In this case, let's add [open_file](https://pub.dev/packages/open_file). As usual, follow the instructions there to install it. Now we can open a file:
+Right now, nothing will happen when a user taps on a file message, we will need to add another dependency. In this case, let's add [open_filex](https://pub.dev/packages/open_filex). As usual, follow the instructions there to install it. Now we can open a file:
 
 ```dart
 // ...
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
   // ...
@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _handleMessageTap(BuildContext _, types.Message message) async {
     if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
+      await OpenFilex.open(message.uri);
     }
   }
 }
@@ -138,7 +138,7 @@ In the previous example, only local files on the device can be opened. If we wan
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -194,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
 
-      await OpenFile.open(localPath);
+      await OpenFilex.open(localPath);
     }
   }
 }
@@ -233,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ## Putting it all together
 
-Now to choose between images and files from a single button we will use `showModalBottomSheet`. If you skipped previous sections and want to use this example, remember to install - [image_picker](https://pub.dev/packages/image_picker), [file_picker](https://pub.dev/packages/file_picker) and [open_file](https://pub.dev/packages/open_file). This is a drop-in example, everything should work if you had installed all the dependencies.
+Now to choose between images and files from a single button we will use `showModalBottomSheet`. If you skipped previous sections and want to use this example, remember to install - [image_picker](https://pub.dev/packages/image_picker), [file_picker](https://pub.dev/packages/file_picker) and [open_filex](https://pub.dev/packages/open_filex). This is a drop-in example, everything should work if you had installed all the dependencies.
 
 ```dart
 import 'dart:convert';
@@ -246,7 +246,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
 // For the testing purposes, you should probably use https://pub.dev/packages/uuid.
@@ -427,7 +427,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
 
-      await OpenFile.open(localPath);
+      await OpenFilex.open(localPath);
     }
   }
 

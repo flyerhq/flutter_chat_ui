@@ -12,15 +12,15 @@ class PatternStyle {
   String get pattern => regExp.pattern;
 
   static PatternStyle get bold => PatternStyle(
-        RegExp('(\\*\\*|\\*)'),
-        RegExp('(\\*\\*|\\*)(.*?)(\\*\\*|\\*)'),
+        '*',
+        RegExp('\\*[^\\*]+\\*'),
         '',
         const TextStyle(fontWeight: FontWeight.bold),
       );
 
   static PatternStyle get code => PatternStyle(
         '`',
-        RegExp('`(.*?)`'),
+        RegExp('`[^`]+`'),
         '',
         TextStyle(
           fontFamily: defaultTargetPlatform == TargetPlatform.iOS
@@ -31,14 +31,14 @@ class PatternStyle {
 
   static PatternStyle get italic => PatternStyle(
         '_',
-        RegExp('_(.*?)_'),
+        RegExp('_[^_]+_'),
         '',
         const TextStyle(fontStyle: FontStyle.italic),
       );
 
   static PatternStyle get lineThrough => PatternStyle(
         '~',
-        RegExp('~(.*?)~'),
+        RegExp('~[^~]+~'),
         '',
         const TextStyle(decoration: TextDecoration.lineThrough),
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'widgets/typing_indicator.dart';
+import 'widgets/message/system_message.dart';
 import 'widgets/unread_header.dart';
 
 // For internal usage only. Use values from theme itself.
@@ -102,6 +103,7 @@ abstract class ChatTheme {
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
     required this.statusIconPadding,
+    required this.systemMessageTheme,
     required this.typingIndicatorTheme,
     required this.unreadHeaderTheme,
     required this.userAvatarImageBackgroundColor,
@@ -264,6 +266,10 @@ abstract class ChatTheme {
   /// Padding around status icons.
   final EdgeInsets statusIconPadding;
 
+  /// Theme for the system message. Will not have an effect if a custom builder
+  /// is provided.
+  final SystemMessageTheme systemMessageTheme;
+
   /// Theme for typing indicator. See [TypingIndicator].
   final TypingIndicatorTheme typingIndicatorTheme;
 
@@ -404,6 +410,20 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.systemMessageTheme = const SystemMessageTheme(
+      margin: EdgeInsets.only(
+        bottom: 24,
+        top: 8,
+        left: 8,
+        right: 8,
+      ),
+      textStyle: TextStyle(
+        color: neutral2,
+        fontSize: 12,
+        fontWeight: FontWeight.w800,
+        height: 1.333,
+      ),
+    ),
     super.typingIndicatorTheme = const TypingIndicatorTheme(
       animatedCirclesColor: neutral1,
       animatedCircleSize: 5.0,
@@ -559,6 +579,20 @@ class DarkChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.systemMessageTheme = const SystemMessageTheme(
+      margin: EdgeInsets.only(
+        bottom: 24,
+        top: 8,
+        left: 8,
+        right: 8,
+      ),
+      textStyle: TextStyle(
+        color: neutral7,
+        fontSize: 12,
+        fontWeight: FontWeight.w800,
+        height: 1.333,
+      ),
+    ),
     super.typingIndicatorTheme = const TypingIndicatorTheme(
       animatedCirclesColor: neutral7,
       animatedCircleSize: 5.0,

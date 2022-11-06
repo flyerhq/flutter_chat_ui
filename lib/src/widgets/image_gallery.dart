@@ -7,11 +7,15 @@ import '../models/preview_image.dart';
 class ImageGallery extends StatelessWidget {
   const ImageGallery({
     super.key,
+    this.imageHeaders,
     required this.images,
     required this.onClosePressed,
     this.options = const ImageGalleryOptions(),
     required this.pageController,
   });
+
+  /// See [Chat.imageHeaders].
+  final Map<String, String>? imageHeaders;
 
   /// Images to show in the gallery.
   final List<PreviewImage> images;
@@ -40,7 +44,10 @@ class ImageGallery extends StatelessWidget {
               PhotoViewGallery.builder(
                 builder: (BuildContext context, int index) =>
                     PhotoViewGalleryPageOptions(
-                  imageProvider: Conditional().getProvider(images[index].uri),
+                  imageProvider: Conditional().getProvider(
+                    images[index].uri,
+                    headers: imageHeaders,
+                  ),
                   minScale: options.minScale,
                   maxScale: options.maxScale,
                 ),
