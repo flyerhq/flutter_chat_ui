@@ -1,3 +1,4 @@
+import 'dart:developer' as l;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -344,6 +345,7 @@ class ChatState extends State<Chat> {
 
   @override
   void initState() {
+    l.log('show image: ${widget.theme.showBackgroundImage}');
     super.initState();
 
     _scrollController = widget.scrollController ?? AutoScrollController();
@@ -413,13 +415,14 @@ class ChatState extends State<Chat> {
             child: Stack(
               children: [
                 Container(
-                  decoration: widget.theme.backgroundColor != null
+                  decoration: !widget.theme.showBackgroundImage
                       ? BoxDecoration(
                           color: widget.theme.backgroundColor,
                         )
                       : BoxDecoration(
                           image: DecorationImage(
                             image: widget.theme.backgroundImage!,
+                            fit: BoxFit.cover,
                           ),
                         ),
                   child: Column(

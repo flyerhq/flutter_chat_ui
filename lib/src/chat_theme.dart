@@ -58,7 +58,7 @@ abstract class ChatTheme {
   const ChatTheme({
     required this.attachmentButtonIcon,
     required this.attachmentButtonMargin,
-    this.backgroundColor,
+    required this.backgroundColor,
     this.backgroundImage,
     required this.dateDividerMargin,
     required this.dateDividerTextStyle,
@@ -111,6 +111,7 @@ abstract class ChatTheme {
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
+    required this.showBackgroundImage,
   });
 
   /// Icon for select attachment button.
@@ -295,6 +296,9 @@ abstract class ChatTheme {
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
+
+  /// When True the background image will be shown and not background color.
+  final bool showBackgroundImage;
 }
 
 /// Default chat theme which extends [ChatTheme].
@@ -307,6 +311,8 @@ class DefaultChatTheme extends ChatTheme {
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
     super.backgroundColor = neutral7,
+    super.backgroundImage,
+    super.showBackgroundImage = false,
     super.dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
@@ -476,6 +482,8 @@ class DarkChatTheme extends ChatTheme {
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
     super.backgroundColor = dark,
+    super.backgroundImage,
+    super.showBackgroundImage = false,
     super.dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
