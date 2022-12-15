@@ -58,7 +58,8 @@ abstract class ChatTheme {
   const ChatTheme({
     required this.attachmentButtonIcon,
     required this.attachmentButtonMargin,
-    required this.backgroundColor,
+    this.backgroundColor,
+    this.backgroundImage,
     required this.dateDividerMargin,
     required this.dateDividerTextStyle,
     required this.deliveredIcon,
@@ -119,7 +120,10 @@ abstract class ChatTheme {
   final EdgeInsets? attachmentButtonMargin;
 
   /// Used as a background color of a chat widget.
-  final Color backgroundColor;
+  final Color? backgroundColor;
+
+  /// Used as a background image of a chat widget.
+  final ImageProvider? backgroundImage;
 
   /// Margin around date dividers.
   final EdgeInsets dateDividerMargin;

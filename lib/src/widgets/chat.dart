@@ -413,7 +413,15 @@ class ChatState extends State<Chat> {
             child: Stack(
               children: [
                 Container(
-                  color: widget.theme.backgroundColor,
+                  decoration: widget.theme.backgroundColor != null
+                      ? BoxDecoration(
+                          color: widget.theme.backgroundColor,
+                        )
+                      : BoxDecoration(
+                          image: DecorationImage(
+                            image: widget.theme.backgroundImage!,
+                          ),
+                        ),
                   child: Column(
                     children: [
                       Flexible(
