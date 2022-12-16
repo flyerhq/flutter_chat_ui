@@ -608,7 +608,7 @@ class ChatState extends State<Chat> {
         controller: _scrollController,
         index: index ?? -1,
         key: Key('scroll-${message.id}'),
-        color: widget.theme.highlightMessageColor,
+        highlightColor: widget.theme.highlightMessageColor,
         child: messageWidget,
       );
     }
