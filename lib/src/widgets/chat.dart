@@ -396,11 +396,22 @@ class ChatState extends State<Chat> {
   }
 
   /// Scroll to the message with the specified [id].
-  void scrollToMessage(String id, {Duration? duration}) =>
-      _scrollController.scrollToIndex(
+  void scrollToMessage(
+    String id, {
+    Duration? duration,
+    bool withHighlight = false,
+  }) async {
+    await _scrollController.scrollToIndex(
+      _autoScrollIndexById[id]!,
+      duration: duration ?? scrollAnimationDuration,
+    );
+    if (withHighlight) {
+      await _scrollController.highlight(
         _autoScrollIndexById[id]!,
-        duration: duration ?? scrollAnimationDuration,
+        highlightDuration: duration ?? const Duration(seconds: 3),
       );
+    }
+  }
 
   /// Highlight the message with the specified [id].
   void highlightMessage(String id, {Duration? duration}) =>
