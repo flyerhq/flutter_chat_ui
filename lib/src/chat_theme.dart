@@ -463,6 +463,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    super.highlightMessageColor,
   });
 }
 
@@ -632,5 +633,6 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    super.highlightMessageColor,
   });
 }
