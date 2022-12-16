@@ -110,6 +110,7 @@ abstract class ChatTheme {
     required this.userAvatarNameColors,
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
+    this.highlightMessageColor,
   });
 
   /// Icon for select attachment button.
@@ -291,6 +292,9 @@ abstract class ChatTheme {
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
   final TextStyle userNameTextStyle;
+
+  /// Color used as background of message row on highligth.
+  final Color? highlightMessageColor;
 }
 
 /// Default chat theme which extends [ChatTheme].

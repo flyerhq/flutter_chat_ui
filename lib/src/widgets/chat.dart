@@ -402,6 +402,13 @@ class ChatState extends State<Chat> {
         duration: duration ?? scrollAnimationDuration,
       );
 
+  /// Highlight the message with the specified [id].
+  void highlightMessage(String id, {Duration? duration}) =>
+      _scrollController.highlight(
+        _autoScrollIndexById[id]!,
+        highlightDuration: duration ?? const Duration(seconds: 3),
+      );
+
   @override
   Widget build(BuildContext context) => InheritedUser(
         user: widget.user,
@@ -601,6 +608,7 @@ class ChatState extends State<Chat> {
         controller: _scrollController,
         index: index ?? -1,
         key: Key('scroll-${message.id}'),
+        color: widget.theme.highlightMessageColor,
         child: messageWidget,
       );
     }
