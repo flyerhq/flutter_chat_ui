@@ -202,7 +202,7 @@ class _InputState extends State<Input> {
                                 InheritedL10n.of(context).l10n.inputPlaceholder,
                           ),
                       focusNode: _inputFocusNode,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: widget.options.keyboardType,
                       maxLines: 5,
                       minLines: 1,
                       onChanged: widget.options.onTextChanged,
@@ -244,6 +244,7 @@ class _InputState extends State<Input> {
 class InputOptions {
   const InputOptions({
     this.inputClearMode = InputClearMode.always,
+    this.keyboardType = TextInputType.multiline,
     this.onTextChanged,
     this.onTextFieldTap,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
@@ -252,6 +253,9 @@ class InputOptions {
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
   final InputClearMode inputClearMode;
+  
+  /// Controls the [Input] keyboard type. Defaults to [TextInputType.multiline].
+  final TextInputType keyboardType;
 
   /// Will be called whenever the text inside [TextField] changes.
   final void Function(String)? onTextChanged;
