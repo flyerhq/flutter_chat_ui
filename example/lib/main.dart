@@ -49,6 +49,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Chat(
+          makeMsgStartFromTop: true,
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
           onMessageTap: _handleMessageTap,

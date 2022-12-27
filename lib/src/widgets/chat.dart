@@ -95,6 +95,7 @@ class Chat extends StatefulWidget {
     this.userAgent,
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
+    this.makeMsgStartFromTop = false,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -322,6 +323,7 @@ class Chat extends StatefulWidget {
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
 
+  final bool makeMsgStartFromTop;
   @override
   State<Chat> createState() => ChatState();
 }
@@ -414,6 +416,9 @@ class ChatState extends State<Chat> {
                 Container(
                   color: widget.theme.backgroundColor,
                   child: Column(
+                    mainAxisAlignment: widget.makeMsgStartFromTop
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.start,
                     children: [
                       Flexible(
                         child: widget.messages.isEmpty
@@ -431,6 +436,8 @@ class ChatState extends State<Chat> {
                                     BoxConstraints constraints,
                                   ) =>
                                       ChatList(
+                                    makeMsgStartFromTop:
+                                        widget.makeMsgStartFromTop,
                                     bottomWidget: widget.listBottomWidget,
                                     bubbleRtlAlignment:
                                         widget.bubbleRtlAlignment!,
