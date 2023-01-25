@@ -97,6 +97,7 @@ class Chat extends StatefulWidget {
     this.userAgent,
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
+    this.slidableMessageBuilder,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -318,6 +319,10 @@ class Chat extends StatefulWidget {
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
 
+  /// See [Message.slidableMessageBuilder].
+  final Widget Function(types.Message, Widget msgWidget)?
+      slidableMessageBuilder;
+
   @override
   State<Chat> createState() => ChatState();
 }
@@ -456,8 +461,7 @@ class ChatState extends State<Chat> {
             widget.showUserAvatars && message.author.id != widget.user.id
                 ? min(constraints.maxWidth * 0.72, 440).floor()
                 : min(constraints.maxWidth * 0.78, 440).floor();
-
-        messageWidget = Message(
+        final Widget msgWidget = Message(
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
@@ -499,6 +503,9 @@ class ChatState extends State<Chat> {
           userAgent: widget.userAgent,
           videoMessageBuilder: widget.videoMessageBuilder,
         );
+        messageWidget = widget.slidableMessageBuilder == null
+            ? msgWidget
+            : widget.slidableMessageBuilder!(message, msgWidget);
       }
 
       return AutoScrollTag(
