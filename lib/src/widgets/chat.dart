@@ -28,6 +28,10 @@ import 'state/inherited_user.dart';
 import 'typing_indicator.dart';
 import 'unread_header.dart';
 
+
+/// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
+final Map<String, int> chatMessageAutoScrollIndexById = {};
+
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
@@ -329,7 +333,7 @@ class Chat extends StatefulWidget {
 
 /// [Chat] widget state.
 class ChatState extends State<Chat> {
-  /// Used to get the correct auto scroll index from [_autoScrollIndexById].
+  /// Used to get the correct auto scroll index from [chatMessageAutoScrollIndexById].
   static const String _unreadHeaderId = 'unread_header_id';
 
   List<Object> _chatMessages = [];
@@ -338,8 +342,6 @@ class ChatState extends State<Chat> {
   bool _hadScrolledToUnreadOnOpen = false;
   bool _isImageViewVisible = false;
 
-  /// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
-  final Map<String, int> _autoScrollIndexById = {};
   late final AutoScrollController _scrollController;
 
   @override
@@ -353,7 +355,7 @@ class ChatState extends State<Chat> {
 
   /// Scroll to the unread header.
   void scrollToUnreadHeader() {
-    final unreadHeaderIndex = _autoScrollIndexById[_unreadHeaderId];
+    final unreadHeaderIndex = chatMessageAutoScrollIndexById[_unreadHeaderId];
     if (unreadHeaderIndex != null) {
       _scrollController.scrollToIndex(
         unreadHeaderIndex,
@@ -370,13 +372,13 @@ class ChatState extends State<Chat> {
     Duration? highlightDuration,
   }) async {
     await _scrollController.scrollToIndex(
-      _autoScrollIndexById[id]!,
+      chatMessageAutoScrollIndexById[id]!,
       duration: scrollDuration ?? scrollAnimationDuration,
       preferPosition: AutoScrollPosition.middle,
     );
     if (withHighlight) {
       await _scrollController.highlight(
-        _autoScrollIndexById[id]!,
+        chatMessageAutoScrollIndexById[id]!,
         highlightDuration: highlightDuration ?? const Duration(seconds: 3),
       );
     }
@@ -385,7 +387,7 @@ class ChatState extends State<Chat> {
   /// Highlight the message with the specified [id].
   void highlightMessage(String id, {Duration? duration}) =>
       _scrollController.highlight(
-        _autoScrollIndexById[id]!,
+        chatMessageAutoScrollIndexById[id]!,
         highlightDuration: duration ?? const Duration(seconds: 3),
       );
 
@@ -543,16 +545,16 @@ class ChatState extends State<Chat> {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
-  /// Updates the [_autoScrollIndexById] mapping with the latest messages.
+  /// Updates the [chatMessageAutoScrollIndexById] mapping with the latest messages.
   void _refreshAutoScrollMapping() {
-    _autoScrollIndexById.clear();
+    chatMessageAutoScrollIndexById.clear();
     var i = 0;
     for (final object in _chatMessages) {
       if (object is UnreadHeaderData) {
-        _autoScrollIndexById[_unreadHeaderId] = i;
+        chatMessageAutoScrollIndexById[_unreadHeaderId] = i;
       } else if (object is Map<String, Object>) {
         final message = object['message']! as types.Message;
-        _autoScrollIndexById[message.id] = i;
+        chatMessageAutoScrollIndexById[message.id] = i;
       }
       i++;
     }
