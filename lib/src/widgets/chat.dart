@@ -28,7 +28,6 @@ import 'state/inherited_user.dart';
 import 'typing_indicator.dart';
 import 'unread_header.dart';
 
-
 /// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
 final Map<String, int> chatMessageAutoScrollIndexById = {};
 
