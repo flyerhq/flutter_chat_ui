@@ -8,6 +8,7 @@ import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_l10n.dart';
 import 'attachment_button.dart';
+import 'pen_button.dart';
 import 'input_text_field_controller.dart';
 import 'send_button.dart';
 
@@ -19,6 +20,7 @@ class Input extends StatefulWidget {
     super.key,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
+    this.onPenPressed,
     required this.onSendPressed,
     this.options = const InputOptions(),
   });
@@ -31,6 +33,8 @@ class Input extends StatefulWidget {
 
   /// See [AttachmentButton.onPressed].
   final VoidCallback? onAttachmentPressed;
+
+  final VoidCallback? onPenPressed;
 
   /// Will be called on [SendButton] tap. Has [types.PartialText] which can
   /// be transformed to [types.TextMessage] and added to the messages list.
@@ -175,6 +179,12 @@ class _InputState extends State<Input> {
                   AttachmentButton(
                     isLoading: widget.isAttachmentUploading ?? false,
                     onPressed: widget.onAttachmentPressed,
+                    padding: buttonPadding,
+                  ),
+                if (widget.onPenPressed != null)
+                  PenButton(
+                    isLoading: widget.isAttachmentUploading ?? false,
+                    onPressed: widget.onPenPressed,
                     padding: buttonPadding,
                   ),
                 Expanded(

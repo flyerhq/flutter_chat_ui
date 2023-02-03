@@ -7,8 +7,8 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=2.18.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   diffutil_dart: ^3.0.0
@@ -24,6 +24,7 @@ dependencies:
   scroll_to_index: ^3.0.1
   url_launcher: ^6.1.6
   visibility_detector: ^0.3.3
+  decorated_icon: ^1.2.1
 
 dev_dependencies:
   dart_code_metrics: ^4.21.3
@@ -33,6 +34,7 @@ dev_dependencies:
 
 flutter:
   assets:
+    # - assets/images/
     - packages/flutter_chat_ui/assets/icon-arrow.png
     - packages/flutter_chat_ui/assets/icon-attachment.png
     - packages/flutter_chat_ui/assets/icon-delivered.png
@@ -45,6 +47,7 @@ flutter:
     - packages/flutter_chat_ui/assets/2.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/2.0x/icon-document.png
     - packages/flutter_chat_ui/assets/2.0x/icon-error.png
+    - packages/flutter_chat_ui/assets/2.0x/icon-pen.png
     - packages/flutter_chat_ui/assets/2.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/2.0x/icon-send.png
     - packages/flutter_chat_ui/assets/3.0x/icon-arrow.png
@@ -52,5 +55,6 @@ flutter:
     - packages/flutter_chat_ui/assets/3.0x/icon-delivered.png
     - packages/flutter_chat_ui/assets/3.0x/icon-document.png
     - packages/flutter_chat_ui/assets/3.0x/icon-error.png
+    - packages/flutter_chat_ui/assets/3.0x/icon-pen.png
     - packages/flutter_chat_ui/assets/3.0x/icon-seen.png
     - packages/flutter_chat_ui/assets/3.0x/icon-send.png

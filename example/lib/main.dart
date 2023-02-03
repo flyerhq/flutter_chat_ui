@@ -14,6 +14,8 @@ import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
+//import 'package:flutter_chat_ui_editor/painter.dart';
+
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
@@ -36,9 +38,11 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
+  //List<Widget> actions;
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
+  bool _isAppBarVisible = true;
 
   @override
   void initState() {
@@ -48,9 +52,17 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: _isAppBarVisible
+            ? AppBar(
+                backgroundColor: neutral0,
+                title: const Text('friends'),
+              )
+            : null,
         body: Chat(
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
+          onPenPressed: _handlePenPressed,
+          //onCheckPressed:_handlePenPressed,
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
@@ -64,6 +76,15 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
+  }
+
+  void _handlePenPressed() {
+    setState(() {
+      _isAppBarVisible = !_isAppBarVisible;
+    });
+
+    print('penが押されたよーー _isAppBarVisible: $_isAppBarVisible');
+    //return PenPress;
   }
 
   void _handleAttachmentPressed() {
