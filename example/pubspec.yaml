@@ -33,8 +33,7 @@ dependencies:
     path: ../
   image_picker: ^0.8.2
   intl: ^0.17.0
-  mime: ^1.0.0
-  open_file: ^3.2.1
+  mime: ^1.0.0  
   uuid: ^3.0.4
 
 dev_dependencies:
