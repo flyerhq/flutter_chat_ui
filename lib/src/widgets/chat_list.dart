@@ -2,11 +2,9 @@ import 'package:diffutil_dart/diffutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-import '../models/bubble_rtl_alignment.dart';
 import 'patched_sliver_animated_list.dart';
 import 'state/inherited_chat_theme.dart';
 import 'state/inherited_user.dart';
-import 'typing_indicator.dart';
 
 /// Animated list that handles automatic animations and pagination.
 class ChatList extends StatefulWidget {
@@ -14,7 +12,6 @@ class ChatList extends StatefulWidget {
   const ChatList({
     super.key,
     this.bottomWidget,
-    required this.bubbleRtlAlignment,
     this.isLastPage,
     required this.itemBuilder,
     required this.items,
@@ -23,16 +20,11 @@ class ChatList extends StatefulWidget {
     this.onEndReachedThreshold,
     required this.scrollController,
     this.scrollPhysics,
-    this.typingIndicatorOptions,
     required this.useTopSafeAreaInset,
   });
 
   /// A custom widget at the bottom of the list.
   final Widget? bottomWidget;
-
-  /// Used to set alignment of typing indicator.
-  /// See [BubbleRtlAlignment].
-  final BubbleRtlAlignment bubbleRtlAlignment;
 
   /// Used for pagination (infinite scroll) together with [onEndReached].
   /// When true, indicates that there are no more pages to load and
@@ -66,10 +58,6 @@ class ChatList extends StatefulWidget {
   /// Determines the physics of the scroll view.
   final ScrollPhysics? scrollPhysics;
 
-  /// Used to build typing indicator according to options.
-  /// See [TypingIndicatorOptions].
-  final TypingIndicatorOptions? typingIndicatorOptions;
-
   /// Whether to use top safe area inset for the list.
   final bool useTopSafeAreaInset;
 
@@ -84,9 +72,9 @@ class _ChatListState extends State<ChatList>
     curve: Curves.easeOutQuad,
     parent: _controller,
   );
+
   late final AnimationController _controller = AnimationController(vsync: this);
 
-  bool _indicatorOnScrollStatus = false;
   bool _isNextPageLoading = false;
   final GlobalKey<PatchedSliverAnimatedListState> _listKey =
       GlobalKey<PatchedSliverAnimatedListState>();
@@ -116,17 +104,6 @@ class _ChatListState extends State<ChatList>
   Widget build(BuildContext context) =>
       NotificationListener<ScrollNotification>(
         onNotification: (notification) {
-          if (notification.metrics.pixels > 10.0 && !_indicatorOnScrollStatus) {
-            setState(() {
-              _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
-            });
-          } else if (notification.metrics.pixels == 0.0 &&
-              _indicatorOnScrollStatus) {
-            setState(() {
-              _indicatorOnScrollStatus = !_indicatorOnScrollStatus;
-            });
-          }
-
           if (widget.onEndReached == null || widget.isLastPage == true) {
             return false;
           }
@@ -163,19 +140,6 @@ class _ChatListState extends State<ChatList>
           slivers: [
             if (widget.bottomWidget != null)
               SliverToBoxAdapter(child: widget.bottomWidget),
-            SliverPadding(
-              padding: const EdgeInsets.only(bottom: 4),
-              sliver: SliverToBoxAdapter(
-                child: widget.typingIndicatorOptions?.customTypingIndicator ??
-                    TypingIndicator(
-                      bubbleAlignment: widget.bubbleRtlAlignment,
-                      options: widget.typingIndicatorOptions!,
-                      showIndicator: (widget
-                              .typingIndicatorOptions!.typingUsers.isNotEmpty &&
-                          !_indicatorOnScrollStatus),
-                    ),
-              ),
-            ),
             SliverPadding(
               padding: const EdgeInsets.only(bottom: 4),
               sliver: PatchedSliverAnimatedList(

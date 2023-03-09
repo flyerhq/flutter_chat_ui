@@ -10,7 +10,7 @@ analyzer:
 # invoked from the command line by running `flutter analyze`.
 
 # The following line activates a set of recommended lints for Flutter apps,
-# packages, and plugins designed to encourage good coding practices.
+# packages, and plugins designed to encouhrage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
 linter:

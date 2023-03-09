@@ -598,4 +598,4 @@ if (_messages.where((e) => e.id == 'lastReadMessageId').isEmpty) {
     _chatKey.currentState?.scrollToUnreadHeader();
   });
 }
-
+```
