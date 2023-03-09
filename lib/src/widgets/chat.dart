@@ -517,7 +517,12 @@ class ChatState extends State<Chat> {
     int? index,
   ) {
     if (object is DateHeader) {
-      return widget.dateHeaderBuilder?.call(object) ??
+      return 
+      
+      SizedBox(
+        height: 0,
+      );
+      /* widget.dateHeaderBuilder?.call(object) ??
           Container(
             alignment: Alignment.center,
             margin: widget.theme.dateDividerMargin,
@@ -525,10 +530,10 @@ class ChatState extends State<Chat> {
               object.text,
               style: widget.theme.dateDividerTextStyle,
             ),
-          );
+          ); */
     } else if (object is MessageSpacer) {
       return SizedBox(
-        height: object.height,
+        height: 1,
       );
     } else if (object is UnreadHeaderData) {
       return AutoScrollTag(

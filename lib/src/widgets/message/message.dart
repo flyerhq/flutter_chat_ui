@@ -222,11 +222,11 @@ class Message extends StatelessWidget {
           ? EdgeInsetsDirectional.only(
               bottom: 4,
               end: isMobile ? query.padding.right : 0,
-              start: 20 + (isMobile ? query.padding.left : 0),
+              start: 4 + (isMobile ? query.padding.left : 0),
             )
           : EdgeInsets.only(
               bottom: 4,
-              left: 20 + (isMobile ? query.padding.left : 0),
+              left: 4 + (isMobile ? query.padding.left : 0),
               right: isMobile ? query.padding.right : 0,
             ),
       child: Row(
@@ -294,13 +294,20 @@ class Message extends StatelessWidget {
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
+      Container(child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+     
           UserAvatar(
             author: message.author,
             bubbleRtlAlignment: bubbleRtlAlignment,
             imageHeaders: imageHeaders,
             onAvatarTap: onAvatarTap,
-          )
-      : const SizedBox(width: 40);
+          ),
+
+             SizedBox(height:10)
+      ],),)
+      : const SizedBox(width: 0);
 
   Widget _bubbleBuilder(
     BuildContext context,
