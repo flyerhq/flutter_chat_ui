@@ -181,6 +181,7 @@ class _InputState extends State<Input> {
                   child: Padding(
                     padding: textPadding,
                     child: TextField(
+                      enabled: widget.options.enabled,
                       autocorrect: widget.options.autocorrect,
                       enableSuggestions: widget.options.enableSuggestions,
                       controller: _textController,
@@ -252,6 +253,7 @@ class InputOptions {
     this.textEditingController,
     this.autocorrect = true,
     this.enableSuggestions = true,
+    this.enabled = true,
   });
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
@@ -276,9 +278,12 @@ class InputOptions {
   /// and pass it here.
   final TextEditingController? textEditingController;
 
-  /// [TextField] property to manage auto correct.
+  /// Controls the [TextInput] autocorrect behavior. Defaults to [true].
   final bool autocorrect;
 
-  /// [TextField] property to manage auto suggestions.
+  /// Controls the [TextInput] enableSuggestions behavior. Defaults to [true].
   final bool enableSuggestions;
+
+  /// Controls the [TextInput] enabled behavior. Defaults to [true].
+  final bool enabled;
 }
