@@ -7,8 +7,8 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: ">=2.18.0 <3.0.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   diffutil_dart: ^3.0.0
@@ -18,7 +18,7 @@ dependencies:
   flutter_chat_types: ^3.6.0
   flutter_link_previewer: ^3.2.0
   flutter_parsed_text: ^2.2.1
-  intl: ^0.17.0
+  intl: ^0.18.0
   meta: ^1.8.0
   photo_view: ^0.14.0
   scroll_to_index: ^3.0.1
