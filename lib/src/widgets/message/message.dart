@@ -106,7 +106,7 @@ class Message extends StatelessWidget {
   final int messageWidth;
 
   /// See [TextMessage.nameBuilder].
-  final Widget Function(String userId)? nameBuilder;
+  final Widget Function(types.User userId)? nameBuilder;
 
   /// See [UserAvatar.onAvatarTap].
   final void Function(types.User)? onAvatarTap;

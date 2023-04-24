@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart'
     show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
@@ -39,7 +40,7 @@ class TextMessage extends StatelessWidget {
 
   /// This is to allow custom user name builder
   /// By using this we can fetch newest user info based on id
-  final Widget Function(String userId)? nameBuilder;
+  final Widget Function(User userId)? nameBuilder;
 
   /// See [LinkPreview.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
@@ -155,8 +156,7 @@ class TextMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showName)
-          nameBuilder?.call(message.author.id) ??
-              UserName(author: message.author),
+          nameBuilder?.call(message.author) ?? UserName(author: message.author),
         if (enlargeEmojis)
           if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)
