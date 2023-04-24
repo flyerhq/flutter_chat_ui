@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 
@@ -96,6 +97,9 @@ bool isConsistsOfEmojis(
   return multiEmojiRegExp.hasMatch(message.text);
 }
 
+final isMobile = defaultTargetPlatform == TargetPlatform.android ||
+    defaultTargetPlatform == TargetPlatform.iOS;
+
 /// Parses provided messages to chat messages (with headers and spacers)
 /// and returns them with a gallery.
 List<Object> calculateChatMessages(
@@ -104,6 +108,7 @@ List<Object> calculateChatMessages(
   String Function(DateTime)? customDateHeaderText,
   DateFormat? dateFormat,
   required int dateHeaderThreshold,
+  bool dateIsUtc = false,
   String? dateLocale,
   required int groupMessagesThreshold,
   String? lastReadMessageId,
@@ -159,9 +164,14 @@ List<Object> calculateChatMessages(
       nextMessageDateThreshold =
           nextMessage!.createdAt! - message.createdAt! >= dateHeaderThreshold;
 
-      nextMessageDifferentDay =
-          DateTime.fromMillisecondsSinceEpoch(message.createdAt!).day !=
-              DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!).day;
+      nextMessageDifferentDay = DateTime.fromMillisecondsSinceEpoch(
+            message.createdAt!,
+            isUtc: dateIsUtc,
+          ).day !=
+          DateTime.fromMillisecondsSinceEpoch(
+            nextMessage.createdAt!,
+            isUtc: dateIsUtc,
+          ).day;
 
       nextMessageInGroup = nextMessageSameAuthor &&
           message.id != lastReadMessageId &&
@@ -172,13 +182,22 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
-          dateTime: DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
+          dateTime: DateTime.fromMillisecondsSinceEpoch(
+            message.createdAt!,
+            isUtc: dateIsUtc,
+          ),
           text: customDateHeaderText != null
               ? customDateHeaderText(
-                  DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
+                  DateTime.fromMillisecondsSinceEpoch(
+                    message.createdAt!,
+                    isUtc: dateIsUtc,
+                  ),
                 )
               : getVerboseDateTimeRepresentation(
-                  DateTime.fromMillisecondsSinceEpoch(message.createdAt!),
+                  DateTime.fromMillisecondsSinceEpoch(
+                    message.createdAt!,
+                    isUtc: dateIsUtc,
+                  ),
                   dateFormat: dateFormat,
                   dateLocale: dateLocale,
                   timeFormat: timeFormat,
@@ -194,7 +213,7 @@ List<Object> calculateChatMessages(
       'showStatus': message.showStatus ?? true,
     });
 
-    if (!nextMessageInGroup) {
+    if (!nextMessageInGroup && message.type != types.MessageType.system) {
       chatMessages.insert(
         0,
         MessageSpacer(
@@ -208,14 +227,22 @@ List<Object> calculateChatMessages(
       chatMessages.insert(
         0,
         DateHeader(
-          dateTime:
-              DateTime.fromMillisecondsSinceEpoch(nextMessage!.createdAt!),
+          dateTime: DateTime.fromMillisecondsSinceEpoch(
+            nextMessage!.createdAt!,
+            isUtc: dateIsUtc,
+          ),
           text: customDateHeaderText != null
               ? customDateHeaderText(
-                  DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!),
+                  DateTime.fromMillisecondsSinceEpoch(
+                    nextMessage.createdAt!,
+                    isUtc: dateIsUtc,
+                  ),
                 )
               : getVerboseDateTimeRepresentation(
-                  DateTime.fromMillisecondsSinceEpoch(nextMessage.createdAt!),
+                  DateTime.fromMillisecondsSinceEpoch(
+                    nextMessage.createdAt!,
+                    isUtc: dateIsUtc,
+                  ),
                   dateFormat: dateFormat,
                   dateLocale: dateLocale,
                   timeFormat: timeFormat,

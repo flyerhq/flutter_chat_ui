@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../../models/input_clear_mode.dart';
 import '../../models/send_button_visibility_mode.dart';
+import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_l10n.dart';
 import 'attachment_button.dart';
@@ -136,14 +136,14 @@ class _InputState extends State<Input> {
         .theme
         .inputPadding
         .copyWith(left: 16, right: 16);
-    final safeAreaInsets = kIsWeb
-        ? EdgeInsets.zero
-        : EdgeInsets.fromLTRB(
+    final safeAreaInsets = isMobile
+        ? EdgeInsets.fromLTRB(
             query.padding.left,
             0,
             query.padding.right,
             query.viewInsets.bottom + query.padding.bottom,
-          );
+          )
+        : EdgeInsets.zero;
     final textPadding = InheritedChatTheme.of(context)
         .theme
         .inputPadding
@@ -181,6 +181,9 @@ class _InputState extends State<Input> {
                   child: Padding(
                     padding: textPadding,
                     child: TextField(
+                      enabled: widget.options.enabled,
+                      autocorrect: widget.options.autocorrect,
+                      enableSuggestions: widget.options.enableSuggestions,
                       controller: _textController,
                       cursorColor: InheritedChatTheme.of(context)
                           .theme
@@ -202,7 +205,7 @@ class _InputState extends State<Input> {
                                 InheritedL10n.of(context).l10n.inputPlaceholder,
                           ),
                       focusNode: _inputFocusNode,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: widget.options.keyboardType,
                       maxLines: 5,
                       minLines: 1,
                       onChanged: widget.options.onTextChanged,
@@ -244,14 +247,21 @@ class _InputState extends State<Input> {
 class InputOptions {
   const InputOptions({
     this.inputClearMode = InputClearMode.always,
+    this.keyboardType = TextInputType.multiline,
     this.onTextChanged,
     this.onTextFieldTap,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.textEditingController,
+    this.autocorrect = true,
+    this.enableSuggestions = true,
+    this.enabled = true,
   });
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
   final InputClearMode inputClearMode;
+  
+  /// Controls the [Input] keyboard type. Defaults to [TextInputType.multiline].
+  final TextInputType keyboardType;
 
   /// Will be called whenever the text inside [TextField] changes.
   final void Function(String)? onTextChanged;
@@ -271,4 +281,13 @@ class InputOptions {
   /// you can create your own [InputTextFieldController] (imported from this lib)
   /// and pass it here.
   final TextEditingController? textEditingController;
+
+  /// Controls the [TextInput] autocorrect behavior. Defaults to [true].
+  final bool autocorrect;
+
+  /// Controls the [TextInput] enableSuggestions behavior. Defaults to [true].
+  final bool enableSuggestions;
+
+  /// Controls the [TextInput] enabled behavior. Defaults to [true].
+  final bool enabled;
 }

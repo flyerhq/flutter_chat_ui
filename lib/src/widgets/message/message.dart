@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
@@ -21,6 +20,7 @@ class Message extends StatelessWidget {
   /// Creates a particular message from any message type.
   const Message({
     super.key,
+    this.audioMessageBuilder,
     this.avatarBuilder,
     this.bubbleBuilder,
     this.bubbleRtlAlignment,
@@ -51,7 +51,12 @@ class Message extends StatelessWidget {
     required this.textMessageOptions,
     required this.usePreviewData,
     this.userAgent,
+    this.videoMessageBuilder,
   });
+
+  /// Build an audio message inside predefined bubble.
+  final Widget Function(types.AudioMessage, {required int messageWidth})?
+      audioMessageBuilder;
 
   /// This is to allow custom user avatar builder
   /// By using this we can fetch newest user info based on id
@@ -165,6 +170,10 @@ class Message extends StatelessWidget {
   /// See [TextMessage.userAgent].
   final String? userAgent;
 
+  /// Build an audio message inside predefined bubble.
+  final Widget Function(types.VideoMessage, {required int messageWidth})?
+      videoMessageBuilder;
+
   @override
   Widget build(BuildContext context) {
     final query = MediaQuery.of(context);
@@ -212,13 +221,13 @@ class Message extends StatelessWidget {
       margin: bubbleRtlAlignment == BubbleRtlAlignment.left
           ? EdgeInsetsDirectional.only(
               bottom: 4,
-              end: kIsWeb ? 0 : query.padding.right,
-              start: 20 + (kIsWeb ? 0 : query.padding.left),
+              end: isMobile ? query.padding.right : 0,
+              start: 20 + (isMobile ? query.padding.left : 0),
             )
           : EdgeInsets.only(
               bottom: 4,
-              left: 20 + (kIsWeb ? 0 : query.padding.left),
-              right: kIsWeb ? 0 : query.padding.right,
+              left: 20 + (isMobile ? query.padding.left : 0),
+              right: isMobile ? query.padding.right : 0,
             ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -323,6 +332,11 @@ class Message extends StatelessWidget {
 
   Widget _messageBuilder() {
     switch (message.type) {
+      case types.MessageType.audio:
+        final audioMessage = message as types.AudioMessage;
+        return audioMessageBuilder != null
+            ? audioMessageBuilder!(audioMessage, messageWidth: messageWidth)
+            : const SizedBox();
       case types.MessageType.custom:
         final customMessage = message as types.CustomMessage;
         return customMessageBuilder != null
@@ -361,6 +375,11 @@ class Message extends StatelessWidget {
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,
               );
+      case types.MessageType.video:
+        final videoMessage = message as types.VideoMessage;
+        return videoMessageBuilder != null
+            ? videoMessageBuilder!(videoMessage, messageWidth: messageWidth)
+            : const SizedBox();
       default:
         return const SizedBox();
     }

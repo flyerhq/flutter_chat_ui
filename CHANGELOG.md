@@ -1,3 +1,17 @@
+## 1.6.6
+
+- Add `audioMessageBuilder` (no default implementation yet). Thanks @marinkobabic for the PR!
+- Add `videoMessageBuilder` (no default implementation yet).
+- Add `SystemMessage` and `systemMessageBuilder`. Thanks @felixgabler for the PR!
+- Add `dateIsUtc` to use UTC time for parsing dates inside the chat. Thanks @marinkobabic for the PR!
+- Fix unnecessary scrolls to the bottom. Thanks @MaddinMade for the PR!
+- Add custom text matchers to the `TextMessageOptions`. Thanks @jld3103 for the PR!
+- Add `listBottomWidget`. Thanks @MaddinMade for the PR!
+- Fix scroll to unread when no unread messages exist. Thans @jld3103 for the PR!
+- Add `useTopSafeAreaInset` to the `Chat` widget, by default enabled on mobile platforms. Use it to disable top safe area inset. Thanks @jld3103 for reporting!
+- Fix PatternStyle regexes. Thanks @Mayb3Nots for reporting!
+- Update dependencies. Requires Dart >= 2.18.0.
+
 ## 1.6.5
 
 - **BREAKING CHANGE**: `PreviewTapOptions` -> `TextMessageOptions`

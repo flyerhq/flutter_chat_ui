@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/message/system_message.dart';
+import 'widgets/typing_indicator.dart';
 import 'widgets/unread_header.dart';
 
 // For internal usage only. Use values from theme itself.
@@ -26,6 +28,9 @@ const error = Color(0xffff6767);
 
 /// N0.
 const neutral0 = Color(0xff1d1c21);
+
+/// N1.
+const neutral1 = Color(0xff615e6e);
 
 /// N2.
 const neutral2 = Color(0xff9e9cab);
@@ -98,6 +103,8 @@ abstract class ChatTheme {
     required this.sentMessageLinkDescriptionTextStyle,
     required this.sentMessageLinkTitleTextStyle,
     required this.statusIconPadding,
+    required this.systemMessageTheme,
+    required this.typingIndicatorTheme,
     required this.unreadHeaderTheme,
     required this.userAvatarImageBackgroundColor,
     required this.userAvatarNameColors,
@@ -259,6 +266,13 @@ abstract class ChatTheme {
   /// Padding around status icons.
   final EdgeInsets statusIconPadding;
 
+  /// Theme for the system message. Will not have an effect if a custom builder
+  /// is provided.
+  final SystemMessageTheme systemMessageTheme;
+
+  /// Theme for typing indicator. See [TypingIndicator].
+  final TypingIndicatorTheme typingIndicatorTheme;
+
   /// Theme for the unread header.
   final UnreadHeaderTheme unreadHeaderTheme;
 
@@ -396,6 +410,33 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.systemMessageTheme = const SystemMessageTheme(
+      margin: EdgeInsets.only(
+        bottom: 24,
+        top: 8,
+        left: 8,
+        right: 8,
+      ),
+      textStyle: TextStyle(
+        color: neutral2,
+        fontSize: 12,
+        fontWeight: FontWeight.w800,
+        height: 1.333,
+      ),
+    ),
+    super.typingIndicatorTheme = const TypingIndicatorTheme(
+      animatedCirclesColor: neutral1,
+      animatedCircleSize: 5.0,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      bubbleColor: neutral7,
+      countAvatarColor: primary,
+      countTextColor: secondary,
+      multipleUserTextStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: neutral2,
+      ),
+    ),
     super.unreadHeaderTheme = const UnreadHeaderTheme(
       color: secondary,
       textStyle: TextStyle(
@@ -538,6 +579,33 @@ class DarkChatTheme extends ChatTheme {
       height: 1.375,
     ),
     super.statusIconPadding = const EdgeInsets.symmetric(horizontal: 4),
+    super.systemMessageTheme = const SystemMessageTheme(
+      margin: EdgeInsets.only(
+        bottom: 24,
+        top: 8,
+        left: 8,
+        right: 8,
+      ),
+      textStyle: TextStyle(
+        color: neutral7,
+        fontSize: 12,
+        fontWeight: FontWeight.w800,
+        height: 1.333,
+      ),
+    ),
+    super.typingIndicatorTheme = const TypingIndicatorTheme(
+      animatedCirclesColor: neutral7,
+      animatedCircleSize: 5.0,
+      bubbleBorder: BorderRadius.all(Radius.circular(27.0)),
+      bubbleColor: dark,
+      countAvatarColor: primary,
+      countTextColor: secondary,
+      multipleUserTextStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: neutral2,
+      ),
+    ),
     super.unreadHeaderTheme = const UnreadHeaderTheme(
       color: secondaryDark,
       textStyle: TextStyle(
