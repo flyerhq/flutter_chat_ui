@@ -266,13 +266,22 @@ class TypingWidget extends StatelessWidget {
     );
     if (mode == TypingIndicatorMode.name) {
       return SizedBox(
-        child: Text(
-          _multiUserTextBuilder(widget.options.typingUsers),
-          style: InheritedChatTheme.of(context)
-              .theme
-              .typingIndicatorTheme
-              .multipleUserTextStyle,
-        ),
+        child: widget.options.multiUserTextBuilder != null
+            ? widget.options.multiUserTextBuilder!(
+                context,
+                widget.options.typingUsers,
+                InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .multipleUserTextStyle,
+              )
+            : Text(
+                _multiUserTextBuilder(widget.options.typingUsers),
+                style: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .multipleUserTextStyle,
+              ),
       );
     } else if (mode == TypingIndicatorMode.avatar) {
       return SizedBox(
@@ -293,13 +302,22 @@ class TypingWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Text(
-            _multiUserTextBuilder(widget.options.typingUsers),
-            style: InheritedChatTheme.of(context)
-                .theme
-                .typingIndicatorTheme
-                .multipleUserTextStyle,
-          ),
+          widget.options.multiUserTextBuilder != null
+              ? widget.options.multiUserTextBuilder!(
+                  context,
+                  widget.options.typingUsers,
+                  InheritedChatTheme.of(context)
+                      .theme
+                      .typingIndicatorTheme
+                      .multipleUserTextStyle,
+                )
+              : Text(
+                  _multiUserTextBuilder(widget.options.typingUsers),
+                  style: InheritedChatTheme.of(context)
+                      .theme
+                      .typingIndicatorTheme
+                      .multipleUserTextStyle,
+                ),
         ],
       );
     }
@@ -450,6 +468,7 @@ class TypingIndicatorOptions {
     this.customTypingWidget,
     this.customTypingIndicatorBuilder,
     this.typingWidgetBuilder,
+    this.multiUserTextBuilder,
   });
 
   /// Animation speed for circles.
@@ -483,6 +502,12 @@ class TypingIndicatorOptions {
     required TypingIndicator widget,
     required TypingIndicatorMode mode,
   })? typingWidgetBuilder;
+
+  final Widget Function(
+    BuildContext context,
+    List<types.User> author,
+    TextStyle? style,
+  )? multiUserTextBuilder;
 }
 
 @immutable
