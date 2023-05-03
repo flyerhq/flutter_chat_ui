@@ -195,11 +195,17 @@ class _TypingIndicatorState extends State<TypingIndicator>
             widget.bubbleAlignment == BubbleRtlAlignment.right
                 ? Container(
                     margin: const EdgeInsets.only(left: 12),
-                    child: TypingWidget(
-                      widget: widget,
-                      context: context,
-                      mode: widget.options.typingMode,
-                    ),
+                    child: widget.options.typingWidgetBuilder != null
+                        ? widget.options.typingWidgetBuilder!(
+                            widget: widget,
+                            context: context,
+                            mode: widget.options.typingMode,
+                          )
+                        : TypingWidget(
+                            widget: widget,
+                            context: context,
+                            mode: widget.options.typingMode,
+                          ),
                   )
                 : const SizedBox(),
           ],
@@ -433,6 +439,8 @@ class TypingIndicatorOptions {
     this.customTypingIndicator,
     this.typingMode = TypingIndicatorMode.name,
     this.typingUsers = const [],
+    this.customTypingIndicatorBuilder,
+    this.typingWidgetBuilder,
   });
 
   /// Animation speed for circles.
@@ -448,6 +456,21 @@ class TypingIndicatorOptions {
   /// Author(s) for [TypingIndicator].
   /// By default its empty list which hides the indicator, see [types.User].
   final List<types.User> typingUsers;
+
+  /// Allows to set custom builder [TypingIndicator].
+  final Widget Function({
+    required BuildContext context,
+    required BubbleRtlAlignment bubbleAlignment,
+    required TypingIndicatorOptions options,
+    required bool indicatorOnScrollStatus,
+  })? customTypingIndicatorBuilder;
+
+  // Allows to set custom builder [TypingWidget].
+  final Widget Function({
+    required BuildContext context,
+    required TypingIndicator widget,
+    required TypingIndicatorMode mode,
+  })? typingWidgetBuilder;
 }
 
 @immutable

@@ -273,14 +273,25 @@ class _ChatListState extends State<ChatList>
               sliver: SliverToBoxAdapter(
                 child: (widget.typingIndicatorOptions!.typingUsers.isNotEmpty &&
                         !_indicatorOnScrollStatus)
-                    ? widget.typingIndicatorOptions?.customTypingIndicator ??
-                        TypingIndicator(
-                          bubbleAlignment: widget.bubbleRtlAlignment,
-                          options: widget.typingIndicatorOptions!,
-                          showIndicator: (widget.typingIndicatorOptions!
-                                  .typingUsers.isNotEmpty &&
-                              !_indicatorOnScrollStatus),
-                        )
+                    ? (widget.typingIndicatorOptions
+                                ?.customTypingIndicatorBuilder !=
+                            null
+                        ? widget.typingIndicatorOptions!
+                            .customTypingIndicatorBuilder!(
+                            context: context,
+                            bubbleAlignment: widget.bubbleRtlAlignment,
+                            options: widget.typingIndicatorOptions!,
+                            indicatorOnScrollStatus: _indicatorOnScrollStatus,
+                          )
+                        : widget.typingIndicatorOptions
+                                ?.customTypingIndicator ??
+                            TypingIndicator(
+                              bubbleAlignment: widget.bubbleRtlAlignment,
+                              options: widget.typingIndicatorOptions!,
+                              showIndicator: (widget.typingIndicatorOptions!
+                                      .typingUsers.isNotEmpty &&
+                                  !_indicatorOnScrollStatus),
+                            ))
                     : const SizedBox.shrink(),
               ),
             ),
