@@ -144,11 +144,18 @@ class _TypingIndicatorState extends State<TypingIndicator>
             widget.bubbleAlignment == BubbleRtlAlignment.left
                 ? Container(
                     margin: const EdgeInsets.only(right: 12),
-                    child: TypingWidget(
-                      widget: widget,
-                      context: context,
-                      mode: widget.options.typingMode,
-                    ),
+                    child: widget.options.typingWidgetBuilder != null
+                        ? widget.options.typingWidgetBuilder!(
+                            widget: widget,
+                            context: context,
+                            mode: widget.options.typingMode,
+                          )
+                        : (widget.options.customTypingWidget ??
+                            TypingWidget(
+                              widget: widget,
+                              context: context,
+                              mode: widget.options.typingMode,
+                            )),
                   )
                 : const SizedBox(),
             Container(
@@ -201,11 +208,12 @@ class _TypingIndicatorState extends State<TypingIndicator>
                             context: context,
                             mode: widget.options.typingMode,
                           )
-                        : TypingWidget(
-                            widget: widget,
-                            context: context,
-                            mode: widget.options.typingMode,
-                          ),
+                        : (widget.options.customTypingWidget ??
+                            TypingWidget(
+                              widget: widget,
+                              context: context,
+                              mode: widget.options.typingMode,
+                            )),
                   )
                 : const SizedBox(),
           ],
@@ -439,6 +447,7 @@ class TypingIndicatorOptions {
     this.customTypingIndicator,
     this.typingMode = TypingIndicatorMode.name,
     this.typingUsers = const [],
+    this.customTypingWidget,
     this.customTypingIndicatorBuilder,
     this.typingWidgetBuilder,
   });
@@ -456,6 +465,9 @@ class TypingIndicatorOptions {
   /// Author(s) for [TypingIndicator].
   /// By default its empty list which hides the indicator, see [types.User].
   final List<types.User> typingUsers;
+
+  /// Allows to set custom [TypingWidget].
+  final Widget? customTypingWidget;
 
   /// Allows to set custom builder [TypingIndicator].
   final Widget Function({
