@@ -1,3 +1,4 @@
+import 'dart:developer' as l;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -109,6 +110,7 @@ class Chat extends StatefulWidget {
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
+    required bool hasEmoji,
   })? bubbleBuilder;
 
   /// See [Message.bubbleRtlAlignment].
@@ -343,6 +345,7 @@ class ChatState extends State<Chat> {
 
   @override
   void initState() {
+    l.log('show image: ${widget.theme.showBackgroundImage}');
     super.initState();
 
     _scrollController = widget.scrollController ?? AutoScrollController();
@@ -412,7 +415,16 @@ class ChatState extends State<Chat> {
             child: Stack(
               children: [
                 Container(
-                  color: widget.theme.backgroundColor,
+                  decoration: !widget.theme.showBackgroundImage
+                      ? BoxDecoration(
+                          color: widget.theme.backgroundColor,
+                        )
+                      : BoxDecoration(
+                          image: DecorationImage(
+                            image: widget.theme.backgroundImage!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                   child: Column(
                     children: [
                       Flexible(

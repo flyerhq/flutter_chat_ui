@@ -67,10 +67,13 @@ class Message extends StatelessWidget {
   /// (contains `author` inside) and `nextMessageInGroup` allows you to see
   /// if the message is a part of a group (messages are grouped when written
   /// in quick succession by the same author)
+  /// If the message is just an emoji you can use `hasEmoji` to hide the
+  /// background
   final Widget Function(
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
+    required bool hasEmoji,
   })? bubbleBuilder;
 
   /// Determine the alignment of the bubble for RTL languages. Has no effect
@@ -313,6 +316,7 @@ class Message extends StatelessWidget {
               _messageBuilder(),
               message: message,
               nextMessageInGroup: roundBorder,
+              hasEmoji: enlargeEmojis && hideBackgroundOnEmojiMessages,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
               ? _messageBuilder()
