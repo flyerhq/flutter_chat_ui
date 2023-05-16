@@ -224,3 +224,19 @@ class ChatL10nZhTW extends ChatL10n {
     super.unreadMessagesLabel = '未讀訊息',
   });
 }
+
+/// Swedish l10n which extends [ChatL10n].
+@immutable
+class ChatL10nSe extends ChatL10n {
+  /// Creates Swedish l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nSe({
+    super.attachmentButtonAccessibilityLabel = 'Skicka media',
+    super.emptyChatPlaceholder = 'Här finns inga meddelanden',
+    super.fileButtonAccessibilityLabel = 'Fil',
+    super.inputPlaceholder = 'Meddelande',
+    super.sendButtonAccessibilityLabel = 'Skicka',
+    super.unreadMessagesLabel = 'Olästa meddelanden',
+  });
+}
