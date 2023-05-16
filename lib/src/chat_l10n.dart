@@ -225,6 +225,22 @@ class ChatL10nZhTW extends ChatL10n {
   });
 }
 
+/// Finnish l10n which extends [ChatL10n].
+@immutable
+class ChatL10nFi extends ChatL10n {
+  /// Creates Finnish l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n]
+  const ChatL10nFi({
+    super.attachmentButtonAccessibilityLabel = 'Lähetä mediaa',
+    super.emptyChatPlaceholder = 'Ei viestejä täällä vielä',
+    super.fileButtonAccessibilityLabel = 'Tiedosto',
+    super.inputPlaceholder = 'Viesti',
+    super.sendButtonAccessibilityLabel = 'Lähetä',
+    super.unreadMessagesLabel = 'Lukemattomat viestit',
+  });
+}
+
 /// Swedish l10n which extends [ChatL10n].
 @immutable
 class ChatL10nSe extends ChatL10n {
