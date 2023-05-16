@@ -7,8 +7,8 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
-  flutter: ">=2.0.0"
+  sdk: '>=2.18.6 <3.0.0'
+  flutter: '>=2.0.0'
 
 dependencies:
   diffutil_dart: ^3.0.0
@@ -26,7 +26,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
-  dart_code_metrics: ^4.21.3
+  dart_code_metrics: ^5.3.0
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
