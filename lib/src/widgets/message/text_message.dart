@@ -39,7 +39,7 @@ class TextMessage extends StatelessWidget {
 
   /// This is to allow custom user name builder
   /// By using this we can fetch newest user info based on id
-  final Widget Function(String userId)? nameBuilder;
+  final Widget Function(types.User)? nameBuilder;
 
   /// See [LinkPreview.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
@@ -155,7 +155,7 @@ class TextMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showName)
-          nameBuilder?.call(message.author.id) ??
+          nameBuilder?.call(message.author) ??
               UserName(author: message.author),
         if (enlargeEmojis)
           if (options.isTextSelectable)
