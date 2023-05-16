@@ -80,6 +80,35 @@ class _TypingIndicatorState extends State<TypingIndicator>
     }
   }
 
+  /// Handler for circles offset.
+  Animation<Offset> _circleOffset(
+    Offset? start,
+    Offset? end,
+    Interval animationInterval,
+  ) =>
+      TweenSequence<Offset>(
+        <TweenSequenceItem<Offset>>[
+          TweenSequenceItem<Offset>(
+            tween: Tween<Offset>(
+              begin: start,
+              end: end,
+            ),
+            weight: 50.0,
+          ),
+          TweenSequenceItem<Offset>(
+            tween: Tween<Offset>(
+              begin: end,
+              end: start,
+            ),
+            weight: 50.0,
+          ),
+        ],
+      ).animate(CurvedAnimation(
+        parent: _animatedCirclesController,
+        curve: animationInterval,
+        reverseCurve: animationInterval,
+      ));
+
   @override
   void didUpdateWidget(TypingIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -176,35 +205,6 @@ class _TypingIndicatorState extends State<TypingIndicator>
           ],
         ),
       );
-
-  /// Handler for circles offset.
-  Animation<Offset> _circleOffset(
-    Offset? start,
-    Offset? end,
-    Interval animationInterval,
-  ) =>
-      TweenSequence<Offset>(
-        <TweenSequenceItem<Offset>>[
-          TweenSequenceItem<Offset>(
-            tween: Tween<Offset>(
-              begin: start,
-              end: end,
-            ),
-            weight: 50.0,
-          ),
-          TweenSequenceItem<Offset>(
-            tween: Tween<Offset>(
-              begin: end,
-              end: start,
-            ),
-            weight: 50.0,
-          ),
-        ],
-      ).animate(CurvedAnimation(
-        parent: _animatedCirclesController,
-        curve: animationInterval,
-        reverseCurve: animationInterval,
-      ));
 }
 
 /// Typing Widget.
@@ -219,6 +219,30 @@ class TypingWidget extends StatelessWidget {
   final TypingIndicator widget;
   final BuildContext context;
   final TypingIndicatorMode mode;
+
+  /// Handler for multi user typing text.
+  String _multiUserTextBuilder(List<types.User> author) {
+    if (author.isEmpty) {
+      return '';
+    } else if (author.length == 1) {
+      return '${author.first.firstName} is typing';
+    } else if (author.length == 2) {
+      return '${author.first.firstName} and ${author[1].firstName}';
+    } else {
+      return '${author.first.firstName} and ${author.length - 1} others';
+    }
+  }
+
+  /// Used to specify width of stacking avatars based on number of authors.
+  double _getStackingWidth(List<types.User> author, double indicatorWidth) {
+    if (author.length == 1) {
+      return indicatorWidth * 0.06;
+    } else if (author.length == 2) {
+      return indicatorWidth * 0.11;
+    } else {
+      return indicatorWidth * 0.15;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,30 +288,6 @@ class TypingWidget extends StatelessWidget {
           ),
         ],
       );
-    }
-  }
-
-  /// Handler for multi user typing text.
-  String _multiUserTextBuilder(List<types.User> author) {
-    if (author.isEmpty) {
-      return '';
-    } else if (author.length == 1) {
-      return '${author.first.firstName} is typing';
-    } else if (author.length == 2) {
-      return '${author.first.firstName} and ${author[1].firstName}';
-    } else {
-      return '${author.first.firstName} and ${author.length - 1} others';
-    }
-  }
-
-  /// Used to specify width of stacking avatars based on number of authors.
-  double _getStackingWidth(List<types.User> author, double indicatorWidth) {
-    if (author.length == 1) {
-      return indicatorWidth * 0.06;
-    } else if (author.length == 2) {
-      return indicatorWidth * 0.11;
-    } else {
-      return indicatorWidth * 0.15;
     }
   }
 }

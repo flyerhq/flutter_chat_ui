@@ -12,7 +12,7 @@ BaseConditional createConditional() => BrowserConditional();
 /// A conditional for browser.
 class BrowserConditional extends BaseConditional {
   /// Returns [NetworkImage] if URI starts with http
-  /// otherwise returns transparent image
+  /// otherwise returns transparent image.
   @override
   ImageProvider getProvider(String uri, {Map<String, String>? headers}) {
     if (uri.startsWith('http') || uri.startsWith('blob')) {
