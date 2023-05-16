@@ -2,6 +2,7 @@
 
 - **BREAKING CHANGE**: `nameBuilder` now passes the whole user class, instead of just an id. Thanks @vintage for the PR!
 - Add typing indicator. See `typingIndicatorOptions`. Thanks @gtalha07 for the PR! Huge one!
+- Add `imageProviderBuilder`. Thanks @marinkobabic for the PR!
 - Add `autocorrect` and `enableSuggestions` to the `InputOptions`. By default, both values will be true. Thanks @g0dzillaa for the PR!
 - Add `keyboardType` to the `InputOptions`. Thanks @Gramatton for the PR!
 - Add Swedish localization. Thanks @OlleEkberg for the PR!

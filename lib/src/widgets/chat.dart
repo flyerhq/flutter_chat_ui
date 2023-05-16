@@ -179,19 +179,19 @@ class Chat extends StatefulWidget {
   /// Headers passed to all network images used in the chat.
   final Map<String, String>? imageHeaders;
 
-  /// Option to have a custom image provider. This is helpful when user wants to use some caching.
-  /// or wants to handle image loading manually. Usage of cached_network_image is also possible
-  /// but when it comes to caching, then consumer want's to decide this specific per message
-  /// Also using this provider consumer can decide based on url to send specific headers or not
+  /// See [Message.imageMessageBuilder].
+  final Widget Function(types.ImageMessage, {required int messageWidth})?
+      imageMessageBuilder;
+
+  /// This feature allows you to use a custom image provider.
+  /// This is useful if you want to manage image loading yourself, or if you need to cache images.
+  /// You can also use the `cached_network_image` feature, but when it comes to caching, you might want to decide on a per-message basis.
+  /// Plus, by using this provider, you can choose whether or not to send specific headers based on the URL.
   final ImageProvider Function({
     required String uri,
     required Map<String, String>? imageHeaders,
     required Conditional conditional,
   })? imageProviderBuilder;
-
-  /// See [Message.imageMessageBuilder].
-  final Widget Function(types.ImageMessage, {required int messageWidth})?
-      imageMessageBuilder;
 
   /// See [Input.options].
   final InputOptions inputOptions;
@@ -449,6 +449,7 @@ class ChatState extends State<Chat> {
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
           imageHeaders: widget.imageHeaders,
           imageMessageBuilder: widget.imageMessageBuilder,
+          imageProviderBuilder: widget.imageProviderBuilder,
           message: message,
           messageWidth: messageWidth,
           nameBuilder: widget.nameBuilder,

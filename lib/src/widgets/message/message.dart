@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../conditional/conditional.dart';
 import '../../models/bubble_rtl_alignment.dart';
 import '../../models/emoji_enlargement_behavior.dart';
 import '../../util.dart';
@@ -31,6 +32,7 @@ class Message extends StatelessWidget {
     required this.hideBackgroundOnEmojiMessages,
     this.imageHeaders,
     this.imageMessageBuilder,
+    this.imageProviderBuilder,
     required this.message,
     required this.messageWidth,
     this.nameBuilder,
@@ -103,6 +105,13 @@ class Message extends StatelessWidget {
   /// Build an image message inside predefined bubble.
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
+
+  /// See [Chat.imageProviderBuilder].
+  final ImageProvider Function({
+    required String uri,
+    required Map<String, String>? imageHeaders,
+    required Conditional conditional,
+  })? imageProviderBuilder;
 
   /// Any message type.
   final types.Message message;
@@ -235,6 +244,7 @@ class Message extends StatelessWidget {
             ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
             : ImageMessage(
                 imageHeaders: imageHeaders,
+                imageProviderBuilder: imageProviderBuilder,
                 message: imageMessage,
                 messageWidth: messageWidth,
               );
