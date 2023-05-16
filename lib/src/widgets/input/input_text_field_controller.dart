@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/pattern_style.dart';
 
 /// Controller for the [TextField] on [Input] widget
-/// To highlighting the matches for pattern
+/// To highlighting the matches for pattern.
 class InputTextFieldController extends TextEditingController {
   /// A map of style to apply to the text pattern.
   final List<PatternStyle> _listPatternStyle = [

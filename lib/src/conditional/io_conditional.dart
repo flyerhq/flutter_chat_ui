@@ -12,7 +12,7 @@ BaseConditional createConditional() => IOConditional();
 /// A conditional for anything but browser.
 class IOConditional extends BaseConditional {
   /// Returns [NetworkImage] if URI starts with http
-  /// otherwise uses IO to create File
+  /// otherwise uses IO to create File.
   @override
   ImageProvider getProvider(String uri, {Map<String, String>? headers}) {
     if (uri.startsWith('http')) {

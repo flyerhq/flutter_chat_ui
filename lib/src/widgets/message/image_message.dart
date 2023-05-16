@@ -48,6 +48,26 @@ class _ImageMessageState extends State<ImageMessage> {
     _size = Size(widget.message.width ?? 0, widget.message.height ?? 0);
   }
 
+  void _getImage() {
+    final oldImageStream = _stream;
+    _stream = _image?.resolve(createLocalImageConfiguration(context));
+    if (_stream?.key == oldImageStream?.key) {
+      return;
+    }
+    final listener = ImageStreamListener(_updateImage);
+    oldImageStream?.removeListener(listener);
+    _stream?.addListener(listener);
+  }
+
+  void _updateImage(ImageInfo info, bool _) {
+    setState(() {
+      _size = Size(
+        info.image.width.toDouble(),
+        info.image.height.toDouble(),
+      );
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -156,25 +176,5 @@ class _ImageMessageState extends State<ImageMessage> {
         ),
       );
     }
-  }
-
-  void _getImage() {
-    final oldImageStream = _stream;
-    _stream = _image?.resolve(createLocalImageConfiguration(context));
-    if (_stream?.key == oldImageStream?.key) {
-      return;
-    }
-    final listener = ImageStreamListener(_updateImage);
-    oldImageStream?.removeListener(listener);
-    _stream?.addListener(listener);
-  }
-
-  void _updateImage(ImageInfo info, bool _) {
-    setState(() {
-      _size = Size(
-        info.image.width.toDouble(),
-        info.image.height.toDouble(),
-      );
-    });
   }
 }
