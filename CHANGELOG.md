@@ -1,3 +1,7 @@
+## 1.6.7
+
+- Update dependencies. Requires Dart >= 2.19.0.
+
 ## 1.6.6
 
 - Add `audioMessageBuilder` (no default implementation yet). Thanks @marinkobabic for the PR!
