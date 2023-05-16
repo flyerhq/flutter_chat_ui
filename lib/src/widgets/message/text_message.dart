@@ -38,7 +38,7 @@ class TextMessage extends StatelessWidget {
   final types.TextMessage message;
 
   /// This is to allow custom user name builder
-  /// By using this we can fetch newest user info based on id
+  /// By using this we can fetch newest user info based on id.
   final Widget Function(types.User)? nameBuilder;
 
   /// See [LinkPreview.onPreviewDataFetched].
@@ -56,33 +56,6 @@ class TextMessage extends StatelessWidget {
 
   /// User agent to fetch preview data with.
   final String? userAgent;
-
-  @override
-  Widget build(BuildContext context) {
-    final enlargeEmojis =
-        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
-            isConsistsOfEmojis(emojiEnlargementBehavior, message);
-    final theme = InheritedChatTheme.of(context).theme;
-    final user = InheritedUser.of(context).user;
-    final width = MediaQuery.of(context).size.width;
-
-    if (usePreviewData && onPreviewDataFetched != null) {
-      final urlRegexp = RegExp(regexLink, caseSensitive: false);
-      final matches = urlRegexp.allMatches(message.text);
-
-      if (matches.isNotEmpty) {
-        return _linkPreview(user, width, context);
-      }
-    }
-
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: theme.messageInsetsHorizontal,
-        vertical: theme.messageInsetsVertical,
-      ),
-      child: _textWidgetBuilder(user, context, enlargeEmojis),
-    );
-  }
 
   Widget _linkPreview(
     types.User user,
@@ -155,8 +128,7 @@ class TextMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showName)
-          nameBuilder?.call(message.author) ??
-              UserName(author: message.author),
+          nameBuilder?.call(message.author) ?? UserName(author: message.author),
         if (enlargeEmojis)
           if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)
@@ -172,6 +144,33 @@ class TextMessage extends StatelessWidget {
             text: message.text,
           ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final enlargeEmojis =
+        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
+            isConsistsOfEmojis(emojiEnlargementBehavior, message);
+    final theme = InheritedChatTheme.of(context).theme;
+    final user = InheritedUser.of(context).user;
+    final width = MediaQuery.of(context).size.width;
+
+    if (usePreviewData && onPreviewDataFetched != null) {
+      final urlRegexp = RegExp(regexLink, caseSensitive: false);
+      final matches = urlRegexp.allMatches(message.text);
+
+      if (matches.isNotEmpty) {
+        return _linkPreview(user, width, context);
+      }
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: theme.messageInsetsHorizontal,
+        vertical: theme.messageInsetsVertical,
+      ),
+      child: _textWidgetBuilder(user, context, enlargeEmojis),
     );
   }
 }

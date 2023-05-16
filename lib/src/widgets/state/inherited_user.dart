@@ -10,11 +10,11 @@ class InheritedUser extends InheritedWidget {
     required super.child,
   });
 
-  /// Represents current logged in user. Used to determine message's author.
-  final types.User user;
-
   static InheritedUser of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<InheritedUser>()!;
+
+  /// Represents current logged in user. Used to determine message's author.
+  final types.User user;
 
   @override
   bool updateShouldNotify(InheritedUser oldWidget) =>

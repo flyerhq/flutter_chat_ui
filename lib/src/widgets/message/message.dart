@@ -59,14 +59,14 @@ class Message extends StatelessWidget {
       audioMessageBuilder;
 
   /// This is to allow custom user avatar builder
-  /// By using this we can fetch newest user info based on id
+  /// By using this we can fetch newest user info based on id.
   final Widget Function(String userId)? avatarBuilder;
 
   /// Customize the default bubble using this function. `child` is a content
   /// you should render inside your bubble, `message` is a current message
   /// (contains `author` inside) and `nextMessageInGroup` allows you to see
   /// if the message is a part of a group (messages are grouped when written
-  /// in quick succession by the same author)
+  /// in quick succession by the same author).
   final Widget Function(
     Widget child, {
     required types.Message message,
@@ -173,6 +173,99 @@ class Message extends StatelessWidget {
   /// Build an audio message inside predefined bubble.
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
+
+  Widget _avatarBuilder() => showAvatar
+      ? avatarBuilder?.call(message.author.id) ??
+          UserAvatar(
+            author: message.author,
+            bubbleRtlAlignment: bubbleRtlAlignment,
+            imageHeaders: imageHeaders,
+            onAvatarTap: onAvatarTap,
+          )
+      : const SizedBox(width: 40);
+
+  Widget _bubbleBuilder(
+    BuildContext context,
+    BorderRadius borderRadius,
+    bool currentUserIsAuthor,
+    bool enlargeEmojis,
+  ) =>
+      bubbleBuilder != null
+          ? bubbleBuilder!(
+              _messageBuilder(),
+              message: message,
+              nextMessageInGroup: roundBorder,
+            )
+          : enlargeEmojis && hideBackgroundOnEmojiMessages
+              ? _messageBuilder()
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: borderRadius,
+                    color: !currentUserIsAuthor ||
+                            message.type == types.MessageType.image
+                        ? InheritedChatTheme.of(context).theme.secondaryColor
+                        : InheritedChatTheme.of(context).theme.primaryColor,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: borderRadius,
+                    child: _messageBuilder(),
+                  ),
+                );
+
+  Widget _messageBuilder() {
+    switch (message.type) {
+      case types.MessageType.audio:
+        final audioMessage = message as types.AudioMessage;
+        return audioMessageBuilder != null
+            ? audioMessageBuilder!(audioMessage, messageWidth: messageWidth)
+            : const SizedBox();
+      case types.MessageType.custom:
+        final customMessage = message as types.CustomMessage;
+        return customMessageBuilder != null
+            ? customMessageBuilder!(customMessage, messageWidth: messageWidth)
+            : const SizedBox();
+      case types.MessageType.file:
+        final fileMessage = message as types.FileMessage;
+        return fileMessageBuilder != null
+            ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
+            : FileMessage(message: fileMessage);
+      case types.MessageType.image:
+        final imageMessage = message as types.ImageMessage;
+        return imageMessageBuilder != null
+            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
+            : ImageMessage(
+                imageHeaders: imageHeaders,
+                message: imageMessage,
+                messageWidth: messageWidth,
+              );
+      case types.MessageType.text:
+        final textMessage = message as types.TextMessage;
+        return textMessageBuilder != null
+            ? textMessageBuilder!(
+                textMessage,
+                messageWidth: messageWidth,
+                showName: showName,
+              )
+            : TextMessage(
+                emojiEnlargementBehavior: emojiEnlargementBehavior,
+                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                message: textMessage,
+                nameBuilder: nameBuilder,
+                onPreviewDataFetched: onPreviewDataFetched,
+                options: textMessageOptions,
+                showName: showName,
+                usePreviewData: usePreviewData,
+                userAgent: userAgent,
+              );
+      case types.MessageType.video:
+        final videoMessage = message as types.VideoMessage;
+        return videoMessageBuilder != null
+            ? videoMessageBuilder!(videoMessage, messageWidth: messageWidth)
+            : const SizedBox();
+      default:
+        return const SizedBox();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -290,98 +383,5 @@ class Message extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _avatarBuilder() => showAvatar
-      ? avatarBuilder?.call(message.author.id) ??
-          UserAvatar(
-            author: message.author,
-            bubbleRtlAlignment: bubbleRtlAlignment,
-            imageHeaders: imageHeaders,
-            onAvatarTap: onAvatarTap,
-          )
-      : const SizedBox(width: 40);
-
-  Widget _bubbleBuilder(
-    BuildContext context,
-    BorderRadius borderRadius,
-    bool currentUserIsAuthor,
-    bool enlargeEmojis,
-  ) =>
-      bubbleBuilder != null
-          ? bubbleBuilder!(
-              _messageBuilder(),
-              message: message,
-              nextMessageInGroup: roundBorder,
-            )
-          : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder()
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: !currentUserIsAuthor ||
-                            message.type == types.MessageType.image
-                        ? InheritedChatTheme.of(context).theme.secondaryColor
-                        : InheritedChatTheme.of(context).theme.primaryColor,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: borderRadius,
-                    child: _messageBuilder(),
-                  ),
-                );
-
-  Widget _messageBuilder() {
-    switch (message.type) {
-      case types.MessageType.audio:
-        final audioMessage = message as types.AudioMessage;
-        return audioMessageBuilder != null
-            ? audioMessageBuilder!(audioMessage, messageWidth: messageWidth)
-            : const SizedBox();
-      case types.MessageType.custom:
-        final customMessage = message as types.CustomMessage;
-        return customMessageBuilder != null
-            ? customMessageBuilder!(customMessage, messageWidth: messageWidth)
-            : const SizedBox();
-      case types.MessageType.file:
-        final fileMessage = message as types.FileMessage;
-        return fileMessageBuilder != null
-            ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
-            : FileMessage(message: fileMessage);
-      case types.MessageType.image:
-        final imageMessage = message as types.ImageMessage;
-        return imageMessageBuilder != null
-            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
-            : ImageMessage(
-                imageHeaders: imageHeaders,
-                message: imageMessage,
-                messageWidth: messageWidth,
-              );
-      case types.MessageType.text:
-        final textMessage = message as types.TextMessage;
-        return textMessageBuilder != null
-            ? textMessageBuilder!(
-                textMessage,
-                messageWidth: messageWidth,
-                showName: showName,
-              )
-            : TextMessage(
-                emojiEnlargementBehavior: emojiEnlargementBehavior,
-                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
-                message: textMessage,
-                nameBuilder: nameBuilder,
-                onPreviewDataFetched: onPreviewDataFetched,
-                options: textMessageOptions,
-                showName: showName,
-                usePreviewData: usePreviewData,
-                userAgent: userAgent,
-              );
-      case types.MessageType.video:
-        final videoMessage = message as types.VideoMessage;
-        return videoMessageBuilder != null
-            ? videoMessageBuilder!(videoMessage, messageWidth: messageWidth)
-            : const SizedBox();
-      default:
-        return const SizedBox();
-    }
   }
 }

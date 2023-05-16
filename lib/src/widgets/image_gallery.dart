@@ -29,6 +29,18 @@ class ImageGallery extends StatelessWidget {
   /// Page controller for the image pages.
   final PageController pageController;
 
+  Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            value: event == null || event.expectedTotalBytes == null
+                ? 0
+                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
@@ -67,18 +79,6 @@ class ImageGallery extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
-      );
-
-  Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
-        child: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            value: event == null || event.expectedTotalBytes == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       );

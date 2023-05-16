@@ -6,7 +6,7 @@ import 'widgets/unread_header.dart';
 
 // For internal usage only. Use values from theme itself.
 
-/// See [ChatTheme.userAvatarNameColors]
+/// See [ChatTheme.userAvatarNameColors].
 const colors = [
   Color(0xffff6767),
   Color(0xff66e0da),
@@ -179,7 +179,7 @@ abstract class ChatTheme {
   final double messageInsetsVertical;
 
   /// Primary color of the chat used as a background of sent messages
-  /// and statuses
+  /// and statuses.
   final Color primaryColor;
 
   /// Text style used for displaying emojis on text messages.
@@ -194,15 +194,14 @@ abstract class ChatTheme {
   final TextStyle? receivedMessageBodyCodeTextStyle;
 
   /// Text style used for displaying link text on received text messages.
-  /// Defaults to [receivedMessageBodyTextStyle]
+  /// Defaults to [receivedMessageBodyTextStyle].
   final TextStyle? receivedMessageBodyLinkTextStyle;
 
   /// Body text style used for displaying text on different types
-  /// of received messages
+  /// of received messages.
   final TextStyle receivedMessageBodyTextStyle;
 
-  /// Caption text style used for displaying secondary info (e.g. file size)
-  /// on different types of received messages
+  /// Caption text style used for displaying secondary info (e.g. file size) on different types of received messages.
   final TextStyle receivedMessageCaptionTextStyle;
 
   /// Color of the document icon on received messages. Has no effect when
@@ -242,15 +241,14 @@ abstract class ChatTheme {
   final TextStyle? sentMessageBodyCodeTextStyle;
 
   /// Text style used for displaying link text on sent text messages.
-  /// Defaults to [sentMessageBodyTextStyle]
+  /// Defaults to [sentMessageBodyTextStyle].
   final TextStyle? sentMessageBodyLinkTextStyle;
 
   /// Body text style used for displaying text on different types
-  /// of sent messages
+  /// of sent messages.
   final TextStyle sentMessageBodyTextStyle;
 
-  /// Caption text style used for displaying secondary info (e.g. file size)
-  /// on different types of sent messages
+  /// Caption text style used for displaying secondary info (e.g. file size) on different types of sent messages.
   final TextStyle sentMessageCaptionTextStyle;
 
   /// Color of the document icon on sent messages. Has no effect when
@@ -286,7 +284,7 @@ abstract class ChatTheme {
   final List<Color> userAvatarNameColors;
 
   /// Text style used for displaying initials on user avatar if no
-  /// image is provided
+  /// image is provided.
   final TextStyle userAvatarTextStyle;
 
   /// User names text style. Color will be overwritten with [userAvatarNameColors].
@@ -298,7 +296,7 @@ abstract class ChatTheme {
 class DefaultChatTheme extends ChatTheme {
   /// Creates a default chat theme. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatTheme]
+  /// which extends [ChatTheme].
   const DefaultChatTheme({
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
@@ -467,7 +465,7 @@ class DefaultChatTheme extends ChatTheme {
 class DarkChatTheme extends ChatTheme {
   /// Creates a dark chat theme. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatTheme]
+  /// which extends [ChatTheme].
   const DarkChatTheme({
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
