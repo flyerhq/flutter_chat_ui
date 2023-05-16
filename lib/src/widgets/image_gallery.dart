@@ -8,6 +8,7 @@ class ImageGallery extends StatelessWidget {
   const ImageGallery({
     super.key,
     this.imageHeaders,
+    this.imageProviderBuilder,
     required this.images,
     required this.onClosePressed,
     this.options = const ImageGalleryOptions(),
@@ -16,6 +17,13 @@ class ImageGallery extends StatelessWidget {
 
   /// See [Chat.imageHeaders].
   final Map<String, String>? imageHeaders;
+
+  /// See [Chat.imageProviderBuilder].
+  final ImageProvider Function({
+    required String uri,
+    required Map<String, String>? imageHeaders,
+    required Conditional conditional,
+  })? imageProviderBuilder;
 
   /// Images to show in the gallery.
   final List<PreviewImage> images;
@@ -56,10 +64,16 @@ class ImageGallery extends StatelessWidget {
               PhotoViewGallery.builder(
                 builder: (BuildContext context, int index) =>
                     PhotoViewGalleryPageOptions(
-                  imageProvider: Conditional().getProvider(
-                    images[index].uri,
-                    headers: imageHeaders,
-                  ),
+                  imageProvider: imageProviderBuilder != null
+                      ? imageProviderBuilder!(
+                          uri: images[index].uri,
+                          imageHeaders: imageHeaders,
+                          conditional: Conditional(),
+                        )
+                      : Conditional().getProvider(
+                          images[index].uri,
+                          headers: imageHeaders,
+                        ),
                   minScale: options.minScale,
                   maxScale: options.maxScale,
                 ),

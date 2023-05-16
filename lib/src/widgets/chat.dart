@@ -8,6 +8,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
+import '../conditional/conditional.dart';
 import '../models/bubble_rtl_alignment.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
@@ -58,6 +59,7 @@ class Chat extends StatefulWidget {
     ),
     this.imageHeaders,
     this.imageMessageBuilder,
+    this.imageProviderBuilder,
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
@@ -176,6 +178,16 @@ class Chat extends StatefulWidget {
 
   /// Headers passed to all network images used in the chat.
   final Map<String, String>? imageHeaders;
+
+  /// Option to have a custom image provider. This is helpful when user wants to use some caching.
+  /// or wants to handle image loading manually. Usage of cached_network_image is also possible
+  /// but when it comes to caching, then consumer want's to decide this specific per message
+  /// Also using this provider consumer can decide based on url to send specific headers or not
+  final ImageProvider Function({
+    required String uri,
+    required Map<String, String>? imageHeaders,
+    required Conditional conditional,
+  })? imageProviderBuilder;
 
   /// See [Message.imageMessageBuilder].
   final Widget Function(types.ImageMessage, {required int messageWidth})?
@@ -619,6 +631,7 @@ class ChatState extends State<Chat> {
                 if (_isImageViewVisible)
                   ImageGallery(
                     imageHeaders: widget.imageHeaders,
+                    imageProviderBuilder: widget.imageProviderBuilder,
                     images: _gallery,
                     pageController: _galleryPageController!,
                     onClosePressed: _onCloseGalleryPressed,
