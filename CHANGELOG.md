@@ -1,3 +1,8 @@
+## 1.6.8
+
+- Downgrade `intl` to make it compatible with latest Flutter
+- Add `autofocus` to the `InputOptions`. Thanks @josefwilhelm for the PR!
+
 ## 1.6.7
 
 - **BREAKING CHANGE**: `nameBuilder` now passes the whole user class, instead of just an id. Thanks @vintage for the PR!

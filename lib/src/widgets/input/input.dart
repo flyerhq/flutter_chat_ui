@@ -160,8 +160,8 @@ class _InputState extends State<Input> {
                     padding: textPadding,
                     child: TextField(
                       enabled: widget.options.enabled,
-                      autofocus: widget.options.autofocus,
                       autocorrect: widget.options.autocorrect,
+                      autofocus: widget.options.autofocus,
                       enableSuggestions: widget.options.enableSuggestions,
                       controller: _textController,
                       cursorColor: InheritedChatTheme.of(context)
@@ -254,9 +254,9 @@ class InputOptions {
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.textEditingController,
     this.autocorrect = true,
+    this.autofocus = false,
     this.enableSuggestions = true,
     this.enabled = true,
-    this.autofocus = false,
   });
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
@@ -287,12 +287,12 @@ class InputOptions {
   /// Controls the [TextInput] autocorrect behavior. Defaults to [true].
   final bool autocorrect;
 
+  /// Whether [TextInput] should have focus. Defaults to [false].
+  final bool autofocus;
+
   /// Controls the [TextInput] enableSuggestions behavior. Defaults to [true].
   final bool enableSuggestions;
 
   /// Controls the [TextInput] enabled behavior. Defaults to [true].
   final bool enabled;
-
-  /// Whether textfield should have focus. Defaults to [false].
-  final bool autofocus;
 }

@@ -39,7 +39,7 @@ dependencies:
     path: ../
   http: ^0.13.6
   image_picker: ^0.8.7+5
-  intl: ^0.18.1
+  intl: ^0.18.0
   mime: ^1.0.4
   open_filex: ^4.3.2
   path_provider: ^2.0.15
