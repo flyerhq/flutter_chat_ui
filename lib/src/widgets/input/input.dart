@@ -136,7 +136,7 @@ class _InputState extends State<Input> {
         );
 
     return Focus(
-      autofocus: true,
+      autofocus: !widget.options.autofocus,
       child: Padding(
         padding: InheritedChatTheme.of(context).theme.inputMargin,
         child: Material(
@@ -160,6 +160,7 @@ class _InputState extends State<Input> {
                     padding: textPadding,
                     child: TextField(
                       enabled: widget.options.enabled,
+                      autofocus: widget.options.autofocus,
                       autocorrect: widget.options.autocorrect,
                       enableSuggestions: widget.options.enableSuggestions,
                       controller: _textController,
@@ -255,6 +256,7 @@ class InputOptions {
     this.autocorrect = true,
     this.enableSuggestions = true,
     this.enabled = true,
+    this.autofocus = false,
   });
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
@@ -290,4 +292,7 @@ class InputOptions {
 
   /// Controls the [TextInput] enabled behavior. Defaults to [true].
   final bool enabled;
+
+  /// Whether textfield should have focus. Defaults to [false].
+  final bool autofocus;
 }
