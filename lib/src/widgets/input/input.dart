@@ -136,7 +136,7 @@ class _InputState extends State<Input> {
         );
 
     return Focus(
-      autofocus: true,
+      autofocus: !widget.options.autofocus,
       child: Padding(
         padding: InheritedChatTheme.of(context).theme.inputMargin,
         child: Material(
