@@ -31,28 +31,28 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
-  file_picker: ^5.3.0
+  file_picker: ^5.3.2
   flutter:
     sdk: flutter
-  flutter_chat_types: ^3.6.1
+  flutter_chat_types: ^3.6.2
   flutter_chat_ui:
     path: ../
-  http: ^0.13.6
-  image_picker: ^0.8.7+5
-  intl: ^0.18.0
+  http: '>=0.13.6 <2.0.0'
+  image_picker: ^1.0.0
+  intl: ^0.18.1
   mime: ^1.0.4
   open_filex: ^4.3.2
   path_provider: ^2.0.15
   uuid: ^3.0.7
 
 dev_dependencies:
-  dart_code_metrics: ^5.7.3
+  dart_code_metrics: ^5.7.5
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.2
   flutter_test:
     sdk: flutter
 
