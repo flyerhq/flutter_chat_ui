@@ -1,7 +1,7 @@
 name: chat
 
 environment:
-  sdk: ">=2.19.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 dev_dependencies:
-  flutter_lints: ^2.0.1
-  melos: ^3.0.1
+  flutter_lints: ^4.0.0
+  melos: ^6.1.0
