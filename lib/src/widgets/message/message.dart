@@ -62,7 +62,7 @@ class Message extends StatelessWidget {
 
   /// This is to allow custom user avatar builder
   /// By using this we can fetch newest user info based on id.
-  final Widget Function(String userId)? avatarBuilder;
+  final Widget Function(types.User author)? avatarBuilder;
 
   /// Customize the default bubble using this function. `child` is a content
   /// you should render inside your bubble, `message` is a current message
@@ -184,7 +184,7 @@ class Message extends StatelessWidget {
       videoMessageBuilder;
 
   Widget _avatarBuilder() => showAvatar
-      ? avatarBuilder?.call(message.author.id) ??
+      ? avatarBuilder?.call(message.author) ??
           UserAvatar(
             author: message.author,
             bubbleRtlAlignment: bubbleRtlAlignment,
