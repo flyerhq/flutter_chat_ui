@@ -26,7 +26,7 @@ class UserAvatar extends StatelessWidget {
   final Map<String, String>? imageHeaders;
 
   /// Called when user taps on an avatar.
-  final void Function(types.User)? onAvatarTap;
+  final void Function(types.User, Offset position)? onAvatarTap;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,9 @@ class UserAvatar extends StatelessWidget {
           ? const EdgeInsetsDirectional.only(end: 0)
           : const EdgeInsets.only(right: 0),
       child: GestureDetector(
-        onTap: () => onAvatarTap?.call(author),
+          onTapDown: (TapDownDetails details){
+          onAvatarTap?.call(author, details.globalPosition);
+        },
         child: CircleAvatar(
           backgroundColor: hasImage
               ? InheritedChatTheme.of(context)

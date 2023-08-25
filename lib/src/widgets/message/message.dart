@@ -114,7 +114,7 @@ class Message extends StatelessWidget {
   final Widget Function(String userId)? nameBuilder;
 
   /// See [UserAvatar.onAvatarTap].
-  final void Function(types.User)? onAvatarTap;
+  final void Function(types.User,  Offset position)? onAvatarTap;
 
   /// Called when user double taps on any message.
   final void Function(BuildContext context, types.Message)? onMessageDoubleTap;

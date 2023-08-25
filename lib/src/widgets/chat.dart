@@ -222,7 +222,7 @@ class Chat extends StatefulWidget {
   final VoidCallback? onAttachmentPressed;
 
   /// See [Message.onAvatarTap].
-  final void Function(types.User)? onAvatarTap;
+  final void Function(types.User,  Offset position)? onAvatarTap;
 
   /// Called when user taps on background.
   final VoidCallback? onBackgroundTap;
