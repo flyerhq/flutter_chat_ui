@@ -33,7 +33,7 @@
     },
     {
       "name": "async",
-      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/async-2.10.0",
+      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/async-2.11.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -45,7 +45,7 @@
     },
     {
       "name": "characters",
-      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/characters-1.2.1",
+      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/characters-1.3.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -119,7 +119,7 @@
       "name": "flutter",
       "rootUri": "file:///Users/furkanerkul/development/flutter/packages/flutter",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "flutter_chat_types",
@@ -155,13 +155,13 @@
       "name": "flutter_test",
       "rootUri": "file:///Users/furkanerkul/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "flutter_web_plugins",
       "rootUri": "file:///Users/furkanerkul/development/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "glob",
@@ -219,7 +219,7 @@
     },
     {
       "name": "matcher",
-      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/matcher-0.12.14",
+      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/matcher-0.12.15",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -231,7 +231,7 @@
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/meta-1.9.0",
+      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/meta-1.9.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -299,7 +299,7 @@
       "name": "sky_engine",
       "rootUri": "file:///Users/furkanerkul/development/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
     },
     {
       "name": "source_span",
@@ -333,7 +333,7 @@
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/test_api-0.4.18",
+      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/test_api-0.5.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -428,7 +428,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-03-20T21:02:43.501198Z",
+  "generated": "2023-08-25T10:30:26.168071Z",
   "generator": "pub",
-  "generatorVersion": "3.0.0-218.0.dev"
+  "generatorVersion": "3.0.2"
 }
