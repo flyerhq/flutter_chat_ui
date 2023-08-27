@@ -219,6 +219,18 @@ class TextMessageText extends StatelessWidget {
   Widget build(BuildContext context) => ParsedText(
         parse: [
           ...options.matchers,
+
+          MatchText(
+/*   onTap: (mention) {
+  
+  }, */
+  pattern: r'(@\w+)', // @ ile başlayan kelimeyi yakalamak için regex deseni
+  style: TextStyle(
+    color: Colors.black, // Özel renk (isteğe bağlı)
+    fontWeight: FontWeight.bold, // Yazı stili olarak kalın (bold) belirlendi
+  ),
+),
+
           MatchText(
             onTap: (mail) async {
               final url = Uri(scheme: 'mailto', path: mail);
