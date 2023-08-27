@@ -26,8 +26,9 @@ class TextMessage extends StatelessWidget {
     required this.showName,
     required this.usePreviewData,
     this.userAgent,
+    this.onUserNameTap,
   });
-
+  final void Function(types.User)? onUserNameTap;
   /// See [Message.emojiEnlargementBehavior].
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
 
@@ -156,7 +157,7 @@ class TextMessage extends StatelessWidget {
       children: [
         if (showName)
           nameBuilder?.call(message.author.id) ??
-              UserName(author: message.author, ),
+              UserName(author: message.author, onUserNameTap: onUserNameTap,),
         if (enlargeEmojis)
           if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)

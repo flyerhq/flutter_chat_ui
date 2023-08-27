@@ -373,6 +373,7 @@ class Message extends StatelessWidget {
                 textMessage,
                 messageWidth: messageWidth,
                 showName: showName,
+                
               )
             : TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
@@ -384,6 +385,7 @@ class Message extends StatelessWidget {
                 showName: showName,
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,
+                onUserNameTap: onUserNameTap,
               );
       case types.MessageType.video:
         final videoMessage = message as types.VideoMessage;
