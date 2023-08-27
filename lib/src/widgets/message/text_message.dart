@@ -156,7 +156,7 @@ class TextMessage extends StatelessWidget {
       children: [
         if (showName)
           nameBuilder?.call(message.author.id) ??
-              UserName(author: message.author),
+              UserName(author: message.author, ),
         if (enlargeEmojis)
           if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)

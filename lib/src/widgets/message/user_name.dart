@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -10,10 +12,12 @@ class UserName extends StatelessWidget {
   const UserName({
     super.key,
     required this.author,
+     this.onUserNameTap,
   });
 
   /// Author to show name from.
   final types.User author;
+  final void Function(types.User)? onUserNameTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +27,18 @@ class UserName extends StatelessWidget {
 
     return name.isEmpty
         ? const SizedBox()
-        : Padding(
-            padding: const EdgeInsets.only(bottom: 0),
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.userNameTextStyle.copyWith(color: color),
+        : GestureDetector(
+            onTap: () {
+              onUserNameTap?.call(author);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: Text(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.userNameTextStyle.copyWith(color: color),
+              ),
             ),
           );
   }
