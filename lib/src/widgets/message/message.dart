@@ -322,7 +322,7 @@ class Message extends StatelessWidget {
           ? bubbleBuilder!(
               _messageBuilder(),
               message: message,
-              nextMessageInGroup: roundBorder,
+              nextMessageInGroup: false,//roundBorder,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
               ? _messageBuilder()
