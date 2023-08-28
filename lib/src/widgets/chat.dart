@@ -586,7 +586,7 @@ class ChatState extends State<Chat> {
           onPreviewDataFetched: _onPreviewDataFetched,
           roundBorder: map['nextMessageInGroup'] == true,
           showAvatar: true,//map['nextMessageInGroup'] == false,
-          showName: map['showName'] == true,
+          showName: true, //map['showName'] == true,
           showStatus: map['showStatus'] == true,
           showUserAvatars: widget.showUserAvatars,
           textMessageBuilder: widget.textMessageBuilder,
