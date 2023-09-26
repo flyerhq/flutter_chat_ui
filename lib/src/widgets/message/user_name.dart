@@ -34,10 +34,11 @@ class UserName extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 0),
               child: Text(
+                
                 name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.userNameTextStyle.copyWith(color: color),
+                style: theme.userNameTextStyle.copyWith(color: color, fontSize: 12),
               ),
             ),
           );
