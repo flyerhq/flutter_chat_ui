@@ -405,6 +405,7 @@ class ChatState extends State<Chat> {
     await _scrollController.scrollToIndex(
       _autoScrollIndexById[id]!,
       duration: scrollDuration ?? scrollAnimationDuration,
+      preferPosition: AutoScrollPosition.middle,
     );
     if (withHighlight) {
       await _scrollController.highlight(
