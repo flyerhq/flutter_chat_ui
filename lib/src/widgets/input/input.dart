@@ -142,6 +142,9 @@ class _InputState extends State<Input> {
         child: Material(
           borderRadius: InheritedChatTheme.of(context).theme.inputBorderRadius,
           color: InheritedChatTheme.of(context).theme.inputBackgroundColor,
+          surfaceTintColor:
+              InheritedChatTheme.of(context).theme.inputSurfaceTintColor,
+          elevation: InheritedChatTheme.of(context).theme.inputElevation,
           child: Container(
             decoration:
                 InheritedChatTheme.of(context).theme.inputContainerDecoration,
