@@ -358,10 +358,30 @@ class ChatState extends State<Chat> {
   }
 
   /// Scroll to the message with the specified [id].
-  void scrollToMessage(String id, {Duration? duration}) =>
-      _scrollController.scrollToIndex(
+  void scrollToMessage(
+    String id, {
+    Duration? scrollDuration,
+    bool withHighlight = false,
+    Duration? highlightDuration,
+  }) async {
+    await _scrollController.scrollToIndex(
+      _autoScrollIndexById[id]!,
+      duration: scrollDuration ?? scrollAnimationDuration,
+      preferPosition: AutoScrollPosition.middle,
+    );
+    if (withHighlight) {
+      await _scrollController.highlight(
         _autoScrollIndexById[id]!,
-        duration: duration ?? scrollAnimationDuration,
+        highlightDuration: highlightDuration ?? const Duration(seconds: 3),
+      );
+    }
+  }
+
+  /// Highlight the message with the specified [id].
+  void highlightMessage(String id, {Duration? duration}) =>
+      _scrollController.highlight(
+        _autoScrollIndexById[id]!,
+        highlightDuration: duration ?? const Duration(seconds: 3),
       );
 
   Widget _emptyStateBuilder() =>
@@ -485,6 +505,7 @@ class ChatState extends State<Chat> {
         controller: _scrollController,
         index: index ?? -1,
         key: Key('scroll-${message.id}'),
+        highlightColor: widget.theme.highlightMessageColor,
         child: messageWidget,
       );
     }
