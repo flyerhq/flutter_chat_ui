@@ -53,7 +53,7 @@ String getUserName(types.User user) =>
     '${user.firstName ?? ''} ${user.lastName ?? ''}'.trim();
 
 /// Returns formatted date used as a divider between different days in the
-/// chat history
+/// chat history.
 String getVerboseDateTimeRepresentation(
   DateTime dateTime, {
   DateFormat? dateFormat,

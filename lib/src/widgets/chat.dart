@@ -8,6 +8,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
+import '../conditional/conditional.dart';
 import '../models/bubble_rtl_alignment.dart';
 import '../models/date_header.dart';
 import '../models/emoji_enlargement_behavior.dart';
@@ -58,6 +59,7 @@ class Chat extends StatefulWidget {
     ),
     this.imageHeaders,
     this.imageMessageBuilder,
+    this.imageProviderBuilder,
     this.inputOptions = const InputOptions(),
     this.isAttachmentUploading,
     this.isLastPage,
@@ -114,18 +116,10 @@ class Chat extends StatefulWidget {
   /// See [Message.bubbleRtlAlignment].
   final BubbleRtlAlignment? bubbleRtlAlignment;
 
-  /// Allows you to replace the default Input widget e.g. if you want to create
-  /// a channel view. If you're looking for the bottom widget added to the chat
-  /// list, see [listBottomWidget] instead.
+  /// Allows you to replace the default Input widget e.g. if you want to create a channel view. If you're looking for the bottom widget added to the chat list, see [listBottomWidget] instead.
   final Widget? customBottomWidget;
 
-  /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
-  /// customize date headers in your case, use this to return an arbitrary
-  /// string based on a [DateTime] of a particular message. Can be helpful to
-  /// return "Today" if [DateTime] is today. IMPORTANT: this will replace
-  /// all default date headers, so you must handle all cases yourself, like
-  /// for example today, yesterday and before. Or you can just return the same
-  /// date header for any message.
+  /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to customize date headers in your case, use this to return an arbitrary string based on a [DateTime] of a particular message. Can be helpful to return "Today" if [DateTime] is today. IMPORTANT: this will replace all default date headers, so you must handle all cases yourself, like for example today, yesterday and before. Or you can just return the same date header for any message.
   final String Function(DateTime)? customDateHeaderText;
 
   /// See [Message.customMessageBuilder].
@@ -136,11 +130,7 @@ class Chat extends StatefulWidget {
   final Widget Function(types.Message message, {required BuildContext context})?
       customStatusBuilder;
 
-  /// Allows you to customize the date format. IMPORTANT: only for the date,
-  /// do not return time here. See [timeFormat] to customize the time format.
-  /// [dateLocale] will be ignored if you use this, so if you want a localized date
-  /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
-  /// for more customization.
+  /// Allows you to customize the date format. IMPORTANT: only for the date, do not return time here. See [timeFormat] to customize the time format. [dateLocale] will be ignored if you use this, so if you want a localized date make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText] for more customization.
   final DateFormat? dateFormat;
 
   /// Custom date header builder gives ability to customize date header widget.
@@ -193,6 +183,16 @@ class Chat extends StatefulWidget {
   final Widget Function(types.ImageMessage, {required int messageWidth})?
       imageMessageBuilder;
 
+  /// This feature allows you to use a custom image provider.
+  /// This is useful if you want to manage image loading yourself, or if you need to cache images.
+  /// You can also use the `cached_network_image` feature, but when it comes to caching, you might want to decide on a per-message basis.
+  /// Plus, by using this provider, you can choose whether or not to send specific headers based on the URL.
+  final ImageProvider Function({
+    required String uri,
+    required Map<String, String>? imageHeaders,
+    required Conditional conditional,
+  })? imageProviderBuilder;
+
   /// See [Input.options].
   final InputOptions inputOptions;
 
@@ -218,7 +218,7 @@ class Chat extends StatefulWidget {
   final List<types.Message> messages;
 
   /// See [Message.nameBuilder].
-  final Widget Function(String userId)? nameBuilder;
+  final Widget Function(types.User)? nameBuilder;
 
   /// See [Input.onAttachmentPressed].
   final VoidCallback? onAttachmentPressed;
@@ -296,11 +296,7 @@ class Chat extends StatefulWidget {
   /// properties, see more here [DefaultChatTheme].
   final ChatTheme theme;
 
-  /// Allows you to customize the time format. IMPORTANT: only for the time,
-  /// do not return date here. See [dateFormat] to customize the date format.
-  /// [dateLocale] will be ignored if you use this, so if you want a localized time
-  /// make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText]
-  /// for more customization.
+  /// Allows you to customize the time format. IMPORTANT: only for the time, do not return date here. See [dateFormat] to customize the date format. [dateLocale] will be ignored if you use this, so if you want a localized time make sure you initialize your [DateFormat] with a locale. See [customDateHeaderText] for more customization.
   final DateFormat? timeFormat;
 
   /// Used to show typing users with indicator. See [TypingIndicatorOptions].
@@ -350,40 +346,6 @@ class ChatState extends State<Chat> {
     didUpdateWidget(widget);
   }
 
-  @override
-  void didUpdateWidget(covariant Chat oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.messages.isNotEmpty) {
-      final result = calculateChatMessages(
-        widget.messages,
-        widget.user,
-        customDateHeaderText: widget.customDateHeaderText,
-        dateFormat: widget.dateFormat,
-        dateHeaderThreshold: widget.dateHeaderThreshold,
-        dateIsUtc: widget.dateIsUtc,
-        dateLocale: widget.dateLocale,
-        groupMessagesThreshold: widget.groupMessagesThreshold,
-        lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
-        showUserNames: widget.showUserNames,
-        timeFormat: widget.timeFormat,
-      );
-
-      _chatMessages = result[0] as List<Object>;
-      _gallery = result[1] as List<PreviewImage>;
-
-      _refreshAutoScrollMapping();
-      _maybeScrollToFirstUnread();
-    }
-  }
-
-  @override
-  void dispose() {
-    _galleryPageController?.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
-
   /// Scroll to the unread header.
   void scrollToUnreadHeader() {
     final unreadHeaderIndex = _autoScrollIndexById[_unreadHeaderId];
@@ -420,85 +382,6 @@ class ChatState extends State<Chat> {
       _scrollController.highlight(
         _autoScrollIndexById[id]!,
         highlightDuration: duration ?? const Duration(seconds: 3),
-      );
-
-  @override
-  Widget build(BuildContext context) => InheritedUser(
-        user: widget.user,
-        child: InheritedChatTheme(
-          theme: widget.theme,
-          child: InheritedL10n(
-            l10n: widget.l10n,
-            child: Stack(
-              children: [
-                Container(
-                  color: widget.theme.backgroundColor,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: widget.messages.isEmpty
-                            ? SizedBox.expand(
-                                child: _emptyStateBuilder(),
-                              )
-                            : GestureDetector(
-                                onTap: () {
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  widget.onBackgroundTap?.call();
-                                },
-                                child: LayoutBuilder(
-                                  builder: (
-                                    BuildContext context,
-                                    BoxConstraints constraints,
-                                  ) =>
-                                      ChatList(
-                                    bottomWidget: widget.listBottomWidget,
-                                    bubbleRtlAlignment:
-                                        widget.bubbleRtlAlignment!,
-                                    isLastPage: widget.isLastPage,
-                                    itemBuilder: (Object item, int? index) =>
-                                        _messageBuilder(
-                                      item,
-                                      constraints,
-                                      index,
-                                    ),
-                                    items: _chatMessages,
-                                    keyboardDismissBehavior:
-                                        widget.keyboardDismissBehavior,
-                                    onEndReached: widget.onEndReached,
-                                    onEndReachedThreshold:
-                                        widget.onEndReachedThreshold,
-                                    scrollController: _scrollController,
-                                    scrollPhysics: widget.scrollPhysics,
-                                    typingIndicatorOptions:
-                                        widget.typingIndicatorOptions,
-                                    useTopSafeAreaInset:
-                                        widget.useTopSafeAreaInset ?? isMobile,
-                                  ),
-                                ),
-                              ),
-                      ),
-                      widget.customBottomWidget ??
-                          Input(
-                            isAttachmentUploading: widget.isAttachmentUploading,
-                            onAttachmentPressed: widget.onAttachmentPressed,
-                            onSendPressed: widget.onSendPressed,
-                            options: widget.inputOptions,
-                          ),
-                    ],
-                  ),
-                ),
-                if (_isImageViewVisible)
-                  ImageGallery(
-                    imageHeaders: widget.imageHeaders,
-                    images: _gallery,
-                    pageController: _galleryPageController!,
-                    onClosePressed: _onCloseGalleryPressed,
-                    options: widget.imageGalleryOptions,
-                  ),
-              ],
-            ),
-          ),
-        ),
       );
 
   Widget _emptyStateBuilder() =>
@@ -586,6 +469,7 @@ class ChatState extends State<Chat> {
           hideBackgroundOnEmojiMessages: widget.hideBackgroundOnEmojiMessages,
           imageHeaders: widget.imageHeaders,
           imageMessageBuilder: widget.imageMessageBuilder,
+          imageProviderBuilder: widget.imageProviderBuilder,
           message: message,
           messageWidth: messageWidth,
           nameBuilder: widget.nameBuilder,
@@ -666,4 +550,118 @@ class ChatState extends State<Chat> {
       i++;
     }
   }
+
+  @override
+  void didUpdateWidget(covariant Chat oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.messages.isNotEmpty) {
+      final result = calculateChatMessages(
+        widget.messages,
+        widget.user,
+        customDateHeaderText: widget.customDateHeaderText,
+        dateFormat: widget.dateFormat,
+        dateHeaderThreshold: widget.dateHeaderThreshold,
+        dateIsUtc: widget.dateIsUtc,
+        dateLocale: widget.dateLocale,
+        groupMessagesThreshold: widget.groupMessagesThreshold,
+        lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
+        showUserNames: widget.showUserNames,
+        timeFormat: widget.timeFormat,
+      );
+
+      _chatMessages = result[0] as List<Object>;
+      _gallery = result[1] as List<PreviewImage>;
+
+      _refreshAutoScrollMapping();
+      _maybeScrollToFirstUnread();
+    }
+  }
+
+  @override
+  void dispose() {
+    _galleryPageController?.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => InheritedUser(
+        user: widget.user,
+        child: InheritedChatTheme(
+          theme: widget.theme,
+          child: InheritedL10n(
+            l10n: widget.l10n,
+            child: Stack(
+              children: [
+                Container(
+                  color: widget.theme.backgroundColor,
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: widget.messages.isEmpty
+                            ? SizedBox.expand(
+                                child: _emptyStateBuilder(),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  widget.onBackgroundTap?.call();
+                                },
+                                child: LayoutBuilder(
+                                  builder: (
+                                    BuildContext context,
+                                    BoxConstraints constraints,
+                                  ) =>
+                                      ChatList(
+                                    bottomWidget: widget.listBottomWidget,
+                                    bubbleRtlAlignment:
+                                        widget.bubbleRtlAlignment!,
+                                    isLastPage: widget.isLastPage,
+                                    itemBuilder: (Object item, int? index) =>
+                                        _messageBuilder(
+                                      item,
+                                      constraints,
+                                      index,
+                                    ),
+                                    items: _chatMessages,
+                                    keyboardDismissBehavior:
+                                        widget.keyboardDismissBehavior,
+                                    onEndReached: widget.onEndReached,
+                                    onEndReachedThreshold:
+                                        widget.onEndReachedThreshold,
+                                    scrollController: _scrollController,
+                                    scrollPhysics: widget.scrollPhysics,
+                                    typingIndicatorOptions:
+                                        widget.typingIndicatorOptions,
+                                    useTopSafeAreaInset:
+                                        widget.useTopSafeAreaInset ?? isMobile,
+                                  ),
+                                ),
+                              ),
+                      ),
+                      widget.customBottomWidget ??
+                          Input(
+                            isAttachmentUploading: widget.isAttachmentUploading,
+                            onAttachmentPressed: widget.onAttachmentPressed,
+                            onSendPressed: widget.onSendPressed,
+                            options: widget.inputOptions,
+                          ),
+                    ],
+                  ),
+                ),
+                if (_isImageViewVisible)
+                  ImageGallery(
+                    imageHeaders: widget.imageHeaders,
+                    imageProviderBuilder: widget.imageProviderBuilder,
+                    images: _gallery,
+                    pageController: _galleryPageController!,
+                    onClosePressed: _onCloseGalleryPressed,
+                    options: widget.imageGalleryOptions,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
 }

@@ -76,28 +76,6 @@ class _InputState extends State<Input> {
     _handleSendButtonVisibilityModeChange();
   }
 
-  @override
-  void didUpdateWidget(covariant Input oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.options.sendButtonVisibilityMode !=
-        oldWidget.options.sendButtonVisibilityMode) {
-      _handleSendButtonVisibilityModeChange();
-    }
-  }
-
-  @override
-  void dispose() {
-    _inputFocusNode.dispose();
-    _textController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: () => _inputFocusNode.requestFocus(),
-        child: _inputBuilder(),
-      );
-
   void _handleSendButtonVisibilityModeChange() {
     _textController.removeListener(_handleTextControllerChange);
     if (widget.options.sendButtonVisibilityMode ==
@@ -158,7 +136,7 @@ class _InputState extends State<Input> {
         );
 
     return Focus(
-      autofocus: true,
+      autofocus: !widget.options.autofocus,
       child: Padding(
         padding: InheritedChatTheme.of(context).theme.inputMargin,
         child: Material(
@@ -181,6 +159,10 @@ class _InputState extends State<Input> {
                   child: Padding(
                     padding: textPadding,
                     child: TextField(
+                      enabled: widget.options.enabled,
+                      autocorrect: widget.options.autocorrect,
+                      autofocus: widget.options.autofocus,
+                      enableSuggestions: widget.options.enableSuggestions,
                       controller: _textController,
                       cursorColor: InheritedChatTheme.of(context)
                           .theme
@@ -202,7 +184,7 @@ class _InputState extends State<Input> {
                                 InheritedL10n.of(context).l10n.inputPlaceholder,
                           ),
                       focusNode: _inputFocusNode,
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: widget.options.keyboardType,
                       maxLines: 5,
                       minLines: 1,
                       onChanged: widget.options.onTextChanged,
@@ -238,20 +220,50 @@ class _InputState extends State<Input> {
       ),
     );
   }
+
+  @override
+  void didUpdateWidget(covariant Input oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.options.sendButtonVisibilityMode !=
+        oldWidget.options.sendButtonVisibilityMode) {
+      _handleSendButtonVisibilityModeChange();
+    }
+  }
+
+  @override
+  void dispose() {
+    _inputFocusNode.dispose();
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () => _inputFocusNode.requestFocus(),
+        child: _inputBuilder(),
+      );
 }
 
 @immutable
 class InputOptions {
   const InputOptions({
     this.inputClearMode = InputClearMode.always,
+    this.keyboardType = TextInputType.multiline,
     this.onTextChanged,
     this.onTextFieldTap,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.editing,
     this.textEditingController,
+    this.autocorrect = true,
+    this.autofocus = false,
+    this.enableSuggestions = true,
+    this.enabled = true,
   });
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
   final InputClearMode inputClearMode;
+
+  /// Controls the [Input] keyboard type. Defaults to [TextInputType.multiline].
+  final TextInputType keyboardType;
 
   /// Will be called whenever the text inside [TextField] changes.
   final void Function(String)? onTextChanged;
@@ -271,4 +283,16 @@ class InputOptions {
   /// you can create your own [InputTextFieldController] (imported from this lib)
   /// and pass it here.
   final TextEditingController? textEditingController;
+
+  /// Controls the [TextInput] autocorrect behavior. Defaults to [true].
+  final bool autocorrect;
+
+  /// Whether [TextInput] should have focus. Defaults to [false].
+  final bool autofocus;
+
+  /// Controls the [TextInput] enableSuggestions behavior. Defaults to [true].
+  final bool enableSuggestions;
+
+  /// Controls the [TextInput] enabled behavior. Defaults to [true].
+  final bool enabled;
 }

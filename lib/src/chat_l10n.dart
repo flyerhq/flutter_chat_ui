@@ -38,7 +38,7 @@ abstract class ChatL10n {
 class ChatL10nAr extends ChatL10n {
   /// Creates Arabic l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nAr({
     super.attachmentButtonAccessibilityLabel = 'إرسال الوسائط',
     super.emptyChatPlaceholder = 'لا يوجد رسائل هنا بعد',
@@ -54,7 +54,7 @@ class ChatL10nAr extends ChatL10n {
 class ChatL10nDe extends ChatL10n {
   /// Creates German l10n. Use this constructor if you want to
   /// override only a couple of variables, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nDe({
     super.attachmentButtonAccessibilityLabel = 'Medien senden',
     super.emptyChatPlaceholder = 'Noch keine Nachrichten',
@@ -70,7 +70,7 @@ class ChatL10nDe extends ChatL10n {
 class ChatL10nEn extends ChatL10n {
   /// Creates English l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nEn({
     super.attachmentButtonAccessibilityLabel = 'Send media',
     super.emptyChatPlaceholder = 'No messages here yet',
@@ -86,7 +86,7 @@ class ChatL10nEn extends ChatL10n {
 class ChatL10nEs extends ChatL10n {
   /// Creates Spanish l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nEs({
     super.attachmentButtonAccessibilityLabel = 'Enviar multimedia',
     super.emptyChatPlaceholder = 'Aún no hay mensajes',
@@ -97,12 +97,28 @@ class ChatL10nEs extends ChatL10n {
   });
 }
 
+/// Finnish l10n which extends [ChatL10n].
+@immutable
+class ChatL10nFi extends ChatL10n {
+  /// Creates Finnish l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n].
+  const ChatL10nFi({
+    super.attachmentButtonAccessibilityLabel = 'Lähetä media',
+    super.emptyChatPlaceholder = 'Täällä ei ole vielä viestejä',
+    super.fileButtonAccessibilityLabel = 'Tiedosto',
+    super.inputPlaceholder = 'Viesti',
+    super.sendButtonAccessibilityLabel = 'Lähetä',
+    super.unreadMessagesLabel = 'Lukemattomat viestit',
+  });
+}
+
 /// Korean l10n which extends [ChatL10n].
 @immutable
 class ChatL10nKo extends ChatL10n {
   /// Creates Korean l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nKo({
     super.attachmentButtonAccessibilityLabel = '미디어 보내기',
     super.emptyChatPlaceholder = '주고받은 메시지가 없습니다',
@@ -118,7 +134,7 @@ class ChatL10nKo extends ChatL10n {
 class ChatL10nPl extends ChatL10n {
   /// Creates Polish l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nPl({
     super.attachmentButtonAccessibilityLabel = 'Wyślij multimedia',
     super.emptyChatPlaceholder = 'Tu jeszcze nie ma wiadomości',
@@ -134,7 +150,7 @@ class ChatL10nPl extends ChatL10n {
 class ChatL10nPt extends ChatL10n {
   /// Creates Portuguese l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nPt({
     super.attachmentButtonAccessibilityLabel = 'Envia mídia',
     super.emptyChatPlaceholder = 'Ainda não há mensagens aqui',
@@ -150,7 +166,7 @@ class ChatL10nPt extends ChatL10n {
 class ChatL10nRu extends ChatL10n {
   /// Creates Russian l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nRu({
     super.attachmentButtonAccessibilityLabel = 'Отправить медиа',
     super.emptyChatPlaceholder = 'Пока что у вас нет сообщений',
@@ -161,12 +177,28 @@ class ChatL10nRu extends ChatL10n {
   });
 }
 
+/// Swedish l10n which extends [ChatL10n].
+@immutable
+class ChatL10nSe extends ChatL10n {
+  /// Creates Swedish l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n].
+  const ChatL10nSe({
+    super.attachmentButtonAccessibilityLabel = 'Skicka media',
+    super.emptyChatPlaceholder = 'Inga meddelanden än',
+    super.fileButtonAccessibilityLabel = 'Fil',
+    super.inputPlaceholder = 'Meddelande',
+    super.sendButtonAccessibilityLabel = 'Skicka',
+    super.unreadMessagesLabel = 'Olästa meddelanden',
+  });
+}
+
 /// Turkish l10n which extends [ChatL10n].
 @immutable
 class ChatL10nTr extends ChatL10n {
   /// Creates Turkish l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nTr({
     super.attachmentButtonAccessibilityLabel = 'Medya gönder',
     super.emptyChatPlaceholder = 'Henüz mesaj yok',
@@ -182,7 +214,7 @@ class ChatL10nTr extends ChatL10n {
 class ChatL10nUk extends ChatL10n {
   /// Creates Ukrainian l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nUk({
     super.attachmentButtonAccessibilityLabel = 'Надіслати медіа',
     super.emptyChatPlaceholder = 'Повідомлень ще немає',
@@ -198,7 +230,7 @@ class ChatL10nUk extends ChatL10n {
 class ChatL10nZhCN extends ChatL10n {
   /// Creates Simplified Chinese l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nZhCN({
     super.attachmentButtonAccessibilityLabel = '发送媒体文件',
     super.emptyChatPlaceholder = '暂无消息',
@@ -214,7 +246,7 @@ class ChatL10nZhCN extends ChatL10n {
 class ChatL10nZhTW extends ChatL10n {
   /// Creates Traditional Chinese l10n. Use this constructor if you want to
   /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n]
+  /// which extends [ChatL10n].
   const ChatL10nZhTW({
     super.attachmentButtonAccessibilityLabel = '傳送媒體',
     super.emptyChatPlaceholder = '還沒有訊息在這裡',

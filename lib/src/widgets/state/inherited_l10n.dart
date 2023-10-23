@@ -11,11 +11,11 @@ class InheritedL10n extends InheritedWidget {
     required super.child,
   });
 
-  /// Represents localized copy.
-  final ChatL10n l10n;
-
   static InheritedL10n of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<InheritedL10n>()!;
+
+  /// Represents localized copy.
+  final ChatL10n l10n;
 
   @override
   bool updateShouldNotify(InheritedL10n oldWidget) =>

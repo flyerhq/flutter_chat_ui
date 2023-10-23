@@ -21,5 +21,5 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - run: flutter format . --set-exit-if-changed
+      - run: dart format . --set-exit-if-changed
       - run: flutter analyze --no-pub

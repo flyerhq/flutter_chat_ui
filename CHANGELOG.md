@@ -1,3 +1,23 @@
+## 1.6.9
+
+- Update dependencies
+
+## 1.6.8
+
+- Downgrade `intl` to make it compatible with latest Flutter
+- Add `autofocus` to the `InputOptions`. Thanks @josefwilhelm for the PR!
+
+## 1.6.7
+
+- **BREAKING CHANGE**: `nameBuilder` now passes the whole user class, instead of just an id. Thanks @vintage for the PR!
+- Add typing indicator. See `typingIndicatorOptions`. Thanks @gtalha07 for the PR! Huge one!
+- Add `imageProviderBuilder`. Thanks @marinkobabic for the PR!
+- Add `autocorrect` and `enableSuggestions` to the `InputOptions`. By default, both values will be true. Thanks @g0dzillaa for the PR!
+- Add `keyboardType` to the `InputOptions`. Thanks @Gramatton for the PR!
+- Add Swedish localization. Thanks @OlleEkberg for the PR!
+- Add Finnish localization. Thanks @tuoku for the PR!
+- Update dependencies. Requires Dart >= 2.19.0.
+
 ## 1.6.6
 
 - Add `audioMessageBuilder` (no default implementation yet). Thanks @marinkobabic for the PR!
@@ -94,7 +114,7 @@
 
 ## 1.5.4
 
-- **BREAKING CHANGE**: Rename `inputPadding` theme key to `inputMargin` (outer insets) and add `inputPadding` (inner insets, previously were hardcoded) 
+- **BREAKING CHANGE**: Rename `inputPadding` theme key to `inputMargin` (outer insets) and add `inputPadding` (inner insets, previously were hardcoded)
 - **BREAKING CHANGE**: Add `BuildContext` as a first parameter for `onMessageLongPress`, `onMessageStatusLongPress`, `onMessageStatusTap`, `onMessageTap`. Thanks @leeyisoft for the PR!
 - Add `inputContainerDecoration` to the theme
 - Remove keyboard shortuts from Android and iOS platforms. Thanks @kyoungsongKim for reporting!
@@ -241,7 +261,7 @@ Breaking changes:
 - **BREAKING CHANGE**: [FileMessage] `fileName` is renamed to `name`
 - **BREAKING CHANGE**: [ImageMessage] `imageName` is renamed to `name`
 - **BREAKING CHANGE**: [Messages] `authorId` is replaced with `author` to support avatars and names inside the chat
-- **BREAKING CHANGE**: [Messages] `timestamp` is renamed to `createdAt`. All timestamps are in `ms` now. 
+- **BREAKING CHANGE**: [Messages] `timestamp` is renamed to `createdAt`. All timestamps are in `ms` now.
 - **BREAKING CHANGE**: [Status] `read` is renamed to `seen`
 - **BREAKING CHANGE**: [User] `avatarUrl` is renamed to `imageUrl`
 - New `custom` and `unsupported` message types. First one is used to build any message you want, second one is to support backwards compatibility

@@ -11,11 +11,11 @@ class InheritedChatTheme extends InheritedWidget {
     required super.child,
   });
 
-  /// Represents chat theme.
-  final ChatTheme theme;
-
   static InheritedChatTheme of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<InheritedChatTheme>()!;
+
+  /// Represents chat theme.
+  final ChatTheme theme;
 
   @override
   bool updateShouldNotify(InheritedChatTheme oldWidget) =>
