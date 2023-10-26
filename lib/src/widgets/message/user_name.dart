@@ -2,6 +2,7 @@ import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
@@ -12,11 +13,13 @@ class UserName extends StatelessWidget {
   const UserName({
     super.key,
     required this.author,
-     this.onUserNameTap,
+    required this.verified,
+    this.onUserNameTap,
   });
 
   /// Author to show name from.
   final types.User author;
+  final bool verified;
   final void Function(types.User)? onUserNameTap;
 
   @override
@@ -33,12 +36,38 @@ class UserName extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.only(bottom: 0),
-              child: Text(
-                
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.userNameTextStyle.copyWith(color: color, fontSize: 12),
+              child: Row(
+                children: [
+                  Text(
+                    name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.userNameTextStyle
+                        .copyWith(color: color, fontSize: 12),
+                  ),
+                  if (verified)
+                       SizedBox(
+                        width: 14.0,
+                        height: 18.0,
+                        child: Stack(children: [
+                          Center(
+                            child: Icon(
+                              FontAwesomeIcons.certificate,
+                              color: Colors.blue,
+                              size: 12,
+                            ),
+                          ),
+                          Center(
+                            child: Icon(
+                              FontAwesomeIcons.check,
+                              color: Colors.white,
+                              size: 7,
+                            ),
+                          ),
+                        ]),
+                      ),
+                    
+                ],
               ),
             ),
           );

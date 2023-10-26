@@ -164,6 +164,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "font_awesome_flutter",
+      "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/font_awesome_flutter-10.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "glob",
       "rootUri": "file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/glob-2.1.1",
       "packageUri": "lib/",
@@ -428,7 +434,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-08-25T10:30:26.168071Z",
+  "generated": "2023-10-25T11:03:34.259785Z",
   "generator": "pub",
   "generatorVersion": "3.0.2"
 }

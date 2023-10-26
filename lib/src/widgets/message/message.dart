@@ -35,7 +35,7 @@ class Message extends StatelessWidget {
     required this.messageWidth,
     this.nameBuilder,
     this.onAvatarTap,
-     this.onUserNameTap,
+    this.onUserNameTap,
     this.onMessageDoubleTap,
     this.onMessageLongPress,
     this.onMessageStatusLongPress,
@@ -53,6 +53,8 @@ class Message extends StatelessWidget {
     required this.usePreviewData,
     this.userAgent,
     this.videoMessageBuilder,
+    required this.verified
+    
   });
 
   /// Build an audio message inside predefined bubble.
@@ -115,9 +117,8 @@ class Message extends StatelessWidget {
   final Widget Function(String userId)? nameBuilder;
 
   /// See [UserAvatar.onAvatarTap].
-  final void Function(types.User,  Offset position)? onAvatarTap;
-    final void Function(types.User)? onUserNameTap;
-
+  final void Function(types.User, Offset position)? onAvatarTap;
+  final void Function(types.User)? onUserNameTap;
 
   /// Called when user double taps on any message.
   final void Function(BuildContext context, types.Message)? onMessageDoubleTap;
@@ -173,9 +174,11 @@ class Message extends StatelessWidget {
   /// See [TextMessage.userAgent].
   final String? userAgent;
 
+
   /// Build an audio message inside predefined bubble.
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
+    final bool verified;
 
   @override
   Widget build(BuildContext context) {
@@ -260,18 +263,18 @@ class Message extends StatelessWidget {
                             visibilityInfo.visibleFraction > 0.1,
                           ),
                           child: _bubbleBuilder(
-                            context,
-                            borderRadius.resolve(Directionality.of(context)),
-                            currentUserIsAuthor,
-                            enlargeEmojis,
-                          ),
+                              context,
+                              borderRadius.resolve(Directionality.of(context)),
+                              currentUserIsAuthor,
+                              enlargeEmojis,
+                              verified),
                         )
                       : _bubbleBuilder(
                           context,
                           borderRadius.resolve(Directionality.of(context)),
                           currentUserIsAuthor,
                           enlargeEmojis,
-                        ),
+                          verified),
                 ),
               ],
             ),
@@ -297,19 +300,20 @@ class Message extends StatelessWidget {
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
-      Container(child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-     
-          UserAvatar(
-            author: message.author,
-            bubbleRtlAlignment: bubbleRtlAlignment,
-            imageHeaders: imageHeaders,
-            onAvatarTap: onAvatarTap,
-          ),
-
-             SizedBox(height:10)
-      ],),)
+          Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                UserAvatar(
+                  author: message.author,
+                  bubbleRtlAlignment: bubbleRtlAlignment,
+                  imageHeaders: imageHeaders,
+                  onAvatarTap: onAvatarTap,
+                ),
+                SizedBox(height: 10)
+              ],
+            ),
+          )
       : const SizedBox(width: 0);
 
   Widget _bubbleBuilder(
@@ -317,15 +321,16 @@ class Message extends StatelessWidget {
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
     bool enlargeEmojis,
+    bool verified,
   ) =>
       bubbleBuilder != null
           ? bubbleBuilder!(
-              _messageBuilder(),
+              _messageBuilder(verified),
               message: message,
-              nextMessageInGroup: false,//roundBorder,
+              nextMessageInGroup: false, //roundBorder,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder()
+              ? _messageBuilder(verified)
               : Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
@@ -336,11 +341,11 @@ class Message extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: borderRadius,
-                    child: _messageBuilder(),
+                    child: _messageBuilder(verified),
                   ),
                 );
 
-  Widget _messageBuilder() {
+  Widget _messageBuilder(bool verified) {
     switch (message.type) {
       case types.MessageType.audio:
         final audioMessage = message as types.AudioMessage;
@@ -373,7 +378,6 @@ class Message extends StatelessWidget {
                 textMessage,
                 messageWidth: messageWidth,
                 showName: showName,
-                
               )
             : TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
@@ -386,6 +390,7 @@ class Message extends StatelessWidget {
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,
                 onUserNameTap: onUserNameTap,
+                verified: verified,
               );
       case types.MessageType.video:
         final videoMessage = message as types.VideoMessage;

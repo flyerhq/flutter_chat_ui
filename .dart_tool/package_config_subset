@@ -94,6 +94,10 @@ flutter_parsed_text
 2.12
 file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/flutter_parsed_text-2.2.1/
 file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/flutter_parsed_text-2.2.1/lib/
+font_awesome_flutter
+3.0
+file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/font_awesome_flutter-10.6.0/
+file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/font_awesome_flutter-10.6.0/lib/
 glob
 2.15
 file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/glob-2.1.1/
@@ -264,8 +268,8 @@ file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/yaml-3.1.1/
 file:///Users/furkanerkul/.pub-cache/hosted/pub.dev/yaml-3.1.1/lib/
 flutter_chat_ui
 2.18
-file:///Users/furkanerkul/chatui/flutter_chat_ui/
-file:///Users/furkanerkul/chatui/flutter_chat_ui/lib/
+file:///Users/furkanerkul/chatpanelui/flutter_chat_ui/
+file:///Users/furkanerkul/chatpanelui/flutter_chat_ui/lib/
 sky_engine
 3.0
 file:///Users/furkanerkul/development/flutter/bin/cache/pkg/sky_engine/

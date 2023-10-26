@@ -25,10 +25,12 @@ class TextMessage extends StatelessWidget {
     this.options = const TextMessageOptions(),
     required this.showName,
     required this.usePreviewData,
+    required this.verified,
     this.userAgent,
     this.onUserNameTap,
   });
   final void Function(types.User)? onUserNameTap;
+
   /// See [Message.emojiEnlargementBehavior].
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
 
@@ -58,6 +60,8 @@ class TextMessage extends StatelessWidget {
   /// User agent to fetch preview data with.
   final String? userAgent;
 
+  final bool verified;
+
   @override
   Widget build(BuildContext context) {
     final enlargeEmojis =
@@ -72,7 +76,7 @@ class TextMessage extends StatelessWidget {
       final matches = urlRegexp.allMatches(message.text);
 
       if (matches.isNotEmpty) {
-        return _linkPreview(user, width, context);
+        return _linkPreview(user, width, context, verified);
       }
     }
 
@@ -81,15 +85,12 @@ class TextMessage extends StatelessWidget {
         horizontal: theme.messageInsetsHorizontal,
         vertical: theme.messageInsetsVertical,
       ),
-      child: _textWidgetBuilder(user, context, enlargeEmojis),
+      child: _textWidgetBuilder(user, context, enlargeEmojis, verified),
     );
   }
 
   Widget _linkPreview(
-    types.User user,
-    double width,
-    BuildContext context,
-  ) {
+      types.User user, double width, BuildContext context, bool verified) {
     final linkDescriptionTextStyle = user.id == message.author.id
         ? InheritedChatTheme.of(context)
             .theme
@@ -118,7 +119,7 @@ class TextMessage extends StatelessWidget {
       ),
       previewData: message.previewData,
       text: message.text,
-      textWidget: _textWidgetBuilder(user, context, false),
+      textWidget: _textWidgetBuilder(user, context, false, verified),
       userAgent: userAgent,
       width: width,
     );
@@ -134,6 +135,7 @@ class TextMessage extends StatelessWidget {
     types.User user,
     BuildContext context,
     bool enlargeEmojis,
+    bool verified,
   ) {
     final theme = InheritedChatTheme.of(context).theme;
     final bodyLinkTextStyle = user.id == message.author.id
@@ -157,7 +159,11 @@ class TextMessage extends StatelessWidget {
       children: [
         if (showName)
           nameBuilder?.call(message.author.id) ??
-              UserName(author: message.author, onUserNameTap: onUserNameTap,),
+              UserName(
+                author: message.author,
+                onUserNameTap: onUserNameTap,
+                verified: verified,
+              ),
         if (enlargeEmojis)
           if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)
@@ -219,18 +225,18 @@ class TextMessageText extends StatelessWidget {
   Widget build(BuildContext context) => ParsedText(
         parse: [
           ...options.matchers,
-
           MatchText(
 /*   onTap: (mention) {
   
   }, */
-  pattern: r'(@\w+)', // @ ile başlayan kelimeyi yakalamak için regex deseni
-  style: TextStyle(
-    color: Colors.black, // Özel renk (isteğe bağlı)
-    fontWeight: FontWeight.bold, // Yazı stili olarak kalın (bold) belirlendi
-  ),
-),
-
+            pattern:
+                r'(@\w+)', // @ ile başlayan kelimeyi yakalamak için regex deseni
+            style: TextStyle(
+              color: Colors.black, // Özel renk (isteğe bağlı)
+              fontWeight:
+                  FontWeight.bold, // Yazı stili olarak kalın (bold) belirlendi
+            ),
+          ),
           MatchText(
             onTap: (mail) async {
               final url = Uri(scheme: 'mailto', path: mail);

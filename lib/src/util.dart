@@ -104,7 +104,8 @@ final isMobile = defaultTargetPlatform == TargetPlatform.android ||
 /// and returns them with a gallery.
 List<Object> calculateChatMessages(
   List<types.Message> messages,
-  types.User user, {
+  types.User user,
+   {
   String Function(DateTime)? customDateHeaderText,
   DateFormat? dateFormat,
   required int dateHeaderThreshold,
@@ -114,7 +115,9 @@ List<Object> calculateChatMessages(
   String? lastReadMessageId,
   required bool showUserNames,
   DateFormat? timeFormat,
-}) {
+  required bool verified,
+}
+) {
   final chatMessages = <Object>[];
   final gallery = <PreviewImage>[];
 

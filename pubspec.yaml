@@ -24,6 +24,7 @@ dependencies:
   scroll_to_index: ^3.0.1
   url_launcher: ^6.1.6
   visibility_detector: ^0.3.3
+  font_awesome_flutter: ^10.6.0
 
 dev_dependencies:
   dart_code_metrics: ^4.21.3
