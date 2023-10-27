@@ -94,6 +94,7 @@ class Chat extends StatefulWidget {
     this.userAgent,
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
+   required this.verified
   });
 
   /// See [Message.audioMessageBuilder].
@@ -318,7 +319,7 @@ class Chat extends StatefulWidget {
   /// See [Message.videoMessageBuilder].
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
-  final bool verified;
+  final List<bool> verified;
 
   @override
   State<Chat> createState() => ChatState();
@@ -434,7 +435,7 @@ class ChatState extends State<Chat> {
                                       item,
                                       constraints,
                                       index,
-                                      item[]
+                                      widget.verified[index ?? 0],
                                     ),
                                     items: _chatMessages,
                                     keyboardDismissBehavior:

@@ -115,7 +115,7 @@ List<Object> calculateChatMessages(
   String? lastReadMessageId,
   required bool showUserNames,
   DateFormat? timeFormat,
-  required bool verified,
+required List<bool> verified,
 }
 ) {
   final chatMessages = <Object>[];
