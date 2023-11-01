@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -50,7 +51,10 @@ class UserAvatar extends StatelessWidget {
                   .userAvatarImageBackgroundColor
               : color,
           backgroundImage: hasImage
-              ? NetworkImage(author.imageUrl!, headers: imageHeaders)
+              ? CachedNetworkImageProvider(
+                  author.imageUrl!,
+                  headers: imageHeaders,
+                )
               : null,
           radius: 16,
           child: !hasImage

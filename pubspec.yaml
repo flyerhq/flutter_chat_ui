@@ -11,6 +11,7 @@ environment:
   flutter: '>=3.0.0'
 
 dependencies:
+  cached_network_image: ^3.3.0
   diffutil_dart: ^3.0.0
   equatable: ^2.0.5
   flutter:
