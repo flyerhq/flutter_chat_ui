@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -54,6 +55,9 @@ class _InputState extends State<Input> {
               PhysicalKeyboardKey.shiftRight,
             }.contains(el),
           )) {
+        if (kIsWeb && _textController.value.isComposingRangeValid) {
+          return KeyEventResult.ignored;
+        }
         if (event is KeyDownEvent) {
           _handleSendPressed();
         }
@@ -103,6 +107,9 @@ class _InputState extends State<Input> {
   }
 
   void _handleTextControllerChange() {
+    if (_textController.value.isComposingRangeValid) {
+      return;
+    }
     setState(() {
       _sendButtonVisible = _textController.text.trim() != '';
     });
