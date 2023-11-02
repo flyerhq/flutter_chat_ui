@@ -247,10 +247,9 @@ class _ChatListState extends State<ChatList>
             });
 
             widget.onEndReached!().whenComplete(() {
-              if (mounted){
+              if (mounted) {
                 _controller.duration = const Duration(milliseconds: 300);
                 _controller.reverse();
-              
 
                 setState(() {
                   _isNextPageLoading = false;
