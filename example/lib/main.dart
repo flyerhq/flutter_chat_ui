@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: ChatPage(),
       );
 }
@@ -147,10 +148,8 @@ class _ChatPageState extends State<ChatPage> {
 
       if (message.uri.startsWith('http')) {
         try {
-          final index =
-              _messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-              (_messages[index] as types.FileMessage).copyWith(
+          final index = _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage = (_messages[index] as types.FileMessage).copyWith(
             isLoading: true,
           );
 
@@ -169,10 +168,8 @@ class _ChatPageState extends State<ChatPage> {
             await file.writeAsBytes(bytes);
           }
         } finally {
-          final index =
-              _messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-              (_messages[index] as types.FileMessage).copyWith(
+          final index = _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage = (_messages[index] as types.FileMessage).copyWith(
             isLoading: null,
           );
 
@@ -213,9 +210,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
-    final messages = (jsonDecode(response) as List)
-        .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final messages = (jsonDecode(response) as List).map((e) => types.Message.fromJson(e as Map<String, dynamic>)).toList();
 
     setState(() {
       _messages = messages;
@@ -224,15 +219,78 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Chat(
-          messages: _messages,
-          onAttachmentPressed: _handleAttachmentPressed,
-          onMessageTap: _handleMessageTap,
-          onPreviewDataFetched: _handlePreviewDataFetched,
-          onSendPressed: _handleSendPressed,
-          showUserAvatars: true,
-          showUserNames: true,
-          user: _user,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/6020066?v=4'),
+              ),
+              SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Yesdev'),
+                  Text(
+                    '@yes',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.more_horiz_outlined),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          child: Chat(
+            theme: DarkChatTheme(
+              messageInsetsVertical: 10,
+              messageInsetsHorizontal: 10,
+              backgroundColor: Colors.black,
+              messageBorderRadius: 20,
+              primaryColor: Colors.lightBlue,
+              secondaryColor: Colors.grey.shade900,
+              attachmentButtonIcon: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Colors.blue,
+                ),
+                child: const Icon(
+                  Icons.camera_alt,
+                  color: Colors.black,
+                ),
+              ),
+              inputPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 1),
+              inputMargin: const EdgeInsets.symmetric(horizontal: 16),
+              inputContainerDecoration: BoxDecoration(
+                color: Colors.grey[900],
+                borderRadius: BorderRadius.circular(40),
+              ),
+            ),
+            messages: _messages,
+            onAttachmentPressed: _handleAttachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            showUserAvatars: false,
+            showUserNames: false,
+            user: _user,
+          ),
         ),
       );
 }

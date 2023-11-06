@@ -32,10 +32,7 @@ class AttachmentButton extends StatelessWidget {
               0,
             ),
         child: IconButton(
-          constraints: const BoxConstraints(
-            minHeight: 24,
-            minWidth: 24,
-          ),
+          alignment: Alignment.centerLeft,
           icon: isLoading
               ? SizedBox(
                   height: 20,
@@ -57,8 +54,7 @@ class AttachmentButton extends StatelessWidget {
           onPressed: isLoading ? null : onPressed,
           padding: padding,
           splashRadius: 24,
-          tooltip:
-              InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
+          tooltip: InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
         ),
       );
 }
