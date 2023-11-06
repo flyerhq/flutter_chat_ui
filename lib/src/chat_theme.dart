@@ -59,6 +59,7 @@ abstract class ChatTheme {
     required this.attachmentButtonIcon,
     required this.attachmentButtonMargin,
     required this.backgroundColor,
+    this.backgroundBorderRadius,
     required this.dateDividerMargin,
     required this.dateDividerTextStyle,
     required this.deliveredIcon,
@@ -123,6 +124,8 @@ abstract class ChatTheme {
 
   /// Used as a background color of a chat widget.
   final Color backgroundColor;
+
+  final BorderRadiusGeometry? backgroundBorderRadius;
 
   /// Margin around date dividers.
   final EdgeInsets dateDividerMargin;
