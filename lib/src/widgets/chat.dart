@@ -603,7 +603,10 @@ class ChatState extends State<Chat> {
             child: Stack(
               children: [
                 Container(
-                  color: widget.theme.backgroundColor,
+                  decoration: BoxDecoration(
+                    color: widget.theme.backgroundColor,
+                    borderRadius: widget.theme.backgroundBorderRadius,
+                  ),
                   child: Column(
                     children: [
                       Flexible(
