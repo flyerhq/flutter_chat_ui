@@ -1,3 +1,16 @@
+## 1.6.10
+
+- Possibly last release before 2.0.0, which will be a complete re-write focused on extensibility, customizability, performance and stability.
+- Fixed repaint if type indicator is not used. Thanks @mozomig for the PR!
+- Added ability to highlight message when scrolling to it. Thanks @SergeySor for the PR!
+- Added more theming to the text input. Thanks @claudius-kienle for the PR!
+- Fixed an exception when user exiting the chat. Thanks @elihaialgoaitech for the PR!
+- Fixed input bug for the Japanese language. Thanks @okano4413 for the PR!
+- Added `slidableMessageBuilder`. Thanks @leeyisoft for the PR!
+- Matchers are now reusable and used in system message as well. Thanks @provokateurin for the PR!
+- `avatarBuilder` now provides whole user object. Thanks @kahyoongho for the PR!
+- Added semantics for the send button, useful in e2e tests. Thanks @GustekDev for the PR!
+
 ## 1.6.9
 
 - Update dependencies

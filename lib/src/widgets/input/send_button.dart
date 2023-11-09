@@ -38,7 +38,8 @@ class SendButton extends StatelessWidget {
             onPressed: onPressed,
             padding: padding,
             splashRadius: 24,
-            tooltip: InheritedL10n.of(context).l10n.sendButtonAccessibilityLabel,
+            tooltip:
+                InheritedL10n.of(context).l10n.sendButtonAccessibilityLabel,
           ),
         ),
       );
