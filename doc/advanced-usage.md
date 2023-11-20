@@ -598,4 +598,17 @@ if (_messages.where((e) => e.id == 'lastReadMessageId').isEmpty) {
     _chatKey.currentState?.scrollToUnreadHeader();
   });
 }
+```
 
+### Hightlight message on scroll
+
+In order to hightlight message on scrolling you need to setup `highlightMessageColor` for ChatTheme used. Then you can call scroll to message function like this:
+
+```dart
+scrollToMessage(
+  'messageId',
+  withHighlight: true,
+  // Default duration is 3 seconds
+  highlightDuration: const Duration(milliseconds: 1000), 
+);
+```
