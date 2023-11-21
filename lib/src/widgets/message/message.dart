@@ -3,17 +3,11 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../../flutter_chat_ui.dart';
 import '../../conditional/conditional.dart';
-import '../../models/bubble_rtl_alignment.dart';
-import '../../models/emoji_enlargement_behavior.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
-import 'file_message.dart';
-import 'image_message.dart';
-import 'message_status.dart';
-import 'text_message.dart';
-import 'user_avatar.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
@@ -198,12 +192,12 @@ class Message extends StatelessWidget {
   ) =>
       bubbleBuilder != null
           ? bubbleBuilder!(
-              _messageBuilder(),
+              _messageBuilder(context),
               message: message,
               nextMessageInGroup: roundBorder,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder()
+              ? _messageBuilder(context)
               : Container(
                   decoration: BoxDecoration(
                     borderRadius: borderRadius,
@@ -214,39 +208,47 @@ class Message extends StatelessWidget {
                       borderRadius: borderRadius,
                       color: InheritedChatTheme.of(context).theme.primaryColor,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (message.repliedMessage != null)
+                    child: IntrinsicWidth(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (message.repliedMessage != null)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 4.0, right: 4.0, left: 4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16.0),
+                                        color: InheritedChatTheme.of(context).theme.secondaryColor,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: borderRadius,
+                                        child: _repliedMessageBuilder(message.repliedMessage!),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           Row(
                             children: [
                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      color: InheritedChatTheme.of(context).theme.secondaryColor,
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: borderRadius,
-                                      child: _repliedMessageBuilder(message.repliedMessage!),
-                                    ),
-                                  ),
+                                child: ClipRRect(
+                                  borderRadius: borderRadius,
+                                  child: _messageBuilder(context),
                                 ),
                               ),
                             ],
                           ),
-                        ClipRRect(
-                          borderRadius: borderRadius,
-                          child: _messageBuilder(),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
 
-  Widget _messageBuilder() {
+  Widget _messageBuilder(BuildContext context) {
     switch (message.type) {
       case types.MessageType.audio:
         final audioMessage = message as types.AudioMessage;
@@ -261,11 +263,50 @@ class Message extends StatelessWidget {
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
             ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
-            : ImageMessage(
-                imageHeaders: imageHeaders,
-                imageProviderBuilder: imageProviderBuilder,
-                message: imageMessage,
-                messageWidth: messageWidth,
+            : Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: ImageMessage(
+                        imageHeaders: imageHeaders,
+                        imageProviderBuilder: imageProviderBuilder,
+                        message: imageMessage,
+                        messageWidth: messageWidth,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0, right: 8),
+                        child: Row(
+                          children: [
+                            Text(
+                              '19:49',
+                              style: InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            if (message.author.id == InheritedUser.of(context).user.id)
+                              Padding(
+                                padding: EdgeInsets.zero,
+                                child: showStatus
+                                    ? GestureDetector(
+                                        onLongPress: () => onMessageStatusLongPress?.call(context, message),
+                                        onTap: () => onMessageStatusTap?.call(context, message),
+                                        child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
+                                      )
+                                    : null,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
@@ -275,16 +316,53 @@ class Message extends StatelessWidget {
                 messageWidth: messageWidth,
                 showName: showName,
               )
-            : TextMessage(
-                emojiEnlargementBehavior: emojiEnlargementBehavior,
-                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
-                message: textMessage,
-                nameBuilder: nameBuilder,
-                onPreviewDataFetched: onPreviewDataFetched,
-                options: textMessageOptions,
-                showName: showName,
-                usePreviewData: usePreviewData,
-                userAgent: userAgent,
+            : Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 3.0),
+                    child: TextMessage(
+                      emojiEnlargementBehavior: emojiEnlargementBehavior,
+                      hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                      message: textMessage,
+                      nameBuilder: nameBuilder,
+                      onPreviewDataFetched: onPreviewDataFetched,
+                      options: textMessageOptions,
+                      showName: showName,
+                      usePreviewData: usePreviewData,
+                      userAgent: userAgent,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0, right: 10),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '19:49',
+                            style: InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle.copyWith(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                          if (message.author.id == InheritedUser.of(context).user.id)
+                            Padding(
+                              padding: EdgeInsets.zero,
+                              child: showStatus
+                                  ? GestureDetector(
+                                      onLongPress: () => onMessageStatusLongPress?.call(context, message),
+                                      onTap: () => onMessageStatusTap?.call(context, message),
+                                      child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
+                                    )
+                                  : null,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               );
       case types.MessageType.video:
         final videoMessage = message as types.VideoMessage;
@@ -467,17 +545,6 @@ class Message extends StatelessWidget {
                 ],
               ),
             ),
-            if (currentUserIsAuthor)
-              Padding(
-                padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-                child: showStatus
-                    ? GestureDetector(
-                        onLongPress: () => onMessageStatusLongPress?.call(context, message),
-                        onTap: () => onMessageStatusTap?.call(context, message),
-                        child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
-                      )
-                    : null,
-              ),
           ],
         ),
       ),

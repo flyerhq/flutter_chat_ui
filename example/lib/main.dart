@@ -128,6 +128,7 @@ class _ChatPageState extends State<ChatPage> {
       final image = await decodeImageFromList(bytes);
 
       final message = types.ImageMessage(
+        repliedMessage: repliedMessage,
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
@@ -136,6 +137,8 @@ class _ChatPageState extends State<ChatPage> {
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
+        showStatus: true,
+        status: types.Status.sent,
       );
 
       _addMessage(message);
@@ -198,7 +201,15 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(author: _user, createdAt: DateTime.now().millisecondsSinceEpoch, id: const Uuid().v4(), text: message.text, repliedMessage: repliedMessage);
+    final textMessage = types.TextMessage(
+      author: _user,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: message.text,
+      repliedMessage: repliedMessage,
+      showStatus: true,
+      status: types.Status.sent,
+    );
     repliedMessage = null;
     _addMessage(textMessage);
   }
@@ -209,12 +220,6 @@ class _ChatPageState extends State<ChatPage> {
 
     setState(() {
       _messages = messages;
-    });
-  }
-
-  void replying(types.TextMessage message) {
-    setState(() {
-      repliedMessage = message;
     });
   }
 
@@ -368,6 +373,11 @@ class _ChatPageState extends State<ChatPage> {
             ),
             messages: _messages,
             onSwipeToRight: (context, message) {
+              if (repliedMessage != null) {
+                setState(() {
+                  repliedMessage = null;
+                });
+              }
               setState(() {
                 if (message is types.TextMessage) {
                   repliedMessage = types.TextMessage(author: message.author, id: message.id, text: (message).text);
