@@ -42,59 +42,31 @@ class ImageGallery extends StatelessWidget {
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
-            value: event == null || event.expectedTotalBytes == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+            value: event == null || event.expectedTotalBytes == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       );
 
   @override
-  Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          onClosePressed();
-          return false;
-        },
-        child: Dismissible(
-          key: const Key('photo_view_gallery'),
-          direction: DismissDirection.down,
-          onDismissed: (direction) => onClosePressed(),
-          child: Stack(
-            children: [
-              PhotoViewGallery.builder(
-                builder: (BuildContext context, int index) =>
-                    PhotoViewGalleryPageOptions(
-                  imageProvider: imageProviderBuilder != null
-                      ? imageProviderBuilder!(
-                          uri: images[index].uri,
-                          imageHeaders: imageHeaders,
-                          conditional: Conditional(),
-                        )
-                      : Conditional().getProvider(
-                          images[index].uri,
-                          headers: imageHeaders,
-                        ),
-                  minScale: options.minScale,
-                  maxScale: options.maxScale,
+  Widget build(BuildContext context) => PhotoViewGallery.builder(
+        builder: (BuildContext context, int index) => PhotoViewGalleryPageOptions(
+          imageProvider: imageProviderBuilder != null
+              ? imageProviderBuilder!(
+                  uri: images[index].uri,
+                  imageHeaders: imageHeaders,
+                  conditional: Conditional(),
+                )
+              : Conditional().getProvider(
+                  images[index].uri,
+                  headers: imageHeaders,
                 ),
-                itemCount: images.length,
-                loadingBuilder: (context, event) =>
-                    _imageGalleryLoadingBuilder(event),
-                pageController: pageController,
-                scrollPhysics: const ClampingScrollPhysics(),
-              ),
-              Positioned.directional(
-                end: 16,
-                textDirection: Directionality.of(context),
-                top: 56,
-                child: CloseButton(
-                  color: Colors.white,
-                  onPressed: onClosePressed,
-                ),
-              ),
-            ],
-          ),
+          minScale: options.minScale,
+          maxScale: options.maxScale,
         ),
+        itemCount: images.length,
+        loadingBuilder: (context, event) => _imageGalleryLoadingBuilder(event),
+        pageController: pageController,
+        scrollPhysics: const ClampingScrollPhysics(),
       );
 }
 

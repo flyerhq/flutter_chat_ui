@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../conditional/conditional.dart';
@@ -40,6 +41,8 @@ class Message extends StatelessWidget {
     this.onMessageDoubleTap,
     this.onMessageLongPress,
     this.onMessageStatusLongPress,
+    this.onSwipeToRight,
+    this.onSwipeToLeft,
     this.onMessageStatusTap,
     this.onMessageTap,
     this.onMessageVisibilityChanged,
@@ -125,6 +128,8 @@ class Message extends StatelessWidget {
 
   /// Called when user makes a long press on any message.
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
+  final void Function(BuildContext context, types.Message)? onSwipeToRight;
+  final void Function(BuildContext context, types.Message)? onSwipeToLeft;
 
   /// Called when user makes a long press on status icon in any message.
   final void Function(BuildContext context, types.Message)? onMessageStatusLongPress;
@@ -204,9 +209,40 @@ class Message extends StatelessWidget {
                     borderRadius: borderRadius,
                     color: !currentUserIsAuthor || message.type == types.MessageType.image ? InheritedChatTheme.of(context).theme.secondaryColor : InheritedChatTheme.of(context).theme.primaryColor,
                   ),
-                  child: ClipRRect(
-                    borderRadius: borderRadius,
-                    child: _messageBuilder(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: borderRadius,
+                      color: InheritedChatTheme.of(context).theme.primaryColor,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (message.repliedMessage != null)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      color: InheritedChatTheme.of(context).theme.secondaryColor,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: borderRadius,
+                                      child: _repliedMessageBuilder(message.repliedMessage!),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ClipRRect(
+                          borderRadius: borderRadius,
+                          child: _messageBuilder(),
+                        ),
+                      ],
+                    ),
                   ),
                 );
 
@@ -258,6 +294,81 @@ class Message extends StatelessWidget {
     }
   }
 
+  Widget _repliedMessageBuilder(types.Message repliedMessage) {
+    switch (repliedMessage.type) {
+      case types.MessageType.audio:
+        final audioMessage = repliedMessage as types.AudioMessage;
+        return audioMessageBuilder != null ? audioMessageBuilder!(audioMessage, messageWidth: messageWidth) : const SizedBox();
+      case types.MessageType.custom:
+        final customMessage = repliedMessage as types.CustomMessage;
+        return customMessageBuilder != null ? customMessageBuilder!(customMessage, messageWidth: messageWidth) : const SizedBox();
+      case types.MessageType.file:
+        final fileMessage = repliedMessage as types.FileMessage;
+        return fileMessageBuilder != null ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth) : FileMessage(message: fileMessage);
+      case types.MessageType.image:
+        final imageMessage = repliedMessage as types.ImageMessage;
+        return imageMessageBuilder != null
+            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
+            : Row(
+                children: [
+                  Expanded(
+                    child: TextMessage(
+                      emojiEnlargementBehavior: emojiEnlargementBehavior,
+                      hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                      message: types.TextMessage(author: repliedMessage.author, createdAt: repliedMessage.createdAt, id: repliedMessage.id, text: 'Fotoğraf'),
+                      nameBuilder: nameBuilder,
+                      onPreviewDataFetched: onPreviewDataFetched,
+                      showName: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      usePreviewData: usePreviewData,
+                      userAgent: userAgent,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  ImageMessage(
+                    imageHeaders: imageHeaders,
+                    imageProviderBuilder: imageProviderBuilder,
+                    message: imageMessage,
+                    messageWidth: 50,
+                    minWidth: 50,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                ],
+              );
+      case types.MessageType.text:
+        final textMessage = repliedMessage as types.TextMessage;
+        return textMessageBuilder != null
+            ? textMessageBuilder!(
+                textMessage,
+                messageWidth: messageWidth,
+                showName: showName,
+              )
+            : TextMessage(
+                emojiEnlargementBehavior: emojiEnlargementBehavior,
+                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                message: textMessage,
+                nameBuilder: nameBuilder,
+                onPreviewDataFetched: onPreviewDataFetched,
+                options: textMessageOptions,
+                showName: true,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                usePreviewData: usePreviewData,
+                userAgent: userAgent,
+              );
+      case types.MessageType.video:
+        final videoMessage = repliedMessage as types.VideoMessage;
+        return videoMessageBuilder != null ? videoMessageBuilder!(videoMessage, messageWidth: messageWidth) : const SizedBox();
+      default:
+        return const SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final query = MediaQuery.of(context);
@@ -292,78 +403,83 @@ class Message extends StatelessWidget {
             topRight: Radius.circular(messageBorderRadius),
           );
 
-    return Container(
-      alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
-          ? currentUserIsAuthor
-              ? AlignmentDirectional.centerEnd
-              : AlignmentDirectional.centerStart
-          : currentUserIsAuthor
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
-      margin: bubbleRtlAlignment == BubbleRtlAlignment.left
-          ? EdgeInsetsDirectional.only(
-              bottom: 4,
-              end: isMobile ? query.padding.right : 0,
-              start: 20 + (isMobile ? query.padding.left : 0),
-            )
-          : EdgeInsets.only(
-              bottom: 4,
-              left: 20 + (isMobile ? query.padding.left : 0),
-              right: isMobile ? query.padding.right : 0,
-            ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left ? null : TextDirection.ltr,
-        children: [
-          if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: messageWidth.toDouble(),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onDoubleTap: () => onMessageDoubleTap?.call(context, message),
-                  onLongPress: () => onMessageLongPress?.call(context, message),
-                  onTap: () => onMessageTap?.call(context, message),
-                  child: onMessageVisibilityChanged != null
-                      ? VisibilityDetector(
-                          key: Key(message.id),
-                          onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
-                            message,
-                            visibilityInfo.visibleFraction > 0.1,
-                          ),
-                          child: _bubbleBuilder(
+    return SwipeTo(
+      onRightSwipe: (a) {
+        onSwipeToRight?.call(context, message);
+      },
+      child: Container(
+        alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
+            ? currentUserIsAuthor
+                ? AlignmentDirectional.centerEnd
+                : AlignmentDirectional.centerStart
+            : currentUserIsAuthor
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+        margin: bubbleRtlAlignment == BubbleRtlAlignment.left
+            ? EdgeInsetsDirectional.only(
+                bottom: 4,
+                end: isMobile ? query.padding.right : 0,
+                start: 20 + (isMobile ? query.padding.left : 0),
+              )
+            : EdgeInsets.only(
+                bottom: 4,
+                left: 20 + (isMobile ? query.padding.left : 0),
+                right: isMobile ? query.padding.right : 0,
+              ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left ? null : TextDirection.ltr,
+          children: [
+            if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: messageWidth.toDouble(),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onDoubleTap: () => onMessageDoubleTap?.call(context, message),
+                    onLongPress: () => onMessageLongPress?.call(context, message),
+                    onTap: () => onMessageTap?.call(context, message),
+                    child: onMessageVisibilityChanged != null
+                        ? VisibilityDetector(
+                            key: Key(message.id),
+                            onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
+                              message,
+                              visibilityInfo.visibleFraction > 0.1,
+                            ),
+                            child: _bubbleBuilder(
+                              context,
+                              borderRadius.resolve(Directionality.of(context)),
+                              currentUserIsAuthor,
+                              enlargeEmojis,
+                            ),
+                          )
+                        : _bubbleBuilder(
                             context,
                             borderRadius.resolve(Directionality.of(context)),
                             currentUserIsAuthor,
                             enlargeEmojis,
                           ),
-                        )
-                      : _bubbleBuilder(
-                          context,
-                          borderRadius.resolve(Directionality.of(context)),
-                          currentUserIsAuthor,
-                          enlargeEmojis,
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          if (currentUserIsAuthor)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () => onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
-                    )
-                  : null,
-            ),
-        ],
+            if (currentUserIsAuthor)
+              Padding(
+                padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+                child: showStatus
+                    ? GestureDetector(
+                        onLongPress: () => onMessageStatusLongPress?.call(context, message),
+                        onTap: () => onMessageStatusTap?.call(context, message),
+                        child: customStatusBuilder != null ? customStatusBuilder!(message, context: context) : MessageStatus(status: message.status),
+                      )
+                    : null,
+              ),
+          ],
+        ),
       ),
     );
   }

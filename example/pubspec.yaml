@@ -44,6 +44,8 @@ dependencies:
   open_filex: ^4.3.2
   path_provider: ^2.0.15
   uuid: ^3.0.7
+  swipe_to: ^1.0.3
+
 
 dev_dependencies:
   dart_code_metrics: ^5.7.5

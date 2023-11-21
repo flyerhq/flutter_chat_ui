@@ -18,6 +18,7 @@ class ImageMessage extends StatefulWidget {
     this.imageProviderBuilder,
     required this.message,
     required this.messageWidth,
+    this.minWidth,
   });
 
   /// See [Chat.imageHeaders].
@@ -35,6 +36,7 @@ class ImageMessage extends StatefulWidget {
 
   /// Maximum message width.
   final int messageWidth;
+  final double? minWidth;
 
   @override
   State<ImageMessage> createState() => _ImageMessageState();
@@ -108,9 +110,7 @@ class _ImageMessageState extends State<ImageMessage> {
       );
     } else if (_size.aspectRatio < 0.1 || _size.aspectRatio > 10) {
       return Container(
-        color: user.id == widget.message.author.id
-            ? InheritedChatTheme.of(context).theme.primaryColor
-            : InheritedChatTheme.of(context).theme.secondaryColor,
+        color: user.id == widget.message.author.id ? InheritedChatTheme.of(context).theme.primaryColor : InheritedChatTheme.of(context).theme.secondaryColor,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -144,13 +144,7 @@ class _ImageMessageState extends State<ImageMessage> {
                   children: [
                     Text(
                       widget.message.name,
-                      style: user.id == widget.message.author.id
-                          ? InheritedChatTheme.of(context)
-                              .theme
-                              .sentMessageBodyTextStyle
-                          : InheritedChatTheme.of(context)
-                              .theme
-                              .receivedMessageBodyTextStyle,
+                      style: user.id == widget.message.author.id ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle,
                       textWidthBasis: TextWidthBasis.longestLine,
                     ),
                     Container(
@@ -160,12 +154,8 @@ class _ImageMessageState extends State<ImageMessage> {
                       child: Text(
                         formatBytes(widget.message.size.truncate()),
                         style: user.id == widget.message.author.id
-                            ? InheritedChatTheme.of(context)
-                                .theme
-                                .sentMessageCaptionTextStyle
-                            : InheritedChatTheme.of(context)
-                                .theme
-                                .receivedMessageCaptionTextStyle,
+                            ? InheritedChatTheme.of(context).theme.sentMessageCaptionTextStyle
+                            : InheritedChatTheme.of(context).theme.receivedMessageCaptionTextStyle,
                       ),
                     ),
                   ],
@@ -179,7 +169,7 @@ class _ImageMessageState extends State<ImageMessage> {
       return Container(
         constraints: BoxConstraints(
           maxHeight: widget.messageWidth.toDouble(),
-          minWidth: 170,
+          minWidth: widget.minWidth ?? 170,
         ),
         child: AspectRatio(
           aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,

@@ -3,13 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-import '../../models/input_clear_mode.dart';
-import '../../models/send_button_visibility_mode.dart';
+import '../../../flutter_chat_ui.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_l10n.dart';
-import 'attachment_button.dart';
-import 'input_text_field_controller.dart';
-import 'send_button.dart';
 
 /// A class that represents bottom bar widget with a text field, attachment and
 /// send buttons inside. By default hides send button when text field is empty.
@@ -127,59 +123,70 @@ class _InputState extends State<Input> {
       autofocus: !widget.options.autofocus,
       child: Padding(
         padding: InheritedChatTheme.of(context).theme.inputMargin,
-        child: Container(
-          decoration: InheritedChatTheme.of(context).theme.inputContainerDecoration,
-          child: Row(
-            textDirection: TextDirection.ltr,
-            children: [
-              if (widget.onAttachmentPressed != null)
-                AttachmentButton(
-                  isLoading: widget.isAttachmentUploading ?? false,
-                  onPressed: widget.onAttachmentPressed,
-                ),
-              Expanded(
-                child: Padding(
-                  padding: textPadding,
-                  child: TextField(
-                    enabled: widget.options.enabled,
-                    autocorrect: widget.options.autocorrect,
-                    autofocus: widget.options.autofocus,
-                    enableSuggestions: widget.options.enableSuggestions,
-                    controller: _textController,
-                    cursorColor: InheritedChatTheme.of(context).theme.inputTextCursorColor,
-                    decoration: InheritedChatTheme.of(context).theme.inputTextDecoration.copyWith(
-                          hintStyle: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
-                                color: InheritedChatTheme.of(context).theme.inputTextColor.withOpacity(0.5),
-                              ),
-                          hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
-                        ),
-                    focusNode: _inputFocusNode,
-                    keyboardType: widget.options.keyboardType,
-                    maxLines: 5,
-                    minLines: 1,
-                    onChanged: widget.options.onTextChanged,
-                    onTap: widget.options.onTextFieldTap,
-                    style: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
-                          color: InheritedChatTheme.of(context).theme.inputTextColor,
-                        ),
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                ),
+        child: Column(
+          children: [
+            if (InheritedChatTheme.of(context).theme.repliedMessageWidget != null)
+              Column(
+                children: [
+                  InheritedChatTheme.of(context).theme.repliedMessageWidget!,
+                  const SizedBox(height: 8),
+                ],
               ),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: buttonPadding.bottom + buttonPadding.top + 24,
-                ),
-                child: Visibility(
-                  visible: _sendButtonVisible,
-                  child: SendButton(
-                    onPressed: _handleSendPressed,
-                    padding: buttonPadding,
+            Container(
+              decoration: InheritedChatTheme.of(context).theme.inputContainerDecoration,
+              child: Row(
+                textDirection: TextDirection.ltr,
+                children: [
+                  if (widget.onAttachmentPressed != null)
+                    AttachmentButton(
+                      isLoading: widget.isAttachmentUploading ?? false,
+                      onPressed: widget.onAttachmentPressed,
+                    ),
+                  Expanded(
+                    child: Padding(
+                      padding: textPadding,
+                      child: TextField(
+                        enabled: widget.options.enabled,
+                        autocorrect: widget.options.autocorrect,
+                        autofocus: widget.options.autofocus,
+                        enableSuggestions: widget.options.enableSuggestions,
+                        controller: _textController,
+                        cursorColor: InheritedChatTheme.of(context).theme.inputTextCursorColor,
+                        decoration: InheritedChatTheme.of(context).theme.inputTextDecoration.copyWith(
+                              hintStyle: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
+                                    color: InheritedChatTheme.of(context).theme.inputTextColor.withOpacity(0.5),
+                                  ),
+                              hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
+                            ),
+                        focusNode: _inputFocusNode,
+                        keyboardType: widget.options.keyboardType,
+                        maxLines: 5,
+                        minLines: 1,
+                        onChanged: widget.options.onTextChanged,
+                        onTap: widget.options.onTextFieldTap,
+                        style: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
+                              color: InheritedChatTheme.of(context).theme.inputTextColor,
+                            ),
+                        textCapitalization: TextCapitalization.sentences,
+                      ),
+                    ),
                   ),
-                ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: buttonPadding.bottom + buttonPadding.top + 24,
+                    ),
+                    child: Visibility(
+                      visible: _sendButtonVisible,
+                      child: SendButton(
+                        onPressed: _handleSendPressed,
+                        padding: buttonPadding,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

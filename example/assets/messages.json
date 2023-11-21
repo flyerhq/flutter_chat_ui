@@ -1,5 +1,22 @@
 [
   {
+    "repliedMessage": {
+      "author": {
+        "firstName": "Janice",
+        "id": "e52552f4-835d-4dbe-ba77-b076e659774d",
+        "imageUrl": "https://i.pravatar.cc/300?u=e52552f4-835d-4dbe-ba77-b076e659774d",
+        "lastName": "King"
+      },
+      "createdAt": 1655648403000,
+      "height": 1280,
+      "id": "02797655-4d73-402e-a319-50fde79e2bc4",
+      "name": "madrid",
+      "size": 585000,
+      "status": "seen",
+      "type": "image",
+      "uri": "https://source.unsplash.com/WBGjg0DsO_g/1920x1280",
+      "width": 1920
+    },
     "author": {
       "firstName": "John",
       "id": "4c2307ba-3d40-442f-b1ff-b271f63904ca",
@@ -35,10 +52,22 @@
       "imageUrl": "https://i.pravatar.cc/300?u=e52552f4-835d-4dbe-ba77-b076e659774d",
       "lastName": "King"
     },
+    "repliedMessage": {
+      "author": {
+        "firstName": "Matthew",
+        "id": "82091008-a484-4a89-ae75-a22bf8d6f3ac",
+        "lastName": "White"
+      },
+      "createdAt": 1655648401000,
+      "id": "64747b28-df19-4a0c-8c47-316dc3546e3c",
+      "status": "seen",
+      "text": "Here you go buddy 💪",
+      "type": "text"
+    },
     "createdAt": 1655648402000,
     "id": "4e048753-2d60-4144-bc28-9967050aaf12",
     "status": "seen",
-    "text": "What a ~nice~ _wonderful_ sunset! 😻",
+    "text": "What a ~nice~ _wonderful_ sunsetss! 😻",
     "type": "text"
   },
   {

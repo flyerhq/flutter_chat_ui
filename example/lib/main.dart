@@ -36,10 +36,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  types.Message? repliedMessage;
+
   List<types.Message> _messages = [];
-  final _user = const types.User(
-    id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-  );
+  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac', firstName: 'yesdevasdasdasdasdasdasdasd123123');
 
   @override
   void initState() {
@@ -198,13 +198,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: message.text,
-    );
-
+    final textMessage = types.TextMessage(author: _user, createdAt: DateTime.now().millisecondsSinceEpoch, id: const Uuid().v4(), text: message.text, repliedMessage: repliedMessage);
+    repliedMessage = null;
     _addMessage(textMessage);
   }
 
@@ -214,6 +209,12 @@ class _ChatPageState extends State<ChatPage> {
 
     setState(() {
       _messages = messages;
+    });
+  }
+
+  void replying(types.TextMessage message) {
+    setState(() {
+      repliedMessage = message;
     });
   }
 
@@ -275,14 +276,161 @@ class _ChatPageState extends State<ChatPage> {
                   color: Colors.black,
                 ),
               ),
+              repliedMessageWidget: (repliedMessage != null)
+                  ? Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.2),
+                                ),
+                                color: Colors.grey.shade900,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: (repliedMessage is types.TextMessage)
+                                          ? TextMessage(
+                                              message: repliedMessage! as types.TextMessage,
+                                              emojiEnlargementBehavior: EmojiEnlargementBehavior.never,
+                                              hideBackgroundOnEmojiMessages: true,
+                                              showName: true,
+                                              usePreviewData: false,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                          : Row(
+                                              children: [
+                                                Expanded(
+                                                  child: TextMessage(
+                                                    emojiEnlargementBehavior: EmojiEnlargementBehavior.never,
+                                                    message: types.TextMessage(author: repliedMessage!.author, id: repliedMessage?.id ?? '', text: 'Fotoğraf'),
+                                                    hideBackgroundOnEmojiMessages: true,
+                                                    showName: true,
+                                                    usePreviewData: false,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                ImageMessage(
+                                                  message: types.ImageMessage(
+                                                    size: 50,
+                                                    author: repliedMessage!.author,
+                                                    id: repliedMessage!.id,
+                                                    uri: (repliedMessage! as types.ImageMessage).uri,
+                                                    name: 'Fotoğraf',
+                                                  ),
+                                                  messageWidth: 50,
+                                                  minWidth: 50,
+                                                ),
+                                                const SizedBox(width: 8),
+                                              ],
+                                            ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          repliedMessage = null;
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white.withOpacity(0.5),
+                                        size: 24,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : null,
               inputPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 1),
-              inputMargin: const EdgeInsets.symmetric(horizontal: 16),
+              inputMargin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
               inputContainerDecoration: BoxDecoration(
                 color: Colors.grey[900],
                 borderRadius: BorderRadius.circular(40),
               ),
             ),
             messages: _messages,
+            onSwipeToRight: (context, message) {
+              setState(() {
+                if (message is types.TextMessage) {
+                  repliedMessage = types.TextMessage(author: message.author, id: message.id, text: (message).text);
+                } else if (message is types.ImageMessage) {
+                  repliedMessage = types.ImageMessage(
+                    size: 50,
+                    uri: message.uri,
+                    author: message.author,
+                    id: message.id,
+                    name: 'Fotoğraf',
+                  );
+                }
+              });
+            },
+            onMessageLongPress: (context, message) {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          final index = _messages.indexWhere((element) => element.id == message.id);
+
+                          final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+                            text: 'Deleted',
+                          );
+
+                          setState(() {
+                            _messages[index] = updatedMessage;
+                          });
+                        },
+                        child: const Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text('Delete'),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          setState(() {
+                            repliedMessage = types.TextMessage(author: message.author, id: message.id, text: (message as types.TextMessage).text);
+                          });
+                        },
+                        child: const Align(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: Text('Yanıtla'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,

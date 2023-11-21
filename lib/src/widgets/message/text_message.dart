@@ -16,6 +16,7 @@ class TextMessage extends StatelessWidget {
   /// Creates a text message widget from a [types.TextMessage] class.
   const TextMessage({
     super.key,
+    this.overflow,
     required this.emojiEnlargementBehavior,
     required this.hideBackgroundOnEmojiMessages,
     required this.message,
@@ -25,6 +26,7 @@ class TextMessage extends StatelessWidget {
     required this.showName,
     required this.usePreviewData,
     this.userAgent,
+    this.maxLines,
   });
 
   /// See [Message.emojiEnlargementBehavior].
@@ -35,6 +37,8 @@ class TextMessage extends StatelessWidget {
 
   /// [types.TextMessage].
   final types.TextMessage message;
+  final int? maxLines;
+  final TextOverflow? overflow;
 
   /// This is to allow custom user name builder
   /// By using this we can fetch newest user info based on id.
@@ -117,6 +121,8 @@ class TextMessage extends StatelessWidget {
             codeTextStyle: codeTextStyle,
             options: options,
             text: message.text,
+            maxLines: maxLines,
+            overflow: overflow ?? TextOverflow.clip,
           ),
       ],
     );
@@ -284,7 +290,7 @@ class TextMessageText extends StatelessWidget {
 @immutable
 class TextMessageOptions {
   const TextMessageOptions({
-    this.isTextSelectable = true,
+    this.isTextSelectable = false,
     this.onLinkPressed,
     this.openOnPreviewImageTap = false,
     this.openOnPreviewTitleTap = false,
