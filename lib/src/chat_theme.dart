@@ -113,14 +113,10 @@ abstract class ChatTheme {
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
     this.highlightMessageColor,
-    this.repliedMessageWidget,
   });
 
   /// Icon for select attachment button.
   final Widget? attachmentButtonIcon;
-
-  // Widget for input text field.
-  final Widget? repliedMessageWidget;
 
   /// Margin of attachment button.
   final EdgeInsets? attachmentButtonMargin;
@@ -342,7 +338,6 @@ class DefaultChatTheme extends ChatTheme {
     super.inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
-    super.repliedMessageWidget,
     super.inputContainerDecoration,
     super.inputMargin = EdgeInsets.zero,
     super.inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),
@@ -515,7 +510,6 @@ class DarkChatTheme extends ChatTheme {
     super.inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
-    super.repliedMessageWidget,
     super.inputContainerDecoration,
     super.inputMargin = EdgeInsets.zero,
     super.inputPadding = const EdgeInsets.fromLTRB(24, 20, 24, 20),

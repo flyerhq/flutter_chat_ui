@@ -87,8 +87,8 @@ SPEC CHECKSUMS:
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   SDWebImage: 2aea163b50bfcb569a2726b6a754c54a4506fcf6
   SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
-  url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
+  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
 
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0
