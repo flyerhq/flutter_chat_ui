@@ -113,7 +113,12 @@ abstract class ChatTheme {
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
     this.highlightMessageColor,
+    this.receivedRepliedMessageBackgroundColor,
+    this.sentRepliedMessageBackgroundColor,
   });
+
+  final Color? sentRepliedMessageBackgroundColor;
+  final Color? receivedRepliedMessageBackgroundColor;
 
   /// Icon for select attachment button.
   final Widget? attachmentButtonIcon;
@@ -471,6 +476,8 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.highlightMessageColor,
+    super.receivedRepliedMessageBackgroundColor = const Color(0xffF4F4F4),
+    super.sentRepliedMessageBackgroundColor = const Color(0xffE6F5FF),
   });
 }
 
@@ -643,5 +650,7 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.highlightMessageColor,
+    super.receivedRepliedMessageBackgroundColor = const Color(0xff000000),
+    super.sentRepliedMessageBackgroundColor = const Color(0xff051E2F),
   });
 }

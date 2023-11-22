@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -51,6 +52,7 @@ class Message extends StatelessWidget {
     required this.usePreviewData,
     this.userAgent,
     this.videoMessageBuilder,
+    required this.scrollController,
   });
 
   /// Build an audio message inside predefined bubble.
@@ -115,6 +117,8 @@ class Message extends StatelessWidget {
 
   /// Maximum message width.
   final int messageWidth;
+
+  final AutoScrollController scrollController;
 
   /// See [TextMessage.nameBuilder].
   final Widget Function(types.User)? nameBuilder;
@@ -192,6 +196,26 @@ class Message extends StatelessWidget {
           )
       : const SizedBox(width: 40);
 
+  /// Scroll to the message with the specified [id].
+  void scrollToMessage(
+    String id, {
+    Duration? scrollDuration,
+    bool withHighlight = false,
+    Duration? highlightDuration,
+  }) async {
+    await scrollController.scrollToIndex(
+      chatMessageAutoScrollIndexById[id]!,
+      duration: scrollDuration ?? scrollAnimationDuration,
+      preferPosition: AutoScrollPosition.middle,
+    );
+    if (withHighlight) {
+      await scrollController.highlight(
+        chatMessageAutoScrollIndexById[id]!,
+        highlightDuration: highlightDuration ?? const Duration(seconds: 3),
+      );
+    }
+  }
+
   Widget _bubbleBuilder(
     BuildContext context,
     BorderRadius borderRadius,
@@ -217,36 +241,50 @@ class Message extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
-                      color: InheritedChatTheme.of(context).theme.primaryColor,
+                      color: !currentUserIsAuthor
+                          ? InheritedChatTheme.of(context).theme.secondaryColor
+                          : InheritedChatTheme.of(context).theme.primaryColor,
                     ),
                     child: IntrinsicWidth(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (message.repliedMessage != null)
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 4.0, right: 4.0, left: 4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                        color: InheritedChatTheme.of(context)
-                                            .theme
-                                            .secondaryColor,
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: borderRadius,
-                                        child: _repliedMessageBuilder(
-                                            message.repliedMessage!),
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                scrollToMessage(message.repliedMessage!.id);
+                              },
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 4.0, right: 4.0, left: 4.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                          color: !currentUserIsAuthor
+                                              ? InheritedChatTheme.of(context)
+                                                  .theme
+                                                  .receivedRepliedMessageBackgroundColor
+                                              : InheritedChatTheme.of(context)
+                                                  .theme
+                                                  .sentRepliedMessageBackgroundColor,
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: borderRadius,
+                                          child: _repliedMessageBuilder(
+                                            message.repliedMessage!,
+                                            scrollController,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           Row(
                             children: [
@@ -420,7 +458,8 @@ class Message extends StatelessWidget {
     }
   }
 
-  Widget _repliedMessageBuilder(types.Message repliedMessage) {
+  Widget _repliedMessageBuilder(
+      types.Message repliedMessage, AutoScrollController controller) {
     switch (repliedMessage.type) {
       case types.MessageType.audio:
         final audioMessage = repliedMessage as types.AudioMessage;
@@ -577,7 +616,6 @@ class Message extends StatelessWidget {
             if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
             ConstrainedBox(
               constraints: BoxConstraints(
-                minWidth: 170,
                 maxWidth: messageWidth.toDouble(),
               ),
               child: Column(
@@ -597,18 +635,30 @@ class Message extends StatelessWidget {
                               message,
                               visibilityInfo.visibleFraction > 0.1,
                             ),
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minWidth:
+                                    MediaQuery.of(context).size.width * .2,
+                              ),
+                              child: _bubbleBuilder(
+                                context,
+                                borderRadius
+                                    .resolve(Directionality.of(context)),
+                                currentUserIsAuthor,
+                                enlargeEmojis,
+                              ),
+                            ),
+                          )
+                        : ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: MediaQuery.of(context).size.width * .2,
+                            ),
                             child: _bubbleBuilder(
                               context,
                               borderRadius.resolve(Directionality.of(context)),
                               currentUserIsAuthor,
                               enlargeEmojis,
                             ),
-                          )
-                        : _bubbleBuilder(
-                            context,
-                            borderRadius.resolve(Directionality.of(context)),
-                            currentUserIsAuthor,
-                            enlargeEmojis,
                           ),
                   ),
                 ],

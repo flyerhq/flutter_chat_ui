@@ -12,6 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -37,6 +38,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   types.Message? repliedMessage;
+  final AutoScrollController scrollController = AutoScrollController();
 
   List<types.Message> _messages = [];
   final _user = const types.User(
@@ -272,6 +274,7 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: Colors.black,
         body: SafeArea(
           child: Chat(
+            scrollController: scrollController,
             repliedMessageWidget: (repliedMessage != null)
                 ? Row(
                     children: [
