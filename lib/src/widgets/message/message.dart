@@ -577,7 +577,6 @@ class Message extends StatelessWidget {
             if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
             ConstrainedBox(
               constraints: BoxConstraints(
-                minWidth: 170,
                 maxWidth: messageWidth.toDouble(),
               ),
               child: Column(
