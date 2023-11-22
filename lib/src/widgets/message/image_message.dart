@@ -181,7 +181,6 @@ class _ImageMessageState extends State<ImageMessage> {
       return Container(
         constraints: BoxConstraints(
           maxHeight: widget.messageWidth.toDouble(),
-          minWidth: widget.minWidth ?? 170,
         ),
         child: AspectRatio(
           aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
