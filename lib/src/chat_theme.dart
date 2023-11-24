@@ -80,6 +80,7 @@ abstract class ChatTheme {
     required this.messageBorderRadius,
     required this.messageInsetsHorizontal,
     required this.messageInsetsVertical,
+    required this.messageMinWidth,
     required this.primaryColor,
     required this.receivedEmojiMessageTextStyle,
     this.receivedMessageBodyBoldTextStyle,
@@ -185,6 +186,9 @@ abstract class ChatTheme {
 
   /// Vertical message bubble insets.
   final double messageInsetsVertical;
+
+  /// Message bubble min width. set to [double.infinity] adaptive screen.
+  final double messageMinWidth;
 
   /// Primary color of the chat used as a background of sent messages
   /// and statuses.
@@ -356,6 +360,7 @@ class DefaultChatTheme extends ChatTheme {
     super.messageBorderRadius = 20,
     super.messageInsetsHorizontal = 20,
     super.messageInsetsVertical = 16,
+    super.messageMinWidth = 440,
     super.primaryColor = primary,
     super.receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     super.receivedMessageBodyBoldTextStyle,
@@ -528,6 +533,7 @@ class DarkChatTheme extends ChatTheme {
     super.messageBorderRadius = 20,
     super.messageInsetsHorizontal = 20,
     super.messageInsetsVertical = 16,
+    super.messageMinWidth = 440,
     super.primaryColor = primary,
     super.receivedEmojiMessageTextStyle = const TextStyle(fontSize: 40),
     super.receivedMessageBodyBoldTextStyle,
