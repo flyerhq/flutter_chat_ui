@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_link_previewer/flutter_link_previewer.dart'
-    show LinkPreview, regexEmail, regexLink;
+import 'package:flutter_link_previewer/flutter_link_previewer.dart' show LinkPreview, regexEmail, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,7 +9,6 @@ import '../../models/pattern_style.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
-import 'message_model/voco_message_model.dart';
 import 'user_name.dart';
 
 /// A class that represents text message widget with optional link preview.
@@ -38,7 +36,7 @@ class TextMessage extends StatelessWidget {
   final bool hideBackgroundOnEmojiMessages;
 
   /// [types.TextMessage].
-  final ChatMessageModel message;
+  final types.TextMessage message;
   final int? maxLines;
   final TextOverflow? overflow;
 
@@ -47,8 +45,7 @@ class TextMessage extends StatelessWidget {
   final Widget Function(types.User)? nameBuilder;
 
   /// See [LinkPreview.onPreviewDataFetched].
-  final void Function(types.TextMessage, types.PreviewData)?
-      onPreviewDataFetched;
+  final void Function(types.TextMessage, types.PreviewData)? onPreviewDataFetched;
 
   /// Customisation options for the [TextMessage].
   final TextMessageOptions options;
@@ -67,18 +64,10 @@ class TextMessage extends StatelessWidget {
     double width,
     BuildContext context,
   ) {
-    final linkDescriptionTextStyle = user.id == message.authorId
-        ? InheritedChatTheme.of(context)
-            .theme
-            .sentMessageLinkDescriptionTextStyle
-        : InheritedChatTheme.of(context)
-            .theme
-            .receivedMessageLinkDescriptionTextStyle;
-    final linkTitleTextStyle = user.id == message.authorId
-        ? InheritedChatTheme.of(context).theme.sentMessageLinkTitleTextStyle
-        : InheritedChatTheme.of(context)
-            .theme
-            .receivedMessageLinkTitleTextStyle;
+    final linkDescriptionTextStyle =
+        user.id == message.author.id ? InheritedChatTheme.of(context).theme.sentMessageLinkDescriptionTextStyle : InheritedChatTheme.of(context).theme.receivedMessageLinkDescriptionTextStyle;
+    final linkTitleTextStyle =
+        user.id == message.author.id ? InheritedChatTheme.of(context).theme.sentMessageLinkTitleTextStyle : InheritedChatTheme.of(context).theme.receivedMessageLinkTitleTextStyle;
 
     return LinkPreview(
       enableAnimation: true,
@@ -89,12 +78,11 @@ class TextMessage extends StatelessWidget {
       openOnPreviewImageTap: options.openOnPreviewImageTap,
       openOnPreviewTitleTap: options.openOnPreviewTitleTap,
       padding: EdgeInsets.symmetric(
-        horizontal:
-            InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
+        horizontal: InheritedChatTheme.of(context).theme.messageInsetsHorizontal,
         vertical: InheritedChatTheme.of(context).theme.messageInsetsVertical,
       ),
       previewData: message.previewData,
-      text: message.message,
+      text: message.text,
       textWidget: _textWidgetBuilder(user, context, false),
       userAgent: userAgent,
       width: width,
@@ -103,12 +91,7 @@ class TextMessage extends StatelessWidget {
 
   void _onPreviewDataFetched(types.PreviewData previewData) {
     if (message.previewData == null) {
-      onPreviewDataFetched?.call(
-          types.TextMessage(
-              author: types.User(id: message.authorId),
-              id: message.id,
-              text: message.message),
-          previewData);
+      onPreviewDataFetched?.call(message, previewData);
     }
   }
 
@@ -118,33 +101,18 @@ class TextMessage extends StatelessWidget {
     bool enlargeEmojis,
   ) {
     final theme = InheritedChatTheme.of(context).theme;
-    final bodyLinkTextStyle = user.id == message.authorId
-        ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle
-        : InheritedChatTheme.of(context).theme.receivedMessageBodyLinkTextStyle;
-    final bodyTextStyle = user.id == message.authorId
-        ? theme.sentMessageBodyTextStyle
-        : theme.receivedMessageBodyTextStyle;
-    final boldTextStyle = user.id == message.authorId
-        ? theme.sentMessageBodyBoldTextStyle
-        : theme.receivedMessageBodyBoldTextStyle;
-    final codeTextStyle = user.id == message.authorId
-        ? theme.sentMessageBodyCodeTextStyle
-        : theme.receivedMessageBodyCodeTextStyle;
-    final emojiTextStyle = user.id == message.authorId
-        ? theme.sentEmojiMessageTextStyle
-        : theme.receivedEmojiMessageTextStyle;
+    final bodyLinkTextStyle = user.id == message.author.id ? InheritedChatTheme.of(context).theme.sentMessageBodyLinkTextStyle : InheritedChatTheme.of(context).theme.receivedMessageBodyLinkTextStyle;
+    final bodyTextStyle = user.id == message.author.id ? theme.sentMessageBodyTextStyle : theme.receivedMessageBodyTextStyle;
+    final boldTextStyle = user.id == message.author.id ? theme.sentMessageBodyBoldTextStyle : theme.receivedMessageBodyBoldTextStyle;
+    final codeTextStyle = user.id == message.author.id ? theme.sentMessageBodyCodeTextStyle : theme.receivedMessageBodyCodeTextStyle;
+    final emojiTextStyle = user.id == message.author.id ? theme.sentEmojiMessageTextStyle : theme.receivedEmojiMessageTextStyle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showName)
-          nameBuilder?.call(types.User(id: message.authorId)) ??
-              UserName(author: types.User(id: message.authorId)),
+        if (showName) nameBuilder?.call(message.author) ?? UserName(author: message.author),
         if (enlargeEmojis)
-          if (options.isTextSelectable)
-            SelectableText(message.message, style: emojiTextStyle)
-          else
-            Text(message.message, style: emojiTextStyle)
+          if (options.isTextSelectable) SelectableText(message.text, style: emojiTextStyle) else Text(message.text, style: emojiTextStyle)
         else
           TextMessageText(
             bodyLinkTextStyle: bodyLinkTextStyle,
@@ -152,7 +120,7 @@ class TextMessage extends StatelessWidget {
             boldTextStyle: boldTextStyle,
             codeTextStyle: codeTextStyle,
             options: options,
-            text: message.message,
+            text: message.text,
             maxLines: maxLines,
             overflow: overflow ?? TextOverflow.clip,
           ),
@@ -162,21 +130,14 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final enlargeEmojis =
-        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
-            isConsistsOfEmojis(
-                emojiEnlargementBehavior,
-                types.TextMessage(
-                    author: types.User(id: message.authorId),
-                    id: message.id,
-                    text: message.message));
+    final enlargeEmojis = emojiEnlargementBehavior != EmojiEnlargementBehavior.never && isConsistsOfEmojis(emojiEnlargementBehavior, message);
     final theme = InheritedChatTheme.of(context).theme;
     final user = InheritedUser.of(context).user;
     final width = MediaQuery.of(context).size.width;
 
     if (usePreviewData && onPreviewDataFetched != null) {
       final urlRegexp = RegExp(regexLink, caseSensitive: false);
-      final matches = urlRegexp.allMatches(message.message);
+      final matches = urlRegexp.allMatches(message.text);
 
       if (matches.isNotEmpty) {
         return _linkPreview(user, width, context);
@@ -277,8 +238,7 @@ class TextMessageText extends StatelessWidget {
           ),
           MatchText(
             pattern: PatternStyle.bold.pattern,
-            style: boldTextStyle ??
-                bodyTextStyle.merge(PatternStyle.bold.textStyle),
+            style: boldTextStyle ?? bodyTextStyle.merge(PatternStyle.bold.textStyle),
             renderText: ({required String str, required String pattern}) => {
               'display': str.replaceAll(
                 PatternStyle.bold.from,
@@ -308,8 +268,7 @@ class TextMessageText extends StatelessWidget {
           ),
           MatchText(
             pattern: PatternStyle.code.pattern,
-            style: codeTextStyle ??
-                bodyTextStyle.merge(PatternStyle.code.textStyle),
+            style: codeTextStyle ?? bodyTextStyle.merge(PatternStyle.code.textStyle),
             renderText: ({required String str, required String pattern}) => {
               'display': str.replaceAll(
                 PatternStyle.code.from,

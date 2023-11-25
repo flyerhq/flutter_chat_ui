@@ -25,7 +25,6 @@ dependencies:
   url_launcher: ^6.1.12
   visibility_detector: ^0.4.0+2
   swipe_to: ^1.0.3
-  freezed_annotation: ^2.4.1
 
 
 dev_dependencies:
