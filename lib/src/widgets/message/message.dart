@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -253,6 +255,7 @@ class Message extends StatelessWidget {
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
+                                log('replied message tapped');
                                 scrollToMessage(message.repliedMessage!.id);
                               },
                               child: Row(
@@ -322,7 +325,56 @@ class Message extends StatelessWidget {
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
-            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
+            ? Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Stack(
+                  children: [
+                    imageMessageBuilder!(imageMessage,
+                        messageWidth: messageWidth),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 4, left: 4, bottom: 4.0, right: 8),
+                        child: Row(
+                          children: [
+                            Text(
+                              '19:49',
+                              style: InheritedChatTheme.of(context)
+                                  .theme
+                                  .sentMessageBodyTextStyle
+                                  .copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            if (message.author.id ==
+                                InheritedUser.of(context).user.id)
+                              Padding(
+                                padding: EdgeInsets.zero,
+                                child: showStatus
+                                    ? GestureDetector(
+                                        onLongPress: () =>
+                                            onMessageStatusLongPress?.call(
+                                                context, message),
+                                        onTap: () => onMessageStatusTap?.call(
+                                            context, message),
+                                        child: customStatusBuilder != null
+                                            ? customStatusBuilder!(message,
+                                                context: context)
+                                            : MessageStatus(
+                                                status: message.status),
+                                      )
+                                    : null,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             : Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Stack(
