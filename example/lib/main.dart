@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_ui/src/widgets/message/message_model/voco_message_model.dart'
+    as chat;
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
@@ -37,13 +38,14 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  types.Message? repliedMessage;
+  chat.ChatMessageModel? repliedMessage;
   final AutoScrollController scrollController = AutoScrollController();
 
   List<types.Message> _messages = [];
   final _user = const types.User(
-      id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
-      firstName: 'yesdevasdasdasdasdasdasdasd123123');
+    id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
+    firstName: 'yesdevasdasdasdasdasdasdasd123123',
+  );
 
   @override
   void initState() {
@@ -69,7 +71,6 @@ class _ChatPageState extends State<ChatPage> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _handleImageSelection();
                 },
                 child: const Align(
                   alignment: AlignmentDirectional.centerStart,
@@ -114,35 +115,6 @@ class _ChatPageState extends State<ChatPage> {
         name: result.files.single.name,
         size: result.files.single.size,
         uri: result.files.single.path!,
-      );
-
-      _addMessage(message);
-    }
-  }
-
-  void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
-
-    if (result != null) {
-      final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
-
-      final message = types.ImageMessage(
-        repliedMessage: repliedMessage,
-        author: _user,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        height: image.height.toDouble(),
-        id: const Uuid().v4(),
-        name: result.name,
-        size: bytes.length,
-        uri: result.path,
-        width: image.width.toDouble(),
-        showStatus: true,
-        status: types.Status.sent,
       );
 
       _addMessage(message);
@@ -208,20 +180,6 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: message.text,
-      repliedMessage: repliedMessage,
-      showStatus: true,
-      status: types.Status.sent,
-    );
-    repliedMessage = null;
-    _addMessage(textMessage);
-  }
-
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
@@ -246,7 +204,8 @@ class _ChatPageState extends State<ChatPage> {
               CircleAvatar(
                 radius: 20,
                 backgroundImage: NetworkImage(
-                    'https://avatars.githubusercontent.com/u/6020066?v=4'),
+                  'https://avatars.githubusercontent.com/u/6020066?v=4',
+                ),
               ),
               SizedBox(width: 8),
               Column(
@@ -296,10 +255,10 @@ class _ChatPageState extends State<ChatPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: (repliedMessage is types.TextMessage)
+                                    child: (repliedMessage!.attachments ?? [])
+                                            .isEmpty
                                         ? TextMessage(
-                                            message: repliedMessage!
-                                                as types.TextMessage,
+                                            message: repliedMessage!,
                                             emojiEnlargementBehavior:
                                                 EmojiEnlargementBehavior.never,
                                             hideBackgroundOnEmojiMessages: true,
@@ -315,12 +274,7 @@ class _ChatPageState extends State<ChatPage> {
                                                   emojiEnlargementBehavior:
                                                       EmojiEnlargementBehavior
                                                           .never,
-                                                  message: types.TextMessage(
-                                                      author: repliedMessage!
-                                                          .author,
-                                                      id: repliedMessage?.id ??
-                                                          '',
-                                                      text: 'Fotoğraf'),
+                                                  message: repliedMessage!,
                                                   hideBackgroundOnEmojiMessages:
                                                       true,
                                                   showName: true,
@@ -331,19 +285,29 @@ class _ChatPageState extends State<ChatPage> {
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
-                                              ImageMessage(
-                                                message: types.ImageMessage(
-                                                  size: 50,
-                                                  author:
-                                                      repliedMessage!.author,
-                                                  id: repliedMessage!.id,
-                                                  uri: (repliedMessage!
-                                                          as types.ImageMessage)
-                                                      .uri,
-                                                  name: 'Fotoğraf',
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 8.0,
                                                 ),
-                                                messageWidth: 50,
-                                                minWidth: 50,
+                                                child: ImageMessage(
+                                                  message: types.ImageMessage(
+                                                    size: 50,
+                                                    author: types.User(
+                                                      id: repliedMessage
+                                                              ?.authorId ??
+                                                          '',
+                                                    ),
+                                                    id: repliedMessage!.id,
+                                                    uri: (repliedMessage!
+                                                                .attachments ??
+                                                            [])
+                                                        .first,
+                                                    name: 'Fotoğraf',
+                                                  ),
+                                                  messageWidth: 50,
+                                                  minWidth: 50,
+                                                ),
                                               ),
                                               const SizedBox(width: 8),
                                             ],
@@ -409,17 +373,27 @@ class _ChatPageState extends State<ChatPage> {
               }
               setState(() {
                 if (message is types.TextMessage) {
-                  repliedMessage = types.TextMessage(
-                      author: message.author,
-                      id: message.id,
-                      text: (message).text);
-                } else if (message is types.ImageMessage) {
-                  repliedMessage = types.ImageMessage(
-                    size: 50,
-                    uri: message.uri,
-                    author: message.author,
+                  repliedMessage = chat.ChatMessageModel(
                     id: message.id,
-                    name: 'Fotoğraf',
+                    authorId: message.author.id,
+                    roomId: message.roomId ?? '',
+                    message: message.text,
+                    status: message.status.toString(),
+                    createdAt: DateTime.fromMillisecondsSinceEpoch(
+                      message.createdAt!,
+                    ),
+                  );
+                } else if (message is types.ImageMessage) {
+                  repliedMessage = chat.ChatMessageModel(
+                    id: message.id,
+                    authorId: message.author.id,
+                    roomId: message.roomId ?? '',
+                    message: 'Fotoğraf',
+                    attachments: [message.uri],
+                    status: message.status.toString(),
+                    createdAt: DateTime.fromMillisecondsSinceEpoch(
+                      message.createdAt!,
+                    ),
                   );
                 }
               });
@@ -442,7 +416,8 @@ class _ChatPageState extends State<ChatPage> {
                         onPressed: () {
                           Navigator.pop(context);
                           final index = _messages.indexWhere(
-                              (element) => element.id == message.id);
+                            (element) => element.id == message.id,
+                          );
 
                           final updatedMessage =
                               (_messages[index] as types.TextMessage).copyWith(
@@ -462,10 +437,16 @@ class _ChatPageState extends State<ChatPage> {
                         onPressed: () {
                           Navigator.pop(context);
                           setState(() {
-                            repliedMessage = types.TextMessage(
-                                author: message.author,
-                                id: message.id,
-                                text: (message as types.TextMessage).text);
+                            repliedMessage = chat.ChatMessageModel(
+                              id: message.id,
+                              authorId: message.author.id,
+                              roomId: message.roomId ?? '',
+                              message: (message as types.TextMessage).text,
+                              status: message.status.toString(),
+                              createdAt: DateTime.fromMillisecondsSinceEpoch(
+                                message.createdAt!,
+                              ),
+                            );
                           });
                         },
                         child: const Align(
@@ -481,7 +462,7 @@ class _ChatPageState extends State<ChatPage> {
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
+            onSendPressed: (p0) {},
             showUserAvatars: false,
             showUserNames: false,
             user: _user,

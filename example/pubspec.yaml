@@ -38,7 +38,7 @@ dependencies:
   flutter_chat_ui:
     path: ../
   http: '>=0.13.6 <2.0.0'
-  image_picker: ^1.0.0
+  image_picker: ^1.0.4
   intl: ^0.18.1
   mime: ^1.0.4
   open_filex: ^4.3.2
@@ -46,6 +46,7 @@ dependencies:
   uuid: ^3.0.7
   swipe_to: ^1.0.3
   scroll_to_index: ^3.0.1
+  freezed: ^2.4.5
 
 
 dev_dependencies:

@@ -9,6 +9,7 @@ import '../../conditional/conditional.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
+import 'message_model/voco_message_model.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
 /// messages and status. Sets maximum width for a message for
@@ -321,133 +322,134 @@ class Message extends StatelessWidget {
             : FileMessage(message: fileMessage);
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
-        return imageMessageBuilder != null
-            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
-            : Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: ImageMessage(
-                        imageHeaders: imageHeaders,
-                        imageProviderBuilder: imageProviderBuilder,
-                        message: imageMessage,
-                        messageWidth: messageWidth,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 4, left: 4, bottom: 4.0, right: 8),
-                        child: Row(
-                          children: [
-                            Text(
-                              '19:49',
-                              style: InheritedChatTheme.of(context)
-                                  .theme
-                                  .sentMessageBodyTextStyle
-                                  .copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            if (message.author.id ==
-                                InheritedUser.of(context).user.id)
-                              Padding(
-                                padding: EdgeInsets.zero,
-                                child: showStatus
-                                    ? GestureDetector(
-                                        onLongPress: () =>
-                                            onMessageStatusLongPress?.call(
-                                                context, message),
-                                        onTap: () => onMessageStatusTap?.call(
-                                            context, message),
-                                        child: customStatusBuilder != null
-                                            ? customStatusBuilder!(message,
-                                                context: context)
-                                            : MessageStatus(
-                                                status: message.status),
-                                      )
-                                    : null,
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: ImageMessage(
+                  imageHeaders: imageHeaders,
+                  imageProviderBuilder: imageProviderBuilder,
+                  message: types.ImageMessage(
+                    author: imageMessage.author,
+                    id: imageMessage.id,
+                    uri: imageMessage.uri,
+                    name: 'Fotoğraf',
+                    size: 150,
+                  ),
+                  messageWidth: messageWidth,
                 ),
-              );
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 4, left: 4, bottom: 4.0, right: 8),
+                  child: Row(
+                    children: [
+                      Text(
+                        '19:49',
+                        style: InheritedChatTheme.of(context)
+                            .theme
+                            .sentMessageBodyTextStyle
+                            .copyWith(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      if (message.author.id ==
+                          InheritedUser.of(context).user.id)
+                        Padding(
+                          padding: EdgeInsets.zero,
+                          child: showStatus
+                              ? GestureDetector(
+                                  onLongPress: () => onMessageStatusLongPress
+                                      ?.call(context, message),
+                                  onTap: () => onMessageStatusTap?.call(
+                                      context, message),
+                                  child: customStatusBuilder != null
+                                      ? customStatusBuilder!(message,
+                                          context: context)
+                                      : MessageStatus(status: message.status),
+                                )
+                              : null,
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       case types.MessageType.text:
         final textMessage = message as types.TextMessage;
-        return textMessageBuilder != null
-            ? textMessageBuilder!(
-                textMessage,
-                messageWidth: messageWidth,
+        return Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 3.0),
+              child: TextMessage(
+                emojiEnlargementBehavior: emojiEnlargementBehavior,
+                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                message: ChatMessageModel(
+                  id: textMessage.id,
+                  authorId: textMessage.author.id,
+                  roomId: textMessage.roomId ?? '',
+                  message: textMessage.text,
+                  status: textMessage.status.toString(),
+                  createdAt: DateTime.fromMillisecondsSinceEpoch(
+                    textMessage.createdAt!,
+                  ),
+                ),
+                nameBuilder: nameBuilder,
+                onPreviewDataFetched: onPreviewDataFetched,
+                options: textMessageOptions,
                 showName: showName,
-              )
-            : Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 3.0),
-                    child: TextMessage(
-                      emojiEnlargementBehavior: emojiEnlargementBehavior,
-                      hideBackgroundOnEmojiMessages:
-                          hideBackgroundOnEmojiMessages,
-                      message: textMessage,
-                      nameBuilder: nameBuilder,
-                      onPreviewDataFetched: onPreviewDataFetched,
-                      options: textMessageOptions,
-                      showName: showName,
-                      usePreviewData: usePreviewData,
-                      userAgent: userAgent,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0, right: 10),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '19:49',
-                            style: InheritedChatTheme.of(context)
-                                .theme
-                                .sentMessageBodyTextStyle
-                                .copyWith(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                usePreviewData: usePreviewData,
+                userAgent: userAgent,
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 4.0, right: 10),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '19:49',
+                      style: InheritedChatTheme.of(context)
+                          .theme
+                          .sentMessageBodyTextStyle
+                          .copyWith(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
                           ),
-                          if (message.author.id ==
-                              InheritedUser.of(context).user.id)
-                            Padding(
-                              padding: EdgeInsets.zero,
-                              child: showStatus
-                                  ? GestureDetector(
-                                      onLongPress: () =>
-                                          onMessageStatusLongPress?.call(
-                                              context, message),
-                                      onTap: () => onMessageStatusTap?.call(
-                                          context, message),
-                                      child: customStatusBuilder != null
-                                          ? customStatusBuilder!(message,
-                                              context: context)
-                                          : MessageStatus(
-                                              status: message.status),
-                                    )
-                                  : null,
-                            ),
-                        ],
-                      ),
                     ),
-                  ),
-                ],
-              );
+                    if (message.author.id == InheritedUser.of(context).user.id)
+                      Padding(
+                        padding: EdgeInsets.zero,
+                        child: showStatus
+                            ? GestureDetector(
+                                onLongPress: () => onMessageStatusLongPress
+                                    ?.call(context, message),
+                                onTap: () =>
+                                    onMessageStatusTap?.call(context, message),
+                                child: customStatusBuilder != null
+                                    ? customStatusBuilder!(message,
+                                        context: context)
+                                    : MessageStatus(status: message.status),
+                              )
+                            : null,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
       case types.MessageType.video:
         final videoMessage = message as types.VideoMessage;
         return videoMessageBuilder != null
@@ -478,65 +480,77 @@ class Message extends StatelessWidget {
             : FileMessage(message: fileMessage);
       case types.MessageType.image:
         final imageMessage = repliedMessage as types.ImageMessage;
-        return imageMessageBuilder != null
-            ? imageMessageBuilder!(imageMessage, messageWidth: messageWidth)
-            : Row(
-                children: [
-                  Expanded(
-                    child: TextMessage(
-                      emojiEnlargementBehavior: emojiEnlargementBehavior,
-                      hideBackgroundOnEmojiMessages:
-                          hideBackgroundOnEmojiMessages,
-                      message: types.TextMessage(
-                          author: repliedMessage.author,
-                          createdAt: repliedMessage.createdAt,
-                          id: repliedMessage.id,
-                          text: 'Fotoğraf'),
-                      nameBuilder: nameBuilder,
-                      onPreviewDataFetched: onPreviewDataFetched,
-                      showName: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      usePreviewData: usePreviewData,
-                      userAgent: userAgent,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  ImageMessage(
-                    imageHeaders: imageHeaders,
-                    imageProviderBuilder: imageProviderBuilder,
-                    message: imageMessage,
-                    messageWidth: 50,
-                    minWidth: 50,
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                ],
-              );
-      case types.MessageType.text:
-        final textMessage = repliedMessage as types.TextMessage;
-        return textMessageBuilder != null
-            ? textMessageBuilder!(
-                textMessage,
-                messageWidth: messageWidth,
-                showName: showName,
-              )
-            : TextMessage(
+        return Row(
+          children: [
+            Expanded(
+              child: TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
-                message: textMessage,
+                message: ChatMessageModel(
+                  id: imageMessage.id,
+                  authorId: imageMessage.author.id,
+                  roomId: imageMessage.roomId ?? '',
+                  message: 'Fotoğraf',
+                  status: imageMessage.status.toString(),
+                  createdAt: DateTime.fromMillisecondsSinceEpoch(
+                    imageMessage.createdAt!,
+                  ),
+                ),
                 nameBuilder: nameBuilder,
                 onPreviewDataFetched: onPreviewDataFetched,
-                options: textMessageOptions,
                 showName: true,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 usePreviewData: usePreviewData,
                 userAgent: userAgent,
-              );
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ImageMessage(
+                imageHeaders: imageHeaders,
+                imageProviderBuilder: imageProviderBuilder,
+                message: types.ImageMessage(
+                  author: types.User(id: imageMessage.author.id),
+                  id: imageMessage.id,
+                  uri: imageMessage.uri,
+                  name: 'Fotoğraf',
+                  size: 150,
+                ),
+                messageWidth: 50,
+                minWidth: 50,
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+          ],
+        );
+      case types.MessageType.text:
+        final textMessage = repliedMessage as types.TextMessage;
+        return TextMessage(
+          emojiEnlargementBehavior: emojiEnlargementBehavior,
+          hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+          message: ChatMessageModel(
+              id: textMessage.id,
+              authorId: textMessage.author.id,
+              roomId: textMessage.roomId ?? '',
+              message: textMessage.text,
+              status: textMessage.status.toString(),
+              createdAt:
+                  DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!)),
+          nameBuilder: nameBuilder,
+          onPreviewDataFetched: onPreviewDataFetched,
+          options: textMessageOptions,
+          showName: true,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          usePreviewData: usePreviewData,
+          userAgent: userAgent,
+        );
       case types.MessageType.video:
         final videoMessage = repliedMessage as types.VideoMessage;
         return videoMessageBuilder != null
