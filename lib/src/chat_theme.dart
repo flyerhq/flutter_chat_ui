@@ -479,7 +479,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.highlightMessageColor,
-    super.receivedRepliedMessageBackgroundColor = const Color(0xffDDDDDD),
+    super.receivedRepliedMessageBackgroundColor = const Color(0xFFFAFAFA),
     super.sentRepliedMessageBackgroundColor = const Color(0xffE6F5FF),
   });
 }
