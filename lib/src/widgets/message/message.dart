@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:intl/intl.dart' as intl;
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -348,7 +349,11 @@ class Message extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour.toStringAsFixed(2)}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute.toStringAsFixed(2)}',
+                              intl.DateFormat("HH:mm").format(
+                                (DateTime.fromMillisecondsSinceEpoch(
+                                  imageMessage.createdAt!,
+                                )),
+                              ),
                               style: InheritedChatTheme.of(context)
                                   .theme
                                   .sentMessageBodyTextStyle
@@ -409,7 +414,11 @@ class Message extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour.toStringAsFixed(2)}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute.toStringAsFixed(2)}',
+                              intl.DateFormat("HH:mm").format(
+                                (DateTime.fromMillisecondsSinceEpoch(
+                                  imageMessage.createdAt!,
+                                )),
+                              ),
                               style: InheritedChatTheme.of(context)
                                   .theme
                                   .sentMessageBodyTextStyle
@@ -478,7 +487,11 @@ class Message extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).hour.toStringAsFixed(2)}:${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).minute.toStringAsFixed(2)}',
+                            intl.DateFormat('HH:mm').format(
+                              (DateTime.fromMillisecondsSinceEpoch(
+                                textMessage.createdAt!,
+                              )),
+                            ),
                             style: InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageBodyTextStyle
