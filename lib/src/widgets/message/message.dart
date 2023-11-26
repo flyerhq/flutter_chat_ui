@@ -263,7 +263,10 @@ class Message extends StatelessWidget {
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 4.0, right: 4.0, left: 4.0),
+                                        top: 4.0,
+                                        right: 4.0,
+                                        left: 4.0,
+                                      ),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -280,7 +283,6 @@ class Message extends StatelessWidget {
                                           borderRadius: borderRadius,
                                           child: _repliedMessageBuilder(
                                             message.repliedMessage!,
-                                            scrollController,
                                           ),
                                         ),
                                       ),
@@ -329,18 +331,24 @@ class Message extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: Stack(
                   children: [
-                    imageMessageBuilder!(imageMessage,
-                        messageWidth: messageWidth),
+                    imageMessageBuilder!(
+                      imageMessage,
+                      messageWidth: messageWidth,
+                    ),
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 4, left: 4, bottom: 4.0, right: 8),
+                        padding: const EdgeInsets.only(
+                          top: 4,
+                          left: 4,
+                          bottom: 4.0,
+                          right: 8,
+                        ),
                         child: Row(
                           children: [
                             Text(
-                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute}',
+                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour.toStringAsFixed(2)}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute.toStringAsFixed(2)}',
                               style: InheritedChatTheme.of(context)
                                   .theme
                                   .sentMessageBodyTextStyle
@@ -401,7 +409,7 @@ class Message extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute}',
+                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour.toStringAsFixed(2)}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute.toStringAsFixed(2)}',
                               style: InheritedChatTheme.of(context)
                                   .theme
                                   .sentMessageBodyTextStyle
@@ -470,7 +478,7 @@ class Message extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).hour}:${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).minute}',
+                            '${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).hour.toStringAsFixed(2)}:${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).minute.toStringAsFixed(2)}',
                             style: InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageBodyTextStyle
@@ -514,8 +522,7 @@ class Message extends StatelessWidget {
     }
   }
 
-  Widget _repliedMessageBuilder(
-      types.Message repliedMessage, AutoScrollController controller) {
+  Widget _repliedMessageBuilder(types.Message repliedMessage) {
     switch (repliedMessage.type) {
       case types.MessageType.audio:
         final audioMessage = repliedMessage as types.AudioMessage;
