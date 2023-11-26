@@ -335,12 +335,12 @@ class Message extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       child: Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                             top: 4, left: 4, bottom: 4.0, right: 8),
                         child: Row(
                           children: [
                             Text(
-                              '19:49',
+                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute}',
                               style: InheritedChatTheme.of(context)
                                   .theme
                                   .sentMessageBodyTextStyle
@@ -393,11 +393,15 @@ class Message extends StatelessWidget {
                       right: 0,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            top: 4, left: 4, bottom: 4.0, right: 8),
+                          top: 4,
+                          left: 4,
+                          bottom: 4.0,
+                          right: 8,
+                        ),
                         child: Row(
                           children: [
                             Text(
-                              '19:49',
+                              '${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).hour}:${DateTime.fromMillisecondsSinceEpoch(imageMessage.createdAt!).minute}',
                               style: InheritedChatTheme.of(context)
                                   .theme
                                   .sentMessageBodyTextStyle
@@ -443,7 +447,7 @@ class Message extends StatelessWidget {
             : Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 3.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: TextMessage(
                       emojiEnlargementBehavior: emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
@@ -466,7 +470,7 @@ class Message extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '19:49',
+                            '${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).hour}:${DateTime.fromMillisecondsSinceEpoch(textMessage.createdAt!).minute}',
                             style: InheritedChatTheme.of(context)
                                 .theme
                                 .sentMessageBodyTextStyle
