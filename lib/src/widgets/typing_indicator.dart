@@ -348,7 +348,7 @@ class AvatarHandler extends StatelessWidget {
                         .countTextColor,
                   ),
                   textAlign: TextAlign.center,
-                  textScaleFactor: 0.7,
+                  textScaler: const TextScaler.linear(0.7),
                 ),
               ),
             ),
@@ -389,7 +389,7 @@ class TypingAvatar extends StatelessWidget {
           ? Text(
               initials,
               style: InheritedChatTheme.of(context).theme.userAvatarTextStyle,
-              textScaleFactor: 0.7,
+              textScaler: const TextScaler.linear(0.7),
             )
           : null,
     );
