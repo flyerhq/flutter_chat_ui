@@ -63,6 +63,7 @@ abstract class ChatTheme {
     required this.dateDividerTextStyle,
     required this.deliveredIcon,
     required this.documentIcon,
+    this.sentIcon,
     required this.emptyChatPlaceholderTextStyle,
     required this.errorColor,
     required this.errorIcon,
@@ -137,6 +138,7 @@ abstract class ChatTheme {
 
   /// Icon for message's `delivered` status. For the best look use size of 16.
   final Widget? deliveredIcon;
+  final Widget? sentIcon;
 
   /// Icon inside file message.
   final Widget? documentIcon;
@@ -393,6 +395,7 @@ class DefaultChatTheme extends ChatTheme {
     ),
     super.secondaryColor = secondary,
     super.seenIcon,
+    super.sentIcon,
     super.sendButtonIcon,
     super.sendButtonMargin,
     super.sendingIcon,
@@ -567,6 +570,7 @@ class DarkChatTheme extends ChatTheme {
     ),
     super.secondaryColor = secondaryDark,
     super.seenIcon,
+    super.sentIcon,
     super.sendButtonIcon,
     super.sendButtonMargin,
     super.sendingIcon,

@@ -18,12 +18,27 @@ class MessageStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (status) {
       case types.Status.delivered:
-      case types.Status.sent:
         return InheritedChatTheme.of(context).theme.deliveredIcon != null
             ? InheritedChatTheme.of(context).theme.deliveredIcon!
             : Image.asset(
                 'assets/icon-delivered.png',
-                color: InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle.color ?? InheritedChatTheme.of(context).theme.primaryColor,
+                color: InheritedChatTheme.of(context)
+                        .theme
+                        .sentMessageBodyTextStyle
+                        .color ??
+                    InheritedChatTheme.of(context).theme.primaryColor,
+                package: 'flutter_chat_ui',
+              );
+      case types.Status.sent:
+        return InheritedChatTheme.of(context).theme.sentIcon != null
+            ? InheritedChatTheme.of(context).theme.sentIcon!
+            : Image.asset(
+                'assets/icon-delivered.png',
+                color: InheritedChatTheme.of(context)
+                        .theme
+                        .sentMessageBodyTextStyle
+                        .color ??
+                    InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.error:
@@ -39,7 +54,11 @@ class MessageStatus extends StatelessWidget {
             ? InheritedChatTheme.of(context).theme.seenIcon!
             : Image.asset(
                 'assets/icon-seen.png',
-                color: InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle.color ?? InheritedChatTheme.of(context).theme.primaryColor,
+                color: InheritedChatTheme.of(context)
+                        .theme
+                        .sentMessageBodyTextStyle
+                        .color ??
+                    InheritedChatTheme.of(context).theme.primaryColor,
                 package: 'flutter_chat_ui',
               );
       case types.Status.sending:
@@ -53,7 +72,11 @@ class MessageStatus extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     strokeWidth: 1.5,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle.color ?? InheritedChatTheme.of(context).theme.primaryColor,
+                      InheritedChatTheme.of(context)
+                              .theme
+                              .sentMessageBodyTextStyle
+                              .color ??
+                          InheritedChatTheme.of(context).theme.primaryColor,
                     ),
                   ),
                 ),
