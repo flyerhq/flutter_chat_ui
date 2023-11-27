@@ -659,53 +659,73 @@ class Message extends StatelessWidget {
             topRight: Radius.circular(messageBorderRadius),
           );
 
-    return Container(
-      alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
-          ? currentUserIsAuthor
-              ? AlignmentDirectional.centerEnd
-              : AlignmentDirectional.centerStart
-          : currentUserIsAuthor
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
-      margin: bubbleRtlAlignment == BubbleRtlAlignment.left
-          ? EdgeInsetsDirectional.only(
-              bottom: 4,
-              end: isMobile ? query.padding.right : 0,
-              start: 20 + (isMobile ? query.padding.left : 0),
-            )
-          : EdgeInsets.only(
-              bottom: 4,
-              left: 20 + (isMobile ? query.padding.left : 0),
-              right: 20 + (isMobile ? query.padding.right : 0),
-            ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
-            ? null
-            : TextDirection.ltr,
-        children: [
-          if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: messageWidth.toDouble(),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onDoubleTap: () => onMessageDoubleTap?.call(context, message),
-                  onLongPress: () => onMessageLongPress?.call(context, message),
-                  onTap: () => onMessageTap?.call(context, message),
-                  child: onMessageVisibilityChanged != null
-                      ? VisibilityDetector(
-                          key: Key(message.id),
-                          onVisibilityChanged: (visibilityInfo) =>
-                              onMessageVisibilityChanged!(
-                            message,
-                            visibilityInfo.visibleFraction > 0.1,
-                          ),
-                          child: ConstrainedBox(
+    return SwipeTo(
+      onRightSwipe: (a) {
+        onSwipeToRight?.call(context, message);
+      },
+      child: Container(
+        alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
+            ? currentUserIsAuthor
+                ? AlignmentDirectional.centerEnd
+                : AlignmentDirectional.centerStart
+            : currentUserIsAuthor
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+        margin: bubbleRtlAlignment == BubbleRtlAlignment.left
+            ? EdgeInsetsDirectional.only(
+                bottom: 4,
+                end: isMobile ? query.padding.right : 0,
+                start: 20 + (isMobile ? query.padding.left : 0),
+              )
+            : EdgeInsets.only(
+                bottom: 4,
+                left: 20 + (isMobile ? query.padding.left : 0),
+                right: 20 + (isMobile ? query.padding.right : 0),
+              ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
+              ? null
+              : TextDirection.ltr,
+          children: [
+            if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: messageWidth.toDouble(),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onDoubleTap: () =>
+                        onMessageDoubleTap?.call(context, message),
+                    onLongPress: () =>
+                        onMessageLongPress?.call(context, message),
+                    onTap: () => onMessageTap?.call(context, message),
+                    child: onMessageVisibilityChanged != null
+                        ? VisibilityDetector(
+                            key: Key(message.id),
+                            onVisibilityChanged: (visibilityInfo) =>
+                                onMessageVisibilityChanged!(
+                              message,
+                              visibilityInfo.visibleFraction > 0.1,
+                            ),
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minWidth:
+                                    MediaQuery.of(context).size.width * .2,
+                              ),
+                              child: _bubbleBuilder(
+                                context,
+                                borderRadius
+                                    .resolve(Directionality.of(context)),
+                                currentUserIsAuthor,
+                                enlargeEmojis,
+                              ),
+                            ),
+                          )
+                        : ConstrainedBox(
                             constraints: BoxConstraints(
                               minWidth: MediaQuery.of(context).size.width * .2,
                             ),
@@ -716,23 +736,12 @@ class Message extends StatelessWidget {
                               enlargeEmojis,
                             ),
                           ),
-                        )
-                      : ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth: MediaQuery.of(context).size.width * .2,
-                          ),
-                          child: _bubbleBuilder(
-                            context,
-                            borderRadius.resolve(Directionality.of(context)),
-                            currentUserIsAuthor,
-                            enlargeEmojis,
-                          ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
