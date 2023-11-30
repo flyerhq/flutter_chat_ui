@@ -284,6 +284,23 @@ class Message extends StatelessWidget {
     }
   }
 
+  Widget _statusIcon(
+    BuildContext context,
+  ) {
+    if (!showStatus) return const SizedBox.shrink();
+
+    return Padding(
+      padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+      child: GestureDetector(
+        onLongPress: () => onMessageStatusLongPress?.call(context, message),
+        onTap: () => onMessageStatusTap?.call(context, message),
+        child: customStatusBuilder != null
+            ? customStatusBuilder!(message, context: context)
+            : MessageStatus(status: message.status),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final query = MediaQuery.of(context);
@@ -347,20 +364,7 @@ class Message extends StatelessWidget {
             : TextDirection.ltr,
         children: [
           if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
-          if (currentUserIsAuthor && isLeftStatus)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () =>
-                          onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: customStatusBuilder != null
-                          ? customStatusBuilder!(message, context: context)
-                          : MessageStatus(status: message.status),
-                    )
-                  : null,
-            ),
+          if (currentUserIsAuthor && isLeftStatus) _statusIcon(context),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),
@@ -397,20 +401,7 @@ class Message extends StatelessWidget {
               ],
             ),
           ),
-          if (currentUserIsAuthor && !isLeftStatus)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () =>
-                          onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: customStatusBuilder != null
-                          ? customStatusBuilder!(message, context: context)
-                          : MessageStatus(status: message.status),
-                    )
-                  : null,
-            ),
+          if (currentUserIsAuthor && !isLeftStatus) _statusIcon(context),
         ],
       ),
     );
