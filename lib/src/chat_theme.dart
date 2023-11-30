@@ -114,6 +114,8 @@ abstract class ChatTheme {
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
     this.highlightMessageColor,
+    this.sendButtonColor,
+    this.attachmentButtonColor,
     this.receivedRepliedMessageBackgroundColor,
     this.sentRepliedMessageBackgroundColor,
   });
@@ -129,6 +131,8 @@ abstract class ChatTheme {
 
   /// Used as a background color of a chat widget.
   final Color backgroundColor;
+  final Color? sendButtonColor;
+  final Color? attachmentButtonColor;
 
   /// Margin around date dividers.
   final EdgeInsets dateDividerMargin;
@@ -316,6 +320,8 @@ class DefaultChatTheme extends ChatTheme {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatTheme].
   const DefaultChatTheme({
+    super.attachmentButtonColor,
+    super.sendButtonColor,
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
     super.backgroundColor = neutral7,
@@ -491,6 +497,8 @@ class DarkChatTheme extends ChatTheme {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatTheme].
   const DarkChatTheme({
+    super.attachmentButtonColor,
+    super.sendButtonColor,
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
     super.backgroundColor = dark,
