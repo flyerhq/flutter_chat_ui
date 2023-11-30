@@ -31,30 +31,33 @@ class AttachmentButton extends StatelessWidget {
               0,
               0,
             ),
-        child: IconButton(
-          alignment: Alignment.centerLeft,
-          icon: isLoading
-              ? SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.transparent,
-                    strokeWidth: 1.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      InheritedChatTheme.of(context).theme.inputTextColor,
+        child: InheritedChatTheme.of(context).theme.attachmentButtonIcon ??
+            IconButton(
+              alignment: Alignment.centerLeft,
+              icon: isLoading
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.transparent,
+                        strokeWidth: 1.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          InheritedChatTheme.of(context).theme.inputTextColor,
+                        ),
+                      ),
+                    )
+                  : Image.asset(
+                      'assets/icon-attachment.png',
+                      color:
+                          InheritedChatTheme.of(context).theme.inputTextColor,
+                      package: 'flutter_chat_ui',
                     ),
-                  ),
-                )
-              : InheritedChatTheme.of(context).theme.attachmentButtonIcon ??
-                  Image.asset(
-                    'assets/icon-attachment.png',
-                    color: InheritedChatTheme.of(context).theme.inputTextColor,
-                    package: 'flutter_chat_ui',
-                  ),
-          onPressed: isLoading ? null : onPressed,
-          padding: padding,
-          splashRadius: 24,
-          tooltip: InheritedL10n.of(context).l10n.attachmentButtonAccessibilityLabel,
-        ),
+              onPressed: isLoading ? null : onPressed,
+              padding: padding,
+              splashRadius: 24,
+              tooltip: InheritedL10n.of(context)
+                  .l10n
+                  .attachmentButtonAccessibilityLabel,
+            ),
       );
 }
