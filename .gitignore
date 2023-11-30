@@ -119,4 +119,4 @@ app.*.symbols
 !**/ios/**/Podfile.lock
 
 # fvm
-.fvm/flutter_sdk
+.fvm/
