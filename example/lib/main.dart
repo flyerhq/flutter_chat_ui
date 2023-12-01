@@ -275,6 +275,7 @@ class _ChatPageState extends State<ChatPage> {
         body: SafeArea(
           child: Chat(
             scrollController: scrollController,
+            lastMessageId: "64747b28-df19-4a0c-8c47-316dc3546e3c",
             repliedMessageWidget: (repliedMessage != null)
                 ? Row(
                     children: [
@@ -379,7 +380,8 @@ class _ChatPageState extends State<ChatPage> {
               backgroundColor: Colors.black,
               messageBorderRadius: 20,
               primaryColor: Colors.lightBlue,
-              secondaryColor: Colors.grey.shade900,
+              secondaryColor: const Color(0xff323639),
+              receivedRepliedMessageBackgroundColor: const Color(0xff17181C),
               attachmentButtonIcon: Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(

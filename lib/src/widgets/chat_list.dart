@@ -135,8 +135,12 @@ class _ChatListState extends State<ChatList>
   Widget _newMessageBuilder(int index, Animation<double> animation) {
     try {
       final item = _oldData[index];
-
-      return widget.itemBuilder(item, index);
+      return SizeTransition(
+        key: _valueKeyForItem(item),
+        axisAlignment: -1,
+        sizeFactor: animation.drive(CurveTween(curve: Curves.easeOutQuad)),
+        child: widget.itemBuilder(item, index),
+      );
     } catch (e) {
       return const SizedBox();
     }

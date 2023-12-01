@@ -106,6 +106,7 @@ class Chat extends StatefulWidget {
     this.videoMessageBuilder,
     this.slidableMessageBuilder,
     this.repliedMessageWidget,
+    this.lastMessageId,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -124,6 +125,8 @@ class Chat extends StatefulWidget {
 
   /// See [Message.bubbleRtlAlignment].
   final BubbleRtlAlignment? bubbleRtlAlignment;
+
+  final String? lastMessageId;
 
   /// Allows you to replace the default Input widget e.g. if you want to create a channel view. If you're looking for the bottom widget added to the chat list, see [listBottomWidget] instead.
   final Widget? customBottomWidget;
@@ -471,6 +474,7 @@ class ChatState extends State<Chat> {
           onAvatarTap: widget.onAvatarTap,
           onMessageDoubleTap: widget.onMessageDoubleTap,
           onMessageLongPress: widget.onMessageLongPress,
+          lastMessageId: widget.lastMessageId,
           onSwipeToLeft: widget.onSwipeToLeft,
           onSwipeToRight: widget.onSwipeToRight,
           onMessageStatusLongPress: widget.onMessageStatusLongPress,

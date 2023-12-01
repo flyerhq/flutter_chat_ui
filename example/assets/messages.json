@@ -25,7 +25,7 @@
     "createdAt": 1655648404000,
     "id": "c67ed376-52bf-4d4e-ba2a-7a0f8467b22a",
     "status": "seen",
-    "text": "Ooowww ☺️",
+    "text": "0",
     "type": "text"
   },
   {
@@ -61,6 +61,7 @@
       "createdAt": 1655648401000,
       "id": "64747b28-df19-4a0c-8c47-316dc3546e3c",
       "status": "seen",
+      "isLastMessage": true,
       "text": "Here you go buddy 💪",
       "type": "text"
     },

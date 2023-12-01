@@ -56,6 +56,7 @@ class Message extends StatelessWidget {
     this.userAgent,
     this.videoMessageBuilder,
     required this.scrollController,
+    this.lastMessageId,
   });
 
   /// Build an audio message inside predefined bubble.
@@ -117,6 +118,7 @@ class Message extends StatelessWidget {
 
   /// Any message type.
   final types.Message message;
+  final String? lastMessageId;
 
   /// Maximum message width.
   final int messageWidth;
@@ -227,88 +229,166 @@ class Message extends StatelessWidget {
   ) =>
       bubbleBuilder != null
           ? bubbleBuilder!(
-              _messageBuilder(context),
+              _messageBuilder(),
               message: message,
               nextMessageInGroup: roundBorder,
             )
           : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder(context)
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: !currentUserIsAuthor ||
-                            message.type == types.MessageType.image
-                        ? InheritedChatTheme.of(context).theme.secondaryColor
-                        : InheritedChatTheme.of(context).theme.primaryColor,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: borderRadius,
-                      color: !currentUserIsAuthor
-                          ? InheritedChatTheme.of(context).theme.secondaryColor
-                          : InheritedChatTheme.of(context).theme.primaryColor,
-                    ),
-                    child: IntrinsicWidth(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (message.repliedMessage != null)
-                            GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                log('replied message tapped');
-                                scrollToMessage(message.repliedMessage!.id);
-                              },
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 4.0,
-                                        right: 4.0,
-                                        left: 4.0,
-                                      ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                          color: !currentUserIsAuthor
-                                              ? InheritedChatTheme.of(context)
-                                                  .theme
-                                                  .receivedRepliedMessageBackgroundColor
-                                              : InheritedChatTheme.of(context)
-                                                  .theme
-                                                  .sentRepliedMessageBackgroundColor,
+              ? _messageBuilder()
+              : Column(
+                  crossAxisAlignment: currentUserIsAuthor
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    (message.repliedMessage != null)
+                        ? Column(
+                            crossAxisAlignment: currentUserIsAuthor
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {
+                                  log('replied message tapped');
+                                  scrollToMessage(message.repliedMessage!.id);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 4.0,
+                                          right: 4.0,
+                                          left: 4.0,
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: borderRadius,
-                                          child: _repliedMessageBuilder(
-                                            message.repliedMessage!,
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 4.0,
+                                            right: 4.0,
+                                            left: 4.0,
+                                            bottom: 20,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            color: !currentUserIsAuthor
+                                                ? InheritedChatTheme.of(context)
+                                                    .theme
+                                                    .receivedRepliedMessageBackgroundColor
+                                                : InheritedChatTheme.of(context)
+                                                    .theme
+                                                    .sentRepliedMessageBackgroundColor,
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: borderRadius,
+                                            child: _repliedMessageBuilder(
+                                              message.repliedMessage!,
+                                            ),
                                           ),
                                         ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Container(
+                                      transform: message.repliedMessage != null
+                                          ? Matrix4.translationValues(0, -20, 0)
+                                          : null,
+                                      decoration: BoxDecoration(
+                                        borderRadius: borderRadius,
+                                        color: !currentUserIsAuthor ||
+                                                message.type ==
+                                                    types.MessageType.image
+                                            ? InheritedChatTheme.of(context)
+                                                .theme
+                                                .secondaryColor
+                                            : InheritedChatTheme.of(context)
+                                                .theme
+                                                .primaryColor,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: borderRadius,
+                                        child: _messageBuilder(),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          Row(
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: borderRadius,
-                                  child: _messageBuilder(context),
+                              Flexible(
+                                child: Container(
+                                  transform: message.repliedMessage != null
+                                      ? Matrix4.translationValues(0, -10, 0)
+                                      : null,
+                                  decoration: BoxDecoration(
+                                    borderRadius: borderRadius,
+                                    color: !currentUserIsAuthor ||
+                                            message.type ==
+                                                types.MessageType.image
+                                        ? InheritedChatTheme.of(context)
+                                            .theme
+                                            .secondaryColor
+                                        : InheritedChatTheme.of(context)
+                                            .theme
+                                            .primaryColor,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: borderRadius,
+                                    child: _messageBuilder(),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                    (message.repliedMessage != null)
+                        ? Transform(
+                            transform: Matrix4.translationValues(0, -15, 0),
+                            child: Text(
+                              intl.DateFormat('HH:mm').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  message.createdAt!,
+                                ),
+                              ),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text(
+                              (currentUserIsAuthor &&
+                                      message.status == types.Status.seen &&
+                                      message.id == lastMessageId)
+                                  ? 'Görüldü'
+                                  : intl.DateFormat('HH:mm').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.createdAt!,
+                                      ),
+                                    ),
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                  ],
                 );
 
-  Widget _messageBuilder(BuildContext context) {
+  Widget _messageBuilder() {
     switch (message.type) {
       case types.MessageType.audio:
         final audioMessage = message as types.AudioMessage;
@@ -330,127 +410,21 @@ class Message extends StatelessWidget {
         return imageMessageBuilder != null
             ? Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Stack(
-                  children: [
-                    imageMessageBuilder!(
-                      imageMessage,
-                      messageWidth: messageWidth,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4,
-                          left: 4,
-                          bottom: 4.0,
-                          right: 8,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              intl.DateFormat("HH:mm").format(
-                                (DateTime.fromMillisecondsSinceEpoch(
-                                  imageMessage.createdAt!,
-                                )),
-                              ),
-                              style: InheritedChatTheme.of(context)
-                                  .theme
-                                  .sentMessageBodyTextStyle
-                                  .copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            if (message.author.id ==
-                                InheritedUser.of(context).user.id)
-                              Padding(
-                                padding: EdgeInsets.zero,
-                                child: showStatus
-                                    ? GestureDetector(
-                                        onLongPress: () =>
-                                            onMessageStatusLongPress?.call(
-                                                context, message),
-                                        onTap: () => onMessageStatusTap?.call(
-                                            context, message),
-                                        child: customStatusBuilder != null
-                                            ? customStatusBuilder!(message,
-                                                context: context)
-                                            : MessageStatus(
-                                                status: message.status),
-                                      )
-                                    : null,
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                child: imageMessageBuilder!(
+                  imageMessage,
+                  messageWidth: messageWidth,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: ImageMessage(
-                        imageHeaders: imageHeaders,
-                        imageProviderBuilder: imageProviderBuilder,
-                        message: imageMessage,
-                        messageWidth: messageWidth,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4,
-                          left: 4,
-                          bottom: 4.0,
-                          right: 8,
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              intl.DateFormat("HH:mm").format(
-                                (DateTime.fromMillisecondsSinceEpoch(
-                                  imageMessage.createdAt!,
-                                )),
-                              ),
-                              style: InheritedChatTheme.of(context)
-                                  .theme
-                                  .sentMessageBodyTextStyle
-                                  .copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            if (message.author.id ==
-                                InheritedUser.of(context).user.id)
-                              Padding(
-                                padding: EdgeInsets.zero,
-                                child: showStatus
-                                    ? GestureDetector(
-                                        onLongPress: () =>
-                                            onMessageStatusLongPress?.call(
-                                                context, message),
-                                        onTap: () => onMessageStatusTap?.call(
-                                            context, message),
-                                        child: customStatusBuilder != null
-                                            ? customStatusBuilder!(message,
-                                                context: context)
-                                            : MessageStatus(
-                                                status: message.status),
-                                      )
-                                    : null,
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: ImageMessage(
+                    imageHeaders: imageHeaders,
+                    imageProviderBuilder: imageProviderBuilder,
+                    message: imageMessage,
+                    messageWidth: messageWidth,
+                  ),
                 ),
               );
       case types.MessageType.text:
@@ -461,69 +435,16 @@ class Message extends StatelessWidget {
                 messageWidth: messageWidth,
                 showName: showName,
               )
-            : Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: TextMessage(
-                      emojiEnlargementBehavior: emojiEnlargementBehavior,
-                      hideBackgroundOnEmojiMessages:
-                          hideBackgroundOnEmojiMessages,
-                      message: textMessage,
-                      nameBuilder: nameBuilder,
-                      onPreviewDataFetched: onPreviewDataFetched,
-                      options: textMessageOptions,
-                      showName: showName,
-                      usePreviewData: usePreviewData,
-                      userAgent: userAgent,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0, right: 10),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            intl.DateFormat('HH:mm').format(
-                              (DateTime.fromMillisecondsSinceEpoch(
-                                textMessage.createdAt!,
-                              )),
-                            ),
-                            style: InheritedChatTheme.of(context)
-                                .theme
-                                .sentMessageBodyTextStyle
-                                .copyWith(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                          if (message.author.id ==
-                              InheritedUser.of(context).user.id)
-                            Padding(
-                              padding: EdgeInsets.zero,
-                              child: showStatus
-                                  ? GestureDetector(
-                                      onLongPress: () =>
-                                          onMessageStatusLongPress?.call(
-                                              context, message),
-                                      onTap: () => onMessageStatusTap?.call(
-                                          context, message),
-                                      child: customStatusBuilder != null
-                                          ? customStatusBuilder!(message,
-                                              context: context)
-                                          : MessageStatus(
-                                              status: message.status),
-                                    )
-                                  : null,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+            : TextMessage(
+                emojiEnlargementBehavior: emojiEnlargementBehavior,
+                hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
+                message: textMessage,
+                nameBuilder: nameBuilder,
+                onPreviewDataFetched: onPreviewDataFetched,
+                options: textMessageOptions,
+                showName: showName,
+                usePreviewData: usePreviewData,
+                userAgent: userAgent,
               );
       case types.MessageType.video:
         final videoMessage = message as types.VideoMessage;
