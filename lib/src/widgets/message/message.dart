@@ -372,7 +372,7 @@ class Message extends StatelessWidget {
                             child: Text(
                               (currentUserIsAuthor &&
                                       message.status == types.Status.seen &&
-                                      message.id == lastMessageId)
+                                      message.remoteId == lastMessageId)
                                   ? 'Görüldü'
                                   : intl.DateFormat('HH:mm').format(
                                       DateTime.fromMillisecondsSinceEpoch(
