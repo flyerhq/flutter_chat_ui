@@ -360,7 +360,7 @@ class Message extends StatelessWidget {
                         ? Transform(
                             transform: Matrix4.translationValues(0, -15, 0),
                             child: Text(
-                              isLastMessage
+                              isLastMessage && currentUserIsAuthor
                                   ? message.status == Status.seen
                                       ? "Görüldü"
                                       : intl.DateFormat('HH:mm').format(
@@ -378,7 +378,7 @@ class Message extends StatelessWidget {
                         : Padding(
                             padding: const EdgeInsets.only(top: 5.0),
                             child: Text(
-                              isLastMessage
+                              isLastMessage && currentUserIsAuthor
                                   ? message.status == Status.seen
                                       ? "Görüldü"
                                       : intl.DateFormat('HH:mm').format(
