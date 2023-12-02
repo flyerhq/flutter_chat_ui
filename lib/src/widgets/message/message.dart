@@ -227,7 +227,7 @@ class Message extends StatelessWidget {
     bool currentUserIsAuthor,
     bool enlargeEmojis,
   ) {
-    if (message.remoteId == lastMessageId)
+    if (message.remoteId == lastMessageId || message.id == lastMessageId)
       log("${"currentUserIsAuthor: $currentUserIsAuthor"} message.status: ${message.status} message.remoteId: ${message.remoteId}");
     return bubbleBuilder != null
         ? bubbleBuilder!(
@@ -375,8 +375,9 @@ class Message extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 5.0),
                           child: Text(
                             (currentUserIsAuthor &&
-                                    message.status == types.Status.seen &&
-                                    message.remoteId == lastMessageId)
+                                        message.status == types.Status.seen &&
+                                        message.remoteId == lastMessageId ||
+                                    message.id == lastMessageId)
                                 ? 'Görüldü'
                                 : intl.DateFormat('HH:mm').format(
                                     DateTime.fromMillisecondsSinceEpoch(
