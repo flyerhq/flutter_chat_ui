@@ -362,7 +362,11 @@ class Message extends StatelessWidget {
                             child: Text(
                               isLastMessage && currentUserIsAuthor
                                   ? message.status == Status.seen
-                                      ? "Görüldü"
+                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )})"
                                       : intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
