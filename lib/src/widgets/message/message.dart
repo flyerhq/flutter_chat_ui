@@ -227,7 +227,8 @@ class Message extends StatelessWidget {
     bool currentUserIsAuthor,
     bool enlargeEmojis,
   ) {
-    log("${"currentUserIsAuthor: $currentUserIsAuthor"} message.status: ${message.status} message.remoteId: ${message.remoteId}");
+    if (message.remoteId == lastMessageId)
+      log("${"currentUserIsAuthor: $currentUserIsAuthor"} message.status: ${message.status} message.remoteId: ${message.remoteId}");
     return bubbleBuilder != null
         ? bubbleBuilder!(
             _messageBuilder(),
