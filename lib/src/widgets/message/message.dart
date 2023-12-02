@@ -360,20 +360,6 @@ class Message extends StatelessWidget {
                       ? Transform(
                           transform: Matrix4.translationValues(0, -15, 0),
                           child: Text(
-                            intl.DateFormat('HH:mm').format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                message.createdAt!,
-                              ),
-                            ),
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: Text(
                             (currentUserIsAuthor &&
                                     message.status == types.Status.seen &&
                                     (message.remoteId == lastMessageId ||
@@ -389,7 +375,29 @@ class Message extends StatelessWidget {
                               color: Colors.grey,
                             ),
                           ),
-                        ),
+                        )
+                      : (message.remoteId == lastMessageId ||
+                              message.id == lastMessageId)
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: Text(
+                                (currentUserIsAuthor &&
+                                        message.status == types.Status.seen &&
+                                        (message.remoteId == lastMessageId ||
+                                            message.id == lastMessageId))
+                                    ? 'Görüldü'
+                                    : intl.DateFormat('HH:mm').format(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                          message.createdAt!,
+                                        ),
+                                      ),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                 ],
               );
   }
