@@ -375,9 +375,9 @@ class Message extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 5.0),
                           child: Text(
                             (currentUserIsAuthor &&
-                                        message.status == types.Status.seen &&
-                                        message.remoteId == lastMessageId ||
-                                    message.id == lastMessageId)
+                                    message.status == types.Status.seen &&
+                                    (message.remoteId == lastMessageId ||
+                                        message.id == lastMessageId))
                                 ? 'Görüldü'
                                 : intl.DateFormat('HH:mm').format(
                                     DateTime.fromMillisecondsSinceEpoch(
