@@ -368,7 +368,11 @@ class Message extends StatelessWidget {
                                             message.createdAt!,
                                           ),
                                         )
-                                  : "",
+                                  : intl.DateFormat('HH:mm').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.createdAt!,
+                                      ),
+                                    ),
                               style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
@@ -380,13 +384,21 @@ class Message extends StatelessWidget {
                             child: Text(
                               isLastMessage && currentUserIsAuthor
                                   ? message.status == Status.seen
-                                      ? "Görüldü"
+                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )})"
                                       : intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
                                         )
-                                  : "",
+                                  : intl.DateFormat('HH:mm').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.createdAt!,
+                                      ),
+                                    ),
                               style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
