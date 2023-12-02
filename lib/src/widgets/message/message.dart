@@ -226,181 +226,178 @@ class Message extends StatelessWidget {
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
     bool enlargeEmojis,
-  ) {
-    if (message.remoteId == lastMessageId || message.id == lastMessageId)
-      log("${"currentUserIsAuthor: $currentUserIsAuthor"} message.status: ${message.status} message.remoteId: ${message.remoteId}");
-    return bubbleBuilder != null
-        ? bubbleBuilder!(
-            _messageBuilder(),
-            message: message,
-            nextMessageInGroup: roundBorder,
-          )
-        : enlargeEmojis && hideBackgroundOnEmojiMessages
-            ? _messageBuilder()
-            : Column(
-                crossAxisAlignment: currentUserIsAuthor
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                children: [
-                  (message.repliedMessage != null)
-                      ? Column(
-                          crossAxisAlignment: currentUserIsAuthor
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                log('replied message tapped');
-                                scrollToMessage(
-                                  message.repliedMessage!.remoteId ?? '',
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 4.0,
-                                        right: 4.0,
-                                        left: 4.0,
-                                      ),
-                                      child: Container(
+  ) =>
+      bubbleBuilder != null
+          ? bubbleBuilder!(
+              _messageBuilder(),
+              message: message,
+              nextMessageInGroup: roundBorder,
+            )
+          : enlargeEmojis && hideBackgroundOnEmojiMessages
+              ? _messageBuilder()
+              : Column(
+                  crossAxisAlignment: currentUserIsAuthor
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    (message.repliedMessage != null)
+                        ? Column(
+                            crossAxisAlignment: currentUserIsAuthor
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {
+                                  log('replied message tapped');
+                                  scrollToMessage(
+                                    message.repliedMessage!.remoteId ?? '',
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
                                         padding: const EdgeInsets.only(
                                           top: 4.0,
                                           right: 4.0,
                                           left: 4.0,
-                                          bottom: 20,
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                          color: !currentUserIsAuthor
-                                              ? InheritedChatTheme.of(context)
-                                                  .theme
-                                                  .receivedRepliedMessageBackgroundColor
-                                              : InheritedChatTheme.of(context)
-                                                  .theme
-                                                  .sentRepliedMessageBackgroundColor,
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: borderRadius,
-                                          child: _repliedMessageBuilder(
-                                            message.repliedMessage!,
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                            top: 4.0,
+                                            right: 4.0,
+                                            left: 4.0,
+                                            bottom: 20,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            color: !currentUserIsAuthor
+                                                ? InheritedChatTheme.of(context)
+                                                    .theme
+                                                    .receivedRepliedMessageBackgroundColor
+                                                : InheritedChatTheme.of(context)
+                                                    .theme
+                                                    .sentRepliedMessageBackgroundColor,
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: borderRadius,
+                                            child: _repliedMessageBuilder(
+                                              message.repliedMessage!,
+                                            ),
                                           ),
                                         ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Container(
+                                      transform: message.repliedMessage != null
+                                          ? Matrix4.translationValues(0, -20, 0)
+                                          : null,
+                                      decoration: BoxDecoration(
+                                        borderRadius: borderRadius,
+                                        color: !currentUserIsAuthor ||
+                                                message.type ==
+                                                    types.MessageType.image
+                                            ? InheritedChatTheme.of(context)
+                                                .theme
+                                                .secondaryColor
+                                            : InheritedChatTheme.of(context)
+                                                .theme
+                                                .primaryColor,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: borderRadius,
+                                        child: _messageBuilder(),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: Container(
-                                    transform: message.repliedMessage != null
-                                        ? Matrix4.translationValues(0, -20, 0)
-                                        : null,
-                                    decoration: BoxDecoration(
-                                      borderRadius: borderRadius,
-                                      color: !currentUserIsAuthor ||
-                                              message.type ==
-                                                  types.MessageType.image
-                                          ? InheritedChatTheme.of(context)
-                                              .theme
-                                              .secondaryColor
-                                          : InheritedChatTheme.of(context)
-                                              .theme
-                                              .primaryColor,
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: borderRadius,
-                                      child: _messageBuilder(),
-                                    ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  transform: message.repliedMessage != null
+                                      ? Matrix4.translationValues(0, -10, 0)
+                                      : null,
+                                  decoration: BoxDecoration(
+                                    borderRadius: borderRadius,
+                                    color: !currentUserIsAuthor ||
+                                            message.type ==
+                                                types.MessageType.image
+                                        ? InheritedChatTheme.of(context)
+                                            .theme
+                                            .secondaryColor
+                                        : InheritedChatTheme.of(context)
+                                            .theme
+                                            .primaryColor,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(
-                              child: Container(
-                                transform: message.repliedMessage != null
-                                    ? Matrix4.translationValues(0, -10, 0)
-                                    : null,
-                                decoration: BoxDecoration(
-                                  borderRadius: borderRadius,
-                                  color: !currentUserIsAuthor ||
-                                          message.type ==
-                                              types.MessageType.image
-                                      ? InheritedChatTheme.of(context)
-                                          .theme
-                                          .secondaryColor
-                                      : InheritedChatTheme.of(context)
-                                          .theme
-                                          .primaryColor,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: borderRadius,
-                                  child: _messageBuilder(),
+                                  child: ClipRRect(
+                                    borderRadius: borderRadius,
+                                    child: _messageBuilder(),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                  (message.repliedMessage != null)
-                      ? Transform(
-                          transform: Matrix4.translationValues(0, -15, 0),
-                          child: Text(
-                            (currentUserIsAuthor &&
-                                    message.status == types.Status.seen &&
-                                    (message.remoteId == lastMessageId ||
-                                        message.id == lastMessageId))
-                                ? 'Görüldü'
-                                : intl.DateFormat('HH:mm').format(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                      message.createdAt!,
-                                    ),
-                                  ),
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                            ),
+                            ],
                           ),
-                        )
-                      : (message.remoteId == lastMessageId ||
-                              message.id == lastMessageId)
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: Text(
-                                (currentUserIsAuthor &&
-                                        message.status == types.Status.seen &&
-                                        (message.remoteId == lastMessageId ||
-                                            message.id == lastMessageId))
-                                    ? 'Görüldü'
-                                    : intl.DateFormat('HH:mm').format(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                          message.createdAt!,
-                                        ),
+                    (message.repliedMessage != null)
+                        ? Transform(
+                            transform: Matrix4.translationValues(0, -15, 0),
+                            child: Text(
+                              (currentUserIsAuthor &&
+                                      message.status == types.Status.seen &&
+                                      (message.remoteId == lastMessageId ||
+                                          message.id == lastMessageId))
+                                  ? 'Görüldü'
+                                  : intl.DateFormat('HH:mm').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.createdAt!,
                                       ),
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                ),
+                                    ),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
                               ),
-                            )
-                          : const SizedBox.shrink(),
-                ],
-              );
-  }
+                            ),
+                          )
+                        : (message.remoteId == lastMessageId ||
+                                message.id == lastMessageId)
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Text(
+                                  (currentUserIsAuthor &&
+                                          message.status == types.Status.seen &&
+                                          (message.remoteId == lastMessageId ||
+                                              message.id == lastMessageId))
+                                      ? 'Görüldü'
+                                      : intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        ),
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                  ],
+                );
 
   Widget _messageBuilder() {
     switch (message.type) {
