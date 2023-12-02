@@ -101,6 +101,7 @@ class Chat extends StatefulWidget {
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
     this.slidableMessageBuilder,
+    this.isLeftStatus = false,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -326,6 +327,12 @@ class Chat extends StatefulWidget {
   final Widget Function(types.Message, Widget msgWidget)?
       slidableMessageBuilder;
 
+  /// See [Message.isLeftStatus].
+  /// If true, status will be shown on the left side of the message.
+  /// If false, status will be shown on the right side of the message.
+  /// Default value is false.
+  final bool isLeftStatus;
+
   @override
   State<Chat> createState() => ChatState();
 }
@@ -498,6 +505,7 @@ class ChatState extends State<Chat> {
           showAvatar: map['nextMessageInGroup'] == false,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
+          isLeftStatus: widget.isLeftStatus,
           showUserAvatars: widget.showUserAvatars,
           textMessageBuilder: widget.textMessageBuilder,
           textMessageOptions: widget.textMessageOptions,

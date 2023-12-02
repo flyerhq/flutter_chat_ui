@@ -48,6 +48,7 @@ class Message extends StatelessWidget {
     required this.showAvatar,
     required this.showName,
     required this.showStatus,
+    required this.isLeftStatus,
     required this.showUserAvatars,
     this.textMessageBuilder,
     required this.textMessageOptions,
@@ -159,6 +160,12 @@ class Message extends StatelessWidget {
 
   /// Show message's status.
   final bool showStatus;
+
+  /// This is used to determine if the status icon should be on the left or
+  /// right side of the message.
+  /// This is only used when [showStatus] is true.
+  /// Defaults to false.
+  final bool isLeftStatus;
 
   /// Show user avatars for received messages. Useful for a group chat.
   final bool showUserAvatars;
@@ -277,6 +284,23 @@ class Message extends StatelessWidget {
     }
   }
 
+  Widget _statusIcon(
+    BuildContext context,
+  ) {
+    if (!showStatus) return const SizedBox.shrink();
+
+    return Padding(
+      padding: InheritedChatTheme.of(context).theme.statusIconPadding,
+      child: GestureDetector(
+        onLongPress: () => onMessageStatusLongPress?.call(context, message),
+        onTap: () => onMessageStatusTap?.call(context, message),
+        child: customStatusBuilder != null
+            ? customStatusBuilder!(message, context: context)
+            : MessageStatus(status: message.status),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final query = MediaQuery.of(context);
@@ -340,6 +364,7 @@ class Message extends StatelessWidget {
             : TextDirection.ltr,
         children: [
           if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
+          if (currentUserIsAuthor && isLeftStatus) _statusIcon(context),
           ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: messageWidth.toDouble(),
@@ -376,20 +401,7 @@ class Message extends StatelessWidget {
               ],
             ),
           ),
-          if (currentUserIsAuthor)
-            Padding(
-              padding: InheritedChatTheme.of(context).theme.statusIconPadding,
-              child: showStatus
-                  ? GestureDetector(
-                      onLongPress: () =>
-                          onMessageStatusLongPress?.call(context, message),
-                      onTap: () => onMessageStatusTap?.call(context, message),
-                      child: customStatusBuilder != null
-                          ? customStatusBuilder!(message, context: context)
-                          : MessageStatus(status: message.status),
-                    )
-                  : null,
-            ),
+          if (currentUserIsAuthor && !isLeftStatus) _statusIcon(context),
         ],
       ),
     );
