@@ -250,7 +250,9 @@ class Message extends StatelessWidget {
                                 behavior: HitTestBehavior.translucent,
                                 onTap: () {
                                   log('replied message tapped');
-                                  scrollToMessage(message.repliedMessage!.id);
+                                  scrollToMessage(
+                                    message.repliedMessage!.remoteId ?? '',
+                                  );
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -361,7 +363,7 @@ class Message extends StatelessWidget {
                                   message.createdAt!,
                                 ),
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
                               ),
@@ -371,7 +373,6 @@ class Message extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 5.0),
                             child: Text(
                               (currentUserIsAuthor &&
-                                      message.status == types.Status.seen &&
                                       message.remoteId == lastMessageId)
                                   ? 'Görüldü'
                                   : intl.DateFormat('HH:mm').format(
@@ -379,7 +380,7 @@ class Message extends StatelessWidget {
                                         message.createdAt!,
                                       ),
                                     ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
                               ),
