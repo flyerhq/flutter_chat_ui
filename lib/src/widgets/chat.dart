@@ -106,7 +106,6 @@ class Chat extends StatefulWidget {
     this.videoMessageBuilder,
     this.slidableMessageBuilder,
     this.repliedMessageWidget,
-    this.lastMessageId,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -125,8 +124,6 @@ class Chat extends StatefulWidget {
 
   /// See [Message.bubbleRtlAlignment].
   final BubbleRtlAlignment? bubbleRtlAlignment;
-
-  final String? lastMessageId;
 
   /// Allows you to replace the default Input widget e.g. if you want to create a channel view. If you're looking for the bottom widget added to the chat list, see [listBottomWidget] instead.
   final Widget? customBottomWidget;
@@ -416,6 +413,7 @@ class ChatState extends State<Chat> {
     Object object,
     BoxConstraints constraints,
     int? index,
+    types.Message myLastMessage,
   ) {
     if (object is DateHeader) {
       return widget.dateHeaderBuilder?.call(object) ??
@@ -455,6 +453,8 @@ class ChatState extends State<Chat> {
                 ? min(constraints.maxWidth * 0.72, 440).floor()
                 : min(constraints.maxWidth * 0.78, 440).floor();
         final Widget msgWidget = Message(
+          isLastMessage: (myLastMessage.id == message.id ||
+              myLastMessage.id == message.remoteId),
           scrollController: widget.scrollController ?? AutoScrollController(),
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
@@ -474,7 +474,6 @@ class ChatState extends State<Chat> {
           onAvatarTap: widget.onAvatarTap,
           onMessageDoubleTap: widget.onMessageDoubleTap,
           onMessageLongPress: widget.onMessageLongPress,
-          lastMessageId: widget.lastMessageId,
           onSwipeToLeft: widget.onSwipeToLeft,
           onSwipeToRight: widget.onSwipeToRight,
           onMessageStatusLongPress: widget.onMessageStatusLongPress,
@@ -489,7 +488,7 @@ class ChatState extends State<Chat> {
           },
           onMessageVisibilityChanged: widget.onMessageVisibilityChanged,
           onPreviewDataFetched: _onPreviewDataFetched,
-          roundBorder: map['nextMessageInGroup'] == true,
+          roundBorder: false,
           showAvatar: map['nextMessageInGroup'] == false,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
@@ -639,6 +638,9 @@ class ChatState extends State<Chat> {
                                       item,
                                       constraints,
                                       index,
+                                      widget.messages.lastWhere((element) =>
+                                          element.author.id ==
+                                          InheritedUser.of(context).user.id),
                                     ),
                                     items: _chatMessages,
                                     keyboardDismissBehavior:

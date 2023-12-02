@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../../../flutter_chat_ui.dart';
+import '../../../flutter_chat_ui.dart' as ui;
 import '../../conditional/conditional.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
@@ -56,7 +57,7 @@ class Message extends StatelessWidget {
     this.userAgent,
     this.videoMessageBuilder,
     required this.scrollController,
-    this.lastMessageId,
+    this.isLastMessage = false,
   });
 
   /// Build an audio message inside predefined bubble.
@@ -80,11 +81,13 @@ class Message extends StatelessWidget {
 
   /// Determine the alignment of the bubble for RTL languages. Has no effect
   /// for the LTR languages.
-  final BubbleRtlAlignment? bubbleRtlAlignment;
+  final ui.BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Build a custom message inside predefined bubble.
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
+
+  final bool isLastMessage;
 
   /// Build a custom status widgets.
   final Widget Function(types.Message message, {required BuildContext context})?
@@ -93,7 +96,7 @@ class Message extends StatelessWidget {
   /// Controls the enlargement behavior of the emojis in the
   /// [types.TextMessage].
   /// Defaults to [EmojiEnlargementBehavior.multi].
-  final EmojiEnlargementBehavior emojiEnlargementBehavior;
+  final ui.EmojiEnlargementBehavior emojiEnlargementBehavior;
 
   /// Build a file message inside predefined bubble.
   final Widget Function(types.FileMessage, {required int messageWidth})?
@@ -118,14 +121,13 @@ class Message extends StatelessWidget {
 
   /// Any message type.
   final types.Message message;
-  final String? lastMessageId;
 
   /// Maximum message width.
   final int messageWidth;
 
   final AutoScrollController scrollController;
 
-  /// See [TextMessage.nameBuilder].
+  /// See [types.TextMessage.nameBuilder].
   final Widget Function(types.User)? nameBuilder;
 
   /// See [UserAvatar.onAvatarTap].
@@ -152,7 +154,7 @@ class Message extends StatelessWidget {
   /// Called when the message's visibility changes.
   final void Function(types.Message, bool visible)? onMessageVisibilityChanged;
 
-  /// See [TextMessage.onPreviewDataFetched].
+  /// See [types.TextMessage.onPreviewDataFetched].
   final void Function(types.TextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
@@ -162,7 +164,7 @@ class Message extends StatelessWidget {
   /// Show user avatar for the received message. Useful for a group chat.
   final bool showAvatar;
 
-  /// See [TextMessage.showName].
+  /// See [types.TextMessage.showName].
   final bool showName;
 
   /// Show message's status.
@@ -178,13 +180,13 @@ class Message extends StatelessWidget {
     required bool showName,
   })? textMessageBuilder;
 
-  /// See [TextMessage.options].
-  final TextMessageOptions textMessageOptions;
+  /// See [types.TextMessage.options].
+  final ui.TextMessageOptions textMessageOptions;
 
-  /// See [TextMessage.usePreviewData].
+  /// See [types.TextMessage.usePreviewData].
   final bool usePreviewData;
 
-  /// See [TextMessage.userAgent].
+  /// See [types.TextMessage.userAgent].
   final String? userAgent;
 
   /// Build an audio message inside predefined bubble.
@@ -193,7 +195,7 @@ class Message extends StatelessWidget {
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author.id) ??
-          UserAvatar(
+          ui.UserAvatar(
             author: message.author,
             bubbleRtlAlignment: bubbleRtlAlignment,
             imageHeaders: imageHeaders,
@@ -209,13 +211,13 @@ class Message extends StatelessWidget {
     Duration? highlightDuration,
   }) async {
     await scrollController.scrollToIndex(
-      chatMessageAutoScrollIndexById[id]!,
+      ui.chatMessageAutoScrollIndexById[id]!,
       duration: scrollDuration ?? scrollAnimationDuration,
       preferPosition: AutoScrollPosition.middle,
     );
     if (withHighlight) {
       await scrollController.highlight(
-        chatMessageAutoScrollIndexById[id]!,
+        ui.chatMessageAutoScrollIndexById[id]!,
         highlightDuration: highlightDuration ?? const Duration(seconds: 3),
       );
     }
@@ -358,44 +360,39 @@ class Message extends StatelessWidget {
                         ? Transform(
                             transform: Matrix4.translationValues(0, -15, 0),
                             child: Text(
-                              (currentUserIsAuthor &&
-                                      message.status == types.Status.seen &&
-                                      (message.remoteId == lastMessageId ||
-                                          message.id == lastMessageId))
-                                  ? 'Görüldü'
-                                  : intl.DateFormat('HH:mm').format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                        message.createdAt!,
-                                      ),
-                                    ),
+                              isLastMessage
+                                  ? message.status == Status.seen
+                                      ? "Görüldü"
+                                      : intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )
+                                  : "",
                               style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
                               ),
                             ),
                           )
-                        : (message.remoteId == lastMessageId ||
-                                message.id == lastMessageId)
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                                child: Text(
-                                  (currentUserIsAuthor &&
-                                          message.status == types.Status.seen &&
-                                          (message.remoteId == lastMessageId ||
-                                              message.id == lastMessageId))
-                                      ? 'Görüldü'
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Text(
+                              isLastMessage
+                                  ? message.status == Status.seen
+                                      ? "Görüldü"
                                       : intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
-                                        ),
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
+                                        )
+                                  : "",
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
                   ],
                 );
 
@@ -415,7 +412,7 @@ class Message extends StatelessWidget {
         final fileMessage = message as types.FileMessage;
         return fileMessageBuilder != null
             ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
-            : FileMessage(message: fileMessage);
+            : ui.FileMessage(message: fileMessage);
       case types.MessageType.image:
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
@@ -430,7 +427,7 @@ class Message extends StatelessWidget {
                 padding: const EdgeInsets.all(4.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.0),
-                  child: ImageMessage(
+                  child: ui.ImageMessage(
                     imageHeaders: imageHeaders,
                     imageProviderBuilder: imageProviderBuilder,
                     message: imageMessage,
@@ -446,7 +443,7 @@ class Message extends StatelessWidget {
                 messageWidth: messageWidth,
                 showName: showName,
               )
-            : TextMessage(
+            : ui.TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
@@ -483,7 +480,7 @@ class Message extends StatelessWidget {
         final fileMessage = repliedMessage as types.FileMessage;
         return fileMessageBuilder != null
             ? fileMessageBuilder!(fileMessage, messageWidth: messageWidth)
-            : FileMessage(message: fileMessage);
+            : ui.FileMessage(message: fileMessage);
       case types.MessageType.image:
         final imageMessage = repliedMessage as types.ImageMessage;
         return imageMessageBuilder != null
@@ -491,7 +488,7 @@ class Message extends StatelessWidget {
             : Row(
                 children: [
                   Expanded(
-                    child: TextMessage(
+                    child: ui.TextMessage(
                       emojiEnlargementBehavior: emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
                           hideBackgroundOnEmojiMessages,
@@ -512,7 +509,7 @@ class Message extends StatelessWidget {
                   const SizedBox(
                     width: 8,
                   ),
-                  ImageMessage(
+                  ui.ImageMessage(
                     imageHeaders: imageHeaders,
                     imageProviderBuilder: imageProviderBuilder,
                     message: imageMessage,
@@ -532,7 +529,7 @@ class Message extends StatelessWidget {
                 messageWidth: messageWidth,
                 showName: showName,
               )
-            : TextMessage(
+            : ui.TextMessage(
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
@@ -561,7 +558,7 @@ class Message extends StatelessWidget {
     final user = InheritedUser.of(context).user;
     final currentUserIsAuthor = user.id == message.author.id;
     final enlargeEmojis =
-        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
+        emojiEnlargementBehavior != ui.EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
             isConsistsOfEmojis(
               emojiEnlargementBehavior,
@@ -569,7 +566,7 @@ class Message extends StatelessWidget {
             );
     final messageBorderRadius =
         InheritedChatTheme.of(context).theme.messageBorderRadius;
-    final borderRadius = bubbleRtlAlignment == BubbleRtlAlignment.left
+    final borderRadius = bubbleRtlAlignment == ui.BubbleRtlAlignment.left
         ? BorderRadiusDirectional.only(
             bottomEnd: Radius.circular(
               !currentUserIsAuthor || roundBorder ? messageBorderRadius : 0,
@@ -596,14 +593,14 @@ class Message extends StatelessWidget {
         onSwipeToRight?.call(context, message);
       },
       child: Container(
-        alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
+        alignment: bubbleRtlAlignment == ui.BubbleRtlAlignment.left
             ? currentUserIsAuthor
                 ? AlignmentDirectional.centerEnd
                 : AlignmentDirectional.centerStart
             : currentUserIsAuthor
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
-        margin: bubbleRtlAlignment == BubbleRtlAlignment.left
+        margin: bubbleRtlAlignment == ui.BubbleRtlAlignment.left
             ? EdgeInsetsDirectional.only(
                 bottom: 4,
                 end: isMobile ? query.padding.right : 0,
@@ -617,7 +614,7 @@ class Message extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
-          textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
+          textDirection: bubbleRtlAlignment == ui.BubbleRtlAlignment.left
               ? null
               : TextDirection.ltr,
           children: [

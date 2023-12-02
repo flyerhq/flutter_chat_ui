@@ -275,7 +275,6 @@ class _ChatPageState extends State<ChatPage> {
         body: SafeArea(
           child: Chat(
             scrollController: scrollController,
-            lastMessageId: "64747b28-df19-4a0c-8c47-316dc3546e3c",
             repliedMessageWidget: (repliedMessage != null)
                 ? Row(
                     children: [
