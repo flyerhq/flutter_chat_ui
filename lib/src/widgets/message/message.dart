@@ -470,7 +470,7 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : ui.TextMessage(
-                isRepliedMessage: true,
+                isRepliedMessage: false,
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
