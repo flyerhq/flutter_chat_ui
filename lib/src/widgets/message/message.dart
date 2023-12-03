@@ -470,6 +470,7 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : ui.TextMessage(
+                isRepliedMessage: true,
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,
@@ -515,13 +516,14 @@ class Message extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ui.TextMessage(
+                      isRepliedMessage: true,
                       emojiEnlargementBehavior: emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
                           hideBackgroundOnEmojiMessages,
                       message: types.TextMessage(
-                          author: repliedMessage.author,
-                          createdAt: repliedMessage.createdAt,
-                          id: repliedMessage.remoteId ?? repliedMessage.id,
+                          author: imageMessage.author,
+                          createdAt: imageMessage.createdAt,
+                          id: imageMessage.remoteId ?? imageMessage.id,
                           text: 'Fotoğraf'),
                       nameBuilder: nameBuilder,
                       onPreviewDataFetched: onPreviewDataFetched,
@@ -556,6 +558,7 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : ui.TextMessage(
+                isRepliedMessage: true,
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,
                 message: textMessage,

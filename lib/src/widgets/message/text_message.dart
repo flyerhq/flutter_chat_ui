@@ -28,6 +28,7 @@ class TextMessage extends StatelessWidget {
     required this.usePreviewData,
     this.userAgent,
     this.maxLines,
+    this.isRepliedMessage,
   });
 
   /// See [Message.emojiEnlargementBehavior].
@@ -35,6 +36,7 @@ class TextMessage extends StatelessWidget {
 
   /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
+  final bool? isRepliedMessage;
 
   /// [types.TextMessage].
   final types.TextMessage message;
@@ -140,6 +142,7 @@ class TextMessage extends StatelessWidget {
             Text(message.text, style: emojiTextStyle)
         else
           TextMessageText(
+            isRepliedMessage: isRepliedMessage,
             bodyLinkTextStyle: bodyLinkTextStyle,
             bodyTextStyle: bodyTextStyle,
             boldTextStyle: boldTextStyle,
@@ -190,6 +193,7 @@ class TextMessageText extends StatelessWidget {
     this.boldTextStyle,
     this.codeTextStyle,
     this.maxLines,
+    this.isRepliedMessage,
     this.options = const TextMessageOptions(),
     this.overflow = TextOverflow.clip,
     required this.text,
@@ -218,6 +222,8 @@ class TextMessageText extends StatelessWidget {
 
   /// Text that is shown as markdown.
   final String text;
+
+  final bool? isRepliedMessage;
 
   @override
   Widget build(BuildContext context) => ParsedText(
@@ -310,7 +316,13 @@ class TextMessageText extends StatelessWidget {
         overflow: overflow,
         regexOptions: const RegexOptions(multiLine: true, dotAll: true),
         selectable: options.isTextSelectable,
-        style: bodyTextStyle,
+        style: (isRepliedMessage ?? false)
+            ? bodyTextStyle.copyWith(
+                color: InheritedChatTheme.of(context)
+                    .theme
+                    .receivedMessageBodyTextStyle
+                    .color)
+            : bodyTextStyle,
         text: text,
         textWidthBasis: TextWidthBasis.longestLine,
       );
