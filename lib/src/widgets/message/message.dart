@@ -362,23 +362,27 @@ class Message extends StatelessWidget {
                         ? Transform(
                             transform: Matrix4.translationValues(0, -15, 0),
                             child: Text(
-                              isLastMessage && currentUserIsAuthor
-                                  ? message.status == Status.seen
-                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                            message.createdAt!,
-                                          ),
-                                        )})"
+                              message.status == Status.error
+                                  ? 'Gönderilemedi'
+                                  : isLastMessage && currentUserIsAuthor
+                                      ? message.status == Status.seen
+                                          ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                message.createdAt!,
+                                              ),
+                                            )})"
+                                          : intl.DateFormat('HH:mm').format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                message.createdAt!,
+                                              ),
+                                            )
                                       : intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
-                                        )
-                                  : intl.DateFormat('HH:mm').format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                        message.createdAt!,
-                                      ),
-                                    ),
+                                        ),
                               style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
@@ -388,23 +392,27 @@ class Message extends StatelessWidget {
                         : Padding(
                             padding: const EdgeInsets.only(top: 5.0),
                             child: Text(
-                              isLastMessage && currentUserIsAuthor
-                                  ? message.status == Status.seen
-                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                            message.createdAt!,
-                                          ),
-                                        )})"
+                              message.status == Status.error
+                                  ? 'Gönderilemedi'
+                                  : isLastMessage && currentUserIsAuthor
+                                      ? message.status == Status.seen
+                                          ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                message.createdAt!,
+                                              ),
+                                            )})"
+                                          : intl.DateFormat('HH:mm').format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                message.createdAt!,
+                                              ),
+                                            )
                                       : intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
-                                        )
-                                  : intl.DateFormat('HH:mm').format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                        message.createdAt!,
-                                      ),
-                                    ),
+                                        ),
                               style: const TextStyle(
                                 fontSize: 10,
                                 color: Colors.grey,
@@ -513,7 +521,7 @@ class Message extends StatelessWidget {
                       message: types.TextMessage(
                           author: repliedMessage.author,
                           createdAt: repliedMessage.createdAt,
-                          id: repliedMessage.id,
+                          id: repliedMessage.remoteId ?? repliedMessage.id,
                           text: 'Fotoğraf'),
                       nameBuilder: nameBuilder,
                       onPreviewDataFetched: onPreviewDataFetched,
