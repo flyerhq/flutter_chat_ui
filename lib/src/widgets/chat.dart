@@ -7,7 +7,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:scroll_to_index/scroll_to_index.dart';
-
+import 'package:collection/collection.dart';
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -638,11 +638,10 @@ class ChatState extends State<Chat> {
                                       item,
                                       constraints,
                                       index,
-                                      widget.messages.lastWhere(
+                                      widget.messages.lastWhereOrNull(
                                         (element) =>
                                             element.author.id ==
                                             InheritedUser.of(context).user.id,
-                                        orElse: null,
                                       ),
                                     ),
                                     items: _chatMessages,
