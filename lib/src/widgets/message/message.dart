@@ -253,7 +253,9 @@ class Message extends StatelessWidget {
                                 onTap: () {
                                   log('replied message tapped');
                                   scrollToMessage(
-                                    message.repliedMessage!.remoteId ?? '',
+                                    message.repliedMessage?.remoteId ??
+                                        message.repliedMessage?.id ??
+                                        '',
                                   );
                                 },
                                 child: Row(

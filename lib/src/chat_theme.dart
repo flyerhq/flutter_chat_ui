@@ -118,10 +118,12 @@ abstract class ChatTheme {
     this.attachmentButtonColor,
     this.receivedRepliedMessageBackgroundColor,
     this.sentRepliedMessageBackgroundColor,
+    this.receivedRepliedMessageMessageColor,
   });
 
   final Color? sentRepliedMessageBackgroundColor;
   final Color? receivedRepliedMessageBackgroundColor;
+  final Color? receivedRepliedMessageMessageColor;
 
   /// Icon for select attachment button.
   final Widget? attachmentButtonIcon;
@@ -484,6 +486,7 @@ class DefaultChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    super.receivedRepliedMessageMessageColor = const Color(0xffE6F5FF),
     super.highlightMessageColor,
     super.receivedRepliedMessageBackgroundColor = const Color(0xFFFAFAFA),
     super.sentRepliedMessageBackgroundColor = const Color(0xffE6F5FF),
@@ -661,6 +664,7 @@ class DarkChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.333,
     ),
+    super.receivedRepliedMessageMessageColor = const Color(0xff000000),
     super.highlightMessageColor,
     super.receivedRepliedMessageBackgroundColor = const Color(0xff000000),
     super.sentRepliedMessageBackgroundColor = const Color(0xff051E2F),

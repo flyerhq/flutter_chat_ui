@@ -413,7 +413,7 @@ class ChatState extends State<Chat> {
     Object object,
     BoxConstraints constraints,
     int? index,
-    types.Message myLastMessage,
+    types.Message? myLastMessage,
   ) {
     if (object is DateHeader) {
       return widget.dateHeaderBuilder?.call(object) ??
@@ -453,8 +453,8 @@ class ChatState extends State<Chat> {
                 ? min(constraints.maxWidth * 0.72, 440).floor()
                 : min(constraints.maxWidth * 0.78, 440).floor();
         final Widget msgWidget = Message(
-          isLastMessage: (myLastMessage.id == message.id ||
-              myLastMessage.id == message.remoteId),
+          isLastMessage: (myLastMessage?.id == message.id ||
+              myLastMessage?.id == message.remoteId),
           scrollController: widget.scrollController ?? AutoScrollController(),
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
@@ -638,9 +638,12 @@ class ChatState extends State<Chat> {
                                       item,
                                       constraints,
                                       index,
-                                      widget.messages.lastWhere((element) =>
-                                          element.author.id ==
-                                          InheritedUser.of(context).user.id),
+                                      widget.messages.lastWhere(
+                                        (element) =>
+                                            element.author.id ==
+                                            InheritedUser.of(context).user.id,
+                                        orElse: null,
+                                      ),
                                     ),
                                     items: _chatMessages,
                                     keyboardDismissBehavior:
