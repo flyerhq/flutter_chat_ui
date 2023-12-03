@@ -57,7 +57,6 @@ class Message extends StatelessWidget {
     this.userAgent,
     this.videoMessageBuilder,
     required this.scrollController,
-    this.isLastMessage = false,
   });
 
   /// Build an audio message inside predefined bubble.
@@ -86,8 +85,6 @@ class Message extends StatelessWidget {
   /// Build a custom message inside predefined bubble.
   final Widget Function(types.CustomMessage, {required int messageWidth})?
       customMessageBuilder;
-
-  final bool isLastMessage;
 
   /// Build a custom status widgets.
   final Widget Function(types.Message message, {required BuildContext context})?
@@ -364,7 +361,7 @@ class Message extends StatelessWidget {
                             child: Text(
                               message.status == Status.error
                                   ? 'Gönderilemedi'
-                                  : isLastMessage && currentUserIsAuthor
+                                  : currentUserIsAuthor
                                       ? message.status == Status.seen
                                           ? "Görüldü (${intl.DateFormat('HH:mm').format(
                                               DateTime
@@ -394,7 +391,7 @@ class Message extends StatelessWidget {
                             child: Text(
                               message.status == Status.error
                                   ? 'Gönderilemedi'
-                                  : isLastMessage && currentUserIsAuthor
+                                  : currentUserIsAuthor
                                       ? message.status == Status.seen
                                           ? "Görüldü (${intl.DateFormat('HH:mm').format(
                                               DateTime
