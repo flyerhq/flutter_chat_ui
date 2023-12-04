@@ -26,6 +26,8 @@ dependencies:
   swipe_to: ^1.0.3
   url_launcher: ^6.1.12
   visibility_detector: ^0.4.0+2
+  cached_network_image: ^3.3.0
+
   
 
 

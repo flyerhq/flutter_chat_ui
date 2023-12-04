@@ -3,6 +3,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../../conditional/conditional.dart';
 import '../../util.dart';
+import '../cached_network_image.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
 
@@ -127,9 +128,8 @@ class _ImageMessageState extends State<ImageMessage> {
               width: 64,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: _image!,
+                child: CachedNetworkImageWidget(
+                  url: widget.message.uri,
                 ),
               ),
             ),
@@ -186,9 +186,8 @@ class _ImageMessageState extends State<ImageMessage> {
           aspectRatio: _size.aspectRatio > 0 ? _size.aspectRatio : 1,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image(
-              fit: BoxFit.contain,
-              image: _image!,
+            child: CachedNetworkImageWidget(
+              url: widget.message.uri,
             ),
           ),
         ),
