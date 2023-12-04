@@ -546,6 +546,7 @@ class ChatState extends State<Chat> {
                 ),
                 Expanded(
                   child: ImageGallery(
+                    uri: message.uri,
                     imageHeaders: widget.imageHeaders,
                     imageProviderBuilder: widget.imageProviderBuilder,
                     images: _gallery,

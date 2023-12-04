@@ -3,6 +3,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 import '../conditional/conditional.dart';
 import '../models/preview_image.dart';
+import 'cached_network_image.dart';
 
 class ImageGallery extends StatefulWidget {
   const ImageGallery({
@@ -13,7 +14,9 @@ class ImageGallery extends StatefulWidget {
     required this.onClosePressed,
     this.options = const ImageGalleryOptions(),
     required this.pageController,
+    required this.uri,
   });
+  final String uri;
 
   /// See [Chat.imageHeaders].
   final Map<String, String>? imageHeaders;
@@ -55,7 +58,11 @@ class _ImageGalleryState extends State<ImageGallery> {
       );
 
   @override
-  Widget build(BuildContext context) => PhotoViewGallery.builder(
+  Widget build(BuildContext context) =>
+      CachedNetworkImageWidget(
+        url: widget.uri,
+      ) ??
+      PhotoViewGallery.builder(
         builder: (BuildContext context, int index) =>
             PhotoViewGalleryPageOptions(
           imageProvider: widget.imageProviderBuilder != null
