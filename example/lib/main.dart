@@ -374,6 +374,28 @@ class _ChatPageState extends State<ChatPage> {
                   )
                 : null,
             theme: DarkChatTheme(
+              imageGalleryTextStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+              receivedRepliedMessageTextStyle: const TextStyle(
+                color: Colors.green,
+                fontSize: 14,
+              ),
+              receivedRepliedMessageUsernameTextStyle: const TextStyle(
+                color: Colors.purple,
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+              sentRepliedMessageUsernameTextStyle: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+              sentRepliedMessageTextStyle: const TextStyle(
+                color: Colors.blue,
+                fontSize: 14,
+              ),
               messageInsetsVertical: 10,
               messageInsetsHorizontal: 10,
               backgroundColor: Colors.black,

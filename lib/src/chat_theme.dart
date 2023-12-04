@@ -119,9 +119,19 @@ abstract class ChatTheme {
     this.receivedRepliedMessageBackgroundColor,
     this.sentRepliedMessageBackgroundColor,
     this.receivedRepliedMessageMessageColor,
+    this.sentRepliedMessageTextStyle,
+    this.receivedRepliedMessageTextStyle,
+    this.sentRepliedMessageUsernameTextStyle,
+    this.receivedRepliedMessageUsernameTextStyle,
+    this.imageGalleryTextStyle,
   });
 
+  final TextStyle? imageGalleryTextStyle;
+  final TextStyle? sentRepliedMessageUsernameTextStyle;
+  final TextStyle? receivedRepliedMessageUsernameTextStyle;
+  final TextStyle? sentRepliedMessageTextStyle;
   final Color? sentRepliedMessageBackgroundColor;
+  final TextStyle? receivedRepliedMessageTextStyle;
   final Color? receivedRepliedMessageBackgroundColor;
   final Color? receivedRepliedMessageMessageColor;
 
@@ -322,6 +332,11 @@ class DefaultChatTheme extends ChatTheme {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatTheme].
   const DefaultChatTheme({
+    super.imageGalleryTextStyle,
+    super.sentRepliedMessageUsernameTextStyle,
+    super.receivedRepliedMessageUsernameTextStyle,
+    super.sentRepliedMessageTextStyle,
+    super.receivedRepliedMessageTextStyle,
     super.attachmentButtonColor,
     super.sendButtonColor,
     super.attachmentButtonIcon,
@@ -500,6 +515,11 @@ class DarkChatTheme extends ChatTheme {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatTheme].
   const DarkChatTheme({
+    super.imageGalleryTextStyle,
+    super.sentRepliedMessageUsernameTextStyle,
+    super.receivedRepliedMessageUsernameTextStyle,
+    super.sentRepliedMessageTextStyle,
+    super.receivedRepliedMessageTextStyle,
     super.attachmentButtonColor,
     super.sendButtonColor,
     super.attachmentButtonIcon,

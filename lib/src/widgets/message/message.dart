@@ -232,108 +232,76 @@ class Message extends StatelessWidget {
               message: message,
               nextMessageInGroup: roundBorder,
             )
-          : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder()
-              : Column(
-                  crossAxisAlignment: currentUserIsAuthor
-                      ? CrossAxisAlignment.end
-                      : CrossAxisAlignment.start,
-                  children: [
-                    (message.repliedMessage != null)
-                        ? Column(
-                            crossAxisAlignment: currentUserIsAuthor
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () {
-                                  log('replied message tapped');
-                                  scrollToMessage(
-                                    message.repliedMessage?.remoteId ??
-                                        message.repliedMessage?.id ??
-                                        '',
-                                  );
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 4.0,
-                                          right: 4.0,
-                                          left: 4.0,
-                                        ),
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                            top: 4.0,
-                                            right: 4.0,
-                                            left: 4.0,
-                                            bottom: 20,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                            color: !currentUserIsAuthor
-                                                ? InheritedChatTheme.of(context)
-                                                    .theme
-                                                    .receivedRepliedMessageBackgroundColor
-                                                : InheritedChatTheme.of(context)
-                                                    .theme
-                                                    .sentRepliedMessageBackgroundColor,
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius: borderRadius,
-                                            child: _repliedMessageBuilder(
-                                              message.repliedMessage!,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+          : Column(
+              crossAxisAlignment: currentUserIsAuthor
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                (message.repliedMessage != null)
+                    ? Column(
+                        crossAxisAlignment: currentUserIsAuthor
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              log('replied message tapped');
+                              scrollToMessage(
+                                message.repliedMessage?.remoteId ??
+                                    message.repliedMessage?.id ??
+                                    '',
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 4.0,
+                                      right: 4.0,
+                                      left: 4.0,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
                                     child: Container(
-                                      transform: message.repliedMessage != null
-                                          ? Matrix4.translationValues(0, -20, 0)
-                                          : null,
+                                      padding: const EdgeInsets.only(
+                                        top: 4.0,
+                                        right: 4.0,
+                                        left: 4.0,
+                                        bottom: 20,
+                                      ),
                                       decoration: BoxDecoration(
-                                        borderRadius: borderRadius,
-                                        color: !currentUserIsAuthor ||
-                                                message.type ==
-                                                    types.MessageType.image
+                                        borderRadius:
+                                            BorderRadius.circular(16.0),
+                                        color: !currentUserIsAuthor
                                             ? InheritedChatTheme.of(context)
                                                 .theme
-                                                .secondaryColor
+                                                .receivedRepliedMessageBackgroundColor
                                             : InheritedChatTheme.of(context)
                                                 .theme
-                                                .primaryColor,
+                                                .sentRepliedMessageBackgroundColor,
                                       ),
                                       child: ClipRRect(
                                         borderRadius: borderRadius,
-                                        child: _messageBuilder(),
+                                        child: _repliedMessageBuilder(
+                                          message.repliedMessage!,
+                                          currentUserIsAuthor,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Flexible(
                                 child: Container(
                                   transform: message.repliedMessage != null
-                                      ? Matrix4.translationValues(0, -10, 0)
+                                      ? Matrix4.translationValues(0, -20, 0)
                                       : null,
                                   decoration: BoxDecoration(
                                     borderRadius: borderRadius,
@@ -355,69 +323,95 @@ class Message extends StatelessWidget {
                               ),
                             ],
                           ),
-                    (message.repliedMessage != null)
-                        ? Transform(
-                            transform: Matrix4.translationValues(0, -15, 0),
-                            child: Text(
-                              message.status == Status.error
-                                  ? 'Gönderilemedi'
-                                  : currentUserIsAuthor
-                                      ? message.status == Status.seen
-                                          ? "Görüldü (${intl.DateFormat('HH:mm').format(
-                                              DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                message.createdAt!,
-                                              ),
-                                            )})"
-                                          : intl.DateFormat('HH:mm').format(
-                                              DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                message.createdAt!,
-                                              ),
-                                            )
-                                      : intl.DateFormat('HH:mm').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                            message.createdAt!,
-                                          ),
-                                        ),
-                              style: const TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              transform: message.repliedMessage != null
+                                  ? Matrix4.translationValues(0, -10, 0)
+                                  : null,
+                              decoration: BoxDecoration(
+                                borderRadius: borderRadius,
+                                color: !currentUserIsAuthor ||
+                                        message.type == types.MessageType.image
+                                    ? InheritedChatTheme.of(context)
+                                        .theme
+                                        .secondaryColor
+                                    : InheritedChatTheme.of(context)
+                                        .theme
+                                        .primaryColor,
                               ),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: Text(
-                              message.status == Status.error
-                                  ? 'Gönderilemedi'
-                                  : currentUserIsAuthor
-                                      ? message.status == Status.seen
-                                          ? "Görüldü (${intl.DateFormat('HH:mm').format(
-                                              DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                message.createdAt!,
-                                              ),
-                                            )})"
-                                          : intl.DateFormat('HH:mm').format(
-                                              DateTime
-                                                  .fromMillisecondsSinceEpoch(
-                                                message.createdAt!,
-                                              ),
-                                            )
-                                      : intl.DateFormat('HH:mm').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                            message.createdAt!,
-                                          ),
-                                        ),
-                              style: const TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
+                              child: ClipRRect(
+                                borderRadius: borderRadius,
+                                child: _messageBuilder(),
                               ),
                             ),
                           ),
-                  ],
-                );
+                        ],
+                      ),
+                (message.repliedMessage != null)
+                    ? Transform(
+                        transform: Matrix4.translationValues(0, -15, 0),
+                        child: Text(
+                          message.status == Status.error
+                              ? 'Gönderilemedi'
+                              : currentUserIsAuthor
+                                  ? message.status == Status.seen
+                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )})"
+                                      : intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )
+                                  : intl.DateFormat('HH:mm').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.createdAt!,
+                                      ),
+                                    ),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: Text(
+                          message.status == Status.error
+                              ? 'Gönderilemedi'
+                              : currentUserIsAuthor
+                                  ? message.status == Status.seen
+                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )})"
+                                      : intl.DateFormat('HH:mm').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                            message.createdAt!,
+                                          ),
+                                        )
+                                  : intl.DateFormat('HH:mm').format(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                        message.createdAt!,
+                                      ),
+                                    ),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+              ],
+            );
 
   Widget _messageBuilder() {
     switch (message.type) {
@@ -488,7 +482,10 @@ class Message extends StatelessWidget {
     }
   }
 
-  Widget _repliedMessageBuilder(types.Message repliedMessage) {
+  Widget _repliedMessageBuilder(
+    types.Message repliedMessage,
+    bool currentUserIsAuthor,
+  ) {
     switch (repliedMessage.type) {
       case types.MessageType.audio:
         final audioMessage = repliedMessage as types.AudioMessage;
@@ -513,6 +510,7 @@ class Message extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ui.TextMessage(
+                      currentUserIsAuthor: currentUserIsAuthor,
                       isRepliedMessage: true,
                       emojiEnlargementBehavior: emojiEnlargementBehavior,
                       hideBackgroundOnEmojiMessages:
@@ -555,6 +553,7 @@ class Message extends StatelessWidget {
                 showName: showName,
               )
             : ui.TextMessage(
+                currentUserIsAuthor: currentUserIsAuthor,
                 isRepliedMessage: true,
                 emojiEnlargementBehavior: emojiEnlargementBehavior,
                 hideBackgroundOnEmojiMessages: hideBackgroundOnEmojiMessages,

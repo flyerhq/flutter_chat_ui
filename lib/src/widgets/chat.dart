@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:collection/collection.dart';
+import 'package:intl/intl.dart' as intl;
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -512,6 +513,7 @@ class ChatState extends State<Chat> {
   }
 
   void _onCloseGalleryPressed() {
+    Navigator.pop(context);
     setState(() {
       _isImageViewVisible = false;
     });
@@ -527,14 +529,33 @@ class ChatState extends State<Chat> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Material(
-          child: ImageGallery(
-            imageHeaders: widget.imageHeaders,
-            imageProviderBuilder: widget.imageProviderBuilder,
-            images: _gallery,
-            pageController: _galleryPageController!,
-            onClosePressed: _onCloseGalleryPressed,
-            options: widget.imageGalleryOptions,
+        builder: (context) => Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    BackButton(
+                      color: widget.theme.imageGalleryTextStyle?.color ??
+                          Colors.white,
+                      onPressed: _onCloseGalleryPressed,
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ImageGallery(
+                    imageHeaders: widget.imageHeaders,
+                    imageProviderBuilder: widget.imageProviderBuilder,
+                    images: _gallery,
+                    pageController: _galleryPageController!,
+                    onClosePressed: _onCloseGalleryPressed,
+                    options: widget.imageGalleryOptions,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

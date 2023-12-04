@@ -4,7 +4,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../conditional/conditional.dart';
 import '../models/preview_image.dart';
 
-class ImageGallery extends StatelessWidget {
+class ImageGallery extends StatefulWidget {
   const ImageGallery({
     super.key,
     this.imageHeaders,
@@ -37,35 +37,43 @@ class ImageGallery extends StatelessWidget {
   /// Page controller for the image pages.
   final PageController pageController;
 
+  @override
+  State<ImageGallery> createState() => _ImageGalleryState();
+}
+
+class _ImageGalleryState extends State<ImageGallery> {
   Widget _imageGalleryLoadingBuilder(ImageChunkEvent? event) => Center(
         child: SizedBox(
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
-            value: event == null || event.expectedTotalBytes == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+            value: event == null || event.expectedTotalBytes == null
+                ? 0
+                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       );
 
   @override
   Widget build(BuildContext context) => PhotoViewGallery.builder(
-        builder: (BuildContext context, int index) => PhotoViewGalleryPageOptions(
-          imageProvider: imageProviderBuilder != null
-              ? imageProviderBuilder!(
-                  uri: images[index].uri,
-                  imageHeaders: imageHeaders,
+        builder: (BuildContext context, int index) =>
+            PhotoViewGalleryPageOptions(
+          imageProvider: widget.imageProviderBuilder != null
+              ? widget.imageProviderBuilder!(
+                  uri: widget.images[index].uri,
+                  imageHeaders: widget.imageHeaders,
                   conditional: Conditional(),
                 )
               : Conditional().getProvider(
-                  images[index].uri,
-                  headers: imageHeaders,
+                  widget.images[index].uri,
+                  headers: widget.imageHeaders,
                 ),
-          minScale: options.minScale,
-          maxScale: options.maxScale,
+          minScale: widget.options.minScale,
+          maxScale: widget.options.maxScale,
         ),
-        itemCount: images.length,
+        itemCount: widget.images.length,
         loadingBuilder: (context, event) => _imageGalleryLoadingBuilder(event),
-        pageController: pageController,
+        pageController: widget.pageController,
         scrollPhysics: const ClampingScrollPhysics(),
       );
 }

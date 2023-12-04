@@ -29,7 +29,10 @@ class TextMessage extends StatelessWidget {
     this.userAgent,
     this.maxLines,
     this.isRepliedMessage,
+    this.currentUserIsAuthor = false,
   });
+
+  final bool currentUserIsAuthor;
 
   /// See [Message.emojiEnlargementBehavior].
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
@@ -96,7 +99,7 @@ class TextMessage extends StatelessWidget {
       ),
       previewData: message.previewData,
       text: message.text,
-      textWidget: _textWidgetBuilder(user, context, false),
+      textWidget: _textWidgetBuilder(user, context, false, currentUserIsAuthor),
       userAgent: userAgent,
       width: width,
     );
@@ -112,6 +115,7 @@ class TextMessage extends StatelessWidget {
     types.User user,
     BuildContext context,
     bool enlargeEmojis,
+    bool currentUserIsAuthor,
   ) {
     final theme = InheritedChatTheme.of(context).theme;
     final bodyLinkTextStyle = user.id == message.author.id
@@ -134,7 +138,12 @@ class TextMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showName)
-          nameBuilder?.call(message.author) ?? UserName(author: message.author),
+          nameBuilder?.call(message.author) ??
+              UserName(
+                author: message.author,
+                currentUserIsAuthor: currentUserIsAuthor,
+                isRepliedMessage: isRepliedMessage ?? false,
+              ),
         if (enlargeEmojis)
           if (options.isTextSelectable)
             SelectableText(message.text, style: emojiTextStyle)
@@ -151,6 +160,7 @@ class TextMessage extends StatelessWidget {
             text: message.text,
             maxLines: maxLines,
             overflow: overflow ?? TextOverflow.clip,
+            currentUserIsAuthor: currentUserIsAuthor,
           ),
       ],
     );
@@ -179,7 +189,8 @@ class TextMessage extends StatelessWidget {
         horizontal: theme.messageInsetsHorizontal,
         vertical: theme.messageInsetsVertical,
       ),
-      child: _textWidgetBuilder(user, context, enlargeEmojis),
+      child:
+          _textWidgetBuilder(user, context, enlargeEmojis, currentUserIsAuthor),
     );
   }
 }
@@ -197,7 +208,9 @@ class TextMessageText extends StatelessWidget {
     this.options = const TextMessageOptions(),
     this.overflow = TextOverflow.clip,
     required this.text,
+    this.currentUserIsAuthor = false,
   });
+  final bool currentUserIsAuthor;
 
   /// Style to apply to anything that matches a link.
   final TextStyle? bodyLinkTextStyle;
@@ -317,11 +330,13 @@ class TextMessageText extends StatelessWidget {
         regexOptions: const RegexOptions(multiLine: true, dotAll: true),
         selectable: options.isTextSelectable,
         style: (isRepliedMessage ?? false)
-            ? bodyTextStyle.copyWith(
-                color: InheritedChatTheme.of(context)
+            ? currentUserIsAuthor
+                ? InheritedChatTheme.of(context)
                     .theme
-                    .receivedMessageBodyTextStyle
-                    .color)
+                    .sentRepliedMessageTextStyle
+                : InheritedChatTheme.of(context)
+                    .theme
+                    .receivedRepliedMessageTextStyle
             : bodyTextStyle,
         text: text,
         textWidthBasis: TextWidthBasis.longestLine,

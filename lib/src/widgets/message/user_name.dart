@@ -10,11 +10,14 @@ class UserName extends StatelessWidget {
   const UserName({
     super.key,
     required this.author,
+    required this.currentUserIsAuthor,
+    this.isRepliedMessage = false,
   });
 
   /// Author to show name from.
   final types.User author;
-
+  final bool currentUserIsAuthor;
+  final bool isRepliedMessage;
   @override
   Widget build(BuildContext context) {
     final theme = InheritedChatTheme.of(context).theme;
@@ -29,7 +32,15 @@ class UserName extends StatelessWidget {
               name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.userNameTextStyle.copyWith(color: color),
+              style: isRepliedMessage
+                  ? currentUserIsAuthor
+                      ? InheritedChatTheme.of(context)
+                          .theme
+                          .sentRepliedMessageUsernameTextStyle
+                      : InheritedChatTheme.of(context)
+                          .theme
+                          .receivedRepliedMessageUsernameTextStyle
+                  : theme.userNameTextStyle.copyWith(color: color),
             ),
           );
   }
