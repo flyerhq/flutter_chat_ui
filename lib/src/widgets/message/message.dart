@@ -614,10 +614,13 @@ class Message extends StatelessWidget {
           );
 
     return SwipeTo(
+      swipeSensitivity: 20,
       onRightSwipe: (a) {
         onSwipeToRight?.call(context, message);
       },
       child: Container(
+        color: Colors.transparent,
+        width: MediaQuery.of(context).size.width,
         alignment: bubbleRtlAlignment == ui.BubbleRtlAlignment.left
             ? currentUserIsAuthor
                 ? AlignmentDirectional.centerEnd
