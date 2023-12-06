@@ -97,6 +97,19 @@ class ChatL10nEs extends ChatL10n {
   });
 }
 
+/// Persian l10n which extends [ChatL10n].
+@immutable
+class ChatL10nFa extends ChatL10n {
+  const ChatL10nFa({
+    super.attachmentButtonAccessibilityLabel = 'فرستادن رسانه',
+    super.emptyChatPlaceholder = 'هنوز پیامی وجود ندارد',
+    super.fileButtonAccessibilityLabel = 'فایل',
+    super.inputPlaceholder = 'متن پیام',
+    super.sendButtonAccessibilityLabel = 'بفرست',
+    super.unreadMessagesLabel = 'پیام‌های خوانده نشده',
+  });
+}
+
 /// Finnish l10n which extends [ChatL10n].
 @immutable
 class ChatL10nFi extends ChatL10n {
