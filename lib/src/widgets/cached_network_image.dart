@@ -2,13 +2,10 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/src/service/cache_service.dart';
+
+import '../service/cache_service.dart';
 
 extension TranslationExtension on String {
-  // String get tr {
-  //   return LanguageManager.instance.translations[this]!;
-  // }
-
   String capitalizeFirst() {
     if (isEmpty) {
       return this;
@@ -17,14 +14,14 @@ extension TranslationExtension on String {
   }
 
   ImageTypeFromUri get _imageType {
-    final String imageUri = this;
+    final imageUri = this;
 
     if (imageUri.isEmpty) {
       return ImageTypeFromUri.nullPhoto;
     }
-    if (imageUri == "error") {
+    if (imageUri == 'error') {
       return ImageTypeFromUri.error;
-    } else if (imageUri.startsWith("https") || imageUri.startsWith("http")) {
+    } else if (imageUri.startsWith('https') || imageUri.startsWith('http')) {
       return ImageTypeFromUri.network;
     } else {
       return ImageTypeFromUri.local;
@@ -61,7 +58,7 @@ class CachedNetworkImageWidget extends StatefulWidget {
   final bool secondTry;
 
   const CachedNetworkImageWidget({
-    Key? key,
+    super.key,
     required this.url,
     this.placeholder,
     this.errorWidget,
@@ -76,7 +73,7 @@ class CachedNetworkImageWidget extends StatefulWidget {
     this.isBoosted = false,
     this.borderRadius,
     this.isBorder = false,
-  }) : super(key: key);
+  });
 
   @override
   State<CachedNetworkImageWidget> createState() =>
@@ -84,6 +81,88 @@ class CachedNetworkImageWidget extends StatefulWidget {
 }
 
 class _CachedNetworkImageWidgetState extends State<CachedNetworkImageWidget> {
+  CachedNetworkImage _networkImage() {
+    if (widget.isCircle != true) {
+      return CachedNetworkImage(
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            boxShadow: widget.shadow == true
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(.2),
+                      blurRadius: 5,
+                      offset: const Offset(20, 55),
+                    ),
+                  ]
+                : null,
+            borderRadius: widget.radius == null
+                ? widget.borderRadius ?? BorderRadius.circular(12)
+                : BorderRadius.circular(widget.radius ?? 12),
+            image: DecorationImage(
+              image: imageProvider,
+              fit: widget.fit ?? BoxFit.cover,
+            ),
+          ),
+        ),
+        key: ValueKey(widget.url),
+        httpHeaders: const {'Keep-Alive': 'timeout=1000'},
+        imageUrl: widget.url,
+        cacheKey: widget.url,
+        cacheManager: CustomCacheManager.instance.cacheManager,
+        fit: widget.fit ?? BoxFit.cover,
+        height: widget.height,
+        width: widget.width,
+        placeholder: (context, url) => const SizedBox(),
+        errorWidget: (context, url, error) =>
+            widget.errorWidget ?? const Icon(Icons.error),
+        fadeInDuration: const Duration(milliseconds: 100),
+        fadeOutDuration: const Duration(milliseconds: 100),
+      );
+    } else {
+      return CachedNetworkImage(
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            boxShadow: widget.shadow == true
+                ? [
+                    BoxShadow(
+                      color: widget.shadowColor ?? Colors.black,
+                      blurRadius: 10,
+                      blurStyle: BlurStyle.normal,
+                      spreadRadius: 1,
+                      offset: Offset.zero,
+                    ),
+                  ]
+                : null,
+            border: (widget.isBorder ?? false)
+                ? Border.all(width: 4, color: Colors.black)
+                : null,
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: imageProvider,
+              alignment: Alignment.center,
+              fit: widget.fit ?? BoxFit.cover,
+            ),
+          ),
+        ),
+        key: ValueKey(widget.url),
+        httpHeaders: const {'Keep-Alive': 'timeout=1000'},
+        imageUrl: widget.url,
+        cacheKey: widget.url,
+        cacheManager: CustomCacheManager.instance.cacheManager,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => widget.placeholder ?? const SizedBox(),
+        errorWidget: (context, url, error) =>
+            widget.errorWidget ?? const Icon(Icons.error),
+        fadeInDuration: const Duration(milliseconds: 100),
+        filterQuality: FilterQuality.high,
+        height: widget.height ?? 42,
+        width: widget.width ?? 42,
+        alignment: Alignment.center,
+        fadeOutDuration: const Duration(milliseconds: 100),
+      );
+    }
+  }
+
   @override
   void didUpdateWidget(CachedNetworkImageWidget oldWidget) {
     if (oldWidget.url != widget.url) {}
@@ -121,7 +200,7 @@ class _CachedNetworkImageWidgetState extends State<CachedNetworkImageWidget> {
               ? widget.borderRadius ?? BorderRadius.circular(12)
               : BorderRadius.circular(widget.radius ?? 12),
           child: Image.file(
-            File(widget.url.getImageType.uri ?? ""),
+            File(widget.url.getImageType.uri ?? ''),
             height: widget.height,
             width: widget.width,
             fit: BoxFit.cover,
@@ -133,92 +212,6 @@ class _CachedNetworkImageWidgetState extends State<CachedNetworkImageWidget> {
 
       default:
         return _networkImage();
-    }
-  }
-
-  _networkImage() {
-    if (widget.isCircle != true) {
-      return CachedNetworkImage(
-        imageBuilder: (context, imageProvider) => Container(
-            decoration: BoxDecoration(
-          boxShadow: widget.shadow == true
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(.2),
-                    blurRadius: 5,
-                    offset: const Offset(20, 55),
-                  )
-                ]
-              : null,
-          borderRadius: widget.radius == null
-              ? widget.borderRadius ?? BorderRadius.circular(12)
-              : BorderRadius.circular(widget.radius ?? 12),
-          image: DecorationImage(
-            image: imageProvider,
-            fit: widget.fit ?? BoxFit.cover,
-          ),
-        )),
-        key: ValueKey(widget.url),
-        httpHeaders: const {'Keep-Alive': 'timeout=1000'},
-        imageUrl: widget.url,
-        cacheKey: widget.url,
-        cacheManager: CustomCacheManager.instance.cacheManager,
-        fit: widget.fit ?? BoxFit.cover,
-        height: widget.height,
-        width: widget.width,
-        placeholder: (context, url) => SizedBox(),
-        errorWidget: (context, url, error) {
-          // });
-          return widget.errorWidget ?? const Icon(Icons.error);
-        },
-        fadeInDuration: const Duration(milliseconds: 100),
-        fadeOutDuration: const Duration(milliseconds: 100),
-      );
-    } else {
-      return CachedNetworkImage(
-        imageBuilder: (context, imageProvider) {
-          return Container(
-            decoration: BoxDecoration(
-              boxShadow: widget.shadow == true
-                  ? [
-                      BoxShadow(
-                        color: widget.shadowColor ?? Colors.black,
-                        blurRadius: 10,
-                        blurStyle: BlurStyle.normal,
-                        spreadRadius: 1,
-                        offset: const Offset(0, 0),
-                      )
-                    ]
-                  : null,
-              border: (widget.isBorder ?? false)
-                  ? Border.all(width: 4, color: Colors.black)
-                  : null,
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: imageProvider,
-                alignment: Alignment.center,
-                fit: widget.fit ?? BoxFit.cover,
-              ),
-            ),
-          );
-        },
-        key: ValueKey(widget.url),
-        httpHeaders: const {'Keep-Alive': 'timeout=1000'},
-        imageUrl: widget.url,
-        cacheKey: widget.url,
-        cacheManager: CustomCacheManager.instance.cacheManager,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => widget.placeholder ?? const SizedBox(),
-        errorWidget: (context, url, error) {
-          return widget.errorWidget ?? const Icon(Icons.error);
-        },
-        fadeInDuration: const Duration(milliseconds: 100),
-        filterQuality: FilterQuality.high,
-        height: widget.height ?? 42,
-        width: widget.width ?? 42,
-        alignment: Alignment.center,
-        fadeOutDuration: const Duration(milliseconds: 100),
-      );
     }
   }
 }

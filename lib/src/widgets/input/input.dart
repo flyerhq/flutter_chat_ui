@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -205,10 +207,10 @@ class _InputState extends State<Input> {
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                       minHeight: buttonPadding.bottom + buttonPadding.top + 24,
+                      minHeight: buttonPadding.bottom + buttonPadding.top + 24,
                     ),
                     child: Visibility(
-                      visible: _sendButtonVisible,
+                      visible: Platform.isAndroid ? true : _sendButtonVisible,
                       child: SendButton(
                         onPressed: _handleSendPressed,
                         padding: buttonPadding,

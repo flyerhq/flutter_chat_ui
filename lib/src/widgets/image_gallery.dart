@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -59,22 +61,26 @@ class _ImageGalleryState extends State<ImageGallery> {
 
   @override
   Widget build(BuildContext context) =>
-      CachedNetworkImageWidget(
-        url: widget.uri,
-      ) ??
+      // CachedNetworkImageWidget(
+      //   url: widget.uri,
+      //   fit: BoxFit.contain,
+      // ) ??
       PhotoViewGallery.builder(
         builder: (BuildContext context, int index) =>
             PhotoViewGalleryPageOptions(
-          imageProvider: widget.imageProviderBuilder != null
-              ? widget.imageProviderBuilder!(
-                  uri: widget.images[index].uri,
-                  imageHeaders: widget.imageHeaders,
-                  conditional: Conditional(),
-                )
-              : Conditional().getProvider(
-                  widget.images[index].uri,
-                  headers: widget.imageHeaders,
-                ),
+          imageProvider: widget.images[index].uri.getImageType.type ==
+                  ImageTypeFromUri.local
+              ? FileImage(File(widget.images[index].uri))
+              : widget.imageProviderBuilder != null
+                  ? widget.imageProviderBuilder!(
+                      uri: widget.images[index].uri,
+                      imageHeaders: widget.imageHeaders,
+                      conditional: Conditional(),
+                    )
+                  : Conditional().getProvider(
+                      widget.images[index].uri,
+                      headers: widget.imageHeaders,
+                    ),
           minScale: widget.options.minScale,
           maxScale: widget.options.maxScale,
         ),

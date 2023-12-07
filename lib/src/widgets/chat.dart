@@ -7,8 +7,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart' show PhotoViewComputedScale;
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:collection/collection.dart';
-import 'package:intl/intl.dart' as intl;
+
 import '../chat_l10n.dart';
 import '../chat_theme.dart';
 import '../conditional/conditional.dart';
@@ -479,7 +478,8 @@ class ChatState extends State<Chat> {
           onMessageTap: (context, tappedMessage) {
             if (tappedMessage is types.ImageMessage &&
                 widget.disableImageGallery != true) {
-              _onImagePressed(tappedMessage);
+              _onImagePressed(
+                  tappedMessage, InheritedChatTheme.of(context).theme);
             }
 
             widget.onMessageTap?.call(context, tappedMessage);
@@ -521,7 +521,7 @@ class ChatState extends State<Chat> {
     _galleryPageController = null;
   }
 
-  void _onImagePressed(types.ImageMessage message) {
+  void _onImagePressed(types.ImageMessage message, ChatTheme theme) {
     final initialPage = _gallery.indexWhere(
       (element) => element.id == message.id && element.uri == message.uri,
     );
@@ -529,8 +529,8 @@ class ChatState extends State<Chat> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Scaffold(
-          backgroundColor: Colors.transparent,
+        builder: (ctx) => Scaffold(
+          backgroundColor: theme.backgroundColor,
           body: SafeArea(
             bottom: false,
             child: Column(
