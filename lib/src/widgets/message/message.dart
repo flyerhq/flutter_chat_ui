@@ -12,6 +12,7 @@ import '../../../flutter_chat_ui.dart' as ui;
 import '../../conditional/conditional.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
+import '../state/inherited_focus_node.dart';
 import '../state/inherited_user.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
@@ -616,6 +617,7 @@ class Message extends StatelessWidget {
     return SwipeTo(
       onRightSwipe: (a) {
         onSwipeToRight?.call(context, message);
+        InheritedFocusNode.of(context).focusNode.requestFocus();
       },
       child: Container(
         alignment: bubbleRtlAlignment == ui.BubbleRtlAlignment.left

@@ -25,6 +25,7 @@ import 'message/message.dart';
 import 'message/system_message.dart';
 import 'message/text_message.dart';
 import 'state/inherited_chat_theme.dart';
+import 'state/inherited_focus_node.dart';
 import 'state/inherited_l10n.dart';
 import 'state/inherited_user.dart';
 import 'typing_indicator.dart';
@@ -349,6 +350,7 @@ class ChatState extends State<Chat> {
   PageController? _galleryPageController;
   bool _hadScrolledToUnreadOnOpen = false;
   bool _isImageViewVisible = false;
+  FocusNode focusNode = FocusNode();
 
   late final AutoScrollController _scrollController;
 
@@ -624,68 +626,75 @@ class ChatState extends State<Chat> {
         user: widget.user,
         child: InheritedChatTheme(
           theme: widget.theme,
-          child: InheritedL10n(
-            l10n: widget.l10n,
-            child: Stack(
-              children: [
-                Container(
-                  color: widget.theme.backgroundColor,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        child: widget.messages.isEmpty
-                            ? SizedBox.expand(
-                                child: _emptyStateBuilder(),
-                              )
-                            : GestureDetector(
-                                onTap: () {
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  widget.onBackgroundTap?.call();
-                                },
-                                child: LayoutBuilder(
-                                  builder: (
-                                    BuildContext context,
-                                    BoxConstraints constraints,
-                                  ) =>
-                                      ChatList(
-                                    bottomWidget: widget.listBottomWidget,
-                                    bubbleRtlAlignment:
-                                        widget.bubbleRtlAlignment!,
-                                    isLastPage: widget.isLastPage,
-                                    itemBuilder: (Object item, int? index) =>
-                                        _messageBuilder(
-                                      item,
-                                      constraints,
-                                      index,
+          child: InheritedFocusNode(
+            focusNode: focusNode,
+            child: InheritedL10n(
+              l10n: widget.l10n,
+              child: Stack(
+                children: [
+                  Container(
+                    color: widget.theme.backgroundColor,
+                    child: Column(
+                      children: [
+                        Flexible(
+                          child: widget.messages.isEmpty
+                              ? SizedBox.expand(
+                                  child: _emptyStateBuilder(),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    focusNode.unfocus();
+                                    widget.onBackgroundTap?.call();
+                                  },
+                                  child: LayoutBuilder(
+                                    builder: (
+                                      BuildContext context,
+                                      BoxConstraints constraints,
+                                    ) =>
+                                        ChatList(
+                                      bottomWidget: widget.listBottomWidget,
+                                      bubbleRtlAlignment:
+                                          widget.bubbleRtlAlignment!,
+                                      isLastPage: widget.isLastPage,
+                                      itemBuilder: (Object item, int? index) =>
+                                          _messageBuilder(
+                                        item,
+                                        constraints,
+                                        index,
+                                      ),
+                                      items: _chatMessages,
+                                      keyboardDismissBehavior:
+                                          widget.keyboardDismissBehavior,
+                                      onEndReached: widget.onEndReached,
+                                      onEndReachedThreshold:
+                                          widget.onEndReachedThreshold,
+                                      scrollController: _scrollController,
+                                      scrollPhysics: widget.scrollPhysics,
+                                      typingIndicatorOptions:
+                                          widget.typingIndicatorOptions,
+                                      useTopSafeAreaInset:
+                                          widget.useTopSafeAreaInset ??
+                                              isMobile,
                                     ),
-                                    items: _chatMessages,
-                                    keyboardDismissBehavior:
-                                        widget.keyboardDismissBehavior,
-                                    onEndReached: widget.onEndReached,
-                                    onEndReachedThreshold:
-                                        widget.onEndReachedThreshold,
-                                    scrollController: _scrollController,
-                                    scrollPhysics: widget.scrollPhysics,
-                                    typingIndicatorOptions:
-                                        widget.typingIndicatorOptions,
-                                    useTopSafeAreaInset:
-                                        widget.useTopSafeAreaInset ?? isMobile,
                                   ),
                                 ),
-                              ),
-                      ),
-                      widget.customBottomWidget ??
-                          Input(
-                            isAttachmentUploading: widget.isAttachmentUploading,
-                            repliedMessageWidget: widget.repliedMessageWidget,
-                            onAttachmentPressed: widget.onAttachmentPressed,
-                            onSendPressed: widget.onSendPressed,
-                            options: widget.inputOptions,
-                          ),
-                    ],
+                        ),
+                        widget.customBottomWidget ??
+                            Input(
+                              isAttachmentUploading:
+                                  widget.isAttachmentUploading,
+                              repliedMessageWidget: widget.repliedMessageWidget,
+                              onAttachmentPressed: widget.onAttachmentPressed,
+                              onSendPressed: widget.onSendPressed,
+                              options: widget.inputOptions,
+                            ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

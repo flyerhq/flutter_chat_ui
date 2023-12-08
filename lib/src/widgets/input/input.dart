@@ -7,6 +7,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../../../flutter_chat_ui.dart';
 import '../state/inherited_chat_theme.dart';
+import '../state/inherited_focus_node.dart';
 import '../state/inherited_l10n.dart';
 
 /// A class that represents bottom bar widget with a text field, attachment and
@@ -187,7 +188,33 @@ class _InputState extends State<Input> {
                                   .l10n
                                   .inputPlaceholder,
                             ),
-                        focusNode: _inputFocusNode,
+                        focusNode: InheritedFocusNode.of(context).focusNode
+                          ..attach(
+                            context,
+                            onKeyEvent: (node, event) {
+                              if (event.physicalKey ==
+                                      PhysicalKeyboardKey.enter &&
+                                  !HardwareKeyboard.instance.physicalKeysPressed
+                                      .any(
+                                    (el) => <PhysicalKeyboardKey>{
+                                      PhysicalKeyboardKey.shiftLeft,
+                                      PhysicalKeyboardKey.shiftRight,
+                                    }.contains(el),
+                                  )) {
+                                if (kIsWeb &&
+                                    _textController
+                                        .value.isComposingRangeValid) {
+                                  return KeyEventResult.ignored;
+                                }
+                                if (event is KeyDownEvent) {
+                                  _handleSendPressed();
+                                }
+                                return KeyEventResult.handled;
+                              } else {
+                                return KeyEventResult.ignored;
+                              }
+                            },
+                          ),
                         keyboardType: widget.options.keyboardType,
                         maxLines: 5,
                         minLines: 1,
