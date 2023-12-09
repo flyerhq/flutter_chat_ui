@@ -527,39 +527,90 @@ class ChatState extends State<Chat> {
     final initialPage = _gallery.indexWhere(
       (element) => element.id == message.id && element.uri == message.uri,
     );
+
+    var messageSenderFirstName = message.author.firstName ?? '';
+    var messageCreatedAt = message.createdAt ?? 0;
+    var lastMessageIndex = initialPage;
+
     _galleryPageController = PageController(initialPage: initialPage);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => Scaffold(
-          backgroundColor: theme.backgroundColor,
-          body: SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                Row(
+        builder: (ctx) => StatefulBuilder(
+          builder: (context, statefulBuilderSetState) {
+            _galleryPageController?.addListener(() {
+              final currentPage = _galleryPageController!.page;
+              if (currentPage == lastMessageIndex) return;
+
+              final currentImage = _gallery[currentPage!.round()];
+              final currentMessage = widget.messages
+                  .firstWhere((element) => element.id == currentImage.id);
+              statefulBuilderSetState(() {
+                lastMessageIndex = currentPage.round();
+                messageSenderFirstName = currentMessage.author.firstName ?? '';
+                messageCreatedAt = currentMessage.createdAt ?? 0;
+              });
+            });
+            return Scaffold(
+              backgroundColor: theme.backgroundColor,
+              body: SafeArea(
+                bottom: false,
+                child: Column(
                   children: [
-                    BackButton(
-                      color: widget.theme.imageGalleryTextStyle?.color ??
-                          Colors.white,
-                      onPressed: _onCloseGalleryPressed,
+                    Row(
+                      children: [
+                        BackButton(
+                          color: widget.theme.imageGalleryTextStyle?.color ??
+                              Colors.white,
+                          onPressed: _onCloseGalleryPressed,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              messageSenderFirstName,
+                              style: widget.theme.imageGalleryTextStyle?.merge(
+                                const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              DateFormat('dd.MM.yyyy HH:mm').format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  messageCreatedAt,
+                                ),
+                              ),
+                              style: widget.theme.imageGalleryTextStyle?.merge(
+                                const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: ImageGallery(
+                        uri: message.uri,
+                        imageHeaders: widget.imageHeaders,
+                        imageProviderBuilder: widget.imageProviderBuilder,
+                        images: _gallery,
+                        pageController: _galleryPageController!,
+                        onClosePressed: _onCloseGalleryPressed,
+                        options: widget.imageGalleryOptions,
+                      ),
                     ),
                   ],
                 ),
-                Expanded(
-                  child: ImageGallery(
-                    uri: message.uri,
-                    imageHeaders: widget.imageHeaders,
-                    imageProviderBuilder: widget.imageProviderBuilder,
-                    images: _gallery,
-                    pageController: _galleryPageController!,
-                    onClosePressed: _onCloseGalleryPressed,
-                    options: widget.imageGalleryOptions,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
