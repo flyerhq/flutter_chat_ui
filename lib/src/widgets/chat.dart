@@ -70,7 +70,7 @@ class Chat extends StatefulWidget {
     this.isAttachmentUploading,
     this.isLastPage,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.l10n = const ChatL10nEn(),
+    this.l10n = const ChatL10nTr(),
     this.listBottomWidget,
     required this.messages,
     this.nameBuilder,

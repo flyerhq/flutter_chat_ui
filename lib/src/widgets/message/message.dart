@@ -9,6 +9,7 @@ import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../flutter_chat_ui.dart' as ui;
+import '../../chat_l10n.dart';
 import '../../conditional/conditional.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
@@ -359,10 +360,10 @@ class Message extends StatelessWidget {
                         transform: Matrix4.translationValues(0, -15, 0),
                         child: Text(
                           message.status == Status.error
-                              ? 'Gönderilemedi'
+                              ? ChatL10nTr().failed ?? 'Gönderilemedi'
                               : currentUserIsAuthor
                                   ? message.status == Status.seen
-                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                      ? "${ChatL10nTr().seen ?? "Görüldü"} (${intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
@@ -387,10 +388,10 @@ class Message extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 5.0),
                         child: Text(
                           message.status == Status.error
-                              ? 'Gönderilemedi'
+                              ? ChatL10nTr().failed ?? 'Gönderilemedi'
                               : currentUserIsAuthor
                                   ? message.status == Status.seen
-                                      ? "Görüldü (${intl.DateFormat('HH:mm').format(
+                                      ? "${ChatL10nTr().seen ?? "Görüldü"} (${intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
@@ -520,7 +521,7 @@ class Message extends StatelessWidget {
                           author: imageMessage.author,
                           createdAt: imageMessage.createdAt,
                           id: imageMessage.remoteId ?? imageMessage.id,
-                          text: 'Fotoğraf'),
+                          text: ChatL10nTr().photo ?? 'Fotoğraf'),
                       nameBuilder: nameBuilder,
                       onPreviewDataFetched: onPreviewDataFetched,
                       showName: true,

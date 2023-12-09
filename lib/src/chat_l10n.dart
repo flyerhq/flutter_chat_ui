@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 abstract class ChatL10n {
   /// Creates a new chat l10n based on provided copy.
   const ChatL10n({
+    required this.failed,
+    required this.seen,
+    required this.photo,
     required this.attachmentButtonAccessibilityLabel,
     required this.emptyChatPlaceholder,
     required this.fileButtonAccessibilityLabel,
@@ -31,6 +34,10 @@ abstract class ChatL10n {
 
   /// Label for the unread messages header.
   final String unreadMessagesLabel;
+
+  final String failed;
+  final String seen;
+  final String photo;
 }
 
 /// Arabic l10n which extends [ChatL10n].
@@ -40,6 +47,9 @@ class ChatL10nAr extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nAr({
+    super.failed = 'فشل',
+    super.seen = 'مشاهدة',
+    super.photo = 'صورة',
     super.attachmentButtonAccessibilityLabel = 'إرسال الوسائط',
     super.emptyChatPlaceholder = 'لا يوجد رسائل هنا بعد',
     super.fileButtonAccessibilityLabel = 'ملف',
@@ -56,6 +66,9 @@ class ChatL10nDe extends ChatL10n {
   /// override only a couple of variables, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nDe({
+    super.failed = 'Fehlgeschlagen',
+    super.seen = 'Gesehen',
+    super.photo = 'Foto',
     super.attachmentButtonAccessibilityLabel = 'Medien senden',
     super.emptyChatPlaceholder = 'Noch keine Nachrichten',
     super.fileButtonAccessibilityLabel = 'Datei',
@@ -72,6 +85,9 @@ class ChatL10nEn extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nEn({
+    super.failed = 'Failed',
+    super.seen = 'Seen',
+    super.photo = 'Photo',
     super.attachmentButtonAccessibilityLabel = 'Send media',
     super.emptyChatPlaceholder = 'No messages here yet',
     super.fileButtonAccessibilityLabel = 'File',
@@ -88,6 +104,9 @@ class ChatL10nEs extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nEs({
+    super.failed = 'Fallido',
+    super.seen = 'Visto',
+    super.photo = 'Foto',
     super.attachmentButtonAccessibilityLabel = 'Enviar multimedia',
     super.emptyChatPlaceholder = 'Aún no hay mensajes',
     super.fileButtonAccessibilityLabel = 'Archivo',
@@ -104,6 +123,9 @@ class ChatL10nFi extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nFi({
+    super.failed = 'Epäonnistui',
+    super.seen = 'Nähty',
+    super.photo = 'Kuva',
     super.attachmentButtonAccessibilityLabel = 'Lähetä media',
     super.emptyChatPlaceholder = 'Täällä ei ole vielä viestejä',
     super.fileButtonAccessibilityLabel = 'Tiedosto',
@@ -120,6 +142,9 @@ class ChatL10nKo extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nKo({
+    super.failed = '실패',
+    super.seen = '읽음',
+    super.photo = '사진',
     super.attachmentButtonAccessibilityLabel = '미디어 보내기',
     super.emptyChatPlaceholder = '주고받은 메시지가 없습니다',
     super.fileButtonAccessibilityLabel = '파일',
@@ -136,6 +161,9 @@ class ChatL10nPl extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nPl({
+    super.failed = 'Niepowodzenie',
+    super.seen = 'Przeczytano',
+    super.photo = 'Zdjęcie',
     super.attachmentButtonAccessibilityLabel = 'Wyślij multimedia',
     super.emptyChatPlaceholder = 'Tu jeszcze nie ma wiadomości',
     super.fileButtonAccessibilityLabel = 'Plik',
@@ -152,6 +180,9 @@ class ChatL10nPt extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nPt({
+    super.failed = 'Falhou',
+    super.seen = 'Visto',
+    super.photo = 'Foto',
     super.attachmentButtonAccessibilityLabel = 'Envia mídia',
     super.emptyChatPlaceholder = 'Ainda não há mensagens aqui',
     super.fileButtonAccessibilityLabel = 'Arquivo',
@@ -168,6 +199,9 @@ class ChatL10nRu extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nRu({
+    super.failed = 'Не удалось',
+    super.seen = 'Просмотрено',
+    super.photo = 'Фото',
     super.attachmentButtonAccessibilityLabel = 'Отправить медиа',
     super.emptyChatPlaceholder = 'Пока что у вас нет сообщений',
     super.fileButtonAccessibilityLabel = 'Файл',
@@ -184,6 +218,9 @@ class ChatL10nSe extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nSe({
+    super.failed = 'Misslyckades',
+    super.seen = 'Sett',
+    super.photo = 'Foto',
     super.attachmentButtonAccessibilityLabel = 'Skicka media',
     super.emptyChatPlaceholder = 'Inga meddelanden än',
     super.fileButtonAccessibilityLabel = 'Fil',
@@ -200,6 +237,9 @@ class ChatL10nTr extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nTr({
+    super.failed = 'Gönderilemedi',
+    super.seen = 'Görüldü',
+    super.photo = 'Fotoğraf',
     super.attachmentButtonAccessibilityLabel = 'Medya gönder',
     super.emptyChatPlaceholder = 'Henüz mesaj yok',
     super.fileButtonAccessibilityLabel = 'Dosya',
@@ -216,6 +256,9 @@ class ChatL10nUk extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nUk({
+    super.failed = 'Не вдалося',
+    super.seen = 'Переглянуто',
+    super.photo = 'Фото',
     super.attachmentButtonAccessibilityLabel = 'Надіслати медіа',
     super.emptyChatPlaceholder = 'Повідомлень ще немає',
     super.fileButtonAccessibilityLabel = 'Файл',
@@ -232,6 +275,9 @@ class ChatL10nZhCN extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nZhCN({
+    super.failed = '发送失败',
+    super.seen = '已读',
+    super.photo = '照片',
     super.attachmentButtonAccessibilityLabel = '发送媒体文件',
     super.emptyChatPlaceholder = '暂无消息',
     super.fileButtonAccessibilityLabel = '文件',
@@ -248,6 +294,9 @@ class ChatL10nZhTW extends ChatL10n {
   /// override only a couple of properties, otherwise create a new class
   /// which extends [ChatL10n].
   const ChatL10nZhTW({
+    super.failed = '傳送失敗',
+    super.seen = '已讀',
+    super.photo = '照片',
     super.attachmentButtonAccessibilityLabel = '傳送媒體',
     super.emptyChatPlaceholder = '還沒有訊息在這裡',
     super.fileButtonAccessibilityLabel = '檔案',
