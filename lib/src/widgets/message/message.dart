@@ -9,11 +9,11 @@ import 'package:swipe_to/swipe_to.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../flutter_chat_ui.dart' as ui;
-import '../../chat_l10n.dart';
 import '../../conditional/conditional.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_focus_node.dart';
+import '../state/inherited_l10n.dart';
 import '../state/inherited_user.dart';
 
 /// Base widget for all message types in the chat. Renders bubbles around
@@ -289,6 +289,7 @@ class Message extends StatelessWidget {
                                         child: _repliedMessageBuilder(
                                           message.repliedMessage!,
                                           currentUserIsAuthor,
+                                          context,
                                         ),
                                       ),
                                     ),
@@ -360,10 +361,10 @@ class Message extends StatelessWidget {
                         transform: Matrix4.translationValues(0, -15, 0),
                         child: Text(
                           message.status == Status.error
-                              ? ChatL10nTr().failed ?? 'Gönderilemedi'
+                              ? InheritedL10n.of(context).l10n.failed
                               : currentUserIsAuthor
                                   ? message.status == Status.seen
-                                      ? "${ChatL10nTr().seen ?? "Görüldü"} (${intl.DateFormat('HH:mm').format(
+                                      ? "${InheritedL10n.of(context).l10n.seen} (${intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
@@ -388,10 +389,10 @@ class Message extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 5.0),
                         child: Text(
                           message.status == Status.error
-                              ? ChatL10nTr().failed ?? 'Gönderilemedi'
+                              ? InheritedL10n.of(context).l10n.failed
                               : currentUserIsAuthor
                                   ? message.status == Status.seen
-                                      ? "${ChatL10nTr().seen ?? "Görüldü"} (${intl.DateFormat('HH:mm').format(
+                                      ? "${InheritedL10n.of(context).l10n.seen} (${intl.DateFormat('HH:mm').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                             message.createdAt!,
                                           ),
@@ -487,6 +488,7 @@ class Message extends StatelessWidget {
   Widget _repliedMessageBuilder(
     types.Message repliedMessage,
     bool currentUserIsAuthor,
+    BuildContext context,
   ) {
     switch (repliedMessage.type) {
       case types.MessageType.audio:
@@ -518,10 +520,11 @@ class Message extends StatelessWidget {
                       hideBackgroundOnEmojiMessages:
                           hideBackgroundOnEmojiMessages,
                       message: types.TextMessage(
-                          author: imageMessage.author,
-                          createdAt: imageMessage.createdAt,
-                          id: imageMessage.remoteId ?? imageMessage.id,
-                          text: ChatL10nTr().photo ?? 'Fotoğraf'),
+                        author: imageMessage.author,
+                        createdAt: imageMessage.createdAt,
+                        id: imageMessage.remoteId ?? imageMessage.id,
+                        text: InheritedL10n.of(context).l10n.photo,
+                      ),
                       nameBuilder: nameBuilder,
                       onPreviewDataFetched: onPreviewDataFetched,
                       showName: true,
