@@ -14,6 +14,7 @@ class UserAvatar extends StatelessWidget {
     this.bubbleRtlAlignment,
     this.imageHeaders,
     this.onAvatarTap,
+   // required this.isnewuser
   });
 
   /// Author to show image and name initials from.
@@ -27,6 +28,7 @@ class UserAvatar extends StatelessWidget {
 
   /// Called when user taps on an avatar.
   final void Function(types.User, Offset position)? onAvatarTap;
+ // final bool isnewuser;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class UserAvatar extends StatelessWidget {
           ? const EdgeInsetsDirectional.only(end: 0)
           : const EdgeInsets.only(right: 0),
       child: GestureDetector(
-          onTapDown: (TapDownDetails details){
+        onTapDown: (TapDownDetails details) {
           onAvatarTap?.call(author, details.globalPosition);
         },
         child: CircleAvatar(
@@ -58,8 +60,9 @@ class UserAvatar extends StatelessWidget {
           child: !hasImage
               ? Text(
                   initials,
-                  style:
-                      InheritedChatTheme.of(context).theme.userAvatarTextStyle,
+                  style: InheritedChatTheme.of(context)
+                      .theme
+                      .userAvatarTextStyle,
                 )
               : null,
         ),
@@ -67,3 +70,28 @@ class UserAvatar extends StatelessWidget {
     );
   }
 }
+
+/* 
+     if (isnewuser)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: 50, // Container genişliği
+                height: 20, // Container yüksekliği
+                decoration: BoxDecoration(
+                  color: Colors.blue, // Arka plan rengi
+                  borderRadius:
+                      BorderRadius.circular(8.0), // Köşeleri oval yapar
+                ),
+                child: Center(
+                  child: Text(
+                    'Yeni',
+                    style: TextStyle(
+                      color: Colors.white, // Yazı rengi
+                      fontSize: 12, // Yazı boyutu
+                    ),
+                  ),
+                ),
+              ),
+            )
+ */
