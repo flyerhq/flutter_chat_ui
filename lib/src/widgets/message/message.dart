@@ -339,8 +339,7 @@ class Message extends StatelessWidget {
                                   : null,
                               decoration: BoxDecoration(
                                 borderRadius: borderRadius,
-                                color: !currentUserIsAuthor ||
-                                        message.type == types.MessageType.image
+                                color: !currentUserIsAuthor
                                     ? InheritedChatTheme.of(context)
                                         .theme
                                         .secondaryColor

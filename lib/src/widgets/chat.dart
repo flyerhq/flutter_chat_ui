@@ -601,6 +601,7 @@ class ChatState extends State<Chat> {
                         imageHeaders: widget.imageHeaders,
                         imageProviderBuilder: widget.imageProviderBuilder,
                         images: _gallery,
+                        backgroundColor: theme.backgroundColor,
                         pageController: _galleryPageController!,
                         onClosePressed: _onCloseGalleryPressed,
                         options: widget.imageGalleryOptions,

@@ -17,7 +17,11 @@ class ImageGallery extends StatefulWidget {
     this.options = const ImageGalleryOptions(),
     required this.pageController,
     required this.uri,
+    required this.backgroundColor,
   });
+
+  final Color backgroundColor;
+
   final String uri;
 
   /// See [Chat.imageHeaders].
@@ -83,6 +87,9 @@ class _ImageGalleryState extends State<ImageGallery> {
                     ),
           minScale: widget.options.minScale,
           maxScale: widget.options.maxScale,
+        ),
+        backgroundDecoration: BoxDecoration(
+          color: widget.backgroundColor,
         ),
         itemCount: widget.images.length,
         loadingBuilder: (context, event) => _imageGalleryLoadingBuilder(event),
