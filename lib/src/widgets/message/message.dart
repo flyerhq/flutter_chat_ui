@@ -395,16 +395,16 @@ class Message extends StatelessWidget {
         final imageMessage = message as types.ImageMessage;
         return imageMessageBuilder != null
             ? Padding(
-                padding: const EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(4.0),
                 child: imageMessageBuilder!(
                   imageMessage,
                   messageWidth: messageWidth,
                 ),
               )
             : Padding(
-                padding: const EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(4.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(18.0),
+                  borderRadius: BorderRadius.circular(16.0),
                   child: ui.ImageMessage(
                     imageHeaders: imageHeaders,
                     imageProviderBuilder: imageProviderBuilder,
