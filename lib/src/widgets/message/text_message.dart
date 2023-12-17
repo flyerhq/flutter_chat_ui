@@ -240,6 +240,9 @@ class TextMessageText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ParsedText(
+        strutStyle: const StrutStyle(
+          forceStrutHeight: true,
+        ),
         parse: [
           ...options.matchers,
           MatchText(
