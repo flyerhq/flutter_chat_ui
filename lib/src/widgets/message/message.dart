@@ -404,7 +404,7 @@ class Message extends StatelessWidget {
             : Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
+                  borderRadius: BorderRadius.circular(18.0),
                   child: ui.ImageMessage(
                     imageHeaders: imageHeaders,
                     imageProviderBuilder: imageProviderBuilder,
