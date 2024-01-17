@@ -101,6 +101,7 @@ class Chat extends StatefulWidget {
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
     this.slidableMessageBuilder,
+    this.isLeftStatus = false,
     this.messageWidthRatio = 0.72,
   });
 
@@ -326,6 +327,12 @@ class Chat extends StatefulWidget {
   /// See [Message.slidableMessageBuilder].
   final Widget Function(types.Message, Widget msgWidget)?
       slidableMessageBuilder;
+
+  /// See [Message.isLeftStatus].
+  /// If true, status will be shown on the left side of the message.
+  /// If false, status will be shown on the right side of the message.
+  /// Default value is false.
+  final bool isLeftStatus;
   
   /// Width ratio for message bubble.
   final double messageWidthRatio;
@@ -462,10 +469,11 @@ class ChatState extends State<Chat> {
         messageWidget = widget.systemMessageBuilder?.call(message) ??
             SystemMessage(message: message.text);
       } else {
+        final maxWidth = widget.theme.messageMaxWidth;
         final messageWidth =
             widget.showUserAvatars && message.author.id != widget.user.id
-                ? min(constraints.maxWidth * widget.messageWidthRatio, 440).floor()
-                : min(constraints.maxWidth * (widget.messageWidthRatio + 0.06), 440).floor();
+                ? min(constraints.maxWidth * widget.messageWidthRatio, maxWidth).floor()
+                : min(constraints.maxWidth * (widget.messageWidthRatio + 0.06), maxWidth).floor();
         final Widget msgWidget = Message(
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
@@ -501,6 +509,7 @@ class ChatState extends State<Chat> {
           showAvatar: map['nextMessageInGroup'] == false,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
+          isLeftStatus: widget.isLeftStatus,
           showUserAvatars: widget.showUserAvatars,
           textMessageBuilder: widget.textMessageBuilder,
           textMessageOptions: widget.textMessageOptions,
