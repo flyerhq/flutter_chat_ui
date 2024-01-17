@@ -28,9 +28,6 @@ import 'state/inherited_user.dart';
 import 'typing_indicator.dart';
 import 'unread_header.dart';
 
-/// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
-final Map<String, int> chatMessageAutoScrollIndexById = {};
-
 /// Entry widget, represents the complete chat. If you wrap it in [SafeArea] and
 /// it should be full screen, set [SafeArea]'s `bottom` to `false`.
 class Chat extends StatefulWidget {
@@ -100,8 +97,7 @@ class Chat extends StatefulWidget {
     this.userAgent,
     this.useTopSafeAreaInset,
     this.videoMessageBuilder,
-    this.slidableMessageBuilder,
-    this.isLeftStatus = false,
+    this.messageWidthRatio = 0.72,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -109,7 +105,7 @@ class Chat extends StatefulWidget {
       audioMessageBuilder;
 
   /// See [Message.avatarBuilder].
-  final Widget Function(types.User author)? avatarBuilder;
+  final Widget Function(String userId)? avatarBuilder;
 
   /// See [Message.bubbleBuilder].
   final Widget Function(
@@ -323,15 +319,8 @@ class Chat extends StatefulWidget {
   final Widget Function(types.VideoMessage, {required int messageWidth})?
       videoMessageBuilder;
 
-  /// See [Message.slidableMessageBuilder].
-  final Widget Function(types.Message, Widget msgWidget)?
-      slidableMessageBuilder;
-
-  /// See [Message.isLeftStatus].
-  /// If true, status will be shown on the left side of the message.
-  /// If false, status will be shown on the right side of the message.
-  /// Default value is false.
-  final bool isLeftStatus;
+  /// Width ratio for message bubble.
+  final double messageWidthRatio;
 
   @override
   State<Chat> createState() => ChatState();
@@ -339,7 +328,7 @@ class Chat extends StatefulWidget {
 
 /// [Chat] widget state.
 class ChatState extends State<Chat> {
-  /// Used to get the correct auto scroll index from [chatMessageAutoScrollIndexById].
+  /// Used to get the correct auto scroll index from [_autoScrollIndexById].
   static const String _unreadHeaderId = 'unread_header_id';
 
   List<Object> _chatMessages = [];
@@ -348,6 +337,8 @@ class ChatState extends State<Chat> {
   bool _hadScrolledToUnreadOnOpen = false;
   bool _isImageViewVisible = false;
 
+  /// Keep track of all the auto scroll indices by their respective message's id to allow animating to them.
+  final Map<String, int> _autoScrollIndexById = {};
   late final AutoScrollController _scrollController;
 
   @override
@@ -361,7 +352,7 @@ class ChatState extends State<Chat> {
 
   /// Scroll to the unread header.
   void scrollToUnreadHeader() {
-    final unreadHeaderIndex = chatMessageAutoScrollIndexById[_unreadHeaderId];
+    final unreadHeaderIndex = _autoScrollIndexById[_unreadHeaderId];
     if (unreadHeaderIndex != null) {
       _scrollController.scrollToIndex(
         unreadHeaderIndex,
@@ -378,13 +369,13 @@ class ChatState extends State<Chat> {
     Duration? highlightDuration,
   }) async {
     await _scrollController.scrollToIndex(
-      chatMessageAutoScrollIndexById[id]!,
+      _autoScrollIndexById[id]!,
       duration: scrollDuration ?? scrollAnimationDuration,
       preferPosition: AutoScrollPosition.middle,
     );
     if (withHighlight) {
       await _scrollController.highlight(
-        chatMessageAutoScrollIndexById[id]!,
+        _autoScrollIndexById[id]!,
         highlightDuration: highlightDuration ?? const Duration(seconds: 3),
       );
     }
@@ -393,7 +384,7 @@ class ChatState extends State<Chat> {
   /// Highlight the message with the specified [id].
   void highlightMessage(String id, {Duration? duration}) =>
       _scrollController.highlight(
-        chatMessageAutoScrollIndexById[id]!,
+        _autoScrollIndexById[id]!,
         highlightDuration: duration ?? const Duration(seconds: 3),
       );
 
@@ -465,12 +456,12 @@ class ChatState extends State<Chat> {
         messageWidget = widget.systemMessageBuilder?.call(message) ??
             SystemMessage(message: message.text);
       } else {
-        final maxWidth = widget.theme.messageMaxWidth;
         final messageWidth =
             widget.showUserAvatars && message.author.id != widget.user.id
-                ? min(constraints.maxWidth * 0.72, maxWidth).floor()
-                : min(constraints.maxWidth * 0.78, maxWidth).floor();
-        final Widget msgWidget = Message(
+                ? min(constraints.maxWidth * widget.messageWidthRatio, 440).floor()
+                : min(constraints.maxWidth * widget.messageWidthRatio + 0.06, 440).floor();
+
+        messageWidget = Message(
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
           bubbleBuilder: widget.bubbleBuilder,
@@ -505,7 +496,6 @@ class ChatState extends State<Chat> {
           showAvatar: map['nextMessageInGroup'] == false,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
-          isLeftStatus: widget.isLeftStatus,
           showUserAvatars: widget.showUserAvatars,
           textMessageBuilder: widget.textMessageBuilder,
           textMessageOptions: widget.textMessageOptions,
@@ -513,9 +503,6 @@ class ChatState extends State<Chat> {
           userAgent: widget.userAgent,
           videoMessageBuilder: widget.videoMessageBuilder,
         );
-        messageWidget = widget.slidableMessageBuilder == null
-            ? msgWidget
-            : widget.slidableMessageBuilder!(message, msgWidget);
       }
 
       return AutoScrollTag(
@@ -553,16 +540,16 @@ class ChatState extends State<Chat> {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
-  /// Updates the [chatMessageAutoScrollIndexById] mapping with the latest messages.
+  /// Updates the [_autoScrollIndexById] mapping with the latest messages.
   void _refreshAutoScrollMapping() {
-    chatMessageAutoScrollIndexById.clear();
+    _autoScrollIndexById.clear();
     var i = 0;
     for (final object in _chatMessages) {
       if (object is UnreadHeaderData) {
-        chatMessageAutoScrollIndexById[_unreadHeaderId] = i;
+        _autoScrollIndexById[_unreadHeaderId] = i;
       } else if (object is Map<String, Object>) {
         final message = object['message']! as types.Message;
-        chatMessageAutoScrollIndexById[message.id] = i;
+        _autoScrollIndexById[message.id] = i;
       }
       i++;
     }
