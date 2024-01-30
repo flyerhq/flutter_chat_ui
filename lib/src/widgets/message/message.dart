@@ -74,6 +74,7 @@ class Message extends StatelessWidget {
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
+    required Widget defaultBubbleMessage,
   })? bubbleBuilder;
 
   /// Determine the alignment of the bubble for RTL languages. Has no effect
@@ -205,28 +206,28 @@ class Message extends StatelessWidget {
     BorderRadius borderRadius,
     bool currentUserIsAuthor,
     bool enlargeEmojis,
-  ) =>
-      bubbleBuilder != null
-          ? bubbleBuilder!(
-              _messageBuilder(),
-              message: message,
-              nextMessageInGroup: roundBorder,
-            )
-          : enlargeEmojis && hideBackgroundOnEmojiMessages
-              ? _messageBuilder()
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: !currentUserIsAuthor ||
-                            message.type == types.MessageType.image
-                        ? InheritedChatTheme.of(context).theme.secondaryColor
-                        : InheritedChatTheme.of(context).theme.primaryColor,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: borderRadius,
-                    child: _messageBuilder(),
-                  ),
-                );
+  ) {
+    Widget defaultMessage = (enlargeEmojis && hideBackgroundOnEmojiMessages)
+        ? _messageBuilder()
+        : Container(
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              color: !currentUserIsAuthor || message.type == types.MessageType.image ? InheritedChatTheme.of(context).theme.secondaryColor : InheritedChatTheme.of(context).theme.primaryColor,
+            ),
+            child: ClipRRect(
+              borderRadius: borderRadius,
+              child: _messageBuilder(),
+            ),
+          );
+    return bubbleBuilder != null
+        ? bubbleBuilder!(
+            _messageBuilder(),
+            message: message,
+            nextMessageInGroup: roundBorder,
+            defaultBubbleMessage: defaultMessage,
+          )
+        : defaultMessage;
+  }
 
   Widget _messageBuilder() {
     switch (message.type) {
