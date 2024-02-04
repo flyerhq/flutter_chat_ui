@@ -102,6 +102,7 @@ class Chat extends StatefulWidget {
     this.videoMessageBuilder,
     this.slidableMessageBuilder,
     this.isLeftStatus = false,
+    this.messageWidthRatio = 0.72,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -333,6 +334,9 @@ class Chat extends StatefulWidget {
   /// If false, status will be shown on the right side of the message.
   /// Default value is false.
   final bool isLeftStatus;
+  
+  /// Width ratio for message bubble.
+  final double messageWidthRatio;
 
   @override
   State<Chat> createState() => ChatState();
@@ -469,8 +473,8 @@ class ChatState extends State<Chat> {
         final maxWidth = widget.theme.messageMaxWidth;
         final messageWidth =
             widget.showUserAvatars && message.author.id != widget.user.id
-                ? min(constraints.maxWidth * 0.72, maxWidth).floor()
-                : min(constraints.maxWidth * 0.78, maxWidth).floor();
+                ? min(constraints.maxWidth * widget.messageWidthRatio, maxWidth).floor()
+                : min(constraints.maxWidth * (widget.messageWidthRatio + 0.06), maxWidth).floor();
         final Widget msgWidget = Message(
           audioMessageBuilder: widget.audioMessageBuilder,
           avatarBuilder: widget.avatarBuilder,
