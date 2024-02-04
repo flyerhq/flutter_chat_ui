@@ -1,3 +1,13 @@
+## 1.6.11
+
+- Small patch release while 2.0.0 is still in the works.
+- Added `messageMaxWidth` to the theme. Thanks @bobz392 for the PR!
+- Added `isLeftStatus` to display status on the left side of the message. Thanks @hndrr for the PR!
+- Added localisation for Persian language (fa locale). Thanks @xclud for the PR!
+- Added default message to the `bubbleBuilder`. Thanks @asoap for the PR!
+- Added `messageWidthRatio` to the chat. Thanks @elihaialgoaitech for the PR!
+- Added `customTypingWidget`, `customTypingIndicatorBuilder`, `typingWidgetBuilder` and `multiUserTextBuilder` to the `TypingIndicatorOptions`. Thanks @phamconganh for the PR!
+
 ## 1.6.10
 
 - Possibly last release before 2.0.0, which will be a complete re-write focused on extensibility, customizability, performance and stability.
