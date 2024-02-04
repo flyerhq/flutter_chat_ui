@@ -144,11 +144,18 @@ class _TypingIndicatorState extends State<TypingIndicator>
             widget.bubbleAlignment == BubbleRtlAlignment.left
                 ? Container(
                     margin: const EdgeInsets.only(right: 12),
-                    child: TypingWidget(
-                      widget: widget,
-                      context: context,
-                      mode: widget.options.typingMode,
-                    ),
+                    child: widget.options.typingWidgetBuilder != null
+                        ? widget.options.typingWidgetBuilder!(
+                            widget: widget,
+                            context: context,
+                            mode: widget.options.typingMode,
+                          )
+                        : (widget.options.customTypingWidget ??
+                            TypingWidget(
+                              widget: widget,
+                              context: context,
+                              mode: widget.options.typingMode,
+                            )),
                   )
                 : const SizedBox(),
             Container(
@@ -195,11 +202,18 @@ class _TypingIndicatorState extends State<TypingIndicator>
             widget.bubbleAlignment == BubbleRtlAlignment.right
                 ? Container(
                     margin: const EdgeInsets.only(left: 12),
-                    child: TypingWidget(
-                      widget: widget,
-                      context: context,
-                      mode: widget.options.typingMode,
-                    ),
+                    child: widget.options.typingWidgetBuilder != null
+                        ? widget.options.typingWidgetBuilder!(
+                            widget: widget,
+                            context: context,
+                            mode: widget.options.typingMode,
+                          )
+                        : (widget.options.customTypingWidget ??
+                            TypingWidget(
+                              widget: widget,
+                              context: context,
+                              mode: widget.options.typingMode,
+                            )),
                   )
                 : const SizedBox(),
           ],
@@ -252,13 +266,22 @@ class TypingWidget extends StatelessWidget {
     );
     if (mode == TypingIndicatorMode.name) {
       return SizedBox(
-        child: Text(
-          _multiUserTextBuilder(widget.options.typingUsers),
-          style: InheritedChatTheme.of(context)
-              .theme
-              .typingIndicatorTheme
-              .multipleUserTextStyle,
-        ),
+        child: widget.options.multiUserTextBuilder != null
+            ? widget.options.multiUserTextBuilder!(
+                context,
+                widget.options.typingUsers,
+                InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .multipleUserTextStyle,
+              )
+            : Text(
+                _multiUserTextBuilder(widget.options.typingUsers),
+                style: InheritedChatTheme.of(context)
+                    .theme
+                    .typingIndicatorTheme
+                    .multipleUserTextStyle,
+              ),
       );
     } else if (mode == TypingIndicatorMode.avatar) {
       return SizedBox(
@@ -279,13 +302,22 @@ class TypingWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          Text(
-            _multiUserTextBuilder(widget.options.typingUsers),
-            style: InheritedChatTheme.of(context)
-                .theme
-                .typingIndicatorTheme
-                .multipleUserTextStyle,
-          ),
+          widget.options.multiUserTextBuilder != null
+              ? widget.options.multiUserTextBuilder!(
+                  context,
+                  widget.options.typingUsers,
+                  InheritedChatTheme.of(context)
+                      .theme
+                      .typingIndicatorTheme
+                      .multipleUserTextStyle,
+                )
+              : Text(
+                  _multiUserTextBuilder(widget.options.typingUsers),
+                  style: InheritedChatTheme.of(context)
+                      .theme
+                      .typingIndicatorTheme
+                      .multipleUserTextStyle,
+                ),
         ],
       );
     }
@@ -433,6 +465,10 @@ class TypingIndicatorOptions {
     this.customTypingIndicator,
     this.typingMode = TypingIndicatorMode.name,
     this.typingUsers = const [],
+    this.customTypingWidget,
+    this.customTypingIndicatorBuilder,
+    this.typingWidgetBuilder,
+    this.multiUserTextBuilder,
   });
 
   /// Animation speed for circles.
@@ -448,6 +484,30 @@ class TypingIndicatorOptions {
   /// Author(s) for [TypingIndicator].
   /// By default its empty list which hides the indicator, see [types.User].
   final List<types.User> typingUsers;
+
+  /// Allows to set custom [TypingWidget].
+  final Widget? customTypingWidget;
+
+  /// Allows to set custom builder [TypingIndicator].
+  final Widget Function({
+    required BuildContext context,
+    required BubbleRtlAlignment bubbleAlignment,
+    required TypingIndicatorOptions options,
+    required bool indicatorOnScrollStatus,
+  })? customTypingIndicatorBuilder;
+
+  // Allows to set custom builder [TypingWidget].
+  final Widget Function({
+    required BuildContext context,
+    required TypingIndicator widget,
+    required TypingIndicatorMode mode,
+  })? typingWidgetBuilder;
+
+  final Widget Function(
+    BuildContext context,
+    List<types.User> author,
+    TextStyle? style,
+  )? multiUserTextBuilder;
 }
 
 @immutable
