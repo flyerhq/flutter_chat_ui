@@ -117,7 +117,6 @@ class Chat extends StatefulWidget {
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
-    required Widget defaultBubbleMessage,
   })? bubbleBuilder;
 
   /// See [Message.bubbleRtlAlignment].

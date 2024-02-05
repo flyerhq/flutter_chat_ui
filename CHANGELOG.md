@@ -1,3 +1,7 @@
+## 1.6.12
+
+- Remove `defaultBubbleMessage` from the `bubbleBuilder` as it breaks compatibility. If you need this please use previous release, this is the only change here. Next should be v2.0.0 preview.
+
 ## 1.6.11
 
 - Small patch release while 2.0.0 is still in the works.

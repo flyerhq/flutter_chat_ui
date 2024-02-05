@@ -74,7 +74,6 @@ class Message extends StatelessWidget {
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
-    required Widget defaultBubbleMessage,
   })? bubbleBuilder;
 
   /// Determine the alignment of the bubble for RTL languages. Has no effect
@@ -227,7 +226,6 @@ class Message extends StatelessWidget {
             _messageBuilder(),
             message: message,
             nextMessageInGroup: roundBorder,
-            defaultBubbleMessage: defaultMessage,
           )
         : defaultMessage;
   }
