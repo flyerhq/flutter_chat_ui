@@ -188,33 +188,33 @@ class _InputState extends State<Input> {
                                   .l10n
                                   .inputPlaceholder,
                             ),
-                        focusNode: InheritedFocusNode.of(context).focusNode
-                          ..attach(
-                            context,
-                            onKeyEvent: (node, event) {
-                              if (event.physicalKey ==
-                                      PhysicalKeyboardKey.enter &&
-                                  !HardwareKeyboard.instance.physicalKeysPressed
-                                      .any(
-                                    (el) => <PhysicalKeyboardKey>{
-                                      PhysicalKeyboardKey.shiftLeft,
-                                      PhysicalKeyboardKey.shiftRight,
-                                    }.contains(el),
-                                  )) {
-                                if (kIsWeb &&
-                                    _textController
-                                        .value.isComposingRangeValid) {
-                                  return KeyEventResult.ignored;
-                                }
-                                if (event is KeyDownEvent) {
-                                  _handleSendPressed();
-                                }
-                                return KeyEventResult.handled;
-                              } else {
-                                return KeyEventResult.ignored;
-                              }
-                            },
-                          ),
+                        // focusNode: InheritedFocusNode.of(context).focusNode
+                        //   ..attach(
+                        //     context,
+                        //     onKeyEvent: (node, event) {
+                        //       if (event.physicalKey ==
+                        //               PhysicalKeyboardKey.enter &&
+                        //           !HardwareKeyboard.instance.physicalKeysPressed
+                        //               .any(
+                        //             (el) => <PhysicalKeyboardKey>{
+                        //               PhysicalKeyboardKey.shiftLeft,
+                        //               PhysicalKeyboardKey.shiftRight,
+                        //             }.contains(el),
+                        //           )) {
+                        //         if (kIsWeb &&
+                        //             _textController
+                        //                 .value.isComposingRangeValid) {
+                        //           return KeyEventResult.ignored;
+                        //         }
+                        //         if (event is KeyDownEvent) {
+                        //           _handleSendPressed();
+                        //         }
+                        //         return KeyEventResult.handled;
+                        //       } else {
+                        //         return KeyEventResult.ignored;
+                        //       }
+                        //     },
+                        //   ),
                         keyboardType: widget.options.keyboardType,
                         maxLines: 5,
                         minLines: 1,
