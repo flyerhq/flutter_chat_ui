@@ -59,6 +59,7 @@ abstract class ChatTheme {
     required this.attachmentButtonIcon,
     required this.attachmentButtonMargin,
     required this.backgroundColor,
+    this.bubbleMargin,
     required this.dateDividerMargin,
     required this.dateDividerTextStyle,
     required this.deliveredIcon,
@@ -124,6 +125,9 @@ abstract class ChatTheme {
 
   /// Used as a background color of a chat widget.
   final Color backgroundColor;
+
+  // Margin around the message bubble.
+  final EdgeInsets? bubbleMargin;
 
   /// Margin around date dividers.
   final EdgeInsets dateDividerMargin;
