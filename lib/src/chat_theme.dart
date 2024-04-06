@@ -320,6 +320,7 @@ class DefaultChatTheme extends ChatTheme {
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
     super.backgroundColor = neutral7,
+    super.bubbleMargin,
     super.dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
@@ -493,6 +494,7 @@ class DarkChatTheme extends ChatTheme {
     super.attachmentButtonIcon,
     super.attachmentButtonMargin,
     super.backgroundColor = dark,
+    super.bubbleMargin,
     super.dateDividerMargin = const EdgeInsets.only(
       bottom: 32,
       top: 16,
