@@ -351,11 +351,11 @@ class Message extends StatelessWidget {
           ? EdgeInsetsDirectional.only(
               bottom: 4,
               end: isMobile ? query.padding.right : 0,
-              start: 20 + (isMobile ? query.padding.left : 0),
+              start: InheritedChatTheme.of(context).theme.paddingLeft + (isMobile ? query.padding.left : 0),
             )
           : EdgeInsets.only(
               bottom: 4,
-              left: 20 + (isMobile ? query.padding.left : 0),
+              left: InheritedChatTheme.of(context).theme.paddingLeft + (isMobile ? query.padding.left : 0),
               right: isMobile ? query.padding.right : 0,
             ),
       child: Row(

@@ -114,6 +114,7 @@ abstract class ChatTheme {
     required this.userAvatarTextStyle,
     required this.userNameTextStyle,
     this.highlightMessageColor,
+    required this.paddingLeft,
   });
 
   /// Icon for select attachment button.
@@ -304,6 +305,8 @@ abstract class ChatTheme {
 
   /// Color used as background of message row on highligth.
   final Color? highlightMessageColor;
+
+  final double paddingLeft;
 }
 
 /// Default chat theme which extends [ChatTheme].
@@ -476,6 +479,7 @@ class DefaultChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.highlightMessageColor,
+    super.paddingLeft = 20,
   });
 }
 
