@@ -653,5 +653,6 @@ class DarkChatTheme extends ChatTheme {
       height: 1.333,
     ),
     super.highlightMessageColor,
+    super.paddingLeft,
   });
 }
