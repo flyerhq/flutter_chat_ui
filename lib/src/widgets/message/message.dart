@@ -350,13 +350,13 @@ class Message extends StatelessWidget {
       margin: bubbleRtlAlignment == BubbleRtlAlignment.left
           ? EdgeInsetsDirectional.only(
               bottom: 4,
-              end: isMobile ? query.padding.right : 0,
-              start: InheritedChatTheme.of(context).theme.paddingLeft + (isMobile ? query.padding.left : 0),
+              end: InheritedChatTheme.of(context).theme.horizontalPadding + (isMobile ? query.padding.right : 0),
+              start: InheritedChatTheme.of(context).theme.horizontalPadding + (isMobile ? query.padding.left : 0),
             )
           : EdgeInsets.only(
               bottom: 4,
-              left: InheritedChatTheme.of(context).theme.paddingLeft + (isMobile ? query.padding.left : 0),
-              right: isMobile ? query.padding.right : 0,
+              left: InheritedChatTheme.of(context).theme.horizontalPadding + (isMobile ? query.padding.left : 0),
+              right: InheritedChatTheme.of(context).theme.horizontalPadding + (isMobile ? query.padding.right : 0),
             ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
