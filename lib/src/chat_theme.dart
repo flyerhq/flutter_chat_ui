@@ -127,7 +127,7 @@ abstract class ChatTheme {
   final Color backgroundColor;
 
   // Margin around the message bubble.
-  final EdgeInsets? bubbleMargin;
+  final EdgeInsetsGeometry? bubbleMargin;
 
   /// Margin around date dividers.
   final EdgeInsets dateDividerMargin;
