@@ -339,6 +339,19 @@ class Message extends StatelessWidget {
             topRight: Radius.circular(messageBorderRadius),
           );
 
+    final bubbleMargin = InheritedChatTheme.of(context).theme.bubbleMargin ??
+        (bubbleRtlAlignment == BubbleRtlAlignment.left
+            ? EdgeInsetsDirectional.only(
+                bottom: 4,
+                end: isMobile ? query.padding.right : 0,
+                start: 20 + (isMobile ? query.padding.left : 0),
+              )
+            : EdgeInsets.only(
+                bottom: 4,
+                left: 20 + (isMobile ? query.padding.left : 0),
+                right: isMobile ? query.padding.right : 0,
+              ));
+
     return Container(
       alignment: bubbleRtlAlignment == BubbleRtlAlignment.left
           ? currentUserIsAuthor
@@ -347,17 +360,7 @@ class Message extends StatelessWidget {
           : currentUserIsAuthor
               ? Alignment.centerRight
               : Alignment.centerLeft,
-      margin: bubbleRtlAlignment == BubbleRtlAlignment.left
-          ? EdgeInsetsDirectional.only(
-              bottom: 4,
-              end: isMobile ? query.padding.right : 0,
-              start: 20 + (isMobile ? query.padding.left : 0),
-            )
-          : EdgeInsets.only(
-              bottom: 4,
-              left: 20 + (isMobile ? query.padding.left : 0),
-              right: isMobile ? query.padding.right : 0,
-            ),
+      margin: bubbleMargin,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
