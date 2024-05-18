@@ -233,14 +233,6 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
-          theme: const DefaultChatTheme(
-            seenIcon: Text(
-              'read',
-              style: TextStyle(
-                fontSize: 10.0,
-              ),
-            ),
-          ),
         ),
       );
 }
