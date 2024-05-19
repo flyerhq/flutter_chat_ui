@@ -3,6 +3,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../../flutter_chat_ui.dart';
 import '../util.dart';
 import 'state/inherited_chat_theme.dart';
+import 'state/inherited_l10n.dart';
 
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
@@ -239,11 +240,11 @@ class TypingWidget extends StatelessWidget {
     if (author.isEmpty) {
       return '';
     } else if (author.length == 1) {
-      return '${author.first.firstName} is typing';
+      return '${author.first.firstName} ${InheritedL10n.of(context).l10n.isTyping}';
     } else if (author.length == 2) {
-      return '${author.first.firstName} and ${author[1].firstName}';
+      return '${author.first.firstName} ${InheritedL10n.of(context).l10n.and} ${author.last.firstName}';
     } else {
-      return '${author.first.firstName} and ${author.length - 1} others';
+      return '${author.first.firstName} ${InheritedL10n.of(context).l10n.and} ${author.length - 1} ${InheritedL10n.of(context).l10n.others}';
     }
   }
 

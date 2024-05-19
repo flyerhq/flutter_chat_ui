@@ -23,7 +23,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const MaterialApp(
-        home: ChatPage(),
+        home: Directionality(
+          textDirection: TextDirection.ltr,
+          child: ChatPage(),
+        ),
       );
 }
 
