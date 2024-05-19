@@ -1,3 +1,10 @@
+## 1.6.13
+
+- While `v2` is still in the works (unexpected blockers, see GitHub for progress) releasing a small patch update with improvements.
+- **Potentially breaking: bumped dependencies**, but I used ranges (>= and <) so don't expect any problems. Please raise an issue if some change breaks your project.
+- Added support for overriding the `bubbleMargin` property using `ChatTheme`. Thanks @ishchhabra for the PR!
+- Added localisation support to the typing indicator which was hardcoded english only previously. Thanks @longnh2k1 for raising the issue!
+
 ## 1.6.12
 
 - Remove `defaultBubbleMessage` from the `bubbleBuilder` as it breaks compatibility. If you need this please use previous release, this is the only change here. Next should be v2.0.0 preview.
