@@ -380,11 +380,12 @@ class ChatState extends State<Chat> {
     Duration? scrollDuration,
     bool withHighlight = false,
     Duration? highlightDuration,
+    AutoScrollPosition? preferPosition
   }) async {
     await _scrollController.scrollToIndex(
       chatMessageAutoScrollIndexById[id]!,
       duration: scrollDuration ?? scrollAnimationDuration,
-      preferPosition: AutoScrollPosition.middle,
+      preferPosition: preferPosition ?? AutoScrollPosition.middle,
     );
     if (withHighlight) {
       await _scrollController.highlight(
