@@ -118,7 +118,7 @@ class _InputState extends State<Input> {
         .theme
         .inputPadding
         .copyWith(left: 16, right: 16);
-    final safeAreaInsets = isMobile
+    final safeAreaInsets = widget.options.usesSafeArea && isMobile
         ? EdgeInsets.fromLTRB(
             query.padding.left,
             0,
@@ -264,6 +264,7 @@ class InputOptions {
     this.autofocus = false,
     this.enableSuggestions = true,
     this.enabled = true,
+    this.usesSafeArea = true,
   });
 
   /// Controls the [Input] clear behavior. Defaults to [InputClearMode.always].
@@ -302,4 +303,7 @@ class InputOptions {
 
   /// Controls the [TextInput] enabled behavior. Defaults to [true].
   final bool enabled;
+
+  /// Controls the [Input] usesSafeArea behavior. Defaults to [true].
+  final bool usesSafeArea;
 }
