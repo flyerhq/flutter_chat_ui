@@ -1,3 +1,10 @@
+## 1.6.14
+
+- While `v2` is still in the works (unexpected blockers, see GitHub for progress) releasing a small patch update with improvements.
+- Added optional scroll `preferPosition` to `scrollController.scrollToIndex`. Thanks @chdo002 for the PR!
+- Removed `isComposingRangeValid` check from the input to hopefully fix send button that does not appear.
+- Added `usesSafeArea` option to the `inputOptions` to be able to remove safe area backed inside the input.
+
 ## 1.6.13
 
 - While `v2` is still in the works (unexpected blockers, see GitHub for progress) releasing a small patch update with improvements.
