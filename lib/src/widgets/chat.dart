@@ -129,7 +129,9 @@ class _ChatState extends State<Chat> {
     String uri,
     List<String> galleryItems,
   ) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+  SystemUiOverlay.bottom]);
     setState(() {
       _isImageViewVisible = true;
       _imageViewIndex = galleryItems.indexOf(uri);
