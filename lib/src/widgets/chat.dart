@@ -120,7 +120,9 @@ class _ChatState extends State<Chat> {
     setState(() {
       _isImageViewVisible = false;
     });
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    //SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+  SystemUiOverlay.top]);
   }
 
   void _onImagePressed(
