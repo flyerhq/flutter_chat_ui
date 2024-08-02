@@ -6,7 +6,7 @@ version: 1.0.7
 homepage: https://flyer.chat
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: "=2.18.0 <4.0.0"
   flutter: ">=2.0.0"
 
 dependencies:
@@ -25,7 +25,7 @@ dependencies:
       url: https://github.com/ntsmac/flutter_link_previewer.git
       ref: feature/audio_message
 
-  intl: ^0.17.0
+  intl: ^0.19.0
   photo_view: ^0.11.1
   #flutter_sound: ^8.1.4
   flutter_sound_lite: '8.1.9'
