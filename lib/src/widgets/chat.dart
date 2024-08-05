@@ -120,7 +120,7 @@ class _ChatState extends State<Chat> {
     setState(() {
       _isImageViewVisible = false;
     });
-    //SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    ///SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
   SystemUiOverlay.top]);
   }
@@ -129,7 +129,7 @@ class _ChatState extends State<Chat> {
     String uri,
     List<String> galleryItems,
   ) {
-    //SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    ///SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
   SystemUiOverlay.bottom]);
     setState(() {
