@@ -50,51 +50,44 @@ class ImageGallery extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => PopScope(
-        onPopInvoked: (didPop) {
-          if (didPop) {
-            onClosePressed();
-          }
-        },
-        child: Dismissible(
-          key: const Key('photo_view_gallery'),
-          direction: DismissDirection.down,
-          onDismissed: (direction) => onClosePressed(),
-          child: Stack(
-            children: [
-              PhotoViewGallery.builder(
-                builder: (BuildContext context, int index) =>
-                    PhotoViewGalleryPageOptions(
-                  imageProvider: imageProviderBuilder != null
-                      ? imageProviderBuilder!(
-                          uri: images[index].uri,
-                          imageHeaders: imageHeaders,
-                          conditional: Conditional(),
-                        )
-                      : Conditional().getProvider(
-                          images[index].uri,
-                          headers: imageHeaders,
-                        ),
-                  minScale: options.minScale,
-                  maxScale: options.maxScale,
-                ),
-                itemCount: images.length,
-                loadingBuilder: (context, event) =>
-                    _imageGalleryLoadingBuilder(event),
-                pageController: pageController,
-                scrollPhysics: const ClampingScrollPhysics(),
+  Widget build(BuildContext context) => Dismissible(
+        key: const Key('photo_view_gallery'),
+        direction: DismissDirection.down,
+        onDismissed: (direction) => onClosePressed(),
+        child: Stack(
+          children: [
+            PhotoViewGallery.builder(
+              builder: (BuildContext context, int index) =>
+                  PhotoViewGalleryPageOptions(
+                imageProvider: imageProviderBuilder != null
+                    ? imageProviderBuilder!(
+                        uri: images[index].uri,
+                        imageHeaders: imageHeaders,
+                        conditional: Conditional(),
+                      )
+                    : Conditional().getProvider(
+                        images[index].uri,
+                        headers: imageHeaders,
+                      ),
+                minScale: options.minScale,
+                maxScale: options.maxScale,
               ),
-              Positioned.directional(
-                end: 16,
-                textDirection: Directionality.of(context),
-                top: 56,
-                child: CloseButton(
-                  color: Colors.white,
-                  onPressed: onClosePressed,
-                ),
+              itemCount: images.length,
+              loadingBuilder: (context, event) =>
+                  _imageGalleryLoadingBuilder(event),
+              pageController: pageController,
+              scrollPhysics: const ClampingScrollPhysics(),
+            ),
+            Positioned.directional(
+              end: 16,
+              textDirection: Directionality.of(context),
+              top: 56,
+              child: CloseButton(
+                color: Colors.white,
+                onPressed: onClosePressed,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }
