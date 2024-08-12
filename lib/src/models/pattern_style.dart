@@ -12,8 +12,8 @@ class PatternStyle {
   String get pattern => regExp.pattern;
 
   static PatternStyle get bold => PatternStyle(
-        '*',
-        RegExp('\\*[^\\*]+\\*'),
+        '**',
+        RegExp('\\*\\*[^\\*]+\\*\\*'),
         '',
         const TextStyle(fontWeight: FontWeight.bold),
       );
@@ -23,22 +23,23 @@ class PatternStyle {
         RegExp('`[^`]+`'),
         '',
         TextStyle(
-          fontFamily: defaultTargetPlatform == TargetPlatform.iOS
+          fontFamily: defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.macOS
               ? 'Courier'
               : 'monospace',
         ),
       );
 
   static PatternStyle get italic => PatternStyle(
-        '_',
-        RegExp('_[^_]+_'),
+        '__',
+        RegExp('__[^_]+__'),
         '',
         const TextStyle(fontStyle: FontStyle.italic),
       );
 
   static PatternStyle get lineThrough => PatternStyle(
-        '~',
-        RegExp('~[^~]+~'),
+        '~~',
+        RegExp('~~[^~]+~~'),
         '',
         const TextStyle(decoration: TextDecoration.lineThrough),
       );
