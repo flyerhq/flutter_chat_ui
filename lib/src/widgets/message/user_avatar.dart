@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+import '../../conditional/conditional.dart';
 import '../../models/bubble_rtl_alignment.dart';
 import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
-import '../../conditional/conditional.dart';
 
 /// Renders user's avatar or initials next to a message.
 class UserAvatar extends StatelessWidget {
