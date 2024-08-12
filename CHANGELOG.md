@@ -1,3 +1,10 @@
+## 1.6.15
+
+- Last release of `v1` and `v2` is replacing it on main branch soon.
+- Updated markdown matchers to be **bold** (double asterisk), _italic_ (double underscore), ~~linethrough~~ (double tilde) and `code` (single backtick).
+- Removed PopScope since new api requires Flutter v3.22 and I want to still support older versions. Let me know if it introduces breaking behaviour.
+- Added support for AssetImage (uri starts with `assets/`). Thanks @thomers for the PR!
+
 ## 1.6.14
 
 - While `v2` is still in the works (unexpected blockers, see GitHub for progress) releasing a small patch update with improvements.
