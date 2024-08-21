@@ -296,7 +296,7 @@ class _ChatListState extends State<ChatList>
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.only(bottom: 4),
+              padding: InheritedChatTheme.of(context).theme.chatContentMargin,
               sliver: SliverAnimatedList(
                 findChildIndexCallback: (Key key) {
                   if (key is ValueKey<Object>) {
