@@ -104,6 +104,7 @@ class Chat extends StatefulWidget {
     this.slidableMessageBuilder,
     this.isLeftStatus = false,
     this.messageWidthRatio = 0.72,
+    this.unreadHeaderDataBuilder,
   });
 
   /// See [Message.audioMessageBuilder].
@@ -142,6 +143,9 @@ class Chat extends StatefulWidget {
 
   /// Custom date header builder gives ability to customize date header widget.
   final Widget Function(DateHeader)? dateHeaderBuilder;
+
+// Custom unreadHeaderData spacer builder gives ability to customize header for unread messages.
+  final Widget Function(UnreadHeaderData)? unreadHeaderDataBuilder;
 
   /// Time (in ms) between two messages when we will render a date header.
   /// Default value is 15 minutes, 900000 ms. When time between two messages
@@ -457,11 +461,11 @@ class ChatState extends State<Chat> {
         height: object.height,
       );
     } else if (object is UnreadHeaderData) {
-      return AutoScrollTag(
+      return widget.unreadHeaderDataBuilder?.call(object) ?? AutoScrollTag(
         controller: _scrollController,
         index: index ?? -1,
         key: const Key('unread_header'),
-        child: UnreadHeader(
+        child:  UnreadHeader(
           marginTop: object.marginTop,
         ),
       );
@@ -599,7 +603,7 @@ class ChatState extends State<Chat> {
         lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
-        messagesSpacerHeight: widget.messagesSpacerHeight,
+        
       );
 
       _chatMessages = result[0] as List<Object>;
