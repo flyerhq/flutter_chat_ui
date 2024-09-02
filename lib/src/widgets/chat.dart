@@ -461,14 +461,15 @@ class ChatState extends State<Chat> {
         height: object.height,
       );
     } else if (object is UnreadHeaderData) {
-      return widget.unreadHeaderDataBuilder?.call(object) ?? AutoScrollTag(
-        controller: _scrollController,
-        index: index ?? -1,
-        key: const Key('unread_header'),
-        child:  UnreadHeader(
-          marginTop: object.marginTop,
-        ),
-      );
+      return widget.unreadHeaderDataBuilder?.call(object) ??
+          AutoScrollTag(
+            controller: _scrollController,
+            index: index ?? -1,
+            key: const Key('unread_header'),
+            child: UnreadHeader(
+              marginTop: object.marginTop,
+            ),
+          );
     } else {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.Message;
