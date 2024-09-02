@@ -64,6 +64,25 @@ class ChatL10nAr extends ChatL10n {
   });
 }
 
+/// Czech l10n which extends [ChatL10n].
+@immutable
+class ChatL10nCs extends ChatL10n {
+  /// Creates Czech l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n].
+  const ChatL10nCs({
+    super.and = 'a',
+    super.attachmentButtonAccessibilityLabel = 'Poslat média',
+    super.emptyChatPlaceholder = 'Zde zatím nejsou žádné zprávy',
+    super.fileButtonAccessibilityLabel = 'Soubor',
+    super.inputPlaceholder = 'Zpráva',
+    super.isTyping = 'píše...',
+    super.others = 'ostatní',
+    super.sendButtonAccessibilityLabel = 'Odeslat',
+    super.unreadMessagesLabel = 'Nepřečtené zprávy',
+  });
+}
+
 /// German l10n which extends [ChatL10n].
 @immutable
 class ChatL10nDe extends ChatL10n {
