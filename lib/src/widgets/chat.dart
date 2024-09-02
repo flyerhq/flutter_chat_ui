@@ -144,7 +144,7 @@ class Chat extends StatefulWidget {
   /// Custom date header builder gives ability to customize date header widget.
   final Widget Function(DateHeader)? dateHeaderBuilder;
 
-// Custom unreadHeaderData spacer builder gives ability to customize header for unread messages.
+// Custom unread header data builder gives ability to customize header for unread messages.
   final Widget Function(UnreadHeaderData)? unreadHeaderDataBuilder;
 
   /// Time (in ms) between two messages when we will render a date header.
@@ -603,7 +603,7 @@ class ChatState extends State<Chat> {
         lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
-        
+        messagesSpacerHeight: widget.messagesSpacerHeight,
       );
 
       _chatMessages = result[0] as List<Object>;
