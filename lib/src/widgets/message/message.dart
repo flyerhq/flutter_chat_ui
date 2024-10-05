@@ -45,6 +45,7 @@ class Message extends StatelessWidget {
     this.onMessageVisibilityChanged,
     this.onPreviewDataFetched,
     required this.roundBorder,
+    required this.isFirstInGroup,
     required this.showAvatar,
     required this.showName,
     required this.showStatus,
@@ -74,6 +75,7 @@ class Message extends StatelessWidget {
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
+    required bool isFirstInGroup,
   })? bubbleBuilder;
 
   /// Determine the alignment of the bubble for RTL languages. Has no effect
@@ -152,6 +154,8 @@ class Message extends StatelessWidget {
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
 
+  final bool isFirstInGroup;
+
   /// Show user avatar for the received message. Useful for a group chat.
   final bool showAvatar;
 
@@ -226,6 +230,7 @@ class Message extends StatelessWidget {
             _messageBuilder(),
             message: message,
             nextMessageInGroup: roundBorder,
+            isFirstInGroup: isFirstInGroup,
           )
         : defaultMessage;
   }

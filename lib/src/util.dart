@@ -136,17 +136,16 @@ List<Object> calculateChatMessages(
     var nextMessageInGroup = false;
     var showName = false;
 
-    if (showUserNames) {
-      final previousMessage = isFirst ? null : messages[i + 1];
+    final previousMessage = isFirst ? null : messages[i + 1];
 
-      final isFirstInGroup = notMyMessage &&
-          ((message.author.id != previousMessage?.author.id) ||
-              (messageHasCreatedAt &&
-                  previousMessage?.createdAt != null &&
+    final isFirstInGroup = ((message.author.id != previousMessage?.author.id) ||
+        (messageHasCreatedAt &&
+            previousMessage?.createdAt != null &&
                   message.createdAt! - previousMessage!.createdAt! >
                       groupMessagesThreshold));
 
-      if (isFirstInGroup) {
+    if (showUserNames) {
+      if (isFirstInGroup && notMyMessage) {
         shouldShowName = false;
         if (message.type == types.MessageType.text) {
           showName = true;
@@ -210,6 +209,7 @@ List<Object> calculateChatMessages(
     chatMessages.insert(0, {
       'message': message,
       'nextMessageInGroup': nextMessageInGroup,
+      'isFirstInGroup': isFirstInGroup,
       'showName': notMyMessage && showUserNames && showName,
       'showStatus': message.showStatus ?? true,
     });

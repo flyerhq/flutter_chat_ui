@@ -118,6 +118,7 @@ class Chat extends StatefulWidget {
     Widget child, {
     required types.Message message,
     required bool nextMessageInGroup,
+    required bool isFirstInGroup,
   })? bubbleBuilder;
 
   /// See [Message.bubbleRtlAlignment].
@@ -517,6 +518,7 @@ class ChatState extends State<Chat> {
           onPreviewDataFetched: _onPreviewDataFetched,
           roundBorder: map['nextMessageInGroup'] == true,
           showAvatar: map['nextMessageInGroup'] == false,
+          isFirstInGroup: map['isFirstInGroup'] == true,
           showName: map['showName'] == true,
           showStatus: map['showStatus'] == true,
           isLeftStatus: widget.isLeftStatus,

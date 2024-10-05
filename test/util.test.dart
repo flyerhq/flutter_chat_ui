@@ -120,6 +120,7 @@ void main() {
             {
               'message': imageMessage,
               'nextMessageInGroup': false,
+              'isFirstInGroup': true,
               'showName': false,
               'showStatus': true,
             },
@@ -127,6 +128,7 @@ void main() {
             {
               'message': message,
               'nextMessageInGroup': false,
+              'isFirstInGroup': true,
               'showName': false,
               'showStatus': true,
             },
@@ -166,6 +168,7 @@ void main() {
               {
                 'message': imageMessage,
                 'nextMessageInGroup': false,
+                'isFirstInGroup': true,
                 'showName': false,
                 'showStatus': true,
               },
@@ -174,6 +177,7 @@ void main() {
               {
                 'message': message,
                 'nextMessageInGroup': false,
+                'isFirstInGroup': true,
                 'showName': false,
                 'showStatus': true,
               },
@@ -212,6 +216,7 @@ void main() {
               {
                 'message': imageMessage,
                 'nextMessageInGroup': false,
+                'isFirstInGroup': true,
                 'showName': false,
                 'showStatus': true,
               },
@@ -219,6 +224,7 @@ void main() {
               {
                 'message': message,
                 'nextMessageInGroup': false,
+                'isFirstInGroup': true,
                 'showName': false,
                 'showStatus': true,
               },
@@ -261,6 +267,7 @@ void main() {
                 {
                   'message': imageMessage,
                   'nextMessageInGroup': false,
+                  'isFirstInGroup': true,
                   'showName': false,
                   'showStatus': true,
                 },
@@ -269,6 +276,7 @@ void main() {
                 {
                   'message': message,
                   'nextMessageInGroup': false,
+                  'isFirstInGroup': true,
                   'showName': false,
                   'showStatus': true,
                 },
