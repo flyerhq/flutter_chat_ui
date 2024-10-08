@@ -59,8 +59,7 @@ class Message extends StatelessWidget {
   });
 
   /// Build an audio message inside predefined bubble.
-  final Widget Function(types.AudioMessage, {required int messageWidth})?
-      audioMessageBuilder;
+  final Widget Function(types.AudioMessage, {required int messageWidth})? audioMessageBuilder;
 
   /// This is to allow custom user avatar builder
   /// By using this we can fetch newest user info based on id.
@@ -83,12 +82,10 @@ class Message extends StatelessWidget {
   final BubbleRtlAlignment? bubbleRtlAlignment;
 
   /// Build a custom message inside predefined bubble.
-  final Widget Function(types.CustomMessage, {required int messageWidth})?
-      customMessageBuilder;
+  final Widget Function(types.CustomMessage, {required int messageWidth})? customMessageBuilder;
 
   /// Build a custom status widgets.
-  final Widget Function(types.Message message, {required BuildContext context})?
-      customStatusBuilder;
+  final Widget Function(types.Message message, {required BuildContext context})? customStatusBuilder;
 
   /// Controls the enlargement behavior of the emojis in the
   /// [types.TextMessage].
@@ -96,8 +93,7 @@ class Message extends StatelessWidget {
   final EmojiEnlargementBehavior emojiEnlargementBehavior;
 
   /// Build a file message inside predefined bubble.
-  final Widget Function(types.FileMessage, {required int messageWidth})?
-      fileMessageBuilder;
+  final Widget Function(types.FileMessage, {required int messageWidth})? fileMessageBuilder;
 
   /// Hide background for messages containing only emojis.
   final bool hideBackgroundOnEmojiMessages;
@@ -106,8 +102,7 @@ class Message extends StatelessWidget {
   final Map<String, String>? imageHeaders;
 
   /// Build an image message inside predefined bubble.
-  final Widget Function(types.ImageMessage, {required int messageWidth})?
-      imageMessageBuilder;
+  final Widget Function(types.ImageMessage, {required int messageWidth})? imageMessageBuilder;
 
   /// See [Chat.imageProviderBuilder].
   final ImageProvider Function({
@@ -135,8 +130,7 @@ class Message extends StatelessWidget {
   final void Function(BuildContext context, types.Message)? onMessageLongPress;
 
   /// Called when user makes a long press on status icon in any message.
-  final void Function(BuildContext context, types.Message)?
-      onMessageStatusLongPress;
+  final void Function(BuildContext context, types.Message)? onMessageStatusLongPress;
 
   /// Called when user taps on status icon in any message.
   final void Function(BuildContext context, types.Message)? onMessageStatusTap;
@@ -148,12 +142,12 @@ class Message extends StatelessWidget {
   final void Function(types.Message, bool visible)? onMessageVisibilityChanged;
 
   /// See [TextMessage.onPreviewDataFetched].
-  final void Function(types.TextMessage, types.PreviewData)?
-      onPreviewDataFetched;
+  final void Function(types.TextMessage, types.PreviewData)? onPreviewDataFetched;
 
   /// Rounds border of the message to visually group messages together.
   final bool roundBorder;
 
+  /// This is used to determine if the message is the first in a group of messages or a single message.
   final bool isFirstInGroup;
 
   /// Show user avatar for the received message. Useful for a group chat.
@@ -191,8 +185,7 @@ class Message extends StatelessWidget {
   final String? userAgent;
 
   /// Build an audio message inside predefined bubble.
-  final Widget Function(types.VideoMessage, {required int messageWidth})?
-      videoMessageBuilder;
+  final Widget Function(types.VideoMessage, {required int messageWidth})? videoMessageBuilder;
 
   Widget _avatarBuilder() => showAvatar
       ? avatarBuilder?.call(message.author) ??
@@ -215,8 +208,7 @@ class Message extends StatelessWidget {
         : Container(
             decoration: BoxDecoration(
               borderRadius: borderRadius,
-              color: !currentUserIsAuthor ||
-                      message.type == types.MessageType.image
+              color: !currentUserIsAuthor || message.type == types.MessageType.image
                   ? InheritedChatTheme.of(context).theme.secondaryColor
                   : InheritedChatTheme.of(context).theme.primaryColor,
             ),
@@ -313,15 +305,13 @@ class Message extends StatelessWidget {
     final query = MediaQuery.of(context);
     final user = InheritedUser.of(context).user;
     final currentUserIsAuthor = user.id == message.author.id;
-    final enlargeEmojis =
-        emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
-            message is types.TextMessage &&
-            isConsistsOfEmojis(
-              emojiEnlargementBehavior,
-              message as types.TextMessage,
-            );
-    final messageBorderRadius =
-        InheritedChatTheme.of(context).theme.messageBorderRadius;
+    final enlargeEmojis = emojiEnlargementBehavior != EmojiEnlargementBehavior.never &&
+        message is types.TextMessage &&
+        isConsistsOfEmojis(
+          emojiEnlargementBehavior,
+          message as types.TextMessage,
+        );
+    final messageBorderRadius = InheritedChatTheme.of(context).theme.messageBorderRadius;
     final borderRadius = bubbleRtlAlignment == BubbleRtlAlignment.left
         ? BorderRadiusDirectional.only(
             bottomEnd: Radius.circular(
@@ -369,9 +359,7 @@ class Message extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
-        textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
-            ? null
-            : TextDirection.ltr,
+        textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left ? null : TextDirection.ltr,
         children: [
           if (!currentUserIsAuthor && showUserAvatars) _avatarBuilder(),
           if (currentUserIsAuthor && isLeftStatus) _statusIcon(context),
@@ -389,8 +377,7 @@ class Message extends StatelessWidget {
                   child: onMessageVisibilityChanged != null
                       ? VisibilityDetector(
                           key: Key(message.id),
-                          onVisibilityChanged: (visibilityInfo) =>
-                              onMessageVisibilityChanged!(
+                          onVisibilityChanged: (visibilityInfo) => onMessageVisibilityChanged!(
                             message,
                             visibilityInfo.visibleFraction > 0.1,
                           ),
