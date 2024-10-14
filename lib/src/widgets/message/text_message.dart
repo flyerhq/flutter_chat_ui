@@ -91,6 +91,9 @@ class TextMessage extends StatelessWidget {
       previewData: message.previewData,
       text: message.text,
       textWidget: _textWidgetBuilder(user, context, false),
+      imageBuilder: options.previewImageBuilder != null
+          ? (url) => options.previewImageBuilder!.call(context, url)
+          : null,
       userAgent: userAgent,
       width: width,
     );
@@ -135,14 +138,24 @@ class TextMessage extends StatelessWidget {
           else
             Text(message.text, style: emojiTextStyle)
         else
-          TextMessageText(
-            bodyLinkTextStyle: bodyLinkTextStyle,
-            bodyTextStyle: bodyTextStyle,
-            boldTextStyle: boldTextStyle,
-            codeTextStyle: codeTextStyle,
-            options: options,
-            text: message.text,
-          ),
+          options.textMessageTextBuilder != null
+              ? options.textMessageTextBuilder!(
+                  context,
+                  message.text,
+                  options,
+                  bodyLinkTextStyle: bodyLinkTextStyle,
+                  bodyTextStyle: bodyTextStyle,
+                  boldTextStyle: boldTextStyle,
+                  codeTextStyle: codeTextStyle,
+                )
+              : TextMessageText(
+                  bodyLinkTextStyle: bodyLinkTextStyle,
+                  bodyTextStyle: bodyTextStyle,
+                  boldTextStyle: boldTextStyle,
+                  codeTextStyle: codeTextStyle,
+                  options: options,
+                  text: message.text,
+                ),
       ],
     );
   }
@@ -263,6 +276,8 @@ class TextMessageOptions {
     this.openOnPreviewImageTap = false,
     this.openOnPreviewTitleTap = false,
     this.matchers = const [],
+    this.previewImageBuilder,
+    this.textMessageTextBuilder,
   });
 
   /// Whether user can tap and hold to select a text content.
@@ -279,4 +294,22 @@ class TextMessageOptions {
 
   /// Additional matchers to parse the text.
   final List<MatchText> matchers;
+
+  /// Custom link preview imageBuilder.
+  final PreviewImageBuilder? previewImageBuilder;
+
+  /// Add TextMessageTextBuilder to build custom text example markdown, code highlight, etc.
+  final TextMessageTextBuilder? textMessageTextBuilder;
 }
+
+typedef PreviewImageBuilder = Widget Function(BuildContext context, String url);
+
+typedef TextMessageTextBuilder = Widget Function(
+  BuildContext context,
+  String text,
+  TextMessageOptions options, {
+  TextStyle? bodyLinkTextStyle,
+  TextStyle? bodyTextStyle,
+  TextStyle? boldTextStyle,
+  TextStyle? codeTextStyle,
+});
