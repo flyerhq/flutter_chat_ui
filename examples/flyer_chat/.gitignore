@@ -22,8 +22,6 @@ migrate_working_dir/
 #.vscode/
 
 # Flutter/Dart/Pub related
-# Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
-pubspec.lock
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -31,7 +29,7 @@ pubspec.lock
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-build/
+/build/
 
 # Symbolication related
 app.*.symbols
@@ -43,6 +41,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-pubspec_overrides.yaml
-coverage/

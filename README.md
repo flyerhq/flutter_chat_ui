@@ -1,73 +1,142 @@
-<br>
+## Create a new example or package
 
-<p align="center">
-  <a href="https://flyer.chat">
-    <img src="https://flyer.chat/assets/logo-dark.svg" width="288px" alt="Flyer Chat Logo" />
-  </a>
-</p>
+### To create a new example:
 
-<h1 align="center">Flutter Chat UI</h1>
+1. Go to examples folder
 
-<p align="center">
-  Actively maintained, community-driven chat UI implementation with an optional <a href="https://pub.dev/packages/flutter_firebase_chat_core">Firebase BaaS</a>.
-</p>
+```bash
+cd examples
+```
 
-<br>
+2. Run the following command:
 
-<p align="center">
-  🇺🇦🇺🇦 We are Ukrainians. If you enjoy our work, please <a href="https://u24.gov.ua">consider donating</a> to help save our country. 🇺🇦🇺🇦
-</p>
+```bash
+flutter create example_name --org flyer.chat
+```
 
-<br>
+3. Go to the root folder
 
-<p align="center">
-  <a href="https://pub.dartlang.org/packages/flutter_chat_ui">
-    <img alt="Pub" src="https://img.shields.io/pub/v/flutter_chat_ui" />
-  </a>
-  <a href="https://github.com/flyerhq/flutter_chat_ui/actions?query=workflow%3Abuild">
-    <img alt="Build Status" src="https://github.com/flyerhq/flutter_chat_ui/actions/workflows/build.yaml/badge.svg" />
-  </a>
-  <a href="https://www.codefactor.io/repository/github/flyerhq/flutter_chat_ui">
-    <img alt="CodeFactor" src="https://www.codefactor.io/repository/github/flyerhq/flutter_chat_ui/badge" />
-  </a>
-</p>
+```bash
+cd ..
+```
 
-<br>
+4. Run melos bootstrap:
 
-<p align="center">
-  <a href="https://flyer.chat">
-    <img alt="Chat Image" src="https://user-images.githubusercontent.com/14123304/193468140-91942302-2332-4cb1-8504-61b8892d828b.jpg" />
-  </a>
-</p>
+```bash
+melos bs
+```
 
-<br>
+5. Replace `analysis_options.yaml` content with the following:
 
-Flyer Chat is a platform for creating in-app chat experiences using Flutter or [React Native](https://github.com/flyerhq/react-native-chat-ui). This repository contains chat UI implementation for Flutter.
+```bash
+include: ../../analysis_options.yaml
 
-* **Free, open-source and community-driven**. We offer no paid plugins and strive to create an easy-to-use, almost drop-in chat experience for any application. Contributions are more than welcome! Please read our [Contributing Guide](https://github.com/flyerhq/flutter_chat_ui/blob/main/CONTRIBUTING.md).
+```
 
-* **Backend agnostic**. You can choose the backend you prefer. But if you don't have one, we provide our own free and open-source [Firebase implementation](https://pub.dev/packages/flutter_firebase_chat_core), which can be used to create a working chat in minutes. We are also working on our more advanced SaaS and self-hosted solutions.
+### To create a new package:
 
-* **Customizable**. Supports custom themes, locales and more. Check our [documentation](https://docs.flyer.chat/flutter/chat-ui/) for the info. More options are on the way, let us know if something is missing.
+1. Go to packages folder
 
-* **Minimum dependencies**. Our packages are lightweight. Use your favourite packages for selecting images, opening files etc. See the [example](https://github.com/flyerhq/flutter_chat_ui/blob/main/example/lib/main.dart) for possible implementation.
+```bash
+cd packages
+```
 
-## Getting Started
+2. Run the following command:
 
-### Requirements
+```bash
+flutter create package_name --template=package
+```
 
-`Dart >=2.19.0` and `Flutter >=3.0.0`
+3. Go to the root folder
 
-Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
+```bash
+cd ..
+```
 
-## Contributing
+4. Run melos bootstrap:
 
-Please read our [Contributing Guide](https://github.com/flyerhq/flutter_chat_ui/blob/main/CONTRIBUTING.md) before submitting a pull request to the project.
+```bash
+melos bs
+```
 
-## Code of Conduct
+5. Replace `analysis_options.yaml` content with the following:
 
-Flyer Chat has adopted the [Contributor Covenant](https://www.contributor-covenant.org) as its Code of Conduct, and we expect project participants to adhere to it. Please read [the full text](https://github.com/flyerhq/flutter_chat_ui/blob/main/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
+```bash
+include: ../../analysis_options.yaml
 
-## License
+```
 
-Licensed under the [Apache License, Version 2.0](https://github.com/flyerhq/flutter_chat_ui/blob/main/LICENSE)
+6. Make sure to follow other packages structure. Minimum required files are:
+
+```
+.dart_tool/
+lib/
+  src/
+    code.dart
+  package_name.dart
+analysis_options.yaml
+CHANGELOG.md
+LICENSE
+melos_package_name.iml
+pubspec.lock
+pubspec.yaml
+README.md
+```
+
+Remove all other files if needed and update `pubspec.yaml` similar to other packages.
+
+Remember to run `melos bs` again after you finished all configs and changed `pubspec.yaml` file.
+
+## Tests
+
+To run tests for a specific package:
+
+```bash
+melos test:selective
+```
+
+To run all tests:
+
+```bash
+melos test
+```
+
+To generate coverage for a specific package:
+
+```bash
+melos coverage:selective
+```
+
+To generate coverage for all packages:
+
+```bash
+melos coverage
+```
+
+## Misc
+
+Get dependencies for all packages:
+
+```bash
+melos bs
+```
+
+Clean all packages:
+
+```bash
+melos clean
+```
+
+Build types (flutter_chat_types):
+
+```bash
+melos build
+```
+
+Additional:
+
+```bash
+melos analyze
+melos format
+melos fix
+```
