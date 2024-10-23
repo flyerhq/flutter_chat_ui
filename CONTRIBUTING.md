@@ -1,26 +1,142 @@
-# Contributing to Flyer Chat
+## Create a new example or package
 
-Thank you for your interest in contributing to Flyer Chat! Our vision is to create an easy-to-use chat experience for any application and while we can't have everything right from the start, we can build it together! If you plan to implement a feature and open a pull request, make sure you don't spend a lot of time on it, otherwise open an issue so we can discuss bigger stuff.
+### To create a new example:
 
-The [Open Source Guides](https://opensource.guide) website has a collection of resources for individuals, communities, and companies who want to learn how to run and contribute to an open-source project. Contributors and people new to open source alike will find the following guides especially useful:
+1. Go to examples folder
 
-* [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
-* [Building Welcoming Communities](https://opensource.guide/building-community/)
+```bash
+cd examples
+```
 
-## Helping with Documentation
+2. Run the following command:
 
-We use [Docusaurus](https://docusaurus.io) to build our documentation which is located in the [doc](https://github.com/flyerhq/flutter_chat_ui/tree/main/doc) folder. If you are adding new functionality or introducing a behavior change, we will ask you to update the documentation to reflect your changes.
+```bash
+flutter create example_name --org flyer.chat
+```
 
-## Contributing Code
+3. Go to the root folder
 
-Code-level contributions to Flyer Chat generally come in the form of pull requests. These are done by forking the repo and making changes locally. Directly in the repo, there is the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project that you can install on your device (or simulators) and use to test the changes you're making to Flyer Chat sources.
+```bash
+cd ..
+```
 
-[Here](https://opensource.guide/how-to-contribute/#opening-a-pull-request) you can read how to open a pull request.
+4. Run melos bootstrap:
 
-## Community Contributions
+```bash
+melos bs
+```
 
-Contributions to Flyer Chat are not limited to GitHub. You can help others by sharing your experience using Flyer Chat, whether that is through blog posts, presenting talks at conferences, or simply sharing your thoughts on social media.
+5. Replace `analysis_options.yaml` content with the following:
 
-## License
+```bash
+include: ../../analysis_options.yaml
 
-By contributing to Flyer Chat, you agree that your contributions will be licensed under its [Apache License, Version 2.0](LICENSE).
+```
+
+### To create a new package:
+
+1. Go to packages folder
+
+```bash
+cd packages
+```
+
+2. Run the following command:
+
+```bash
+flutter create package_name --template=package
+```
+
+3. Go to the root folder
+
+```bash
+cd ..
+```
+
+4. Run melos bootstrap:
+
+```bash
+melos bs
+```
+
+5. Replace `analysis_options.yaml` content with the following:
+
+```bash
+include: ../../analysis_options.yaml
+
+```
+
+6. Make sure to follow other packages structure. Minimum required files are:
+
+```
+.dart_tool/
+lib/
+  src/
+    code.dart
+  package_name.dart
+analysis_options.yaml
+CHANGELOG.md
+LICENSE
+melos_package_name.iml
+pubspec.lock
+pubspec.yaml
+README.md
+```
+
+Remove all other files if needed and update `pubspec.yaml` similar to other packages.
+
+Remember to run `melos bs` again after you finished all configs and changed `pubspec.yaml` file.
+
+## Tests
+
+To run tests for a specific package:
+
+```bash
+melos test:selective
+```
+
+To run all tests:
+
+```bash
+melos test
+```
+
+To generate coverage for a specific package:
+
+```bash
+melos coverage:selective
+```
+
+To generate coverage for all packages:
+
+```bash
+melos coverage
+```
+
+## Misc
+
+Get dependencies for all packages:
+
+```bash
+melos bs
+```
+
+Clean all packages:
+
+```bash
+melos clean
+```
+
+Build types (flutter_chat_types):
+
+```bash
+melos build
+```
+
+Additional:
+
+```bash
+melos analyze
+melos format
+melos fix
+```
