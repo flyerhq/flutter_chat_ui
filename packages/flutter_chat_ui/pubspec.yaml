@@ -1,0 +1,24 @@
+name: flutter_chat_ui
+version: 2.0.0-dev.1
+description: >
+  Community-driven, animated chat UI for Flutter with top-tier performance and
+  customization for chat apps and generative AI agents. #firebase #gemini #chatgpt
+homepage: https://flyer.chat
+repository: https://github.com/flyerhq/flutter_chat_ui
+
+environment:
+  sdk: ">=3.2.0 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  cross_cache: ^0.0.2
+  diffutil_dart: ^4.0.1
+  flutter:
+    sdk: flutter
+  flutter_chat_core: ^0.0.2
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
