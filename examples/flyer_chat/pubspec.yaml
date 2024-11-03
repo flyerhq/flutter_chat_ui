@@ -42,6 +42,7 @@ dependencies:
   flyer_chat_text_message: ^0.0.2
   google_generative_ai: ^0.4.5
   hive: ^4.0.0-dev.2
+  http: ^1.2.2
   image_picker: ^1.1.2
   isar_flutter_libs: ^4.0.0-dev.14
   path: ^1.9.0

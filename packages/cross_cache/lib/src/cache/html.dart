@@ -106,6 +106,46 @@ class Cache extends BaseCache {
     return result != null;
   }
 
+  @override
+  Future<void> delete(String key) async {
+    await _ensureDbOpen();
+
+    if (_db == null) {
+      throw Exception('IndexedDB is not supported or database failed to open');
+    }
+
+    final transaction = _db!.transaction('data', 'readwrite');
+    final store = transaction.objectStore('data');
+    await store.delete(key);
+    await transaction.completed;
+  }
+
+  @override
+  Future<void> updateKey(String key, String newKey) async {
+    await _ensureDbOpen();
+
+    if (_db == null) {
+      throw Exception('IndexedDB is not supported or database failed to open');
+    }
+
+    final transaction = _db!.transaction('data', 'readwrite');
+    final store = transaction.objectStore('data');
+    final data = await store.getObject(key);
+
+    if (data == null) {
+      throw Exception('Key not found: $key');
+    }
+
+    try {
+      await store.put(data, newKey);
+      await store.delete(key);
+      await transaction.completed;
+    } catch (e) {
+      transaction.abort();
+      rethrow;
+    }
+  }
+
   // ignore: undefined_class
   Future _completeRequest(Request request) {
     final completer = Completer.sync();

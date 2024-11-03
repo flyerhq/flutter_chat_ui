@@ -62,8 +62,6 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        context.select((ChatTheme theme) => theme.backgroundColor);
     final inputTheme = context.select((ChatTheme theme) => theme.inputTheme);
 
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
@@ -82,7 +80,7 @@ class _ChatInputState extends State<ChatInput> {
           ),
           child: Container(
             key: _inputKey,
-            color: backgroundColor.withOpacity(0.8),
+            color: inputTheme.backgroundColor,
             child: Padding(
               // TODO: remove padding if it's 0
               padding: widget.padding ?? EdgeInsets.zero,
@@ -104,7 +102,7 @@ class _ChatInputState extends State<ChatInput> {
                         hintStyle: inputTheme.hintStyle,
                         border: widget.inputBorder,
                         filled: widget.filled,
-                        fillColor: inputTheme.backgroundColor,
+                        fillColor: inputTheme.textFieldColor,
                         hoverColor: Colors.transparent,
                       ),
                       style: inputTheme.textStyle,

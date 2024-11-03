@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 const defaultScrollToBottomBackgroundColor = (
-  light: Color(0xffeeeeee),
-  dark: Color(0xffffffff),
+  light: Color(0xFFEEEEEE),
+  dark: Color(0xFFFFFFFF),
 );
 
-const defaultScrollToBottomForegroundColor = Color(0xff101010);
+const defaultScrollToBottomForegroundColor = (
+  light: Color(0xFF101010),
+  dark: Color(0xFF101010),
+);

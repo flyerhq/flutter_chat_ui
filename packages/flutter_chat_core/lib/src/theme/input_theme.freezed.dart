@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$InputTheme {
   Color? get backgroundColor => throw _privateConstructorUsedError;
+  Color? get textFieldColor => throw _privateConstructorUsedError;
   TextStyle? get hintStyle => throw _privateConstructorUsedError;
   TextStyle? get textStyle => throw _privateConstructorUsedError;
 }
@@ -24,11 +25,17 @@ mixin _$InputTheme {
 /// @nodoc
 
 class _$InputThemeImpl extends _InputTheme {
-  const _$InputThemeImpl({this.backgroundColor, this.hintStyle, this.textStyle})
+  const _$InputThemeImpl(
+      {this.backgroundColor,
+      this.textFieldColor,
+      this.hintStyle,
+      this.textStyle})
       : super._();
 
   @override
   final Color? backgroundColor;
+  @override
+  final Color? textFieldColor;
   @override
   final TextStyle? hintStyle;
   @override
@@ -36,7 +43,7 @@ class _$InputThemeImpl extends _InputTheme {
 
   @override
   String toString() {
-    return 'InputTheme(backgroundColor: $backgroundColor, hintStyle: $hintStyle, textStyle: $textStyle)';
+    return 'InputTheme(backgroundColor: $backgroundColor, textFieldColor: $textFieldColor, hintStyle: $hintStyle, textStyle: $textStyle)';
   }
 
   @override
@@ -44,8 +51,10 @@ class _$InputThemeImpl extends _InputTheme {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InputThemeImpl &&
-            (identical(other.backgroundColor, backgroundColor) ||
-                other.backgroundColor == backgroundColor) &&
+            const DeepCollectionEquality()
+                .equals(other.backgroundColor, backgroundColor) &&
+            const DeepCollectionEquality()
+                .equals(other.textFieldColor, textFieldColor) &&
             (identical(other.hintStyle, hintStyle) ||
                 other.hintStyle == hintStyle) &&
             (identical(other.textStyle, textStyle) ||
@@ -53,19 +62,26 @@ class _$InputThemeImpl extends _InputTheme {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, backgroundColor, hintStyle, textStyle);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(backgroundColor),
+      const DeepCollectionEquality().hash(textFieldColor),
+      hintStyle,
+      textStyle);
 }
 
 abstract class _InputTheme extends InputTheme {
   const factory _InputTheme(
       {final Color? backgroundColor,
+      final Color? textFieldColor,
       final TextStyle? hintStyle,
       final TextStyle? textStyle}) = _$InputThemeImpl;
   const _InputTheme._() : super._();
 
   @override
   Color? get backgroundColor;
+  @override
+  Color? get textFieldColor;
   @override
   TextStyle? get hintStyle;
   @override

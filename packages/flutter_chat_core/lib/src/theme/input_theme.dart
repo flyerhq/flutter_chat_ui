@@ -10,40 +10,44 @@ part 'input_theme.freezed.dart';
 class InputTheme with _$InputTheme {
   factory InputTheme.light({
     Color? backgroundColor,
+    Color? textFieldColor,
     String? fontFamily,
     TextStyle? hintStyle,
     TextStyle? textStyle,
   }) {
     return InputTheme(
       backgroundColor: backgroundColor ?? defaultInputBackgroundColor.light,
+      textFieldColor: textFieldColor ?? defaultInputTextFieldColor.light,
       hintStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
         fontWeight: FontWeight.w400,
-        color: defaultChatBackgroundColor.dark.withOpacity(0.6),
+        color: defaultInputHintColor.light,
       ).merge(hintStyle),
       textStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
-        color: defaultChatBackgroundColor.dark,
+        color: defaultInputTextColor.light,
       ).merge(textStyle),
     );
   }
 
   factory InputTheme.dark({
     Color? backgroundColor,
+    Color? textFieldColor,
     String? fontFamily,
     TextStyle? hintStyle,
     TextStyle? textStyle,
   }) {
     return InputTheme(
       backgroundColor: backgroundColor ?? defaultInputBackgroundColor.dark,
+      textFieldColor: textFieldColor ?? defaultInputTextFieldColor.dark,
       hintStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
         fontWeight: FontWeight.w400,
-        color: defaultChatBackgroundColor.light.withOpacity(0.6),
+        color: defaultInputHintColor.dark,
       ).merge(hintStyle),
       textStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
-        color: defaultChatBackgroundColor.light,
+        color: defaultInputTextColor.dark,
       ).merge(textStyle),
     );
   }
@@ -54,7 +58,8 @@ class InputTheme with _$InputTheme {
         defaultChatFontFamily;
 
     return InputTheme(
-      backgroundColor: themeData.colorScheme.surfaceContainerHigh,
+      backgroundColor: themeData.colorScheme.surface.withOpacity(0.8),
+      textFieldColor: themeData.colorScheme.surfaceContainerHigh,
       hintStyle: themeData.textTheme.bodyMedium?.copyWith(
         fontFamily: family,
         color: themeData.textTheme.bodyMedium?.color?.withOpacity(0.6),
@@ -68,6 +73,7 @@ class InputTheme with _$InputTheme {
 
   const factory InputTheme({
     Color? backgroundColor,
+    Color? textFieldColor,
     TextStyle? hintStyle,
     TextStyle? textStyle,
   }) = _InputTheme;
@@ -76,11 +82,13 @@ class InputTheme with _$InputTheme {
 
   InputTheme copyWith({
     Color? backgroundColor,
+    Color? textFieldColor,
     TextStyle? hintStyle,
     TextStyle? textStyle,
   }) {
     return InputTheme(
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      textFieldColor: textFieldColor ?? this.textFieldColor,
       hintStyle: this.hintStyle?.merge(hintStyle) ?? hintStyle,
       textStyle: this.textStyle?.merge(textStyle) ?? textStyle,
     );
@@ -90,6 +98,7 @@ class InputTheme with _$InputTheme {
     if (other == null) return this;
     return copyWith(
       backgroundColor: other.backgroundColor,
+      textFieldColor: other.textFieldColor,
       hintStyle: other.hintStyle,
       textStyle: other.textStyle,
     );

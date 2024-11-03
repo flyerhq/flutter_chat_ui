@@ -26,8 +26,8 @@ class GeminiState extends State<Gemini> {
   final _crossCache = CrossCache();
   final _scrollController = ScrollController();
 
-  late ChatController _chatController;
-  late GenerativeModel _model;
+  late final ChatController _chatController;
+  late final GenerativeModel _model;
   late ChatSession _chatSession;
 
   Message? _currentGeminiResponse;
@@ -183,8 +183,8 @@ class GeminiState extends State<Gemini> {
       }
 
       _currentGeminiResponse = null;
-    } on GenerativeAIException catch (e) {
-      debugPrint('Generation error $e');
+    } on GenerativeAIException catch (error) {
+      debugPrint('Generation error $error');
     }
   }
 }

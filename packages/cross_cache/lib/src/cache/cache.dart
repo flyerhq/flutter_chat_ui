@@ -25,6 +25,20 @@ class Cache extends BaseCache {
   }
 
   @override
+  Future<void> delete(String key) {
+    throw UnimplementedError(
+      'Cache is not available in your current platform.',
+    );
+  }
+
+  @override
+  Future<void> updateKey(String key, String newKey) {
+    throw UnimplementedError(
+      'Cache is not available in your current platform.',
+    );
+  }
+
+  @override
   void dispose() {
     throw UnimplementedError(
       'Cache is not available in your current platform.',

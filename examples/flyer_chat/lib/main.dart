@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:sembast/sembast.dart';
 
-import 'api.dart';
+import 'api/api.dart';
 import 'api_get_chat_id.dart';
 import 'api_get_initial_messages.dart';
 import 'gemini.dart';

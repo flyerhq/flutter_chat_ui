@@ -17,16 +17,16 @@ class TextMessageTheme with _$TextMessageTheme {
   }) {
     return TextMessageTheme(
       receivedBackgroundColor:
-          receivedBackgroundColor ?? defaultReceivedMessageBackgroundColor,
+          receivedBackgroundColor ?? defaultTextReceivedBackgroundColor.light,
       receivedTextStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
-        color: defaultChatBackgroundColor.dark,
+        color: defaultTextReceivedColor.light,
       ).merge(receivedTextStyle),
       sentBackgroundColor:
-          sentBackgroundColor ?? defaultSentMessageBackgroundColor,
+          sentBackgroundColor ?? defaultTextSentBackgroundColor.light,
       sentTextStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
-        color: defaultChatBackgroundColor.light,
+        color: defaultTextSentColor.light,
       ).merge(sentTextStyle),
     );
   }
@@ -40,16 +40,16 @@ class TextMessageTheme with _$TextMessageTheme {
   }) {
     return TextMessageTheme(
       receivedBackgroundColor:
-          receivedBackgroundColor ?? defaultReceivedMessageBackgroundColor,
+          receivedBackgroundColor ?? defaultTextReceivedBackgroundColor.dark,
       receivedTextStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
-        color: defaultChatBackgroundColor.dark,
+        color: defaultTextReceivedColor.dark,
       ).merge(receivedTextStyle),
       sentBackgroundColor:
-          sentBackgroundColor ?? defaultSentMessageBackgroundColor,
+          sentBackgroundColor ?? defaultTextSentBackgroundColor.dark,
       sentTextStyle: TextStyle(
         fontFamily: fontFamily ?? defaultChatFontFamily,
-        color: defaultChatBackgroundColor.light,
+        color: defaultTextSentColor.dark,
       ).merge(sentTextStyle),
     );
   }

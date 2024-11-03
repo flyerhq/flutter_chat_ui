@@ -50,5 +50,35 @@ class Cache extends BaseCache {
   }
 
   @override
+  Future<void> delete(String key) async {
+    final cache = await getApplicationCacheDirectory();
+    final filePathBytes = utf8.encode(key);
+    final filePath = sha256.convert(filePathBytes).toString();
+    final file = File('${cache.path}/cross_cache/$filePath');
+
+    if (await file.exists()) {
+      await file.delete();
+    }
+  }
+
+  @override
+  Future<void> updateKey(String key, String newKey) async {
+    final cache = await getApplicationCacheDirectory();
+    final filePathBytes = utf8.encode(key);
+    final filePath = sha256.convert(filePathBytes).toString();
+    final file = File('${cache.path}/cross_cache/$filePath');
+
+    if (await file.exists()) {
+      final newFilePathBytes = utf8.encode(newKey);
+      final newFilePath = sha256.convert(newFilePathBytes).toString();
+      final newFile = File('${cache.path}/cross_cache/$newFilePath');
+
+      await file.rename(newFile.path);
+    } else {
+      throw FileSystemException('File not found', file.path);
+    }
+  }
+
+  @override
   void dispose() {}
 }
