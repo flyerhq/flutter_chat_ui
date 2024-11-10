@@ -34,18 +34,18 @@ class LocalState extends State<Local> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Chat(
-        builders: Builders(
-          textMessageBuilder: (context, message) =>
-              FlyerChatTextMessage(message: message),
-          imageMessageBuilder: (context, message) =>
-              FlyerChatImageMessage(message: message),
+      body: SafeArea(
+        child: Chat(
+          builders: Builders(
+            textMessageBuilder: (context, message) => FlyerChatTextMessage(message: message),
+            imageMessageBuilder: (context, message) => FlyerChatImageMessage(message: message),
+          ),
+          chatController: _chatController,
+          user: widget.author,
+          onMessageSend: _addItem,
+          onMessageTap: _removeItem,
+          onAttachmentTap: _handleAttachmentTap,
         ),
-        chatController: _chatController,
-        user: widget.author,
-        onMessageSend: _addItem,
-        onMessageTap: _removeItem,
-        onAttachmentTap: _handleAttachmentTap,
       ),
       persistentFooterButtons: [
         TextButton(
@@ -71,9 +71,7 @@ class LocalState extends State<Local> {
   }
 
   void _addItem(String? text) async {
-    final randomUser = Random().nextInt(2) == 0
-        ? const User(id: 'sender1')
-        : const User(id: 'sender2');
+    final randomUser = Random().nextInt(2) == 0 ? const User(id: 'sender1') : const User(id: 'sender2');
 
     final message = await createMessage(randomUser, widget.dio, text: text);
 
