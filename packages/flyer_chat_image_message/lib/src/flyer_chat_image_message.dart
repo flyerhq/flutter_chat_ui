@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:image/image.dart' show encodeJpg;
 import 'package:provider/provider.dart';
-import 'package:thumbhash/thumbhash.dart'
-    show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
+import 'package:thumbhash/thumbhash.dart' show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
 
 import 'custom_network_image.dart';
 import 'preload_image_provider.dart';
@@ -28,8 +27,7 @@ class FlyerChatImageMessage extends StatefulWidget {
   FlyerChatImageMessageState createState() => FlyerChatImageMessageState();
 }
 
-class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
-    with TickerProviderStateMixin {
+class FlyerChatImageMessageState extends State<FlyerChatImageMessage> with TickerProviderStateMixin {
   late ChatController _chatController;
   late CustomNetworkImage _customNetworkImage;
   late double _aspectRatio;
@@ -42,8 +40,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     if (widget.message.width != null && widget.message.height != null) {
       _aspectRatio = widget.message.width! / widget.message.height!;
     } else if (widget.message.thumbhash != null) {
-      final thumbhashBytes =
-          base64.decode(base64.normalize(widget.message.thumbhash!));
+      final thumbhashBytes = base64.decode(base64.normalize(widget.message.thumbhash!));
 
       _aspectRatio = thumbHashToApproximateAspectRatio(thumbhashBytes);
 
@@ -84,10 +81,8 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        context.select((ChatTheme theme) => theme.backgroundColor);
-    final imagePlaceholderColor =
-        context.select((ChatTheme theme) => theme.imagePlaceholderColor);
+    final backgroundColor = context.select((ChatTheme theme) => theme.backgroundColor);
+    final imagePlaceholderColor = context.select((ChatTheme theme) => theme.imagePlaceholderColor);
 
     return ClipRRect(
       borderRadius: widget.borderRadius ?? BorderRadius.zero,
@@ -118,8 +113,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     child: CircularProgressIndicator(
                       color: backgroundColor.withOpacity(0.5),
                       value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                           : null,
                     ),
                   );

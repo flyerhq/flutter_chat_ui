@@ -78,6 +78,36 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) {
   return val;
 }
 
+_$AudioMessageImpl _$$AudioMessageImplFromJson(Map<String, dynamic> json) =>
+    _$AudioMessageImpl(
+      id: json['id'] as String,
+      author: User.fromJson(json['author'] as Map<String, dynamic>),
+      metadata: json['metadata'] as Map<String, dynamic>?,
+      createdAt: const EpochDateTimeConverter()
+          .fromJson((json['createdAt'] as num).toInt()),
+      audioFile: json['audioFile'] as String,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$AudioMessageImplToJson(_$AudioMessageImpl instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'author': instance.author.toJson(),
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('metadata', instance.metadata);
+  val['createdAt'] = const EpochDateTimeConverter().toJson(instance.createdAt);
+  val['audioFile'] = instance.audioFile;
+  val['type'] = instance.$type;
+  return val;
+}
+
 _$UnsupportedMessageImpl _$$UnsupportedMessageImplFromJson(
         Map<String, dynamic> json) =>
     _$UnsupportedMessageImpl(

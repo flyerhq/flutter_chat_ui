@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flyer_chat_audio_message/flyer_chat_audio_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,6 +39,7 @@ class LocalState extends State<Local> {
         child: Chat(
           builders: Builders(
             textMessageBuilder: (context, message) => FlyerChatTextMessage(message: message),
+            audioMessageBuilder: (context, message) => FlyerChatAudioMessage(message: message),
             imageMessageBuilder: (context, message) => FlyerChatImageMessage(message: message),
           ),
           chatController: _chatController,

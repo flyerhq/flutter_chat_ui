@@ -59,7 +59,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
   final _dio = Dio();
   User _author = const User(id: 'sender1');
   final _chatIdController = TextEditingController(text: defaultChatId);
-  final _geminiApiKeyController = TextEditingController(text: defaultGeminiApiKey);
+  final _geminiApiKeyController =
+      TextEditingController(text: defaultGeminiApiKey);
 
   @override
   void dispose() {
@@ -117,7 +118,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        getInitialMessages(_dio, chatId: _chatIdController.text).then((messages) {
+                        getInitialMessages(_dio, chatId: _chatIdController.text)
+                            .then((messages) {
                           if (mounted && context.mounted) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -144,7 +146,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                                   actions: <Widget>[
                                     TextButton(
                                       child: const Text('OK'),
-                                      onPressed: () => Navigator.of(context).pop(),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
                                     ),
                                   ],
                                 );

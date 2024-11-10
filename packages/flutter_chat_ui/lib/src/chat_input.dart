@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -97,7 +98,8 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = context.select((ChatTheme theme) => theme.backgroundColor);
+    final backgroundColor =
+        context.select((ChatTheme theme) => theme.backgroundColor);
     final inputTheme = context.select((ChatTheme theme) => theme.inputTheme);
 
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
@@ -156,7 +158,9 @@ class _ChatInputState extends State<ChatInput> {
                                 shape: BoxShape.circle,
                               ),
                               child: IconButton(
-                                icon: value.text.isNotEmpty || _isRecording ? widget.sendIcon! : widget.audioIcon!,
+                                icon: value.text.isNotEmpty || _isRecording
+                                    ? widget.sendIcon!
+                                    : widget.audioIcon!,
                                 color: inputTheme.hintStyle?.color,
                                 onPressed: () async {
                                   if (_isRecording) {
@@ -182,7 +186,8 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   Widget _buildRecordingIndicator() {
-    final streamAmplitude = _audioRecorder.onAmplitudeChanged(const Duration(seconds: 1));
+    final streamAmplitude =
+        _audioRecorder.onAmplitudeChanged(const Duration(seconds: 1));
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -190,11 +195,14 @@ class _ChatInputState extends State<ChatInput> {
         const Icon(Icons.circle, color: Colors.red),
         const SizedBox(width: 8),
         StreamBuilder<Duration>(
-          stream: Stream.periodic(const Duration(seconds: 1), (count) => Duration(seconds: count)),
+          stream: Stream.periodic(
+              const Duration(seconds: 1), (count) => Duration(seconds: count),),
           builder: (context, snapshot) {
             final duration = snapshot.data ?? Duration.zero;
-            final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
-            final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+            final minutes =
+                duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+            final seconds =
+                duration.inSeconds.remainder(60).toString().padLeft(2, '0');
             return Row(
               children: [
                 Text(
@@ -213,9 +221,9 @@ class _ChatInputState extends State<ChatInput> {
                     final max = snapshot.data?.max ?? 0.0;
                     final audioLevel = (current / max).clamp(0.0, 1.0);
 
-                    print("current: $current");
-                    print("max $max");
-                    print("audioLevel: ${audioLevel}");
+                    developer.log('current: $current', name: 'ChatInput');
+                    developer.log('max: $max', name: 'ChatInput');
+                    developer.log('audioLevel: $audioLevel', name: 'ChatInput');
 
                     return BarAnimation(
                       color: Colors.red,
@@ -232,9 +240,12 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void _updateInputHeight() {
-    final renderBox = _inputKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox =
+        _inputKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
-      context.read<ChatInputHeightNotifier>().updateHeight(renderBox.size.height);
+      context
+          .read<ChatInputHeightNotifier>()
+          .updateHeight(renderBox.size.height);
     }
   }
 
@@ -268,7 +279,8 @@ class _ChatInputState extends State<ChatInput> {
 
         _recordedAudioPath = 'audio.m4a';
 
-        await _audioRecorder.start(const RecordConfig(), path: _recordedAudioPath!);
+        await _audioRecorder.start(const RecordConfig(),
+            path: _recordedAudioPath!,);
       }
     } catch (e) {
       debugPrint('Error during audio recording: $e');

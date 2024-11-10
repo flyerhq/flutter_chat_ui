@@ -12,7 +12,8 @@ class BarAnimation extends StatelessWidget {
   final double audioLevel;
 
   /// Creates a [BarAnimation] widget.
-  const BarAnimation({super.key, required this.color, required this.audioLevel});
+  const BarAnimation(
+      {super.key, required this.color, required this.audioLevel,});
 
   @override
   Widget build(BuildContext context) {

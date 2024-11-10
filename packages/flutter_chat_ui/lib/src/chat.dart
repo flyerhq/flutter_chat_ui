@@ -105,6 +105,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: _builders),
         Provider.value(value: _crossCache),
         Provider.value(value: widget.onMessageSend),
+        Provider.value(value: widget.onAudioSend),
         Provider.value(value: widget.onMessageTap),
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
