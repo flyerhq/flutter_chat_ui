@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 
 class FlyerChatAudioMessage extends StatefulWidget {
@@ -22,6 +21,31 @@ class FlyerChatAudioMessage extends StatefulWidget {
 class FlyerChatAudioMessageState extends State<FlyerChatAudioMessage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
+  Duration _currentPosition = Duration.zero;
+  Duration _totalDuration = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer.onDurationChanged.listen((duration) {
+      setState(() {
+        _totalDuration = duration;
+      });
+    });
+
+    _audioPlayer.onPositionChanged.listen((position) {
+      setState(() {
+        _currentPosition = position;
+      });
+    });
+
+    _audioPlayer.onPlayerComplete.listen((event) {
+      setState(() {
+        _isPlaying = false;
+        _currentPosition = Duration.zero;
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -50,18 +74,39 @@ class FlyerChatAudioMessageState extends State<FlyerChatAudioMessage> {
         child: Row(
           children: [
             IconButton(
-              icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+              icon: Icon(
+                _isPlaying ? Icons.pause : Icons.play_arrow,
+                size: 32,
+              ),
               onPressed: _togglePlayPause,
             ),
-            const Expanded(
-              child: Text(
-                'Audio Message',
-                overflow: TextOverflow.ellipsis,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Slider(
+                    value: _currentPosition.inSeconds.toDouble(),
+                    max: _totalDuration.inSeconds.toDouble(),
+                    onChanged: (value) async {
+                      final position = Duration(seconds: value.toInt());
+                      await _audioPlayer.seek(position);
+                      setState(() {
+                        _currentPosition = position;
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _formatDuration(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(1, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
   }
 }
