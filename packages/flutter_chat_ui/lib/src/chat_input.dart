@@ -1,4 +1,5 @@
 import 'dart:developer' as developer;
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -256,7 +257,8 @@ class _ChatInputState extends State<ChatInput> {
     });
 
     if (_recordedAudioPath!.isNotEmpty) {
-      context.read<OnAudioSendCallback?>()?.call(_recordedAudioPath!);
+      final audioFile = File(_recordedAudioPath!);
+      context.read<OnAudioSendCallback?>()?.call(audioFile);
       _resetAudioState();
     }
   }

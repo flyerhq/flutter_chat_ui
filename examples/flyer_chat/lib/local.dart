@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -104,12 +105,12 @@ class LocalState extends State<Local> {
     }
   }
 
-  Future<void> _addAudio(String filePath) async {
+  Future<void> _addAudio(File file) async {
     final message = await createMessage(
       widget.author,
       widget.dio,
       type: MessageType.audio,
-      filePath: filePath,
+      file: file,
     );
 
     if (mounted) {

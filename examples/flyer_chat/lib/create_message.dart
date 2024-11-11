@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -12,7 +13,7 @@ Future<Message> createMessage(
   Dio dio, {
   MessageType type = MessageType.text,
   String? text,
-  String filePath = 'audio.mp3',
+  File? file,
 }) async {
   const uuid = Uuid();
 
@@ -59,12 +60,16 @@ Future<Message> createMessage(
         blurhash: response.data['blurhash'],
       );
     case MessageType.audio:
-      return AudioMessage(
-        id: uuid.v4(),
-        author: author,
-        createdAt: DateTime.now().toUtc(),
-        audioFile: filePath,
-      );
+      if (file != null) {
+        return AudioMessage(
+          id: uuid.v4(),
+          author: author,
+          createdAt: DateTime.now().toUtc(),
+          audioFile: file.path,
+        );
+      } else {
+        throw ArgumentError('File must be provided for audio messages');
+      }
     default:
       throw ArgumentError('Invalid message type: $type');
   }
