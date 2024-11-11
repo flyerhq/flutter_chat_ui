@@ -45,10 +45,7 @@ class GeminiState extends State<Gemini> {
     );
 
     _chatSession = _model.startChat(
-      history: _chatController.messages
-          .whereType<TextMessage>()
-          .map((message) => Content.text(message.text))
-          .toList(),
+      history: _chatController.messages.whereType<TextMessage>().map((message) => Content.text(message.text)).toList(),
     );
   }
 
@@ -65,10 +62,8 @@ class GeminiState extends State<Gemini> {
     return Scaffold(
       body: Chat(
         builders: Builders(
-          textMessageBuilder: (context, message) =>
-              FlyerChatTextMessage(message: message),
-          imageMessageBuilder: (context, message) =>
-              FlyerChatImageMessage(message: message),
+          textMessageBuilder: (context, message) => FlyerChatTextMessage(message: message),
+          imageMessageBuilder: (context, message) => FlyerChatImageMessage(message: message),
         ),
         chatController: _chatController,
         crossCache: _crossCache,
@@ -156,8 +151,7 @@ class GeminiState extends State<Gemini> {
             );
             await _chatController.insert(_currentGeminiResponse!);
           } else {
-            final newUpdatedMessage = (_currentGeminiResponse as TextMessage)
-                .copyWith(text: accumulatedText);
+            final newUpdatedMessage = (_currentGeminiResponse as TextMessage).copyWith(text: accumulatedText);
             await _chatController.update(
               _currentGeminiResponse!,
               newUpdatedMessage,
@@ -168,9 +162,7 @@ class GeminiState extends State<Gemini> {
             // as soon as message that is being generated reaches top of the viewport
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!_scrollController.hasClients || !mounted) return;
-              if ((_scrollController.position.maxScrollExtent -
-                      initialMaxScrollExtent) <
-                  viewportDimension) {
+              if ((_scrollController.position.maxScrollExtent - initialMaxScrollExtent) < viewportDimension) {
                 _scrollController.animateTo(
                   _scrollController.position.maxScrollExtent,
                   duration: const Duration(milliseconds: 250),

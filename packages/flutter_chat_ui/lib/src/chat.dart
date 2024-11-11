@@ -35,8 +35,8 @@ class Chat extends StatefulWidget {
     this.darkTheme,
     this.themeMode = ThemeMode.system,
     this.onMessageSend,
-    this.onMessageTap,
     this.onAudioSend,
+    this.onMessageTap,
     this.onAttachmentTap,
   });
 

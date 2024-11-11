@@ -45,6 +45,7 @@ class LocalState extends State<Local> {
           chatController: _chatController,
           user: widget.author,
           onMessageSend: _addItem,
+          onAudioSend: _addAudio,
           onMessageTap: _removeItem,
           onAttachmentTap: _handleAttachmentTap,
         ),
@@ -100,6 +101,19 @@ class LocalState extends State<Local> {
       );
 
       await _chatController.insert(imageMessage);
+    }
+  }
+
+  Future<void> _addAudio(String filePath) async {
+    final message = await createMessage(
+      widget.author,
+      widget.dio,
+      type: MessageType.audio,
+      filePath: filePath,
+    );
+
+    if (mounted) {
+      await _chatController.insert(message);
     }
   }
 }
