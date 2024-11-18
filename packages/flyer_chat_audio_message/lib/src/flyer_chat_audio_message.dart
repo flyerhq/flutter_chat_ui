@@ -1,12 +1,20 @@
+import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 
+/// A widget that displays an audio message with play/pause functionality.
 class FlyerChatAudioMessage extends StatefulWidget {
+  /// The audio message to be played.
   final AudioMessage message;
+
+  /// The border radius of the audio message container.
   final BorderRadiusGeometry? borderRadius;
+
+  /// The constraints for the audio message container.
   final BoxConstraints? constraints;
 
+  /// Creates a [FlyerChatAudioMessage] widget.
   const FlyerChatAudioMessage({
     super.key,
     required this.message,
@@ -19,49 +27,65 @@ class FlyerChatAudioMessage extends StatefulWidget {
 }
 
 class FlyerChatAudioMessageState extends State<FlyerChatAudioMessage> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isPlaying = false;
-  Duration _currentPosition = Duration.zero;
-  Duration _totalDuration = Duration.zero;
+  late final AudioPlayer _player;
+  PlayerState? _playerState;
+  Duration? _currentPosition;
+  Duration? _totalDuration;
+
+  StreamSubscription? _durationSubscription;
+  StreamSubscription? _positionSubscription;
+  StreamSubscription? _playerCompleteSubscription;
+  StreamSubscription? _playerStateChangeSubscription;
+
+  bool get _isPlaying => _playerState == PlayerState.playing;
 
   @override
   void initState() {
     super.initState();
-    _audioPlayer.onDurationChanged.listen((duration) {
-      setState(() {
-        _totalDuration = duration;
-      });
-    });
-
-    _audioPlayer.onPositionChanged.listen((position) {
-      setState(() {
-        _currentPosition = position;
-      });
-    });
-
-    _audioPlayer.onPlayerComplete.listen((event) {
-      setState(() {
-        _isPlaying = false;
-        _currentPosition = Duration.zero;
-      });
-    });
+    _player = AudioPlayer();
+    _player.setReleaseMode(ReleaseMode.stop);
+    _initStreams();
   }
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    _durationSubscription?.cancel();
+    _positionSubscription?.cancel();
+    _playerCompleteSubscription?.cancel();
+    _playerStateChangeSubscription?.cancel();
+    _player.dispose();
     super.dispose();
   }
 
-  void _togglePlayPause() async {
-    if (_isPlaying) {
-      await _audioPlayer.pause();
-    } else {
-      await _audioPlayer.play(DeviceFileSource(widget.message.audioFile));
+  Future<void> _togglePlayPause() async {
+    try {
+      if (_isPlaying) {
+        await _player.pause();
+      } else {
+        await _player.setSource(AssetSource(widget.message.audioFile));
+        await _player.resume();
+      }
+    } on AudioPlayerException catch (e) {
+      _showErrorDialog('Audio Player Error', e.toString());
+    } catch (e) {
+      _showErrorDialog('Error', 'An unexpected error occurred. $e');
     }
-    setState(() {
-      _isPlaying = !_isPlaying;
-    });
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -85,11 +109,11 @@ class FlyerChatAudioMessageState extends State<FlyerChatAudioMessage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Slider(
-                    value: _currentPosition.inSeconds.toDouble(),
-                    max: _totalDuration.inSeconds.toDouble(),
+                    value: _currentPosition?.inSeconds.toDouble() ?? 0.0,
+                    max: _totalDuration?.inSeconds.toDouble() ?? 1.0,
                     onChanged: (value) async {
                       final position = Duration(seconds: value.toInt());
-                      await _audioPlayer.seek(position);
+                      await _player.seek(position);
                       setState(() {
                         _currentPosition = position;
                       });
@@ -104,9 +128,26 @@ class FlyerChatAudioMessageState extends State<FlyerChatAudioMessage> {
     );
   }
 
-  String _formatDuration(Duration duration) {
-    final minutes = duration.inMinutes.remainder(60).toString().padLeft(1, '0');
-    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return '$minutes:$seconds';
+  void _initStreams() {
+    _durationSubscription = _player.onDurationChanged.listen((duration) {
+      setState(() => _totalDuration = duration);
+    });
+
+    _positionSubscription = _player.onPositionChanged.listen((position) {
+      setState(() => _currentPosition = position);
+    });
+
+    _playerCompleteSubscription = _player.onPlayerComplete.listen((event) {
+      setState(() {
+        _playerState = PlayerState.stopped;
+        _currentPosition = Duration.zero;
+      });
+    });
+
+    _playerStateChangeSubscription = _player.onPlayerStateChanged.listen((state) {
+      setState(() {
+        _playerState = state;
+      });
+    });
   }
 }

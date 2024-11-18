@@ -272,11 +272,11 @@ class _ChatInputState extends State<ChatInput> {
           _isRecording = true;
         });
 
-        _recordedAudioPath = 'audio.m4a';
+        _recordedAudioPath = 'audio.mp3';
 
         await _audioRecorder.start(
           const RecordConfig(),
-          path: _recordedAudioPath!,
+          path: 'assets/${_recordedAudioPath!}',
         );
       }
     } catch (e) {

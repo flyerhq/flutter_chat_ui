@@ -1,0 +1,253 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "flutter_chat_ui",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat",
+            "cwd": "examples/flyer_chat",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat (profile mode)",
+            "cwd": "examples/flyer_chat",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat (release mode)",
+            "cwd": "examples/flyer_chat",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "cross_cache",
+            "cwd": "packages/cross_cache",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "cross_cache (profile mode)",
+            "cwd": "packages/cross_cache",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "cross_cache (release mode)",
+            "cwd": "packages/cross_cache",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_chat_core",
+            "cwd": "packages/flutter_chat_core",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_chat_core (profile mode)",
+            "cwd": "packages/flutter_chat_core",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_chat_core (release mode)",
+            "cwd": "packages/flutter_chat_core",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_chat_ui",
+            "cwd": "packages/flutter_chat_ui",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_chat_ui (profile mode)",
+            "cwd": "packages/flutter_chat_ui",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_chat_ui (release mode)",
+            "cwd": "packages/flutter_chat_ui",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_audio_message",
+            "cwd": "packages/flyer_chat_audio_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_audio_message (profile mode)",
+            "cwd": "packages/flyer_chat_audio_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_audio_message (release mode)",
+            "cwd": "packages/flyer_chat_audio_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_custom_message",
+            "cwd": "packages/flyer_chat_custom_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_custom_message (profile mode)",
+            "cwd": "packages/flyer_chat_custom_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_custom_message (release mode)",
+            "cwd": "packages/flyer_chat_custom_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_file_message",
+            "cwd": "packages/flyer_chat_file_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_file_message (profile mode)",
+            "cwd": "packages/flyer_chat_file_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_file_message (release mode)",
+            "cwd": "packages/flyer_chat_file_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_image_message",
+            "cwd": "packages/flyer_chat_image_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_image_message (profile mode)",
+            "cwd": "packages/flyer_chat_image_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_image_message (release mode)",
+            "cwd": "packages/flyer_chat_image_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_location_message",
+            "cwd": "packages/flyer_chat_location_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_location_message (profile mode)",
+            "cwd": "packages/flyer_chat_location_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_location_message (release mode)",
+            "cwd": "packages/flyer_chat_location_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_system_message",
+            "cwd": "packages/flyer_chat_system_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_system_message (profile mode)",
+            "cwd": "packages/flyer_chat_system_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_system_message (release mode)",
+            "cwd": "packages/flyer_chat_system_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_text_message",
+            "cwd": "packages/flyer_chat_text_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_text_message (profile mode)",
+            "cwd": "packages/flyer_chat_text_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_text_message (release mode)",
+            "cwd": "packages/flyer_chat_text_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flyer_chat_video_message",
+            "cwd": "packages/flyer_chat_video_message",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flyer_chat_video_message (profile mode)",
+            "cwd": "packages/flyer_chat_video_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flyer_chat_video_message (release mode)",
+            "cwd": "packages/flyer_chat_video_message",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
