@@ -26,11 +26,7 @@ class HiveChatController implements ChatController {
 
   @override
   Future<void> remove(Message message) async {
-    final index = _box
-        .getRange(0, _box.length)
-        .map((json) => Message.fromJson(json))
-        .toList()
-        .indexOf(message);
+    final index = _box.getRange(0, _box.length).map((json) => Message.fromJson(json)).toList().indexOf(message);
 
     if (index > -1) {
       _box.write(() {
@@ -44,11 +40,7 @@ class HiveChatController implements ChatController {
   Future<void> update(Message oldMessage, Message newMessage) async {
     if (oldMessage == newMessage) return;
 
-    final index = _box
-        .getRange(0, _box.length)
-        .map((json) => Message.fromJson(json))
-        .toList()
-        .indexOf(oldMessage);
+    final index = _box.getRange(0, _box.length).map((json) => Message.fromJson(json)).toList().indexOf(oldMessage);
 
     if (index > -1) {
       _box.write(() {
@@ -67,10 +59,7 @@ class HiveChatController implements ChatController {
     } else {
       _box.write(() {
         _box.putAll(
-          messages
-              .map((message) => {message.id: message.toJson()})
-              .toList()
-              .reduce((acc, map) => {...acc, ...map}),
+          messages.map((message) => {message.id: message.toJson()}).toList().reduce((acc, map) => {...acc, ...map}),
         );
         _operationsController.add(ChatOperation.set());
       });
@@ -79,10 +68,7 @@ class HiveChatController implements ChatController {
 
   @override
   List<Message> get messages {
-    return _box
-        .getRange(0, _box.length)
-        .map((json) => Message.fromJson(json))
-        .toList();
+    return _box.getRange(0, _box.length).map((json) => Message.fromJson(json)).toList();
   }
 
   @override

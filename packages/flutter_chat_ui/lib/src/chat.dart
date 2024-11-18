@@ -20,6 +20,7 @@ class Chat extends StatefulWidget {
   final ChatTheme? darkTheme;
   final ThemeMode themeMode;
   final OnMessageSendCallback? onMessageSend;
+  final OnAudioSendCallback? onAudioSend;
   final OnMessageTapCallback? onMessageTap;
   final OnAttachmentTapCallback? onAttachmentTap;
 
@@ -34,6 +35,7 @@ class Chat extends StatefulWidget {
     this.darkTheme,
     this.themeMode = ThemeMode.system,
     this.onMessageSend,
+    this.onAudioSend,
     this.onMessageTap,
     this.onAttachmentTap,
   });
@@ -69,8 +71,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   void didUpdateWidget(covariant Chat oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.theme != widget.theme ||
-        oldWidget.darkTheme != widget.darkTheme) {
+    if (oldWidget.theme != widget.theme || oldWidget.darkTheme != widget.darkTheme) {
       _updateTheme(theme: _theme, darkTheme: _theme);
     }
 
@@ -104,6 +105,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: _builders),
         Provider.value(value: _crossCache),
         Provider.value(value: widget.onMessageSend),
+        Provider.value(value: widget.onAudioSend),
         Provider.value(value: widget.onMessageTap),
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
@@ -151,10 +153,9 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         _theme = (darkTheme ?? ChatTheme.dark()).merge(widget.darkTheme);
         break;
       case ThemeMode.system:
-        _theme =
-            PlatformDispatcher.instance.platformBrightness == Brightness.dark
-                ? (darkTheme ?? ChatTheme.dark()).merge(widget.darkTheme)
-                : (theme ?? ChatTheme.light()).merge(widget.theme);
+        _theme = PlatformDispatcher.instance.platformBrightness == Brightness.dark
+            ? (darkTheme ?? ChatTheme.dark()).merge(widget.darkTheme)
+            : (theme ?? ChatTheme.light()).merge(widget.theme);
         break;
     }
   }

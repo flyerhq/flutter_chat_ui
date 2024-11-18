@@ -30,6 +30,14 @@ sealed class Message with _$Message {
     double? height,
   }) = ImageMessage;
 
+  const factory Message.audio({
+    required String id,
+    required User author,
+    Map<String, dynamic>? metadata,
+    @EpochDateTimeConverter() required DateTime createdAt,
+    required String audioFile,
+  }) = AudioMessage;
+
   const factory Message.unsupported({
     required String id,
     required User author,
@@ -39,6 +47,5 @@ sealed class Message with _$Message {
 
   const Message._();
 
-  factory Message.fromJson(Map<String, dynamic> json) =>
-      _$MessageFromJson(json);
+  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 }

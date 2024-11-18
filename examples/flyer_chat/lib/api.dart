@@ -58,10 +58,8 @@ class ApiState extends State<Api> {
     return Scaffold(
       body: Chat(
         builders: Builders(
-          textMessageBuilder: (context, message) =>
-              FlyerChatTextMessage(message: message),
-          imageMessageBuilder: (context, message) =>
-              FlyerChatImageMessage(message: message),
+          textMessageBuilder: (context, message) => FlyerChatTextMessage(message: message),
+          imageMessageBuilder: (context, message) => FlyerChatImageMessage(message: message),
         ),
         chatController: _chatController,
         user: widget.author,
@@ -145,7 +143,7 @@ class ApiState extends State<Api> {
     });
   }
 
-  void _addItem(String? text) async {
+  Future<void> _addItem(String? text) async {
     final message = await createMessage(widget.author, widget.dio, text: text);
 
     if (mounted) {
@@ -159,8 +157,6 @@ class ApiState extends State<Api> {
       );
 
       if (mounted) {
-        // Make sure to get the updated message
-        // (width and height might have been set by the image message widget)
         final possiblyUpdatedMessage = _chatController.messages.firstWhere(
           (element) => element.id == message.id,
           orElse: () => message,

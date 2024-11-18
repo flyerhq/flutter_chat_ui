@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Some message to describe why you need this permission</string>
+	<key>com.apple.security.device.audio-input</key>
+	<true/>
 </dict>
 </plist>

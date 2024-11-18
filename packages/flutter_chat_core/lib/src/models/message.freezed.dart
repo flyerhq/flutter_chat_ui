@@ -20,6 +20,8 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
       return TextMessage.fromJson(json);
     case 'image':
       return ImageMessage.fromJson(json);
+    case 'audio':
+      return AudioMessage.fromJson(json);
 
     default:
       return UnsupportedMessage.fromJson(json);
@@ -57,6 +59,13 @@ mixin _$Message {
     required TResult Function(
             String id,
             User author,
+            Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt,
+            String audioFile)
+        audio,
+    required TResult Function(
+            String id,
+            User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
         unsupported,
@@ -83,6 +92,9 @@ mixin _$Message {
             double? width,
             double? height)?
         image,
+    TResult? Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult? Function(
             String id,
             User author,
@@ -112,6 +124,9 @@ mixin _$Message {
             double? width,
             double? height)?
         image,
+    TResult Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult Function(
             String id,
             User author,
@@ -125,6 +140,7 @@ mixin _$Message {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(AudioMessage value) audio,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) =>
       throw _privateConstructorUsedError;
@@ -132,6 +148,7 @@ mixin _$Message {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(AudioMessage value)? audio,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) =>
       throw _privateConstructorUsedError;
@@ -139,6 +156,7 @@ mixin _$Message {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(AudioMessage value)? audio,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) =>
@@ -403,6 +421,13 @@ class _$TextMessageImpl extends TextMessage {
     required TResult Function(
             String id,
             User author,
+            Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt,
+            String audioFile)
+        audio,
+    required TResult Function(
+            String id,
+            User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
         unsupported,
@@ -432,6 +457,9 @@ class _$TextMessageImpl extends TextMessage {
             double? width,
             double? height)?
         image,
+    TResult? Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult? Function(
             String id,
             User author,
@@ -464,6 +492,9 @@ class _$TextMessageImpl extends TextMessage {
             double? width,
             double? height)?
         image,
+    TResult Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult Function(
             String id,
             User author,
@@ -483,6 +514,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(AudioMessage value) audio,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) {
     return text(this);
@@ -493,6 +525,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(AudioMessage value)? audio,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) {
     return text?.call(this);
@@ -503,6 +536,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(AudioMessage value)? audio,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) {
@@ -763,6 +797,13 @@ class _$ImageMessageImpl extends ImageMessage {
     required TResult Function(
             String id,
             User author,
+            Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt,
+            String audioFile)
+        audio,
+    required TResult Function(
+            String id,
+            User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
         unsupported,
@@ -793,6 +834,9 @@ class _$ImageMessageImpl extends ImageMessage {
             double? width,
             double? height)?
         image,
+    TResult? Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult? Function(
             String id,
             User author,
@@ -826,6 +870,9 @@ class _$ImageMessageImpl extends ImageMessage {
             double? width,
             double? height)?
         image,
+    TResult Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult Function(
             String id,
             User author,
@@ -846,6 +893,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(AudioMessage value) audio,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) {
     return image(this);
@@ -856,6 +904,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(AudioMessage value)? audio,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) {
     return image?.call(this);
@@ -866,6 +915,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(AudioMessage value)? audio,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) {
@@ -919,6 +969,330 @@ abstract class ImageMessage extends Message {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImageMessageImplCopyWith<_$ImageMessageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AudioMessageImplCopyWith<$Res>
+    implements $MessageCopyWith<$Res> {
+  factory _$$AudioMessageImplCopyWith(
+          _$AudioMessageImpl value, $Res Function(_$AudioMessageImpl) then) =
+      __$$AudioMessageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      User author,
+      Map<String, dynamic>? metadata,
+      @EpochDateTimeConverter() DateTime createdAt,
+      String audioFile});
+
+  @override
+  $UserCopyWith<$Res> get author;
+}
+
+/// @nodoc
+class __$$AudioMessageImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$AudioMessageImpl>
+    implements _$$AudioMessageImplCopyWith<$Res> {
+  __$$AudioMessageImplCopyWithImpl(
+      _$AudioMessageImpl _value, $Res Function(_$AudioMessageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? author = null,
+    Object? metadata = freezed,
+    Object? createdAt = null,
+    Object? audioFile = null,
+  }) {
+    return _then(_$AudioMessageImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as User,
+      metadata: freezed == metadata
+          ? _value._metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      audioFile: null == audioFile
+          ? _value.audioFile
+          : audioFile // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AudioMessageImpl extends AudioMessage {
+  const _$AudioMessageImpl(
+      {required this.id,
+      required this.author,
+      final Map<String, dynamic>? metadata,
+      @EpochDateTimeConverter() required this.createdAt,
+      required this.audioFile,
+      final String? $type})
+      : _metadata = metadata,
+        $type = $type ?? 'audio',
+        super._();
+
+  factory _$AudioMessageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AudioMessageImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final User author;
+  final Map<String, dynamic>? _metadata;
+  @override
+  Map<String, dynamic>? get metadata {
+    final value = _metadata;
+    if (value == null) return null;
+    if (_metadata is EqualUnmodifiableMapView) return _metadata;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  @EpochDateTimeConverter()
+  final DateTime createdAt;
+  @override
+  final String audioFile;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Message.audio(id: $id, author: $author, metadata: $metadata, createdAt: $createdAt, audioFile: $audioFile)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AudioMessageImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.author, author) || other.author == author) &&
+            const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.audioFile, audioFile) ||
+                other.audioFile == audioFile));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, author,
+      const DeepCollectionEquality().hash(_metadata), createdAt, audioFile);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AudioMessageImplCopyWith<_$AudioMessageImpl> get copyWith =>
+      __$$AudioMessageImplCopyWithImpl<_$AudioMessageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String text,
+            LinkPreview? linkPreview)
+        text,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String source,
+            String? thumbhash,
+            String? blurhash,
+            double? width,
+            double? height)
+        image,
+    required TResult Function(
+            String id,
+            User author,
+            Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt,
+            String audioFile)
+        audio,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
+        unsupported,
+  }) {
+    return audio(id, author, metadata, createdAt, audioFile);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String text,
+            LinkPreview? linkPreview)?
+        text,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String source,
+            String? thumbhash,
+            String? blurhash,
+            double? width,
+            double? height)?
+        image,
+    TResult? Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        unsupported,
+  }) {
+    return audio?.call(id, author, metadata, createdAt, audioFile);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String text,
+            LinkPreview? linkPreview)?
+        text,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String source,
+            String? thumbhash,
+            String? blurhash,
+            double? width,
+            double? height)?
+        image,
+    TResult Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        unsupported,
+    required TResult orElse(),
+  }) {
+    if (audio != null) {
+      return audio(id, author, metadata, createdAt, audioFile);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TextMessage value) text,
+    required TResult Function(ImageMessage value) image,
+    required TResult Function(AudioMessage value) audio,
+    required TResult Function(UnsupportedMessage value) unsupported,
+  }) {
+    return audio(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TextMessage value)? text,
+    TResult? Function(ImageMessage value)? image,
+    TResult? Function(AudioMessage value)? audio,
+    TResult? Function(UnsupportedMessage value)? unsupported,
+  }) {
+    return audio?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TextMessage value)? text,
+    TResult Function(ImageMessage value)? image,
+    TResult Function(AudioMessage value)? audio,
+    TResult Function(UnsupportedMessage value)? unsupported,
+    required TResult orElse(),
+  }) {
+    if (audio != null) {
+      return audio(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AudioMessageImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class AudioMessage extends Message {
+  const factory AudioMessage(
+      {required final String id,
+      required final User author,
+      final Map<String, dynamic>? metadata,
+      @EpochDateTimeConverter() required final DateTime createdAt,
+      required final String audioFile}) = _$AudioMessageImpl;
+  const AudioMessage._() : super._();
+
+  factory AudioMessage.fromJson(Map<String, dynamic> json) =
+      _$AudioMessageImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  User get author;
+  @override
+  Map<String, dynamic>? get metadata;
+  @override
+  @EpochDateTimeConverter()
+  DateTime get createdAt;
+  String get audioFile;
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AudioMessageImplCopyWith<_$AudioMessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1071,6 +1445,13 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
     required TResult Function(
             String id,
             User author,
+            Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt,
+            String audioFile)
+        audio,
+    required TResult Function(
+            String id,
+            User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
         unsupported,
@@ -1100,6 +1481,9 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             double? width,
             double? height)?
         image,
+    TResult? Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult? Function(
             String id,
             User author,
@@ -1132,6 +1516,9 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             double? width,
             double? height)?
         image,
+    TResult Function(String id, User author, Map<String, dynamic>? metadata,
+            @EpochDateTimeConverter() DateTime createdAt, String audioFile)?
+        audio,
     TResult Function(
             String id,
             User author,
@@ -1151,6 +1538,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(AudioMessage value) audio,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) {
     return unsupported(this);
@@ -1161,6 +1549,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(AudioMessage value)? audio,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) {
     return unsupported?.call(this);
@@ -1171,6 +1560,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(AudioMessage value)? audio,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) {

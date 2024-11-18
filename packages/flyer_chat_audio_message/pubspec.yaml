@@ -10,8 +10,10 @@ environment:
   flutter: ">=3.16.0"
 
 dependencies:
+  audioplayers: ^6.1.0
   flutter:
     sdk: flutter
+  flutter_chat_core: ^0.0.2
 
 dev_dependencies:
   flutter_lints: ^4.0.0

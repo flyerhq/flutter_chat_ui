@@ -7,11 +7,18 @@ import 'package:provider/provider.dart';
 import '../simple_text_message.dart';
 import 'chat_message.dart';
 
+/// A widget that represents an internal chat message with animation and update capabilities.
 class ChatMessageInternal extends StatefulWidget {
+  /// Animation for the message.
   final Animation<double> animation;
+
+  /// The message to be displayed.
   final Message message;
+
+  /// Indicates if the message is removed.
   final bool? isRemoved;
 
+  /// Creates a [ChatMessageInternal] widget.
   const ChatMessageInternal({
     super.key,
     required this.animation,
@@ -23,6 +30,7 @@ class ChatMessageInternal extends StatefulWidget {
   State<ChatMessageInternal> createState() => ChatMessageInternalState();
 }
 
+/// State for [ChatMessageInternal] that handles message updates and rendering.
 class ChatMessageInternalState extends State<ChatMessageInternal> {
   late StreamSubscription<ChatOperation>? _operationsSubscription;
   late Message _updatedMessage;
@@ -36,8 +44,7 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
     if (widget.isRemoved == true) {
       _operationsSubscription = null;
     } else {
-      final chatController =
-          Provider.of<ChatController>(context, listen: false);
+      final chatController = Provider.of<ChatController>(context, listen: false);
       _operationsSubscription = chatController.operationsStream.listen((event) {
         switch (event.type) {
           case ChatOperationType.update:
@@ -63,8 +70,8 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
 
   @override
   void dispose() {
-    super.dispose();
     _operationsSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -92,11 +99,9 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
   ) {
     switch (message) {
       case TextMessage():
-        return builders.textMessageBuilder?.call(context, message) ??
-            SimpleTextMessage(message: message);
+        return builders.textMessageBuilder?.call(context, message) ?? SimpleTextMessage(message: message);
       case ImageMessage():
-        final result = builders.imageMessageBuilder?.call(context, message) ??
-            const SizedBox.shrink();
+        final result = builders.imageMessageBuilder?.call(context, message) ?? const SizedBox.shrink();
         assert(
           !(result is SizedBox && result.width == 0 && result.height == 0),
           'You are trying to display an image message but you have not provided an imageMessageBuilder. '
@@ -104,6 +109,11 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
           'If you want to use default image message widget, install flyer_chat_image_message package and use FlyerChatImageMessage widget.',
         );
         return result;
+      case AudioMessage():
+        return builders.audioMessageBuilder?.call(context, message) ??
+            const Text(
+              'Audio message received.',
+            );
       case UnsupportedMessage():
         return builders.unsupportedMessageBuilder?.call(context, message) ??
             const Text(

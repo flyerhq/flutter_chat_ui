@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flyer_chat_audio_message/flyer_chat_audio_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,18 +36,20 @@ class LocalState extends State<Local> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Chat(
-        builders: Builders(
-          textMessageBuilder: (context, message) =>
-              FlyerChatTextMessage(message: message),
-          imageMessageBuilder: (context, message) =>
-              FlyerChatImageMessage(message: message),
+      body: SafeArea(
+        child: Chat(
+          builders: Builders(
+            textMessageBuilder: (context, message) => FlyerChatTextMessage(message: message),
+            audioMessageBuilder: (context, message) => FlyerChatAudioMessage(message: message),
+            imageMessageBuilder: (context, message) => FlyerChatImageMessage(message: message),
+          ),
+          chatController: _chatController,
+          user: widget.author,
+          onMessageSend: _addItem,
+          onAudioSend: _addAudio,
+          onMessageTap: _removeItem,
+          onAttachmentTap: _handleAttachmentTap,
         ),
-        chatController: _chatController,
-        user: widget.author,
-        onMessageSend: _addItem,
-        onMessageTap: _removeItem,
-        onAttachmentTap: _handleAttachmentTap,
       ),
       persistentFooterButtons: [
         TextButton(
@@ -71,9 +75,7 @@ class LocalState extends State<Local> {
   }
 
   void _addItem(String? text) async {
-    final randomUser = Random().nextInt(2) == 0
-        ? const User(id: 'sender1')
-        : const User(id: 'sender2');
+    final randomUser = Random().nextInt(2) == 0 ? const User(id: 'sender1') : const User(id: 'sender2');
 
     final message = await createMessage(randomUser, widget.dio, text: text);
 
@@ -100,6 +102,19 @@ class LocalState extends State<Local> {
       );
 
       await _chatController.insert(imageMessage);
+    }
+  }
+
+  Future<void> _addAudio(File file) async {
+    final message = await createMessage(
+      widget.author,
+      widget.dio,
+      type: MessageType.audio,
+      file: file,
+    );
+
+    if (mounted) {
+      await _chatController.insert(message);
     }
   }
 }
