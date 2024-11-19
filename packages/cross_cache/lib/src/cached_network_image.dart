@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:cross_cache/cross_cache.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
+
+import '../cross_cache.dart';
 
 // Method signature for _loadAsync decode callbacks.
 typedef _SimpleDecoderCallback = Future<ui.Codec> Function(
@@ -11,10 +12,10 @@ typedef _SimpleDecoderCallback = Future<ui.Codec> Function(
 );
 
 @immutable
-class CustomNetworkImage extends ImageProvider<NetworkImage>
+class CachedNetworkImage extends ImageProvider<NetworkImage>
     implements NetworkImage {
   /// Creates an object that fetches the image at the given URL.
-  const CustomNetworkImage(
+  const CachedNetworkImage(
     this.url,
     this.crossCache, {
     this.scale = 1.0,
@@ -78,7 +79,7 @@ class CustomNetworkImage extends ImageProvider<NetworkImage>
       );
 
       if (bytes.lengthInBytes == 0) {
-        throw Exception('CustomNetworkImage is an empty file: ${key.url}');
+        throw Exception('CachedNetworkImage is an empty file: ${key.url}');
       }
 
       return decode(await ui.ImmutableBuffer.fromUint8List(bytes));
@@ -100,7 +101,7 @@ class CustomNetworkImage extends ImageProvider<NetworkImage>
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is CustomNetworkImage &&
+    return other is CachedNetworkImage &&
         other.url == url &&
         other.scale == scale;
   }
@@ -110,5 +111,5 @@ class CustomNetworkImage extends ImageProvider<NetworkImage>
 
   @override
   String toString() =>
-      '${objectRuntimeType(this, 'CustomNetworkImage')}("$url", scale: ${scale.toStringAsFixed(1)})';
+      '${objectRuntimeType(this, 'CachedNetworkImage')}("$url", scale: ${scale.toStringAsFixed(1)})';
 }

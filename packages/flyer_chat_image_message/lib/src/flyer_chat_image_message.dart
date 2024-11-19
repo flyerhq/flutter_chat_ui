@@ -9,8 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:thumbhash/thumbhash.dart'
     show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
 
-import 'custom_network_image.dart';
-import 'preload_image_provider.dart';
+import 'get_image_dimensions.dart';
 
 class FlyerChatImageMessage extends StatefulWidget {
   final ImageMessage message;
@@ -30,8 +29,8 @@ class FlyerChatImageMessage extends StatefulWidget {
 
 class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     with TickerProviderStateMixin {
-  late ChatController _chatController;
-  late CustomNetworkImage _customNetworkImage;
+  late final ChatController _chatController;
+  late CachedNetworkImage _cachedNetworkImage;
   late double _aspectRatio;
   ImageProvider? _placeholderProvider;
 
@@ -39,9 +38,12 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   void initState() {
     super.initState();
 
-    if (widget.message.width != null && widget.message.height != null) {
-      _aspectRatio = widget.message.width! / widget.message.height!;
-    } else if (widget.message.thumbhash != null) {
+    final height = widget.message.height;
+    final width = widget.message.width;
+
+    if (height != null && width != null && height > 0 && width > 0) {
+      _aspectRatio = width / height;
+    } else if (widget.message.thumbhash?.isNotEmpty ?? false) {
       final thumbhashBytes =
           base64.decode(base64.normalize(widget.message.thumbhash!));
 
@@ -50,7 +52,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       final rgbaImage = thumbHashToRGBA(thumbhashBytes);
       final bmp = rgbaToBmp(rgbaImage);
       _placeholderProvider = MemoryImage(bmp);
-    } else if (widget.message.blurhash != null) {
+    } else if (widget.message.blurhash?.isNotEmpty ?? false) {
       _aspectRatio = 1;
 
       final blurhash = BlurHash.decode(widget.message.blurhash!);
@@ -64,10 +66,10 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     final crossCache = Provider.of<CrossCache>(context, listen: false);
 
     _chatController = Provider.of<ChatController>(context, listen: false);
-    _customNetworkImage = CustomNetworkImage(widget.message.source, crossCache);
+    _cachedNetworkImage = CachedNetworkImage(widget.message.source, crossCache);
 
-    if (widget.message.width == null || widget.message.height == null) {
-      getDimensions(_customNetworkImage).then((dimensions) {
+    if (width == null || height == null) {
+      getImageDimensions(_cachedNetworkImage).then((dimensions) {
         if (mounted) {
           _aspectRatio = dimensions.$1 / dimensions.$2;
           _chatController.update(
@@ -83,11 +85,32 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   }
 
   @override
+  void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
+    if (oldWidget.message.source != widget.message.source) {
+      final crossCache = Provider.of<CrossCache>(context, listen: false);
+      final newImage = CachedNetworkImage(widget.message.source, crossCache);
+
+      precacheImage(newImage, context).then((_) {
+        if (mounted) {
+          _cachedNetworkImage = newImage;
+        }
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _placeholderProvider?.evict();
+    // Evicting the cached network image on dispose will result in images flickering
+    // _cachedNetworkImage.evict();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final backgroundColor =
-        context.select((ChatTheme theme) => theme.backgroundColor);
-    final imagePlaceholderColor =
-        context.select((ChatTheme theme) => theme.imagePlaceholderColor);
+    final imageMessageTheme =
+        context.select((ChatTheme theme) => theme.imageMessageTheme);
 
     return ClipRRect(
       borderRadius: widget.borderRadius ?? BorderRadius.zero,
@@ -104,10 +127,10 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                       fit: BoxFit.fill,
                     )
                   : Container(
-                      color: imagePlaceholderColor,
+                      color: imageMessageTheme.placeholderColor,
                     ),
               Image(
-                image: _customNetworkImage,
+                image: _cachedNetworkImage,
                 fit: BoxFit.fill,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
@@ -116,7 +139,8 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
                   return Center(
                     child: CircularProgressIndicator(
-                      color: backgroundColor.withOpacity(0.5),
+                      color: imageMessageTheme.downloadProgressIndicatorColor,
+                      strokeCap: StrokeCap.round,
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                               loadingProgress.expectedTotalBytes!
@@ -137,6 +161,27 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   );
                 },
               ),
+              if (_chatController is UploadProgressMixin)
+                StreamBuilder<double>(
+                  stream: (_chatController as UploadProgressMixin)
+                      .getUploadProgress(widget.message.id),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.data! >= 1) {
+                      return const SizedBox();
+                    }
+
+                    return Container(
+                      color: imageMessageTheme.uploadOverlayColor,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: imageMessageTheme.uploadProgressIndicatorColor,
+                          strokeCap: StrokeCap.round,
+                          value: snapshot.data,
+                        ),
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),

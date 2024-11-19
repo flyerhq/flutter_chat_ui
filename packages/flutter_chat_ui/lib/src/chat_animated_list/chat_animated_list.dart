@@ -19,6 +19,8 @@ class ChatAnimatedList extends StatefulWidget {
   final Duration scrollToBottomAppearanceDelay;
   final double? topPadding;
   final double? bottomPadding;
+  final Widget? topSliver;
+  final Widget? bottomSliver;
 
   const ChatAnimatedList({
     super.key,
@@ -32,6 +34,8 @@ class ChatAnimatedList extends StatefulWidget {
     // for the first message
     this.topPadding = 7,
     this.bottomPadding = 20,
+    this.topSliver,
+    this.bottomSliver,
   });
 
   @override
@@ -41,12 +45,12 @@ class ChatAnimatedList extends StatefulWidget {
 class ChatAnimatedListState extends State<ChatAnimatedList>
     with SingleTickerProviderStateMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
-  late ChatController _chatController;
+  late final ChatController _chatController;
   late List<Message> _oldList;
-  late StreamSubscription<ChatOperation> _operationsSubscription;
+  late final StreamSubscription<ChatOperation> _operationsSubscription;
 
-  late AnimationController _scrollToBottomController;
-  late Animation<double> _scrollToBottomAnimation;
+  late final AnimationController _scrollToBottomController;
+  late final Animation<double> _scrollToBottomAnimation;
   Timer? _scrollToBottomShowTimer;
 
   bool _userHasScrolled = false;
@@ -167,6 +171,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                 SliverPadding(
                   padding: EdgeInsets.only(top: widget.topPadding!),
                 ),
+              if (widget.topSliver != null) widget.topSliver!,
               SliverAnimatedList(
                 key: _listKey,
                 initialItemCount: _chatController.messages.length,
@@ -183,11 +188,13 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                   );
                 },
               ),
+              if (widget.bottomSliver != null) widget.bottomSliver!,
               Consumer<ChatInputHeightNotifier>(
                 builder: (context, heightNotifier, child) {
                   return SliverPadding(
                     padding: EdgeInsets.only(
-                      top: heightNotifier.height + (widget.bottomPadding ?? 0),
+                      bottom:
+                          heightNotifier.height + (widget.bottomPadding ?? 0),
                     ),
                   );
                 },

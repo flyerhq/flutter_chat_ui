@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 typedef Dimensions = (double width, double height);
 
-Future<Dimensions> getDimensions(ImageProvider provider) {
+Future<Dimensions> getImageDimensions(ImageProvider provider) {
   final completer = Completer<Dimensions>();
   const config = ImageConfiguration.empty;
 

@@ -46,3 +46,5 @@ app.*.map.json
 
 pubspec_overrides.yaml
 coverage/
+
+devtools_options.yaml

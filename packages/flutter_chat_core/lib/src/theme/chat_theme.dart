@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'chat_theme_constants.dart';
+import 'image_message_theme.dart';
 import 'input_theme.dart';
 import 'scroll_to_bottom_theme.dart';
 import 'text_message_theme.dart';
@@ -12,7 +13,7 @@ class ChatTheme with _$ChatTheme {
   factory ChatTheme.light({
     Color? backgroundColor,
     String? fontFamily,
-    Color? imagePlaceholderColor,
+    ImageMessageTheme? imageMessageTheme,
     InputTheme? inputTheme,
     ScrollToBottomTheme? scrollToBottomTheme,
     TextMessageTheme? textMessageTheme,
@@ -20,8 +21,7 @@ class ChatTheme with _$ChatTheme {
     return ChatTheme(
       backgroundColor: backgroundColor ?? defaultChatBackgroundColor.light,
       fontFamily: fontFamily ?? defaultChatFontFamily,
-      imagePlaceholderColor:
-          imagePlaceholderColor ?? defaultImagePlaceholderColor.light,
+      imageMessageTheme: ImageMessageTheme.light().merge(imageMessageTheme),
       inputTheme:
           InputTheme.light(fontFamily: fontFamily ?? defaultChatFontFamily)
               .merge(inputTheme),
@@ -36,7 +36,7 @@ class ChatTheme with _$ChatTheme {
   factory ChatTheme.dark({
     Color? backgroundColor,
     String? fontFamily,
-    Color? imagePlaceholderColor,
+    ImageMessageTheme? imageMessageTheme,
     InputTheme? inputTheme,
     ScrollToBottomTheme? scrollToBottomTheme,
     TextMessageTheme? textMessageTheme,
@@ -44,8 +44,7 @@ class ChatTheme with _$ChatTheme {
     return ChatTheme(
       backgroundColor: backgroundColor ?? defaultChatBackgroundColor.dark,
       fontFamily: fontFamily ?? defaultChatFontFamily,
-      imagePlaceholderColor:
-          imagePlaceholderColor ?? defaultImagePlaceholderColor.dark,
+      imageMessageTheme: ImageMessageTheme.dark().merge(imageMessageTheme),
       inputTheme:
           InputTheme.dark(fontFamily: fontFamily ?? defaultChatFontFamily)
               .merge(inputTheme),
@@ -65,7 +64,7 @@ class ChatTheme with _$ChatTheme {
     return ChatTheme(
       backgroundColor: themeData.colorScheme.surface,
       fontFamily: family,
-      imagePlaceholderColor: themeData.colorScheme.surfaceContainerLow,
+      imageMessageTheme: ImageMessageTheme.fromThemeData(themeData),
       inputTheme: InputTheme.fromThemeData(themeData, fontFamily: family),
       scrollToBottomTheme: ScrollToBottomTheme.fromThemeData(themeData),
       textMessageTheme: TextMessageTheme.fromThemeData(
@@ -78,7 +77,7 @@ class ChatTheme with _$ChatTheme {
   const factory ChatTheme({
     required Color backgroundColor,
     required String fontFamily,
-    required Color imagePlaceholderColor,
+    required ImageMessageTheme imageMessageTheme,
     required InputTheme inputTheme,
     required ScrollToBottomTheme scrollToBottomTheme,
     required TextMessageTheme textMessageTheme,
@@ -89,7 +88,7 @@ class ChatTheme with _$ChatTheme {
   ChatTheme copyWith({
     Color? backgroundColor,
     String? fontFamily,
-    Color? imagePlaceholderColor,
+    ImageMessageTheme? imageMessageTheme,
     InputTheme? inputTheme,
     ScrollToBottomTheme? scrollToBottomTheme,
     TextMessageTheme? textMessageTheme,
@@ -97,8 +96,7 @@ class ChatTheme with _$ChatTheme {
     return ChatTheme(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       fontFamily: fontFamily ?? this.fontFamily,
-      imagePlaceholderColor:
-          imagePlaceholderColor ?? this.imagePlaceholderColor,
+      imageMessageTheme: this.imageMessageTheme.merge(imageMessageTheme),
       inputTheme: this.inputTheme.merge(inputTheme),
       scrollToBottomTheme: this.scrollToBottomTheme.merge(scrollToBottomTheme),
       textMessageTheme: this.textMessageTheme.merge(textMessageTheme),
@@ -110,7 +108,7 @@ class ChatTheme with _$ChatTheme {
     return copyWith(
       backgroundColor: other.backgroundColor,
       fontFamily: other.fontFamily,
-      imagePlaceholderColor: other.imagePlaceholderColor,
+      imageMessageTheme: other.imageMessageTheme,
       inputTheme: other.inputTheme,
       scrollToBottomTheme: other.scrollToBottomTheme,
       textMessageTheme: other.textMessageTheme,

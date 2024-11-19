@@ -14,7 +14,8 @@ class ScrollToBottomTheme with _$ScrollToBottomTheme {
     return ScrollToBottomTheme(
       backgroundColor:
           backgroundColor ?? defaultScrollToBottomBackgroundColor.light,
-      foregroundColor: foregroundColor ?? defaultScrollToBottomForegroundColor,
+      foregroundColor:
+          foregroundColor ?? defaultScrollToBottomForegroundColor.light,
     );
   }
 
@@ -25,7 +26,8 @@ class ScrollToBottomTheme with _$ScrollToBottomTheme {
     return ScrollToBottomTheme(
       backgroundColor:
           backgroundColor ?? defaultScrollToBottomBackgroundColor.dark,
-      foregroundColor: foregroundColor ?? defaultScrollToBottomForegroundColor,
+      foregroundColor:
+          foregroundColor ?? defaultScrollToBottomForegroundColor.dark,
     );
   }
 

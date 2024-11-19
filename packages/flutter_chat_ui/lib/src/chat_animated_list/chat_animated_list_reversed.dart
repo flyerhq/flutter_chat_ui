@@ -16,7 +16,10 @@ class ChatAnimatedListReversed extends StatefulWidget {
   final Duration insertAnimationDuration;
   final Duration removeAnimationDuration;
   final Duration scrollToEndAnimationDuration;
+  final double? topPadding;
   final double? bottomPadding;
+  final Widget? topSliver;
+  final Widget? bottomSliver;
 
   const ChatAnimatedListReversed({
     super.key,
@@ -25,7 +28,10 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.insertAnimationDuration = const Duration(milliseconds: 250),
     this.removeAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
+    this.topPadding,
     this.bottomPadding = 20,
+    this.topSliver,
+    this.bottomSliver,
   });
 
   @override
@@ -35,9 +41,9 @@ class ChatAnimatedListReversed extends StatefulWidget {
 
 class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
-  late ChatController _chatController;
+  late final ChatController _chatController;
   late List<Message> _oldList;
-  late StreamSubscription<ChatOperation> _operationsSubscription;
+  late final StreamSubscription<ChatOperation> _operationsSubscription;
 
   bool _userHasScrolled = false;
 
@@ -133,11 +139,12 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
             builder: (context, heightNotifier, child) {
               return SliverPadding(
                 padding: EdgeInsets.only(
-                  top: heightNotifier.height + (widget.bottomPadding ?? 0),
+                  bottom: heightNotifier.height + (widget.bottomPadding ?? 0),
                 ),
               );
             },
           ),
+          if (widget.bottomSliver != null) widget.bottomSliver!,
           SliverAnimatedList(
             key: _listKey,
             initialItemCount: _chatController.messages.length,
@@ -155,6 +162,11 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
               );
             },
           ),
+          if (widget.topSliver != null) widget.topSliver!,
+          if (widget.topPadding != null)
+            SliverPadding(
+              padding: EdgeInsets.only(top: widget.topPadding!),
+            ),
         ],
       ),
     );

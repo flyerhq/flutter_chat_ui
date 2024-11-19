@@ -3,8 +3,11 @@ import 'dart:async';
 import '../models/message.dart';
 import 'chat_controller.dart';
 import 'chat_operation.dart';
+import 'upload_progress_mixin.dart';
 
-class InMemoryChatController implements ChatController {
+class InMemoryChatController
+    with UploadProgressMixin
+    implements ChatController {
   List<Message> _messages;
   final _operationsController = StreamController<ChatOperation>.broadcast();
 
@@ -62,6 +65,7 @@ class InMemoryChatController implements ChatController {
 
   @override
   void dispose() {
+    disposeUploadProgress();
     _operationsController.close();
   }
 }

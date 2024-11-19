@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ChatTheme {
   Color get backgroundColor => throw _privateConstructorUsedError;
   String get fontFamily => throw _privateConstructorUsedError;
-  Color get imagePlaceholderColor => throw _privateConstructorUsedError;
+  ImageMessageTheme get imageMessageTheme => throw _privateConstructorUsedError;
   InputTheme get inputTheme => throw _privateConstructorUsedError;
   ScrollToBottomTheme get scrollToBottomTheme =>
       throw _privateConstructorUsedError;
@@ -31,7 +31,7 @@ class _$ChatThemeImpl extends _ChatTheme {
   const _$ChatThemeImpl(
       {required this.backgroundColor,
       required this.fontFamily,
-      required this.imagePlaceholderColor,
+      required this.imageMessageTheme,
       required this.inputTheme,
       required this.scrollToBottomTheme,
       required this.textMessageTheme})
@@ -42,7 +42,7 @@ class _$ChatThemeImpl extends _ChatTheme {
   @override
   final String fontFamily;
   @override
-  final Color imagePlaceholderColor;
+  final ImageMessageTheme imageMessageTheme;
   @override
   final InputTheme inputTheme;
   @override
@@ -52,7 +52,7 @@ class _$ChatThemeImpl extends _ChatTheme {
 
   @override
   String toString() {
-    return 'ChatTheme(backgroundColor: $backgroundColor, fontFamily: $fontFamily, imagePlaceholderColor: $imagePlaceholderColor, inputTheme: $inputTheme, scrollToBottomTheme: $scrollToBottomTheme, textMessageTheme: $textMessageTheme)';
+    return 'ChatTheme(backgroundColor: $backgroundColor, fontFamily: $fontFamily, imageMessageTheme: $imageMessageTheme, inputTheme: $inputTheme, scrollToBottomTheme: $scrollToBottomTheme, textMessageTheme: $textMessageTheme)';
   }
 
   @override
@@ -60,12 +60,12 @@ class _$ChatThemeImpl extends _ChatTheme {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatThemeImpl &&
-            (identical(other.backgroundColor, backgroundColor) ||
-                other.backgroundColor == backgroundColor) &&
+            const DeepCollectionEquality()
+                .equals(other.backgroundColor, backgroundColor) &&
             (identical(other.fontFamily, fontFamily) ||
                 other.fontFamily == fontFamily) &&
-            (identical(other.imagePlaceholderColor, imagePlaceholderColor) ||
-                other.imagePlaceholderColor == imagePlaceholderColor) &&
+            (identical(other.imageMessageTheme, imageMessageTheme) ||
+                other.imageMessageTheme == imageMessageTheme) &&
             (identical(other.inputTheme, inputTheme) ||
                 other.inputTheme == inputTheme) &&
             (identical(other.scrollToBottomTheme, scrollToBottomTheme) ||
@@ -75,15 +75,21 @@ class _$ChatThemeImpl extends _ChatTheme {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, backgroundColor, fontFamily,
-      imagePlaceholderColor, inputTheme, scrollToBottomTheme, textMessageTheme);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(backgroundColor),
+      fontFamily,
+      imageMessageTheme,
+      inputTheme,
+      scrollToBottomTheme,
+      textMessageTheme);
 }
 
 abstract class _ChatTheme extends ChatTheme {
   const factory _ChatTheme(
       {required final Color backgroundColor,
       required final String fontFamily,
-      required final Color imagePlaceholderColor,
+      required final ImageMessageTheme imageMessageTheme,
       required final InputTheme inputTheme,
       required final ScrollToBottomTheme scrollToBottomTheme,
       required final TextMessageTheme textMessageTheme}) = _$ChatThemeImpl;
@@ -94,7 +100,7 @@ abstract class _ChatTheme extends ChatTheme {
   @override
   String get fontFamily;
   @override
-  Color get imagePlaceholderColor;
+  ImageMessageTheme get imageMessageTheme;
   @override
   InputTheme get inputTheme;
   @override

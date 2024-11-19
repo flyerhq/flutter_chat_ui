@@ -88,9 +88,16 @@ class CrossCache {
     }
   }
 
-  Future<bool> contains(String key) => _cache.contains(key);
+  Future<void> set(String key, Uint8List value) => _cache.set(key, value);
 
   Future<Uint8List> get(String key) => _cache.get(key);
+
+  Future<bool> contains(String key) => _cache.contains(key);
+
+  Future<void> delete(String key) => _cache.delete(key);
+
+  Future<void> updateKey(String key, String newKey) =>
+      _cache.updateKey(key, newKey);
 
   void dispose() {
     _dio.close(force: true);

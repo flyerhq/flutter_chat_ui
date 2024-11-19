@@ -46,8 +46,8 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   // TODO: If theme is passed and then removed, it does not reset to default
   late ChatTheme _theme;
   late Builders _builders;
-  late CrossCache _crossCache;
-  late ScrollController _scrollController;
+  late final CrossCache _crossCache;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
