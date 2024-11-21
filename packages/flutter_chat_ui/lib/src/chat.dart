@@ -21,7 +21,6 @@ class Chat extends StatefulWidget {
   final ThemeMode themeMode;
   final OnMessageSendCallback? onMessageSend;
   final OnMessageTapCallback? onMessageTap;
-  final OnAttachmentTapCallback? onAttachmentTap;
 
   const Chat({
     super.key,
@@ -35,7 +34,6 @@ class Chat extends StatefulWidget {
     this.themeMode = ThemeMode.system,
     this.onMessageSend,
     this.onMessageTap,
-    this.onAttachmentTap,
   });
 
   @override

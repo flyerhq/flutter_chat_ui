@@ -15,7 +15,7 @@ class ChatInput extends StatefulWidget {
   final double? sigmaX;
   final double? sigmaY;
   final EdgeInsetsGeometry? padding;
-  final Widget? attachmentIcon;
+  final List<Widget>? attachmentButtons;
   final Widget? sendIcon;
   final double? gap;
   final InputBorder? inputBorder;
@@ -30,7 +30,7 @@ class ChatInput extends StatefulWidget {
     this.sigmaX = 20,
     this.sigmaY = 20,
     this.padding = const EdgeInsets.all(8.0),
-    this.attachmentIcon = const Icon(Icons.attachment),
+    this.attachmentButtons = const [],
     this.sendIcon = const Icon(Icons.send),
     this.gap = 8,
     this.inputBorder = const OutlineInputBorder(
@@ -64,8 +64,6 @@ class _ChatInputState extends State<ChatInput> {
   Widget build(BuildContext context) {
     final inputTheme = context.select((ChatTheme theme) => theme.inputTheme);
 
-    final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
-
     return Positioned(
       left: widget.left,
       right: widget.right,
@@ -85,14 +83,7 @@ class _ChatInputState extends State<ChatInput> {
               // TODO: remove padding if it's 0
               padding: widget.padding ?? EdgeInsets.zero,
               child: Row(
-                children: [
-                  widget.attachmentIcon != null
-                      ? IconButton(
-                          icon: widget.attachmentIcon!,
-                          color: inputTheme.hintStyle?.color,
-                          onPressed: onAttachmentTap,
-                        )
-                      : const SizedBox.shrink(),
+                children: (widget.attachmentButtons.isNotEmpty ? widget.attachmentButtons : [const SizedBox.shrink()]) + [
                   SizedBox(width: widget.gap),
                   Expanded(
                     child: TextField(
