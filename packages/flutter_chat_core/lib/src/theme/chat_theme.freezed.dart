@@ -60,8 +60,8 @@ class _$ChatThemeImpl extends _ChatTheme {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatThemeImpl &&
-            const DeepCollectionEquality()
-                .equals(other.backgroundColor, backgroundColor) &&
+            (identical(other.backgroundColor, backgroundColor) ||
+                other.backgroundColor == backgroundColor) &&
             (identical(other.fontFamily, fontFamily) ||
                 other.fontFamily == fontFamily) &&
             (identical(other.imageMessageTheme, imageMessageTheme) ||
@@ -75,14 +75,8 @@ class _$ChatThemeImpl extends _ChatTheme {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(backgroundColor),
-      fontFamily,
-      imageMessageTheme,
-      inputTheme,
-      scrollToBottomTheme,
-      textMessageTheme);
+  int get hashCode => Object.hash(runtimeType, backgroundColor, fontFamily,
+      imageMessageTheme, inputTheme, scrollToBottomTheme, textMessageTheme);
 }
 
 abstract class _ChatTheme extends ChatTheme {

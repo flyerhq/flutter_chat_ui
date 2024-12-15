@@ -20,6 +20,8 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
       return TextMessage.fromJson(json);
     case 'image':
       return ImageMessage.fromJson(json);
+    case 'custom':
+      return CustomMessage.fromJson(json);
 
     default:
       return UnsupportedMessage.fromJson(json);
@@ -59,6 +61,12 @@ mixin _$Message {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
+        custom,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
         unsupported,
   }) =>
       throw _privateConstructorUsedError;
@@ -83,6 +91,12 @@ mixin _$Message {
             double? width,
             double? height)?
         image,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        custom,
     TResult? Function(
             String id,
             User author,
@@ -117,6 +131,12 @@ mixin _$Message {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)?
+        custom,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
         unsupported,
     required TResult orElse(),
   }) =>
@@ -125,6 +145,7 @@ mixin _$Message {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) =>
       throw _privateConstructorUsedError;
@@ -132,6 +153,7 @@ mixin _$Message {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) =>
       throw _privateConstructorUsedError;
@@ -139,6 +161,7 @@ mixin _$Message {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) =>
@@ -405,6 +428,12 @@ class _$TextMessageImpl extends TextMessage {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
+        custom,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
         unsupported,
   }) {
     return text(id, author, createdAt, metadata, this.text, linkPreview);
@@ -432,6 +461,12 @@ class _$TextMessageImpl extends TextMessage {
             double? width,
             double? height)?
         image,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        custom,
     TResult? Function(
             String id,
             User author,
@@ -469,6 +504,12 @@ class _$TextMessageImpl extends TextMessage {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)?
+        custom,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
         unsupported,
     required TResult orElse(),
   }) {
@@ -483,6 +524,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) {
     return text(this);
@@ -493,6 +535,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) {
     return text?.call(this);
@@ -503,6 +546,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) {
@@ -765,6 +809,12 @@ class _$ImageMessageImpl extends ImageMessage {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
+        custom,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
         unsupported,
   }) {
     return image(id, author, createdAt, metadata, source, thumbhash, blurhash,
@@ -793,6 +843,12 @@ class _$ImageMessageImpl extends ImageMessage {
             double? width,
             double? height)?
         image,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        custom,
     TResult? Function(
             String id,
             User author,
@@ -831,6 +887,12 @@ class _$ImageMessageImpl extends ImageMessage {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)?
+        custom,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
         unsupported,
     required TResult orElse(),
   }) {
@@ -846,6 +908,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) {
     return image(this);
@@ -856,6 +919,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) {
     return image?.call(this);
@@ -866,6 +930,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) {
@@ -919,6 +984,321 @@ abstract class ImageMessage extends Message {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImageMessageImplCopyWith<_$ImageMessageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CustomMessageImplCopyWith<$Res>
+    implements $MessageCopyWith<$Res> {
+  factory _$$CustomMessageImplCopyWith(
+          _$CustomMessageImpl value, $Res Function(_$CustomMessageImpl) then) =
+      __$$CustomMessageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      User author,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata});
+
+  @override
+  $UserCopyWith<$Res> get author;
+}
+
+/// @nodoc
+class __$$CustomMessageImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$CustomMessageImpl>
+    implements _$$CustomMessageImplCopyWith<$Res> {
+  __$$CustomMessageImplCopyWithImpl(
+      _$CustomMessageImpl _value, $Res Function(_$CustomMessageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? author = null,
+    Object? createdAt = null,
+    Object? metadata = freezed,
+  }) {
+    return _then(_$CustomMessageImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as User,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      metadata: freezed == metadata
+          ? _value._metadata
+          : metadata // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CustomMessageImpl extends CustomMessage {
+  const _$CustomMessageImpl(
+      {required this.id,
+      required this.author,
+      @EpochDateTimeConverter() required this.createdAt,
+      final Map<String, dynamic>? metadata,
+      final String? $type})
+      : _metadata = metadata,
+        $type = $type ?? 'custom',
+        super._();
+
+  factory _$CustomMessageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CustomMessageImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final User author;
+  @override
+  @EpochDateTimeConverter()
+  final DateTime createdAt;
+  final Map<String, dynamic>? _metadata;
+  @override
+  Map<String, dynamic>? get metadata {
+    final value = _metadata;
+    if (value == null) return null;
+    if (_metadata is EqualUnmodifiableMapView) return _metadata;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Message.custom(id: $id, author: $author, createdAt: $createdAt, metadata: $metadata)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CustomMessageImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.author, author) || other.author == author) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            const DeepCollectionEquality().equals(other._metadata, _metadata));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, author, createdAt,
+      const DeepCollectionEquality().hash(_metadata));
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CustomMessageImplCopyWith<_$CustomMessageImpl> get copyWith =>
+      __$$CustomMessageImplCopyWithImpl<_$CustomMessageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String text,
+            LinkPreview? linkPreview)
+        text,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String source,
+            String? thumbhash,
+            String? blurhash,
+            double? width,
+            double? height)
+        image,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
+        custom,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
+        unsupported,
+  }) {
+    return custom(id, author, createdAt, metadata);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String text,
+            LinkPreview? linkPreview)?
+        text,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String source,
+            String? thumbhash,
+            String? blurhash,
+            double? width,
+            double? height)?
+        image,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        custom,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        unsupported,
+  }) {
+    return custom?.call(id, author, createdAt, metadata);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String text,
+            LinkPreview? linkPreview)?
+        text,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata,
+            String source,
+            String? thumbhash,
+            String? blurhash,
+            double? width,
+            double? height)?
+        image,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        custom,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        unsupported,
+    required TResult orElse(),
+  }) {
+    if (custom != null) {
+      return custom(id, author, createdAt, metadata);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TextMessage value) text,
+    required TResult Function(ImageMessage value) image,
+    required TResult Function(CustomMessage value) custom,
+    required TResult Function(UnsupportedMessage value) unsupported,
+  }) {
+    return custom(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TextMessage value)? text,
+    TResult? Function(ImageMessage value)? image,
+    TResult? Function(CustomMessage value)? custom,
+    TResult? Function(UnsupportedMessage value)? unsupported,
+  }) {
+    return custom?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TextMessage value)? text,
+    TResult Function(ImageMessage value)? image,
+    TResult Function(CustomMessage value)? custom,
+    TResult Function(UnsupportedMessage value)? unsupported,
+    required TResult orElse(),
+  }) {
+    if (custom != null) {
+      return custom(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CustomMessageImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class CustomMessage extends Message {
+  const factory CustomMessage(
+      {required final String id,
+      required final User author,
+      @EpochDateTimeConverter() required final DateTime createdAt,
+      final Map<String, dynamic>? metadata}) = _$CustomMessageImpl;
+  const CustomMessage._() : super._();
+
+  factory CustomMessage.fromJson(Map<String, dynamic> json) =
+      _$CustomMessageImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  User get author;
+  @override
+  @EpochDateTimeConverter()
+  DateTime get createdAt;
+  @override
+  Map<String, dynamic>? get metadata;
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomMessageImplCopyWith<_$CustomMessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1073,6 +1453,12 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)
+        custom,
+    required TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)
         unsupported,
   }) {
     return unsupported(id, author, createdAt, metadata);
@@ -1100,6 +1486,12 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             double? width,
             double? height)?
         image,
+    TResult? Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
+        custom,
     TResult? Function(
             String id,
             User author,
@@ -1137,6 +1529,12 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             User author,
             @EpochDateTimeConverter() DateTime createdAt,
             Map<String, dynamic>? metadata)?
+        custom,
+    TResult Function(
+            String id,
+            User author,
+            @EpochDateTimeConverter() DateTime createdAt,
+            Map<String, dynamic>? metadata)?
         unsupported,
     required TResult orElse(),
   }) {
@@ -1151,6 +1549,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
   }) {
     return unsupported(this);
@@ -1161,6 +1560,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
   }) {
     return unsupported?.call(this);
@@ -1171,6 +1571,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
     required TResult orElse(),
   }) {

@@ -20,7 +20,7 @@ class FlyerChatImageMessage extends StatefulWidget {
     super.key,
     required this.message,
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
-    this.constraints = const BoxConstraints(maxHeight: 300, minWidth: 170),
+    this.constraints = const BoxConstraints(maxHeight: 300),
   });
 
   @override

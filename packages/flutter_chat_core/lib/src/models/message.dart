@@ -30,6 +30,13 @@ sealed class Message with _$Message {
     double? height,
   }) = ImageMessage;
 
+  const factory Message.custom({
+    required String id,
+    required User author,
+    @EpochDateTimeConverter() required DateTime createdAt,
+    Map<String, dynamic>? metadata,
+  }) = CustomMessage;
+
   const factory Message.unsupported({
     required String id,
     required User author,

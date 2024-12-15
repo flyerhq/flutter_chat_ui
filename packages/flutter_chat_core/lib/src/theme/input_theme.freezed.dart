@@ -51,10 +51,10 @@ class _$InputThemeImpl extends _InputTheme {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InputThemeImpl &&
-            const DeepCollectionEquality()
-                .equals(other.backgroundColor, backgroundColor) &&
-            const DeepCollectionEquality()
-                .equals(other.textFieldColor, textFieldColor) &&
+            (identical(other.backgroundColor, backgroundColor) ||
+                other.backgroundColor == backgroundColor) &&
+            (identical(other.textFieldColor, textFieldColor) ||
+                other.textFieldColor == textFieldColor) &&
             (identical(other.hintStyle, hintStyle) ||
                 other.hintStyle == hintStyle) &&
             (identical(other.textStyle, textStyle) ||
@@ -63,11 +63,7 @@ class _$InputThemeImpl extends _InputTheme {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(backgroundColor),
-      const DeepCollectionEquality().hash(textFieldColor),
-      hintStyle,
-      textStyle);
+      runtimeType, backgroundColor, textFieldColor, hintStyle, textStyle);
 }
 
 abstract class _InputTheme extends InputTheme {

@@ -104,6 +104,9 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
           'If you want to use default image message widget, install flyer_chat_image_message package and use FlyerChatImageMessage widget.',
         );
         return result;
+      case CustomMessage():
+        return builders.customMessageBuilder?.call(context, message) ??
+            const SizedBox.shrink();
       case UnsupportedMessage():
         return builders.unsupportedMessageBuilder?.call(context, message) ??
             const Text(
