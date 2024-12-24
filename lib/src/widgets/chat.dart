@@ -55,7 +55,6 @@ class Chat extends StatefulWidget {
     this.emptyState,
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
-    this.messagesSpacerHeight = 12,
     this.hideBackgroundOnEmojiMessages = true,
     this.imageGalleryOptions = const ImageGalleryOptions(
       maxScale: PhotoViewComputedScale.covered,
@@ -104,7 +103,12 @@ class Chat extends StatefulWidget {
     this.slidableMessageBuilder,
     this.isLeftStatus = false,
     this.messageWidthRatio = 0.72,
+    this.backgroundImage,
   });
+
+  /// Background image for the chat. If provided, it will be rendered behind the chat widget.
+  /// [Background Image] widget will be rendered on top of this image.
+  final Widget? backgroundImage;
 
   /// See [Message.audioMessageBuilder].
   final Widget Function(types.AudioMessage, {required int messageWidth})?
@@ -176,10 +180,6 @@ class Chat extends StatefulWidget {
   /// Default value is 1 minute, 60000 ms. When time between two messages
   /// is lower than this threshold, they will be visually grouped.
   final int groupMessagesThreshold;
-
-  /// Height value of spacers added to separate message groups.
-  /// Default value is 12. If 0, no gap between groups.
-  final double messagesSpacerHeight;
 
   /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
@@ -599,7 +599,6 @@ class ChatState extends State<Chat> {
         lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
-        messagesSpacerHeight: widget.messagesSpacerHeight,
       );
 
       _chatMessages = result[0] as List<Object>;
@@ -626,6 +625,11 @@ class ChatState extends State<Chat> {
             l10n: widget.l10n,
             child: Stack(
               children: [
+                /// [Background Image] widget will be rendered on top of this image.
+                if (widget.backgroundImage != null)
+                  Positioned.fill(
+                    child: widget.backgroundImage ?? SizedBox(),
+                  ),
                 Container(
                   color: widget.theme.backgroundColor,
                   child: Column(
