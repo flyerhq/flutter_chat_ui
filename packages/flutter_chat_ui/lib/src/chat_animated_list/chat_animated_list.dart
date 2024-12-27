@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../scroll_to_bottom.dart';
 import '../utils/chat_input_height_notifier.dart';
+import '../utils/keyboard_mixin.dart';
 import '../utils/message_list_diff.dart';
 
 class ChatAnimatedList extends StatefulWidget {
@@ -21,6 +22,8 @@ class ChatAnimatedList extends StatefulWidget {
   final double? bottomPadding;
   final Widget? topSliver;
   final Widget? bottomSliver;
+  final bool? handleSafeArea;
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
 
   const ChatAnimatedList({
     super.key,
@@ -36,6 +39,8 @@ class ChatAnimatedList extends StatefulWidget {
     this.bottomPadding = 20,
     this.topSliver,
     this.bottomSliver,
+    this.handleSafeArea = true,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   });
 
   @override
@@ -43,7 +48,7 @@ class ChatAnimatedList extends StatefulWidget {
 }
 
 class ChatAnimatedListState extends State<ChatAnimatedList>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver, KeyboardMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;
   late List<Message> _oldList;
@@ -123,6 +128,25 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   @override
+  void onKeyboardHeightChanged(double height) async {
+    if (mounted && widget.scrollController.hasClients) {
+      if (widget.scrollToEndAnimationDuration == Duration.zero) {
+        widget.scrollController.jumpTo(
+          widget.scrollController.offset + height,
+        );
+      } else {
+        await widget.scrollController.animateTo(
+          widget.scrollController.offset + height,
+          duration: widget.scrollToEndAnimationDuration,
+          curve: Curves.linearToEaseOut,
+        );
+      }
+      // we don't want to show the scroll to bottom button when automatically scrolling content with keyboard
+      _scrollToBottomShowTimer?.cancel();
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _scrollToBottomShowTimer?.cancel();
@@ -132,6 +156,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
   @override
   Widget build(BuildContext context) {
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
     final builders = context.watch<Builders>();
 
     return NotificationListener<Notification>(
@@ -166,6 +191,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         children: [
           CustomScrollView(
             controller: widget.scrollController,
+            keyboardDismissBehavior: widget.keyboardDismissBehavior ??
+                ScrollViewKeyboardDismissBehavior.manual,
             slivers: <Widget>[
               if (widget.topPadding != null)
                 SliverPadding(
@@ -193,8 +220,9 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                 builder: (context, heightNotifier, child) {
                   return SliverPadding(
                     padding: EdgeInsets.only(
-                      bottom:
-                          heightNotifier.height + (widget.bottomPadding ?? 0),
+                      bottom: heightNotifier.height +
+                          (widget.bottomPadding ?? 0) +
+                          (widget.handleSafeArea == true ? bottomSafeArea : 0),
                     ),
                   );
                 },

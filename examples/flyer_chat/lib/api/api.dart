@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../create_message.dart';
+import '../widgets/input_action_bar.dart';
 import 'api_service.dart';
 import 'connection_status.dart';
 import 'upload_file.dart';
@@ -76,9 +77,11 @@ class ApiState extends State<Api> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final topSafeArea = MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Api'),
+      ),
       body: Stack(
         children: [
           Chat(
@@ -87,14 +90,33 @@ class ApiState extends State<Api> {
                   FlyerChatTextMessage(message: message),
               imageMessageBuilder: (context, message) =>
                   FlyerChatImageMessage(message: message),
-              chatAnimatedListBuilder:
-                  (context, scrollController, itemBuilder) {
-                return ChatAnimatedList(
-                  scrollController: scrollController,
-                  itemBuilder: itemBuilder,
-                  topPadding: topSafeArea + 7,
-                );
-              },
+              inputBuilder: (context) => ChatInput(
+                topWidget: InputActionBar(
+                  buttons: [
+                    InputActionButton(
+                      icon: Icons.shuffle,
+                      title: 'Send random',
+                      onPressed: () => _addItem(null),
+                    ),
+                    InputActionButton(
+                      icon: Icons.delete_sweep,
+                      title: 'Clear all',
+                      onPressed: () async {
+                        try {
+                          await _apiService.flush();
+                          if (mounted) {
+                            await _chatController.set([]);
+                            await _showInfo('All messages cleared');
+                          }
+                        } catch (error) {
+                          await _showInfo('Error: $error');
+                        }
+                      },
+                      destructive: true,
+                    ),
+                  ],
+                ),
+              ),
             ),
             chatController: _chatController,
             crossCache: _crossCache,
@@ -106,40 +128,12 @@ class ApiState extends State<Api> {
             darkTheme: ChatTheme.fromThemeData(theme),
           ),
           Positioned(
-            top: topSafeArea + 16,
+            top: 16,
             left: 16,
             child: ConnectionStatus(webSocketService: _webSocketService),
           ),
         ],
       ),
-      persistentFooterButtons: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Go back'),
-        ),
-        TextButton(
-          onPressed: () {
-            _addItem(null);
-          },
-          child: const Text('Send random'),
-        ),
-        TextButton(
-          onPressed: () async {
-            try {
-              await _apiService.flush();
-              if (mounted) {
-                await _chatController.set([]);
-                await _showInfo('All messages cleared');
-              }
-            } catch (error) {
-              await _showInfo('Error: $error');
-            }
-          },
-          child: const Text('Clear all messages'),
-        ),
-      ],
     );
   }
 
