@@ -32,7 +32,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cross_cache: ^0.0.2
   cupertino_icons: ^1.0.8
-  dio: ^5.6.0
+  dio: ^5.7.0
   flutter:
     sdk: flutter
   flutter_chat_core: ^0.0.2
@@ -40,15 +40,15 @@ dependencies:
   flutter_lorem: ^2.0.0
   flyer_chat_image_message: ^0.0.2
   flyer_chat_text_message: ^0.0.2
-  google_generative_ai: ^0.4.5
+  google_generative_ai: ^0.4.6
   hive: ^4.0.0-dev.2
   http: ^1.2.2
   image_picker: ^1.1.2
   isar_flutter_libs: ^4.0.0-dev.14
   path: ^1.9.0
-  path_provider: ^2.1.4
-  sembast: ^3.7.3+3
-  sembast_web: ^2.4.0+2
+  path_provider: ^2.1.5
+  sembast: ^3.8.0+1
+  sembast_web: ^2.4.0+4
   uuid: ^4.4.2
   web_socket_channel: ^3.0.1
 

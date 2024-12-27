@@ -6,14 +6,14 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^0.0.2
-  flutter_markdown: ^0.7.3+1
+  flutter_markdown: ^0.7.4+3
   provider: ^6.1.2
 
 dev_dependencies:
