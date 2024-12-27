@@ -56,7 +56,7 @@ class ImageMessageTheme with _$ImageMessageTheme {
       downloadProgressIndicatorColor: themeData.colorScheme.primary,
       uploadProgressIndicatorColor: themeData.colorScheme.primary,
       uploadOverlayColor:
-          themeData.colorScheme.surfaceContainerLow.withOpacity(0.5),
+          themeData.colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
     );
   }
 

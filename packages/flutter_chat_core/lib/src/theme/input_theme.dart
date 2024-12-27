@@ -58,11 +58,11 @@ class InputTheme with _$InputTheme {
         defaultChatFontFamily;
 
     return InputTheme(
-      backgroundColor: themeData.colorScheme.surface.withOpacity(0.8),
+      backgroundColor: themeData.colorScheme.surface.withValues(alpha: 0.8),
       textFieldColor: themeData.colorScheme.surfaceContainerHigh,
       hintStyle: themeData.textTheme.bodyMedium?.copyWith(
         fontFamily: family,
-        color: themeData.textTheme.bodyMedium?.color?.withOpacity(0.6),
+        color: themeData.textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
       ),
       textStyle: themeData.textTheme.bodyMedium?.copyWith(
         fontFamily: family,

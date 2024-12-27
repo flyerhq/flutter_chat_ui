@@ -19,7 +19,7 @@ dependencies:
   path_provider: ^2.1.4
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
   http_mock_adapter: ^0.6.1
