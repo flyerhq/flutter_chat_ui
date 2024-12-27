@@ -10,6 +10,7 @@ import 'package:sembast/sembast.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sembast_chat_controller.dart';
+import 'widgets/input_action_bar.dart';
 
 class Gemini extends StatefulWidget {
   final String geminiApiKey;
@@ -63,12 +64,30 @@ class GeminiState extends State<Gemini> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Gemini'),
+      ),
       body: Chat(
         builders: Builders(
           textMessageBuilder: (context, message) =>
               FlyerChatTextMessage(message: message),
           imageMessageBuilder: (context, message) =>
               FlyerChatImageMessage(message: message),
+          inputBuilder: (context) => ChatInput(
+            topWidget: InputActionBar(
+              buttons: [
+                InputActionButton(
+                  icon: Icons.delete_sweep,
+                  title: 'Clear all',
+                  onPressed: () {
+                    _chatController.set([]);
+                    _chatSession = _model.startChat();
+                  },
+                  destructive: true,
+                ),
+              ],
+            ),
+          ),
         ),
         chatController: _chatController,
         crossCache: _crossCache,
@@ -77,21 +96,6 @@ class GeminiState extends State<Gemini> {
         onAttachmentTap: _handleAttachmentTap,
         user: const User(id: 'me'),
       ),
-      persistentFooterButtons: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Go back'),
-        ),
-        TextButton(
-          onPressed: () {
-            _chatController.set([]);
-            _chatSession = _model.startChat();
-          },
-          child: const Text('Clear all messages'),
-        ),
-      ],
     );
   }
 

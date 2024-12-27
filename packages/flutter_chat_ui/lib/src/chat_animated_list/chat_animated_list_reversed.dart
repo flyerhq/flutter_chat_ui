@@ -20,6 +20,7 @@ class ChatAnimatedListReversed extends StatefulWidget {
   final double? bottomPadding;
   final Widget? topSliver;
   final Widget? bottomSliver;
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
 
   const ChatAnimatedListReversed({
     super.key,
@@ -32,6 +33,7 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.bottomPadding = 20,
     this.topSliver,
     this.bottomSliver,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   });
 
   @override
@@ -134,6 +136,8 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
       child: CustomScrollView(
         reverse: true,
         controller: widget.scrollController,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior ??
+            ScrollViewKeyboardDismissBehavior.manual,
         slivers: <Widget>[
           Consumer<ChatInputHeightNotifier>(
             builder: (context, heightNotifier, child) {
