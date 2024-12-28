@@ -94,7 +94,7 @@ class ChatL10nEn extends ChatL10n {
     super.attachmentButtonAccessibilityLabel = 'Send media',
     super.emptyChatPlaceholder = 'No messages here yet',
     super.fileButtonAccessibilityLabel = 'File',
-    super.inputPlaceholder = 'Message',
+    super.inputPlaceholder = 'Type your message',
     super.isTyping = 'is typing...',
     super.others = 'others',
     super.sendButtonAccessibilityLabel = 'Send',
@@ -325,4 +325,23 @@ class ChatL10nZhTW extends ChatL10n {
     super.sendButtonAccessibilityLabel = '傳送',
     super.unreadMessagesLabel = '未讀訊息',
   });
+
+  /// French l10n which extends [ChatL10n].
+  @immutable
+  class ChatL10nFr extends ChatL10n {
+    /// Creates French l10n. Use this constructor if you want to
+    /// override only a couple of properties, otherwise create a new class
+    /// which extends [ChatL10n].
+    const ChatL10nFr({
+      super.and = 'et',
+      super.attachmentButtonAccessibilityLabel = 'Envoyer des médias',
+      super.emptyChatPlaceholder = 'Aucun message ici pour l\'instant',
+      super.fileButtonAccessibilityLabel = 'Fichier',
+      super.inputPlaceholder = 'Entrez votre message',
+      super.isTyping = 'est en train d\'écrire...',
+      super.others = 'autres',
+      super.sendButtonAccessibilityLabel = 'Envoyer',
+      super.unreadMessagesLabel = 'Messages non lus',
+    });
+  }   
 }
