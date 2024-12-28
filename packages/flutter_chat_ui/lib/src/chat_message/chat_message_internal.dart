@@ -49,7 +49,7 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
               event.message != null,
               'Message must be provided when updating a message.',
             );
-            if (_updatedMessage == event.oldMessage) {
+            if (_updatedMessage.id == event.oldMessage!.id) {
               setState(() {
                 _updatedMessage = event.message!;
               });
