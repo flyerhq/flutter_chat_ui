@@ -54,7 +54,8 @@ mixin _$Message {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)
+            double? height,
+            bool? overlay)
         image,
     required TResult Function(
             String id,
@@ -89,7 +90,8 @@ mixin _$Message {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult? Function(
             String id,
@@ -124,7 +126,8 @@ mixin _$Message {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult Function(
             String id,
@@ -421,7 +424,8 @@ class _$TextMessageImpl extends TextMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)
+            double? height,
+            bool? overlay)
         image,
     required TResult Function(
             String id,
@@ -459,7 +463,8 @@ class _$TextMessageImpl extends TextMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult? Function(
             String id,
@@ -497,7 +502,8 @@ class _$TextMessageImpl extends TextMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult Function(
             String id,
@@ -614,7 +620,8 @@ abstract class _$$ImageMessageImplCopyWith<$Res>
       String? thumbhash,
       String? blurhash,
       double? width,
-      double? height});
+      double? height,
+      bool? overlay});
 
   @override
   $UserCopyWith<$Res> get author;
@@ -642,6 +649,7 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
     Object? blurhash = freezed,
     Object? width = freezed,
     Object? height = freezed,
+    Object? overlay = freezed,
   }) {
     return _then(_$ImageMessageImpl(
       id: null == id
@@ -680,6 +688,10 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
               as double?,
+      overlay: freezed == overlay
+          ? _value.overlay
+          : overlay // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -697,6 +709,7 @@ class _$ImageMessageImpl extends ImageMessage {
       this.blurhash,
       this.width,
       this.height,
+      this.overlay,
       final String? $type})
       : _metadata = metadata,
         $type = $type ?? 'image',
@@ -732,13 +745,15 @@ class _$ImageMessageImpl extends ImageMessage {
   final double? width;
   @override
   final double? height;
+  @override
+  final bool? overlay;
 
   @JsonKey(name: 'type')
   final String $type;
 
   @override
   String toString() {
-    return 'Message.image(id: $id, author: $author, createdAt: $createdAt, metadata: $metadata, source: $source, thumbhash: $thumbhash, blurhash: $blurhash, width: $width, height: $height)';
+    return 'Message.image(id: $id, author: $author, createdAt: $createdAt, metadata: $metadata, source: $source, thumbhash: $thumbhash, blurhash: $blurhash, width: $width, height: $height, overlay: $overlay)';
   }
 
   @override
@@ -757,7 +772,8 @@ class _$ImageMessageImpl extends ImageMessage {
             (identical(other.blurhash, blurhash) ||
                 other.blurhash == blurhash) &&
             (identical(other.width, width) || other.width == width) &&
-            (identical(other.height, height) || other.height == height));
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.overlay, overlay) || other.overlay == overlay));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -772,7 +788,8 @@ class _$ImageMessageImpl extends ImageMessage {
       thumbhash,
       blurhash,
       width,
-      height);
+      height,
+      overlay);
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -802,7 +819,8 @@ class _$ImageMessageImpl extends ImageMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)
+            double? height,
+            bool? overlay)
         image,
     required TResult Function(
             String id,
@@ -818,7 +836,7 @@ class _$ImageMessageImpl extends ImageMessage {
         unsupported,
   }) {
     return image(id, author, createdAt, metadata, source, thumbhash, blurhash,
-        width, height);
+        width, height, overlay);
   }
 
   @override
@@ -841,7 +859,8 @@ class _$ImageMessageImpl extends ImageMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult? Function(
             String id,
@@ -857,7 +876,7 @@ class _$ImageMessageImpl extends ImageMessage {
         unsupported,
   }) {
     return image?.call(id, author, createdAt, metadata, source, thumbhash,
-        blurhash, width, height);
+        blurhash, width, height, overlay);
   }
 
   @override
@@ -880,7 +899,8 @@ class _$ImageMessageImpl extends ImageMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult Function(
             String id,
@@ -898,7 +918,7 @@ class _$ImageMessageImpl extends ImageMessage {
   }) {
     if (image != null) {
       return image(id, author, createdAt, metadata, source, thumbhash, blurhash,
-          width, height);
+          width, height, overlay);
     }
     return orElse();
   }
@@ -958,7 +978,8 @@ abstract class ImageMessage extends Message {
       final String? thumbhash,
       final String? blurhash,
       final double? width,
-      final double? height}) = _$ImageMessageImpl;
+      final double? height,
+      final bool? overlay}) = _$ImageMessageImpl;
   const ImageMessage._() : super._();
 
   factory ImageMessage.fromJson(Map<String, dynamic> json) =
@@ -978,6 +999,7 @@ abstract class ImageMessage extends Message {
   String? get blurhash;
   double? get width;
   double? get height;
+  bool? get overlay;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -1130,7 +1152,8 @@ class _$CustomMessageImpl extends CustomMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)
+            double? height,
+            bool? overlay)
         image,
     required TResult Function(
             String id,
@@ -1168,7 +1191,8 @@ class _$CustomMessageImpl extends CustomMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult? Function(
             String id,
@@ -1206,7 +1230,8 @@ class _$CustomMessageImpl extends CustomMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult Function(
             String id,
@@ -1446,7 +1471,8 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)
+            double? height,
+            bool? overlay)
         image,
     required TResult Function(
             String id,
@@ -1484,7 +1510,8 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult? Function(
             String id,
@@ -1522,7 +1549,8 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
             String? thumbhash,
             String? blurhash,
             double? width,
-            double? height)?
+            double? height,
+            bool? overlay)?
         image,
     TResult Function(
             String id,

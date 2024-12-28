@@ -41,17 +41,15 @@ class _$ScrollToBottomThemeImpl extends _ScrollToBottomTheme {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ScrollToBottomThemeImpl &&
-            const DeepCollectionEquality()
-                .equals(other.backgroundColor, backgroundColor) &&
-            const DeepCollectionEquality()
-                .equals(other.foregroundColor, foregroundColor));
+            (identical(other.backgroundColor, backgroundColor) ||
+                other.backgroundColor == backgroundColor) &&
+            (identical(other.foregroundColor, foregroundColor) ||
+                other.foregroundColor == foregroundColor));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(backgroundColor),
-      const DeepCollectionEquality().hash(foregroundColor));
+  int get hashCode =>
+      Object.hash(runtimeType, backgroundColor, foregroundColor);
 }
 
 abstract class _ScrollToBottomTheme extends ScrollToBottomTheme {

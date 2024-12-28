@@ -28,6 +28,7 @@ sealed class Message with _$Message {
     String? blurhash,
     double? width,
     double? height,
+    bool? overlay,
   }) = ImageMessage;
 
   const factory Message.custom({

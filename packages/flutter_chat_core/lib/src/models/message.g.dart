@@ -52,6 +52,7 @@ _$ImageMessageImpl _$$ImageMessageImplFromJson(Map<String, dynamic> json) =>
       blurhash: json['blurhash'] as String?,
       width: (json['width'] as num?)?.toDouble(),
       height: (json['height'] as num?)?.toDouble(),
+      overlay: json['overlay'] as bool?,
       $type: json['type'] as String?,
     );
 
@@ -74,6 +75,7 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) {
   writeNotNull('blurhash', instance.blurhash);
   writeNotNull('width', instance.width);
   writeNotNull('height', instance.height);
+  writeNotNull('overlay', instance.overlay);
   val['type'] = instance.$type;
   return val;
 }
