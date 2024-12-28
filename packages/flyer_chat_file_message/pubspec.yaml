@@ -1,5 +1,5 @@
 name: flyer_chat_file_message
-version: 0.0.1
+version: 0.0.3
 description: >
   File message package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
 homepage: https://flyer.chat

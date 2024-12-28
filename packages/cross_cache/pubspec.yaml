@@ -1,5 +1,5 @@
 name: cross_cache
-version: 0.0.2
+version: 0.0.3
 description: >
   Cross-platform cache manager for Flutter using IndexedDB for web, file system
   for mobile and desktop, and Dio for network requests. #cache #indexeddb #dio

@@ -1,3 +1,49 @@
+## 2.0.0-dev.2
+
+**⚠️ Contains breaking changes ⚠️**
+
+**⚠️ Requires Flutter ^3.19 and Dart ^3.3 ⚠️**
+
+### 🖼️ API Example
+
+- Added support for image uploads
+- Added a web sockets connection status indicator with reconnection logic examples
+
+### 🔗 cross-cache
+
+- Added new methods:
+  - `delete(String key)` – delete entries
+  - `updateKey(String key, String newKey)` – rename keys while keeping the data
+- `CustomNetworkImage` is now `CachedNetworkImage` and has been moved to the cross-cache package
+- Exposed the `set` method for better flexibility
+
+### 💬 flutter-chat-core
+
+- Added `customMessageBuilder` for building custom messages
+- Added `overlay` parameter to `ImageMessage`
+- Themes:
+  - Added `ImageMessageTheme` (replacing `imagePlaceholderColor`)
+  - Updated `InputTheme` (adding `textFieldColor`)
+  - Updated `ScrollToBottomTheme`
+  - Updated `TextMessageTheme`
+- Added `UploadProgressMixin` for handling upload progress tracking
+
+### 📝 flutter-chat-ui
+
+- Automatically handles the safe area (optional, enabled by default)
+- Scrolls content up when the keyboard is opened
+- Added support for an action bar above the input field (with example)
+- Exported `ChatInputHeightNotifier`
+- Enhanced `ChatAnimatedList` with:
+  - `topSliver` and `bottomSliver` for custom widgets at the top or bottom of the chat (both scrollable)
+
+### 📸 flyer-chat-image-message
+
+- Theme now derives from `imageMessageTheme`
+- Added an upload progress indicator
+- Fixed default constraints
+- Added an optional overlay to images
+
 ## 2.0.0-dev.1
 
 - 🚀 Exciting pre-release of `v2`! This version is a complete rewrite, focusing on extensibility, customizability, performance, and stability. 🛠️
