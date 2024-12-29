@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../utils/chat_input_height_notifier.dart';
 import '../utils/message_list_diff.dart';
@@ -44,8 +45,12 @@ class ChatAnimatedListReversed extends StatefulWidget {
 class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;
+  late final SliverObserverController _observerController;
   late List<Message> _oldList;
   late final StreamSubscription<ChatOperation> _operationsSubscription;
+
+  // Used by scrollview_observer to allow for scroll to specific item
+  BuildContext? _sliverListViewContext;
 
   bool _userHasScrolled = false;
 
@@ -53,6 +58,8 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
   void initState() {
     super.initState();
     _chatController = Provider.of<ChatController>(context, listen: false);
+    _observerController =
+        SliverObserverController(controller: widget.scrollController);
     // TODO: Add assert for messages having same id
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
@@ -133,45 +140,52 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
         // Allow other listeners to get the notification
         return false;
       },
-      child: CustomScrollView(
-        reverse: true,
-        controller: widget.scrollController,
-        keyboardDismissBehavior: widget.keyboardDismissBehavior ??
-            ScrollViewKeyboardDismissBehavior.manual,
-        slivers: <Widget>[
-          Consumer<ChatInputHeightNotifier>(
-            builder: (context, heightNotifier, child) {
-              return SliverPadding(
-                padding: EdgeInsets.only(
-                  bottom: heightNotifier.height + (widget.bottomPadding ?? 0),
-                ),
-              );
-            },
-          ),
-          if (widget.bottomSliver != null) widget.bottomSliver!,
-          SliverAnimatedList(
-            key: _listKey,
-            initialItemCount: _chatController.messages.length,
-            itemBuilder: (
-              BuildContext context,
-              int index,
-              Animation<double> animation,
-            ) {
-              final message = _chatController.messages[
-                  max(_chatController.messages.length - 1 - index, 0)];
-              return widget.itemBuilder(
-                context,
-                animation,
-                message,
-              );
-            },
-          ),
-          if (widget.topSliver != null) widget.topSliver!,
-          if (widget.topPadding != null)
-            SliverPadding(
-              padding: EdgeInsets.only(top: widget.topPadding!),
-            ),
+      child: SliverViewObserver(
+        controller: _observerController,
+        sliverContexts: () => [
+          if (_sliverListViewContext != null) _sliverListViewContext!,
         ],
+        child: CustomScrollView(
+          reverse: true,
+          controller: widget.scrollController,
+          keyboardDismissBehavior: widget.keyboardDismissBehavior ??
+              ScrollViewKeyboardDismissBehavior.manual,
+          slivers: <Widget>[
+            Consumer<ChatInputHeightNotifier>(
+              builder: (context, heightNotifier, child) {
+                return SliverPadding(
+                  padding: EdgeInsets.only(
+                    bottom: heightNotifier.height + (widget.bottomPadding ?? 0),
+                  ),
+                );
+              },
+            ),
+            if (widget.bottomSliver != null) widget.bottomSliver!,
+            SliverAnimatedList(
+              key: _listKey,
+              initialItemCount: _chatController.messages.length,
+              itemBuilder: (
+                BuildContext context,
+                int index,
+                Animation<double> animation,
+              ) {
+                _sliverListViewContext ??= context;
+                final message = _chatController.messages[
+                    max(_chatController.messages.length - 1 - index, 0)];
+                return widget.itemBuilder(
+                  context,
+                  animation,
+                  message,
+                );
+              },
+            ),
+            if (widget.topSliver != null) widget.topSliver!,
+            if (widget.topPadding != null)
+              SliverPadding(
+                padding: EdgeInsets.only(top: widget.topPadding!),
+              ),
+          ],
+        ),
       ),
     );
   }
