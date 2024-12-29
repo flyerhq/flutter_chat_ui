@@ -106,6 +106,7 @@ class GeminiState extends State<Gemini> {
         author: const User(id: 'me'),
         createdAt: DateTime.now().toUtc(),
         text: text,
+        isOnlyEmoji: isOnlyEmoji(text),
       ),
     );
 
@@ -157,6 +158,7 @@ class GeminiState extends State<Gemini> {
               author: const User(id: 'gemini'),
               createdAt: DateTime.now().toUtc(),
               text: accumulatedText,
+              isOnlyEmoji: isOnlyEmoji(accumulatedText),
             );
             await _chatController.insert(_currentGeminiResponse!);
           } else {

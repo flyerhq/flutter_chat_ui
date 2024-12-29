@@ -177,7 +177,7 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   getChatId(_dio).then((chatId) {
-                                    if (mounted && context.mounted) {
+                                    if (mounted) {
                                       _chatIdController.text = chatId;
                                     }
                                   });

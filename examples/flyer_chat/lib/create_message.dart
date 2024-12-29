@@ -20,6 +20,7 @@ Future<Message> createMessage(
       author: author,
       createdAt: DateTime.now().toUtc(),
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
+      isOnlyEmoji: isOnlyEmoji(text ?? ''),
     );
   } else {
     final orientation = ['portrait', 'square', 'wide'][Random().nextInt(3)];

@@ -17,6 +17,7 @@ _$TextMessageImpl _$$TextMessageImplFromJson(Map<String, dynamic> json) =>
       linkPreview: json['linkPreview'] == null
           ? null
           : LinkPreview.fromJson(json['linkPreview'] as Map<String, dynamic>),
+      isOnlyEmoji: json['isOnlyEmoji'] as bool?,
       $type: json['type'] as String?,
     );
 
@@ -36,6 +37,7 @@ Map<String, dynamic> _$$TextMessageImplToJson(_$TextMessageImpl instance) {
   writeNotNull('metadata', instance.metadata);
   val['text'] = instance.text;
   writeNotNull('linkPreview', instance.linkPreview?.toJson());
+  writeNotNull('isOnlyEmoji', instance.isOnlyEmoji);
   val['type'] = instance.$type;
   return val;
 }

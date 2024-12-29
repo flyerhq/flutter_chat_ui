@@ -58,7 +58,10 @@ class ChatMessage extends StatelessWidget {
                       ? sentMessageAlignment
                       : receivedMessageAlignment),
               child: Padding(
-                padding: padding,
+                padding: message is TextMessage &&
+                        (message as TextMessage).isOnlyEmoji == true
+                    ? EdgeInsets.zero
+                    : padding,
                 child: child,
               ),
             ),

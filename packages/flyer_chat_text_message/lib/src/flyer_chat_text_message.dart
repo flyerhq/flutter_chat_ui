@@ -7,6 +7,7 @@ class FlyerChatTextMessage extends StatelessWidget {
   final TextMessage message;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
+  final double? onlyEmojiFontSize;
 
   const FlyerChatTextMessage({
     super.key,
@@ -16,6 +17,7 @@ class FlyerChatTextMessage extends StatelessWidget {
       vertical: 10,
     ),
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+    this.onlyEmojiFontSize = 48,
   });
 
   @override
@@ -23,21 +25,26 @@ class FlyerChatTextMessage extends StatelessWidget {
     final textMessageTheme =
         context.select((ChatTheme theme) => theme.textMessageTheme);
     final isSentByMe = context.watch<User>().id == message.author.id;
+    final paragraphStyle = isSentByMe
+        ? textMessageTheme.sentTextStyle
+        : textMessageTheme.receivedTextStyle;
 
     return Container(
       padding: padding,
-      decoration: BoxDecoration(
-        color: isSentByMe
-            ? textMessageTheme.sentBackgroundColor
-            : textMessageTheme.receivedBackgroundColor,
-        borderRadius: borderRadius,
-      ),
+      decoration: message.isOnlyEmoji == true
+          ? null
+          : BoxDecoration(
+              color: isSentByMe
+                  ? textMessageTheme.sentBackgroundColor
+                  : textMessageTheme.receivedBackgroundColor,
+              borderRadius: borderRadius,
+            ),
       child: MarkdownBody(
         data: message.text,
         styleSheet: MarkdownStyleSheet(
-          p: isSentByMe
-              ? textMessageTheme.sentTextStyle
-              : textMessageTheme.receivedTextStyle,
+          p: message.isOnlyEmoji == true
+              ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+              : paragraphStyle,
         ),
       ),
     );
