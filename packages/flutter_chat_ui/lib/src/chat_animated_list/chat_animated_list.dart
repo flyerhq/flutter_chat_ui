@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:diffutil_dart/diffutil.dart' as diffutil;
 import 'package:flutter/material.dart';
@@ -139,11 +140,17 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     if (mounted && widget.scrollController.hasClients) {
       if (widget.scrollToEndAnimationDuration == Duration.zero) {
         widget.scrollController.jumpTo(
-          widget.scrollController.offset + height,
+          min(
+            widget.scrollController.offset + height,
+            widget.scrollController.position.maxScrollExtent,
+          ),
         );
       } else {
         await widget.scrollController.animateTo(
-          widget.scrollController.offset + height,
+          min(
+            widget.scrollController.offset + height,
+            widget.scrollController.position.maxScrollExtent,
+          ),
           duration: widget.scrollToEndAnimationDuration,
           curve: Curves.linearToEaseOut,
         );
