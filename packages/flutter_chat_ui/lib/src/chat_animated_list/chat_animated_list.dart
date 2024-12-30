@@ -162,10 +162,10 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
   @override
   void dispose() {
-    super.dispose();
     _scrollToBottomShowTimer?.cancel();
     _scrollToBottomController.dispose();
     _operationsSubscription.cancel();
+    super.dispose();
   }
 
   @override

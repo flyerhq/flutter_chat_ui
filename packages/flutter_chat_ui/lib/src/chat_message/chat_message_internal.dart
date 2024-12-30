@@ -63,8 +63,8 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
 
   @override
   void dispose() {
-    super.dispose();
     _operationsSubscription?.cancel();
+    super.dispose();
   }
 
   @override

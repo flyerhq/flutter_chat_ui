@@ -111,8 +111,8 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
 
   @override
   void dispose() {
-    super.dispose();
     _operationsSubscription.cancel();
+    super.dispose();
   }
 
   @override

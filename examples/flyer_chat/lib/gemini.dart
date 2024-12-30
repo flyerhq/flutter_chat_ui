@@ -55,10 +55,10 @@ class GeminiState extends State<Gemini> {
 
   @override
   void dispose() {
-    super.dispose();
     _chatController.dispose();
     _scrollController.dispose();
     _crossCache.dispose();
+    super.dispose();
   }
 
   @override

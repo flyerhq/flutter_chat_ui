@@ -28,8 +28,8 @@ class LocalState extends State<Local> {
 
   @override
   void dispose() {
-    super.dispose();
     _chatController.dispose();
+    super.dispose();
   }
 
   @override

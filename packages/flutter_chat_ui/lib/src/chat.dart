@@ -81,17 +81,17 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
     // Only try to dispose cross cache if it's not provided, since
     // users might want to keep downloading media even after the chat
     // is disposed.
-    if (widget.crossCache == null) {
-      _crossCache.dispose();
-    }
     if (widget.scrollController == null) {
       _scrollController.dispose();
     }
+    if (widget.crossCache == null) {
+      _crossCache.dispose();
+    }
+    super.dispose();
   }
 
   @override

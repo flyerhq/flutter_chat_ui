@@ -64,8 +64,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
 
   @override
   void dispose() {
-    super.dispose();
     _dio.close(force: true);
+    super.dispose();
   }
 
   @override
