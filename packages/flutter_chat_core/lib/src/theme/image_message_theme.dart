@@ -56,7 +56,9 @@ class ImageMessageTheme with _$ImageMessageTheme {
       downloadProgressIndicatorColor: themeData.colorScheme.primary,
       uploadProgressIndicatorColor: themeData.colorScheme.primary,
       uploadOverlayColor:
-          themeData.colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
+          // This API is deprecated in Dart ^3.6 and we support Dart ^3.3
+          // ignore: deprecated_member_use
+          themeData.colorScheme.surfaceContainerLow.withOpacity(0.5),
     );
   }
 

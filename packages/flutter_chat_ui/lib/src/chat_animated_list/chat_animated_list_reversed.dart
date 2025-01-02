@@ -21,6 +21,7 @@ class ChatAnimatedListReversed extends StatefulWidget {
   final double? bottomPadding;
   final Widget? topSliver;
   final Widget? bottomSliver;
+  final bool? handleSafeArea;
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
 
   const ChatAnimatedListReversed({
@@ -30,10 +31,11 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.insertAnimationDuration = const Duration(milliseconds: 250),
     this.removeAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
-    this.topPadding,
+    this.topPadding = 8,
     this.bottomPadding = 20,
     this.topSliver,
     this.bottomSliver,
+    this.handleSafeArea = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
   });
 
@@ -117,6 +119,8 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+
     return NotificationListener<Notification>(
       onNotification: (notification) {
         // Handle initial scroll to bottom so you see latest messages
@@ -155,7 +159,9 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
               builder: (context, heightNotifier, child) {
                 return SliverPadding(
                   padding: EdgeInsets.only(
-                    bottom: heightNotifier.height + (widget.bottomPadding ?? 0),
+                    bottom: heightNotifier.height +
+                        (widget.bottomPadding ?? 0) +
+                        (widget.handleSafeArea == true ? bottomSafeArea : 0),
                   ),
                 );
               },
@@ -170,12 +176,15 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
                 Animation<double> animation,
               ) {
                 _sliverListViewContext ??= context;
-                final message = _chatController.messages[
-                    max(_chatController.messages.length - 1 - index, 0)];
+                final currentIndex =
+                    max(_chatController.messages.length - 1 - index, 0);
+                final message = _chatController.messages[currentIndex];
+
                 return widget.itemBuilder(
                   context,
-                  animation,
                   message,
+                  currentIndex,
+                  animation,
                 );
               },
             ),
@@ -218,8 +227,9 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
       visualPosition,
       (context, animation) => widget.itemBuilder(
         context,
-        animation,
         data,
+        visualPosition,
+        animation,
         isRemoved: true,
       ),
       duration: widget.removeAnimationDuration,

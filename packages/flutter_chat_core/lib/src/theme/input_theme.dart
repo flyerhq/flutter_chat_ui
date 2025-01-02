@@ -58,11 +58,15 @@ class InputTheme with _$InputTheme {
         defaultChatFontFamily;
 
     return InputTheme(
-      backgroundColor: themeData.colorScheme.surface.withValues(alpha: 0.8),
+      // This API is deprecated in Dart ^3.6 and we support Dart ^3.3
+      // ignore: deprecated_member_use
+      backgroundColor: themeData.colorScheme.surface.withOpacity(0.8),
       textFieldColor: themeData.colorScheme.surfaceContainerHigh,
       hintStyle: themeData.textTheme.bodyMedium?.copyWith(
         fontFamily: family,
-        color: themeData.textTheme.bodyMedium?.color?.withValues(alpha: 0.6),
+        // This API is deprecated in Dart ^3.6 and we support Dart ^3.3
+        // ignore: deprecated_member_use
+        color: themeData.textTheme.bodyMedium?.color?.withOpacity(0.6),
       ),
       textStyle: themeData.textTheme.bodyMedium?.copyWith(
         fontFamily: family,

@@ -40,10 +40,10 @@ class LocalState extends State<Local> {
       ),
       body: Chat(
         builders: Builders(
-          textMessageBuilder: (context, message) =>
-              FlyerChatTextMessage(message: message),
-          imageMessageBuilder: (context, message) =>
-              FlyerChatImageMessage(message: message),
+          textMessageBuilder: (context, message, index) =>
+              FlyerChatTextMessage(message: message, index: index),
+          imageMessageBuilder: (context, message, index) =>
+              FlyerChatImageMessage(message: message, index: index),
           inputBuilder: (context) => ChatInput(
             topWidget: InputActionBar(
               buttons: [

@@ -4,7 +4,8 @@ import '../models/message.dart';
 
 typedef ChatItem = Widget Function(
   BuildContext context,
-  Animation<double> animation,
-  Message message, {
+  Message message,
+  int index,
+  Animation<double> animation, {
   bool? isRemoved,
 });

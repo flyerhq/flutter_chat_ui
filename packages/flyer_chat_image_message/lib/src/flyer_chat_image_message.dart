@@ -13,6 +13,7 @@ import 'get_image_dimensions.dart';
 
 class FlyerChatImageMessage extends StatefulWidget {
   final ImageMessage message;
+  final int index;
   final BorderRadiusGeometry? borderRadius;
   final BoxConstraints? constraints;
   final Widget? overlay;
@@ -20,6 +21,7 @@ class FlyerChatImageMessage extends StatefulWidget {
   const FlyerChatImageMessage({
     super.key,
     required this.message,
+    required this.index,
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
     this.constraints = const BoxConstraints(maxHeight: 300),
     this.overlay,
@@ -167,9 +169,9 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   }
 
                   return AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 250),
                     opacity: frame == null ? 0 : 1,
-                    curve: Curves.fastOutSlowIn,
+                    curve: Curves.linearToEaseOut,
                     child: content,
                   );
                 },
