@@ -1,3 +1,9 @@
+## 0.0.4
+
+- Added `isOnlyEmoji` parameter to `TextMessage`.
+- Message builders now include the message index in their parameters.
+- Reverted `withValues` to `withOpacity` to resolve a compatibility issue.
+
 ## 0.0.3
 
 - Added `customMessageBuilder` for building custom messages

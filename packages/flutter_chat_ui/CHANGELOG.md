@@ -1,3 +1,13 @@
+## 2.0.0-dev.3
+
+**⚠️ Contains breaking changes ⚠️**
+
+- 🎉 Emoji-only messages: added support for text messages containing only emojis, displayed without a bubble.
+- 🧩 Message grouping: added support for grouping messages for a cleaner chat display.
+- 🐛 Bug fix: fixed an issue where timeouts were not being cleared properly.
+- 🔧 Chat builders: chat message builders now include the message index in their parameters.
+- 📱 Safe area: added safe area support for reversed lists.
+
 ## 2.0.0-dev.2
 
 **⚠️ Contains breaking changes ⚠️**

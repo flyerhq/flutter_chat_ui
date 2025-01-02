@@ -1,3 +1,7 @@
+## 0.0.4
+
+- Text messages containing only emojis will now be displayed without a bubble
+
 ## 0.0.3
 
 - Version bump to match other packages

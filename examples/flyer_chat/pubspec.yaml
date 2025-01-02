@@ -30,16 +30,16 @@ environment:
 dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cross_cache: ^0.0.3
+  cross_cache: ^0.0.4
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   flutter:
     sdk: flutter
-  flutter_chat_core: ^0.0.3
-  flutter_chat_ui: ^2.0.0-dev.2
+  flutter_chat_core: ^0.0.4
+  flutter_chat_ui: ^2.0.0-dev.3
   flutter_lorem: ^2.0.0
-  flyer_chat_image_message: ^0.0.3
-  flyer_chat_text_message: ^0.0.3
+  flyer_chat_image_message: ^0.0.4
+  flyer_chat_text_message: ^0.0.4
   google_generative_ai: ^0.4.6
   hive: ^4.0.0-dev.2
   http: ^1.2.2
