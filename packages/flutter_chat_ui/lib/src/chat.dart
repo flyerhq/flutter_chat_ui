@@ -130,14 +130,16 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
 
   Widget _buildItem(
     BuildContext context,
-    Animation<double> animation,
-    Message message, {
+    Message message,
+    int index,
+    Animation<double> animation, {
     bool? isRemoved,
   }) {
     return ChatMessageInternal(
       key: ValueKey(message),
-      animation: animation,
       message: message,
+      index: index,
+      animation: animation,
       isRemoved: isRemoved,
     );
   }

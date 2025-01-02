@@ -35,9 +35,7 @@ class ChatAnimatedList extends StatefulWidget {
     this.removeAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToBottomAppearanceDelay = const Duration(milliseconds: 250),
-    // default vertical padding between messages are 1, so we add 7 to make it 8
-    // for the first message
-    this.topPadding = 7,
+    this.topPadding = 8,
     this.bottomPadding = 20,
     this.topSliver,
     this.bottomSliver,
@@ -127,11 +125,11 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
     _scrollToBottomController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 250),
     );
     _scrollToBottomAnimation = CurvedAnimation(
       parent: _scrollToBottomController,
-      curve: Curves.easeInOut,
+      curve: Curves.linearToEaseOut,
     );
   }
 
@@ -228,10 +226,12 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                   ) {
                     _sliverListViewContext ??= context;
                     final message = _chatController.messages[index];
+
                     return widget.itemBuilder(
                       context,
-                      animation,
                       message,
+                      index,
+                      animation,
                     );
                   },
                 ),
@@ -465,8 +465,9 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       position,
       (context, animation) => widget.itemBuilder(
         context,
-        animation,
         data,
+        position,
+        animation,
         isRemoved: true,
       ),
       duration: widget.removeAnimationDuration,

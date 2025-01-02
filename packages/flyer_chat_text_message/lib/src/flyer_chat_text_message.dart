@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 class FlyerChatTextMessage extends StatelessWidget {
   final TextMessage message;
+  final int index;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
   final double? onlyEmojiFontSize;
@@ -12,6 +13,7 @@ class FlyerChatTextMessage extends StatelessWidget {
   const FlyerChatTextMessage({
     super.key,
     required this.message,
+    required this.index,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 10,

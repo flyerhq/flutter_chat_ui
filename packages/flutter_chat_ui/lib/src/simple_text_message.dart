@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 class SimpleTextMessage extends StatelessWidget {
   final TextMessage message;
+  final int index;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
   final double? onlyEmojiFontSize;
@@ -11,6 +12,7 @@ class SimpleTextMessage extends StatelessWidget {
   const SimpleTextMessage({
     super.key,
     required this.message,
+    required this.index,
     this.padding = const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 10,
