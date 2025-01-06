@@ -25,6 +25,7 @@ class Local extends StatefulWidget {
 class LocalState extends State<Local> {
   final _chatController = InMemoryChatController();
   final _uuid = const Uuid();
+  bool _isTyping = false;
 
   @override
   void dispose() {
@@ -44,9 +45,25 @@ class LocalState extends State<Local> {
               FlyerChatTextMessage(message: message, index: index),
           imageMessageBuilder: (context, message, index) =>
               FlyerChatImageMessage(message: message, index: index),
+          customMessageBuilder: (context, message, index) => Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Color(0xFFF0F0F0),
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+            ),
+            child: IsTypingIndicator(),
+          ),
           inputBuilder: (context) => ChatInput(
             topWidget: InputActionBar(
               buttons: [
+                InputActionButton(
+                  icon: Icons.type_specimen,
+                  title: 'Toggle typing',
+                  onPressed: () => _toggleTyping(),
+                ),
                 InputActionButton(
                   icon: Icons.shuffle,
                   title: 'Send random',
@@ -67,6 +84,11 @@ class LocalState extends State<Local> {
         onMessageSend: _addItem,
         onMessageTap: _removeItem,
         onAttachmentTap: _handleAttachmentTap,
+        darkTheme: ChatTheme.dark(
+          isTypingTheme: IsTypingTheme.dark(
+            color: Color(0xFF101010),
+          ),
+        ),
       ),
     );
   }
@@ -79,7 +101,39 @@ class LocalState extends State<Local> {
     final message = await createMessage(randomUser, widget.dio, text: text);
 
     if (mounted) {
+      if (_isTyping) {
+        await _toggleTyping();
+        await Future.delayed(const Duration(milliseconds: 250));
+      }
       await _chatController.insert(message);
+    }
+  }
+
+  Future<void> _toggleTyping() async {
+    if (!_isTyping) {
+      await _chatController.insert(
+        CustomMessage(
+          id: _uuid.v4(),
+          author: const User(id: 'system'),
+          createdAt: DateTime.now().toUtc(),
+          metadata: {
+            'type': 'typing',
+          },
+        ),
+      );
+      _isTyping = true;
+    } else {
+      try {
+        final typingMessage = _chatController.messages.firstWhere(
+          (message) => message.metadata?['type'] == 'typing',
+        );
+
+        await _chatController.remove(typingMessage);
+        _isTyping = false;
+      } catch (e) {
+        _isTyping = false;
+        await _toggleTyping();
+      }
     }
   }
 
