@@ -25,6 +25,7 @@ class Local extends StatefulWidget {
 class LocalState extends State<Local> {
   final _chatController = InMemoryChatController();
   final _uuid = const Uuid();
+  bool _isTyping = false;
 
   @override
   void dispose() {
@@ -44,9 +45,16 @@ class LocalState extends State<Local> {
               FlyerChatTextMessage(message: message, index: index),
           imageMessageBuilder: (context, message, index) =>
               FlyerChatImageMessage(message: message, index: index),
+          customMessageBuilder: (context, message, index) =>
+              IsTypingIndicator(),
           inputBuilder: (context) => ChatInput(
             topWidget: InputActionBar(
               buttons: [
+                InputActionButton(
+                  icon: Icons.type_specimen,
+                  title: 'Toggle typing',
+                  onPressed: () => _toggleTyping(),
+                ),
                 InputActionButton(
                   icon: Icons.shuffle,
                   title: 'Send random',
@@ -79,7 +87,39 @@ class LocalState extends State<Local> {
     final message = await createMessage(randomUser, widget.dio, text: text);
 
     if (mounted) {
+      if (_isTyping) {
+        await _toggleTyping();
+        await Future.delayed(const Duration(milliseconds: 250));
+      }
       await _chatController.insert(message);
+    }
+  }
+
+  Future<void> _toggleTyping() async {
+    if (!_isTyping) {
+      await _chatController.insert(
+        CustomMessage(
+          id: _uuid.v4(),
+          author: const User(id: 'system'),
+          createdAt: DateTime.now().toUtc(),
+          metadata: {
+            'type': 'typing',
+          },
+        ),
+      );
+      _isTyping = true;
+    } else {
+      try {
+        final typingMessage = _chatController.messages.firstWhere(
+          (message) => message.metadata?['type'] == 'typing',
+        );
+
+        await _chatController.remove(typingMessage);
+        _isTyping = false;
+      } catch (e) {
+        _isTyping = false;
+        await _toggleTyping();
+      }
     }
   }
 
