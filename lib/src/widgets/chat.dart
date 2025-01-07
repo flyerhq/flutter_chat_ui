@@ -56,6 +56,7 @@ class Chat extends StatefulWidget {
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
     this.hideBackgroundOnEmojiMessages = true,
+    this.messagesSpacerHeight = 12,
     this.imageGalleryOptions = const ImageGalleryOptions(
       maxScale: PhotoViewComputedScale.covered,
       minScale: PhotoViewComputedScale.contained,
@@ -180,6 +181,10 @@ class Chat extends StatefulWidget {
   /// Default value is 1 minute, 60000 ms. When time between two messages
   /// is lower than this threshold, they will be visually grouped.
   final int groupMessagesThreshold;
+
+  /// Height value of spacers added to separate message groups.
+  /// Default value is 12. If 0, no gap between groups.
+  final double messagesSpacerHeight;
 
   /// See [Message.hideBackgroundOnEmojiMessages].
   final bool hideBackgroundOnEmojiMessages;
@@ -599,6 +604,8 @@ class ChatState extends State<Chat> {
         lastReadMessageId: widget.scrollToUnreadOptions.lastReadMessageId,
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
+        messagesSpacerHeight: widget.messagesSpacerHeight,
+
       );
 
       _chatMessages = result[0] as List<Object>;
