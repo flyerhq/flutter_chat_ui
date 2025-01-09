@@ -55,8 +55,8 @@ class Chat extends StatefulWidget {
     this.emptyState,
     this.fileMessageBuilder,
     this.groupMessagesThreshold = 60000,
-    this.messagesSpacerHeight = 12,
     this.hideBackgroundOnEmojiMessages = true,
+    this.messagesSpacerHeight = 12,
     this.imageGalleryOptions = const ImageGalleryOptions(
       maxScale: PhotoViewComputedScale.covered,
       minScale: PhotoViewComputedScale.contained,
@@ -104,7 +104,12 @@ class Chat extends StatefulWidget {
     this.slidableMessageBuilder,
     this.isLeftStatus = false,
     this.messageWidthRatio = 0.72,
+    this.backgroundImage,
   });
+
+  /// Background image for the chat. If provided, it will be rendered behind the chat widget.
+  /// [Background Image] widget will be rendered on top of this image.
+  final Widget? backgroundImage;
 
   /// See [Message.audioMessageBuilder].
   final Widget Function(types.AudioMessage, {required int messageWidth})?
@@ -600,6 +605,7 @@ class ChatState extends State<Chat> {
         showUserNames: widget.showUserNames,
         timeFormat: widget.timeFormat,
         messagesSpacerHeight: widget.messagesSpacerHeight,
+
       );
 
       _chatMessages = result[0] as List<Object>;
@@ -626,6 +632,11 @@ class ChatState extends State<Chat> {
             l10n: widget.l10n,
             child: Stack(
               children: [
+                /// [Background Image] widget will be rendered on top of this image.
+                if (widget.backgroundImage != null)
+                  Positioned.fill(
+                    child: widget.backgroundImage ?? SizedBox(),
+                  ),
                 Container(
                   color: widget.theme.backgroundColor,
                   child: Column(
