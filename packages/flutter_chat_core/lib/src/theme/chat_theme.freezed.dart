@@ -20,6 +20,7 @@ mixin _$ChatTheme {
   String get fontFamily => throw _privateConstructorUsedError;
   ImageMessageTheme get imageMessageTheme => throw _privateConstructorUsedError;
   InputTheme get inputTheme => throw _privateConstructorUsedError;
+  IsTypingTheme get isTypingTheme => throw _privateConstructorUsedError;
   ScrollToBottomTheme get scrollToBottomTheme =>
       throw _privateConstructorUsedError;
   TextMessageTheme get textMessageTheme => throw _privateConstructorUsedError;
@@ -33,6 +34,7 @@ class _$ChatThemeImpl extends _ChatTheme {
       required this.fontFamily,
       required this.imageMessageTheme,
       required this.inputTheme,
+      required this.isTypingTheme,
       required this.scrollToBottomTheme,
       required this.textMessageTheme})
       : super._();
@@ -46,13 +48,15 @@ class _$ChatThemeImpl extends _ChatTheme {
   @override
   final InputTheme inputTheme;
   @override
+  final IsTypingTheme isTypingTheme;
+  @override
   final ScrollToBottomTheme scrollToBottomTheme;
   @override
   final TextMessageTheme textMessageTheme;
 
   @override
   String toString() {
-    return 'ChatTheme(backgroundColor: $backgroundColor, fontFamily: $fontFamily, imageMessageTheme: $imageMessageTheme, inputTheme: $inputTheme, scrollToBottomTheme: $scrollToBottomTheme, textMessageTheme: $textMessageTheme)';
+    return 'ChatTheme(backgroundColor: $backgroundColor, fontFamily: $fontFamily, imageMessageTheme: $imageMessageTheme, inputTheme: $inputTheme, isTypingTheme: $isTypingTheme, scrollToBottomTheme: $scrollToBottomTheme, textMessageTheme: $textMessageTheme)';
   }
 
   @override
@@ -68,6 +72,8 @@ class _$ChatThemeImpl extends _ChatTheme {
                 other.imageMessageTheme == imageMessageTheme) &&
             (identical(other.inputTheme, inputTheme) ||
                 other.inputTheme == inputTheme) &&
+            (identical(other.isTypingTheme, isTypingTheme) ||
+                other.isTypingTheme == isTypingTheme) &&
             (identical(other.scrollToBottomTheme, scrollToBottomTheme) ||
                 other.scrollToBottomTheme == scrollToBottomTheme) &&
             (identical(other.textMessageTheme, textMessageTheme) ||
@@ -75,8 +81,15 @@ class _$ChatThemeImpl extends _ChatTheme {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, backgroundColor, fontFamily,
-      imageMessageTheme, inputTheme, scrollToBottomTheme, textMessageTheme);
+  int get hashCode => Object.hash(
+      runtimeType,
+      backgroundColor,
+      fontFamily,
+      imageMessageTheme,
+      inputTheme,
+      isTypingTheme,
+      scrollToBottomTheme,
+      textMessageTheme);
 }
 
 abstract class _ChatTheme extends ChatTheme {
@@ -85,6 +98,7 @@ abstract class _ChatTheme extends ChatTheme {
       required final String fontFamily,
       required final ImageMessageTheme imageMessageTheme,
       required final InputTheme inputTheme,
+      required final IsTypingTheme isTypingTheme,
       required final ScrollToBottomTheme scrollToBottomTheme,
       required final TextMessageTheme textMessageTheme}) = _$ChatThemeImpl;
   const _ChatTheme._() : super._();
@@ -97,6 +111,8 @@ abstract class _ChatTheme extends ChatTheme {
   ImageMessageTheme get imageMessageTheme;
   @override
   InputTheme get inputTheme;
+  @override
+  IsTypingTheme get isTypingTheme;
   @override
   ScrollToBottomTheme get scrollToBottomTheme;
   @override

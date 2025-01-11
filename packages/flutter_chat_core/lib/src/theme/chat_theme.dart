@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'chat_theme_constants.dart';
 import 'image_message_theme.dart';
 import 'input_theme.dart';
+import 'is_typing_theme.dart';
 import 'scroll_to_bottom_theme.dart';
 import 'text_message_theme.dart';
 
@@ -15,6 +16,7 @@ class ChatTheme with _$ChatTheme {
     String? fontFamily,
     ImageMessageTheme? imageMessageTheme,
     InputTheme? inputTheme,
+    IsTypingTheme? isTypingTheme,
     ScrollToBottomTheme? scrollToBottomTheme,
     TextMessageTheme? textMessageTheme,
   }) {
@@ -25,6 +27,7 @@ class ChatTheme with _$ChatTheme {
       inputTheme:
           InputTheme.light(fontFamily: fontFamily ?? defaultChatFontFamily)
               .merge(inputTheme),
+      isTypingTheme: IsTypingTheme.light().merge(isTypingTheme),
       scrollToBottomTheme:
           ScrollToBottomTheme.light().merge(scrollToBottomTheme),
       textMessageTheme: TextMessageTheme.light(
@@ -38,6 +41,7 @@ class ChatTheme with _$ChatTheme {
     String? fontFamily,
     ImageMessageTheme? imageMessageTheme,
     InputTheme? inputTheme,
+    IsTypingTheme? isTypingTheme,
     ScrollToBottomTheme? scrollToBottomTheme,
     TextMessageTheme? textMessageTheme,
   }) {
@@ -48,6 +52,7 @@ class ChatTheme with _$ChatTheme {
       inputTheme:
           InputTheme.dark(fontFamily: fontFamily ?? defaultChatFontFamily)
               .merge(inputTheme),
+      isTypingTheme: IsTypingTheme.dark().merge(isTypingTheme),
       scrollToBottomTheme:
           ScrollToBottomTheme.dark().merge(scrollToBottomTheme),
       textMessageTheme: TextMessageTheme.dark(
@@ -66,6 +71,7 @@ class ChatTheme with _$ChatTheme {
       fontFamily: family,
       imageMessageTheme: ImageMessageTheme.fromThemeData(themeData),
       inputTheme: InputTheme.fromThemeData(themeData, fontFamily: family),
+      isTypingTheme: IsTypingTheme.fromThemeData(themeData),
       scrollToBottomTheme: ScrollToBottomTheme.fromThemeData(themeData),
       textMessageTheme: TextMessageTheme.fromThemeData(
         themeData,
@@ -79,6 +85,7 @@ class ChatTheme with _$ChatTheme {
     required String fontFamily,
     required ImageMessageTheme imageMessageTheme,
     required InputTheme inputTheme,
+    required IsTypingTheme isTypingTheme,
     required ScrollToBottomTheme scrollToBottomTheme,
     required TextMessageTheme textMessageTheme,
   }) = _ChatTheme;
@@ -90,6 +97,7 @@ class ChatTheme with _$ChatTheme {
     String? fontFamily,
     ImageMessageTheme? imageMessageTheme,
     InputTheme? inputTheme,
+    IsTypingTheme? isTypingTheme,
     ScrollToBottomTheme? scrollToBottomTheme,
     TextMessageTheme? textMessageTheme,
   }) {
@@ -98,6 +106,7 @@ class ChatTheme with _$ChatTheme {
       fontFamily: fontFamily ?? this.fontFamily,
       imageMessageTheme: this.imageMessageTheme.merge(imageMessageTheme),
       inputTheme: this.inputTheme.merge(inputTheme),
+      isTypingTheme: this.isTypingTheme.merge(isTypingTheme),
       scrollToBottomTheme: this.scrollToBottomTheme.merge(scrollToBottomTheme),
       textMessageTheme: this.textMessageTheme.merge(textMessageTheme),
     );
@@ -110,6 +119,7 @@ class ChatTheme with _$ChatTheme {
       fontFamily: other.fontFamily,
       imageMessageTheme: other.imageMessageTheme,
       inputTheme: other.inputTheme,
+      isTypingTheme: other.isTypingTheme,
       scrollToBottomTheme: other.scrollToBottomTheme,
       textMessageTheme: other.textMessageTheme,
     );
