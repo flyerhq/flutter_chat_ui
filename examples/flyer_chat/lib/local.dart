@@ -13,10 +13,9 @@ import 'create_message.dart';
 import 'widgets/input_action_bar.dart';
 
 class Local extends StatefulWidget {
-  final User author;
   final Dio dio;
 
-  const Local({super.key, required this.author, required this.dio});
+  const Local({super.key, required this.dio});
 
   @override
   LocalState createState() => LocalState();
@@ -25,6 +24,11 @@ class Local extends StatefulWidget {
 class LocalState extends State<Local> {
   final _chatController = InMemoryChatController();
   final _uuid = const Uuid();
+
+  final _currentUser = const User(id: 'me');
+  final _recipient = const User(id: 'recipient');
+  final _systemUser = const User(id: 'system');
+
   bool _isTyping = false;
 
   @override
@@ -41,10 +45,6 @@ class LocalState extends State<Local> {
       ),
       body: Chat(
         builders: Builders(
-          textMessageBuilder: (context, message, index) =>
-              FlyerChatTextMessage(message: message, index: index),
-          imageMessageBuilder: (context, message, index) =>
-              FlyerChatImageMessage(message: message, index: index),
           customMessageBuilder: (context, message, index) => Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -56,6 +56,8 @@ class LocalState extends State<Local> {
             ),
             child: IsTypingIndicator(),
           ),
+          imageMessageBuilder: (context, message, index) =>
+              FlyerChatImageMessage(message: message, index: index),
           inputBuilder: (context) => ChatInput(
             topWidget: InputActionBar(
               buttons: [
@@ -78,27 +80,39 @@ class LocalState extends State<Local> {
               ],
             ),
           ),
+          textMessageBuilder: (context, message, index) =>
+              FlyerChatTextMessage(message: message, index: index),
         ),
         chatController: _chatController,
-        user: widget.author,
-        onMessageSend: _addItem,
-        onMessageTap: _removeItem,
-        onAttachmentTap: _handleAttachmentTap,
+        currentUserId: _currentUser.id,
         darkTheme: ChatTheme.dark(
           isTypingTheme: IsTypingTheme.dark(
             color: Color(0xFF101010),
           ),
+        ),
+        onAttachmentTap: _handleAttachmentTap,
+        onMessageSend: _addItem,
+        onMessageTap: _removeItem,
+        resolveUser: (id) => Future.value(
+          switch (id) {
+            'me' => _currentUser,
+            'recipient' => _recipient,
+            'system' => _systemUser,
+            _ => null,
+          },
         ),
       ),
     );
   }
 
   void _addItem(String? text) async {
-    final randomUser = Random().nextInt(2) == 0
-        ? const User(id: 'sender1')
-        : const User(id: 'sender2');
+    final randomUser = Random().nextInt(2) == 0 ? _currentUser : _recipient;
 
-    final message = await createMessage(randomUser, widget.dio, text: text);
+    final message = await createMessage(
+      randomUser.id,
+      widget.dio,
+      text: text,
+    );
 
     if (mounted) {
       if (_isTyping) {
@@ -114,7 +128,7 @@ class LocalState extends State<Local> {
       await _chatController.insert(
         CustomMessage(
           id: _uuid.v4(),
-          author: const User(id: 'system'),
+          authorId: _systemUser.id,
           createdAt: DateTime.now().toUtc(),
           metadata: {
             'type': 'typing',
@@ -149,7 +163,7 @@ class LocalState extends State<Local> {
     if (image != null) {
       final imageMessage = ImageMessage(
         id: _uuid.v4(),
-        author: widget.author,
+        authorId: _currentUser.id,
         createdAt: DateTime.now().toUtc(),
         source: image.path,
       );

@@ -9,7 +9,7 @@ part of 'message.dart';
 _$TextMessageImpl _$$TextMessageImplFromJson(Map<String, dynamic> json) =>
     _$TextMessageImpl(
       id: json['id'] as String,
-      author: User.fromJson(json['author'] as Map<String, dynamic>),
+      authorId: json['authorId'] as String,
       createdAt: const EpochDateTimeConverter()
           .fromJson((json['createdAt'] as num).toInt()),
       metadata: json['metadata'] as Map<String, dynamic>?,
@@ -24,7 +24,7 @@ _$TextMessageImpl _$$TextMessageImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$TextMessageImplToJson(_$TextMessageImpl instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'author': instance.author.toJson(),
+    'authorId': instance.authorId,
     'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
   };
 
@@ -45,7 +45,7 @@ Map<String, dynamic> _$$TextMessageImplToJson(_$TextMessageImpl instance) {
 _$ImageMessageImpl _$$ImageMessageImplFromJson(Map<String, dynamic> json) =>
     _$ImageMessageImpl(
       id: json['id'] as String,
-      author: User.fromJson(json['author'] as Map<String, dynamic>),
+      authorId: json['authorId'] as String,
       createdAt: const EpochDateTimeConverter()
           .fromJson((json['createdAt'] as num).toInt()),
       metadata: json['metadata'] as Map<String, dynamic>?,
@@ -61,7 +61,7 @@ _$ImageMessageImpl _$$ImageMessageImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'author': instance.author.toJson(),
+    'authorId': instance.authorId,
     'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
   };
 
@@ -85,7 +85,7 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) {
 _$CustomMessageImpl _$$CustomMessageImplFromJson(Map<String, dynamic> json) =>
     _$CustomMessageImpl(
       id: json['id'] as String,
-      author: User.fromJson(json['author'] as Map<String, dynamic>),
+      authorId: json['authorId'] as String,
       createdAt: const EpochDateTimeConverter()
           .fromJson((json['createdAt'] as num).toInt()),
       metadata: json['metadata'] as Map<String, dynamic>?,
@@ -95,7 +95,7 @@ _$CustomMessageImpl _$$CustomMessageImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$CustomMessageImplToJson(_$CustomMessageImpl instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'author': instance.author.toJson(),
+    'authorId': instance.authorId,
     'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
   };
 
@@ -114,7 +114,7 @@ _$UnsupportedMessageImpl _$$UnsupportedMessageImplFromJson(
         Map<String, dynamic> json) =>
     _$UnsupportedMessageImpl(
       id: json['id'] as String,
-      author: User.fromJson(json['author'] as Map<String, dynamic>),
+      authorId: json['authorId'] as String,
       createdAt: const EpochDateTimeConverter()
           .fromJson((json['createdAt'] as num).toInt()),
       metadata: json['metadata'] as Map<String, dynamic>?,
@@ -125,7 +125,7 @@ Map<String, dynamic> _$$UnsupportedMessageImplToJson(
     _$UnsupportedMessageImpl instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'author': instance.author.toJson(),
+    'authorId': instance.authorId,
     'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
   };
 

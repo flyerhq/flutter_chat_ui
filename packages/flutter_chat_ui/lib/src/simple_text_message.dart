@@ -25,7 +25,7 @@ class SimpleTextMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textMessageTheme =
         context.select((ChatTheme theme) => theme.textMessageTheme);
-    final isSentByMe = context.watch<User>().id == message.author.id;
+    final isSentByMe = context.watch<String>() == message.authorId;
     final textStyle = isSentByMe
         ? textMessageTheme.sentTextStyle
         : textMessageTheme.receivedTextStyle;

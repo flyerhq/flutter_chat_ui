@@ -11,7 +11,8 @@ import 'utils/chat_input_height_notifier.dart';
 import 'utils/typedefs.dart';
 
 class Chat extends StatefulWidget {
-  final User user;
+  final String currentUserId;
+  final ResolveUserCallback resolveUser;
   final ChatController chatController;
   final Builders? builders;
   final CrossCache? crossCache;
@@ -25,7 +26,8 @@ class Chat extends StatefulWidget {
 
   const Chat({
     super.key,
-    required this.user,
+    required this.currentUserId,
+    required this.resolveUser,
     required this.chatController,
     this.builders,
     this.crossCache,
@@ -98,7 +100,8 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider.value(value: widget.user),
+        Provider.value(value: widget.currentUserId),
+        Provider.value(value: widget.resolveUser),
         Provider.value(value: widget.chatController),
         Provider.value(value: _theme),
         Provider.value(value: _builders),

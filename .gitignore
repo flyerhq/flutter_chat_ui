@@ -48,3 +48,5 @@ pubspec_overrides.yaml
 coverage/
 
 devtools_options.yaml
+
+.env

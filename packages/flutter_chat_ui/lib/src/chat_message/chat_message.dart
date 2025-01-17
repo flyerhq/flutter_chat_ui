@@ -43,7 +43,7 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final onMessageTap = context.read<OnMessageTapCallback?>();
-    final isSentByMe = context.watch<User>().id == message.author.id;
+    final isSentByMe = context.watch<String>() == message.authorId;
 
     final curvedAnimation = CurvedAnimation(
       parent: animation,
@@ -101,7 +101,7 @@ class ChatMessage extends StatelessWidget {
       final chatController = context.read<ChatController>();
       final previousMessage = chatController.messages[index - 1];
 
-      final isGrouped = previousMessage.author.id == message.author.id &&
+      final isGrouped = previousMessage.authorId == message.authorId &&
           message.createdAt.difference(previousMessage.createdAt).inSeconds <
               (messageGroupingTimeoutInSeconds ?? 0);
 

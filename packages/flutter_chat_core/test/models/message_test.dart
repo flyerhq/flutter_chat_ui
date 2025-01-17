@@ -7,7 +7,7 @@ void main() {
       // Test ImageMessage
       final imageMessageJson = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'image',
         'source': 'https://example.com/image.png',
@@ -19,7 +19,7 @@ void main() {
       // Test TextMessage
       final textMessageJson = {
         'id': '2',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'text',
         'text': 'Hello',
@@ -31,7 +31,7 @@ void main() {
       // Test UnsupportedMessage
       final unsupportedMessageJson = {
         'id': '3',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
@@ -42,7 +42,7 @@ void main() {
       // Test for a message type that doesn't exist
       final unsupportedTypeJson = {
         'id': '4',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'nonexistentType',
         'metadata': {'key': 'value'},
@@ -58,7 +58,7 @@ void main() {
     setUp(() {
       final json = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'text',
         'text': 'Hello, world!',
@@ -76,7 +76,7 @@ void main() {
 
     test('initializes correctly from a JSON', () {
       expect(message.id, '1');
-      expect(message.author.id, 'sender1');
+      expect(message.authorId, 'me');
       expect(
         message.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
@@ -92,7 +92,7 @@ void main() {
     test('converts correctly to a JSON', () {
       expect(message.toJson(), {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000,
         'type': 'text',
         'text': 'Hello, world!',
@@ -130,7 +130,7 @@ void main() {
 
       // Assert all properties
       expect(copiedMessage.id, '1');
-      expect(copiedMessage.author.id, 'sender1');
+      expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(
@@ -155,7 +155,7 @@ void main() {
 
       // Assert all properties
       expect(copiedMessage.id, '1');
-      expect(copiedMessage.author.id, 'sender1');
+      expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
@@ -167,7 +167,7 @@ void main() {
     test('treats objects with the same properties as equal', () {
       final json = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'text',
         'text': 'Hello, world!',
@@ -196,7 +196,7 @@ void main() {
       // Create another TextMessage with a different ID
       final jsonDifferentId = {
         'id': '2',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'text',
         'text': 'Hello, world!',
@@ -211,7 +211,7 @@ void main() {
       // Create another TextMessage with a different timestamp
       final jsonDifferentTimestamp = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000 + 1000000, // in microseconds
         'type': 'text',
         'text': 'Hello, world!',
@@ -232,7 +232,7 @@ void main() {
     setUp(() {
       final json = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
@@ -244,7 +244,7 @@ void main() {
 
     test('initializes correctly from a JSON', () {
       expect(message.id, '1');
-      expect(message.author.id, 'sender1');
+      expect(message.authorId, 'me');
       expect(
         message.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
@@ -256,7 +256,7 @@ void main() {
     test('converts correctly to a JSON', () {
       expect(message.toJson(), {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000,
         'type': 'image',
         'source': 'https://example.com/image.jpg',
@@ -282,7 +282,7 @@ void main() {
 
       // Assert all properties
       expect(copiedMessage.id, '1');
-      expect(copiedMessage.author.id, 'sender1');
+      expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(
@@ -300,7 +300,7 @@ void main() {
 
       // Assert all properties
       expect(copiedMessage.id, '1');
-      expect(copiedMessage.author.id, 'sender1');
+      expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
@@ -312,7 +312,7 @@ void main() {
     test('treats objects with the same properties as equal', () {
       final json = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
@@ -336,7 +336,7 @@ void main() {
       // Create another ImageMessage with a different ID
       final jsonDifferentId = {
         'id': '2',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
@@ -351,7 +351,7 @@ void main() {
       // Create another ImageMessage with a different timestamp
       final jsonDifferentTimestamp = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000 + 1000000, // in microseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
@@ -372,7 +372,7 @@ void main() {
     setUp(() {
       final json = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
@@ -383,7 +383,7 @@ void main() {
 
     test('initializes correctly from a JSON', () {
       expect(message.id, '1');
-      expect(message.author.id, 'sender1');
+      expect(message.authorId, 'me');
       expect(
         message.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
@@ -394,7 +394,7 @@ void main() {
     test('converts correctly to a JSON', () {
       expect(message.toJson(), {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000,
         'type': 'unsupported',
         'metadata': {'key': 'value'},
@@ -418,7 +418,7 @@ void main() {
 
       // Assert all properties
       expect(copiedMessage.id, '1');
-      expect(copiedMessage.author.id, 'sender1');
+      expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(
@@ -435,7 +435,7 @@ void main() {
 
       // Assert all properties
       expect(copiedMessage.id, '1');
-      expect(copiedMessage.author.id, 'sender1');
+      expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
         DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
@@ -446,7 +446,7 @@ void main() {
     test('treats objects with the same properties as equal', () {
       final json = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
@@ -473,7 +473,7 @@ void main() {
       // Create another UnsupportedMessage with a different ID
       final jsonDifferentId = {
         'id': '2',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000, // in microseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
@@ -487,7 +487,7 @@ void main() {
       // Create another UnsupportedMessage with a different timestamp
       final jsonDifferentTimestamp = {
         'id': '1',
-        'author': {'id': 'sender1'},
+        'authorId': 'me',
         'createdAt': 1729029000000000 + 1000000, // in microseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},

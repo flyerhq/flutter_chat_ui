@@ -200,7 +200,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
   }
 
   void _onInserted(final int position, final Message data) {
-    final user = Provider.of<User>(context, listen: false);
+    final currentUserId = Provider.of<String>(context, listen: false);
 
     // There is a scroll notification listener the controls the `_userHasScrolled` variable.
     // However, when a new message is sent by the current user we want to
@@ -208,7 +208,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
     //
     // Also, if for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
     // set `_userHasScrolled` to false so that the scroll animation is triggered.
-    if (user.id == data.author.id ||
+    if (currentUserId == data.authorId ||
         (_userHasScrolled == true &&
             widget.scrollController.offset >=
                 widget.scrollController.position.maxScrollExtent)) {

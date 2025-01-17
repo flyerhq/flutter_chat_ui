@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'epoch_date_time_converter.dart';
 import 'link_preview.dart';
-import 'user.dart';
 
 part 'message.freezed.dart';
 part 'message.g.dart';
@@ -11,7 +10,7 @@ part 'message.g.dart';
 sealed class Message with _$Message {
   const factory Message.text({
     required String id,
-    required User author,
+    required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
     required String text,
@@ -21,7 +20,7 @@ sealed class Message with _$Message {
 
   const factory Message.image({
     required String id,
-    required User author,
+    required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
     required String source,
@@ -34,14 +33,14 @@ sealed class Message with _$Message {
 
   const factory Message.custom({
     required String id,
-    required User author,
+    required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
   }) = CustomMessage;
 
   const factory Message.unsupported({
     required String id,
-    required User author,
+    required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
   }) = UnsupportedMessage;

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sembast/sembast.dart';
 
 import 'api/api.dart';
@@ -11,11 +11,9 @@ import 'gemini.dart';
 import 'initialize/initialize.dart';
 import 'local.dart';
 
-const defaultChatId = '';
-const defaultGeminiApiKey = '';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   final database = await initialize();
   runApp(FlyerChat(database: database));
 }
@@ -57,13 +55,20 @@ class FlyerChatHomePage extends StatefulWidget {
 
 class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
   final _dio = Dio();
-  User _author = const User(id: 'sender1');
-  final _chatIdController = TextEditingController(text: defaultChatId);
-  final _geminiApiKeyController =
-      TextEditingController(text: defaultGeminiApiKey);
+
+  final _chatIdController = TextEditingController(
+    text: dotenv.env['DEFAULT_CHAT_ID'] ?? '',
+  );
+  final _geminiApiKeyController = TextEditingController(
+    text: dotenv.env['GEMINI_API_KEY'] ?? '',
+  );
+
+  String _currentUserId = 'john';
 
   @override
   void dispose() {
+    _geminiApiKeyController.dispose();
+    _chatIdController.dispose();
     _dio.close(force: true);
     super.dispose();
   }
@@ -80,21 +85,18 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
               SegmentedButton<String>(
                 segments: const <ButtonSegment<String>>[
                   ButtonSegment<String>(
-                    value: 'sender1',
-                    label: Text('sender1'),
+                    value: 'john',
+                    label: Text('John'),
                   ),
                   ButtonSegment<String>(
-                    value: 'sender2',
-                    label: Text('sender2'),
+                    value: 'jane',
+                    label: Text('Jane'),
                   ),
                 ],
-                selected: <String>{_author.id},
+                selected: <String>{_currentUserId},
                 onSelectionChanged: (Set<String> newSender) {
                   setState(() {
-                    // By default there is only a single segment that can be
-                    // selected at one time, so its value is always the first
-                    // item in the selected set.
-                    _author = User(id: newSender.first);
+                    _currentUserId = newSender.first;
                   });
                 },
               ),
@@ -123,7 +125,7 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => Api(
-                                author: _author,
+                                currentUserId: _currentUserId,
                                 chatId: _chatIdController.text,
                                 initialMessages: messages,
                                 dio: _dio,
@@ -222,7 +224,7 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => Local(author: _author, dio: _dio),
+                      builder: (context) => Local(dio: _dio),
                     ),
                   );
                 },

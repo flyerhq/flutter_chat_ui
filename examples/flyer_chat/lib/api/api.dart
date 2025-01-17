@@ -21,14 +21,14 @@ const baseUrl = 'https://whatever.diamanthq.dev';
 const host = 'whatever.diamanthq.dev';
 
 class Api extends StatefulWidget {
-  final User author;
+  final String currentUserId;
   final String chatId;
   final List<Message> initialMessages;
   final Dio dio;
 
   const Api({
     super.key,
-    required this.author,
+    required this.currentUserId,
     required this.chatId,
     required this.initialMessages,
     required this.dio,
@@ -41,6 +41,11 @@ class Api extends StatefulWidget {
 class ApiState extends State<Api> {
   final _crossCache = CrossCache();
   final _uuid = const Uuid();
+
+  final users = const {
+    'john': User(id: 'john'),
+    'jane': User(id: 'jane'),
+  };
 
   late final ApiService _apiService;
   late final ChatWebSocketService _webSocketService;
@@ -59,7 +64,7 @@ class ApiState extends State<Api> {
     _webSocketService = ChatWebSocketService(
       host: host,
       chatId: widget.chatId,
-      authorId: widget.author.id,
+      authorId: widget.currentUserId,
     );
 
     _connectToWs();
@@ -120,12 +125,13 @@ class ApiState extends State<Api> {
             ),
             chatController: _chatController,
             crossCache: _crossCache,
-            user: widget.author,
+            currentUserId: widget.currentUserId,
+            darkTheme: ChatTheme.fromThemeData(theme),
+            onAttachmentTap: _handleAttachmentTap,
             onMessageSend: _addItem,
             onMessageTap: _removeItem,
-            onAttachmentTap: _handleAttachmentTap,
             theme: ChatTheme.fromThemeData(theme),
-            darkTheme: ChatTheme.fromThemeData(theme),
+            resolveUser: (id) => Future.value(users[id]),
           ),
           Positioned(
             top: 16,
@@ -163,7 +169,11 @@ class ApiState extends State<Api> {
   }
 
   void _addItem(String? text) async {
-    final message = await createMessage(widget.author, widget.dio, text: text);
+    final message = await createMessage(
+      widget.currentUserId,
+      widget.dio,
+      text: text,
+    );
 
     if (mounted) {
       await _chatController.insert(message);
@@ -208,7 +218,7 @@ class ApiState extends State<Api> {
 
     final imageMessage = ImageMessage(
       id: id,
-      author: widget.author,
+      authorId: widget.currentUserId,
       createdAt: DateTime.now().toUtc(),
       source: image.path,
     );

@@ -6,7 +6,7 @@ import 'package:flutter_lorem/flutter_lorem.dart';
 import 'package:uuid/uuid.dart';
 
 Future<Message> createMessage(
-  User author,
+  String authorId,
   Dio dio, {
   bool? textOnly,
   String? text,
@@ -17,7 +17,7 @@ Future<Message> createMessage(
   if (Random().nextBool() || textOnly == true || text != null) {
     message = TextMessage(
       id: uuid.v4(),
-      author: author,
+      authorId: authorId,
       createdAt: DateTime.now().toUtc(),
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
       isOnlyEmoji: isOnlyEmoji(text ?? ''),
@@ -50,7 +50,7 @@ Future<Message> createMessage(
 
     message = ImageMessage(
       id: uuid.v4(),
-      author: author,
+      authorId: authorId,
       createdAt: DateTime.now().toUtc(),
       source: response.data['img'],
       thumbhash: response.data['thumbhash'],

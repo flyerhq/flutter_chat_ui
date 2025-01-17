@@ -289,14 +289,14 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _subsequentScrollToEnd(Message data) async {
-    final user = Provider.of<User>(context, listen: false);
+    final currentUserId = Provider.of<String>(context, listen: false);
 
     // In this case we only want to scroll to the bottom if user has not scrolled up
     // or if the message is sent by the current user.
     if (data.id == _lastInsertedMessageId &&
         widget.scrollController.offset <
             widget.scrollController.position.maxScrollExtent &&
-        (user.id == data.author.id || !_userHasScrolled)) {
+        (currentUserId == data.authorId || !_userHasScrolled)) {
       if (widget.scrollToEndAnimationDuration == Duration.zero) {
         widget.scrollController
             .jumpTo(widget.scrollController.position.maxScrollExtent);
@@ -322,7 +322,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       if (data.id == _lastInsertedMessageId &&
           widget.scrollController.offset <
               widget.scrollController.position.maxScrollExtent &&
-          (user.id == data.author.id || !_userHasScrolled)) {
+          (currentUserId == data.authorId || !_userHasScrolled)) {
         widget.scrollController
             .jumpTo(widget.scrollController.position.maxScrollExtent);
       }
@@ -429,7 +429,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _onInserted(final int position, final Message data) {
-    final user = Provider.of<User>(context, listen: false);
+    final currentUserId = Provider.of<String>(context, listen: false);
 
     // There is a scroll notification listener the controls the `_userHasScrolled` variable.
     // However, when a new message is sent by the current user we want to
@@ -437,7 +437,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     //
     // Also, if for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
     // set `_userHasScrolled` to false so that the scroll animation is triggered.
-    if (user.id == data.author.id ||
+    if (currentUserId == data.authorId ||
         (_userHasScrolled == true &&
             widget.scrollController.offset >=
                 widget.scrollController.position.maxScrollExtent)) {

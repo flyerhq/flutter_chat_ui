@@ -3,7 +3,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 final List<Message> mockData = [
   TextMessage(
     id: '1',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029000000000,
       isUtc: true,
@@ -12,7 +12,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '2',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029001000000,
       isUtc: true,
@@ -21,7 +21,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '3',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029002000000,
       isUtc: true,
@@ -30,7 +30,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '4',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029003000000,
       isUtc: true,
@@ -39,7 +39,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '5',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029004000000,
       isUtc: true,
@@ -48,7 +48,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '6',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029005000000,
       isUtc: true,
@@ -57,7 +57,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '7',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029006000000,
       isUtc: true,
@@ -66,7 +66,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '8',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029007000000,
       isUtc: true,
@@ -75,7 +75,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '9',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029008000000,
       isUtc: true,
@@ -84,7 +84,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '10',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029009000000,
       isUtc: true,
@@ -93,7 +93,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '11',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029010000000,
       isUtc: true,
@@ -102,7 +102,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '12',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029011000000,
       isUtc: true,
@@ -111,7 +111,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '13',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029012000000,
       isUtc: true,
@@ -120,7 +120,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '14',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029013000000,
       isUtc: true,
@@ -130,7 +130,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '15',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029014000000,
       isUtc: true,
@@ -139,7 +139,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '16',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029015000000,
       isUtc: true,
@@ -148,7 +148,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '17',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029016000000,
       isUtc: true,
@@ -157,7 +157,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '18',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029017000000,
       isUtc: true,
@@ -166,7 +166,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '19',
-    author: const User(id: 'sender2'),
+    authorId: 'recipient',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029018000000,
       isUtc: true,
@@ -175,7 +175,7 @@ final List<Message> mockData = [
   ),
   TextMessage(
     id: '20',
-    author: const User(id: 'sender1'),
+    authorId: 'me',
     createdAt: DateTime.fromMicrosecondsSinceEpoch(
       1729029019000000,
       isUtc: true,

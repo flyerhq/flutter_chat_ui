@@ -27,6 +27,9 @@ class GeminiState extends State<Gemini> {
   final _crossCache = CrossCache();
   final _scrollController = ScrollController();
 
+  final _currentUser = const User(id: 'me');
+  final _agent = const User(id: 'agent');
+
   late final ChatController _chatController;
   late final GenerativeModel _model;
   late ChatSession _chatSession;
@@ -69,8 +72,6 @@ class GeminiState extends State<Gemini> {
       ),
       body: Chat(
         builders: Builders(
-          textMessageBuilder: (context, message, index) =>
-              FlyerChatTextMessage(message: message, index: index),
           imageMessageBuilder: (context, message, index) =>
               FlyerChatImageMessage(message: message, index: index),
           inputBuilder: (context) => ChatInput(
@@ -88,13 +89,22 @@ class GeminiState extends State<Gemini> {
               ],
             ),
           ),
+          textMessageBuilder: (context, message, index) =>
+              FlyerChatTextMessage(message: message, index: index),
         ),
         chatController: _chatController,
         crossCache: _crossCache,
-        scrollController: _scrollController,
-        onMessageSend: _handleMessageSend,
+        currentUserId: _currentUser.id,
         onAttachmentTap: _handleAttachmentTap,
-        user: const User(id: 'me'),
+        onMessageSend: _handleMessageSend,
+        scrollController: _scrollController,
+        resolveUser: (id) => Future.value(
+          switch (id) {
+            'me' => _currentUser,
+            'agent' => _agent,
+            _ => null,
+          },
+        ),
       ),
     );
   }
@@ -103,7 +113,7 @@ class GeminiState extends State<Gemini> {
     await _chatController.insert(
       TextMessage(
         id: _uuid.v4(),
-        author: const User(id: 'me'),
+        authorId: _currentUser.id,
         createdAt: DateTime.now().toUtc(),
         text: text,
         isOnlyEmoji: isOnlyEmoji(text),
@@ -126,7 +136,7 @@ class GeminiState extends State<Gemini> {
     await _chatController.insert(
       ImageMessage(
         id: _uuid.v4(),
-        author: const User(id: 'me'),
+        authorId: _currentUser.id,
         createdAt: DateTime.now().toUtc(),
         source: image.path,
       ),
@@ -155,7 +165,7 @@ class GeminiState extends State<Gemini> {
           if (_currentGeminiResponse == null) {
             _currentGeminiResponse = TextMessage(
               id: _uuid.v4(),
-              author: const User(id: 'gemini'),
+              authorId: _agent.id,
               createdAt: DateTime.now().toUtc(),
               text: accumulatedText,
               isOnlyEmoji: isOnlyEmoji(accumulatedText),

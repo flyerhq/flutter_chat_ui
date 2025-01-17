@@ -37,6 +37,7 @@ dependencies:
     sdk: flutter
   flutter_chat_core: ^0.0.4
   flutter_chat_ui: ^2.0.0-dev.3
+  flutter_dotenv: ^5.2.1
   flutter_lorem: ^2.0.0
   flyer_chat_image_message: ^0.0.4
   flyer_chat_text_message: ^0.0.4
@@ -74,9 +75,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
