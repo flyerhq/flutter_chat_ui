@@ -14,9 +14,9 @@ void main() {
     // test('inserts a new message at the end', () {
     //   final newMessage = TextMessage(
     //     id: '21',
-    //     author: const User(id: 'sender1'),
-    //     createdAt: DateTime.fromMicrosecondsSinceEpoch(
-    //       1729029020000000,
+    //     authorId: 'me',
+    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
+    //       1736893310000,
     //       isUtc: true,
     //     ),
     //     text: 'test',
@@ -38,9 +38,9 @@ void main() {
     // test('adds multiple messages using set', () {
     //   final newMessage1 = TextMessage(
     //     id: '21',
-    //     author: const User(id: 'sender1'),
-    //     createdAt: DateTime.fromMicrosecondsSinceEpoch(
-    //       1729029020000000,
+    //     authorId: 'me',
+    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
+    //       1736893310000,
     //       isUtc: true,
     //     ),
     //     text: 'test',
@@ -48,9 +48,9 @@ void main() {
 
     //   final newMessage2 = TextMessage(
     //     id: '22',
-    //     author: const User(id: 'sender1'),
-    //     createdAt: DateTime.fromMicrosecondsSinceEpoch(
-    //       1729029021000000,
+    //     authorId: 'me',
+    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
+    //       1736893310000,
     //       isUtc: true,
     //     ),
     //     text: 'test',
@@ -65,9 +65,9 @@ void main() {
     // test('adds keeps inserted message when using set without it', () {
     //   final message = TextMessage(
     //     id: '21',
-    //     author: const User(id: 'sender1'),
-    //     createdAt: DateTime.fromMicrosecondsSinceEpoch(
-    //       1729029020000000,
+    //     authorId: 'me',
+    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
+    //       1736893310000,
     //       isUtc: true,
     //     ),
     //     text: 'test',

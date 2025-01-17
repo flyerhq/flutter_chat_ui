@@ -8,7 +8,7 @@ void main() {
       final imageMessageJson = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'image',
         'source': 'https://example.com/image.png',
         'metadata': {'key': 'value'},
@@ -20,7 +20,7 @@ void main() {
       final textMessageJson = {
         'id': '2',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'text',
         'text': 'Hello',
         'metadata': {'key': 'value'},
@@ -32,7 +32,7 @@ void main() {
       final unsupportedMessageJson = {
         'id': '3',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
       };
@@ -43,7 +43,7 @@ void main() {
       final unsupportedTypeJson = {
         'id': '4',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'nonexistentType',
         'metadata': {'key': 'value'},
       };
@@ -59,7 +59,7 @@ void main() {
       final json = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
@@ -79,7 +79,7 @@ void main() {
       expect(message.authorId, 'me');
       expect(
         message.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
       );
       expect(message.text, 'Hello, world!');
       expect(message.metadata, {'key': 'value'});
@@ -93,7 +93,7 @@ void main() {
       expect(message.toJson(), {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000,
+        'createdAt': 1736893310000,
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
@@ -114,8 +114,8 @@ void main() {
 
     test('creates a correct copy with new values through copyWith', () {
       final copiedMessage = message.copyWith(
-        createdAt: DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
         metadata: {'key': 'newValue'},
@@ -133,8 +133,8 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
       );
@@ -158,7 +158,7 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
       );
       expect(copiedMessage.text, 'Hello, world!');
       expect(copiedMessage.metadata, {'key': 'value'});
@@ -168,7 +168,7 @@ void main() {
       final json = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
@@ -197,7 +197,7 @@ void main() {
       final jsonDifferentId = {
         'id': '2',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
@@ -212,7 +212,7 @@ void main() {
       final jsonDifferentTimestamp = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000 + 1000000, // in microseconds
+        'createdAt': 1736893310000 + 1000, // in milliseconds
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
@@ -233,7 +233,7 @@ void main() {
       final json = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
         'metadata': {'key': 'value'},
@@ -247,7 +247,7 @@ void main() {
       expect(message.authorId, 'me');
       expect(
         message.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
       );
       expect(message.source, 'https://example.com/image.jpg');
       expect(message.metadata, {'key': 'value'});
@@ -257,7 +257,7 @@ void main() {
       expect(message.toJson(), {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000,
+        'createdAt': 1736893310000,
         'type': 'image',
         'source': 'https://example.com/image.jpg',
         'metadata': {'key': 'value'},
@@ -272,8 +272,8 @@ void main() {
 
     test('creates a correct copy with new values through copyWith', () {
       final copiedMessage = message.copyWith(
-        createdAt: DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
         metadata: {'key': 'newValue'},
@@ -285,8 +285,8 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
       );
@@ -303,7 +303,7 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
       );
       expect(copiedMessage.source, 'https://example.com/image.jpg');
       expect(copiedMessage.metadata, {'key': 'value'});
@@ -313,7 +313,7 @@ void main() {
       final json = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
         'metadata': {'key': 'value'},
@@ -337,7 +337,7 @@ void main() {
       final jsonDifferentId = {
         'id': '2',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
         'metadata': {'key': 'value'},
@@ -352,7 +352,7 @@ void main() {
       final jsonDifferentTimestamp = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000 + 1000000, // in microseconds
+        'createdAt': 1736893310000 + 1000, // in milliseconds
         'type': 'image',
         'source': 'https://example.com/image.jpg',
         'metadata': {'key': 'value'},
@@ -373,7 +373,7 @@ void main() {
       final json = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
       };
@@ -386,7 +386,7 @@ void main() {
       expect(message.authorId, 'me');
       expect(
         message.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
       );
       expect(message.metadata, {'key': 'value'});
     });
@@ -395,7 +395,7 @@ void main() {
       expect(message.toJson(), {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000,
+        'createdAt': 1736893310000,
         'type': 'unsupported',
         'metadata': {'key': 'value'},
       });
@@ -409,8 +409,8 @@ void main() {
 
     test('creates a correct copy with new values through copyWith', () {
       final copiedMessage = message.copyWith(
-        createdAt: DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
         metadata: {'key': 'newValue'},
@@ -421,8 +421,8 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
       );
@@ -438,7 +438,7 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMicrosecondsSinceEpoch(1729029000000000, isUtc: true),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
       );
       expect(copiedMessage.metadata, {'key': 'value'});
     });
@@ -447,7 +447,7 @@ void main() {
       final json = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
       };
@@ -459,8 +459,8 @@ void main() {
 
       // Change one property of message2.
       final copiedMessage = message2.copyWith(
-        createdAt: DateTime.fromMicrosecondsSinceEpoch(
-          1729029000000000 + 1000000,
+        createdAt: DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 + 1000,
           isUtc: true,
         ),
       );
@@ -474,7 +474,7 @@ void main() {
       final jsonDifferentId = {
         'id': '2',
         'authorId': 'me',
-        'createdAt': 1729029000000000, // in microseconds
+        'createdAt': 1736893310000, // in milliseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
       };
@@ -488,7 +488,7 @@ void main() {
       final jsonDifferentTimestamp = {
         'id': '1',
         'authorId': 'me',
-        'createdAt': 1729029000000000 + 1000000, // in microseconds
+        'createdAt': 1736893310000 + 1000, // in milliseconds
         'type': 'unsupported',
         'metadata': {'key': 'value'},
       };

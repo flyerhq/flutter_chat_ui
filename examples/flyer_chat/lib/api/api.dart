@@ -191,7 +191,7 @@ class ApiState extends State<Api> {
         );
         final nextMessage = currentMessage.copyWith(
           id: response['id'],
-          createdAt: DateTime.fromMicrosecondsSinceEpoch(
+          createdAt: DateTime.fromMillisecondsSinceEpoch(
             response['createdAt'],
             isUtc: true,
           ),
@@ -257,7 +257,7 @@ class ApiState extends State<Api> {
           );
           final nextMessage2 = currentMessage2.copyWith(
             id: newMessageResponse['id'],
-            createdAt: DateTime.fromMicrosecondsSinceEpoch(
+            createdAt: DateTime.fromMillisecondsSinceEpoch(
               newMessageResponse['createdAt'],
               isUtc: true,
             ),
