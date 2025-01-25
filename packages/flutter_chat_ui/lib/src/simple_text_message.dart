@@ -3,11 +3,19 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
 class SimpleTextMessage extends StatelessWidget {
+  static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
+  static const Color _sentinelColor = Colors.transparent;
+  static const TextStyle _sentinelTextStyle = TextStyle();
+
   final TextMessage message;
   final int index;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
   final double? onlyEmojiFontSize;
+  final Color? sentBackgroundColor;
+  final Color? receivedBackgroundColor;
+  final TextStyle? sentTextStyle;
+  final TextStyle? receivedTextStyle;
 
   const SimpleTextMessage({
     super.key,
@@ -17,35 +25,61 @@ class SimpleTextMessage extends StatelessWidget {
       horizontal: 16,
       vertical: 10,
     ),
-    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+    this.borderRadius = _sentinelBorderRadius,
     this.onlyEmojiFontSize = 48,
+    this.sentBackgroundColor = _sentinelColor,
+    this.receivedBackgroundColor = _sentinelColor,
+    this.sentTextStyle = _sentinelTextStyle,
+    this.receivedTextStyle = _sentinelTextStyle,
   });
+
+  bool get _isOnlyEmoji => message.isOnlyEmoji == true;
 
   @override
   Widget build(BuildContext context) {
-    final textMessageTheme =
-        context.select((ChatTheme theme) => theme.textMessageTheme);
+    final theme = context.watch<ChatTheme>();
     final isSentByMe = context.watch<String>() == message.authorId;
-    final textStyle = isSentByMe
-        ? textMessageTheme.sentTextStyle
-        : textMessageTheme.receivedTextStyle;
+    final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
+    final textStyle = _resolveTextStyle(isSentByMe, theme);
 
     return Container(
       padding: padding,
-      decoration: message.isOnlyEmoji == true
+      decoration: _isOnlyEmoji
           ? null
           : BoxDecoration(
-              color: isSentByMe
-                  ? textMessageTheme.sentBackgroundColor
-                  : textMessageTheme.receivedBackgroundColor,
-              borderRadius: borderRadius,
+              color: backgroundColor,
+              borderRadius: borderRadius == _sentinelBorderRadius
+                  ? theme.shape
+                  : borderRadius,
             ),
       child: Text(
         message.text,
-        style: message.isOnlyEmoji == true
+        style: _isOnlyEmoji
             ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
             : textStyle,
       ),
     );
+  }
+
+  Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
+    if (isSentByMe) {
+      return sentBackgroundColor == _sentinelColor
+          ? theme.colors.primary
+          : sentBackgroundColor;
+    }
+    return receivedBackgroundColor == _sentinelColor
+        ? theme.colors.surfaceContainer
+        : receivedBackgroundColor;
+  }
+
+  TextStyle? _resolveTextStyle(bool isSentByMe, ChatTheme theme) {
+    if (isSentByMe) {
+      return sentTextStyle == _sentinelTextStyle
+          ? theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary)
+          : sentTextStyle;
+    }
+    return receivedTextStyle == _sentinelTextStyle
+        ? theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface)
+        : receivedTextStyle;
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cross_cache/cross_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
@@ -11,6 +9,8 @@ import 'utils/chat_input_height_notifier.dart';
 import 'utils/typedefs.dart';
 
 class Chat extends StatefulWidget {
+  static const Color _sentinelColor = Colors.transparent;
+
   final String currentUserId;
   final ResolveUserCallback resolveUser;
   final ChatController chatController;
@@ -18,11 +18,11 @@ class Chat extends StatefulWidget {
   final CrossCache? crossCache;
   final ScrollController? scrollController;
   final ChatTheme? theme;
-  final ChatTheme? darkTheme;
-  final ThemeMode themeMode;
   final OnMessageSendCallback? onMessageSend;
   final OnMessageTapCallback? onMessageTap;
   final OnAttachmentTapCallback? onAttachmentTap;
+  final Color? backgroundColor;
+  final Decoration? decoration;
 
   const Chat({
     super.key,
@@ -33,11 +33,11 @@ class Chat extends StatefulWidget {
     this.crossCache,
     this.scrollController,
     this.theme,
-    this.darkTheme,
-    this.themeMode = ThemeMode.system,
     this.onMessageSend,
     this.onMessageTap,
     this.onAttachmentTap,
+    this.backgroundColor = _sentinelColor,
+    this.decoration,
   });
 
   @override
@@ -45,7 +45,6 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> with WidgetsBindingObserver {
-  // TODO: If theme is passed and then removed, it does not reset to default
   late ChatTheme _theme;
   late Builders _builders;
   late final CrossCache _crossCache;
@@ -62,18 +61,11 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangePlatformBrightness() {
-    super.didChangePlatformBrightness();
-    setState(_updateTheme);
-  }
-
-  @override
   void didUpdateWidget(covariant Chat oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.theme != widget.theme ||
-        oldWidget.darkTheme != widget.darkTheme) {
-      _updateTheme(theme: _theme, darkTheme: _theme);
+    if (oldWidget.theme != widget.theme) {
+      _updateTheme();
     }
 
     if (oldWidget.builders != widget.builders) {
@@ -112,7 +104,10 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
       ],
       child: Container(
-        color: _theme.backgroundColor,
+        color: widget.backgroundColor == Chat._sentinelColor
+            ? _theme.colors.surface
+            : widget.backgroundColor,
+        decoration: widget.decoration,
         child: Stack(
           children: [
             _builders.chatAnimatedListBuilder?.call(
@@ -147,21 +142,8 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
     );
   }
 
-  void _updateTheme({ChatTheme? theme, ChatTheme? darkTheme}) {
-    switch (widget.themeMode) {
-      case ThemeMode.light:
-        _theme = (theme ?? ChatTheme.light()).merge(widget.theme);
-        break;
-      case ThemeMode.dark:
-        _theme = (darkTheme ?? ChatTheme.dark()).merge(widget.darkTheme);
-        break;
-      case ThemeMode.system:
-        _theme =
-            PlatformDispatcher.instance.platformBrightness == Brightness.dark
-                ? (darkTheme ?? ChatTheme.dark()).merge(widget.darkTheme)
-                : (theme ?? ChatTheme.light()).merge(widget.theme);
-        break;
-    }
+  void _updateTheme() {
+    _theme = widget.theme ?? ChatTheme.light();
   }
 
   void _updateBuilders() {

@@ -16,6 +16,8 @@ class ScrollToBottom extends StatelessWidget {
   final ShapeBorder? shape;
   final Widget? icon;
   final bool? handleSafeArea;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   const ScrollToBottom({
     super.key,
@@ -30,13 +32,19 @@ class ScrollToBottom extends StatelessWidget {
     this.shape = const CircleBorder(),
     this.icon = const Icon(Icons.keyboard_arrow_down),
     this.handleSafeArea = true,
+    this.backgroundColor,
+    this.foregroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
-    final scrollToBottomTheme =
-        context.select((ChatTheme theme) => theme.scrollToBottomTheme);
+    final colors = context.select(
+      (ChatTheme theme) => (
+        onSurface: theme.colors.onSurface,
+        surfaceContainer: theme.colors.surfaceContainer,
+      ),
+    );
 
     return Consumer<ChatInputHeightNotifier>(
       builder: (context, heightNotifier, child) {
@@ -52,8 +60,8 @@ class ScrollToBottom extends StatelessWidget {
           child: ScaleTransition(
             scale: animation,
             child: FloatingActionButton(
-              backgroundColor: scrollToBottomTheme.backgroundColor,
-              foregroundColor: scrollToBottomTheme.foregroundColor,
+              backgroundColor: backgroundColor ?? colors.surfaceContainer,
+              foregroundColor: foregroundColor ?? colors.onSurface,
               heroTag: null,
               mini: mini ?? false,
               shape: shape,
