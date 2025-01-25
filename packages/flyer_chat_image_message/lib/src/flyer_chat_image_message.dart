@@ -12,19 +12,32 @@ import 'package:thumbhash/thumbhash.dart'
 import 'get_image_dimensions.dart';
 
 class FlyerChatImageMessage extends StatefulWidget {
+  static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
+  static const Color _sentinelColor = Colors.transparent;
+
   final ImageMessage message;
   final int index;
   final BorderRadiusGeometry? borderRadius;
   final BoxConstraints? constraints;
   final Widget? overlay;
+  final Color? placeholderColor;
+  final Color? loadingOverlayColor;
+  final Color? loadingIndicatorColor;
+  final Color? uploadOverlayColor;
+  final Color? uploadIndicatorColor;
 
   const FlyerChatImageMessage({
     super.key,
     required this.message,
     required this.index,
-    this.borderRadius = const BorderRadius.all(Radius.circular(12)),
+    this.borderRadius = _sentinelBorderRadius,
     this.constraints = const BoxConstraints(maxHeight: 300),
     this.overlay,
+    this.placeholderColor = _sentinelColor,
+    this.loadingOverlayColor = _sentinelColor,
+    this.loadingIndicatorColor = _sentinelColor,
+    this.uploadOverlayColor = _sentinelColor,
+    this.uploadIndicatorColor = _sentinelColor,
   });
 
   @override
@@ -113,11 +126,13 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
   @override
   Widget build(BuildContext context) {
-    final imageMessageTheme =
-        context.select((ChatTheme theme) => theme.imageMessageTheme);
+    final theme = context.watch<ChatTheme>();
 
     return ClipRRect(
-      borderRadius: widget.borderRadius ?? BorderRadius.zero,
+      borderRadius:
+          widget.borderRadius == FlyerChatImageMessage._sentinelBorderRadius
+              ? theme.shape
+              : (widget.borderRadius ?? BorderRadius.zero),
       child: Container(
         constraints: widget.constraints,
         child: AspectRatio(
@@ -131,7 +146,10 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                       fit: BoxFit.fill,
                     )
                   : Container(
-                      color: imageMessageTheme.placeholderColor,
+                      color: widget.placeholderColor ==
+                              FlyerChatImageMessage._sentinelColor
+                          ? theme.colors.surfaceContainerLow
+                          : widget.placeholderColor,
                     ),
               Image(
                 image: _cachedNetworkImage,
@@ -141,14 +159,25 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     return child;
                   }
 
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: imageMessageTheme.downloadProgressIndicatorColor,
-                      strokeCap: StrokeCap.round,
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
+                  return Container(
+                    color: widget.loadingOverlayColor ==
+                            FlyerChatImageMessage._sentinelColor
+                        // ignore: deprecated_member_use
+                        ? theme.colors.surfaceContainerLow.withOpacity(0.5)
+                        : widget.loadingOverlayColor,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: widget.loadingIndicatorColor ==
+                                FlyerChatImageMessage._sentinelColor
+                            // ignore: deprecated_member_use
+                            ? theme.colors.onSurface.withOpacity(0.8)
+                            : widget.loadingIndicatorColor,
+                        strokeCap: StrokeCap.round,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
                     ),
                   );
                 },
@@ -186,10 +215,18 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     }
 
                     return Container(
-                      color: imageMessageTheme.uploadOverlayColor,
+                      color: widget.uploadOverlayColor ==
+                              FlyerChatImageMessage._sentinelColor
+                          // ignore: deprecated_member_use
+                          ? theme.colors.surfaceContainerLow.withOpacity(0.5)
+                          : widget.uploadOverlayColor,
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: imageMessageTheme.uploadProgressIndicatorColor,
+                          color: widget.uploadIndicatorColor ==
+                                  FlyerChatImageMessage._sentinelColor
+                              // ignore: deprecated_member_use
+                              ? theme.colors.onSurface.withOpacity(0.8)
+                              : widget.uploadIndicatorColor,
                           strokeCap: StrokeCap.round,
                           value: snapshot.data,
                         ),

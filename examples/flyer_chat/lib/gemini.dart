@@ -66,6 +66,8 @@ class GeminiState extends State<Gemini> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gemini'),
@@ -105,6 +107,7 @@ class GeminiState extends State<Gemini> {
             _ => null,
           },
         ),
+        theme: ChatTheme.fromThemeData(theme),
       ),
     );
   }

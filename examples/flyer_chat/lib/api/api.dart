@@ -126,12 +126,11 @@ class ApiState extends State<Api> {
             chatController: _chatController,
             crossCache: _crossCache,
             currentUserId: widget.currentUserId,
-            darkTheme: ChatTheme.fromThemeData(theme),
             onAttachmentTap: _handleAttachmentTap,
             onMessageSend: _addItem,
             onMessageTap: _removeItem,
-            theme: ChatTheme.fromThemeData(theme),
             resolveUser: (id) => Future.value(users[id]),
+            theme: ChatTheme.fromThemeData(theme),
           ),
           Positioned(
             top: 16,

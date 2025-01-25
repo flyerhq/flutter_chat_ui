@@ -8,6 +8,8 @@ import 'utils/chat_input_height_notifier.dart';
 import 'utils/typedefs.dart';
 
 class ChatInput extends StatefulWidget {
+  static const Color _sentinelColor = Colors.transparent;
+
   final double? left;
   final double? right;
   final double? top;
@@ -22,6 +24,12 @@ class ChatInput extends StatefulWidget {
   final bool? filled;
   final Widget? topWidget;
   final bool? handleSafeArea;
+  final Color? backgroundColor;
+  final Color? attachmentIconColor;
+  final Color? sendIconColor;
+  final Color? hintColor;
+  final Color? textColor;
+  final Color? inputFillColor;
 
   const ChatInput({
     super.key,
@@ -42,6 +50,12 @@ class ChatInput extends StatefulWidget {
     this.filled = true,
     this.topWidget,
     this.handleSafeArea = true,
+    this.backgroundColor = _sentinelColor,
+    this.attachmentIconColor,
+    this.sendIconColor,
+    this.hintColor,
+    this.textColor,
+    this.inputFillColor,
   });
 
   @override
@@ -75,7 +89,7 @@ class _ChatInputState extends State<ChatInput> {
     final bottomSafeArea = widget.handleSafeArea == true
         ? MediaQuery.of(context).padding.bottom
         : 0.0;
-    final inputTheme = context.select((ChatTheme theme) => theme.inputTheme);
+    final theme = context.watch<ChatTheme>();
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
 
     return Positioned(
@@ -92,7 +106,10 @@ class _ChatInputState extends State<ChatInput> {
           ),
           child: Container(
             key: _inputKey,
-            color: inputTheme.backgroundColor,
+            color: widget.backgroundColor == ChatInput._sentinelColor
+                // ignore: deprecated_member_use
+                ? theme.colors.surfaceContainerLow.withOpacity(0.8)
+                : widget.backgroundColor,
             child: Column(
               children: [
                 if (widget.topWidget != null) widget.topWidget!,
@@ -107,7 +124,9 @@ class _ChatInputState extends State<ChatInput> {
                       widget.attachmentIcon != null
                           ? IconButton(
                               icon: widget.attachmentIcon!,
-                              color: inputTheme.hintStyle?.color,
+                              color: widget.attachmentIconColor ??
+                                  // ignore: deprecated_member_use
+                                  theme.colors.onSurface.withOpacity(0.5),
                               onPressed: onAttachmentTap,
                             )
                           : const SizedBox.shrink(),
@@ -117,13 +136,22 @@ class _ChatInputState extends State<ChatInput> {
                           controller: _textController,
                           decoration: InputDecoration(
                             hintText: 'Type a message',
-                            hintStyle: inputTheme.hintStyle,
+                            hintStyle: theme.typography.bodyMedium.copyWith(
+                              color: widget.hintColor ??
+                                  // ignore: deprecated_member_use
+                                  theme.colors.onSurface.withOpacity(0.5),
+                            ),
                             border: widget.inputBorder,
                             filled: widget.filled,
-                            fillColor: inputTheme.textFieldColor,
+                            fillColor: widget.inputFillColor ??
+                                theme.colors.surfaceContainerHigh
+                                    // ignore: deprecated_member_use
+                                    .withOpacity(0.8),
                             hoverColor: Colors.transparent,
                           ),
-                          style: inputTheme.textStyle,
+                          style: theme.typography.bodyMedium.copyWith(
+                            color: widget.textColor ?? theme.colors.onSurface,
+                          ),
                           onSubmitted: _handleSubmitted,
                           textInputAction: TextInputAction.send,
                         ),
@@ -132,7 +160,9 @@ class _ChatInputState extends State<ChatInput> {
                       widget.sendIcon != null
                           ? IconButton(
                               icon: widget.sendIcon!,
-                              color: inputTheme.hintStyle?.color,
+                              color: widget.sendIconColor ??
+                                  // ignore: deprecated_member_use
+                                  theme.colors.onSurface.withOpacity(0.5),
                               onPressed: () =>
                                   _handleSubmitted(_textController.text),
                             )

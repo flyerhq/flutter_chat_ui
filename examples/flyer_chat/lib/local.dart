@@ -39,11 +39,14 @@ class LocalState extends State<Local> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Local'),
       ),
       body: Chat(
+        backgroundColor: null,
         builders: Builders(
           customMessageBuilder: (context, message, index) => Container(
             padding: const EdgeInsets.symmetric(
@@ -51,7 +54,9 @@ class LocalState extends State<Local> {
               vertical: 10,
             ),
             decoration: BoxDecoration(
-              color: Color(0xFFF0F0F0),
+              color: theme.brightness == Brightness.dark
+                  ? ChatColors.dark().surfaceContainer
+                  : ChatColors.light().surfaceContainer,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
             ),
             child: IsTypingIndicator(),
@@ -85,9 +90,19 @@ class LocalState extends State<Local> {
         ),
         chatController: _chatController,
         currentUserId: _currentUser.id,
-        darkTheme: ChatTheme.dark(
-          isTypingTheme: IsTypingTheme.dark(
-            color: Color(0xFF101010),
+        decoration: BoxDecoration(
+          color: theme.brightness == Brightness.dark
+              ? ChatColors.dark().surface
+              : ChatColors.light().surface,
+          image: DecorationImage(
+            image: AssetImage('assets/pattern.png'),
+            repeat: ImageRepeat.repeat,
+            colorFilter: ColorFilter.mode(
+              theme.brightness == Brightness.dark
+                  ? ChatColors.dark().surfaceContainerLow
+                  : ChatColors.light().surfaceContainerLow,
+              BlendMode.srcIn,
+            ),
           ),
         ),
         onAttachmentTap: _handleAttachmentTap,
@@ -101,6 +116,9 @@ class LocalState extends State<Local> {
             _ => null,
           },
         ),
+        theme: theme.brightness == Brightness.dark
+            ? ChatTheme.dark()
+            : ChatTheme.light(),
       ),
     );
   }

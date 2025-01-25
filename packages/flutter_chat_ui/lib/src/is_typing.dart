@@ -72,7 +72,7 @@ class _IsTypingIndicatorState extends State<IsTypingIndicator>
 
   @override
   Widget build(BuildContext context) {
-    final dotColor = _getDotColor(context);
+    final dotColor = _resolveDotColor(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: widget.size / 2),
@@ -105,11 +105,13 @@ class _IsTypingIndicatorState extends State<IsTypingIndicator>
     );
   }
 
-  Color? _getDotColor(BuildContext context) {
+  Color? _resolveDotColor(BuildContext context) {
     if (widget.color != null) return widget.color;
 
     try {
-      return context.select((ChatTheme theme) => theme.isTypingTheme).color;
+      return context.select(
+        (ChatTheme theme) => theme.colors.onSurface,
+      );
     } catch (_) {
       return null;
     }
