@@ -93,5 +93,7 @@ class SembastChatController implements ChatController {
   Stream<ChatOperation> get operationsStream => _operationsController.stream;
 
   @override
-  void dispose() {}
+  void dispose() {
+    _operationsController.close();
+  }
 }

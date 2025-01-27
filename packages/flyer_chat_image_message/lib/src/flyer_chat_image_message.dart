@@ -80,9 +80,9 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       _aspectRatio = 1;
     }
 
-    final crossCache = Provider.of<CrossCache>(context, listen: false);
+    final crossCache = context.read<CrossCache>();
 
-    _chatController = Provider.of<ChatController>(context, listen: false);
+    _chatController = context.read<ChatController>();
     _cachedNetworkImage = CachedNetworkImage(widget.message.source, crossCache);
 
     if (width == null || height == null) {
@@ -104,7 +104,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
     if (oldWidget.message.source != widget.message.source) {
-      final crossCache = Provider.of<CrossCache>(context, listen: false);
+      final crossCache = context.read<CrossCache>();
       final newImage = CachedNetworkImage(widget.message.source, crossCache);
 
       precacheImage(newImage, context).then((_) {

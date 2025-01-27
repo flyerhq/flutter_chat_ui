@@ -74,6 +74,13 @@ class GeminiState extends State<Gemini> {
       ),
       body: Chat(
         builders: Builders(
+          chatAnimatedListBuilder: (context, scrollController, itemBuilder) {
+            return ChatAnimatedList(
+              scrollController: scrollController,
+              itemBuilder: itemBuilder,
+              shouldScrollToEndWhenAtBottom: false,
+            );
+          },
           imageMessageBuilder: (context, message, index) =>
               FlyerChatImageMessage(message: message, index: index),
           inputBuilder: (context) => ChatInput(
@@ -156,13 +163,19 @@ class GeminiState extends State<Gemini> {
       final response = _chatSession.sendMessageStream(content);
 
       var accumulatedText = '';
-      // used to showcase an example where we stop scrolling to the bottom
-      // as soon as message that is being generated reaches top of the viewport
-      final initialMaxScrollExtent = _scrollController.position.maxScrollExtent;
-      final viewportDimension = _scrollController.position.viewportDimension;
+      // This implements a scrolling behavior where we stop auto-scrolling once the
+      // generated message reaches the top of the viewport. For this to work properly,
+      // make sure to set `shouldScrollToEndWhenAtBottom` to false in `ChatAnimatedList`.
+      double? initialMaxScrollExtent;
+      var hasReachedTargetScroll = false;
 
       await for (final chunk in response) {
         if (chunk.text != null) {
+          // Store the initial scroll position when user inserts the message.
+          // The chat will auto-scroll here since `shouldScrollToEndWhenSendingMessage`
+          // is enabled by default.
+          initialMaxScrollExtent ??= _scrollController.position.maxScrollExtent;
+
           accumulatedText += chunk.text!;
 
           if (_currentGeminiResponse == null) {
@@ -183,20 +196,46 @@ class GeminiState extends State<Gemini> {
             );
             _currentGeminiResponse = newUpdatedMessage;
 
-            // used to showcase an example where we stop scrolling to the bottom
-            // as soon as message that is being generated reaches top of the viewport
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (!_scrollController.hasClients || !mounted) return;
-              if ((_scrollController.position.maxScrollExtent -
-                      initialMaxScrollExtent) <
-                  viewportDimension) {
-                _scrollController.animateTo(
-                  _scrollController.position.maxScrollExtent,
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.linearToEaseOut,
-                );
-              }
-            });
+            // Only attempt scrolling if:
+            // 1. We haven't already reached our target scroll position
+            // 2. The chat is actually scrollable (maxScrollExtent > 0)
+            // Note: This won't work when the UI first renders and isn't scrollable yet.
+            // That would require measuring content height instead of maxScrollExtent.
+            // Please suggest how to do this if possible.
+            if (!hasReachedTargetScroll && initialMaxScrollExtent > 0) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!_scrollController.hasClients || !mounted) return;
+
+                // Calculate target scroll position:
+                // Start with the initial scroll position
+                // Add viewport height to get to top of visible area
+                // Subtract bottom safe area
+                // Subtract input height since it is absolute positioned (104)
+                // Subtract some padding for visual buffer (20)
+                final targetScroll = (initialMaxScrollExtent ?? 0) +
+                    _scrollController.position.viewportDimension -
+                    MediaQuery.of(context).padding.bottom -
+                    104 -
+                    20;
+
+                if (_scrollController.position.maxScrollExtent > targetScroll) {
+                  _scrollController.animateTo(
+                    targetScroll,
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.linearToEaseOut,
+                  );
+                  // Once we've scrolled to target position, don't try to scroll again
+                  hasReachedTargetScroll = true;
+                } else {
+                  // If we haven't reached target position yet, scroll to bottom
+                  _scrollController.animateTo(
+                    _scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.linearToEaseOut,
+                  );
+                }
+              });
+            }
           }
         }
       }

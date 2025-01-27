@@ -38,8 +38,7 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
     if (widget.isRemoved == true) {
       _operationsSubscription = null;
     } else {
-      final chatController =
-          Provider.of<ChatController>(context, listen: false);
+      final chatController = context.read<ChatController>();
       _operationsSubscription = chatController.operationsStream.listen((event) {
         switch (event.type) {
           case ChatOperationType.update:
