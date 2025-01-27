@@ -13,6 +13,8 @@ import '../utils/chat_input_height_notifier.dart';
 import '../utils/keyboard_mixin.dart';
 import '../utils/message_list_diff.dart';
 
+enum InitialScrollToEndMode { none, jump, animate }
+
 class ChatAnimatedList extends StatefulWidget {
   final ScrollController scrollController;
   final ChatItem itemBuilder;
@@ -26,6 +28,9 @@ class ChatAnimatedList extends StatefulWidget {
   final Widget? bottomSliver;
   final bool? handleSafeArea;
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+  final InitialScrollToEndMode? initialScrollToEndMode;
+  final bool? shouldScrollToEndWhenSendingMessage;
+  final bool? shouldScrollToEndWhenAtBottom;
 
   const ChatAnimatedList({
     super.key,
@@ -41,6 +46,9 @@ class ChatAnimatedList extends StatefulWidget {
     this.bottomSliver,
     this.handleSafeArea = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
+    this.initialScrollToEndMode = InitialScrollToEndMode.jump,
+    this.shouldScrollToEndWhenSendingMessage = true,
+    this.shouldScrollToEndWhenAtBottom = true,
   });
 
   @override
@@ -48,7 +56,7 @@ class ChatAnimatedList extends StatefulWidget {
 }
 
 class ChatAnimatedListState extends State<ChatAnimatedList>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver, KeyboardMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver, KeyboardMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;
   late final SliverObserverController _observerController;
@@ -58,6 +66,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   // Used by scrollview_observer to allow for scroll to specific item
   BuildContext? _sliverListViewContext;
 
+  late final AnimationController _scrollController;
   late final AnimationController _scrollToBottomController;
   late final Animation<double> _scrollToBottomAnimation;
   Timer? _scrollToBottomShowTimer;
@@ -66,13 +75,13 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   bool _isScrollingToBottom = false;
   // This flag is used to determine if we already adjusted the initial
   // scroll position (so we can see latest messages when we enter chat)
-  bool _needsInitialScrollPositionAdjustment = true;
+  late bool _needsInitialScrollPositionAdjustment;
   String _lastInsertedMessageId = '';
 
   @override
   void initState() {
     super.initState();
-    _chatController = Provider.of<ChatController>(context, listen: false);
+    _chatController = context.read<ChatController>();
     _observerController =
         SliverObserverController(controller: widget.scrollController);
     // TODO: Add assert for messages having same id
@@ -123,6 +132,12 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       }
     });
 
+    _scrollController = AnimationController(
+      vsync: this,
+      duration: Duration.zero,
+    );
+    _scrollController.addListener(_linkAnimationToScroll);
+
     _scrollToBottomController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -131,37 +146,52 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       parent: _scrollToBottomController,
       curve: Curves.linearToEaseOut,
     );
+
+    if (widget.initialScrollToEndMode == InitialScrollToEndMode.animate) {
+      _handleScrollToBottom();
+    } else {
+      _needsInitialScrollPositionAdjustment =
+          widget.initialScrollToEndMode == InitialScrollToEndMode.jump;
+    }
   }
 
   @override
-  void onKeyboardHeightChanged(double height) async {
-    if (mounted && widget.scrollController.hasClients) {
-      if (widget.scrollToEndAnimationDuration == Duration.zero) {
-        widget.scrollController.jumpTo(
-          min(
-            widget.scrollController.offset + height,
-            widget.scrollController.position.maxScrollExtent,
-          ),
-        );
-      } else {
-        await widget.scrollController.animateTo(
-          min(
-            widget.scrollController.offset + height,
-            widget.scrollController.position.maxScrollExtent,
-          ),
-          duration: widget.scrollToEndAnimationDuration,
-          curve: Curves.linearToEaseOut,
-        );
-      }
-      // we don't want to show the scroll to bottom button when automatically scrolling content with keyboard
-      _scrollToBottomShowTimer?.cancel();
-    }
+  void onKeyboardHeightChanged(double height) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        if (!mounted || !widget.scrollController.hasClients || height == 0) {
+          return;
+        }
+
+        if (widget.scrollToEndAnimationDuration == Duration.zero) {
+          widget.scrollController.jumpTo(
+            min(
+              widget.scrollController.offset + height,
+              widget.scrollController.position.maxScrollExtent,
+            ),
+          );
+        } else {
+          await widget.scrollController.animateTo(
+            min(
+              widget.scrollController.offset + height,
+              widget.scrollController.position.maxScrollExtent,
+            ),
+            duration: widget.scrollToEndAnimationDuration,
+            curve: Curves.linearToEaseOut,
+          );
+        }
+        // we don't want to show the scroll to bottom button when automatically scrolling content with keyboard
+        _scrollToBottomShowTimer?.cancel();
+      },
+    );
   }
 
   @override
   void dispose() {
     _scrollToBottomShowTimer?.cancel();
     _scrollToBottomController.dispose();
+    _scrollController.removeListener(_linkAnimationToScroll);
+    _scrollController.dispose();
     _operationsSubscription.cancel();
     super.dispose();
   }
@@ -266,6 +296,16 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     );
   }
 
+  /// Joins the `AnimationController` to the `ScrollController`, providing ample
+  /// time for the lazy list to render its contents while scrolling to the bottom.
+  /// See https://stackoverflow.com/a/77175903 for more details.
+  void _linkAnimationToScroll() {
+    widget.scrollController.jumpTo(
+      _scrollController.value *
+          widget.scrollController.position.maxScrollExtent,
+    );
+  }
+
   void _initialScrollToEnd() async {
     // Delay the scroll to the end animation so new message is painted, otherwise
     // maxScrollExtent is not yet updated and the animation might not work.
@@ -273,30 +313,46 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
     if (!widget.scrollController.hasClients || !mounted) return;
 
-    if (widget.scrollController.offset <
+    if (widget.scrollController.offset >=
         widget.scrollController.position.maxScrollExtent) {
-      if (widget.scrollToEndAnimationDuration == Duration.zero) {
-        widget.scrollController
-            .jumpTo(widget.scrollController.position.maxScrollExtent);
-      } else {
-        await widget.scrollController.animateTo(
-          widget.scrollController.position.maxScrollExtent,
-          duration: widget.scrollToEndAnimationDuration,
-          curve: Curves.linearToEaseOut,
-        );
-      }
+      return;
+    }
+
+    if (widget.scrollToEndAnimationDuration == Duration.zero) {
+      widget.scrollController
+          .jumpTo(widget.scrollController.position.maxScrollExtent);
+    } else {
+      await widget.scrollController.animateTo(
+        widget.scrollController.position.maxScrollExtent,
+        duration: widget.scrollToEndAnimationDuration,
+        curve: Curves.linearToEaseOut,
+      );
     }
   }
 
   void _subsequentScrollToEnd(Message data) async {
-    final currentUserId = Provider.of<String>(context, listen: false);
+    // Skip auto-scrolling if both scroll behaviors are disabled:
+    // - Scrolling when user is at bottom of chat
+    // - Scrolling when user sends a new message
+    if (widget.shouldScrollToEndWhenAtBottom == false &&
+        widget.shouldScrollToEndWhenSendingMessage == false) {
+      return;
+    }
 
-    // In this case we only want to scroll to the bottom if user has not scrolled up
-    // or if the message is sent by the current user.
-    if (data.id == _lastInsertedMessageId &&
-        widget.scrollController.offset <
-            widget.scrollController.position.maxScrollExtent &&
-        (currentUserId == data.authorId || !_userHasScrolled)) {
+    // Skip scroll logic if this is not the most recently inserted message
+    // or if the list is already scrolled to the bottom. This prevents
+    // duplicate scrolling when multiple messages are inserted at once.
+    if (data.id != _lastInsertedMessageId ||
+        widget.scrollController.offset >=
+            widget.scrollController.position.maxScrollExtent) {
+      return;
+    }
+
+    // When user hasn't manually scrolled up, automatically scroll to show new messages.
+    // This matches typical chat behavior where you stay at the bottom to see incoming
+    // messages unless you've explicitly scrolled up to view history.
+    // After scrolling, exit the function since no other scroll behavior is needed.
+    if (widget.shouldScrollToEndWhenAtBottom == true && !_userHasScrolled) {
       if (widget.scrollToEndAnimationDuration == Duration.zero) {
         widget.scrollController
             .jumpTo(widget.scrollController.position.maxScrollExtent);
@@ -307,25 +363,38 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
           curve: Curves.linearToEaseOut,
         );
       }
+      return;
+    }
 
-      if (!widget.scrollController.hasClients || !mounted) return;
+    final currentUserId = context.read<String>();
 
-      // Because of the issue I have opened here https://github.com/flutter/flutter/issues/129768
-      // we need an additional jump to the end. Sometimes Flutter
-      // will not scroll to the very end. Sometimes it will not scroll to the
-      // very end even with this, so this is something that needs to be
-      // addressed by the Flutter team.
-      //
-      // Additionally here we have a check for the message id, because
-      // if new message arrives in the meantime it will trigger another
-      // scroll to the end animation, making this logic redundant.
-      if (data.id == _lastInsertedMessageId &&
-          widget.scrollController.offset <
-              widget.scrollController.position.maxScrollExtent &&
-          (currentUserId == data.authorId || !_userHasScrolled)) {
-        widget.scrollController
-            .jumpTo(widget.scrollController.position.maxScrollExtent);
+    // When the user sends a new message, automatically scroll back to
+    // the bottom to show their message.
+    // This matches common chat UX where sending a message returns focus
+    // to the most recent messages. After scrolling, exit the function since
+    // no other scroll behavior is needed.
+    if (widget.shouldScrollToEndWhenSendingMessage == true &&
+        currentUserId == data.authorId) {
+      // When scrolled up in chat history use fling to guarantee scrolling
+      // to the very end of the list.
+      // See https://stackoverflow.com/a/77175903 for more details.
+      if (_userHasScrolled) {
+        _scrollController.value = widget.scrollController.position.pixels /
+            widget.scrollController.position.maxScrollExtent;
+        await _scrollController.fling();
+      } else {
+        if (widget.scrollToEndAnimationDuration == Duration.zero) {
+          widget.scrollController
+              .jumpTo(widget.scrollController.position.maxScrollExtent);
+        } else {
+          await widget.scrollController.animateTo(
+            widget.scrollController.position.maxScrollExtent,
+            duration: widget.scrollToEndAnimationDuration,
+            curve: Curves.linearToEaseOut,
+          );
+        }
       }
+      return;
     }
   }
 
@@ -379,34 +448,22 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _handleScrollToBottom() {
-    _isScrollingToBottom = true;
-    _scrollToBottomController.reverse();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (!widget.scrollController.hasClients || !mounted) return;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!widget.scrollController.hasClients || !mounted) return;
+        _isScrollingToBottom = true;
 
-      if (widget.scrollToEndAnimationDuration == Duration.zero) {
-        widget.scrollController
-            .jumpTo(widget.scrollController.position.maxScrollExtent);
-      } else {
-        await widget.scrollController.animateTo(
-          widget.scrollController.position.maxScrollExtent,
-          duration: widget.scrollToEndAnimationDuration,
-          curve: Curves.linearToEaseOut,
-        );
-      }
+        _scrollToBottomController.reverse();
 
-      if (!widget.scrollController.hasClients || !mounted) return;
+        _scrollController.value = widget.scrollController.position.pixels /
+            widget.scrollController.position.maxScrollExtent;
+        _scrollController.fling();
 
-      if (widget.scrollController.offset <
-          widget.scrollController.position.maxScrollExtent) {
-        widget.scrollController.jumpTo(
-          widget.scrollController.position.maxScrollExtent,
-        );
-      }
-
-      _isScrollingToBottom = false;
-    });
+        _userHasScrolled = false;
+        _isScrollingToBottom = false;
+      },
+    );
   }
 
   void _handleToggleScrollToBottom() {
@@ -417,6 +474,9 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         _scrollToBottomShowTimer =
             Timer(widget.scrollToBottomAppearanceDelay, () {
           if (mounted) {
+            // If we show scroll to bottom that means user is viewing the history
+            // so we set `_userHasScrolled` to true.
+            _userHasScrolled = true;
             _scrollToBottomController.forward();
           }
         });
@@ -429,18 +489,11 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _onInserted(final int position, final Message data) {
-    final currentUserId = Provider.of<String>(context, listen: false);
-
-    // There is a scroll notification listener the controls the `_userHasScrolled` variable.
-    // However, when a new message is sent by the current user we want to
-    // set `_userHasScrolled` to false so that the scroll animation is triggered.
-    //
-    // Also, if for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
-    // set `_userHasScrolled` to false so that the scroll animation is triggered.
-    if (currentUserId == data.authorId ||
-        (_userHasScrolled == true &&
-            widget.scrollController.offset >=
-                widget.scrollController.position.maxScrollExtent)) {
+    // If for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
+    // set `_userHasScrolled` to false so that the scroll to end animation is triggered.
+    if (_userHasScrolled &&
+        widget.scrollController.offset >=
+            widget.scrollController.position.maxScrollExtent) {
       _userHasScrolled = false;
     }
 

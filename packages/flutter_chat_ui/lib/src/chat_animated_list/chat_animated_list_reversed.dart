@@ -59,7 +59,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
   @override
   void initState() {
     super.initState();
-    _chatController = Provider.of<ChatController>(context, listen: false);
+    _chatController = context.read<ChatController>();
     _observerController =
         SliverObserverController(controller: widget.scrollController);
     // TODO: Add assert for messages having same id
@@ -200,7 +200,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed> {
   }
 
   void _onInserted(final int position, final Message data) {
-    final currentUserId = Provider.of<String>(context, listen: false);
+    final currentUserId = context.read<String>();
 
     // There is a scroll notification listener the controls the `_userHasScrolled` variable.
     // However, when a new message is sent by the current user we want to
