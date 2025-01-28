@@ -203,8 +203,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
     return NotificationListener<Notification>(
       onNotification: (notification) {
-        // Handle initial scroll to bottom so you see latest messages
         if (notification is ScrollMetricsNotification) {
+          // Handle initial scroll to bottom so you see latest messages
           _adjustInitialScrollPosition(notification);
           _handleToggleScrollToBottom();
         }
