@@ -6,3 +6,4 @@ typedef ResolveUserCallback = Future<User?> Function(String id);
 typedef OnMessageTapCallback = void Function(Message message);
 typedef OnMessageSendCallback = void Function(String text);
 typedef OnAttachmentTapCallback = VoidCallback;
+typedef PaginationCallback = Future<void> Function();

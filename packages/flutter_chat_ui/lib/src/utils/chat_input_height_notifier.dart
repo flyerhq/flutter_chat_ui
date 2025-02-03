@@ -5,7 +5,7 @@ class ChatInputHeightNotifier extends ChangeNotifier {
 
   double get height => _height;
 
-  void updateHeight(double newHeight) {
+  void setHeight(double newHeight) {
     if (_height != newHeight) {
       _height = newHeight;
       notifyListeners();

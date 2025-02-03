@@ -6,6 +6,7 @@ import 'chat_animated_list/chat_animated_list.dart';
 import 'chat_input.dart';
 import 'chat_message/chat_message_internal.dart';
 import 'utils/chat_input_height_notifier.dart';
+import 'utils/load_more_notifier.dart';
 import 'utils/typedefs.dart';
 
 class Chat extends StatefulWidget {
@@ -76,12 +77,12 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // Only try to dispose cross cache if it's not provided, since
-    // users might want to keep downloading media even after the chat
-    // is disposed.
     if (widget.scrollController == null) {
       _scrollController.dispose();
     }
+    // Only try to dispose cross cache if it's not provided, since
+    // users might want to keep downloading media even after the chat
+    // is disposed.
     if (widget.crossCache == null) {
       _crossCache.dispose();
     }
@@ -102,6 +103,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: widget.onMessageTap),
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
+        ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
       ],
       child: Container(
         color: widget.backgroundColor == Chat._sentinelColor
