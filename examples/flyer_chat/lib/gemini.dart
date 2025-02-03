@@ -74,9 +74,9 @@ class GeminiState extends State<Gemini> {
       ),
       body: Chat(
         builders: Builders(
-          chatAnimatedListBuilder: (context, scrollController, itemBuilder) {
+          chatAnimatedListBuilder: (context, itemBuilder) {
             return ChatAnimatedList(
-              scrollController: scrollController,
+              scrollController: _scrollController,
               itemBuilder: itemBuilder,
               shouldScrollToEndWhenAtBottom: false,
             );
@@ -106,7 +106,6 @@ class GeminiState extends State<Gemini> {
         currentUserId: _currentUser.id,
         onAttachmentTap: _handleAttachmentTap,
         onMessageSend: _handleMessageSend,
-        scrollController: _scrollController,
         resolveUser: (id) => Future.value(
           switch (id) {
             'me' => _currentUser,

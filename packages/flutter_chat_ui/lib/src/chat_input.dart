@@ -10,6 +10,7 @@ import 'utils/typedefs.dart';
 class ChatInput extends StatefulWidget {
   static const Color _sentinelColor = Colors.transparent;
 
+  final TextEditingController? textEditingController;
   final double? left;
   final double? right;
   final double? top;
@@ -33,6 +34,7 @@ class ChatInput extends StatefulWidget {
 
   const ChatInput({
     super.key,
+    this.textEditingController,
     this.left = 0,
     this.right = 0,
     this.top,
@@ -64,11 +66,12 @@ class ChatInput extends StatefulWidget {
 
 class _ChatInputState extends State<ChatInput> {
   final _key = GlobalKey();
-  final TextEditingController _textController = TextEditingController();
+  late final TextEditingController _textController;
 
   @override
   void initState() {
     super.initState();
+    _textController = widget.textEditingController ?? TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
 
@@ -80,7 +83,11 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   void dispose() {
-    _textController.dispose();
+    // Only try to dispose text controller if it's not provided, let
+    // user handle disposing it how they want.
+    if (widget.textEditingController == null) {
+      _textController.dispose();
+    }
     super.dispose();
   }
 

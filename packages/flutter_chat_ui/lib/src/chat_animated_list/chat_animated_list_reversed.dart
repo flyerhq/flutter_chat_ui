@@ -16,8 +16,8 @@ import '../utils/message_list_diff.dart';
 import '../utils/typedefs.dart';
 
 class ChatAnimatedListReversed extends StatefulWidget {
-  final ScrollController scrollController;
   final ChatItem itemBuilder;
+  final ScrollController? scrollController;
   final Duration insertAnimationDuration;
   final Duration removeAnimationDuration;
   final Duration scrollToEndAnimationDuration;
@@ -38,8 +38,8 @@ class ChatAnimatedListReversed extends StatefulWidget {
 
   const ChatAnimatedListReversed({
     super.key,
-    required this.scrollController,
     required this.itemBuilder,
+    this.scrollController,
     this.insertAnimationDuration = const Duration(milliseconds: 250),
     this.removeAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
@@ -65,6 +65,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;
   late final SliverObserverController _observerController;
+  late final ScrollController _scrollController;
   late List<Message> _oldList;
   late final StreamSubscription<ChatOperation> _operationsSubscription;
 
@@ -88,8 +89,9 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   void initState() {
     super.initState();
     _chatController = context.read<ChatController>();
+    _scrollController = widget.scrollController ?? ScrollController();
     _observerController =
-        SliverObserverController(controller: widget.scrollController);
+        SliverObserverController(controller: _scrollController);
     // TODO: Add assert for messages having same id
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
@@ -153,6 +155,13 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
     _scrollToBottomShowTimer?.cancel();
     _scrollToBottomController.dispose();
     _operationsSubscription.cancel();
+
+    // Only try to dispose scroll controller if it's not provided, let
+    // user handle disposing it how they want.
+    if (widget.scrollController == null) {
+      _scrollController.dispose();
+    }
+
     super.dispose();
   }
 
@@ -197,7 +206,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
             ],
             child: CustomScrollView(
               reverse: true,
-              controller: widget.scrollController,
+              controller: _scrollController,
               keyboardDismissBehavior: widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
               slivers: <Widget>[
@@ -275,7 +284,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   void _scrollToEnd(Message data) {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
-        if (!widget.scrollController.hasClients || !mounted) return;
+        if (!_scrollController.hasClients || !mounted) return;
 
         // Skip auto-scrolling if scroll behavior is disabled:
         // - Scrolling when user sends a new message
@@ -287,7 +296,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         // or if the list is already scrolled to the bottom. This prevents
         // duplicate scrolling when multiple messages are inserted at once.
         if (data.id != _lastInsertedMessageId ||
-            widget.scrollController.offset <= 0) {
+            _scrollController.offset <= 0) {
           return;
         }
 
@@ -302,9 +311,9 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
             currentUserId == data.authorId &&
             _oldList.last.id == data.id) {
           if (widget.scrollToEndAnimationDuration == Duration.zero) {
-            widget.scrollController.jumpTo(0);
+            _scrollController.jumpTo(0);
           } else {
-            await widget.scrollController.animateTo(
+            await _scrollController.animateTo(
               0,
               duration: widget.scrollToEndAnimationDuration,
               curve: Curves.linearToEaseOut,
@@ -320,16 +329,16 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   void _handleScrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        if (!widget.scrollController.hasClients || !mounted) return;
+        if (!_scrollController.hasClients || !mounted) return;
 
         _isScrollingToBottom = true;
 
         _scrollToBottomController.reverse();
 
         if (widget.scrollToEndAnimationDuration == Duration.zero) {
-          widget.scrollController.jumpTo(0);
+          _scrollController.jumpTo(0);
         } else {
-          widget.scrollController.animateTo(
+          _scrollController.animateTo(
             0,
             duration: widget.scrollToEndAnimationDuration,
             curve: Curves.linearToEaseOut,
@@ -345,7 +354,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   void _handleToggleScrollToBottom() {
     if (!_isScrollingToBottom) {
       _scrollToBottomShowTimer?.cancel();
-      if (widget.scrollController.offset > 0) {
+      if (_scrollController.offset > 0) {
         _scrollToBottomShowTimer =
             Timer(widget.scrollToBottomAppearanceDelay, () {
           if (mounted) {
@@ -364,7 +373,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   }
 
   void _handlePagination(ScrollMetrics metrics) async {
-    if (!widget.scrollController.hasClients ||
+    if (!_scrollController.hasClients ||
         !mounted ||
         widget.onEndReached == null ||
         context.read<LoadMoreNotifier>().isLoading ||
@@ -392,7 +401,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
 
       // Wait for next frame when new items have been rendered
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (widget.scrollController.hasClients && mounted) {
+        if (_scrollController.hasClients && mounted) {
           // Hide loading indicator now that pagination is complete
           context.read<LoadMoreNotifier>().setLoading(false);
         }
@@ -403,7 +412,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   void _onInserted(final int position, final Message data) {
     // If for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
     // set `_userHasScrolled` to false
-    if (_userHasScrolled && widget.scrollController.offset <= 0) {
+    if (_userHasScrolled && _scrollController.offset <= 0) {
       _userHasScrolled = false;
     }
 

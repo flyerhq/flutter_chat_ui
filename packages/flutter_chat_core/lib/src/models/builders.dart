@@ -35,7 +35,6 @@ typedef ChatMessageBuilder = Widget Function(
 );
 typedef ChatAnimatedListBuilder = Widget Function(
   BuildContext,
-  ScrollController scrollController,
   ChatItem itemBuilder,
 );
 typedef ScrollToBottomBuilder = Widget Function(

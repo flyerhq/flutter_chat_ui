@@ -25,7 +25,6 @@ class PaginationState extends State<Pagination> {
     ).reversed.toList(),
   );
   final _currentUser = const User(id: 'me');
-  final _scrollController = ScrollController();
 
   String? _lastMessageId;
   bool _hasMore = true;
@@ -33,7 +32,6 @@ class PaginationState extends State<Pagination> {
   @override
   void dispose() {
     _chatController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -47,9 +45,8 @@ class PaginationState extends State<Pagination> {
       ),
       body: Chat(
         builders: Builders(
-          chatAnimatedListBuilder: (context, scrollController, itemBuilder) {
+          chatAnimatedListBuilder: (context, itemBuilder) {
             return ChatAnimatedList(
-              scrollController: _scrollController,
               itemBuilder: itemBuilder,
               onEndReached: _loadMore,
             );

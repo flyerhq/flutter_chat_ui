@@ -17,7 +17,6 @@ class Chat extends StatefulWidget {
   final ChatController chatController;
   final Builders? builders;
   final CrossCache? crossCache;
-  final ScrollController? scrollController;
   final ChatTheme? theme;
   final OnMessageSendCallback? onMessageSend;
   final OnMessageTapCallback? onMessageTap;
@@ -32,7 +31,6 @@ class Chat extends StatefulWidget {
     required this.chatController,
     this.builders,
     this.crossCache,
-    this.scrollController,
     this.theme,
     this.onMessageSend,
     this.onMessageTap,
@@ -49,7 +47,6 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   late ChatTheme _theme;
   late Builders _builders;
   late final CrossCache _crossCache;
-  late final ScrollController _scrollController;
 
   @override
   void initState() {
@@ -58,7 +55,6 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
     _updateTheme();
     _updateBuilders();
     _crossCache = widget.crossCache ?? CrossCache();
-    _scrollController = widget.scrollController ?? ScrollController();
   }
 
   @override
@@ -77,9 +73,6 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    if (widget.scrollController == null) {
-      _scrollController.dispose();
-    }
     // Only try to dispose cross cache if it's not provided, since
     // users might want to keep downloading media even after the chat
     // is disposed.
@@ -112,15 +105,8 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         decoration: widget.decoration,
         child: Stack(
           children: [
-            _builders.chatAnimatedListBuilder?.call(
-                  context,
-                  _scrollController,
-                  _buildItem,
-                ) ??
-                ChatAnimatedList(
-                  scrollController: _scrollController,
-                  itemBuilder: _buildItem,
-                ),
+            _builders.chatAnimatedListBuilder?.call(context, _buildItem) ??
+                ChatAnimatedList(itemBuilder: _buildItem),
             _builders.inputBuilder?.call(context) ?? const ChatInput(),
           ],
         ),
