@@ -31,6 +31,7 @@ mixin _$Builders {
       throw _privateConstructorUsedError;
   ScrollToBottomBuilder? get scrollToBottomBuilder =>
       throw _privateConstructorUsedError;
+  LoadMoreBuilder? get loadMoreBuilder => throw _privateConstructorUsedError;
 
   /// Create a copy of Builders
   /// with the given fields replaced by the non-null parameter values.
@@ -52,7 +53,8 @@ abstract class $BuildersCopyWith<$Res> {
       InputBuilder? inputBuilder,
       ChatMessageBuilder? chatMessageBuilder,
       ChatAnimatedListBuilder? chatAnimatedListBuilder,
-      ScrollToBottomBuilder? scrollToBottomBuilder});
+      ScrollToBottomBuilder? scrollToBottomBuilder,
+      LoadMoreBuilder? loadMoreBuilder});
 }
 
 /// @nodoc
@@ -78,6 +80,7 @@ class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
     Object? chatMessageBuilder = freezed,
     Object? chatAnimatedListBuilder = freezed,
     Object? scrollToBottomBuilder = freezed,
+    Object? loadMoreBuilder = freezed,
   }) {
     return _then(_value.copyWith(
       textMessageBuilder: freezed == textMessageBuilder
@@ -112,6 +115,10 @@ class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
           ? _value.scrollToBottomBuilder
           : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
               as ScrollToBottomBuilder?,
+      loadMoreBuilder: freezed == loadMoreBuilder
+          ? _value.loadMoreBuilder
+          : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
+              as LoadMoreBuilder?,
     ) as $Val);
   }
 }
@@ -132,7 +139,8 @@ abstract class _$$BuildersImplCopyWith<$Res>
       InputBuilder? inputBuilder,
       ChatMessageBuilder? chatMessageBuilder,
       ChatAnimatedListBuilder? chatAnimatedListBuilder,
-      ScrollToBottomBuilder? scrollToBottomBuilder});
+      ScrollToBottomBuilder? scrollToBottomBuilder,
+      LoadMoreBuilder? loadMoreBuilder});
 }
 
 /// @nodoc
@@ -156,6 +164,7 @@ class __$$BuildersImplCopyWithImpl<$Res>
     Object? chatMessageBuilder = freezed,
     Object? chatAnimatedListBuilder = freezed,
     Object? scrollToBottomBuilder = freezed,
+    Object? loadMoreBuilder = freezed,
   }) {
     return _then(_$BuildersImpl(
       textMessageBuilder: freezed == textMessageBuilder
@@ -190,6 +199,10 @@ class __$$BuildersImplCopyWithImpl<$Res>
           ? _value.scrollToBottomBuilder
           : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
               as ScrollToBottomBuilder?,
+      loadMoreBuilder: freezed == loadMoreBuilder
+          ? _value.loadMoreBuilder
+          : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
+              as LoadMoreBuilder?,
     ));
   }
 }
@@ -205,7 +218,8 @@ class _$BuildersImpl extends _Builders {
       this.inputBuilder,
       this.chatMessageBuilder,
       this.chatAnimatedListBuilder,
-      this.scrollToBottomBuilder})
+      this.scrollToBottomBuilder,
+      this.loadMoreBuilder})
       : super._();
 
   @override
@@ -224,10 +238,12 @@ class _$BuildersImpl extends _Builders {
   final ChatAnimatedListBuilder? chatAnimatedListBuilder;
   @override
   final ScrollToBottomBuilder? scrollToBottomBuilder;
+  @override
+  final LoadMoreBuilder? loadMoreBuilder;
 
   @override
   String toString() {
-    return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder)';
+    return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder)';
   }
 
   @override
@@ -252,7 +268,9 @@ class _$BuildersImpl extends _Builders {
                     other.chatAnimatedListBuilder, chatAnimatedListBuilder) ||
                 other.chatAnimatedListBuilder == chatAnimatedListBuilder) &&
             (identical(other.scrollToBottomBuilder, scrollToBottomBuilder) ||
-                other.scrollToBottomBuilder == scrollToBottomBuilder));
+                other.scrollToBottomBuilder == scrollToBottomBuilder) &&
+            (identical(other.loadMoreBuilder, loadMoreBuilder) ||
+                other.loadMoreBuilder == loadMoreBuilder));
   }
 
   @override
@@ -265,7 +283,8 @@ class _$BuildersImpl extends _Builders {
       inputBuilder,
       chatMessageBuilder,
       chatAnimatedListBuilder,
-      scrollToBottomBuilder);
+      scrollToBottomBuilder,
+      loadMoreBuilder);
 
   /// Create a copy of Builders
   /// with the given fields replaced by the non-null parameter values.
@@ -285,7 +304,8 @@ abstract class _Builders extends Builders {
       final InputBuilder? inputBuilder,
       final ChatMessageBuilder? chatMessageBuilder,
       final ChatAnimatedListBuilder? chatAnimatedListBuilder,
-      final ScrollToBottomBuilder? scrollToBottomBuilder}) = _$BuildersImpl;
+      final ScrollToBottomBuilder? scrollToBottomBuilder,
+      final LoadMoreBuilder? loadMoreBuilder}) = _$BuildersImpl;
   const _Builders._() : super._();
 
   @override
@@ -304,6 +324,8 @@ abstract class _Builders extends Builders {
   ChatAnimatedListBuilder? get chatAnimatedListBuilder;
   @override
   ScrollToBottomBuilder? get scrollToBottomBuilder;
+  @override
+  LoadMoreBuilder? get loadMoreBuilder;
 
   /// Create a copy of Builders
   /// with the given fields replaced by the non-null parameter values.

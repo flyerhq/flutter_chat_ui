@@ -8,10 +8,13 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
+import '../load_more.dart';
 import '../scroll_to_bottom.dart';
 import '../utils/chat_input_height_notifier.dart';
 import '../utils/keyboard_mixin.dart';
+import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
+import '../utils/typedefs.dart';
 
 enum InitialScrollToEndMode { none, jump, animate }
 
@@ -31,6 +34,12 @@ class ChatAnimatedList extends StatefulWidget {
   final InitialScrollToEndMode? initialScrollToEndMode;
   final bool? shouldScrollToEndWhenSendingMessage;
   final bool? shouldScrollToEndWhenAtBottom;
+  final PaginationCallback? onEndReached;
+
+  /// Threshold for triggering pagination, represented as a value between 0 and 1.
+  /// 0 represents the top of the list, while 1 represents the bottom.
+  /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
+  final double? paginationThreshold;
 
   const ChatAnimatedList({
     super.key,
@@ -49,6 +58,8 @@ class ChatAnimatedList extends StatefulWidget {
     this.initialScrollToEndMode = InitialScrollToEndMode.jump,
     this.shouldScrollToEndWhenSendingMessage = true,
     this.shouldScrollToEndWhenAtBottom = true,
+    this.onEndReached,
+    this.paginationThreshold = 0.2,
   });
 
   @override
@@ -77,6 +88,11 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   // scroll position (so we can see latest messages when we enter chat)
   late bool _needsInitialScrollPositionAdjustment;
   String _lastInsertedMessageId = '';
+  // Controls whether pagination should be triggered when scrolling to the top.
+  // Set to true when user scrolls up, and false after pagination is triggered.
+  // This prevents infinite pagination loops when reaching the end of available messages,
+  // ensuring onEndReached only fires once per user scroll gesture.
+  bool _paginationShouldTrigger = false;
 
   @override
   void initState() {
@@ -207,11 +223,13 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
           // Handle initial scroll to bottom so you see latest messages
           _adjustInitialScrollPosition(notification);
           _handleToggleScrollToBottom();
+          _handlePagination(notification.metrics);
         }
 
         if (notification is UserScrollNotification) {
           // When user scrolls up, save it to `_userHasScrolled`
           if (notification.direction == ScrollDirection.forward) {
+            _paginationShouldTrigger = true;
             _userHasScrolled = true;
           } else {
             // When user overscolls to the bottom or stays idle at the bottom, set `_userHasScrolled` to false
@@ -246,6 +264,20 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                     padding: EdgeInsets.only(top: widget.topPadding!),
                   ),
                 if (widget.topSliver != null) widget.topSliver!,
+                if (widget.onEndReached != null)
+                  SliverToBoxAdapter(
+                    child: Consumer<LoadMoreNotifier>(
+                      builder: (context, notifier, child) {
+                        return Visibility(
+                          visible: notifier.isLoading,
+                          maintainState: true,
+                          child: child!,
+                        );
+                      },
+                      child:
+                          builders.loadMoreBuilder?.call(context) ?? LoadMore(),
+                    ),
+                  ),
                 SliverAnimatedList(
                   key: _listKey,
                   initialItemCount: _chatController.messages.length,
@@ -374,7 +406,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     // to the most recent messages. After scrolling, exit the function since
     // no other scroll behavior is needed.
     if (widget.shouldScrollToEndWhenSendingMessage == true &&
-        currentUserId == data.authorId) {
+        currentUserId == data.authorId &&
+        _oldList.last.id == data.id) {
       // When scrolled up in chat history use fling to guarantee scrolling
       // to the very end of the list.
       // See https://stackoverflow.com/a/77175903 for more details.
@@ -485,6 +518,65 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
           _scrollToBottomController.reverse();
         }
       }
+    }
+  }
+
+  void _handlePagination(ScrollMetrics metrics) async {
+    if (!widget.scrollController.hasClients ||
+        !mounted ||
+        _needsInitialScrollPositionAdjustment ||
+        widget.onEndReached == null ||
+        context.read<LoadMoreNotifier>().isLoading ||
+        !_paginationShouldTrigger) {
+      return;
+    }
+    // Get the threshold for pagination, defaulting to 0 (very top of the list)
+    final threshold = widget.paginationThreshold ?? 0;
+
+    // Calculate how far the user has scrolled as a percentage from 0 to 1.
+    // For example, 0.1 means user has scrolled 10% from the top.
+    final scrollPercentage = metrics.pixels / metrics.maxScrollExtent;
+
+    // Check if user has scrolled past the threshold percentage from the top
+    if (scrollPercentage <= threshold) {
+      // Reset pagination trigger flag to prevent multiple triggers.
+      // Flag gets set back to true when user scrolls up again.
+      _paginationShouldTrigger = false;
+
+      // Store current scroll metrics before loading more items.
+      // We need these to properly adjust scroll position after new items are inserted.
+      // Without this, the scroll position would stay at the very top, causing pagination
+      // to trigger in a loop.
+      final extent = metrics.maxScrollExtent;
+
+      // Show loading indicator while pagination is in progress
+      context.read<LoadMoreNotifier>().setLoading(true);
+
+      // Call user-provided pagination callback to load more items
+      await widget.onEndReached!();
+
+      // Wait for next frame when new items have been rendered
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.scrollController.hasClients && mounted) {
+          final notifier = context.read<LoadMoreNotifier>();
+          final loadMoreHeight = notifier.height;
+          // Calculate new scroll position that accounts for inserted items.
+          // We subtract loading indicator height to get true content extent.
+          // This prevents items from being cut off after scroll adjustment.
+          final newExtent =
+              widget.scrollController.position.maxScrollExtent - loadMoreHeight;
+          final targetOffset = newExtent - extent;
+
+          // Only adjust scroll position if new items were actually added.
+          // We add 1 to account for potential floating point differences.
+          if (newExtent > extent + 1) {
+            widget.scrollController.jumpTo(targetOffset);
+          }
+
+          // Hide loading indicator now that pagination is complete
+          notifier.setLoading(false);
+        }
+      });
     }
   }
 

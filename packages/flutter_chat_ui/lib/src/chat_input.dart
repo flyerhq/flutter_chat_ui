@@ -63,19 +63,19 @@ class ChatInput extends StatefulWidget {
 }
 
 class _ChatInputState extends State<ChatInput> {
-  final GlobalKey _inputKey = GlobalKey();
+  final _key = GlobalKey();
   final TextEditingController _textController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateInputHeight());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
 
   @override
   void didUpdateWidget(covariant ChatInput oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _updateInputHeight());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
 
   @override
@@ -105,7 +105,7 @@ class _ChatInputState extends State<ChatInput> {
             sigmaY: widget.sigmaY ?? 0,
           ),
           child: Container(
-            key: _inputKey,
+            key: _key,
             color: widget.backgroundColor == ChatInput._sentinelColor
                 // ignore: deprecated_member_use
                 ? theme.colors.surfaceContainerLow.withOpacity(0.8)
@@ -178,16 +178,15 @@ class _ChatInputState extends State<ChatInput> {
     );
   }
 
-  void _updateInputHeight() {
+  void _measure() {
     if (!mounted) return;
 
-    final renderBox =
-        _inputKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox = _key.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       final height = renderBox.size.height;
       final bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
-      context.read<ChatInputHeightNotifier>().updateHeight(
+      context.read<ChatInputHeightNotifier>().setHeight(
             // only set real height of the input, ignoring safe area
             widget.handleSafeArea == true ? height - bottomSafeArea : height,
           );

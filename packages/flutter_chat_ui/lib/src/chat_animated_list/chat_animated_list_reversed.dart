@@ -8,9 +8,12 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
+import '../load_more.dart';
 import '../scroll_to_bottom.dart';
 import '../utils/chat_input_height_notifier.dart';
+import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
+import '../utils/typedefs.dart';
 
 class ChatAnimatedListReversed extends StatefulWidget {
   final ScrollController scrollController;
@@ -26,6 +29,12 @@ class ChatAnimatedListReversed extends StatefulWidget {
   final bool? handleSafeArea;
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
   final bool? shouldScrollToEndWhenSendingMessage;
+  final PaginationCallback? onEndReached;
+
+  /// Threshold for triggering pagination, represented as a value between 0 and 1.
+  /// 0 represents the top of the list, while 1 represents the bottom.
+  /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
+  final double? paginationThreshold;
 
   const ChatAnimatedListReversed({
     super.key,
@@ -42,6 +51,8 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.handleSafeArea = true,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     this.shouldScrollToEndWhenSendingMessage = true,
+    this.onEndReached,
+    this.paginationThreshold = 0.2,
   });
 
   @override
@@ -67,6 +78,11 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   bool _userHasScrolled = false;
   bool _isScrollingToBottom = false;
   String _lastInsertedMessageId = '';
+  // Controls whether pagination should be triggered when scrolling to the top.
+  // Set to true when user scrolls up, and false after pagination is triggered.
+  // This prevents infinite pagination loops when reaching the end of available messages,
+  // ensuring onEndReached only fires once per user scroll gesture.
+  bool _paginationShouldTrigger = false;
 
   @override
   void initState() {
@@ -149,11 +165,13 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
       onNotification: (notification) {
         if (notification is ScrollMetricsNotification) {
           _handleToggleScrollToBottom();
+          _handlePagination(notification.metrics);
         }
 
         if (notification is UserScrollNotification) {
           // When user scrolls up, save it to `_userHasScrolled`
           if (notification.direction == ScrollDirection.reverse) {
+            _paginationShouldTrigger = true;
             _userHasScrolled = true;
           } else {
             // When user overscolls to the bottom or stays idle at the bottom, set `_userHasScrolled` to false
@@ -218,6 +236,20 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
                     );
                   },
                 ),
+                if (widget.onEndReached != null)
+                  SliverToBoxAdapter(
+                    child: Consumer<LoadMoreNotifier>(
+                      builder: (context, notifier, child) {
+                        return Visibility(
+                          visible: notifier.isLoading,
+                          maintainState: true,
+                          child: child!,
+                        );
+                      },
+                      child:
+                          builders.loadMoreBuilder?.call(context) ?? LoadMore(),
+                    ),
+                  ),
                 if (widget.topSliver != null) widget.topSliver!,
                 if (widget.topPadding != null)
                   SliverPadding(
@@ -267,7 +299,8 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         // to the most recent messages. After scrolling, exit the function since
         // no other scroll behavior is needed.
         if (widget.shouldScrollToEndWhenSendingMessage == true &&
-            currentUserId == data.authorId) {
+            currentUserId == data.authorId &&
+            _oldList.last.id == data.id) {
           if (widget.scrollToEndAnimationDuration == Duration.zero) {
             widget.scrollController.jumpTo(0);
           } else {
@@ -327,6 +360,43 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
           _scrollToBottomController.reverse();
         }
       }
+    }
+  }
+
+  void _handlePagination(ScrollMetrics metrics) async {
+    if (!widget.scrollController.hasClients ||
+        !mounted ||
+        widget.onEndReached == null ||
+        context.read<LoadMoreNotifier>().isLoading ||
+        !_paginationShouldTrigger) {
+      return;
+    }
+    // Get the threshold for pagination, defaulting to 1 (very top of the list)
+    final threshold = 1 - (widget.paginationThreshold ?? 0);
+
+    // Calculate how far the user has scrolled as a percentage from 0 to 1.
+    // For example, 0.9 means user has scrolled 10% from the top.
+    final scrollPercentage = metrics.pixels / metrics.maxScrollExtent;
+
+    // Check if user has scrolled past the threshold percentage from the top
+    if (scrollPercentage >= threshold) {
+      // Reset pagination trigger flag to prevent multiple triggers.
+      // Flag gets set back to true when user scrolls up again.
+      _paginationShouldTrigger = false;
+
+      // Show loading indicator while pagination is in progress
+      context.read<LoadMoreNotifier>().setLoading(true);
+
+      // Call user-provided pagination callback to load more items
+      await widget.onEndReached!();
+
+      // Wait for next frame when new items have been rendered
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.scrollController.hasClients && mounted) {
+          // Hide loading indicator now that pagination is complete
+          context.read<LoadMoreNotifier>().setLoading(false);
+        }
+      });
     }
   }
 

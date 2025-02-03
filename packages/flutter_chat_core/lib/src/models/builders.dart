@@ -43,6 +43,7 @@ typedef ScrollToBottomBuilder = Widget Function(
   Animation<double> animation,
   VoidCallback onPressed,
 );
+typedef LoadMoreBuilder = Widget Function(BuildContext);
 
 @Freezed(fromJson: false, toJson: false)
 class Builders with _$Builders {
@@ -55,6 +56,7 @@ class Builders with _$Builders {
     ChatMessageBuilder? chatMessageBuilder,
     ChatAnimatedListBuilder? chatAnimatedListBuilder,
     ScrollToBottomBuilder? scrollToBottomBuilder,
+    LoadMoreBuilder? loadMoreBuilder,
   }) = _Builders;
 
   const Builders._();

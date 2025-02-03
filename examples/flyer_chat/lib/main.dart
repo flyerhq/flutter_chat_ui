@@ -10,6 +10,7 @@ import 'api_get_initial_messages.dart';
 import 'gemini.dart';
 import 'initialize/initialize.dart';
 import 'local.dart';
+import 'pagination.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -273,6 +274,26 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 ),
               ),
               const SizedBox(height: 8),
+              const SizedBox(
+                width: 200,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Pagination(),
+                    ),
+                  );
+                },
+                child: const Text('pagination'),
+              ),
             ],
           ),
         ),
