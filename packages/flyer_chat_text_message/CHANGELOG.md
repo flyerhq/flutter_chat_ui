@@ -1,3 +1,7 @@
+## 0.0.5
+
+- Introduce new customization options
+
 ## 0.0.4
 
 - Text messages containing only emojis will now be displayed without a bubble

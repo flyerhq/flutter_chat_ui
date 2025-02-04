@@ -1,3 +1,46 @@
+## 2.0.0-dev.4
+
+**⚠️ Breaking Changes ⚠️**
+
+👥 User Management:
+- Replaced `user` parameter with `currentUserId` (String) and `resolveUser` function
+- Users are now referenced by ID, with async user data resolution through `resolveUser`
+
+⚙️ API Changes:
+- Renamed `ChatInputHeightNotifier.updateHeight()` to `setHeight()`
+- Scroll controller management moved to individual list widgets that you can render via `builders`: `chatAnimatedListBuilder: ... return ChatAnimatedList(scrollController: _scrollController)`
+- Text editing controller now configured through `ChatInput` widget
+
+🔄 Core Changes:
+- `author` (type `User`) is replaced with `authorId` (type `String`) for simpler user management
+- All `DateTime` properties now use milliseconds instead of microseconds for JSON serialization
+
+🎨 Theme Simplification:
+Theme has been streamlined to 3 key parameters:
+1. `colors` - Uses Material 3 semantic names (e.g. `primary`, `onPrimary`, `secondary`) making it easy to apply color schemes
+2. `typography` - Follows Flutter's `TextTheme` semantic naming conventions
+3. `shape` - Controls border radius of all messages (rounded vs square messages)
+
+✨ New Features:
+
+👨‍💻 Chat Experience:
+- Added typing indicator support
+- Background image customization
+- Improved scroll-to-bottom performance
+
+📜 List Behavior Controls:
+- `shouldScrollToEndWhenSendingMessage`: Auto-scroll on message send
+- `shouldScrollToEndWhenAtBottom`: Auto-scroll when at bottom
+- `initialScrollToEndMode`: Controls initial scroll behavior for non-reversed list. Because list is not reversed, you must scroll to the end to see latest messages. Available options:
+  - `none`: No automatic scrolling, do nothing
+  - `animate`: Smooth scroll to end
+  - `jump`: Instant scroll to end (wrong position or UI jumps are expected since Flutter does not know exact size of the list)
+
+🎯 Improvements:
+- Improved AI agent scrolling behavior example with message pinned to the top of the viewport
+- Unified API between reversed and non-reversed lists
+- Added pagination example
+
 ## 2.0.0-dev.3
 
 **⚠️ Contains breaking changes ⚠️**
