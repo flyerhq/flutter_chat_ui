@@ -31,6 +31,7 @@ class ChatInput extends StatefulWidget {
   final Color? hintColor;
   final Color? textColor;
   final Color? inputFillColor;
+  final String? hintText;
 
   const ChatInput({
     super.key,
@@ -58,6 +59,7 @@ class ChatInput extends StatefulWidget {
     this.hintColor,
     this.textColor,
     this.inputFillColor,
+    this.hintText = 'Type a message',
   });
 
   @override
@@ -142,7 +144,7 @@ class _ChatInputState extends State<ChatInput> {
                         child: TextField(
                           controller: _textController,
                           decoration: InputDecoration(
-                            hintText: 'Type a message',
+                            hintText: widget.hintText,
                             hintStyle: theme.typography.bodyMedium.copyWith(
                               color: widget.hintColor ??
                                   // ignore: deprecated_member_use

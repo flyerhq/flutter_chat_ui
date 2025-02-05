@@ -1,3 +1,7 @@
+## 2.0.0-dev.5
+
+- Add `hintText` to the `ChatInput` widget.
+
 ## 2.0.0-dev.4
 
 **⚠️ Breaking Changes ⚠️**
