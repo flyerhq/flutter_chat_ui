@@ -50,7 +50,7 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 * **Customizable**. Supports custom themes, locales and more. Check our [documentation](https://docs.flyer.chat/flutter/chat-ui/) for the info. More options are on the way, let us know if something is missing.
 
-* **Minimum dependencies**. Our packages are lightweight. Use your favourite packages for selecting images, opening files etc. See the [example](https://github.com/flyerhq/flutter_chat_ui/blob/main/example/lib/main.dart) for possible implementation.
+* **Minimum dependencies**. Our packages are lightweight. Use your favourite packages for selecting images, opening files etc. See the [example](https://github.com/flyerhq/flutter_chat_ui/tree/v1/example/lib/main.dart) for possible implementation.
 
 ## Getting Started
 
@@ -58,7 +58,7 @@ Flyer Chat is a platform for creating in-app chat experiences using Flutter or [
 
 `Dart >=2.19.0` and `Flutter >=3.0.0`
 
-Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/main/example) project.
+Read our [documentation](https://docs.flyer.chat/flutter/chat-ui/) or see the [example](https://github.com/flyerhq/flutter_chat_ui/tree/v1/example/) project.
 
 ## Contributing
 
