@@ -1,5 +1,5 @@
 name: flyer_chat_audio_message
-version: 0.0.5
+version: 0.0.6
 description: >
   Audio message package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
 homepage: https://flyer.chat

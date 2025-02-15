@@ -25,8 +25,14 @@ class LocalState extends State<Local> {
   final _chatController = InMemoryChatController();
   final _uuid = const Uuid();
 
-  final _currentUser = const User(id: 'me');
-  final _recipient = const User(id: 'recipient');
+  final _currentUser = const User(
+    id: 'me',
+    imageSource: 'https://picsum.photos/id/65/200/200',
+  );
+  final _recipient = const User(
+    id: 'recipient',
+    imageSource: 'https://picsum.photos/id/265/200/200',
+  );
   final _systemUser = const User(id: 'system');
 
   bool _isTyping = false;
@@ -87,6 +93,39 @@ class LocalState extends State<Local> {
           ),
           textMessageBuilder: (context, message, index) =>
               FlyerChatTextMessage(message: message, index: index),
+          chatMessageBuilder: (
+            context,
+            message,
+            index,
+            animation,
+            child, {
+            bool? isRemoved,
+            MessageGroupStatus? groupStatus,
+          }) {
+            return ChatMessage(
+              message: message,
+              index: index,
+              animation: animation,
+              groupStatus: groupStatus,
+              leadingWidget: message.authorId != _currentUser.id &&
+                      (groupStatus?.isLast ?? true) &&
+                      isRemoved != true
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Avatar(userId: message.authorId),
+                    )
+                  : const SizedBox(width: 40),
+              trailingWidget: message.authorId == _currentUser.id &&
+                      (groupStatus?.isLast ?? true) &&
+                      isRemoved != true
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Avatar(userId: message.authorId),
+                    )
+                  : const SizedBox(width: 40),
+              child: child,
+            );
+          },
         ),
         chatController: _chatController,
         currentUserId: _currentUser.id,

@@ -7,5 +7,6 @@ typedef ChatItem = Widget Function(
   Message message,
   int index,
   Animation<double> animation, {
+  int? messageGroupingTimeoutInSeconds,
   bool? isRemoved,
 });

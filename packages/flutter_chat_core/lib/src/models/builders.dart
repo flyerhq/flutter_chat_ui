@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../utils/typedefs.dart';
 import 'message.dart';
+import 'message_group_status.dart';
 
 part 'builders.freezed.dart';
 
@@ -31,8 +32,10 @@ typedef ChatMessageBuilder = Widget Function(
   Message message,
   int index,
   Animation<double> animation,
-  Widget child,
-);
+  Widget child, {
+  bool? isRemoved,
+  MessageGroupStatus? groupStatus,
+});
 typedef ChatAnimatedListBuilder = Widget Function(
   BuildContext,
   ChatItem itemBuilder,

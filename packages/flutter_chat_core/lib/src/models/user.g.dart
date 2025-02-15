@@ -10,7 +10,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       id: json['id'] as String,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
-      imageUrl: json['imageUrl'] as String?,
+      imageSource: json['imageSource'] as String?,
       createdAt: _$JsonConverterFromJson<int, DateTime>(
           json['createdAt'], const EpochDateTimeConverter().fromJson),
       metadata: json['metadata'] as Map<String, dynamic>?,
@@ -29,7 +29,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) {
 
   writeNotNull('firstName', instance.firstName);
   writeNotNull('lastName', instance.lastName);
-  writeNotNull('imageUrl', instance.imageUrl);
+  writeNotNull('imageSource', instance.imageSource);
   writeNotNull(
       'createdAt',
       _$JsonConverterToJson<int, DateTime>(

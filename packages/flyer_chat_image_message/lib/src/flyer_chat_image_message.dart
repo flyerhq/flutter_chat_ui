@@ -103,6 +103,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
   @override
   void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
+    super.didUpdateWidget(oldWidget);
     if (oldWidget.message.source != widget.message.source) {
       final crossCache = context.read<CrossCache>();
       final newImage = CachedNetworkImage(widget.message.source, crossCache);
@@ -113,7 +114,6 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
         }
       });
     }
-    super.didUpdateWidget(oldWidget);
   }
 
   @override

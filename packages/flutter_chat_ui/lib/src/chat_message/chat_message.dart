@@ -11,6 +11,8 @@ class ChatMessage extends StatelessWidget {
   final int index;
   final Animation<double> animation;
   final Widget child;
+  final Widget? leadingWidget;
+  final Widget? trailingWidget;
   final Alignment sentMessageScaleAnimationAlignment;
   final Alignment receivedMessageScaleAnimationAlignment;
   final AlignmentGeometry sentMessageAlignment;
@@ -20,7 +22,7 @@ class ChatMessage extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Duration? paddingChangeAnimationDuration;
   final bool? isRemoved;
-  final int? messageGroupingTimeoutInSeconds;
+  final MessageGroupStatus? groupStatus;
   final double? horizontalPadding;
   final double? verticalPadding;
   final double? verticalGroupedPadding;
@@ -31,6 +33,8 @@ class ChatMessage extends StatelessWidget {
     required this.index,
     required this.animation,
     required this.child,
+    this.leadingWidget,
+    this.trailingWidget,
     this.sentMessageScaleAnimationAlignment = Alignment.centerRight,
     this.receivedMessageScaleAnimationAlignment = Alignment.centerLeft,
     this.sentMessageAlignment = AlignmentDirectional.centerEnd,
@@ -40,11 +44,21 @@ class ChatMessage extends StatelessWidget {
     this.padding = _sentinelPadding,
     this.paddingChangeAnimationDuration = const Duration(milliseconds: 250),
     this.isRemoved,
-    this.messageGroupingTimeoutInSeconds = 300,
+    this.groupStatus,
     this.horizontalPadding = 8,
     this.verticalPadding = 12,
     this.verticalGroupedPadding = 2,
   });
+
+  Widget get messageRow => Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (leadingWidget != null) leadingWidget!,
+          Flexible(child: child),
+          if (trailingWidget != null) trailingWidget!,
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +96,13 @@ class ChatMessage extends StatelessWidget {
                           padding: resolvedPadding!,
                           duration: paddingChangeAnimationDuration!,
                           curve: Curves.linearToEaseOut,
-                          child: child,
+                          child: messageRow,
                         )
-                      : Padding(padding: resolvedPadding!, child: child)
-                  : child,
+                      : Padding(
+                          padding: resolvedPadding!,
+                          child: messageRow,
+                        )
+                  : messageRow,
             ),
           ),
         ),
@@ -103,34 +120,18 @@ class ChatMessage extends StatelessWidget {
       return EdgeInsets.symmetric(horizontal: horizontalPadding ?? 0);
     }
 
-    try {
-      final chatController = context.read<ChatController>();
-      final previousMessage = chatController.messages[index - 1];
-
-      final isGrouped = previousMessage.authorId == message.authorId &&
-          message.createdAt.difference(previousMessage.createdAt).inSeconds <
-              (messageGroupingTimeoutInSeconds ?? 0);
-
-      return isGrouped || isRemoved == true
-          ? EdgeInsets.fromLTRB(
-              horizontalPadding ?? 0,
-              verticalGroupedPadding ?? 0,
-              horizontalPadding ?? 0,
-              0,
-            )
-          : EdgeInsets.fromLTRB(
-              horizontalPadding ?? 0,
-              verticalPadding ?? 0,
-              horizontalPadding ?? 0,
-              0,
-            );
-    } catch (e) {
-      return EdgeInsets.fromLTRB(
-        horizontalPadding ?? 0,
-        verticalPadding ?? 0,
-        horizontalPadding ?? 0,
-        0,
-      );
-    }
+    return groupStatus?.isFirst == false || isRemoved == true
+        ? EdgeInsets.fromLTRB(
+            horizontalPadding ?? 0,
+            verticalGroupedPadding ?? 0,
+            horizontalPadding ?? 0,
+            0,
+          )
+        : EdgeInsets.fromLTRB(
+            horizontalPadding ?? 0,
+            verticalPadding ?? 0,
+            horizontalPadding ?? 0,
+            0,
+          );
   }
 }

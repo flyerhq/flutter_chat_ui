@@ -11,7 +11,7 @@ class User with _$User {
     required String id,
     String? firstName,
     String? lastName,
-    String? imageUrl,
+    String? imageSource,
     @EpochDateTimeConverter() DateTime? createdAt,
     Map<String, dynamic>? metadata,
   }) = _User;
