@@ -1,6 +1,17 @@
 ## 2.0.0-dev.5
 
+**⚠️ Breaking changes ⚠️**
+
+- Changed signature of `chatMessageBuilder` to include `isRemoved` and `groupStatus` parameters.
+- Changed `imageUrl` to `imageSource` for the `User` model. Change is necessary to show that not only remote URLs are supported but also local assets.
+- `messageGroupingTimeoutInSeconds` is now set via `chatAnimatedListBuilder`.
+
+**⚠️ New features ⚠️**
+
 - Add `hintText` to the `ChatInput` widget.
+- Added avatar support. Check local example for details.
+- `chatMessageBuilder` now returns `isRemoved` and `groupStatus` parameters. Group status returns information about message's position in the group. `isRemoved` is `true` if message is removed.
+- Added `leadingWidget` and `trailingWidget` to the `ChatMessage` widget.
 
 ## 2.0.0-dev.4
 

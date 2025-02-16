@@ -1,3 +1,4 @@
+export 'src/avatar.dart';
 export 'src/chat.dart';
 export 'src/chat_animated_list/chat_animated_list.dart';
 export 'src/chat_animated_list/chat_animated_list_reversed.dart';
