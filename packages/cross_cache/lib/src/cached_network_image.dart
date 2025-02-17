@@ -31,6 +31,9 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
   final Map<String, String>? headers;
 
   @override
+  WebHtmlElementStrategy get webHtmlElementStrategy => WebHtmlElementStrategy.never;
+
+  @override
   Future<NetworkImage> obtainKey(ImageConfiguration configuration) {
     return SynchronousFuture<NetworkImage>(this);
   }
