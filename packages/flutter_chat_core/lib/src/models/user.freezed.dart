@@ -23,7 +23,7 @@ mixin _$User {
   String get id => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
+  String? get imageSource => throw _privateConstructorUsedError;
   @EpochDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
   Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $UserCopyWith<$Res> {
       {String id,
       String? firstName,
       String? lastName,
-      String? imageUrl,
+      String? imageSource,
       @EpochDateTimeConverter() DateTime? createdAt,
       Map<String, dynamic>? metadata});
 }
@@ -69,7 +69,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? id = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
-    Object? imageUrl = freezed,
+    Object? imageSource = freezed,
     Object? createdAt = freezed,
     Object? metadata = freezed,
   }) {
@@ -86,9 +86,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
+      imageSource: freezed == imageSource
+          ? _value.imageSource
+          : imageSource // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -113,7 +113,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       {String id,
       String? firstName,
       String? lastName,
-      String? imageUrl,
+      String? imageSource,
       @EpochDateTimeConverter() DateTime? createdAt,
       Map<String, dynamic>? metadata});
 }
@@ -133,7 +133,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? id = null,
     Object? firstName = freezed,
     Object? lastName = freezed,
-    Object? imageUrl = freezed,
+    Object? imageSource = freezed,
     Object? createdAt = freezed,
     Object? metadata = freezed,
   }) {
@@ -150,9 +150,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
+      imageSource: freezed == imageSource
+          ? _value.imageSource
+          : imageSource // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -173,7 +173,7 @@ class _$UserImpl extends _User {
       {required this.id,
       this.firstName,
       this.lastName,
-      this.imageUrl,
+      this.imageSource,
       @EpochDateTimeConverter() this.createdAt,
       final Map<String, dynamic>? metadata})
       : _metadata = metadata,
@@ -189,7 +189,7 @@ class _$UserImpl extends _User {
   @override
   final String? lastName;
   @override
-  final String? imageUrl;
+  final String? imageSource;
   @override
   @EpochDateTimeConverter()
   final DateTime? createdAt;
@@ -205,7 +205,7 @@ class _$UserImpl extends _User {
 
   @override
   String toString() {
-    return 'User(id: $id, firstName: $firstName, lastName: $lastName, imageUrl: $imageUrl, createdAt: $createdAt, metadata: $metadata)';
+    return 'User(id: $id, firstName: $firstName, lastName: $lastName, imageSource: $imageSource, createdAt: $createdAt, metadata: $metadata)';
   }
 
   @override
@@ -218,8 +218,8 @@ class _$UserImpl extends _User {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
+            (identical(other.imageSource, imageSource) ||
+                other.imageSource == imageSource) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._metadata, _metadata));
@@ -228,7 +228,7 @@ class _$UserImpl extends _User {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, firstName, lastName,
-      imageUrl, createdAt, const DeepCollectionEquality().hash(_metadata));
+      imageSource, createdAt, const DeepCollectionEquality().hash(_metadata));
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +251,7 @@ abstract class _User extends User {
       {required final String id,
       final String? firstName,
       final String? lastName,
-      final String? imageUrl,
+      final String? imageSource,
       @EpochDateTimeConverter() final DateTime? createdAt,
       final Map<String, dynamic>? metadata}) = _$UserImpl;
   const _User._() : super._();
@@ -265,7 +265,7 @@ abstract class _User extends User {
   @override
   String? get lastName;
   @override
-  String? get imageUrl;
+  String? get imageSource;
   @override
   @EpochDateTimeConverter()
   DateTime? get createdAt;

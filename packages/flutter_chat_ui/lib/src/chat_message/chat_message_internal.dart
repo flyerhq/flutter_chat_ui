@@ -11,6 +11,7 @@ class ChatMessageInternal extends StatefulWidget {
   final Message message;
   final int index;
   final Animation<double> animation;
+  final int? messageGroupingTimeoutInSeconds;
   final bool? isRemoved;
 
   const ChatMessageInternal({
@@ -18,6 +19,7 @@ class ChatMessageInternal extends StatefulWidget {
     required this.message,
     required this.index,
     required this.animation,
+    this.messageGroupingTimeoutInSeconds,
     this.isRemoved,
   });
 
@@ -78,20 +80,63 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
       widget.index,
     );
 
+    final groupStatus = _resolveGroupStatus(context);
+
     return builders.chatMessageBuilder?.call(
           context,
           _updatedMessage,
           widget.index,
           widget.animation,
           child,
+          isRemoved: widget.isRemoved,
+          groupStatus: groupStatus,
         ) ??
         ChatMessage(
           message: _updatedMessage,
           index: widget.index,
           animation: widget.animation,
           isRemoved: widget.isRemoved,
+          groupStatus: groupStatus,
           child: child,
         );
+  }
+
+  MessageGroupStatus? _resolveGroupStatus(BuildContext context) {
+    final chatController = context.read<ChatController>();
+    final messages = chatController.messages;
+    final index = widget.index;
+    final currentMessage = _updatedMessage;
+    final timeoutInSeconds = widget.messageGroupingTimeoutInSeconds ?? 300;
+
+    // Get adjacent messages if they exist
+    final nextMessage =
+        index < messages.length - 1 ? messages[index + 1] : null;
+    final previousMessage = index > 0 ? messages[index - 1] : null;
+
+    // Check if message is part of a group with next message
+    final isGroupedWithNext = nextMessage != null &&
+        nextMessage.authorId == currentMessage.authorId &&
+        nextMessage.createdAt.difference(currentMessage.createdAt).inSeconds <
+            timeoutInSeconds;
+
+    // Check if message is part of a group with previous message
+    final isGroupedWithPrevious = previousMessage != null &&
+        previousMessage.authorId == currentMessage.authorId &&
+        currentMessage.createdAt
+                .difference(previousMessage.createdAt)
+                .inSeconds <
+            timeoutInSeconds;
+
+    // If not grouped with either message, return null
+    if (!isGroupedWithNext && !isGroupedWithPrevious) {
+      return null;
+    }
+
+    return MessageGroupStatus(
+      isFirst: !isGroupedWithPrevious,
+      isLast: !isGroupedWithNext,
+      isMiddle: isGroupedWithNext && isGroupedWithPrevious,
+    );
   }
 
   Widget _buildMessage(

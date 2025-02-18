@@ -35,6 +35,7 @@ class ChatAnimatedListReversed extends StatefulWidget {
   /// 0 represents the top of the list, while 1 represents the bottom.
   /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
   final double? paginationThreshold;
+  final int? messageGroupingTimeoutInSeconds;
 
   const ChatAnimatedListReversed({
     super.key,
@@ -53,6 +54,7 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.shouldScrollToEndWhenSendingMessage = true,
     this.onEndReached,
     this.paginationThreshold = 0.2,
+    this.messageGroupingTimeoutInSeconds,
   });
 
   @override
@@ -242,6 +244,8 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
                       message,
                       currentIndex,
                       animation,
+                      messageGroupingTimeoutInSeconds:
+                          widget.messageGroupingTimeoutInSeconds,
                     );
                   },
                 ),
@@ -436,6 +440,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         data,
         visualPosition,
         animation,
+        messageGroupingTimeoutInSeconds: widget.messageGroupingTimeoutInSeconds,
         isRemoved: true,
       ),
       duration: widget.removeAnimationDuration,

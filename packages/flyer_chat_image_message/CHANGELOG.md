@@ -1,3 +1,7 @@
+## 0.0.6
+
+- Version bump to match other packages
+
 ## 0.0.5
 
 - Introduce new customization options

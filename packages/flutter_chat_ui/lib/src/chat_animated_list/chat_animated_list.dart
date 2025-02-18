@@ -40,6 +40,7 @@ class ChatAnimatedList extends StatefulWidget {
   /// 0 represents the top of the list, while 1 represents the bottom.
   /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
   final double? paginationThreshold;
+  final int? messageGroupingTimeoutInSeconds;
 
   const ChatAnimatedList({
     super.key,
@@ -60,6 +61,7 @@ class ChatAnimatedList extends StatefulWidget {
     this.shouldScrollToEndWhenAtBottom = true,
     this.onEndReached,
     this.paginationThreshold = 0.2,
+    this.messageGroupingTimeoutInSeconds,
   });
 
   @override
@@ -303,6 +305,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                       message,
                       index,
                       animation,
+                      messageGroupingTimeoutInSeconds:
+                          widget.messageGroupingTimeoutInSeconds,
                     );
                   },
                 ),
@@ -618,6 +622,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         data,
         position,
         animation,
+        messageGroupingTimeoutInSeconds: widget.messageGroupingTimeoutInSeconds,
         isRemoved: true,
       ),
       duration: widget.removeAnimationDuration,

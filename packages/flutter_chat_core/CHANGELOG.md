@@ -1,3 +1,10 @@
+## 0.0.6
+
+**⚠️ Breaking changes ⚠️**
+
+- Changed signature of `chatMessageBuilder` to include `isRemoved` and `groupStatus` parameters.
+- Changed `imageUrl` to `imageSource` for the `User` model. Change is necessary to show that not only remote URLs are supported but also local assets.
+
 ## 0.0.5
 
 **⚠️ Breaking changes ⚠️**
