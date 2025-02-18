@@ -17,10 +17,7 @@ class InputActionButton {
 class InputActionBar extends StatelessWidget {
   final List<InputActionButton> buttons;
 
-  const InputActionBar({
-    super.key,
-    required this.buttons,
-  });
+  const InputActionBar({super.key, required this.buttons});
 
   @override
   Widget build(BuildContext context) {

@@ -4,31 +4,16 @@ import 'dart:convert';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-enum WebSocketEventType {
-  newMessage,
-  deleteMessage,
-  flush,
-  error,
-  unknown,
-}
+enum WebSocketEventType { newMessage, deleteMessage, flush, error, unknown }
 
-enum WebSocketStatus {
-  disconnected,
-  connecting,
-  connected,
-  reconnecting,
-}
+enum WebSocketStatus { disconnected, connecting, connected, reconnecting }
 
 class WebSocketEvent {
   final WebSocketEventType type;
   final Message? message;
   final String? error;
 
-  const WebSocketEvent({
-    required this.type,
-    this.message,
-    this.error,
-  });
+  const WebSocketEvent({required this.type, this.message, this.error});
 }
 
 class ChatWebSocketService {

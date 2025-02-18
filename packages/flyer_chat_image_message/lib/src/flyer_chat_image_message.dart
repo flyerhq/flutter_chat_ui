@@ -61,8 +61,9 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     if (height != null && width != null && height > 0 && width > 0) {
       _aspectRatio = width / height;
     } else if (widget.message.thumbhash?.isNotEmpty ?? false) {
-      final thumbhashBytes =
-          base64.decode(base64.normalize(widget.message.thumbhash!));
+      final thumbhashBytes = base64.decode(
+        base64.normalize(widget.message.thumbhash!),
+      );
 
       _aspectRatio = thumbHashToApproximateAspectRatio(thumbhashBytes);
 
@@ -141,10 +142,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
             fit: StackFit.expand,
             children: [
               _placeholderProvider != null
-                  ? Image(
-                      image: _placeholderProvider!,
-                      fit: BoxFit.fill,
-                    )
+                  ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
                   : Container(
                       color: widget.placeholderColor ==
                               FlyerChatImageMessage._sentinelColor
@@ -162,15 +160,15 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   return Container(
                     color: widget.loadingOverlayColor ==
                             FlyerChatImageMessage._sentinelColor
-                        // ignore: deprecated_member_use
-                        ? theme.colors.surfaceContainerLow.withOpacity(0.5)
+                        ? theme.colors.surfaceContainerLow.withValues(
+                            alpha: 0.5,
+                          )
                         : widget.loadingOverlayColor,
                     child: Center(
                       child: CircularProgressIndicator(
                         color: widget.loadingIndicatorColor ==
                                 FlyerChatImageMessage._sentinelColor
-                            // ignore: deprecated_member_use
-                            ? theme.colors.onSurface.withOpacity(0.8)
+                            ? theme.colors.onSurface.withValues(alpha: 0.8)
                             : widget.loadingIndicatorColor,
                         strokeCap: StrokeCap.round,
                         value: loadingProgress.expectedTotalBytes != null
@@ -217,15 +215,17 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     return Container(
                       color: widget.uploadOverlayColor ==
                               FlyerChatImageMessage._sentinelColor
-                          // ignore: deprecated_member_use
-                          ? theme.colors.surfaceContainerLow.withOpacity(0.5)
+                          ? theme.colors.surfaceContainerLow.withValues(
+                              alpha: 0.5,
+                            )
                           : widget.uploadOverlayColor,
                       child: Center(
                         child: CircularProgressIndicator(
                           color: widget.uploadIndicatorColor ==
                                   FlyerChatImageMessage._sentinelColor
-                              // ignore: deprecated_member_use
-                              ? theme.colors.onSurface.withOpacity(0.8)
+                              ? theme.colors.onSurface.withValues(
+                                  alpha: 0.8,
+                                )
                               : widget.uploadIndicatorColor,
                           strokeCap: StrokeCap.round,
                           value: snapshot.data,

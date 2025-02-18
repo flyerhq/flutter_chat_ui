@@ -40,9 +40,7 @@ class PaginationState extends State<Pagination> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pagination'),
-      ),
+      appBar: AppBar(title: const Text('Pagination')),
       body: Chat(
         builders: Builders(
           chatAnimatedListBuilder: (context, itemBuilder) {

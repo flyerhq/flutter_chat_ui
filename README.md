@@ -3,7 +3,7 @@
 Welcome to the next generation of Flutter Chat UI! ✨
 
 > 🔨 **Version 2 is currently under development**  
-> Available as a [dev release on pub.dev](https://pub.dev/packages/flutter_chat_ui/versions/2.0.0-dev.4/changelog)
+> Available as a [dev release on pub.dev](https://pub.dev/packages/flutter_chat_ui/versions/2.0.0-dev.6/changelog)
 
 📝 Documentation is actively being written and will be continuously updated here and on Github.
 

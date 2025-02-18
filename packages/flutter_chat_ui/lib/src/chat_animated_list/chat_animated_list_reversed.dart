@@ -92,8 +92,9 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
     super.initState();
     _chatController = context.read<ChatController>();
     _scrollController = widget.scrollController ?? ScrollController();
-    _observerController =
-        SliverObserverController(controller: _scrollController);
+    _observerController = SliverObserverController(
+      controller: _scrollController,
+    );
     // TODO: Add assert for messages having same id
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
@@ -126,9 +127,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
           final newList = _chatController.messages;
 
           final updates = diffutil
-              .calculateDiff<Message>(
-                MessageListDiff(_oldList, newList),
-              )
+              .calculateDiff<Message>(MessageListDiff(_oldList, newList))
               .getUpdatesWithData();
 
           for (var i = updates.length - 1; i >= 0; i--) {
@@ -235,8 +234,10 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
                     Animation<double> animation,
                   ) {
                     _sliverListViewContext ??= context;
-                    final currentIndex =
-                        max(_chatController.messages.length - 1 - index, 0);
+                    final currentIndex = max(
+                      _chatController.messages.length - 1 - index,
+                      0,
+                    );
                     final message = _chatController.messages[currentIndex];
 
                     return widget.itemBuilder(
@@ -286,88 +287,85 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   }
 
   void _scrollToEnd(Message data) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        if (!_scrollController.hasClients || !mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!_scrollController.hasClients || !mounted) return;
 
-        // Skip auto-scrolling if scroll behavior is disabled:
-        // - Scrolling when user sends a new message
-        if (widget.shouldScrollToEndWhenSendingMessage == false) {
-          return;
-        }
+      // Skip auto-scrolling if scroll behavior is disabled:
+      // - Scrolling when user sends a new message
+      if (widget.shouldScrollToEndWhenSendingMessage == false) {
+        return;
+      }
 
-        // Skip scroll logic if this is not the most recently inserted message
-        // or if the list is already scrolled to the bottom. This prevents
-        // duplicate scrolling when multiple messages are inserted at once.
-        if (data.id != _lastInsertedMessageId ||
-            _scrollController.offset <= 0) {
-          return;
-        }
+      // Skip scroll logic if this is not the most recently inserted message
+      // or if the list is already scrolled to the bottom. This prevents
+      // duplicate scrolling when multiple messages are inserted at once.
+      if (data.id != _lastInsertedMessageId || _scrollController.offset <= 0) {
+        return;
+      }
 
-        final currentUserId = context.read<String>();
+      final currentUserId = context.read<String>();
 
-        // When the user sends a new message, automatically scroll back to
-        // the bottom to show their message.
-        // This matches common chat UX where sending a message returns focus
-        // to the most recent messages. After scrolling, exit the function since
-        // no other scroll behavior is needed.
-        if (widget.shouldScrollToEndWhenSendingMessage == true &&
-            currentUserId == data.authorId &&
-            _oldList.last.id == data.id) {
-          if (widget.scrollToEndAnimationDuration == Duration.zero) {
-            _scrollController.jumpTo(0);
-          } else {
-            await _scrollController.animateTo(
-              0,
-              duration: widget.scrollToEndAnimationDuration,
-              curve: Curves.linearToEaseOut,
-            );
-          }
-
-          return;
-        }
-      },
-    );
-  }
-
-  void _handleScrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (!_scrollController.hasClients || !mounted) return;
-
-        _isScrollingToBottom = true;
-
-        _scrollToBottomController.reverse();
-
+      // When the user sends a new message, automatically scroll back to
+      // the bottom to show their message.
+      // This matches common chat UX where sending a message returns focus
+      // to the most recent messages. After scrolling, exit the function since
+      // no other scroll behavior is needed.
+      if (widget.shouldScrollToEndWhenSendingMessage == true &&
+          currentUserId == data.authorId &&
+          _oldList.last.id == data.id) {
         if (widget.scrollToEndAnimationDuration == Duration.zero) {
           _scrollController.jumpTo(0);
         } else {
-          _scrollController.animateTo(
+          await _scrollController.animateTo(
             0,
             duration: widget.scrollToEndAnimationDuration,
             curve: Curves.linearToEaseOut,
           );
         }
 
-        _userHasScrolled = false;
-        _isScrollingToBottom = false;
-      },
-    );
+        return;
+      }
+    });
+  }
+
+  void _handleScrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients || !mounted) return;
+
+      _isScrollingToBottom = true;
+
+      _scrollToBottomController.reverse();
+
+      if (widget.scrollToEndAnimationDuration == Duration.zero) {
+        _scrollController.jumpTo(0);
+      } else {
+        _scrollController.animateTo(
+          0,
+          duration: widget.scrollToEndAnimationDuration,
+          curve: Curves.linearToEaseOut,
+        );
+      }
+
+      _userHasScrolled = false;
+      _isScrollingToBottom = false;
+    });
   }
 
   void _handleToggleScrollToBottom() {
     if (!_isScrollingToBottom) {
       _scrollToBottomShowTimer?.cancel();
       if (_scrollController.offset > 0) {
-        _scrollToBottomShowTimer =
-            Timer(widget.scrollToBottomAppearanceDelay, () {
-          if (mounted) {
-            // If we show scroll to bottom that means user is viewing the history
-            // so we set `_userHasScrolled` to true.
-            _userHasScrolled = true;
-            _scrollToBottomController.forward();
-          }
-        });
+        _scrollToBottomShowTimer = Timer(
+          widget.scrollToBottomAppearanceDelay,
+          () {
+            if (mounted) {
+              // If we show scroll to bottom that means user is viewing the history
+              // so we set `_userHasScrolled` to true.
+              _userHasScrolled = true;
+              _scrollToBottomController.forward();
+            }
+          },
+        );
       } else {
         if (_scrollToBottomController.status == AnimationStatus.completed) {
           _scrollToBottomController.reverse();

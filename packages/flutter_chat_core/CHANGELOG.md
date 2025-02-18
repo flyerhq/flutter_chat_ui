@@ -1,3 +1,7 @@
+## 0.0.7
+
+- Require Flutter 3.29 and Dart 3.7
+
 ## 0.0.6
 
 **⚠️ Breaking changes ⚠️**

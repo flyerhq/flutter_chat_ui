@@ -1,5 +1,5 @@
 name: flutter_chat_core
-version: 0.0.6
+version: 0.0.7
 description: >
   Core package for Flutter chat apps, complementing flutter_chat_ui.
   Contains models and core functionality. #chat #ui
@@ -7,11 +7,11 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.0"
+  sdk: ">=3.7.0 <4.0.0"
+  flutter: ">=3.29.0"
 
 dependencies:
-  dio: ^5.7.0
+  dio: ^5.8.0+1
   flutter:
     sdk: flutter
   freezed_annotation: ^2.4.4
@@ -19,9 +19,9 @@ dependencies:
   path_provider: ^2.1.5
 
 dev_dependencies:
-  build_runner: ^2.4.14
+  build_runner: ^2.4.15
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  freezed: ^2.5.7
-  json_serializable: ^6.8.0
+  freezed: ^2.5.8
+  json_serializable: ^6.9.4

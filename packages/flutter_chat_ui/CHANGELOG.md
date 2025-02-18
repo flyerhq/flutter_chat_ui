@@ -1,3 +1,14 @@
+## 2.0.0-dev.6
+
+**⚠️ Breaking changes ⚠️**
+
+- Require Flutter 3.29 and Dart 3.7
+
+**🐛 Bug Fixes**
+
+- Temporarily disabled blur effect for chat input due to a crash in Flutter 3.29 (will be re-enabled once fix is available in stable)
+- Fixed a warning that occurred when removing all messages simultaneously
+
 ## 2.0.0-dev.5
 
 **⚠️ Breaking changes ⚠️**

@@ -9,12 +9,7 @@ class LoadMore extends StatefulWidget {
   final double? padding;
   final double? size;
 
-  const LoadMore({
-    super.key,
-    this.color,
-    this.padding = 20,
-    this.size = 20,
-  });
+  const LoadMore({super.key, this.color, this.padding = 20, this.size = 20});
 
   @override
   State<LoadMore> createState() => _LoadMoreState();

@@ -96,8 +96,10 @@ class _AvatarContentState extends State<AvatarContent> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.user?.imageSource != widget.user?.imageSource) {
       final crossCache = context.read<CrossCache>();
-      final newImage =
-          CachedNetworkImage(widget.user!.imageSource!, crossCache);
+      final newImage = CachedNetworkImage(
+        widget.user!.imageSource!,
+        crossCache,
+      );
 
       precacheImage(newImage, context).then((_) {
         if (mounted) {
@@ -123,19 +125,10 @@ class _AvatarContentState extends State<AvatarContent> {
 
     final initials = _getInitials(widget.user);
     if (initials.isNotEmpty) {
-      return Center(
-        child: Text(
-          initials,
-          style: widget.textStyle,
-        ),
-      );
+      return Center(child: Text(initials, style: widget.textStyle));
     }
 
-    return Icon(
-      Icons.person,
-      color: widget.foregroundColor,
-      size: 24,
-    );
+    return Icon(Icons.person, color: widget.foregroundColor, size: 24);
   }
 
   String _getInitials(User? user) {

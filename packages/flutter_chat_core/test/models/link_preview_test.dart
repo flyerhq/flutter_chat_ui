@@ -30,9 +30,7 @@ void main() {
       expect(linkPreview == linkPreview2, true);
 
       // Change one property of linkPreview2.
-      final copiedLinkPreview = linkPreview2.copyWith(
-        title: null,
-      );
+      final copiedLinkPreview = linkPreview2.copyWith(title: null);
 
       // The original and the changed objects should not be equal.
       expect(linkPreview == copiedLinkPreview, false);

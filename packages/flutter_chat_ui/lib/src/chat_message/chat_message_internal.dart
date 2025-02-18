@@ -102,41 +102,45 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
   }
 
   MessageGroupStatus? _resolveGroupStatus(BuildContext context) {
-    final chatController = context.read<ChatController>();
-    final messages = chatController.messages;
-    final index = widget.index;
-    final currentMessage = _updatedMessage;
-    final timeoutInSeconds = widget.messageGroupingTimeoutInSeconds ?? 300;
+    try {
+      final chatController = context.read<ChatController>();
+      final messages = chatController.messages;
+      final index = widget.index;
+      final currentMessage = _updatedMessage;
+      final timeoutInSeconds = widget.messageGroupingTimeoutInSeconds ?? 300;
 
-    // Get adjacent messages if they exist
-    final nextMessage =
-        index < messages.length - 1 ? messages[index + 1] : null;
-    final previousMessage = index > 0 ? messages[index - 1] : null;
+      // Get adjacent messages if they exist
+      final nextMessage =
+          index < messages.length - 1 ? messages[index + 1] : null;
+      final previousMessage = index > 0 ? messages[index - 1] : null;
 
-    // Check if message is part of a group with next message
-    final isGroupedWithNext = nextMessage != null &&
-        nextMessage.authorId == currentMessage.authorId &&
-        nextMessage.createdAt.difference(currentMessage.createdAt).inSeconds <
-            timeoutInSeconds;
+      // Check if message is part of a group with next message
+      final isGroupedWithNext = nextMessage != null &&
+          nextMessage.authorId == currentMessage.authorId &&
+          nextMessage.createdAt.difference(currentMessage.createdAt).inSeconds <
+              timeoutInSeconds;
 
-    // Check if message is part of a group with previous message
-    final isGroupedWithPrevious = previousMessage != null &&
-        previousMessage.authorId == currentMessage.authorId &&
-        currentMessage.createdAt
-                .difference(previousMessage.createdAt)
-                .inSeconds <
-            timeoutInSeconds;
+      // Check if message is part of a group with previous message
+      final isGroupedWithPrevious = previousMessage != null &&
+          previousMessage.authorId == currentMessage.authorId &&
+          currentMessage.createdAt
+                  .difference(previousMessage.createdAt)
+                  .inSeconds <
+              timeoutInSeconds;
 
-    // If not grouped with either message, return null
-    if (!isGroupedWithNext && !isGroupedWithPrevious) {
+      // If not grouped with either message, return null
+      if (!isGroupedWithNext && !isGroupedWithPrevious) {
+        return null;
+      }
+
+      return MessageGroupStatus(
+        isFirst: !isGroupedWithPrevious,
+        isLast: !isGroupedWithNext,
+        isMiddle: isGroupedWithNext && isGroupedWithPrevious,
+      );
+    } catch (e) {
       return null;
     }
-
-    return MessageGroupStatus(
-      isFirst: !isGroupedWithPrevious,
-      isLast: !isGroupedWithNext,
-      isMiddle: isGroupedWithNext && isGroupedWithPrevious,
-    );
   }
 
   Widget _buildMessage(
@@ -164,8 +168,11 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
         return builders.customMessageBuilder?.call(context, message, index) ??
             const SizedBox.shrink();
       case UnsupportedMessage():
-        return builders.unsupportedMessageBuilder
-                ?.call(context, message, index) ??
+        return builders.unsupportedMessageBuilder?.call(
+              context,
+              message,
+              index,
+            ) ??
             const Text(
               'This message is not supported. Please update your app.',
             );

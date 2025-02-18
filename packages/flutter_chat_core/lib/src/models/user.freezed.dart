@@ -12,7 +12,8 @@ part of 'user.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return _User.fromJson(json);
@@ -42,13 +43,14 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call(
-      {String id,
-      String? firstName,
-      String? lastName,
-      String? imageSource,
-      @EpochDateTimeConverter() DateTime? createdAt,
-      Map<String, dynamic>? metadata});
+  $Res call({
+    String id,
+    String? firstName,
+    String? lastName,
+    String? imageSource,
+    @EpochDateTimeConverter() DateTime? createdAt,
+    Map<String, dynamic>? metadata,
+  });
 }
 
 /// @nodoc
@@ -73,49 +75,60 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? createdAt = freezed,
     Object? metadata = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstName: freezed == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastName: freezed == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      imageSource: freezed == imageSource
-          ? _value.imageSource
-          : imageSource // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      metadata: freezed == metadata
-          ? _value.metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            firstName:
+                freezed == firstName
+                    ? _value.firstName
+                    : firstName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            lastName:
+                freezed == lastName
+                    ? _value.lastName
+                    : lastName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            imageSource:
+                freezed == imageSource
+                    ? _value.imageSource
+                    : imageSource // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            createdAt:
+                freezed == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            metadata:
+                freezed == metadata
+                    ? _value.metadata
+                    : metadata // ignore: cast_nullable_to_non_nullable
+                        as Map<String, dynamic>?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$$UserImplCopyWith(
-          _$UserImpl value, $Res Function(_$UserImpl) then) =
-      __$$UserImplCopyWithImpl<$Res>;
+    _$UserImpl value,
+    $Res Function(_$UserImpl) then,
+  ) = __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String? firstName,
-      String? lastName,
-      String? imageSource,
-      @EpochDateTimeConverter() DateTime? createdAt,
-      Map<String, dynamic>? metadata});
+  $Res call({
+    String id,
+    String? firstName,
+    String? lastName,
+    String? imageSource,
+    @EpochDateTimeConverter() DateTime? createdAt,
+    Map<String, dynamic>? metadata,
+  });
 }
 
 /// @nodoc
@@ -123,7 +136,7 @@ class __$$UserImplCopyWithImpl<$Res>
     extends _$UserCopyWithImpl<$Res, _$UserImpl>
     implements _$$UserImplCopyWith<$Res> {
   __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
-      : super(_value, _then);
+    : super(_value, _then);
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -137,47 +150,55 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? metadata = freezed,
   }) {
-    return _then(_$UserImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstName: freezed == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastName: freezed == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      imageSource: freezed == imageSource
-          ? _value.imageSource
-          : imageSource // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      metadata: freezed == metadata
-          ? _value._metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-    ));
+    return _then(
+      _$UserImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        firstName:
+            freezed == firstName
+                ? _value.firstName
+                : firstName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        lastName:
+            freezed == lastName
+                ? _value.lastName
+                : lastName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        imageSource:
+            freezed == imageSource
+                ? _value.imageSource
+                : imageSource // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        createdAt:
+            freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        metadata:
+            freezed == metadata
+                ? _value._metadata
+                : metadata // ignore: cast_nullable_to_non_nullable
+                    as Map<String, dynamic>?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$UserImpl extends _User {
-  const _$UserImpl(
-      {required this.id,
-      this.firstName,
-      this.lastName,
-      this.imageSource,
-      @EpochDateTimeConverter() this.createdAt,
-      final Map<String, dynamic>? metadata})
-      : _metadata = metadata,
-        super._();
+  const _$UserImpl({
+    required this.id,
+    this.firstName,
+    this.lastName,
+    this.imageSource,
+    @EpochDateTimeConverter() this.createdAt,
+    final Map<String, dynamic>? metadata,
+  }) : _metadata = metadata,
+       super._();
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -227,8 +248,15 @@ class _$UserImpl extends _User {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, firstName, lastName,
-      imageSource, createdAt, const DeepCollectionEquality().hash(_metadata));
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    firstName,
+    lastName,
+    imageSource,
+    createdAt,
+    const DeepCollectionEquality().hash(_metadata),
+  );
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -240,20 +268,19 @@ class _$UserImpl extends _User {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserImplToJson(
-      this,
-    );
+    return _$$UserImplToJson(this);
   }
 }
 
 abstract class _User extends User {
-  const factory _User(
-      {required final String id,
-      final String? firstName,
-      final String? lastName,
-      final String? imageSource,
-      @EpochDateTimeConverter() final DateTime? createdAt,
-      final Map<String, dynamic>? metadata}) = _$UserImpl;
+  const factory _User({
+    required final String id,
+    final String? firstName,
+    final String? lastName,
+    final String? imageSource,
+    @EpochDateTimeConverter() final DateTime? createdAt,
+    final Map<String, dynamic>? metadata,
+  }) = _$UserImpl;
   const _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;

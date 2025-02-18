@@ -16,8 +16,9 @@ Future<Map<String, dynamic>> uploadFile(
   final uri = Uri.parse('https://whatever.diamanthq.dev/upload');
 
   // Generate a boundary
-  final boundary =
-      base64.encode(List<int>.generate(32, (_) => Random().nextInt(256)));
+  final boundary = base64.encode(
+    List<int>.generate(32, (_) => Random().nextInt(256)),
+  );
 
   // Create the request
   final request = http.MultipartRequest('POST', uri);
@@ -85,18 +86,17 @@ Stream<List<int>> trackProgress(
       uploaded += chunk.length;
       if (chatController is UploadProgressMixin) {
         final progress = uploaded / total;
-        (chatController as UploadProgressMixin)
-            .updateUploadProgress(id, progress);
+        (chatController as UploadProgressMixin).updateUploadProgress(
+          id,
+          progress,
+        );
       }
 
       yield chunk;
     }
   } catch (e) {
     if (chatController is UploadProgressMixin) {
-      (chatController as UploadProgressMixin).updateUploadProgress(
-        id,
-        1,
-      );
+      (chatController as UploadProgressMixin).updateUploadProgress(id, 1);
     }
     rethrow;
   }

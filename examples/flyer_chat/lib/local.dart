@@ -48,9 +48,7 @@ class LocalState extends State<Local> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Local'),
-      ),
+      appBar: AppBar(title: const Text('Local')),
       body: Chat(
         backgroundColor: null,
         builders: Builders(
@@ -165,11 +163,7 @@ class LocalState extends State<Local> {
   void _addItem(String? text) async {
     final randomUser = Random().nextInt(2) == 0 ? _currentUser : _recipient;
 
-    final message = await createMessage(
-      randomUser.id,
-      widget.dio,
-      text: text,
-    );
+    final message = await createMessage(randomUser.id, widget.dio, text: text);
 
     if (mounted) {
       if (_isTyping) {
@@ -187,9 +181,7 @@ class LocalState extends State<Local> {
           id: _uuid.v4(),
           authorId: _systemUser.id,
           createdAt: DateTime.now().toUtc(),
-          metadata: {
-            'type': 'typing',
-          },
+          metadata: {'type': 'typing'},
         ),
       );
       _isTyping = true;

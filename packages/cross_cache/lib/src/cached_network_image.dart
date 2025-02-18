@@ -20,6 +20,7 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
     this.crossCache, {
     this.scale = 1.0,
     this.headers,
+    this.webHtmlElementStrategy = WebHtmlElementStrategy.never,
   });
 
   @override
@@ -29,6 +30,8 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
   final double scale;
   @override
   final Map<String, String>? headers;
+  @override
+  final WebHtmlElementStrategy webHtmlElementStrategy;
 
   @override
   Future<NetworkImage> obtainKey(ImageConfiguration configuration) {

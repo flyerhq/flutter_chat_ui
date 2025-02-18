@@ -49,10 +49,7 @@ class CrossCache {
             uri.scheme == 'blob')) {
       final response = await _dio.get(
         source,
-        options: Options(
-          headers: headers,
-          responseType: ResponseType.bytes,
-        ),
+        options: Options(headers: headers, responseType: ResponseType.bytes),
         onReceiveProgress: onReceiveProgress,
       );
 

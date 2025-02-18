@@ -133,10 +133,7 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMillisecondsSinceEpoch(
-          1736893310000 + 1000,
-          isUtc: true,
-        ),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000 + 1000, isUtc: true),
       );
       expect(copiedMessage.text, 'New text');
       expect(copiedMessage.metadata, {'key': 'newValue'});
@@ -149,20 +146,22 @@ void main() {
       expect(copiedMessage.linkPreview!.link, 'https://newwebsite.com');
     });
 
-    test('retains original values when copyWith is called without new values',
-        () {
-      final copiedMessage = message.copyWith();
+    test(
+      'retains original values when copyWith is called without new values',
+      () {
+        final copiedMessage = message.copyWith();
 
-      // Assert all properties
-      expect(copiedMessage.id, '1');
-      expect(copiedMessage.authorId, 'me');
-      expect(
-        copiedMessage.createdAt,
-        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
-      );
-      expect(copiedMessage.text, 'Hello, world!');
-      expect(copiedMessage.metadata, {'key': 'value'});
-    });
+        // Assert all properties
+        expect(copiedMessage.id, '1');
+        expect(copiedMessage.authorId, 'me');
+        expect(
+          copiedMessage.createdAt,
+          DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
+        );
+        expect(copiedMessage.text, 'Hello, world!');
+        expect(copiedMessage.metadata, {'key': 'value'});
+      },
+    );
 
     test('treats objects with the same properties as equal', () {
       final json = {
@@ -218,8 +217,9 @@ void main() {
         'metadata': {'key': 'value'},
       };
 
-      final messageDifferentTimestamp =
-          TextMessage.fromJson(jsonDifferentTimestamp);
+      final messageDifferentTimestamp = TextMessage.fromJson(
+        jsonDifferentTimestamp,
+      );
 
       // Should not be equal
       expect(message == messageDifferentTimestamp, false);
@@ -285,29 +285,28 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMillisecondsSinceEpoch(
-          1736893310000 + 1000,
-          isUtc: true,
-        ),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000 + 1000, isUtc: true),
       );
       expect(copiedMessage.source, 'https://example.com/image2.jpg');
       expect(copiedMessage.metadata, {'key': 'newValue'});
     });
 
-    test('retains original values when copyWith is called without new values',
-        () {
-      final copiedMessage = message.copyWith();
+    test(
+      'retains original values when copyWith is called without new values',
+      () {
+        final copiedMessage = message.copyWith();
 
-      // Assert all properties
-      expect(copiedMessage.id, '1');
-      expect(copiedMessage.authorId, 'me');
-      expect(
-        copiedMessage.createdAt,
-        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
-      );
-      expect(copiedMessage.source, 'https://example.com/image.jpg');
-      expect(copiedMessage.metadata, {'key': 'value'});
-    });
+        // Assert all properties
+        expect(copiedMessage.id, '1');
+        expect(copiedMessage.authorId, 'me');
+        expect(
+          copiedMessage.createdAt,
+          DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
+        );
+        expect(copiedMessage.source, 'https://example.com/image.jpg');
+        expect(copiedMessage.metadata, {'key': 'value'});
+      },
+    );
 
     test('treats objects with the same properties as equal', () {
       final json = {
@@ -325,8 +324,9 @@ void main() {
       expect(message == message2, true);
 
       // Change one property of message2.
-      final copiedMessage =
-          message2.copyWith(source: 'https://example.com/image2.jpg');
+      final copiedMessage = message2.copyWith(
+        source: 'https://example.com/image2.jpg',
+      );
 
       // The original and the changed objects should not be equal.
       expect(message == copiedMessage, false);
@@ -358,8 +358,9 @@ void main() {
         'metadata': {'key': 'value'},
       };
 
-      final messageDifferentTimestamp =
-          ImageMessage.fromJson(jsonDifferentTimestamp);
+      final messageDifferentTimestamp = ImageMessage.fromJson(
+        jsonDifferentTimestamp,
+      );
 
       // Should not be equal
       expect(message == messageDifferentTimestamp, false);
@@ -421,27 +422,26 @@ void main() {
       expect(copiedMessage.authorId, 'me');
       expect(
         copiedMessage.createdAt,
-        DateTime.fromMillisecondsSinceEpoch(
-          1736893310000 + 1000,
-          isUtc: true,
-        ),
+        DateTime.fromMillisecondsSinceEpoch(1736893310000 + 1000, isUtc: true),
       );
       expect(copiedMessage.metadata, {'key': 'newValue'});
     });
 
-    test('retains original values when copyWith is called without new values',
-        () {
-      final copiedMessage = message.copyWith();
+    test(
+      'retains original values when copyWith is called without new values',
+      () {
+        final copiedMessage = message.copyWith();
 
-      // Assert all properties
-      expect(copiedMessage.id, '1');
-      expect(copiedMessage.authorId, 'me');
-      expect(
-        copiedMessage.createdAt,
-        DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
-      );
-      expect(copiedMessage.metadata, {'key': 'value'});
-    });
+        // Assert all properties
+        expect(copiedMessage.id, '1');
+        expect(copiedMessage.authorId, 'me');
+        expect(
+          copiedMessage.createdAt,
+          DateTime.fromMillisecondsSinceEpoch(1736893310000, isUtc: true),
+        );
+        expect(copiedMessage.metadata, {'key': 'value'});
+      },
+    );
 
     test('treats objects with the same properties as equal', () {
       final json = {
@@ -493,8 +493,9 @@ void main() {
         'metadata': {'key': 'value'},
       };
 
-      final messageDifferentTimestamp =
-          UnsupportedMessage.fromJson(jsonDifferentTimestamp);
+      final messageDifferentTimestamp = UnsupportedMessage.fromJson(
+        jsonDifferentTimestamp,
+      );
 
       // Should not be equal
       expect(message == messageDifferentTimestamp, false);

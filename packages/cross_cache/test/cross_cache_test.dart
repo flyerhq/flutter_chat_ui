@@ -36,10 +36,10 @@ void main() {
         ),
       );
 
-      expect(
-        response.requestOptions.headers,
-        {'user-agent': 'test', 'keep-alive': 1},
-      );
+      expect(response.requestOptions.headers, {
+        'user-agent': 'test',
+        'keep-alive': 1,
+      });
 
       final url = await crossCache.downloadAndSave(path);
 

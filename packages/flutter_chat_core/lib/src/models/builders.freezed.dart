@@ -12,7 +12,8 @@ part of 'builders.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$Builders {
@@ -45,16 +46,17 @@ abstract class $BuildersCopyWith<$Res> {
   factory $BuildersCopyWith(Builders value, $Res Function(Builders) then) =
       _$BuildersCopyWithImpl<$Res, Builders>;
   @useResult
-  $Res call(
-      {TextMessageBuilder? textMessageBuilder,
-      ImageMessageBuilder? imageMessageBuilder,
-      CustomMessageBuilder? customMessageBuilder,
-      UnsupportedMessageBuilder? unsupportedMessageBuilder,
-      InputBuilder? inputBuilder,
-      ChatMessageBuilder? chatMessageBuilder,
-      ChatAnimatedListBuilder? chatAnimatedListBuilder,
-      ScrollToBottomBuilder? scrollToBottomBuilder,
-      LoadMoreBuilder? loadMoreBuilder});
+  $Res call({
+    TextMessageBuilder? textMessageBuilder,
+    ImageMessageBuilder? imageMessageBuilder,
+    CustomMessageBuilder? customMessageBuilder,
+    UnsupportedMessageBuilder? unsupportedMessageBuilder,
+    InputBuilder? inputBuilder,
+    ChatMessageBuilder? chatMessageBuilder,
+    ChatAnimatedListBuilder? chatAnimatedListBuilder,
+    ScrollToBottomBuilder? scrollToBottomBuilder,
+    LoadMoreBuilder? loadMoreBuilder,
+  });
 }
 
 /// @nodoc
@@ -82,44 +84,56 @@ class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
     Object? scrollToBottomBuilder = freezed,
     Object? loadMoreBuilder = freezed,
   }) {
-    return _then(_value.copyWith(
-      textMessageBuilder: freezed == textMessageBuilder
-          ? _value.textMessageBuilder
-          : textMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as TextMessageBuilder?,
-      imageMessageBuilder: freezed == imageMessageBuilder
-          ? _value.imageMessageBuilder
-          : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as ImageMessageBuilder?,
-      customMessageBuilder: freezed == customMessageBuilder
-          ? _value.customMessageBuilder
-          : customMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as CustomMessageBuilder?,
-      unsupportedMessageBuilder: freezed == unsupportedMessageBuilder
-          ? _value.unsupportedMessageBuilder
-          : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as UnsupportedMessageBuilder?,
-      inputBuilder: freezed == inputBuilder
-          ? _value.inputBuilder
-          : inputBuilder // ignore: cast_nullable_to_non_nullable
-              as InputBuilder?,
-      chatMessageBuilder: freezed == chatMessageBuilder
-          ? _value.chatMessageBuilder
-          : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as ChatMessageBuilder?,
-      chatAnimatedListBuilder: freezed == chatAnimatedListBuilder
-          ? _value.chatAnimatedListBuilder
-          : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
-              as ChatAnimatedListBuilder?,
-      scrollToBottomBuilder: freezed == scrollToBottomBuilder
-          ? _value.scrollToBottomBuilder
-          : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
-              as ScrollToBottomBuilder?,
-      loadMoreBuilder: freezed == loadMoreBuilder
-          ? _value.loadMoreBuilder
-          : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
-              as LoadMoreBuilder?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            textMessageBuilder:
+                freezed == textMessageBuilder
+                    ? _value.textMessageBuilder
+                    : textMessageBuilder // ignore: cast_nullable_to_non_nullable
+                        as TextMessageBuilder?,
+            imageMessageBuilder:
+                freezed == imageMessageBuilder
+                    ? _value.imageMessageBuilder
+                    : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
+                        as ImageMessageBuilder?,
+            customMessageBuilder:
+                freezed == customMessageBuilder
+                    ? _value.customMessageBuilder
+                    : customMessageBuilder // ignore: cast_nullable_to_non_nullable
+                        as CustomMessageBuilder?,
+            unsupportedMessageBuilder:
+                freezed == unsupportedMessageBuilder
+                    ? _value.unsupportedMessageBuilder
+                    : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
+                        as UnsupportedMessageBuilder?,
+            inputBuilder:
+                freezed == inputBuilder
+                    ? _value.inputBuilder
+                    : inputBuilder // ignore: cast_nullable_to_non_nullable
+                        as InputBuilder?,
+            chatMessageBuilder:
+                freezed == chatMessageBuilder
+                    ? _value.chatMessageBuilder
+                    : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
+                        as ChatMessageBuilder?,
+            chatAnimatedListBuilder:
+                freezed == chatAnimatedListBuilder
+                    ? _value.chatAnimatedListBuilder
+                    : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
+                        as ChatAnimatedListBuilder?,
+            scrollToBottomBuilder:
+                freezed == scrollToBottomBuilder
+                    ? _value.scrollToBottomBuilder
+                    : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
+                        as ScrollToBottomBuilder?,
+            loadMoreBuilder:
+                freezed == loadMoreBuilder
+                    ? _value.loadMoreBuilder
+                    : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
+                        as LoadMoreBuilder?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -127,20 +141,22 @@ class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
 abstract class _$$BuildersImplCopyWith<$Res>
     implements $BuildersCopyWith<$Res> {
   factory _$$BuildersImplCopyWith(
-          _$BuildersImpl value, $Res Function(_$BuildersImpl) then) =
-      __$$BuildersImplCopyWithImpl<$Res>;
+    _$BuildersImpl value,
+    $Res Function(_$BuildersImpl) then,
+  ) = __$$BuildersImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {TextMessageBuilder? textMessageBuilder,
-      ImageMessageBuilder? imageMessageBuilder,
-      CustomMessageBuilder? customMessageBuilder,
-      UnsupportedMessageBuilder? unsupportedMessageBuilder,
-      InputBuilder? inputBuilder,
-      ChatMessageBuilder? chatMessageBuilder,
-      ChatAnimatedListBuilder? chatAnimatedListBuilder,
-      ScrollToBottomBuilder? scrollToBottomBuilder,
-      LoadMoreBuilder? loadMoreBuilder});
+  $Res call({
+    TextMessageBuilder? textMessageBuilder,
+    ImageMessageBuilder? imageMessageBuilder,
+    CustomMessageBuilder? customMessageBuilder,
+    UnsupportedMessageBuilder? unsupportedMessageBuilder,
+    InputBuilder? inputBuilder,
+    ChatMessageBuilder? chatMessageBuilder,
+    ChatAnimatedListBuilder? chatAnimatedListBuilder,
+    ScrollToBottomBuilder? scrollToBottomBuilder,
+    LoadMoreBuilder? loadMoreBuilder,
+  });
 }
 
 /// @nodoc
@@ -148,8 +164,9 @@ class __$$BuildersImplCopyWithImpl<$Res>
     extends _$BuildersCopyWithImpl<$Res, _$BuildersImpl>
     implements _$$BuildersImplCopyWith<$Res> {
   __$$BuildersImplCopyWithImpl(
-      _$BuildersImpl _value, $Res Function(_$BuildersImpl) _then)
-      : super(_value, _then);
+    _$BuildersImpl _value,
+    $Res Function(_$BuildersImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Builders
   /// with the given fields replaced by the non-null parameter values.
@@ -166,61 +183,72 @@ class __$$BuildersImplCopyWithImpl<$Res>
     Object? scrollToBottomBuilder = freezed,
     Object? loadMoreBuilder = freezed,
   }) {
-    return _then(_$BuildersImpl(
-      textMessageBuilder: freezed == textMessageBuilder
-          ? _value.textMessageBuilder
-          : textMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as TextMessageBuilder?,
-      imageMessageBuilder: freezed == imageMessageBuilder
-          ? _value.imageMessageBuilder
-          : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as ImageMessageBuilder?,
-      customMessageBuilder: freezed == customMessageBuilder
-          ? _value.customMessageBuilder
-          : customMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as CustomMessageBuilder?,
-      unsupportedMessageBuilder: freezed == unsupportedMessageBuilder
-          ? _value.unsupportedMessageBuilder
-          : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as UnsupportedMessageBuilder?,
-      inputBuilder: freezed == inputBuilder
-          ? _value.inputBuilder
-          : inputBuilder // ignore: cast_nullable_to_non_nullable
-              as InputBuilder?,
-      chatMessageBuilder: freezed == chatMessageBuilder
-          ? _value.chatMessageBuilder
-          : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
-              as ChatMessageBuilder?,
-      chatAnimatedListBuilder: freezed == chatAnimatedListBuilder
-          ? _value.chatAnimatedListBuilder
-          : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
-              as ChatAnimatedListBuilder?,
-      scrollToBottomBuilder: freezed == scrollToBottomBuilder
-          ? _value.scrollToBottomBuilder
-          : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
-              as ScrollToBottomBuilder?,
-      loadMoreBuilder: freezed == loadMoreBuilder
-          ? _value.loadMoreBuilder
-          : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
-              as LoadMoreBuilder?,
-    ));
+    return _then(
+      _$BuildersImpl(
+        textMessageBuilder:
+            freezed == textMessageBuilder
+                ? _value.textMessageBuilder
+                : textMessageBuilder // ignore: cast_nullable_to_non_nullable
+                    as TextMessageBuilder?,
+        imageMessageBuilder:
+            freezed == imageMessageBuilder
+                ? _value.imageMessageBuilder
+                : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
+                    as ImageMessageBuilder?,
+        customMessageBuilder:
+            freezed == customMessageBuilder
+                ? _value.customMessageBuilder
+                : customMessageBuilder // ignore: cast_nullable_to_non_nullable
+                    as CustomMessageBuilder?,
+        unsupportedMessageBuilder:
+            freezed == unsupportedMessageBuilder
+                ? _value.unsupportedMessageBuilder
+                : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
+                    as UnsupportedMessageBuilder?,
+        inputBuilder:
+            freezed == inputBuilder
+                ? _value.inputBuilder
+                : inputBuilder // ignore: cast_nullable_to_non_nullable
+                    as InputBuilder?,
+        chatMessageBuilder:
+            freezed == chatMessageBuilder
+                ? _value.chatMessageBuilder
+                : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
+                    as ChatMessageBuilder?,
+        chatAnimatedListBuilder:
+            freezed == chatAnimatedListBuilder
+                ? _value.chatAnimatedListBuilder
+                : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
+                    as ChatAnimatedListBuilder?,
+        scrollToBottomBuilder:
+            freezed == scrollToBottomBuilder
+                ? _value.scrollToBottomBuilder
+                : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
+                    as ScrollToBottomBuilder?,
+        loadMoreBuilder:
+            freezed == loadMoreBuilder
+                ? _value.loadMoreBuilder
+                : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
+                    as LoadMoreBuilder?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$BuildersImpl extends _Builders {
-  const _$BuildersImpl(
-      {this.textMessageBuilder,
-      this.imageMessageBuilder,
-      this.customMessageBuilder,
-      this.unsupportedMessageBuilder,
-      this.inputBuilder,
-      this.chatMessageBuilder,
-      this.chatAnimatedListBuilder,
-      this.scrollToBottomBuilder,
-      this.loadMoreBuilder})
-      : super._();
+  const _$BuildersImpl({
+    this.textMessageBuilder,
+    this.imageMessageBuilder,
+    this.customMessageBuilder,
+    this.unsupportedMessageBuilder,
+    this.inputBuilder,
+    this.chatMessageBuilder,
+    this.chatAnimatedListBuilder,
+    this.scrollToBottomBuilder,
+    this.loadMoreBuilder,
+  }) : super._();
 
   @override
   final TextMessageBuilder? textMessageBuilder;
@@ -257,15 +285,19 @@ class _$BuildersImpl extends _Builders {
                 other.imageMessageBuilder == imageMessageBuilder) &&
             (identical(other.customMessageBuilder, customMessageBuilder) ||
                 other.customMessageBuilder == customMessageBuilder) &&
-            (identical(other.unsupportedMessageBuilder,
-                    unsupportedMessageBuilder) ||
+            (identical(
+                  other.unsupportedMessageBuilder,
+                  unsupportedMessageBuilder,
+                ) ||
                 other.unsupportedMessageBuilder == unsupportedMessageBuilder) &&
             (identical(other.inputBuilder, inputBuilder) ||
                 other.inputBuilder == inputBuilder) &&
             (identical(other.chatMessageBuilder, chatMessageBuilder) ||
                 other.chatMessageBuilder == chatMessageBuilder) &&
             (identical(
-                    other.chatAnimatedListBuilder, chatAnimatedListBuilder) ||
+                  other.chatAnimatedListBuilder,
+                  chatAnimatedListBuilder,
+                ) ||
                 other.chatAnimatedListBuilder == chatAnimatedListBuilder) &&
             (identical(other.scrollToBottomBuilder, scrollToBottomBuilder) ||
                 other.scrollToBottomBuilder == scrollToBottomBuilder) &&
@@ -275,16 +307,17 @@ class _$BuildersImpl extends _Builders {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      textMessageBuilder,
-      imageMessageBuilder,
-      customMessageBuilder,
-      unsupportedMessageBuilder,
-      inputBuilder,
-      chatMessageBuilder,
-      chatAnimatedListBuilder,
-      scrollToBottomBuilder,
-      loadMoreBuilder);
+    runtimeType,
+    textMessageBuilder,
+    imageMessageBuilder,
+    customMessageBuilder,
+    unsupportedMessageBuilder,
+    inputBuilder,
+    chatMessageBuilder,
+    chatAnimatedListBuilder,
+    scrollToBottomBuilder,
+    loadMoreBuilder,
+  );
 
   /// Create a copy of Builders
   /// with the given fields replaced by the non-null parameter values.
@@ -296,16 +329,17 @@ class _$BuildersImpl extends _Builders {
 }
 
 abstract class _Builders extends Builders {
-  const factory _Builders(
-      {final TextMessageBuilder? textMessageBuilder,
-      final ImageMessageBuilder? imageMessageBuilder,
-      final CustomMessageBuilder? customMessageBuilder,
-      final UnsupportedMessageBuilder? unsupportedMessageBuilder,
-      final InputBuilder? inputBuilder,
-      final ChatMessageBuilder? chatMessageBuilder,
-      final ChatAnimatedListBuilder? chatAnimatedListBuilder,
-      final ScrollToBottomBuilder? scrollToBottomBuilder,
-      final LoadMoreBuilder? loadMoreBuilder}) = _$BuildersImpl;
+  const factory _Builders({
+    final TextMessageBuilder? textMessageBuilder,
+    final ImageMessageBuilder? imageMessageBuilder,
+    final CustomMessageBuilder? customMessageBuilder,
+    final UnsupportedMessageBuilder? unsupportedMessageBuilder,
+    final InputBuilder? inputBuilder,
+    final ChatMessageBuilder? chatMessageBuilder,
+    final ChatAnimatedListBuilder? chatAnimatedListBuilder,
+    final ScrollToBottomBuilder? scrollToBottomBuilder,
+    final LoadMoreBuilder? loadMoreBuilder,
+  }) = _$BuildersImpl;
   const _Builders._() : super._();
 
   @override

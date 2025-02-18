@@ -29,10 +29,7 @@ class _IsTypingIndicatorState extends State<IsTypingIndicator>
     super.initState();
     _controllers = List.generate(
       3,
-      (index) => AnimationController(
-        vsync: this,
-        duration: widget.duration,
-      ),
+      (index) => AnimationController(vsync: this, duration: widget.duration),
     );
 
     _controllers[0].forward();
@@ -109,9 +106,7 @@ class _IsTypingIndicatorState extends State<IsTypingIndicator>
     if (widget.color != null) return widget.color;
 
     try {
-      return context.select(
-        (ChatTheme theme) => theme.colors.onSurface,
-      );
+      return context.select((ChatTheme theme) => theme.colors.onSurface);
     } catch (_) {
       return null;
     }

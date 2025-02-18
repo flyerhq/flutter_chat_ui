@@ -14,19 +14,10 @@ _$LinkPreviewImpl _$$LinkPreviewImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
     );
 
-Map<String, dynamic> _$$LinkPreviewImplToJson(_$LinkPreviewImpl instance) {
-  final val = <String, dynamic>{
-    'link': instance.link,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('description', instance.description);
-  writeNotNull('imageUrl', instance.imageUrl);
-  writeNotNull('title', instance.title);
-  return val;
-}
+Map<String, dynamic> _$$LinkPreviewImplToJson(_$LinkPreviewImpl instance) =>
+    <String, dynamic>{
+      'link': instance.link,
+      if (instance.description case final value?) 'description': value,
+      if (instance.imageUrl case final value?) 'imageUrl': value,
+      if (instance.title case final value?) 'title': value,
+    };

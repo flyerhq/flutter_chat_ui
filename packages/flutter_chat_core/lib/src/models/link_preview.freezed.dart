@@ -12,7 +12,8 @@ part of 'link_preview.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 LinkPreview _$LinkPreviewFromJson(Map<String, dynamic> json) {
   return _LinkPreview.fromJson(json);
@@ -38,11 +39,16 @@ mixin _$LinkPreview {
 /// @nodoc
 abstract class $LinkPreviewCopyWith<$Res> {
   factory $LinkPreviewCopyWith(
-          LinkPreview value, $Res Function(LinkPreview) then) =
-      _$LinkPreviewCopyWithImpl<$Res, LinkPreview>;
+    LinkPreview value,
+    $Res Function(LinkPreview) then,
+  ) = _$LinkPreviewCopyWithImpl<$Res, LinkPreview>;
   @useResult
-  $Res call(
-      {String link, String? description, String? imageUrl, String? title});
+  $Res call({
+    String link,
+    String? description,
+    String? imageUrl,
+    String? title,
+  });
 }
 
 /// @nodoc
@@ -65,24 +71,31 @@ class _$LinkPreviewCopyWithImpl<$Res, $Val extends LinkPreview>
     Object? imageUrl = freezed,
     Object? title = freezed,
   }) {
-    return _then(_value.copyWith(
-      link: null == link
-          ? _value.link
-          : link // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            link:
+                null == link
+                    ? _value.link
+                    : link // ignore: cast_nullable_to_non_nullable
+                        as String,
+            description:
+                freezed == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            imageUrl:
+                freezed == imageUrl
+                    ? _value.imageUrl
+                    : imageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            title:
+                freezed == title
+                    ? _value.title
+                    : title // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -90,12 +103,17 @@ class _$LinkPreviewCopyWithImpl<$Res, $Val extends LinkPreview>
 abstract class _$$LinkPreviewImplCopyWith<$Res>
     implements $LinkPreviewCopyWith<$Res> {
   factory _$$LinkPreviewImplCopyWith(
-          _$LinkPreviewImpl value, $Res Function(_$LinkPreviewImpl) then) =
-      __$$LinkPreviewImplCopyWithImpl<$Res>;
+    _$LinkPreviewImpl value,
+    $Res Function(_$LinkPreviewImpl) then,
+  ) = __$$LinkPreviewImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String link, String? description, String? imageUrl, String? title});
+  $Res call({
+    String link,
+    String? description,
+    String? imageUrl,
+    String? title,
+  });
 }
 
 /// @nodoc
@@ -103,8 +121,9 @@ class __$$LinkPreviewImplCopyWithImpl<$Res>
     extends _$LinkPreviewCopyWithImpl<$Res, _$LinkPreviewImpl>
     implements _$$LinkPreviewImplCopyWith<$Res> {
   __$$LinkPreviewImplCopyWithImpl(
-      _$LinkPreviewImpl _value, $Res Function(_$LinkPreviewImpl) _then)
-      : super(_value, _then);
+    _$LinkPreviewImpl _value,
+    $Res Function(_$LinkPreviewImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of LinkPreview
   /// with the given fields replaced by the non-null parameter values.
@@ -116,32 +135,42 @@ class __$$LinkPreviewImplCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? title = freezed,
   }) {
-    return _then(_$LinkPreviewImpl(
-      link: null == link
-          ? _value.link
-          : link // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$LinkPreviewImpl(
+        link:
+            null == link
+                ? _value.link
+                : link // ignore: cast_nullable_to_non_nullable
+                    as String,
+        description:
+            freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        imageUrl:
+            freezed == imageUrl
+                ? _value.imageUrl
+                : imageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        title:
+            freezed == title
+                ? _value.title
+                : title // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$LinkPreviewImpl implements _LinkPreview {
-  const _$LinkPreviewImpl(
-      {required this.link, this.description, this.imageUrl, this.title});
+  const _$LinkPreviewImpl({
+    required this.link,
+    this.description,
+    this.imageUrl,
+    this.title,
+  });
 
   factory _$LinkPreviewImpl.fromJson(Map<String, dynamic> json) =>
       _$$LinkPreviewImplFromJson(json);
@@ -188,18 +217,17 @@ class _$LinkPreviewImpl implements _LinkPreview {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$LinkPreviewImplToJson(
-      this,
-    );
+    return _$$LinkPreviewImplToJson(this);
   }
 }
 
 abstract class _LinkPreview implements LinkPreview {
-  const factory _LinkPreview(
-      {required final String link,
-      final String? description,
-      final String? imageUrl,
-      final String? title}) = _$LinkPreviewImpl;
+  const factory _LinkPreview({
+    required final String link,
+    final String? description,
+    final String? imageUrl,
+    final String? title,
+  }) = _$LinkPreviewImpl;
 
   factory _LinkPreview.fromJson(Map<String, dynamic> json) =
       _$LinkPreviewImpl.fromJson;

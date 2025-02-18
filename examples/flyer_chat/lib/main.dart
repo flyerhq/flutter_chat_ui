@@ -85,14 +85,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
               const SizedBox(height: 8),
               SegmentedButton<String>(
                 segments: const <ButtonSegment<String>>[
-                  ButtonSegment<String>(
-                    value: 'john',
-                    label: Text('John'),
-                  ),
-                  ButtonSegment<String>(
-                    value: 'jane',
-                    label: Text('Jane'),
-                  ),
+                  ButtonSegment<String>(value: 'john', label: Text('John')),
+                  ButtonSegment<String>(value: 'jane', label: Text('Jane')),
                 ],
                 selected: <String>{_currentUserId},
                 onSelectionChanged: (Set<String> newSender) {
@@ -215,18 +209,13 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 width: 200,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: Colors.grey, thickness: 1),
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Local(dio: _dio),
-                    ),
+                    MaterialPageRoute(builder: (context) => Local(dio: _dio)),
                   );
                 },
                 child: const Text('local'),
@@ -235,10 +224,7 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 width: 200,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: Colors.grey, thickness: 1),
                 ),
               ),
               SizedBox(
@@ -278,19 +264,14 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 width: 200,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: Colors.grey, thickness: 1),
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Pagination(),
-                    ),
-                  );
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => Pagination()));
                 },
                 child: const Text('pagination'),
               ),

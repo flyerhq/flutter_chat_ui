@@ -22,10 +22,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     super.key,
     required this.message,
     required this.index,
-    this.padding = const EdgeInsets.symmetric(
-      horizontal: 16,
-      vertical: 10,
-    ),
+    this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     this.borderRadius = _sentinelBorderRadius,
     this.onlyEmojiFontSize = 48,
     this.sentBackgroundColor = _sentinelColor,

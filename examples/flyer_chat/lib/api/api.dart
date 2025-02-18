@@ -42,10 +42,7 @@ class ApiState extends State<Api> {
   final _crossCache = CrossCache();
   final _uuid = const Uuid();
 
-  final users = const {
-    'john': User(id: 'john'),
-    'jane': User(id: 'jane'),
-  };
+  final users = const {'john': User(id: 'john'), 'jane': User(id: 'jane')};
 
   late final ApiService _apiService;
   late final ChatWebSocketService _webSocketService;
@@ -84,9 +81,7 @@ class ApiState extends State<Api> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Api'),
-      ),
+      appBar: AppBar(title: const Text('Api')),
       body: Stack(
         children: [
           Chat(
@@ -143,28 +138,26 @@ class ApiState extends State<Api> {
   }
 
   void _connectToWs() {
-    _webSocketSubscription = _webSocketService.connect().listen(
-      (event) {
-        if (!mounted) return;
+    _webSocketSubscription = _webSocketService.connect().listen((event) {
+      if (!mounted) return;
 
-        switch (event.type) {
-          case WebSocketEventType.newMessage:
-            _chatController.insert(event.message!);
-            break;
-          case WebSocketEventType.deleteMessage:
-            _chatController.remove(event.message!);
-            break;
-          case WebSocketEventType.flush:
-            _chatController.set([]);
-            break;
-          case WebSocketEventType.error:
-            _showInfo('Error: ${event.error}');
-            break;
-          case WebSocketEventType.unknown:
-            break;
-        }
-      },
-    );
+      switch (event.type) {
+        case WebSocketEventType.newMessage:
+          _chatController.insert(event.message!);
+          break;
+        case WebSocketEventType.deleteMessage:
+          _chatController.remove(event.message!);
+          break;
+        case WebSocketEventType.flush:
+          _chatController.set([]);
+          break;
+        case WebSocketEventType.error:
+          _showInfo('Error: ${event.error}');
+          break;
+        case WebSocketEventType.unknown:
+          break;
+      }
+    });
   }
 
   void _addItem(String? text) async {

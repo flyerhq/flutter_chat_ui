@@ -12,7 +12,8 @@ part of 'chat_theme.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$ChatTheme {
@@ -32,10 +33,11 @@ abstract class $ChatThemeCopyWith<$Res> {
   factory $ChatThemeCopyWith(ChatTheme value, $Res Function(ChatTheme) then) =
       _$ChatThemeCopyWithImpl<$Res, ChatTheme>;
   @useResult
-  $Res call(
-      {ChatColors colors,
-      ChatTypography typography,
-      BorderRadiusGeometry shape});
+  $Res call({
+    ChatColors colors,
+    ChatTypography typography,
+    BorderRadiusGeometry shape,
+  });
 
   $ChatColorsCopyWith<$Res> get colors;
   $ChatTypographyCopyWith<$Res> get typography;
@@ -60,20 +62,26 @@ class _$ChatThemeCopyWithImpl<$Res, $Val extends ChatTheme>
     Object? typography = null,
     Object? shape = null,
   }) {
-    return _then(_value.copyWith(
-      colors: null == colors
-          ? _value.colors
-          : colors // ignore: cast_nullable_to_non_nullable
-              as ChatColors,
-      typography: null == typography
-          ? _value.typography
-          : typography // ignore: cast_nullable_to_non_nullable
-              as ChatTypography,
-      shape: null == shape
-          ? _value.shape
-          : shape // ignore: cast_nullable_to_non_nullable
-              as BorderRadiusGeometry,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            colors:
+                null == colors
+                    ? _value.colors
+                    : colors // ignore: cast_nullable_to_non_nullable
+                        as ChatColors,
+            typography:
+                null == typography
+                    ? _value.typography
+                    : typography // ignore: cast_nullable_to_non_nullable
+                        as ChatTypography,
+            shape:
+                null == shape
+                    ? _value.shape
+                    : shape // ignore: cast_nullable_to_non_nullable
+                        as BorderRadiusGeometry,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of ChatTheme
@@ -101,14 +109,16 @@ class _$ChatThemeCopyWithImpl<$Res, $Val extends ChatTheme>
 abstract class _$$ChatThemeImplCopyWith<$Res>
     implements $ChatThemeCopyWith<$Res> {
   factory _$$ChatThemeImplCopyWith(
-          _$ChatThemeImpl value, $Res Function(_$ChatThemeImpl) then) =
-      __$$ChatThemeImplCopyWithImpl<$Res>;
+    _$ChatThemeImpl value,
+    $Res Function(_$ChatThemeImpl) then,
+  ) = __$$ChatThemeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {ChatColors colors,
-      ChatTypography typography,
-      BorderRadiusGeometry shape});
+  $Res call({
+    ChatColors colors,
+    ChatTypography typography,
+    BorderRadiusGeometry shape,
+  });
 
   @override
   $ChatColorsCopyWith<$Res> get colors;
@@ -121,8 +131,9 @@ class __$$ChatThemeImplCopyWithImpl<$Res>
     extends _$ChatThemeCopyWithImpl<$Res, _$ChatThemeImpl>
     implements _$$ChatThemeImplCopyWith<$Res> {
   __$$ChatThemeImplCopyWithImpl(
-      _$ChatThemeImpl _value, $Res Function(_$ChatThemeImpl) _then)
-      : super(_value, _then);
+    _$ChatThemeImpl _value,
+    $Res Function(_$ChatThemeImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of ChatTheme
   /// with the given fields replaced by the non-null parameter values.
@@ -133,29 +144,36 @@ class __$$ChatThemeImplCopyWithImpl<$Res>
     Object? typography = null,
     Object? shape = null,
   }) {
-    return _then(_$ChatThemeImpl(
-      colors: null == colors
-          ? _value.colors
-          : colors // ignore: cast_nullable_to_non_nullable
-              as ChatColors,
-      typography: null == typography
-          ? _value.typography
-          : typography // ignore: cast_nullable_to_non_nullable
-              as ChatTypography,
-      shape: null == shape
-          ? _value.shape
-          : shape // ignore: cast_nullable_to_non_nullable
-              as BorderRadiusGeometry,
-    ));
+    return _then(
+      _$ChatThemeImpl(
+        colors:
+            null == colors
+                ? _value.colors
+                : colors // ignore: cast_nullable_to_non_nullable
+                    as ChatColors,
+        typography:
+            null == typography
+                ? _value.typography
+                : typography // ignore: cast_nullable_to_non_nullable
+                    as ChatTypography,
+        shape:
+            null == shape
+                ? _value.shape
+                : shape // ignore: cast_nullable_to_non_nullable
+                    as BorderRadiusGeometry,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$ChatThemeImpl extends _ChatTheme {
-  const _$ChatThemeImpl(
-      {required this.colors, required this.typography, required this.shape})
-      : super._();
+  const _$ChatThemeImpl({
+    required this.colors,
+    required this.typography,
+    required this.shape,
+  }) : super._();
 
   @override
   final ChatColors colors;
@@ -193,10 +211,11 @@ class _$ChatThemeImpl extends _ChatTheme {
 }
 
 abstract class _ChatTheme extends ChatTheme {
-  const factory _ChatTheme(
-      {required final ChatColors colors,
-      required final ChatTypography typography,
-      required final BorderRadiusGeometry shape}) = _$ChatThemeImpl;
+  const factory _ChatTheme({
+    required final ChatColors colors,
+    required final ChatTypography typography,
+    required final BorderRadiusGeometry shape,
+  }) = _$ChatThemeImpl;
   const _ChatTheme._() : super._();
 
   @override
@@ -234,17 +253,19 @@ mixin _$ChatColors {
 /// @nodoc
 abstract class $ChatColorsCopyWith<$Res> {
   factory $ChatColorsCopyWith(
-          ChatColors value, $Res Function(ChatColors) then) =
-      _$ChatColorsCopyWithImpl<$Res, ChatColors>;
+    ChatColors value,
+    $Res Function(ChatColors) then,
+  ) = _$ChatColorsCopyWithImpl<$Res, ChatColors>;
   @useResult
-  $Res call(
-      {Color primary,
-      Color onPrimary,
-      Color surface,
-      Color onSurface,
-      Color surfaceContainer,
-      Color surfaceContainerLow,
-      Color surfaceContainerHigh});
+  $Res call({
+    Color primary,
+    Color onPrimary,
+    Color surface,
+    Color onSurface,
+    Color surfaceContainer,
+    Color surfaceContainerLow,
+    Color surfaceContainerHigh,
+  });
 }
 
 /// @nodoc
@@ -270,36 +291,46 @@ class _$ChatColorsCopyWithImpl<$Res, $Val extends ChatColors>
     Object? surfaceContainerLow = null,
     Object? surfaceContainerHigh = null,
   }) {
-    return _then(_value.copyWith(
-      primary: null == primary
-          ? _value.primary
-          : primary // ignore: cast_nullable_to_non_nullable
-              as Color,
-      onPrimary: null == onPrimary
-          ? _value.onPrimary
-          : onPrimary // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surface: null == surface
-          ? _value.surface
-          : surface // ignore: cast_nullable_to_non_nullable
-              as Color,
-      onSurface: null == onSurface
-          ? _value.onSurface
-          : onSurface // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surfaceContainer: null == surfaceContainer
-          ? _value.surfaceContainer
-          : surfaceContainer // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surfaceContainerLow: null == surfaceContainerLow
-          ? _value.surfaceContainerLow
-          : surfaceContainerLow // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surfaceContainerHigh: null == surfaceContainerHigh
-          ? _value.surfaceContainerHigh
-          : surfaceContainerHigh // ignore: cast_nullable_to_non_nullable
-              as Color,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            primary:
+                null == primary
+                    ? _value.primary
+                    : primary // ignore: cast_nullable_to_non_nullable
+                        as Color,
+            onPrimary:
+                null == onPrimary
+                    ? _value.onPrimary
+                    : onPrimary // ignore: cast_nullable_to_non_nullable
+                        as Color,
+            surface:
+                null == surface
+                    ? _value.surface
+                    : surface // ignore: cast_nullable_to_non_nullable
+                        as Color,
+            onSurface:
+                null == onSurface
+                    ? _value.onSurface
+                    : onSurface // ignore: cast_nullable_to_non_nullable
+                        as Color,
+            surfaceContainer:
+                null == surfaceContainer
+                    ? _value.surfaceContainer
+                    : surfaceContainer // ignore: cast_nullable_to_non_nullable
+                        as Color,
+            surfaceContainerLow:
+                null == surfaceContainerLow
+                    ? _value.surfaceContainerLow
+                    : surfaceContainerLow // ignore: cast_nullable_to_non_nullable
+                        as Color,
+            surfaceContainerHigh:
+                null == surfaceContainerHigh
+                    ? _value.surfaceContainerHigh
+                    : surfaceContainerHigh // ignore: cast_nullable_to_non_nullable
+                        as Color,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -307,18 +338,20 @@ class _$ChatColorsCopyWithImpl<$Res, $Val extends ChatColors>
 abstract class _$$ChatColorsImplCopyWith<$Res>
     implements $ChatColorsCopyWith<$Res> {
   factory _$$ChatColorsImplCopyWith(
-          _$ChatColorsImpl value, $Res Function(_$ChatColorsImpl) then) =
-      __$$ChatColorsImplCopyWithImpl<$Res>;
+    _$ChatColorsImpl value,
+    $Res Function(_$ChatColorsImpl) then,
+  ) = __$$ChatColorsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {Color primary,
-      Color onPrimary,
-      Color surface,
-      Color onSurface,
-      Color surfaceContainer,
-      Color surfaceContainerLow,
-      Color surfaceContainerHigh});
+  $Res call({
+    Color primary,
+    Color onPrimary,
+    Color surface,
+    Color onSurface,
+    Color surfaceContainer,
+    Color surfaceContainerLow,
+    Color surfaceContainerHigh,
+  });
 }
 
 /// @nodoc
@@ -326,8 +359,9 @@ class __$$ChatColorsImplCopyWithImpl<$Res>
     extends _$ChatColorsCopyWithImpl<$Res, _$ChatColorsImpl>
     implements _$$ChatColorsImplCopyWith<$Res> {
   __$$ChatColorsImplCopyWithImpl(
-      _$ChatColorsImpl _value, $Res Function(_$ChatColorsImpl) _then)
-      : super(_value, _then);
+    _$ChatColorsImpl _value,
+    $Res Function(_$ChatColorsImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of ChatColors
   /// with the given fields replaced by the non-null parameter values.
@@ -342,51 +376,60 @@ class __$$ChatColorsImplCopyWithImpl<$Res>
     Object? surfaceContainerLow = null,
     Object? surfaceContainerHigh = null,
   }) {
-    return _then(_$ChatColorsImpl(
-      primary: null == primary
-          ? _value.primary
-          : primary // ignore: cast_nullable_to_non_nullable
-              as Color,
-      onPrimary: null == onPrimary
-          ? _value.onPrimary
-          : onPrimary // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surface: null == surface
-          ? _value.surface
-          : surface // ignore: cast_nullable_to_non_nullable
-              as Color,
-      onSurface: null == onSurface
-          ? _value.onSurface
-          : onSurface // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surfaceContainer: null == surfaceContainer
-          ? _value.surfaceContainer
-          : surfaceContainer // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surfaceContainerLow: null == surfaceContainerLow
-          ? _value.surfaceContainerLow
-          : surfaceContainerLow // ignore: cast_nullable_to_non_nullable
-              as Color,
-      surfaceContainerHigh: null == surfaceContainerHigh
-          ? _value.surfaceContainerHigh
-          : surfaceContainerHigh // ignore: cast_nullable_to_non_nullable
-              as Color,
-    ));
+    return _then(
+      _$ChatColorsImpl(
+        primary:
+            null == primary
+                ? _value.primary
+                : primary // ignore: cast_nullable_to_non_nullable
+                    as Color,
+        onPrimary:
+            null == onPrimary
+                ? _value.onPrimary
+                : onPrimary // ignore: cast_nullable_to_non_nullable
+                    as Color,
+        surface:
+            null == surface
+                ? _value.surface
+                : surface // ignore: cast_nullable_to_non_nullable
+                    as Color,
+        onSurface:
+            null == onSurface
+                ? _value.onSurface
+                : onSurface // ignore: cast_nullable_to_non_nullable
+                    as Color,
+        surfaceContainer:
+            null == surfaceContainer
+                ? _value.surfaceContainer
+                : surfaceContainer // ignore: cast_nullable_to_non_nullable
+                    as Color,
+        surfaceContainerLow:
+            null == surfaceContainerLow
+                ? _value.surfaceContainerLow
+                : surfaceContainerLow // ignore: cast_nullable_to_non_nullable
+                    as Color,
+        surfaceContainerHigh:
+            null == surfaceContainerHigh
+                ? _value.surfaceContainerHigh
+                : surfaceContainerHigh // ignore: cast_nullable_to_non_nullable
+                    as Color,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$ChatColorsImpl extends _ChatColors {
-  const _$ChatColorsImpl(
-      {required this.primary,
-      required this.onPrimary,
-      required this.surface,
-      required this.onSurface,
-      required this.surfaceContainer,
-      required this.surfaceContainerLow,
-      required this.surfaceContainerHigh})
-      : super._();
+  const _$ChatColorsImpl({
+    required this.primary,
+    required this.onPrimary,
+    required this.surface,
+    required this.onSurface,
+    required this.surfaceContainer,
+    required this.surfaceContainerLow,
+    required this.surfaceContainerHigh,
+  }) : super._();
 
   @override
   final Color primary;
@@ -428,8 +471,16 @@ class _$ChatColorsImpl extends _ChatColors {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, primary, onPrimary, surface,
-      onSurface, surfaceContainer, surfaceContainerLow, surfaceContainerHigh);
+  int get hashCode => Object.hash(
+    runtimeType,
+    primary,
+    onPrimary,
+    surface,
+    onSurface,
+    surfaceContainer,
+    surfaceContainerLow,
+    surfaceContainerHigh,
+  );
 
   /// Create a copy of ChatColors
   /// with the given fields replaced by the non-null parameter values.
@@ -441,14 +492,15 @@ class _$ChatColorsImpl extends _ChatColors {
 }
 
 abstract class _ChatColors extends ChatColors {
-  const factory _ChatColors(
-      {required final Color primary,
-      required final Color onPrimary,
-      required final Color surface,
-      required final Color onSurface,
-      required final Color surfaceContainer,
-      required final Color surfaceContainerLow,
-      required final Color surfaceContainerHigh}) = _$ChatColorsImpl;
+  const factory _ChatColors({
+    required final Color primary,
+    required final Color onPrimary,
+    required final Color surface,
+    required final Color onSurface,
+    required final Color surfaceContainer,
+    required final Color surfaceContainerLow,
+    required final Color surfaceContainerHigh,
+  }) = _$ChatColorsImpl;
   const _ChatColors._() : super._();
 
   @override
@@ -493,16 +545,18 @@ mixin _$ChatTypography {
 /// @nodoc
 abstract class $ChatTypographyCopyWith<$Res> {
   factory $ChatTypographyCopyWith(
-          ChatTypography value, $Res Function(ChatTypography) then) =
-      _$ChatTypographyCopyWithImpl<$Res, ChatTypography>;
+    ChatTypography value,
+    $Res Function(ChatTypography) then,
+  ) = _$ChatTypographyCopyWithImpl<$Res, ChatTypography>;
   @useResult
-  $Res call(
-      {TextStyle bodyLarge,
-      TextStyle bodyMedium,
-      TextStyle bodySmall,
-      TextStyle labelLarge,
-      TextStyle labelMedium,
-      TextStyle labelSmall});
+  $Res call({
+    TextStyle bodyLarge,
+    TextStyle bodyMedium,
+    TextStyle bodySmall,
+    TextStyle labelLarge,
+    TextStyle labelMedium,
+    TextStyle labelSmall,
+  });
 }
 
 /// @nodoc
@@ -527,50 +581,61 @@ class _$ChatTypographyCopyWithImpl<$Res, $Val extends ChatTypography>
     Object? labelMedium = null,
     Object? labelSmall = null,
   }) {
-    return _then(_value.copyWith(
-      bodyLarge: null == bodyLarge
-          ? _value.bodyLarge
-          : bodyLarge // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      bodyMedium: null == bodyMedium
-          ? _value.bodyMedium
-          : bodyMedium // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      bodySmall: null == bodySmall
-          ? _value.bodySmall
-          : bodySmall // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      labelLarge: null == labelLarge
-          ? _value.labelLarge
-          : labelLarge // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      labelMedium: null == labelMedium
-          ? _value.labelMedium
-          : labelMedium // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      labelSmall: null == labelSmall
-          ? _value.labelSmall
-          : labelSmall // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            bodyLarge:
+                null == bodyLarge
+                    ? _value.bodyLarge
+                    : bodyLarge // ignore: cast_nullable_to_non_nullable
+                        as TextStyle,
+            bodyMedium:
+                null == bodyMedium
+                    ? _value.bodyMedium
+                    : bodyMedium // ignore: cast_nullable_to_non_nullable
+                        as TextStyle,
+            bodySmall:
+                null == bodySmall
+                    ? _value.bodySmall
+                    : bodySmall // ignore: cast_nullable_to_non_nullable
+                        as TextStyle,
+            labelLarge:
+                null == labelLarge
+                    ? _value.labelLarge
+                    : labelLarge // ignore: cast_nullable_to_non_nullable
+                        as TextStyle,
+            labelMedium:
+                null == labelMedium
+                    ? _value.labelMedium
+                    : labelMedium // ignore: cast_nullable_to_non_nullable
+                        as TextStyle,
+            labelSmall:
+                null == labelSmall
+                    ? _value.labelSmall
+                    : labelSmall // ignore: cast_nullable_to_non_nullable
+                        as TextStyle,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$ChatTypographyImplCopyWith<$Res>
     implements $ChatTypographyCopyWith<$Res> {
-  factory _$$ChatTypographyImplCopyWith(_$ChatTypographyImpl value,
-          $Res Function(_$ChatTypographyImpl) then) =
-      __$$ChatTypographyImplCopyWithImpl<$Res>;
+  factory _$$ChatTypographyImplCopyWith(
+    _$ChatTypographyImpl value,
+    $Res Function(_$ChatTypographyImpl) then,
+  ) = __$$ChatTypographyImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {TextStyle bodyLarge,
-      TextStyle bodyMedium,
-      TextStyle bodySmall,
-      TextStyle labelLarge,
-      TextStyle labelMedium,
-      TextStyle labelSmall});
+  $Res call({
+    TextStyle bodyLarge,
+    TextStyle bodyMedium,
+    TextStyle bodySmall,
+    TextStyle labelLarge,
+    TextStyle labelMedium,
+    TextStyle labelSmall,
+  });
 }
 
 /// @nodoc
@@ -578,8 +643,9 @@ class __$$ChatTypographyImplCopyWithImpl<$Res>
     extends _$ChatTypographyCopyWithImpl<$Res, _$ChatTypographyImpl>
     implements _$$ChatTypographyImplCopyWith<$Res> {
   __$$ChatTypographyImplCopyWithImpl(
-      _$ChatTypographyImpl _value, $Res Function(_$ChatTypographyImpl) _then)
-      : super(_value, _then);
+    _$ChatTypographyImpl _value,
+    $Res Function(_$ChatTypographyImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of ChatTypography
   /// with the given fields replaced by the non-null parameter values.
@@ -593,46 +659,54 @@ class __$$ChatTypographyImplCopyWithImpl<$Res>
     Object? labelMedium = null,
     Object? labelSmall = null,
   }) {
-    return _then(_$ChatTypographyImpl(
-      bodyLarge: null == bodyLarge
-          ? _value.bodyLarge
-          : bodyLarge // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      bodyMedium: null == bodyMedium
-          ? _value.bodyMedium
-          : bodyMedium // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      bodySmall: null == bodySmall
-          ? _value.bodySmall
-          : bodySmall // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      labelLarge: null == labelLarge
-          ? _value.labelLarge
-          : labelLarge // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      labelMedium: null == labelMedium
-          ? _value.labelMedium
-          : labelMedium // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-      labelSmall: null == labelSmall
-          ? _value.labelSmall
-          : labelSmall // ignore: cast_nullable_to_non_nullable
-              as TextStyle,
-    ));
+    return _then(
+      _$ChatTypographyImpl(
+        bodyLarge:
+            null == bodyLarge
+                ? _value.bodyLarge
+                : bodyLarge // ignore: cast_nullable_to_non_nullable
+                    as TextStyle,
+        bodyMedium:
+            null == bodyMedium
+                ? _value.bodyMedium
+                : bodyMedium // ignore: cast_nullable_to_non_nullable
+                    as TextStyle,
+        bodySmall:
+            null == bodySmall
+                ? _value.bodySmall
+                : bodySmall // ignore: cast_nullable_to_non_nullable
+                    as TextStyle,
+        labelLarge:
+            null == labelLarge
+                ? _value.labelLarge
+                : labelLarge // ignore: cast_nullable_to_non_nullable
+                    as TextStyle,
+        labelMedium:
+            null == labelMedium
+                ? _value.labelMedium
+                : labelMedium // ignore: cast_nullable_to_non_nullable
+                    as TextStyle,
+        labelSmall:
+            null == labelSmall
+                ? _value.labelSmall
+                : labelSmall // ignore: cast_nullable_to_non_nullable
+                    as TextStyle,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$ChatTypographyImpl extends _ChatTypography {
-  const _$ChatTypographyImpl(
-      {required this.bodyLarge,
-      required this.bodyMedium,
-      required this.bodySmall,
-      required this.labelLarge,
-      required this.labelMedium,
-      required this.labelSmall})
-      : super._();
+  const _$ChatTypographyImpl({
+    required this.bodyLarge,
+    required this.bodyMedium,
+    required this.bodySmall,
+    required this.labelLarge,
+    required this.labelMedium,
+    required this.labelSmall,
+  }) : super._();
 
   @override
   final TextStyle bodyLarge;
@@ -672,8 +746,15 @@ class _$ChatTypographyImpl extends _ChatTypography {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, bodyLarge, bodyMedium, bodySmall,
-      labelLarge, labelMedium, labelSmall);
+  int get hashCode => Object.hash(
+    runtimeType,
+    bodyLarge,
+    bodyMedium,
+    bodySmall,
+    labelLarge,
+    labelMedium,
+    labelSmall,
+  );
 
   /// Create a copy of ChatTypography
   /// with the given fields replaced by the non-null parameter values.
@@ -682,17 +763,20 @@ class _$ChatTypographyImpl extends _ChatTypography {
   @pragma('vm:prefer-inline')
   _$$ChatTypographyImplCopyWith<_$ChatTypographyImpl> get copyWith =>
       __$$ChatTypographyImplCopyWithImpl<_$ChatTypographyImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _ChatTypography extends ChatTypography {
-  const factory _ChatTypography(
-      {required final TextStyle bodyLarge,
-      required final TextStyle bodyMedium,
-      required final TextStyle bodySmall,
-      required final TextStyle labelLarge,
-      required final TextStyle labelMedium,
-      required final TextStyle labelSmall}) = _$ChatTypographyImpl;
+  const factory _ChatTypography({
+    required final TextStyle bodyLarge,
+    required final TextStyle bodyMedium,
+    required final TextStyle bodySmall,
+    required final TextStyle labelLarge,
+    required final TextStyle labelMedium,
+    required final TextStyle labelSmall,
+  }) = _$ChatTypographyImpl;
   const _ChatTypography._() : super._();
 
   @override

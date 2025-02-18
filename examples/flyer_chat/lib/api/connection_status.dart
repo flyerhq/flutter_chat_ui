@@ -7,10 +7,7 @@ import 'websocket_service.dart';
 class ConnectionStatus extends StatefulWidget {
   final ChatWebSocketService webSocketService;
 
-  const ConnectionStatus({
-    super.key,
-    required this.webSocketService,
-  });
+  const ConnectionStatus({super.key, required this.webSocketService});
 
   @override
   State<ConnectionStatus> createState() => _ConnectionStatusState();

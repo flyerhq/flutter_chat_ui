@@ -69,9 +69,7 @@ class GeminiState extends State<Gemini> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gemini'),
-      ),
+      appBar: AppBar(title: const Text('Gemini')),
       body: Chat(
         builders: Builders(
           chatAnimatedListBuilder: (context, itemBuilder) {

@@ -25,9 +25,7 @@ class SembastChatController implements ChatController {
     if (index == null) {
       await store.add(database, message.toJson());
       final length = await store.count(database);
-      _operationsController.add(
-        ChatOperation.insert(message, length - 1),
-      );
+      _operationsController.add(ChatOperation.insert(message, length - 1));
     } else {
       await store.record(index).update(database, message.toJson());
       _operationsController.add(ChatOperation.insert(message, index));

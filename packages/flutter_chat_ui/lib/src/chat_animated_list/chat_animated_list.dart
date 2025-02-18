@@ -102,8 +102,9 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     super.initState();
     _chatController = context.read<ChatController>();
     _scrollController = widget.scrollController ?? ScrollController();
-    _observerController =
-        SliverObserverController(controller: _scrollController);
+    _observerController = SliverObserverController(
+      controller: _scrollController,
+    );
     // TODO: Add assert for messages having same id
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
@@ -136,9 +137,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
           final newList = _chatController.messages;
 
           final updates = diffutil
-              .calculateDiff<Message>(
-                MessageListDiff(_oldList, newList),
-              )
+              .calculateDiff<Message>(MessageListDiff(_oldList, newList))
               .getUpdatesWithData();
 
           for (final update in updates) {
@@ -177,33 +176,31 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
   @override
   void onKeyboardHeightChanged(double height) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        if (!mounted || !_scrollController.hasClients || height == 0) {
-          return;
-        }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted || !_scrollController.hasClients || height == 0) {
+        return;
+      }
 
-        if (widget.scrollToEndAnimationDuration == Duration.zero) {
-          _scrollController.jumpTo(
-            min(
-              _scrollController.offset + height,
-              _scrollController.position.maxScrollExtent,
-            ),
-          );
-        } else {
-          await _scrollController.animateTo(
-            min(
-              _scrollController.offset + height,
-              _scrollController.position.maxScrollExtent,
-            ),
-            duration: widget.scrollToEndAnimationDuration,
-            curve: Curves.linearToEaseOut,
-          );
-        }
-        // we don't want to show the scroll to bottom button when automatically scrolling content with keyboard
-        _scrollToBottomShowTimer?.cancel();
-      },
-    );
+      if (widget.scrollToEndAnimationDuration == Duration.zero) {
+        _scrollController.jumpTo(
+          min(
+            _scrollController.offset + height,
+            _scrollController.position.maxScrollExtent,
+          ),
+        );
+      } else {
+        await _scrollController.animateTo(
+          min(
+            _scrollController.offset + height,
+            _scrollController.position.maxScrollExtent,
+          ),
+          duration: widget.scrollToEndAnimationDuration,
+          curve: Curves.linearToEaseOut,
+        );
+      }
+      // we don't want to show the scroll to bottom button when automatically scrolling content with keyboard
+      _scrollToBottomShowTimer?.cancel();
+    });
   }
 
   @override
@@ -442,70 +439,64 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _scrollToEnd(Message data) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (!_scrollController.hasClients || !mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients || !mounted) return;
 
-        // We need this condition because if scroll view is not yet scrollable,
-        // we want to wait for the insert animation to finish before scrolling to the end.
-        if (_scrollController.position.maxScrollExtent == 0) {
-          // Scroll view is not yet scrollable, scroll to the end if
-          // new message makes it scrollable.
-          _initialScrollToEnd();
-        } else {
-          _subsequentScrollToEnd(data);
-        }
-      },
-    );
+      // We need this condition because if scroll view is not yet scrollable,
+      // we want to wait for the insert animation to finish before scrolling to the end.
+      if (_scrollController.position.maxScrollExtent == 0) {
+        // Scroll view is not yet scrollable, scroll to the end if
+        // new message makes it scrollable.
+        _initialScrollToEnd();
+      } else {
+        _subsequentScrollToEnd(data);
+      }
+    });
   }
 
   void _adjustInitialScrollPosition(ScrollMetricsNotification notification) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (!_scrollController.hasClients || !mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients || !mounted) return;
 
-        // If the list is empty there is no need to adjust the initial scroll position.
-        if (_oldList.isEmpty) {
-          _needsInitialScrollPositionAdjustment = false;
+      // If the list is empty there is no need to adjust the initial scroll position.
+      if (_oldList.isEmpty) {
+        _needsInitialScrollPositionAdjustment = false;
+        return;
+      }
+
+      if (_needsInitialScrollPositionAdjustment) {
+        // Flutter might return a bunch of 0 values for maxScrollExtent,
+        // we need to ignore those.
+        if (notification.metrics.maxScrollExtent == 0) {
           return;
         }
 
-        if (_needsInitialScrollPositionAdjustment) {
-          // Flutter might return a bunch of 0 values for maxScrollExtent,
-          // we need to ignore those.
-          if (notification.metrics.maxScrollExtent == 0) {
-            return;
-          }
-
-          // jump until pixels == maxScrollExtent, i.e. end of the list
-          if (notification.metrics.pixels ==
-              notification.metrics.maxScrollExtent) {
-            _needsInitialScrollPositionAdjustment = false;
-          } else {
-            _scrollController.jumpTo(notification.metrics.maxScrollExtent);
-          }
+        // jump until pixels == maxScrollExtent, i.e. end of the list
+        if (notification.metrics.pixels ==
+            notification.metrics.maxScrollExtent) {
+          _needsInitialScrollPositionAdjustment = false;
+        } else {
+          _scrollController.jumpTo(notification.metrics.maxScrollExtent);
         }
-      },
-    );
+      }
+    });
   }
 
   void _handleScrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (!_scrollController.hasClients || !mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients || !mounted) return;
 
-        _isScrollingToBottom = true;
+      _isScrollingToBottom = true;
 
-        _scrollToBottomController.reverse();
+      _scrollToBottomController.reverse();
 
-        _scrollAnimationController.value = _scrollController.position.pixels /
-            _scrollController.position.maxScrollExtent;
-        _scrollAnimationController.fling();
+      _scrollAnimationController.value = _scrollController.position.pixels /
+          _scrollController.position.maxScrollExtent;
+      _scrollAnimationController.fling();
 
-        _userHasScrolled = false;
-        _isScrollingToBottom = false;
-      },
-    );
+      _userHasScrolled = false;
+      _isScrollingToBottom = false;
+    });
   }
 
   void _handleToggleScrollToBottom() {
@@ -513,15 +504,17 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       _scrollToBottomShowTimer?.cancel();
       if (_scrollController.offset <
           _scrollController.position.maxScrollExtent) {
-        _scrollToBottomShowTimer =
-            Timer(widget.scrollToBottomAppearanceDelay, () {
-          if (mounted) {
-            // If we show scroll to bottom that means user is viewing the history
-            // so we set `_userHasScrolled` to true.
-            _userHasScrolled = true;
-            _scrollToBottomController.forward();
-          }
-        });
+        _scrollToBottomShowTimer = Timer(
+          widget.scrollToBottomAppearanceDelay,
+          () {
+            if (mounted) {
+              // If we show scroll to bottom that means user is viewing the history
+              // so we set `_userHasScrolled` to true.
+              _userHasScrolled = true;
+              _scrollToBottomController.forward();
+            }
+          },
+        );
       } else {
         if (_scrollToBottomController.status == AnimationStatus.completed) {
           _scrollToBottomController.reverse();
