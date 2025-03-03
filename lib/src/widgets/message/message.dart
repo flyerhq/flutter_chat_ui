@@ -362,7 +362,7 @@ class Message extends StatelessWidget {
               : Alignment.centerLeft,
       margin: bubbleMargin,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         textDirection: bubbleRtlAlignment == BubbleRtlAlignment.left
             ? null
