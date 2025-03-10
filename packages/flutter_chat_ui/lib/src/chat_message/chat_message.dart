@@ -74,7 +74,9 @@ class ChatMessage extends StatelessWidget {
         padding == _sentinelPadding ? _resolveDefaultPadding(context) : padding;
 
     return GestureDetector(
-      onTap: () => onMessageTap?.call(message, index: index),
+      onTapUp:
+          (details) =>
+              onMessageTap?.call(message, index: index, details: details),
       child: FadeTransition(
         opacity: curvedAnimation,
         child: SizeTransition(
