@@ -2,8 +2,9 @@
 
 **⚠️ Breaking Changes ⚠️**
 
-- Changed `flutter_markdown` to `gpt_markdown` for the `FlyerChatTextMessage` class
-- `onMessageTap` callback now includes message index and tap up details - update params to `(Message item, {int? index, TapUpDetails? details})`
+- Changed dependency from `flutter_markdown` to `gpt_markdown` for the `FlyerChatTextMessage` class
+- `onMessageTap` callback now includes message index and tap up details - updated parameters to `(Message item, {int? index, TapUpDetails? details})`
+- Added more customization options to `ChatInput`, with default capitalization set to sentences
 
 ## 2.0.0-dev.6
 
