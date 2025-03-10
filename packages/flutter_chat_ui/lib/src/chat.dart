@@ -99,9 +99,10 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
       ],
       child: Container(
-        color: widget.backgroundColor == Chat._sentinelColor
-            ? _theme.colors.surface
-            : widget.backgroundColor,
+        color:
+            widget.backgroundColor == Chat._sentinelColor
+                ? _theme.colors.surface
+                : widget.backgroundColor,
         decoration: widget.decoration,
         child: Stack(
           children: [

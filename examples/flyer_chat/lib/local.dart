@@ -52,45 +52,50 @@ class LocalState extends State<Local> {
       body: Chat(
         backgroundColor: null,
         builders: Builders(
-          customMessageBuilder: (context, message, index) => Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-            decoration: BoxDecoration(
-              color: theme.brightness == Brightness.dark
-                  ? ChatColors.dark().surfaceContainer
-                  : ChatColors.light().surfaceContainer,
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-            ),
-            child: IsTypingIndicator(),
-          ),
-          imageMessageBuilder: (context, message, index) =>
-              FlyerChatImageMessage(message: message, index: index),
-          inputBuilder: (context) => ChatInput(
-            topWidget: InputActionBar(
-              buttons: [
-                InputActionButton(
-                  icon: Icons.type_specimen,
-                  title: 'Toggle typing',
-                  onPressed: () => _toggleTyping(),
+          customMessageBuilder:
+              (context, message, index) => Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
                 ),
-                InputActionButton(
-                  icon: Icons.shuffle,
-                  title: 'Send random',
-                  onPressed: () => _addItem(null),
+                decoration: BoxDecoration(
+                  color:
+                      theme.brightness == Brightness.dark
+                          ? ChatColors.dark().surfaceContainer
+                          : ChatColors.light().surfaceContainer,
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
                 ),
-                InputActionButton(
-                  icon: Icons.delete_sweep,
-                  title: 'Clear all',
-                  onPressed: () => _chatController.set([]),
-                  destructive: true,
+                child: IsTypingIndicator(),
+              ),
+          imageMessageBuilder:
+              (context, message, index) =>
+                  FlyerChatImageMessage(message: message, index: index),
+          inputBuilder:
+              (context) => ChatInput(
+                topWidget: InputActionBar(
+                  buttons: [
+                    InputActionButton(
+                      icon: Icons.type_specimen,
+                      title: 'Toggle typing',
+                      onPressed: () => _toggleTyping(),
+                    ),
+                    InputActionButton(
+                      icon: Icons.shuffle,
+                      title: 'Send random',
+                      onPressed: () => _addItem(null),
+                    ),
+                    InputActionButton(
+                      icon: Icons.delete_sweep,
+                      title: 'Clear all',
+                      onPressed: () => _chatController.set([]),
+                      destructive: true,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          textMessageBuilder: (context, message, index) =>
-              FlyerChatTextMessage(message: message, index: index),
+              ),
+          textMessageBuilder:
+              (context, message, index) =>
+                  FlyerChatTextMessage(message: message, index: index),
           chatMessageBuilder: (
             context,
             message,
@@ -105,22 +110,24 @@ class LocalState extends State<Local> {
               index: index,
               animation: animation,
               groupStatus: groupStatus,
-              leadingWidget: message.authorId != _currentUser.id &&
-                      (groupStatus?.isLast ?? true) &&
-                      isRemoved != true
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Avatar(userId: message.authorId),
-                    )
-                  : const SizedBox(width: 40),
-              trailingWidget: message.authorId == _currentUser.id &&
-                      (groupStatus?.isLast ?? true) &&
-                      isRemoved != true
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Avatar(userId: message.authorId),
-                    )
-                  : const SizedBox(width: 40),
+              leadingWidget:
+                  message.authorId != _currentUser.id &&
+                          (groupStatus?.isLast ?? true) &&
+                          isRemoved != true
+                      ? Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Avatar(userId: message.authorId),
+                      )
+                      : const SizedBox(width: 40),
+              trailingWidget:
+                  message.authorId == _currentUser.id &&
+                          (groupStatus?.isLast ?? true) &&
+                          isRemoved != true
+                      ? Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Avatar(userId: message.authorId),
+                      )
+                      : const SizedBox(width: 40),
               child: child,
             );
           },
@@ -128,9 +135,10 @@ class LocalState extends State<Local> {
         chatController: _chatController,
         currentUserId: _currentUser.id,
         decoration: BoxDecoration(
-          color: theme.brightness == Brightness.dark
-              ? ChatColors.dark().surface
-              : ChatColors.light().surface,
+          color:
+              theme.brightness == Brightness.dark
+                  ? ChatColors.dark().surface
+                  : ChatColors.light().surface,
           image: DecorationImage(
             image: AssetImage('assets/pattern.png'),
             repeat: ImageRepeat.repeat,
@@ -145,17 +153,17 @@ class LocalState extends State<Local> {
         onAttachmentTap: _handleAttachmentTap,
         onMessageSend: _addItem,
         onMessageTap: _removeItem,
-        resolveUser: (id) => Future.value(
-          switch (id) {
-            'me' => _currentUser,
-            'recipient' => _recipient,
-            'system' => _systemUser,
-            _ => null,
-          },
-        ),
-        theme: theme.brightness == Brightness.dark
-            ? ChatTheme.dark()
-            : ChatTheme.light(),
+        resolveUser:
+            (id) => Future.value(switch (id) {
+              'me' => _currentUser,
+              'recipient' => _recipient,
+              'system' => _systemUser,
+              _ => null,
+            }),
+        theme:
+            theme.brightness == Brightness.dark
+                ? ChatTheme.dark()
+                : ChatTheme.light(),
       ),
     );
   }

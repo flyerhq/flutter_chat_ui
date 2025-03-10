@@ -126,9 +126,10 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         case ChatOperationType.set:
           final newList = _chatController.messages;
 
-          final updates = diffutil
-              .calculateDiff<Message>(MessageListDiff(_oldList, newList))
-              .getUpdatesWithData();
+          final updates =
+              diffutil
+                  .calculateDiff<Message>(MessageListDiff(_oldList, newList))
+                  .getUpdatesWithData();
 
           for (var i = updates.length - 1; i >= 0; i--) {
             _onDiffUpdate(updates.elementAt(i));
@@ -202,20 +203,23 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         children: [
           SliverViewObserver(
             controller: _observerController,
-            sliverContexts: () => [
-              if (_sliverListViewContext != null) _sliverListViewContext!,
-            ],
+            sliverContexts:
+                () => [
+                  if (_sliverListViewContext != null) _sliverListViewContext!,
+                ],
             child: CustomScrollView(
               reverse: true,
               controller: _scrollController,
-              keyboardDismissBehavior: widget.keyboardDismissBehavior ??
+              keyboardDismissBehavior:
+                  widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
               slivers: <Widget>[
                 Consumer<ChatInputHeightNotifier>(
                   builder: (context, heightNotifier, child) {
                     return SliverPadding(
                       padding: EdgeInsets.only(
-                        bottom: heightNotifier.height +
+                        bottom:
+                            heightNotifier.height +
                             (widget.bottomPadding ?? 0) +
                             (widget.handleSafeArea == true
                                 ? bottomSafeArea

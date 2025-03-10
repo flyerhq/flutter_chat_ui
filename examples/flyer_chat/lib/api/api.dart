@@ -86,37 +86,40 @@ class ApiState extends State<Api> {
         children: [
           Chat(
             builders: Builders(
-              textMessageBuilder: (context, message, index) =>
-                  FlyerChatTextMessage(message: message, index: index),
-              imageMessageBuilder: (context, message, index) =>
-                  FlyerChatImageMessage(message: message, index: index),
-              inputBuilder: (context) => ChatInput(
-                topWidget: InputActionBar(
-                  buttons: [
-                    InputActionButton(
-                      icon: Icons.shuffle,
-                      title: 'Send random',
-                      onPressed: () => _addItem(null),
+              textMessageBuilder:
+                  (context, message, index) =>
+                      FlyerChatTextMessage(message: message, index: index),
+              imageMessageBuilder:
+                  (context, message, index) =>
+                      FlyerChatImageMessage(message: message, index: index),
+              inputBuilder:
+                  (context) => ChatInput(
+                    topWidget: InputActionBar(
+                      buttons: [
+                        InputActionButton(
+                          icon: Icons.shuffle,
+                          title: 'Send random',
+                          onPressed: () => _addItem(null),
+                        ),
+                        InputActionButton(
+                          icon: Icons.delete_sweep,
+                          title: 'Clear all',
+                          onPressed: () async {
+                            try {
+                              await _apiService.flush();
+                              if (mounted) {
+                                await _chatController.set([]);
+                                await _showInfo('All messages cleared');
+                              }
+                            } catch (error) {
+                              await _showInfo('Error: $error');
+                            }
+                          },
+                          destructive: true,
+                        ),
+                      ],
                     ),
-                    InputActionButton(
-                      icon: Icons.delete_sweep,
-                      title: 'Clear all',
-                      onPressed: () async {
-                        try {
-                          await _apiService.flush();
-                          if (mounted) {
-                            await _chatController.set([]);
-                            await _showInfo('All messages cleared');
-                          }
-                        } catch (error) {
-                          await _showInfo('Error: $error');
-                        }
-                      },
-                      destructive: true,
-                    ),
-                  ],
-                ),
-              ),
+                  ),
             ),
             chatController: _chatController,
             crossCache: _crossCache,
@@ -226,10 +229,12 @@ class ApiState extends State<Api> {
 
         // Make sure to get the updated message
         // (width and height might have been set by the image message widget)
-        final currentMessage = _chatController.messages.firstWhere(
-          (element) => element.id == id,
-          orElse: () => imageMessage,
-        ) as ImageMessage;
+        final currentMessage =
+            _chatController.messages.firstWhere(
+                  (element) => element.id == id,
+                  orElse: () => imageMessage,
+                )
+                as ImageMessage;
         final nextMessage = currentMessage.copyWith(
           source: 'https://whatever.diamanthq.dev/blob/$blobId',
         );

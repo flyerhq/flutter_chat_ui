@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
 
 class FlyerChatTextMessage extends StatelessWidget {
@@ -42,21 +42,22 @@ class FlyerChatTextMessage extends StatelessWidget {
 
     return Container(
       padding: padding,
-      decoration: _isOnlyEmoji
-          ? null
-          : BoxDecoration(
-              color: backgroundColor,
-              borderRadius: borderRadius == _sentinelBorderRadius
-                  ? theme.shape
-                  : borderRadius,
-            ),
-      child: MarkdownBody(
-        data: message.text,
-        styleSheet: MarkdownStyleSheet(
-          p: _isOnlyEmoji
-              ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
-              : paragraphStyle,
-        ),
+      decoration:
+          _isOnlyEmoji
+              ? null
+              : BoxDecoration(
+                color: backgroundColor,
+                borderRadius:
+                    borderRadius == _sentinelBorderRadius
+                        ? theme.shape
+                        : borderRadius,
+              ),
+      child: GptMarkdown(
+        message.text,
+        style:
+            _isOnlyEmoji
+                ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+                : paragraphStyle,
       ),
     );
   }

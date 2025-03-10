@@ -93,9 +93,10 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomSafeArea = widget.handleSafeArea == true
-        ? MediaQuery.of(context).padding.bottom
-        : 0.0;
+    final bottomSafeArea =
+        widget.handleSafeArea == true
+            ? MediaQuery.of(context).padding.bottom
+            : 0.0;
     final theme = context.watch<ChatTheme>();
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
 
@@ -107,28 +108,31 @@ class _ChatInputState extends State<ChatInput> {
       child: ClipRect(
         child: Container(
           key: _key,
-          color: widget.backgroundColor == ChatInput._sentinelColor
-              ? theme.colors.surfaceContainerLow
-              : widget.backgroundColor,
+          color:
+              widget.backgroundColor == ChatInput._sentinelColor
+                  ? theme.colors.surfaceContainerLow
+                  : widget.backgroundColor,
           child: Column(
             children: [
               if (widget.topWidget != null) widget.topWidget!,
               Padding(
-                padding: widget.handleSafeArea == true
-                    ? (widget.padding?.add(
-                          EdgeInsets.only(bottom: bottomSafeArea),
-                        ) ??
-                        EdgeInsets.only(bottom: bottomSafeArea))
-                    : (widget.padding ?? EdgeInsets.zero),
+                padding:
+                    widget.handleSafeArea == true
+                        ? (widget.padding?.add(
+                              EdgeInsets.only(bottom: bottomSafeArea),
+                            ) ??
+                            EdgeInsets.only(bottom: bottomSafeArea))
+                        : (widget.padding ?? EdgeInsets.zero),
                 child: Row(
                   children: [
                     widget.attachmentIcon != null
                         ? IconButton(
-                            icon: widget.attachmentIcon!,
-                            color: widget.attachmentIconColor ??
-                                theme.colors.onSurface.withValues(alpha: 0.5),
-                            onPressed: onAttachmentTap,
-                          )
+                          icon: widget.attachmentIcon!,
+                          color:
+                              widget.attachmentIconColor ??
+                              theme.colors.onSurface.withValues(alpha: 0.5),
+                          onPressed: onAttachmentTap,
+                        )
                         : const SizedBox.shrink(),
                     SizedBox(width: widget.gap),
                     Expanded(
@@ -137,12 +141,14 @@ class _ChatInputState extends State<ChatInput> {
                         decoration: InputDecoration(
                           hintText: widget.hintText,
                           hintStyle: theme.typography.bodyMedium.copyWith(
-                            color: widget.hintColor ??
+                            color:
+                                widget.hintColor ??
                                 theme.colors.onSurface.withValues(alpha: 0.5),
                           ),
                           border: widget.inputBorder,
                           filled: widget.filled,
-                          fillColor: widget.inputFillColor ??
+                          fillColor:
+                              widget.inputFillColor ??
                               theme.colors.surfaceContainerHigh.withValues(
                                 alpha: 0.8,
                               ),
@@ -158,12 +164,13 @@ class _ChatInputState extends State<ChatInput> {
                     SizedBox(width: widget.gap),
                     widget.sendIcon != null
                         ? IconButton(
-                            icon: widget.sendIcon!,
-                            color: widget.sendIconColor ??
-                                theme.colors.onSurface.withValues(alpha: 0.5),
-                            onPressed: () =>
-                                _handleSubmitted(_textController.text),
-                          )
+                          icon: widget.sendIcon!,
+                          color:
+                              widget.sendIconColor ??
+                              theme.colors.onSurface.withValues(alpha: 0.5),
+                          onPressed:
+                              () => _handleSubmitted(_textController.text),
+                        )
                         : const SizedBox.shrink(),
                   ],
                 ),
@@ -184,9 +191,9 @@ class _ChatInputState extends State<ChatInput> {
       final bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
       context.read<ChatInputHeightNotifier>().setHeight(
-            // only set real height of the input, ignoring safe area
-            widget.handleSafeArea == true ? height - bottomSafeArea : height,
-          );
+        // only set real height of the input, ignoring safe area
+        widget.handleSafeArea == true ? height - bottomSafeArea : height,
+      );
     }
   }
 

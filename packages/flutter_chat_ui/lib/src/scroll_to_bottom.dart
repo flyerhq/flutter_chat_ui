@@ -52,11 +52,12 @@ class ScrollToBottom extends StatelessWidget {
           left: left,
           right: right,
           top: top,
-          bottom: useChatInputHeightForBottomOffset == true
-              ? heightNotifier.height +
-                  (bottom ?? 0) +
-                  (handleSafeArea == true ? bottomSafeArea : 0)
-              : bottom,
+          bottom:
+              useChatInputHeightForBottomOffset == true
+                  ? heightNotifier.height +
+                      (bottom ?? 0) +
+                      (handleSafeArea == true ? bottomSafeArea : 0)
+                  : bottom,
           child: ScaleTransition(
             scale: animation,
             child: FloatingActionButton(

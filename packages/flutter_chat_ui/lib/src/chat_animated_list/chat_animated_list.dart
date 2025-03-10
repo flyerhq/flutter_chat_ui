@@ -136,9 +136,10 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         case ChatOperationType.set:
           final newList = _chatController.messages;
 
-          final updates = diffutil
-              .calculateDiff<Message>(MessageListDiff(_oldList, newList))
-              .getUpdatesWithData();
+          final updates =
+              diffutil
+                  .calculateDiff<Message>(MessageListDiff(_oldList, newList))
+                  .getUpdatesWithData();
 
           for (final update in updates) {
             _onDiffUpdate(update);
@@ -259,12 +260,14 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         children: [
           SliverViewObserver(
             controller: _observerController,
-            sliverContexts: () => [
-              if (_sliverListViewContext != null) _sliverListViewContext!,
-            ],
+            sliverContexts:
+                () => [
+                  if (_sliverListViewContext != null) _sliverListViewContext!,
+                ],
             child: CustomScrollView(
               controller: _scrollController,
-              keyboardDismissBehavior: widget.keyboardDismissBehavior ??
+              keyboardDismissBehavior:
+                  widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
               slivers: <Widget>[
                 if (widget.topPadding != null)
@@ -312,7 +315,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                   builder: (context, heightNotifier, child) {
                     return SliverPadding(
                       padding: EdgeInsets.only(
-                        bottom: heightNotifier.height +
+                        bottom:
+                            heightNotifier.height +
                             (widget.bottomPadding ?? 0) +
                             (widget.handleSafeArea == true
                                 ? bottomSafeArea
@@ -420,7 +424,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       // to the very end of the list.
       // See https://stackoverflow.com/a/77175903 for more details.
       if (_userHasScrolled) {
-        _scrollAnimationController.value = _scrollController.position.pixels /
+        _scrollAnimationController.value =
+            _scrollController.position.pixels /
             _scrollController.position.maxScrollExtent;
         await _scrollAnimationController.fling();
       } else {
@@ -490,7 +495,8 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
       _scrollToBottomController.reverse();
 
-      _scrollAnimationController.value = _scrollController.position.pixels /
+      _scrollAnimationController.value =
+          _scrollController.position.pixels /
           _scrollController.position.maxScrollExtent;
       _scrollAnimationController.fling();
 
@@ -596,9 +602,10 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       // We are only animating items when scroll view is not yet scrollable,
       // otherwise we just insert the item without animation.
       // (animation is replaced with scroll to bottom animation)
-      duration: _scrollController.position.maxScrollExtent == 0
-          ? widget.insertAnimationDuration
-          : Duration.zero,
+      duration:
+          _scrollController.position.maxScrollExtent == 0
+              ? widget.insertAnimationDuration
+              : Duration.zero,
     );
 
     // Used later to trigger scroll to end only for the last inserted message.

@@ -12,7 +12,7 @@ class InMemoryChatController
   final _operationsController = StreamController<ChatOperation>.broadcast();
 
   InMemoryChatController({List<Message>? messages})
-      : _messages = messages ?? [];
+    : _messages = messages ?? [];
 
   @override
   Future<void> insert(Message message, {int? index}) async {

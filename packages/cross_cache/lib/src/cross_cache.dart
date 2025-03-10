@@ -14,8 +14,8 @@ class CrossCache {
   final BaseOptions? options;
 
   CrossCache({Dio? dio, this.options})
-      : _cache = Cache(),
-        _dio = dio ?? Dio(options);
+    : _cache = Cache(),
+      _dio = dio ?? Dio(options);
 
   Future<Uint8List> downloadAndSave(
     String source, {

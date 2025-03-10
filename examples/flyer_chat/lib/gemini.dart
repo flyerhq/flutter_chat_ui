@@ -49,10 +49,11 @@ class GeminiState extends State<Gemini> {
     );
 
     _chatSession = _model.startChat(
-      history: _chatController.messages
-          .whereType<TextMessage>()
-          .map((message) => Content.text(message.text))
-          .toList(),
+      history:
+          _chatController.messages
+              .whereType<TextMessage>()
+              .map((message) => Content.text(message.text))
+              .toList(),
     );
   }
 
@@ -79,38 +80,40 @@ class GeminiState extends State<Gemini> {
               shouldScrollToEndWhenAtBottom: false,
             );
           },
-          imageMessageBuilder: (context, message, index) =>
-              FlyerChatImageMessage(message: message, index: index),
-          inputBuilder: (context) => ChatInput(
-            topWidget: InputActionBar(
-              buttons: [
-                InputActionButton(
-                  icon: Icons.delete_sweep,
-                  title: 'Clear all',
-                  onPressed: () {
-                    _chatController.set([]);
-                    _chatSession = _model.startChat();
-                  },
-                  destructive: true,
+          imageMessageBuilder:
+              (context, message, index) =>
+                  FlyerChatImageMessage(message: message, index: index),
+          inputBuilder:
+              (context) => ChatInput(
+                topWidget: InputActionBar(
+                  buttons: [
+                    InputActionButton(
+                      icon: Icons.delete_sweep,
+                      title: 'Clear all',
+                      onPressed: () {
+                        _chatController.set([]);
+                        _chatSession = _model.startChat();
+                      },
+                      destructive: true,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          textMessageBuilder: (context, message, index) =>
-              FlyerChatTextMessage(message: message, index: index),
+              ),
+          textMessageBuilder:
+              (context, message, index) =>
+                  FlyerChatTextMessage(message: message, index: index),
         ),
         chatController: _chatController,
         crossCache: _crossCache,
         currentUserId: _currentUser.id,
         onAttachmentTap: _handleAttachmentTap,
         onMessageSend: _handleMessageSend,
-        resolveUser: (id) => Future.value(
-          switch (id) {
-            'me' => _currentUser,
-            'agent' => _agent,
-            _ => null,
-          },
-        ),
+        resolveUser:
+            (id) => Future.value(switch (id) {
+              'me' => _currentUser,
+              'agent' => _agent,
+              _ => null,
+            }),
         theme: ChatTheme.fromThemeData(theme),
       ),
     );
@@ -186,7 +189,10 @@ class GeminiState extends State<Gemini> {
             await _chatController.insert(_currentGeminiResponse!);
           } else {
             final newUpdatedMessage = (_currentGeminiResponse as TextMessage)
-                .copyWith(text: accumulatedText);
+                .copyWith(
+                  text: accumulatedText,
+                  isOnlyEmoji: isOnlyEmoji(accumulatedText),
+                );
             await _chatController.update(
               _currentGeminiResponse!,
               newUpdatedMessage,
@@ -209,7 +215,8 @@ class GeminiState extends State<Gemini> {
                 // Subtract bottom safe area
                 // Subtract input height since it is absolute positioned (104)
                 // Subtract some padding for visual buffer (20)
-                final targetScroll = (initialMaxScrollExtent ?? 0) +
+                final targetScroll =
+                    (initialMaxScrollExtent ?? 0) +
                     _scrollController.position.viewportDimension -
                     MediaQuery.of(context).padding.bottom -
                     104 -

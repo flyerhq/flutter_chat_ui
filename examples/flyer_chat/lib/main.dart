@@ -116,41 +116,43 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                     onPressed: () {
                       getInitialMessages(_dio, chatId: _chatIdController.text)
                           .then((messages) {
-                        if (mounted && context.mounted) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => Api(
-                                currentUserId: _currentUserId,
-                                chatId: _chatIdController.text,
-                                initialMessages: messages,
-                                dio: _dio,
-                              ),
-                            ),
-                          );
-                        }
-                      }).catchError((error) {
-                        if (mounted && context.mounted) {
-                          debugPrint(error.toString());
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Error'),
-                                content: const Text(
-                                  'Make sure the chat ID is correct',
+                            if (mounted && context.mounted) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => Api(
+                                        currentUserId: _currentUserId,
+                                        chatId: _chatIdController.text,
+                                        initialMessages: messages,
+                                        dio: _dio,
+                                      ),
                                 ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                  ),
-                                ],
                               );
-                            },
-                          );
-                        }
-                      });
+                            }
+                          })
+                          .catchError((error) {
+                            if (mounted && context.mounted) {
+                              debugPrint(error.toString());
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Error'),
+                                    content: const Text(
+                                      'Make sure the chat ID is correct',
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('OK'),
+                                        onPressed:
+                                            () => Navigator.of(context).pop(),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          });
                     },
                     child: const Text('api'),
                   ),
@@ -242,10 +244,11 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => Gemini(
-                        geminiApiKey: _geminiApiKeyController.text,
-                        database: widget.database,
-                      ),
+                      builder:
+                          (context) => Gemini(
+                            geminiApiKey: _geminiApiKeyController.text,
+                            database: widget.database,
+                          ),
                     ),
                   );
                 },

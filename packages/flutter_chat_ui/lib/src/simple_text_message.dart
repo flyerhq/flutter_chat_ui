@@ -41,19 +41,22 @@ class SimpleTextMessage extends StatelessWidget {
 
     return Container(
       padding: padding,
-      decoration: _isOnlyEmoji
-          ? null
-          : BoxDecoration(
-              color: backgroundColor,
-              borderRadius: borderRadius == _sentinelBorderRadius
-                  ? theme.shape
-                  : borderRadius,
-            ),
+      decoration:
+          _isOnlyEmoji
+              ? null
+              : BoxDecoration(
+                color: backgroundColor,
+                borderRadius:
+                    borderRadius == _sentinelBorderRadius
+                        ? theme.shape
+                        : borderRadius,
+              ),
       child: Text(
         message.text,
-        style: _isOnlyEmoji
-            ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
-            : textStyle,
+        style:
+            _isOnlyEmoji
+                ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
+                : textStyle,
       ),
     );
   }

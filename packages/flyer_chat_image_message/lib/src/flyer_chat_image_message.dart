@@ -144,11 +144,12 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
               _placeholderProvider != null
                   ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
                   : Container(
-                      color: widget.placeholderColor ==
-                              FlyerChatImageMessage._sentinelColor
-                          ? theme.colors.surfaceContainerLow
-                          : widget.placeholderColor,
-                    ),
+                    color:
+                        widget.placeholderColor ==
+                                FlyerChatImageMessage._sentinelColor
+                            ? theme.colors.surfaceContainerLow
+                            : widget.placeholderColor,
+                  ),
               Image(
                 image: _cachedNetworkImage,
                 fit: BoxFit.fill,
@@ -158,23 +159,26 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   }
 
                   return Container(
-                    color: widget.loadingOverlayColor ==
-                            FlyerChatImageMessage._sentinelColor
-                        ? theme.colors.surfaceContainerLow.withValues(
-                            alpha: 0.5,
-                          )
-                        : widget.loadingOverlayColor,
+                    color:
+                        widget.loadingOverlayColor ==
+                                FlyerChatImageMessage._sentinelColor
+                            ? theme.colors.surfaceContainerLow.withValues(
+                              alpha: 0.5,
+                            )
+                            : widget.loadingOverlayColor,
                     child: Center(
                       child: CircularProgressIndicator(
-                        color: widget.loadingIndicatorColor ==
-                                FlyerChatImageMessage._sentinelColor
-                            ? theme.colors.onSurface.withValues(alpha: 0.8)
-                            : widget.loadingIndicatorColor,
+                        color:
+                            widget.loadingIndicatorColor ==
+                                    FlyerChatImageMessage._sentinelColor
+                                ? theme.colors.onSurface.withValues(alpha: 0.8)
+                                : widget.loadingIndicatorColor,
                         strokeCap: StrokeCap.round,
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
+                        value:
+                            loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
                       ),
                     ),
                   );
@@ -213,20 +217,22 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     }
 
                     return Container(
-                      color: widget.uploadOverlayColor ==
-                              FlyerChatImageMessage._sentinelColor
-                          ? theme.colors.surfaceContainerLow.withValues(
-                              alpha: 0.5,
-                            )
-                          : widget.uploadOverlayColor,
+                      color:
+                          widget.uploadOverlayColor ==
+                                  FlyerChatImageMessage._sentinelColor
+                              ? theme.colors.surfaceContainerLow.withValues(
+                                alpha: 0.5,
+                              )
+                              : widget.uploadOverlayColor,
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: widget.uploadIndicatorColor ==
-                                  FlyerChatImageMessage._sentinelColor
-                              ? theme.colors.onSurface.withValues(
-                                  alpha: 0.8,
-                                )
-                              : widget.uploadIndicatorColor,
+                          color:
+                              widget.uploadIndicatorColor ==
+                                      FlyerChatImageMessage._sentinelColor
+                                  ? theme.colors.onSurface.withValues(
+                                    alpha: 0.8,
+                                  )
+                                  : widget.uploadIndicatorColor,
                           strokeCap: StrokeCap.round,
                           value: snapshot.data,
                         ),

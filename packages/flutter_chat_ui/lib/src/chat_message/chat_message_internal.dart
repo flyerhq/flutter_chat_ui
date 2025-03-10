@@ -115,13 +115,15 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
       final previousMessage = index > 0 ? messages[index - 1] : null;
 
       // Check if message is part of a group with next message
-      final isGroupedWithNext = nextMessage != null &&
+      final isGroupedWithNext =
+          nextMessage != null &&
           nextMessage.authorId == currentMessage.authorId &&
           nextMessage.createdAt.difference(currentMessage.createdAt).inSeconds <
               timeoutInSeconds;
 
       // Check if message is part of a group with previous message
-      final isGroupedWithPrevious = previousMessage != null &&
+      final isGroupedWithPrevious =
+          previousMessage != null &&
           previousMessage.authorId == currentMessage.authorId &&
           currentMessage.createdAt
                   .difference(previousMessage.createdAt)
@@ -156,7 +158,7 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
       case ImageMessage():
         final result =
             builders.imageMessageBuilder?.call(context, message, index) ??
-                const SizedBox.shrink();
+            const SizedBox.shrink();
         assert(
           !(result is SizedBox && result.width == 0 && result.height == 0),
           'You are trying to display an image message but you have not provided an imageMessageBuilder. '

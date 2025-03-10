@@ -51,14 +51,14 @@ class ChatMessage extends StatelessWidget {
   });
 
   Widget get messageRow => Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (leadingWidget != null) leadingWidget!,
-          Flexible(child: child),
-          if (trailingWidget != null) trailingWidget!,
-        ],
-      );
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      if (leadingWidget != null) leadingWidget!,
+      Flexible(child: child),
+      if (trailingWidget != null) trailingWidget!,
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -81,28 +81,31 @@ class ChatMessage extends StatelessWidget {
           sizeFactor: curvedAnimation,
           child: ScaleTransition(
             scale: curvedAnimation,
-            alignment: scaleAnimationAlignment ??
+            alignment:
+                scaleAnimationAlignment ??
                 (isSentByMe
                     ? sentMessageScaleAnimationAlignment
                     : receivedMessageScaleAnimationAlignment),
             child: Align(
-              alignment: alignment ??
+              alignment:
+                  alignment ??
                   (isSentByMe
                       ? sentMessageAlignment
                       : receivedMessageAlignment),
-              child: padding != null
-                  ? paddingChangeAnimationDuration != null
-                      ? AnimatedPadding(
-                          padding: resolvedPadding!,
-                          duration: paddingChangeAnimationDuration!,
-                          curve: Curves.linearToEaseOut,
-                          child: messageRow,
-                        )
-                      : Padding(
-                          padding: resolvedPadding!,
-                          child: messageRow,
-                        )
-                  : messageRow,
+              child:
+                  padding != null
+                      ? paddingChangeAnimationDuration != null
+                          ? AnimatedPadding(
+                            padding: resolvedPadding!,
+                            duration: paddingChangeAnimationDuration!,
+                            curve: Curves.linearToEaseOut,
+                            child: messageRow,
+                          )
+                          : Padding(
+                            padding: resolvedPadding!,
+                            child: messageRow,
+                          )
+                      : messageRow,
             ),
           ),
         ),
@@ -122,16 +125,16 @@ class ChatMessage extends StatelessWidget {
 
     return groupStatus?.isFirst == false || isRemoved == true
         ? EdgeInsets.fromLTRB(
-            horizontalPadding ?? 0,
-            verticalGroupedPadding ?? 0,
-            horizontalPadding ?? 0,
-            0,
-          )
+          horizontalPadding ?? 0,
+          verticalGroupedPadding ?? 0,
+          horizontalPadding ?? 0,
+          0,
+        )
         : EdgeInsets.fromLTRB(
-            horizontalPadding ?? 0,
-            verticalPadding ?? 0,
-            horizontalPadding ?? 0,
-            0,
-          );
+          horizontalPadding ?? 0,
+          verticalPadding ?? 0,
+          horizontalPadding ?? 0,
+          0,
+        );
   }
 }

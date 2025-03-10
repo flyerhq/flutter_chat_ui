@@ -11,18 +11,19 @@ class Pagination extends StatefulWidget {
 
 class PaginationState extends State<Pagination> {
   final _chatController = InMemoryChatController(
-    messages: List.generate(
-      20,
-      (i) => Message.text(
-        id: (i + 1).toString(),
-        authorId: 'me',
-        createdAt: DateTime.fromMillisecondsSinceEpoch(
-          1736893310000 - ((20 - i) * 1000),
-          isUtc: true,
-        ),
-        text: 'Message ${i + 1}',
-      ),
-    ).reversed.toList(),
+    messages:
+        List.generate(
+          20,
+          (i) => Message.text(
+            id: (i + 1).toString(),
+            authorId: 'me',
+            createdAt: DateTime.fromMillisecondsSinceEpoch(
+              1736893310000 - ((20 - i) * 1000),
+              isUtc: true,
+            ),
+            text: 'Message ${i + 1}',
+          ),
+        ).reversed.toList(),
   );
   final _currentUser = const User(id: 'me');
 
@@ -53,12 +54,11 @@ class PaginationState extends State<Pagination> {
         ),
         chatController: _chatController,
         currentUserId: _currentUser.id,
-        resolveUser: (id) => Future.value(
-          switch (id) {
-            'me' => _currentUser,
-            _ => null,
-          },
-        ),
+        resolveUser:
+            (id) => Future.value(switch (id) {
+              'me' => _currentUser,
+              _ => null,
+            }),
         theme: ChatTheme.fromThemeData(theme),
       ),
     );
@@ -102,9 +102,10 @@ class MockDatabase {
   }) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    final start = lastMessageId == null
-        ? 0
-        : _messages.indexWhere((m) => m.id == lastMessageId) + 1;
+    final start =
+        lastMessageId == null
+            ? 0
+            : _messages.indexWhere((m) => m.id == lastMessageId) + 1;
 
     if (start >= _messages.length) return [];
 

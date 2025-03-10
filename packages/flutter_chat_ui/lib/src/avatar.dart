@@ -36,17 +36,18 @@ class Avatar extends StatelessWidget {
             color: backgroundColor ?? theme.colors.surfaceContainer,
             shape: BoxShape.circle,
           ),
-          child: snapshot.connectionState == ConnectionState.waiting
-              ? null
-              : AvatarContent(
-                  user: snapshot.data,
-                  size: size,
-                  foregroundColor: foregroundColor ?? theme.colors.onSurface,
-                  textStyle: theme.typography.labelLarge.copyWith(
-                    color: foregroundColor ?? theme.colors.onSurface,
-                    fontWeight: FontWeight.bold,
+          child:
+              snapshot.connectionState == ConnectionState.waiting
+                  ? null
+                  : AvatarContent(
+                    user: snapshot.data,
+                    size: size,
+                    foregroundColor: foregroundColor ?? theme.colors.onSurface,
+                    textStyle: theme.typography.labelLarge.copyWith(
+                      color: foregroundColor ?? theme.colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
         );
 
         if (onTap != null) {
@@ -86,9 +87,10 @@ class _AvatarContentState extends State<AvatarContent> {
 
     final crossCache = context.read<CrossCache>();
 
-    _cachedNetworkImage = widget.user?.imageSource != null
-        ? CachedNetworkImage(widget.user!.imageSource!, crossCache)
-        : null;
+    _cachedNetworkImage =
+        widget.user?.imageSource != null
+            ? CachedNetworkImage(widget.user!.imageSource!, crossCache)
+            : null;
   }
 
   @override
