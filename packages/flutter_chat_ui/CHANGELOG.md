@@ -3,6 +3,7 @@
 **⚠️ Breaking Changes ⚠️**
 
 - Changed `flutter_markdown` to `gpt_markdown` for the `FlyerChatTextMessage` class
+- `onMessageTap` callback now includes message index - update params to `(Message item, {required int index})`
 
 ## 2.0.0-dev.6
 
