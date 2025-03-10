@@ -1,3 +1,9 @@
+## 2.0.0-dev.7
+
+**⚠️ Breaking Changes ⚠️**
+
+- Changed `flutter_markdown` to `gpt_markdown` for the `FlyerChatTextMessage` class
+
 ## 2.0.0-dev.6
 
 **⚠️ Breaking changes ⚠️**

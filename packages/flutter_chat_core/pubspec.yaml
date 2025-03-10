@@ -1,5 +1,5 @@
 name: flutter_chat_core
-version: 0.0.7
+version: 0.0.8
 description: >
   Core package for Flutter chat apps, complementing flutter_chat_ui.
   Contains models and core functionality. #chat #ui

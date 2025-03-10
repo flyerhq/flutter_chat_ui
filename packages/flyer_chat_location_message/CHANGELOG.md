@@ -1,3 +1,7 @@
+## 0.0.8
+
+- Version bump to match other packages
+
 ## 0.0.7
 
 - Require Flutter 3.29 and Dart 3.7

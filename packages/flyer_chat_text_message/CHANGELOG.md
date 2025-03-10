@@ -1,3 +1,7 @@
+## 0.0.8
+
+- Changed `flutter_markdown` to `gpt_markdown`
+
 ## 0.0.7
 
 - Require Flutter 3.29 and Dart 3.7

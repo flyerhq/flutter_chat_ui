@@ -1,5 +1,5 @@
 name: flyer_chat_text_message
-version: 0.0.7
+version: 0.0.8
 description: >
   Text message package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
 homepage: https://flyer.chat
@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_chat_core: ^0.0.7
+  flutter_chat_core: ^0.0.8
   gpt_markdown: ^1.0.12
   provider: ^6.1.2
 
