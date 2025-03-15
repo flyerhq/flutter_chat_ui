@@ -97,6 +97,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
         ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
+        Provider(create: (_) => UserCache(maxSize: 100)),
       ],
       child: Container(
         color:

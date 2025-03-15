@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
-import 'utils/typedefs.dart';
-
 class Avatar extends StatelessWidget {
   final String userId;
   final double? size;
@@ -24,39 +22,54 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
-    final userFuture = context.watch<ResolveUserCallback>()(userId);
+    final resolveUser = context.read<ResolveUserCallback>();
+    final userCache = context.read<UserCache>();
 
+    // Try to get from cache synchronously first
+    final cachedUser = userCache.getSync(userId);
+
+    if (cachedUser != null) {
+      // Sync path - no FutureBuilder needed
+      return _buildAvatar(context, theme, cachedUser);
+    }
+
+    // Async path - use FutureBuilder with cache
     return FutureBuilder<User?>(
-      future: userFuture,
+      // This will update the cache when resolved
+      future: userCache.getOrResolve(userId, resolveUser),
       builder: (context, snapshot) {
-        Widget avatar = Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: backgroundColor ?? theme.colors.surfaceContainer,
-            shape: BoxShape.circle,
-          ),
-          child:
-              snapshot.connectionState == ConnectionState.waiting
-                  ? null
-                  : AvatarContent(
-                    user: snapshot.data,
-                    size: size,
-                    foregroundColor: foregroundColor ?? theme.colors.onSurface,
-                    textStyle: theme.typography.labelLarge.copyWith(
-                      color: foregroundColor ?? theme.colors.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-        );
-
-        if (onTap != null) {
-          avatar = GestureDetector(onTap: onTap, child: avatar);
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildAvatar(context, theme, null);
         }
-
-        return avatar;
+        return _buildAvatar(context, theme, snapshot.data);
       },
     );
+  }
+
+  Widget _buildAvatar(BuildContext context, ChatTheme theme, User? user) {
+    Widget avatar = Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: backgroundColor ?? theme.colors.surfaceContainer,
+        shape: BoxShape.circle,
+      ),
+      child: AvatarContent(
+        user: user,
+        size: size,
+        foregroundColor: foregroundColor ?? theme.colors.onSurface,
+        textStyle: theme.typography.labelLarge.copyWith(
+          color: foregroundColor ?? theme.colors.onSurface,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+
+    if (onTap != null) {
+      avatar = GestureDetector(onTap: onTap, child: avatar);
+    }
+
+    return avatar;
   }
 }
 

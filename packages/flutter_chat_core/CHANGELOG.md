@@ -1,6 +1,6 @@
 ## 0.0.8
 
-- Version bump to match other packages
+- Add `UserCache` class to store resolved users for synchronous access, preventing flickering in recycled widgets by caching user data with LRU eviction strategy
 
 ## 0.0.7
 

@@ -6,6 +6,10 @@
 - `onMessageTap` callback now includes message index and tap up details - updated parameters to `(Message item, {int? index, TapUpDetails? details})`
 - Added more customization options to `ChatInput`, with default capitalization set to sentences
 
+**🐛 Bug Fixes**
+
+- Fixed flickering in avatar widget by implementing a user cache with LRU eviction strategy, allowing synchronous access to recently resolved user data
+
 ## 2.0.0-dev.6
 
 **⚠️ Breaking changes ⚠️**
