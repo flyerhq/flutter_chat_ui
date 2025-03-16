@@ -105,7 +105,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     _observerController = SliverObserverController(
       controller: _scrollController,
     )..cacheJumpIndexOffset = false;
-    // TODO: Add assert for messages having same id
+
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
       switch (event.type) {

@@ -105,28 +105,41 @@ class LocalState extends State<Local> {
             bool? isRemoved,
             MessageGroupStatus? groupStatus,
           }) {
+            final isSystemMessage = message.authorId == 'system';
+            final isLastInGroup = groupStatus?.isLast ?? true;
+            final shouldShowAvatar =
+                !isSystemMessage && isLastInGroup && isRemoved != true;
+            final isCurrentUser = message.authorId == _currentUser.id;
+
+            Widget? avatar;
+            if (shouldShowAvatar) {
+              avatar = Padding(
+                padding: EdgeInsets.only(
+                  left: isCurrentUser ? 8 : 0,
+                  right: isCurrentUser ? 0 : 8,
+                ),
+                child: Avatar(userId: message.authorId),
+              );
+            } else if (!isSystemMessage) {
+              avatar = const SizedBox(width: 40);
+            }
+
             return ChatMessage(
               message: message,
               index: index,
               animation: animation,
               groupStatus: groupStatus,
               leadingWidget:
-                  message.authorId != _currentUser.id &&
-                          (groupStatus?.isLast ?? true) &&
-                          isRemoved != true
-                      ? Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Avatar(userId: message.authorId),
-                      )
+                  !isCurrentUser
+                      ? avatar
+                      : isSystemMessage
+                      ? null
                       : const SizedBox(width: 40),
               trailingWidget:
-                  message.authorId == _currentUser.id &&
-                          (groupStatus?.isLast ?? true) &&
-                          isRemoved != true
-                      ? Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Avatar(userId: message.authorId),
-                      )
+                  isCurrentUser
+                      ? avatar
+                      : isSystemMessage
+                      ? null
                       : const SizedBox(width: 40),
               child: child,
             );

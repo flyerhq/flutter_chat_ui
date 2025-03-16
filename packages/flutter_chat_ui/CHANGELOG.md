@@ -14,6 +14,7 @@
   - Both methods support customizable animation duration, curve, alignment and offset
   - Can be used directly through any `ChatController` instance
   - See the pagination example in the example project for usage details
+- Add validation to prevent duplicate message IDs
 
 **🐛 Bug Fixes**
 
