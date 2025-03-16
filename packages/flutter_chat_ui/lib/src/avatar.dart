@@ -38,9 +38,6 @@ class Avatar extends StatelessWidget {
       // This will update the cache when resolved
       future: userCache.getOrResolve(userId, resolveUser),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildAvatar(context, theme, null);
-        }
         return _buildAvatar(context, theme, snapshot.data);
       },
     );
@@ -110,17 +107,21 @@ class _AvatarContentState extends State<AvatarContent> {
   void didUpdateWidget(covariant AvatarContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.user?.imageSource != widget.user?.imageSource) {
-      final crossCache = context.read<CrossCache>();
-      final newImage = CachedNetworkImage(
-        widget.user!.imageSource!,
-        crossCache,
-      );
+      if (widget.user?.imageSource != null) {
+        final crossCache = context.read<CrossCache>();
+        final newImage = CachedNetworkImage(
+          widget.user!.imageSource!,
+          crossCache,
+        );
 
-      precacheImage(newImage, context).then((_) {
-        if (mounted) {
-          _cachedNetworkImage = newImage;
-        }
-      });
+        precacheImage(newImage, context).then((_) {
+          if (mounted) {
+            _cachedNetworkImage = newImage;
+          }
+        });
+      } else {
+        _cachedNetworkImage = null;
+      }
     }
   }
 
