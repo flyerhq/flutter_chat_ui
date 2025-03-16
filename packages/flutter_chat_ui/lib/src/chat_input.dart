@@ -35,8 +35,10 @@ class ChatInput extends StatefulWidget {
   final bool autofocus;
   final TextCapitalization textCapitalization;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
   final FocusNode? focusNode;
   final int? maxLength;
+  final int? minLines;
   final int? maxLines;
 
   const ChatInput({
@@ -71,9 +73,11 @@ class ChatInput extends StatefulWidget {
     this.autofocus = false,
     this.textCapitalization = TextCapitalization.sentences,
     this.keyboardType,
+    this.textInputAction = TextInputAction.newline,
     this.focusNode,
     this.maxLength,
-    this.maxLines,
+    this.minLines = 1,
+    this.maxLines = 3,
   });
 
   @override
@@ -174,7 +178,7 @@ class _ChatInputState extends State<ChatInput> {
                           color: widget.textColor ?? theme.colors.onSurface,
                         ),
                         onSubmitted: _handleSubmitted,
-                        textInputAction: TextInputAction.send,
+                        textInputAction: widget.textInputAction,
                         keyboardAppearance: widget.keyboardAppearance,
                         autocorrect: widget.autocorrect ?? true,
                         autofocus: widget.autofocus,
@@ -182,6 +186,7 @@ class _ChatInputState extends State<ChatInput> {
                         keyboardType: widget.keyboardType,
                         focusNode: widget.focusNode,
                         maxLength: widget.maxLength,
+                        minLines: widget.minLines,
                         maxLines: widget.maxLines,
                       ),
                     ),

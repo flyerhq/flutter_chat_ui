@@ -5,6 +5,9 @@
 - Changed dependency from `flutter_markdown` to `gpt_markdown` for the `FlyerChatTextMessage` class
 - `onMessageTap` callback now includes message index and tap up details - updated parameters to `(Message item, {int? index, TapUpDetails? details})`
 - Added more customization options to `ChatInput`, with default capitalization set to sentences
+- Changed default behavior of Enter key in `ChatInput` to create a newline instead of sending message
+  - To send message on Enter, set `textInputAction: TextInputAction.send` when configuring `ChatInput` through builders
+  - See `local.dart` example for how to use builders to customize input behavior
 
 **⚠️ New features ⚠️**
 
