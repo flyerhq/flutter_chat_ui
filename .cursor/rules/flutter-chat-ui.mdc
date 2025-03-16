@@ -1,0 +1,73 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flutter Chat UI - Project Overview
+
+An open-source chat UI package implemented in Dart for Flutter applications.
+
+## Core Values
+- **Performance** - Always optimize for performance
+- **Animations** - Smooth, polished animations are essential
+- **Resource Management** - Properly clean up resources
+- **Customization** - Provide flexible customization options
+- **Modularity** - Extract specific message types to separate packages
+- **Platform Support** - Must support all platforms, including web, so we can not directly import `dart:io` for example
+
+## Project Architecture
+
+### Monorepo Structure
+The project uses a Melos-managed monorepo with:
+- `/examples` - Demo applications 
+- `/packages` - Core and supplementary packages
+
+### Core Packages
+- `packages/flutter_chat_core` - Foundation package with controllers, models, theming
+- `packages/flutter_chat_ui` - Main UI package with minimal dependencies
+- `packages/cross_cache` - Image caching for both IO and web platforms
+
+### Message Type Packages (Prefixed with `flyer_chat_`)
+- `packages/flyer_chat_audio_message`
+- `packages/flyer_chat_custom_message`
+- `packages/flyer_chat_file_message`
+- `packages/flyer_chat_image_message`
+- `packages/flyer_chat_location_message`
+- `packages/flyer_chat_system_message`
+- `packages/flyer_chat_text_message`
+- `packages/flyer_chat_video_message`
+
+## Key Components
+
+### Chat Controller
+- [chat_controller.dart](mdc:packages/flutter_chat_core/lib/src/chat_controller/chat_controller.dart) - Interface for managing chat state
+- [in_memory_chat_controller.dart](mdc:packages/flutter_chat_core/lib/src/chat_controller/in_memory_chat_controller.dart) - Default implementation
+- Alternative implementations: [sembast_chat_controller.dart](mdc:examples/flyer_chat/lib/sembast_chat_controller.dart), [hive_chat_controller.dart](mdc:examples/flyer_chat/lib/hive_chat_controller.dart) in examples
+
+### Message Models
+- [message.dart](mdc:packages/flutter_chat_core/lib/src/models/message.dart) - Base message model
+
+### UI Components
+- [chat_animated_list.dart](mdc:packages/flutter_chat_ui/lib/src/chat_animated_list/chat_animated_list.dart) - Normal orientation list
+- [chat_animated_list_reversed.dart](mdc:packages/flutter_chat_ui/lib/src/chat_animated_list/chat_animated_list_reversed.dart) - Reversed orientation list
+
+### Customization System
+- [builders.dart](mdc:packages/flutter_chat_core/lib/src/models/builders.dart) - Functions for customizing component implementations
+- Allows users to provide their own implementation for any component
+
+## Examples
+- [local.dart](mdc:examples/flyer_chat/lib/local.dart) - Main example showcasing all features
+- Additional examples for AI agents and custom backends
+
+## Theming
+
+- [chat_theme.dart](mdc:packages/flutter_chat_core/lib/src/theme/chat_theme.dart) and [chat_theme_extension.dart](mdc:packages/flutter_chat_core/lib/src/theme/chat_theme_extension.dart) using Material Design principles to create themes
+- All widgets must use colors and typography from the theme, yet also provide overrides via params. Good example [simple_text_message.dart](mdc:packages/flutter_chat_ui/lib/src/simple_text_message.dart)
+
+## Architecture Decisions
+- Minimal dependencies in core packages
+- Extraction of message type implementations to optional packages
+- Builder pattern for complete customization
+- Using `provider` to register shared logic. Registering via `MultiProvider` in [chat.dart](mdc:packages/flutter_chat_ui/lib/src/chat.dart)
+- Support for both regular and reversed chat layouts
+- Controller-based state management 
