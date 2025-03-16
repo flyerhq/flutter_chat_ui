@@ -18,6 +18,7 @@
   - Can be used directly through any `ChatController` instance
   - See the pagination example in the example project for usage details
 - Add validation to prevent duplicate message IDs
+- Added support for sending messages using Shift+Enter keyboard shortcut in ChatInput
 
 **🐛 Bug Fixes**
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
@@ -87,12 +88,26 @@ class ChatInput extends StatefulWidget {
 class _ChatInputState extends State<ChatInput> {
   final _key = GlobalKey();
   late final TextEditingController _textController;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _textController = widget.textEditingController ?? TextEditingController();
+    _focusNode = widget.focusNode ?? FocusNode();
+    _focusNode.onKeyEvent = _handleKeyEvent;
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
+  }
+
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    // Check for Shift+Enter
+    if (event is KeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.enter &&
+        HardwareKeyboard.instance.isShiftPressed) {
+      _handleSubmitted(_textController.text);
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
   }
 
   @override
@@ -107,6 +122,9 @@ class _ChatInputState extends State<ChatInput> {
     // user handle disposing it how they want.
     if (widget.textEditingController == null) {
       _textController.dispose();
+    }
+    if (widget.focusNode == null) {
+      _focusNode.dispose();
     }
     super.dispose();
   }
@@ -184,7 +202,7 @@ class _ChatInputState extends State<ChatInput> {
                         autofocus: widget.autofocus,
                         textCapitalization: widget.textCapitalization,
                         keyboardType: widget.keyboardType,
-                        focusNode: widget.focusNode,
+                        focusNode: _focusNode,
                         maxLength: widget.maxLength,
                         minLines: widget.minLines,
                         maxLines: widget.maxLines,
