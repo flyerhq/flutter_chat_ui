@@ -6,6 +6,15 @@
 - `onMessageTap` callback now includes message index and tap up details - updated parameters to `(Message item, {int? index, TapUpDetails? details})`
 - Added more customization options to `ChatInput`, with default capitalization set to sentences
 
+**⚠️ New features ⚠️**
+
+- Add `ScrollToMessageMixin` to enable programmatic scrolling in chat list:
+  - `scrollToMessage(messageId)`: Scrolls to a specific message by ID
+  - `scrollToIndex(index)`: Scrolls to a message at a specific index
+  - Both methods support customizable animation duration, curve, alignment and offset
+  - Can be used directly through any `ChatController` instance
+  - See the pagination example in the example project for usage details
+
 **🐛 Bug Fixes**
 
 - Fixed flickering in avatar widget by implementing a user cache with LRU eviction strategy, allowing synchronous access to recently resolved user data

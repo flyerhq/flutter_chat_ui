@@ -1,6 +1,7 @@
 export 'src/chat_controller/chat_controller.dart';
 export 'src/chat_controller/chat_operation.dart';
 export 'src/chat_controller/in_memory_chat_controller.dart';
+export 'src/chat_controller/scroll_to_message_mixin.dart';
 export 'src/chat_controller/upload_progress_mixin.dart';
 export 'src/models/builders.dart';
 export 'src/models/link_preview.dart';

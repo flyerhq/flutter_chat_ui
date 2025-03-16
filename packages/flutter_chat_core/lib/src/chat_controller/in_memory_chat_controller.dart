@@ -3,10 +3,11 @@ import 'dart:async';
 import '../models/message.dart';
 import 'chat_controller.dart';
 import 'chat_operation.dart';
+import 'scroll_to_message_mixin.dart';
 import 'upload_progress_mixin.dart';
 
 class InMemoryChatController
-    with UploadProgressMixin
+    with UploadProgressMixin, ScrollToMessageMixin
     implements ChatController {
   List<Message> _messages;
   final _operationsController = StreamController<ChatOperation>.broadcast();
@@ -65,7 +66,8 @@ class InMemoryChatController
 
   @override
   void dispose() {
-    disposeUploadProgress();
     _operationsController.close();
+    disposeUploadProgress();
+    disposeScrollMethods();
   }
 }

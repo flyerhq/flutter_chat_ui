@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:provider/provider.dart';
+
+import 'widgets/input_action_bar.dart';
 
 class Pagination extends StatefulWidget {
   const Pagination({super.key});
@@ -29,6 +32,7 @@ class PaginationState extends State<Pagination> {
 
   String? _lastMessageId;
   bool _hasMore = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -50,7 +54,28 @@ class PaginationState extends State<Pagination> {
               onEndReached: _loadMore,
             );
           },
-          inputBuilder: (context) => const SizedBox.shrink(),
+          inputBuilder:
+              (context) => CustomInput(
+                topWidget: InputActionBar(
+                  buttons: [
+                    InputActionButton(
+                      icon: Icons.call_to_action,
+                      title: 'Scroll to 1',
+                      onPressed: () => _scrollToMessage('1'),
+                    ),
+                    InputActionButton(
+                      icon: Icons.call_to_action,
+                      title: 'Scroll to 40',
+                      onPressed: () => _scrollToMessage('40'),
+                    ),
+                    InputActionButton(
+                      icon: Icons.call_to_action,
+                      title: 'Scroll to 80',
+                      onPressed: () => _scrollToMessage('80'),
+                    ),
+                  ],
+                ),
+              ),
         ),
         chatController: _chatController,
         currentUserId: _currentUser.id,
@@ -65,7 +90,9 @@ class PaginationState extends State<Pagination> {
   }
 
   Future<void> _loadMore() async {
-    if (!_hasMore) return;
+    if (!_hasMore || _isLoading) return;
+
+    _isLoading = true;
 
     final messages = await MockDatabase.getMessages(
       limit: 20,
@@ -74,11 +101,59 @@ class PaginationState extends State<Pagination> {
 
     if (messages.isEmpty) {
       _hasMore = false;
+      _isLoading = false;
       return;
     }
 
     await _chatController.set([...messages, ..._chatController.messages]);
     _lastMessageId = messages.first.id;
+    _isLoading = false;
+  }
+
+  /// Scrolls to a specific message ID, loading necessary pages first if needed
+  Future<void> _scrollToMessage(String messageId) async {
+    // First check if the message is already loaded
+    var messageExists = _chatController.messages.any((m) => m.id == messageId);
+
+    if (messageExists) {
+      // Message is already loaded, scroll to it directly
+      // If the list is reserved, we might need to add an offset that
+      // is equal to the height of the chat input (not including the safe area).
+      // For this example it would be 110.
+      await _chatController.scrollToMessage(messageId);
+      return;
+    }
+
+    // Message is not loaded, show loading information
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Text('Loading message $messageId...'),
+        duration: const Duration(
+          minutes: 1,
+        ), // Long duration since we'll dismiss it manually
+      ),
+    );
+
+    while (!messageExists) {
+      await _loadMore();
+
+      // Check if message is now loaded
+      messageExists = _chatController.messages.any((m) => m.id == messageId);
+    }
+
+    // Dismiss loaded information
+    scaffoldMessenger.hideCurrentSnackBar();
+
+    // If the list is reversed, we need to wait for insert animation to complete
+    // await Future.delayed(const Duration(milliseconds: 250));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // If the list is reserved, we might need to add an offset that
+      // is equal to the height of the chat input (not including the safe area).
+      // For this example it would be 110.
+      _chatController.scrollToMessage(messageId);
+    });
   }
 }
 
@@ -110,5 +185,66 @@ class MockDatabase {
     if (start >= _messages.length) return [];
 
     return _messages.skip(start).take(limit).toList().reversed.toList();
+  }
+}
+
+class CustomInput extends StatefulWidget {
+  final Widget topWidget;
+
+  const CustomInput({super.key, required this.topWidget});
+
+  @override
+  State<CustomInput> createState() => _CustomInputState();
+}
+
+class _CustomInputState extends State<CustomInput> {
+  final _key = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+    final theme = context.watch<ChatTheme>();
+
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: ClipRect(
+        child: Container(
+          key: _key,
+          color: theme.colors.surfaceContainerLow,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: bottomSafeArea),
+            child: widget.topWidget,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _measure() {
+    if (!mounted) return;
+
+    final renderBox = _key.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox != null) {
+      final height = renderBox.size.height;
+      final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+
+      context.read<ChatInputHeightNotifier>().setHeight(
+        height - bottomSafeArea,
+      );
+    }
   }
 }

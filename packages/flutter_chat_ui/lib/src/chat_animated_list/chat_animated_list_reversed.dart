@@ -94,7 +94,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
     _scrollController = widget.scrollController ?? ScrollController();
     _observerController = SliverObserverController(
       controller: _scrollController,
-    );
+    )..cacheJumpIndexOffset = false;
     // TODO: Add assert for messages having same id
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
@@ -150,6 +150,14 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
       parent: _scrollToBottomController,
       curve: Curves.linearToEaseOut,
     );
+
+    // If controller supports ScrollToMessageMixin, attach the scroll methods
+    if (_chatController is ScrollToMessageMixin) {
+      (_chatController as ScrollToMessageMixin).attachScrollMethods(
+        scrollToMessageId: _scrollToMessageId,
+        scrollToIndex: _scrollToIndex,
+      );
+    }
   }
 
   @override
@@ -162,6 +170,11 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
     // user handle disposing it how they want.
     if (widget.scrollController == null) {
       _scrollController.dispose();
+    }
+
+    // If controller supports ScrollToMessageMixin, detach the scroll methods
+    if (_chatController is ScrollToMessageMixin) {
+      (_chatController as ScrollToMessageMixin).detachScrollMethods();
     }
 
     super.dispose();
@@ -412,6 +425,79 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
           context.read<LoadMoreNotifier>().setLoading(false);
         }
       });
+    }
+  }
+
+  /// Scrolls to a specific message by ID.
+  Future<void> _scrollToMessageId(
+    String messageId, {
+    Duration duration = const Duration(milliseconds: 250),
+    Curve curve = Curves.linearToEaseOut,
+    double alignment = 0,
+    double offset = 0,
+  }) async {
+    final index = _chatController.messages.indexWhere((m) => m.id == messageId);
+    if (index == -1) {
+      return;
+    }
+
+    return _scrollToIndex(
+      index,
+      duration: duration,
+      curve: curve,
+      alignment: alignment,
+      offset: offset,
+    );
+  }
+
+  /// Scrolls to a specific index in the message list.
+  Future<void> _scrollToIndex(
+    int index, {
+    Duration duration = const Duration(milliseconds: 250),
+    Curve curve = Curves.linearToEaseOut,
+    double alignment = 0,
+    double offset = 0,
+  }) async {
+    if (index < 0 || index >= _chatController.messages.length) {
+      return;
+    }
+
+    // Transform the content index to visual index for the reversed list
+    final currentIndex = max(_chatController.messages.length - 1 - index, 0);
+
+    if (_sliverListViewContext == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!_scrollController.hasClients || !mounted) return;
+        return _scrollToIndex(
+          index,
+          duration: duration,
+          curve: curve,
+          alignment: alignment,
+          offset: offset,
+        );
+      });
+    }
+
+    try {
+      if (duration == Duration.zero) {
+        await _observerController.jumpTo(
+          index: currentIndex,
+          alignment: alignment,
+          offset: (targetOffset) => offset,
+          renderSliverType: ObserverRenderSliverType.list,
+        );
+      } else {
+        await _observerController.animateTo(
+          index: currentIndex,
+          duration: duration,
+          curve: curve,
+          alignment: alignment,
+          offset: (targetOffset) => offset,
+          renderSliverType: ObserverRenderSliverType.list,
+        );
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 

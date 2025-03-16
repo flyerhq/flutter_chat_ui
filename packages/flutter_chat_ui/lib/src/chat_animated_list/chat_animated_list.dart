@@ -104,7 +104,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     _scrollController = widget.scrollController ?? ScrollController();
     _observerController = SliverObserverController(
       controller: _scrollController,
-    );
+    )..cacheJumpIndexOffset = false;
     // TODO: Add assert for messages having same id
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
@@ -173,6 +173,14 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       _needsInitialScrollPositionAdjustment =
           widget.initialScrollToEndMode == InitialScrollToEndMode.jump;
     }
+
+    // If controller supports ScrollToMessageMixin, attach the scroll methods
+    if (_chatController is ScrollToMessageMixin) {
+      (_chatController as ScrollToMessageMixin).attachScrollMethods(
+        scrollToMessageId: _scrollToMessageId,
+        scrollToIndex: _scrollToIndex,
+      );
+    }
   }
 
   @override
@@ -216,6 +224,11 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
     // user handle disposing it how they want.
     if (widget.scrollController == null) {
       _scrollController.dispose();
+    }
+
+    // If controller supports ScrollToMessageMixin, detach the scroll methods
+    if (_chatController is ScrollToMessageMixin) {
+      (_chatController as ScrollToMessageMixin).detachScrollMethods();
     }
 
     super.dispose();
@@ -585,6 +598,76 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
           notifier.setLoading(false);
         }
       });
+    }
+  }
+
+  /// Scrolls to a specific message by ID.
+  Future<void> _scrollToMessageId(
+    String messageId, {
+    Duration duration = const Duration(milliseconds: 250),
+    Curve curve = Curves.linearToEaseOut,
+    double alignment = 0,
+    double offset = 0,
+  }) async {
+    final index = _chatController.messages.indexWhere((m) => m.id == messageId);
+    if (index == -1) {
+      return;
+    }
+
+    return _scrollToIndex(
+      index,
+      duration: duration,
+      curve: curve,
+      alignment: alignment,
+      offset: offset,
+    );
+  }
+
+  /// Scrolls to a specific index in the message list.
+  Future<void> _scrollToIndex(
+    int index, {
+    Duration duration = const Duration(milliseconds: 250),
+    Curve curve = Curves.linearToEaseOut,
+    double alignment = 0,
+    double offset = 0,
+  }) async {
+    if (index < 0 || index >= _chatController.messages.length) {
+      return;
+    }
+
+    if (_sliverListViewContext == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!_scrollController.hasClients || !mounted) return;
+        return _scrollToIndex(
+          index,
+          duration: duration,
+          curve: curve,
+          alignment: alignment,
+          offset: offset,
+        );
+      });
+    }
+
+    try {
+      if (duration == Duration.zero) {
+        await _observerController.jumpTo(
+          index: index,
+          alignment: alignment,
+          offset: (targetOffset) => offset,
+          renderSliverType: ObserverRenderSliverType.list,
+        );
+      } else {
+        await _observerController.animateTo(
+          index: index,
+          duration: duration,
+          curve: curve,
+          alignment: alignment,
+          offset: (targetOffset) => offset,
+          renderSliverType: ObserverRenderSliverType.list,
+        );
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 

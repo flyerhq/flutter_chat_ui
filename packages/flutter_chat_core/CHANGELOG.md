@@ -1,6 +1,12 @@
 ## 0.0.8
 
 - Add `UserCache` class to store resolved users for synchronous access, preventing flickering in recycled widgets by caching user data with LRU eviction strategy
+- Add `ScrollToMessageMixin` to enable programmatic scrolling in chat list:
+  - `scrollToMessage(messageId)`: Scrolls to a specific message by ID
+  - `scrollToIndex(index)`: Scrolls to a message at a specific index
+  - Both methods support customizable animation duration, curve, alignment and offset
+  - Can be used directly through any `ChatController` instance
+  - See the pagination example in the example project for usage details
 
 ## 0.0.7
 
