@@ -116,11 +116,15 @@ class _AvatarContentState extends State<AvatarContent> {
 
         precacheImage(newImage, context).then((_) {
           if (mounted) {
-            _cachedNetworkImage = newImage;
+            setState(() {
+              _cachedNetworkImage = newImage;
+            });
           }
         });
       } else {
-        _cachedNetworkImage = null;
+        setState(() {
+          _cachedNetworkImage = null;
+        });
       }
     }
   }
