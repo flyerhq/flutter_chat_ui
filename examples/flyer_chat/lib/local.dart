@@ -1,12 +1,15 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
 
 import 'create_message.dart';
@@ -164,8 +167,8 @@ class LocalState extends State<Local> {
           ),
         ),
         onAttachmentTap: _handleAttachmentTap,
+        onMessageLongPress: _handleMessageLongPress,
         onMessageSend: _addItem,
-        onMessageTap: _removeItem,
         resolveUser:
             (id) => Future.value(switch (id) {
               'me' => _currentUser,
@@ -179,6 +182,54 @@ class LocalState extends State<Local> {
                 : ChatTheme.light(),
       ),
     );
+  }
+
+  void _handleMessageLongPress(
+    Message message, {
+    int? index,
+    LongPressStartDetails? details,
+  }) async {
+    // Skip showing menu for system messages
+    if (message.authorId == 'system' || details == null) return;
+
+    // Calculate position for the menu
+    final position = details.globalPosition;
+
+    // Create a Rect for the menu position (small area around tap point)
+    final menuRect = Rect.fromCenter(
+      center: position,
+      width: 0, // Width and height of 0 means show exactly at the point
+      height: 0,
+    );
+
+    final items = [
+      if (message is TextMessage)
+        PullDownMenuItem(
+          title: 'Copy',
+          icon: CupertinoIcons.doc_on_doc,
+          onTap: () {
+            _copyMessage(message);
+          },
+        ),
+      PullDownMenuItem(
+        title: 'Delete',
+        icon: CupertinoIcons.delete,
+        isDestructive: true,
+        onTap: () {
+          _removeItem(message);
+        },
+      ),
+    ];
+
+    await showPullDownMenu(context: context, position: menuRect, items: items);
+  }
+
+  void _copyMessage(TextMessage message) async {
+    await Clipboard.setData(ClipboardData(text: message.text));
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Copied: ${message.text}')));
   }
 
   void _addItem(String? text) async {
@@ -221,7 +272,7 @@ class LocalState extends State<Local> {
     }
   }
 
-  void _removeItem(Message item, {int? index, TapUpDetails? details}) async {
+  void _removeItem(Message item) async {
     await _chatController.remove(item);
   }
 
