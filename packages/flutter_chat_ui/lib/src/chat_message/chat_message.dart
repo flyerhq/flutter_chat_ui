@@ -63,6 +63,7 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final onMessageTap = context.read<OnMessageTapCallback?>();
+    final onMessageLongPress = context.read<OnMessageLongPressCallback?>();
     final isSentByMe = context.watch<String>() == message.authorId;
 
     final curvedAnimation = CurvedAnimation(
@@ -77,6 +78,9 @@ class ChatMessage extends StatelessWidget {
       onTapUp:
           (details) =>
               onMessageTap?.call(message, index: index, details: details),
+      onLongPressStart:
+          (details) =>
+              onMessageLongPress?.call(message, index: index, details: details),
       child: FadeTransition(
         opacity: curvedAnimation,
         child: SizeTransition(

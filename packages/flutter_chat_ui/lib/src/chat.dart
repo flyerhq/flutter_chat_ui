@@ -20,6 +20,7 @@ class Chat extends StatefulWidget {
   final ChatTheme? theme;
   final OnMessageSendCallback? onMessageSend;
   final OnMessageTapCallback? onMessageTap;
+  final OnMessageLongPressCallback? onMessageLongPress;
   final OnAttachmentTapCallback? onAttachmentTap;
   final Color? backgroundColor;
   final Decoration? decoration;
@@ -34,6 +35,7 @@ class Chat extends StatefulWidget {
     this.theme,
     this.onMessageSend,
     this.onMessageTap,
+    this.onMessageLongPress,
     this.onAttachmentTap,
     this.backgroundColor = _sentinelColor,
     this.decoration,
@@ -94,6 +96,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: _crossCache),
         Provider.value(value: widget.onMessageSend),
         Provider.value(value: widget.onMessageTap),
+        Provider.value(value: widget.onMessageLongPress),
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
         ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
