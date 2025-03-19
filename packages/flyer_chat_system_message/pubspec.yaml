@@ -12,6 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_chat_core: ^0.0.8
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_lints: ^5.0.0

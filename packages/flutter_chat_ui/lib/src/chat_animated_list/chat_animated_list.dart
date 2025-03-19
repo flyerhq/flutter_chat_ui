@@ -23,6 +23,8 @@ class ChatAnimatedList extends StatefulWidget {
   final ScrollController? scrollController;
   final Duration insertAnimationDuration;
   final Duration removeAnimationDuration;
+  final MessageAnimationDurationResolver? insertAnimationDurationResolver;
+  final MessageAnimationDurationResolver? removeAnimationDurationResolver;
   final Duration scrollToEndAnimationDuration;
   final Duration scrollToBottomAppearanceDelay;
   final double? topPadding;
@@ -48,6 +50,8 @@ class ChatAnimatedList extends StatefulWidget {
     this.scrollController,
     this.insertAnimationDuration = const Duration(milliseconds: 250),
     this.removeAnimationDuration = const Duration(milliseconds: 250),
+    this.insertAnimationDurationResolver,
+    this.removeAnimationDurationResolver,
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToBottomAppearanceDelay = const Duration(milliseconds: 250),
     this.topPadding = 8,
@@ -680,15 +684,26 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       _userHasScrolled = false;
     }
 
+    final Duration duration;
+
+    if (_scrollController.position.maxScrollExtent == 0) {
+      if (widget.insertAnimationDurationResolver != null) {
+        duration =
+            widget.insertAnimationDurationResolver!(data) ??
+            widget.insertAnimationDuration;
+      } else {
+        duration = widget.insertAnimationDuration;
+      }
+    } else {
+      duration = Duration.zero;
+    }
+
     _listKey.currentState!.insertItem(
       position,
       // We are only animating items when scroll view is not yet scrollable,
       // otherwise we just insert the item without animation.
       // (animation is replaced with scroll to bottom animation)
-      duration:
-          _scrollController.position.maxScrollExtent == 0
-              ? widget.insertAnimationDuration
-              : Duration.zero,
+      duration: duration,
     );
 
     // Used later to trigger scroll to end only for the last inserted message.
@@ -698,6 +713,13 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _onRemoved(final int position, final Message data) {
+    // Use animation duration resolver if provided, otherwise use default duration.
+    final duration =
+        widget.removeAnimationDurationResolver != null
+            ? (widget.removeAnimationDurationResolver!(data) ??
+                widget.removeAnimationDuration)
+            : widget.removeAnimationDuration;
+
     _listKey.currentState!.removeItem(
       position,
       (context, animation) => widget.itemBuilder(
@@ -708,16 +730,20 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         messageGroupingTimeoutInSeconds: widget.messageGroupingTimeoutInSeconds,
         isRemoved: true,
       ),
-      duration: widget.removeAnimationDuration,
+      duration: duration,
     );
   }
 
   void _onChanged(int position, Message oldData, Message newData) {
+    // Use animation duration resolver if provided, otherwise use default duration.
+    final duration =
+        widget.insertAnimationDurationResolver != null
+            ? (widget.insertAnimationDurationResolver!(newData) ??
+                widget.insertAnimationDuration)
+            : widget.insertAnimationDuration;
+
     _onRemoved(position, oldData);
-    _listKey.currentState!.insertItem(
-      position,
-      duration: widget.insertAnimationDuration,
-    );
+    _listKey.currentState!.insertItem(position, duration: duration);
   }
 
   void _onDiffUpdate(diffutil.DataDiffUpdate<Message> update) {

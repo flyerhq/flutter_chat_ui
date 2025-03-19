@@ -20,6 +20,8 @@ class ChatAnimatedListReversed extends StatefulWidget {
   final ScrollController? scrollController;
   final Duration insertAnimationDuration;
   final Duration removeAnimationDuration;
+  final MessageAnimationDurationResolver? insertAnimationDurationResolver;
+  final MessageAnimationDurationResolver? removeAnimationDurationResolver;
   final Duration scrollToEndAnimationDuration;
   final Duration scrollToBottomAppearanceDelay;
   final double? topPadding;
@@ -43,6 +45,8 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.scrollController,
     this.insertAnimationDuration = const Duration(milliseconds: 250),
     this.removeAnimationDuration = const Duration(milliseconds: 250),
+    this.insertAnimationDurationResolver,
+    this.removeAnimationDurationResolver,
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToBottomAppearanceDelay = const Duration(milliseconds: 250),
     this.topPadding = 8,
@@ -508,10 +512,14 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
       _userHasScrolled = false;
     }
 
-    _listKey.currentState!.insertItem(
-      position,
-      duration: widget.insertAnimationDuration,
-    );
+    // Use animation duration resolver if provided, otherwise use default duration.
+    final duration =
+        widget.insertAnimationDurationResolver != null
+            ? (widget.insertAnimationDurationResolver!(data) ??
+                widget.insertAnimationDuration)
+            : widget.insertAnimationDuration;
+
+    _listKey.currentState!.insertItem(position, duration: duration);
 
     // Used later to trigger scroll to end only for the last inserted message.
     _lastInsertedMessageId = data.id;
@@ -520,6 +528,12 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
   }
 
   void _onRemoved(final int position, final Message data) {
+    // Use animation duration resolver if provided, otherwise use default duration.
+    final duration =
+        widget.removeAnimationDurationResolver != null
+            ? (widget.removeAnimationDurationResolver!(data) ??
+                widget.removeAnimationDuration)
+            : widget.removeAnimationDuration;
     final visualPosition = max(_oldList.length - position - 1, 0);
     _listKey.currentState!.removeItem(
       visualPosition,
@@ -531,15 +545,22 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         messageGroupingTimeoutInSeconds: widget.messageGroupingTimeoutInSeconds,
         isRemoved: true,
       ),
-      duration: widget.removeAnimationDuration,
+      duration: duration,
     );
   }
 
   void _onChanged(int position, Message oldData, Message newData) {
+    // Use animation duration resolver if provided, otherwise use default duration.
+    final duration =
+        widget.insertAnimationDurationResolver != null
+            ? (widget.insertAnimationDurationResolver!(newData) ??
+                widget.insertAnimationDuration)
+            : widget.insertAnimationDuration;
+
     _onRemoved(position, oldData);
     _listKey.currentState!.insertItem(
       max(_oldList.length - position - 1, 0),
-      duration: widget.insertAnimationDuration,
+      duration: duration,
     );
   }
 

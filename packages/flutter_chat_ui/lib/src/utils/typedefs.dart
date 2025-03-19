@@ -8,3 +8,4 @@ typedef OnMessageLongPressCallback =
 typedef OnMessageSendCallback = void Function(String text);
 typedef OnAttachmentTapCallback = VoidCallback;
 typedef PaginationCallback = Future<void> Function();
+typedef MessageAnimationDurationResolver = Duration? Function(Message message);

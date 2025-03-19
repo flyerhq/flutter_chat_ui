@@ -70,6 +70,28 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) =>
       'type': instance.$type,
     };
 
+_$SystemMessageImpl _$$SystemMessageImplFromJson(Map<String, dynamic> json) =>
+    _$SystemMessageImpl(
+      id: json['id'] as String,
+      authorId: json['authorId'] as String,
+      createdAt: const EpochDateTimeConverter().fromJson(
+        (json['createdAt'] as num).toInt(),
+      ),
+      metadata: json['metadata'] as Map<String, dynamic>?,
+      text: json['text'] as String,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$SystemMessageImplToJson(_$SystemMessageImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (instance.metadata case final value?) 'metadata': value,
+      'text': instance.text,
+      'type': instance.$type,
+    };
+
 _$CustomMessageImpl _$$CustomMessageImplFromJson(Map<String, dynamic> json) =>
     _$CustomMessageImpl(
       id: json['id'] as String,

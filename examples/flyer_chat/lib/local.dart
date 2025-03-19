@@ -7,8 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
+import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
 
@@ -41,6 +44,12 @@ class LocalState extends State<Local> {
   bool _isTyping = false;
 
   @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting();
+  }
+
+  @override
   void dispose() {
     _chatController.dispose();
     super.dispose();
@@ -55,6 +64,15 @@ class LocalState extends State<Local> {
       body: Chat(
         backgroundColor: null,
         builders: Builders(
+          chatAnimatedListBuilder: (context, itemBuilder) {
+            return ChatAnimatedList(
+              itemBuilder: itemBuilder,
+              insertAnimationDurationResolver: (message) {
+                if (message is SystemMessage) return Duration.zero;
+                return null;
+              },
+            );
+          },
           customMessageBuilder:
               (context, message, index) => Container(
                 padding: const EdgeInsets.symmetric(
@@ -73,6 +91,9 @@ class LocalState extends State<Local> {
           imageMessageBuilder:
               (context, message, index) =>
                   FlyerChatImageMessage(message: message, index: index),
+          systemMessageBuilder:
+              (context, message, index) =>
+                  FlyerChatSystemMessage(message: message, index: index),
           inputBuilder:
               (context) => ChatInput(
                 topWidget: InputActionBar(
@@ -144,6 +165,15 @@ class LocalState extends State<Local> {
                       : isSystemMessage
                       ? null
                       : const SizedBox(width: 40),
+              receivedMessageScaleAnimationAlignment:
+                  (message is SystemMessage)
+                      ? Alignment.center
+                      : Alignment.centerLeft,
+              receivedMessageAlignment:
+                  (message is SystemMessage)
+                      ? AlignmentDirectional.center
+                      : AlignmentDirectional.centerStart,
+              horizontalPadding: (message is SystemMessage) ? 0 : 8,
               child: child,
             );
           },
@@ -242,6 +272,20 @@ class LocalState extends State<Local> {
         await _toggleTyping();
         await Future.delayed(const Duration(milliseconds: 250));
       }
+      if (_chatController.messages.isEmpty) {
+        final now = DateTime.now().toUtc();
+        final formattedDate = DateFormat(
+          'd MMMM yyyy, HH:mm',
+        ).format(now.toLocal());
+        await _chatController.insert(
+          SystemMessage(
+            id: _uuid.v4(),
+            authorId: _systemUser.id,
+            createdAt: now,
+            text: formattedDate,
+          ),
+        );
+      }
       await _chatController.insert(message);
     }
   }
@@ -274,6 +318,9 @@ class LocalState extends State<Local> {
 
   void _removeItem(Message item) async {
     await _chatController.remove(item);
+    if (_chatController.messages.length == 1) {
+      await _chatController.remove(_chatController.messages[0]);
+    }
   }
 
   void _handleAttachmentTap() async {

@@ -31,6 +31,14 @@ sealed class Message with _$Message {
     bool? overlay,
   }) = ImageMessage;
 
+  const factory Message.system({
+    required String id,
+    required String authorId,
+    @EpochDateTimeConverter() required DateTime createdAt,
+    Map<String, dynamic>? metadata,
+    required String text,
+  }) = SystemMessage;
+
   const factory Message.custom({
     required String id,
     required String authorId,
