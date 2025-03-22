@@ -14,6 +14,7 @@ import 'get_image_dimensions.dart';
 class FlyerChatImageMessage extends StatefulWidget {
   static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
   static const Color _sentinelColor = Colors.transparent;
+  static const TextStyle _sentinelTextStyle = TextStyle();
 
   final ImageMessage message;
   final int index;
@@ -25,6 +26,9 @@ class FlyerChatImageMessage extends StatefulWidget {
   final Color? loadingIndicatorColor;
   final Color? uploadOverlayColor;
   final Color? uploadIndicatorColor;
+  final String? time;
+  final TextStyle? timeStyle;
+  final Color? timeBackground;
 
   const FlyerChatImageMessage({
     super.key,
@@ -38,6 +42,9 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.loadingIndicatorColor = _sentinelColor,
     this.uploadOverlayColor = _sentinelColor,
     this.uploadIndicatorColor = _sentinelColor,
+    this.time,
+    this.timeStyle = _sentinelTextStyle,
+    this.timeBackground = _sentinelColor,
   });
 
   @override
@@ -128,6 +135,22 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
+    final timeWidget =
+        widget.time != null
+            ? TimeWidget(
+              time: widget.time!,
+              textStyle:
+                  widget.timeStyle == FlyerChatImageMessage._sentinelTextStyle
+                      ? theme.typography.labelSmall.copyWith(
+                        color: Colors.white,
+                      )
+                      : widget.timeStyle,
+              backgroundColor:
+                  widget.timeBackground == FlyerChatImageMessage._sentinelColor
+                      ? Colors.black.withValues(alpha: 0.6)
+                      : widget.timeBackground,
+            )
+            : null;
 
     return ClipRRect(
       borderRadius:
@@ -240,10 +263,37 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     );
                   },
                 ),
+              if (timeWidget != null)
+                Positioned(bottom: 8, right: 8, child: timeWidget),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class TimeWidget extends StatelessWidget {
+  final String time;
+  final Color? backgroundColor;
+  final TextStyle? textStyle;
+
+  const TimeWidget({
+    super.key,
+    required this.time,
+    this.backgroundColor,
+    this.textStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(time, style: textStyle),
     );
   }
 }

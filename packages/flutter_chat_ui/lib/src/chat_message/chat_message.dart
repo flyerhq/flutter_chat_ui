@@ -120,11 +120,6 @@ class ChatMessage extends StatelessWidget {
   }
 
   EdgeInsetsGeometry _resolveDefaultPadding(BuildContext context) {
-    if (message is TextMessage &&
-        (message as TextMessage).isOnlyEmoji == true) {
-      return EdgeInsets.zero;
-    }
-
     if (index == 0) {
       return EdgeInsets.symmetric(horizontal: horizontalPadding ?? 0);
     }

@@ -16,6 +16,8 @@ class SimpleTextMessage extends StatelessWidget {
   final Color? receivedBackgroundColor;
   final TextStyle? sentTextStyle;
   final TextStyle? receivedTextStyle;
+  final TextStyle? timeStyle;
+  final String? time;
 
   const SimpleTextMessage({
     super.key,
@@ -28,6 +30,8 @@ class SimpleTextMessage extends StatelessWidget {
     this.receivedBackgroundColor = _sentinelColor,
     this.sentTextStyle = _sentinelTextStyle,
     this.receivedTextStyle = _sentinelTextStyle,
+    this.timeStyle = _sentinelTextStyle,
+    this.time,
   });
 
   bool get _isOnlyEmoji => message.isOnlyEmoji == true;
@@ -38,9 +42,26 @@ class SimpleTextMessage extends StatelessWidget {
     final isSentByMe = context.watch<String>() == message.authorId;
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final textStyle = _resolveTextStyle(isSentByMe, theme);
+    final timeStyle = _resolveTimeStyle(isSentByMe, theme);
+
+    final timeWidget = time != null ? Text(time!, style: timeStyle) : null;
+
+    final textContent = Text(
+      message.text,
+      style:
+          _isOnlyEmoji
+              ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
+              : textStyle,
+    );
 
     return Container(
-      padding: padding,
+      padding:
+          _isOnlyEmoji
+              ? EdgeInsets.symmetric(
+                horizontal: (padding?.horizontal ?? 0) / 2,
+                vertical: 0,
+              )
+              : padding,
       decoration:
           _isOnlyEmoji
               ? null
@@ -51,12 +72,19 @@ class SimpleTextMessage extends StatelessWidget {
                         ? theme.shape
                         : borderRadius,
               ),
-      child: Text(
-        message.text,
-        style:
-            _isOnlyEmoji
-                ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
-                : textStyle,
+      child: Stack(
+        children: [
+          timeWidget != null
+              ? Padding(
+                padding: EdgeInsets.only(bottom: textStyle?.lineHeight ?? 0),
+                child: textContent,
+              )
+              : textContent,
+          if (timeWidget != null) ...[
+            Opacity(opacity: 0, child: timeWidget),
+            Positioned(right: 0, bottom: 0, child: timeWidget),
+          ],
+        ],
       ),
     );
   }
@@ -82,4 +110,22 @@ class SimpleTextMessage extends StatelessWidget {
         ? theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface)
         : receivedTextStyle;
   }
+
+  TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
+    if (isSentByMe) {
+      return timeStyle == _sentinelTextStyle
+          ? theme.typography.labelSmall.copyWith(
+            color:
+                _isOnlyEmoji ? theme.colors.onSurface : theme.colors.onPrimary,
+          )
+          : timeStyle;
+    }
+    return timeStyle == _sentinelTextStyle
+        ? theme.typography.labelSmall.copyWith(color: theme.colors.onSurface)
+        : timeStyle;
+  }
+}
+
+extension on TextStyle {
+  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }

@@ -17,6 +17,8 @@ class FlyerChatTextMessage extends StatelessWidget {
   final Color? receivedBackgroundColor;
   final TextStyle? sentTextStyle;
   final TextStyle? receivedTextStyle;
+  final TextStyle? timeStyle;
+  final String? time;
 
   const FlyerChatTextMessage({
     super.key,
@@ -29,6 +31,8 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.receivedBackgroundColor = _sentinelColor,
     this.sentTextStyle = _sentinelTextStyle,
     this.receivedTextStyle = _sentinelTextStyle,
+    this.timeStyle = _sentinelTextStyle,
+    this.time,
   });
 
   bool get _isOnlyEmoji => message.isOnlyEmoji == true;
@@ -39,9 +43,26 @@ class FlyerChatTextMessage extends StatelessWidget {
     final isSentByMe = context.watch<String>() == message.authorId;
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final paragraphStyle = _resolveParagraphStyle(isSentByMe, theme);
+    final timeStyle = _resolveTimeStyle(isSentByMe, theme);
+
+    final timeWidget = time != null ? Text(time!, style: timeStyle) : null;
+
+    final textContent = GptMarkdown(
+      message.text,
+      style:
+          _isOnlyEmoji
+              ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+              : paragraphStyle,
+    );
 
     return Container(
-      padding: padding,
+      padding:
+          _isOnlyEmoji
+              ? EdgeInsets.symmetric(
+                horizontal: (padding?.horizontal ?? 0) / 2,
+                vertical: 0,
+              )
+              : padding,
       decoration:
           _isOnlyEmoji
               ? null
@@ -52,12 +73,21 @@ class FlyerChatTextMessage extends StatelessWidget {
                         ? theme.shape
                         : borderRadius,
               ),
-      child: GptMarkdown(
-        message.text,
-        style:
-            _isOnlyEmoji
-                ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
-                : paragraphStyle,
+      child: Stack(
+        children: [
+          timeWidget != null
+              ? Padding(
+                padding: EdgeInsets.only(
+                  bottom: paragraphStyle?.lineHeight ?? 0,
+                ),
+                child: textContent,
+              )
+              : textContent,
+          if (timeWidget != null) ...[
+            Opacity(opacity: 0, child: timeWidget),
+            Positioned(right: 0, bottom: 0, child: timeWidget),
+          ],
+        ],
       ),
     );
   }
@@ -83,4 +113,22 @@ class FlyerChatTextMessage extends StatelessWidget {
         ? theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface)
         : receivedTextStyle;
   }
+
+  TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
+    if (isSentByMe) {
+      return timeStyle == _sentinelTextStyle
+          ? theme.typography.labelSmall.copyWith(
+            color:
+                _isOnlyEmoji ? theme.colors.onSurface : theme.colors.onPrimary,
+          )
+          : timeStyle;
+    }
+    return timeStyle == _sentinelTextStyle
+        ? theme.typography.labelSmall.copyWith(color: theme.colors.onSurface)
+        : timeStyle;
+  }
+}
+
+extension on TextStyle {
+  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }

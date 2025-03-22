@@ -89,8 +89,11 @@ class LocalState extends State<Local> {
                 child: IsTypingIndicator(),
               ),
           imageMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatImageMessage(message: message, index: index),
+              (context, message, index) => FlyerChatImageMessage(
+                message: message,
+                index: index,
+                time: DateFormat('h:mm a').format(message.createdAt.toLocal()),
+              ),
           systemMessageBuilder:
               (context, message, index) =>
                   FlyerChatSystemMessage(message: message, index: index),
@@ -118,8 +121,11 @@ class LocalState extends State<Local> {
                 ),
               ),
           textMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatTextMessage(message: message, index: index),
+              (context, message, index) => FlyerChatTextMessage(
+                message: message,
+                index: index,
+                time: DateFormat('h:mm a').format(message.createdAt.toLocal()),
+              ),
           chatMessageBuilder: (
             context,
             message,
