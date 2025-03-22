@@ -92,7 +92,7 @@ class LocalState extends State<Local> {
               (context, message, index) => FlyerChatImageMessage(
                 message: message,
                 index: index,
-                time: DateFormat('h:mm a').format(message.createdAt.toLocal()),
+                time: DateFormat('HH:mm').format(message.createdAt.toLocal()),
               ),
           systemMessageBuilder:
               (context, message, index) =>
@@ -124,7 +124,7 @@ class LocalState extends State<Local> {
               (context, message, index) => FlyerChatTextMessage(
                 message: message,
                 index: index,
-                time: DateFormat('h:mm a').format(message.createdAt.toLocal()),
+                time: DateFormat('HH:mm').format(message.createdAt.toLocal()),
               ),
           chatMessageBuilder: (
             context,
