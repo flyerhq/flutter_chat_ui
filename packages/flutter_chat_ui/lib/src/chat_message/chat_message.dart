@@ -13,6 +13,8 @@ class ChatMessage extends StatelessWidget {
   final Widget child;
   final Widget? leadingWidget;
   final Widget? trailingWidget;
+  final Widget? topWidget;
+  final Widget? bottomWidget;
   final Alignment sentMessageScaleAnimationAlignment;
   final Alignment receivedMessageScaleAnimationAlignment;
   final AlignmentGeometry sentMessageAlignment;
@@ -35,6 +37,8 @@ class ChatMessage extends StatelessWidget {
     required this.child,
     this.leadingWidget,
     this.trailingWidget,
+    this.topWidget,
+    this.bottomWidget,
     this.sentMessageScaleAnimationAlignment = Alignment.centerRight,
     this.receivedMessageScaleAnimationAlignment = Alignment.centerLeft,
     this.sentMessageAlignment = AlignmentDirectional.centerEnd,
@@ -50,13 +54,21 @@ class ChatMessage extends StatelessWidget {
     this.verticalGroupedPadding = 2,
   });
 
-  Widget get messageRow => Row(
+  Widget get messageWidget => Column(
     mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.end,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      if (leadingWidget != null) leadingWidget!,
-      Flexible(child: child),
-      if (trailingWidget != null) trailingWidget!,
+      if (topWidget != null) topWidget!,
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (leadingWidget != null) leadingWidget!,
+          Flexible(child: child),
+          if (trailingWidget != null) trailingWidget!,
+        ],
+      ),
+      if (bottomWidget != null) bottomWidget!,
     ],
   );
 
@@ -105,13 +117,13 @@ class ChatMessage extends StatelessWidget {
                             padding: resolvedPadding!,
                             duration: paddingChangeAnimationDuration!,
                             curve: Curves.linearToEaseOut,
-                            child: messageRow,
+                            child: messageWidget,
                           )
                           : Padding(
                             padding: resolvedPadding!,
-                            child: messageRow,
+                            child: messageWidget,
                           )
-                      : messageRow,
+                      : messageWidget,
             ),
           ),
         ),

@@ -18,7 +18,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   final TextStyle? sentTextStyle;
   final TextStyle? receivedTextStyle;
   final TextStyle? timeStyle;
-  final String? time;
+  final bool showTime;
+  final bool showStatus;
+  final TimeAndStatusPosition timeAndStatusPosition;
 
   const FlyerChatTextMessage({
     super.key,
@@ -32,7 +34,9 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.sentTextStyle = _sentinelTextStyle,
     this.receivedTextStyle = _sentinelTextStyle,
     this.timeStyle = _sentinelTextStyle,
-    this.time,
+    this.showTime = true,
+    this.showStatus = true,
+    this.timeAndStatusPosition = TimeAndStatusPosition.end,
   });
 
   bool get _isOnlyEmoji => message.isOnlyEmoji == true;
@@ -45,7 +49,16 @@ class FlyerChatTextMessage extends StatelessWidget {
     final paragraphStyle = _resolveParagraphStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
 
-    final timeWidget = time != null ? Text(time!, style: timeStyle) : null;
+    final timeAndStatus =
+        showTime || showStatus
+            ? TimeAndStatus(
+              createdAt: message.createdAt,
+              status: message.status,
+              showTime: showTime,
+              showStatus: showStatus,
+              textStyle: timeStyle,
+            )
+            : null;
 
     final textContent = GptMarkdown(
       message.text,
@@ -73,23 +86,62 @@ class FlyerChatTextMessage extends StatelessWidget {
                         ? theme.shape
                         : borderRadius,
               ),
-      child: Stack(
-        children: [
-          timeWidget != null
-              ? Padding(
-                padding: EdgeInsets.only(
-                  bottom: paragraphStyle?.lineHeight ?? 0,
-                ),
-                child: textContent,
-              )
-              : textContent,
-          if (timeWidget != null) ...[
-            Opacity(opacity: 0, child: timeWidget),
-            Positioned(right: 0, bottom: 0, child: timeWidget),
-          ],
-        ],
+      child: _buildContentBasedOnPosition(
+        context: context,
+        textContent: textContent,
+        timeAndStatus: timeAndStatus,
+        paragraphStyle: paragraphStyle,
       ),
     );
+  }
+
+  Widget _buildContentBasedOnPosition({
+    required BuildContext context,
+    required Widget textContent,
+    TimeAndStatus? timeAndStatus,
+    TextStyle? paragraphStyle,
+  }) {
+    if (timeAndStatus == null) {
+      return textContent;
+    }
+
+    final textDirection = Directionality.of(context);
+
+    switch (timeAndStatusPosition) {
+      case TimeAndStatusPosition.start:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [textContent, timeAndStatus],
+        );
+      case TimeAndStatusPosition.inline:
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Flexible(child: textContent),
+            const SizedBox(width: 4),
+            timeAndStatus,
+          ],
+        );
+      case TimeAndStatusPosition.end:
+        return Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: paragraphStyle?.lineHeight ?? 0),
+              child: textContent,
+            ),
+            Opacity(opacity: 0, child: timeAndStatus),
+            Positioned.directional(
+              textDirection: textDirection,
+              end: 0,
+              bottom: 0,
+              child: timeAndStatus,
+            ),
+          ],
+        );
+    }
   }
 
   Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
@@ -131,4 +183,47 @@ class FlyerChatTextMessage extends StatelessWidget {
 
 extension on TextStyle {
   double get lineHeight => (height ?? 1) * (fontSize ?? 0);
+}
+
+class TimeAndStatus extends StatelessWidget {
+  final DateTime createdAt;
+  final MessageStatus? status;
+  final bool showTime;
+  final bool showStatus;
+  final TextStyle? textStyle;
+
+  const TimeAndStatus({
+    super.key,
+    required this.createdAt,
+    this.status,
+    this.showTime = true,
+    this.showStatus = true,
+    this.textStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final timeFormat = context.watch<DateFormat>();
+
+    return Row(
+      spacing: 2,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showTime)
+          Text(timeFormat.format(createdAt.toLocal()), style: textStyle),
+        if (showStatus && status != null)
+          if (status == MessageStatus.sending)
+            SizedBox(
+              width: 6,
+              height: 6,
+              child: CircularProgressIndicator(
+                color: textStyle?.color,
+                strokeWidth: 2,
+              ),
+            )
+          else
+            Icon(getIconForStatus(status!), color: textStyle?.color, size: 12),
+      ],
+    );
+  }
 }

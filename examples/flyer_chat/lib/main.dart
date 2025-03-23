@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:sembast/sembast.dart';
 
 import 'api/api.dart';
@@ -14,6 +15,7 @@ import 'pagination.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
   await dotenv.load();
   final database = await initialize();
   runApp(FlyerChat(database: database));

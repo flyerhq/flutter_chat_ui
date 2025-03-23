@@ -38,6 +38,7 @@ mixin _$Message {
   @EpochDateTimeConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
+  MessageStatus? get status => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -45,6 +46,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -55,6 +57,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -68,6 +71,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -76,6 +80,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     custom,
     required TResult Function(
@@ -83,6 +88,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     unsupported,
   }) => throw _privateConstructorUsedError;
@@ -93,6 +99,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -103,6 +110,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -116,6 +124,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -124,6 +133,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult? Function(
@@ -131,6 +141,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
   }) => throw _privateConstructorUsedError;
@@ -141,6 +152,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -151,6 +163,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -164,6 +177,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -172,6 +186,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult Function(
@@ -179,6 +194,7 @@ mixin _$Message {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
     required TResult orElse(),
@@ -228,6 +244,7 @@ abstract class $MessageCopyWith<$Res> {
     String authorId,
     @EpochDateTimeConverter() DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
   });
 }
 
@@ -250,6 +267,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? authorId = null,
     Object? createdAt = null,
     Object? metadata = freezed,
+    Object? status = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -273,6 +291,11 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
                     ? _value.metadata
                     : metadata // ignore: cast_nullable_to_non_nullable
                         as Map<String, dynamic>?,
+            status:
+                freezed == status
+                    ? _value.status
+                    : status // ignore: cast_nullable_to_non_nullable
+                        as MessageStatus?,
           )
           as $Val,
     );
@@ -293,6 +316,7 @@ abstract class _$$TextMessageImplCopyWith<$Res>
     String authorId,
     @EpochDateTimeConverter() DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
     String text,
     LinkPreview? linkPreview,
     bool? isOnlyEmoji,
@@ -319,6 +343,7 @@ class __$$TextMessageImplCopyWithImpl<$Res>
     Object? authorId = null,
     Object? createdAt = null,
     Object? metadata = freezed,
+    Object? status = freezed,
     Object? text = null,
     Object? linkPreview = freezed,
     Object? isOnlyEmoji = freezed,
@@ -345,6 +370,11 @@ class __$$TextMessageImplCopyWithImpl<$Res>
                 ? _value._metadata
                 : metadata // ignore: cast_nullable_to_non_nullable
                     as Map<String, dynamic>?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as MessageStatus?,
         text:
             null == text
                 ? _value.text
@@ -387,6 +417,7 @@ class _$TextMessageImpl extends TextMessage {
     required this.authorId,
     @EpochDateTimeConverter() required this.createdAt,
     final Map<String, dynamic>? metadata,
+    this.status,
     required this.text,
     this.linkPreview,
     this.isOnlyEmoji,
@@ -416,6 +447,8 @@ class _$TextMessageImpl extends TextMessage {
   }
 
   @override
+  final MessageStatus? status;
+  @override
   final String text;
   @override
   final LinkPreview? linkPreview;
@@ -427,7 +460,7 @@ class _$TextMessageImpl extends TextMessage {
 
   @override
   String toString() {
-    return 'Message.text(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, text: $text, linkPreview: $linkPreview, isOnlyEmoji: $isOnlyEmoji)';
+    return 'Message.text(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, status: $status, text: $text, linkPreview: $linkPreview, isOnlyEmoji: $isOnlyEmoji)';
   }
 
   @override
@@ -441,6 +474,7 @@ class _$TextMessageImpl extends TextMessage {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.linkPreview, linkPreview) ||
                 other.linkPreview == linkPreview) &&
@@ -456,6 +490,7 @@ class _$TextMessageImpl extends TextMessage {
     authorId,
     createdAt,
     const DeepCollectionEquality().hash(_metadata),
+    status,
     text,
     linkPreview,
     isOnlyEmoji,
@@ -477,6 +512,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -487,6 +523,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -500,6 +537,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -508,6 +546,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     custom,
     required TResult Function(
@@ -515,6 +554,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     unsupported,
   }) {
@@ -523,6 +563,7 @@ class _$TextMessageImpl extends TextMessage {
       authorId,
       createdAt,
       metadata,
+      status,
       this.text,
       linkPreview,
       isOnlyEmoji,
@@ -537,6 +578,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -547,6 +589,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -560,6 +603,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -568,6 +612,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult? Function(
@@ -575,6 +620,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
   }) {
@@ -583,6 +629,7 @@ class _$TextMessageImpl extends TextMessage {
       authorId,
       createdAt,
       metadata,
+      status,
       this.text,
       linkPreview,
       isOnlyEmoji,
@@ -597,6 +644,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -607,6 +655,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -620,6 +669,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -628,6 +678,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult Function(
@@ -635,6 +686,7 @@ class _$TextMessageImpl extends TextMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
     required TResult orElse(),
@@ -645,6 +697,7 @@ class _$TextMessageImpl extends TextMessage {
         authorId,
         createdAt,
         metadata,
+        status,
         this.text,
         linkPreview,
         isOnlyEmoji,
@@ -705,6 +758,7 @@ abstract class TextMessage extends Message {
     required final String authorId,
     @EpochDateTimeConverter() required final DateTime createdAt,
     final Map<String, dynamic>? metadata,
+    final MessageStatus? status,
     required final String text,
     final LinkPreview? linkPreview,
     final bool? isOnlyEmoji,
@@ -723,6 +777,8 @@ abstract class TextMessage extends Message {
   DateTime get createdAt;
   @override
   Map<String, dynamic>? get metadata;
+  @override
+  MessageStatus? get status;
   String get text;
   LinkPreview? get linkPreview;
   bool? get isOnlyEmoji;
@@ -749,6 +805,7 @@ abstract class _$$ImageMessageImplCopyWith<$Res>
     String authorId,
     @EpochDateTimeConverter() DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
     String source,
     String? thumbhash,
     String? blurhash,
@@ -776,6 +833,7 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
     Object? authorId = null,
     Object? createdAt = null,
     Object? metadata = freezed,
+    Object? status = freezed,
     Object? source = null,
     Object? thumbhash = freezed,
     Object? blurhash = freezed,
@@ -805,6 +863,11 @@ class __$$ImageMessageImplCopyWithImpl<$Res>
                 ? _value._metadata
                 : metadata // ignore: cast_nullable_to_non_nullable
                     as Map<String, dynamic>?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as MessageStatus?,
         source:
             null == source
                 ? _value.source
@@ -848,6 +911,7 @@ class _$ImageMessageImpl extends ImageMessage {
     required this.authorId,
     @EpochDateTimeConverter() required this.createdAt,
     final Map<String, dynamic>? metadata,
+    this.status,
     required this.source,
     this.thumbhash,
     this.blurhash,
@@ -880,6 +944,8 @@ class _$ImageMessageImpl extends ImageMessage {
   }
 
   @override
+  final MessageStatus? status;
+  @override
   final String source;
   @override
   final String? thumbhash;
@@ -897,7 +963,7 @@ class _$ImageMessageImpl extends ImageMessage {
 
   @override
   String toString() {
-    return 'Message.image(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, source: $source, thumbhash: $thumbhash, blurhash: $blurhash, width: $width, height: $height, overlay: $overlay)';
+    return 'Message.image(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, status: $status, source: $source, thumbhash: $thumbhash, blurhash: $blurhash, width: $width, height: $height, overlay: $overlay)';
   }
 
   @override
@@ -911,6 +977,7 @@ class _$ImageMessageImpl extends ImageMessage {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.source, source) || other.source == source) &&
             (identical(other.thumbhash, thumbhash) ||
                 other.thumbhash == thumbhash) &&
@@ -929,6 +996,7 @@ class _$ImageMessageImpl extends ImageMessage {
     authorId,
     createdAt,
     const DeepCollectionEquality().hash(_metadata),
+    status,
     source,
     thumbhash,
     blurhash,
@@ -953,6 +1021,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -963,6 +1032,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -976,6 +1046,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -984,6 +1055,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     custom,
     required TResult Function(
@@ -991,6 +1063,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     unsupported,
   }) {
@@ -999,6 +1072,7 @@ class _$ImageMessageImpl extends ImageMessage {
       authorId,
       createdAt,
       metadata,
+      status,
       source,
       thumbhash,
       blurhash,
@@ -1016,6 +1090,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1026,6 +1101,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1039,6 +1115,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1047,6 +1124,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult? Function(
@@ -1054,6 +1132,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
   }) {
@@ -1062,6 +1141,7 @@ class _$ImageMessageImpl extends ImageMessage {
       authorId,
       createdAt,
       metadata,
+      status,
       source,
       thumbhash,
       blurhash,
@@ -1079,6 +1159,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1089,6 +1170,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1102,6 +1184,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1110,6 +1193,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult Function(
@@ -1117,6 +1201,7 @@ class _$ImageMessageImpl extends ImageMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
     required TResult orElse(),
@@ -1127,6 +1212,7 @@ class _$ImageMessageImpl extends ImageMessage {
         authorId,
         createdAt,
         metadata,
+        status,
         source,
         thumbhash,
         blurhash,
@@ -1190,6 +1276,7 @@ abstract class ImageMessage extends Message {
     required final String authorId,
     @EpochDateTimeConverter() required final DateTime createdAt,
     final Map<String, dynamic>? metadata,
+    final MessageStatus? status,
     required final String source,
     final String? thumbhash,
     final String? blurhash,
@@ -1211,6 +1298,8 @@ abstract class ImageMessage extends Message {
   DateTime get createdAt;
   @override
   Map<String, dynamic>? get metadata;
+  @override
+  MessageStatus? get status;
   String get source;
   String? get thumbhash;
   String? get blurhash;
@@ -1240,6 +1329,7 @@ abstract class _$$SystemMessageImplCopyWith<$Res>
     String authorId,
     @EpochDateTimeConverter() DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
     String text,
   });
 }
@@ -1262,6 +1352,7 @@ class __$$SystemMessageImplCopyWithImpl<$Res>
     Object? authorId = null,
     Object? createdAt = null,
     Object? metadata = freezed,
+    Object? status = freezed,
     Object? text = null,
   }) {
     return _then(
@@ -1286,6 +1377,11 @@ class __$$SystemMessageImplCopyWithImpl<$Res>
                 ? _value._metadata
                 : metadata // ignore: cast_nullable_to_non_nullable
                     as Map<String, dynamic>?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as MessageStatus?,
         text:
             null == text
                 ? _value.text
@@ -1304,6 +1400,7 @@ class _$SystemMessageImpl extends SystemMessage {
     required this.authorId,
     @EpochDateTimeConverter() required this.createdAt,
     final Map<String, dynamic>? metadata,
+    this.status,
     required this.text,
     final String? $type,
   }) : _metadata = metadata,
@@ -1331,6 +1428,8 @@ class _$SystemMessageImpl extends SystemMessage {
   }
 
   @override
+  final MessageStatus? status;
+  @override
   final String text;
 
   @JsonKey(name: 'type')
@@ -1338,7 +1437,7 @@ class _$SystemMessageImpl extends SystemMessage {
 
   @override
   String toString() {
-    return 'Message.system(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, text: $text)';
+    return 'Message.system(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, status: $status, text: $text)';
   }
 
   @override
@@ -1352,6 +1451,7 @@ class _$SystemMessageImpl extends SystemMessage {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.text, text) || other.text == text));
   }
 
@@ -1363,6 +1463,7 @@ class _$SystemMessageImpl extends SystemMessage {
     authorId,
     createdAt,
     const DeepCollectionEquality().hash(_metadata),
+    status,
     text,
   );
 
@@ -1382,6 +1483,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1392,6 +1494,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1405,6 +1508,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -1413,6 +1517,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     custom,
     required TResult Function(
@@ -1420,10 +1525,11 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     unsupported,
   }) {
-    return system(id, authorId, createdAt, metadata, this.text);
+    return system(id, authorId, createdAt, metadata, status, this.text);
   }
 
   @override
@@ -1434,6 +1540,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1444,6 +1551,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1457,6 +1565,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1465,6 +1574,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult? Function(
@@ -1472,10 +1582,11 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
   }) {
-    return system?.call(id, authorId, createdAt, metadata, this.text);
+    return system?.call(id, authorId, createdAt, metadata, status, this.text);
   }
 
   @override
@@ -1486,6 +1597,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1496,6 +1608,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1509,6 +1622,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1517,6 +1631,7 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult Function(
@@ -1524,12 +1639,13 @@ class _$SystemMessageImpl extends SystemMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
     required TResult orElse(),
   }) {
     if (system != null) {
-      return system(id, authorId, createdAt, metadata, this.text);
+      return system(id, authorId, createdAt, metadata, status, this.text);
     }
     return orElse();
   }
@@ -1586,6 +1702,7 @@ abstract class SystemMessage extends Message {
     required final String authorId,
     @EpochDateTimeConverter() required final DateTime createdAt,
     final Map<String, dynamic>? metadata,
+    final MessageStatus? status,
     required final String text,
   }) = _$SystemMessageImpl;
   const SystemMessage._() : super._();
@@ -1602,6 +1719,8 @@ abstract class SystemMessage extends Message {
   DateTime get createdAt;
   @override
   Map<String, dynamic>? get metadata;
+  @override
+  MessageStatus? get status;
   String get text;
 
   /// Create a copy of Message
@@ -1626,6 +1745,7 @@ abstract class _$$CustomMessageImplCopyWith<$Res>
     String authorId,
     @EpochDateTimeConverter() DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
   });
 }
 
@@ -1647,6 +1767,7 @@ class __$$CustomMessageImplCopyWithImpl<$Res>
     Object? authorId = null,
     Object? createdAt = null,
     Object? metadata = freezed,
+    Object? status = freezed,
   }) {
     return _then(
       _$CustomMessageImpl(
@@ -1670,6 +1791,11 @@ class __$$CustomMessageImplCopyWithImpl<$Res>
                 ? _value._metadata
                 : metadata // ignore: cast_nullable_to_non_nullable
                     as Map<String, dynamic>?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as MessageStatus?,
       ),
     );
   }
@@ -1683,6 +1809,7 @@ class _$CustomMessageImpl extends CustomMessage {
     required this.authorId,
     @EpochDateTimeConverter() required this.createdAt,
     final Map<String, dynamic>? metadata,
+    this.status,
     final String? $type,
   }) : _metadata = metadata,
        $type = $type ?? 'custom',
@@ -1708,12 +1835,15 @@ class _$CustomMessageImpl extends CustomMessage {
     return EqualUnmodifiableMapView(value);
   }
 
+  @override
+  final MessageStatus? status;
+
   @JsonKey(name: 'type')
   final String $type;
 
   @override
   String toString() {
-    return 'Message.custom(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata)';
+    return 'Message.custom(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, status: $status)';
   }
 
   @override
@@ -1726,7 +1856,8 @@ class _$CustomMessageImpl extends CustomMessage {
                 other.authorId == authorId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            const DeepCollectionEquality().equals(other._metadata, _metadata));
+            const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1737,6 +1868,7 @@ class _$CustomMessageImpl extends CustomMessage {
     authorId,
     createdAt,
     const DeepCollectionEquality().hash(_metadata),
+    status,
   );
 
   /// Create a copy of Message
@@ -1755,6 +1887,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1765,6 +1898,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1778,6 +1912,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -1786,6 +1921,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     custom,
     required TResult Function(
@@ -1793,10 +1929,11 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     unsupported,
   }) {
-    return custom(id, authorId, createdAt, metadata);
+    return custom(id, authorId, createdAt, metadata, status);
   }
 
   @override
@@ -1807,6 +1944,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1817,6 +1955,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1830,6 +1969,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1838,6 +1978,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult? Function(
@@ -1845,10 +1986,11 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
   }) {
-    return custom?.call(id, authorId, createdAt, metadata);
+    return custom?.call(id, authorId, createdAt, metadata, status);
   }
 
   @override
@@ -1859,6 +2001,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -1869,6 +2012,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -1882,6 +2026,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1890,6 +2035,7 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult Function(
@@ -1897,12 +2043,13 @@ class _$CustomMessageImpl extends CustomMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
     required TResult orElse(),
   }) {
     if (custom != null) {
-      return custom(id, authorId, createdAt, metadata);
+      return custom(id, authorId, createdAt, metadata, status);
     }
     return orElse();
   }
@@ -1959,6 +2106,7 @@ abstract class CustomMessage extends Message {
     required final String authorId,
     @EpochDateTimeConverter() required final DateTime createdAt,
     final Map<String, dynamic>? metadata,
+    final MessageStatus? status,
   }) = _$CustomMessageImpl;
   const CustomMessage._() : super._();
 
@@ -1974,6 +2122,8 @@ abstract class CustomMessage extends Message {
   DateTime get createdAt;
   @override
   Map<String, dynamic>? get metadata;
+  @override
+  MessageStatus? get status;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -1997,6 +2147,7 @@ abstract class _$$UnsupportedMessageImplCopyWith<$Res>
     String authorId,
     @EpochDateTimeConverter() DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
   });
 }
 
@@ -2018,6 +2169,7 @@ class __$$UnsupportedMessageImplCopyWithImpl<$Res>
     Object? authorId = null,
     Object? createdAt = null,
     Object? metadata = freezed,
+    Object? status = freezed,
   }) {
     return _then(
       _$UnsupportedMessageImpl(
@@ -2041,6 +2193,11 @@ class __$$UnsupportedMessageImplCopyWithImpl<$Res>
                 ? _value._metadata
                 : metadata // ignore: cast_nullable_to_non_nullable
                     as Map<String, dynamic>?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as MessageStatus?,
       ),
     );
   }
@@ -2054,6 +2211,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
     required this.authorId,
     @EpochDateTimeConverter() required this.createdAt,
     final Map<String, dynamic>? metadata,
+    this.status,
     final String? $type,
   }) : _metadata = metadata,
        $type = $type ?? 'unsupported',
@@ -2079,12 +2237,15 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
     return EqualUnmodifiableMapView(value);
   }
 
+  @override
+  final MessageStatus? status;
+
   @JsonKey(name: 'type')
   final String $type;
 
   @override
   String toString() {
-    return 'Message.unsupported(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata)';
+    return 'Message.unsupported(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, status: $status)';
   }
 
   @override
@@ -2097,7 +2258,8 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
                 other.authorId == authorId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            const DeepCollectionEquality().equals(other._metadata, _metadata));
+            const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2108,6 +2270,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
     authorId,
     createdAt,
     const DeepCollectionEquality().hash(_metadata),
+    status,
   );
 
   /// Create a copy of Message
@@ -2129,6 +2292,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -2139,6 +2303,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -2152,6 +2317,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -2160,6 +2326,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     custom,
     required TResult Function(
@@ -2167,10 +2334,11 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )
     unsupported,
   }) {
-    return unsupported(id, authorId, createdAt, metadata);
+    return unsupported(id, authorId, createdAt, metadata, status);
   }
 
   @override
@@ -2181,6 +2349,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -2191,6 +2360,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -2204,6 +2374,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -2212,6 +2383,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult? Function(
@@ -2219,10 +2391,11 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
   }) {
-    return unsupported?.call(id, authorId, createdAt, metadata);
+    return unsupported?.call(id, authorId, createdAt, metadata, status);
   }
 
   @override
@@ -2233,6 +2406,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
       LinkPreview? linkPreview,
       bool? isOnlyEmoji,
@@ -2243,6 +2417,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String source,
       String? thumbhash,
       String? blurhash,
@@ -2256,6 +2431,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -2264,6 +2440,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     custom,
     TResult Function(
@@ -2271,12 +2448,13 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       String authorId,
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
+      MessageStatus? status,
     )?
     unsupported,
     required TResult orElse(),
   }) {
     if (unsupported != null) {
-      return unsupported(id, authorId, createdAt, metadata);
+      return unsupported(id, authorId, createdAt, metadata, status);
     }
     return orElse();
   }
@@ -2333,6 +2511,7 @@ abstract class UnsupportedMessage extends Message {
     required final String authorId,
     @EpochDateTimeConverter() required final DateTime createdAt,
     final Map<String, dynamic>? metadata,
+    final MessageStatus? status,
   }) = _$UnsupportedMessageImpl;
   const UnsupportedMessage._() : super._();
 
@@ -2348,6 +2527,8 @@ abstract class UnsupportedMessage extends Message {
   DateTime get createdAt;
   @override
   Map<String, dynamic>? get metadata;
+  @override
+  MessageStatus? get status;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.

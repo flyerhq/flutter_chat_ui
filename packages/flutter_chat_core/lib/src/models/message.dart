@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../utils/typedefs.dart' show MessageStatus;
 import 'epoch_date_time_converter.dart';
 import 'link_preview.dart';
 
@@ -13,6 +14,7 @@ sealed class Message with _$Message {
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
     required String text,
     LinkPreview? linkPreview,
     bool? isOnlyEmoji,
@@ -23,6 +25,7 @@ sealed class Message with _$Message {
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
     required String source,
     String? thumbhash,
     String? blurhash,
@@ -36,6 +39,7 @@ sealed class Message with _$Message {
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
     required String text,
   }) = SystemMessage;
 
@@ -44,6 +48,7 @@ sealed class Message with _$Message {
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
   }) = CustomMessage;
 
   const factory Message.unsupported({
@@ -51,6 +56,7 @@ sealed class Message with _$Message {
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
     Map<String, dynamic>? metadata,
+    MessageStatus? status,
   }) = UnsupportedMessage;
 
   const Message._();

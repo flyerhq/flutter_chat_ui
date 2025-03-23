@@ -10,8 +10,6 @@ import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
 
@@ -42,12 +40,6 @@ class LocalState extends State<Local> {
   final _systemUser = const User(id: 'system');
 
   bool _isTyping = false;
-
-  @override
-  void initState() {
-    super.initState();
-    initializeDateFormatting();
-  }
 
   @override
   void dispose() {
@@ -89,11 +81,8 @@ class LocalState extends State<Local> {
                 child: IsTypingIndicator(),
               ),
           imageMessageBuilder:
-              (context, message, index) => FlyerChatImageMessage(
-                message: message,
-                index: index,
-                time: DateFormat('HH:mm').format(message.createdAt.toLocal()),
-              ),
+              (context, message, index) =>
+                  FlyerChatImageMessage(message: message, index: index),
           systemMessageBuilder:
               (context, message, index) =>
                   FlyerChatSystemMessage(message: message, index: index),
@@ -121,11 +110,8 @@ class LocalState extends State<Local> {
                 ),
               ),
           textMessageBuilder:
-              (context, message, index) => FlyerChatTextMessage(
-                message: message,
-                index: index,
-                time: DateFormat('HH:mm').format(message.createdAt.toLocal()),
-              ),
+              (context, message, index) =>
+                  FlyerChatTextMessage(message: message, index: index),
           chatMessageBuilder: (
             context,
             message,

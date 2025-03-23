@@ -26,9 +26,11 @@ class FlyerChatImageMessage extends StatefulWidget {
   final Color? loadingIndicatorColor;
   final Color? uploadOverlayColor;
   final Color? uploadIndicatorColor;
-  final String? time;
   final TextStyle? timeStyle;
   final Color? timeBackground;
+  final bool showTime;
+  final bool showStatus;
+  final TimeAndStatusPosition timeAndStatusPosition;
 
   const FlyerChatImageMessage({
     super.key,
@@ -42,9 +44,11 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.loadingIndicatorColor = _sentinelColor,
     this.uploadOverlayColor = _sentinelColor,
     this.uploadIndicatorColor = _sentinelColor,
-    this.time,
     this.timeStyle = _sentinelTextStyle,
     this.timeBackground = _sentinelColor,
+    this.showTime = true,
+    this.showStatus = true,
+    this.timeAndStatusPosition = TimeAndStatusPosition.end,
   });
 
   @override
@@ -135,20 +139,24 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
-    final timeWidget =
-        widget.time != null
-            ? TimeWidget(
-              time: widget.time!,
+    final textDirection = Directionality.of(context);
+    final timeAndStatus =
+        widget.showTime || widget.showStatus
+            ? TimeAndStatus(
+              createdAt: widget.message.createdAt,
+              status: widget.message.status,
+              showTime: widget.showTime,
+              showStatus: widget.showStatus,
+              backgroundColor:
+                  widget.timeBackground == FlyerChatImageMessage._sentinelColor
+                      ? Colors.black.withValues(alpha: 0.6)
+                      : widget.timeBackground,
               textStyle:
                   widget.timeStyle == FlyerChatImageMessage._sentinelTextStyle
                       ? theme.typography.labelSmall.copyWith(
                         color: Colors.white,
                       )
                       : widget.timeStyle,
-              backgroundColor:
-                  widget.timeBackground == FlyerChatImageMessage._sentinelColor
-                      ? Colors.black.withValues(alpha: 0.6)
-                      : widget.timeBackground,
             )
             : null;
 
@@ -263,8 +271,24 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     );
                   },
                 ),
-              if (timeWidget != null)
-                Positioned(bottom: 8, right: 8, child: timeWidget),
+              if (timeAndStatus != null)
+                Positioned.directional(
+                  textDirection: textDirection,
+                  bottom: 8,
+                  end:
+                      widget.timeAndStatusPosition ==
+                                  TimeAndStatusPosition.end ||
+                              widget.timeAndStatusPosition ==
+                                  TimeAndStatusPosition.inline
+                          ? 8
+                          : null,
+                  start:
+                      widget.timeAndStatusPosition ==
+                              TimeAndStatusPosition.start
+                          ? 8
+                          : null,
+                  child: timeAndStatus,
+                ),
             ],
           ),
         ),
@@ -273,27 +297,58 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   }
 }
 
-class TimeWidget extends StatelessWidget {
-  final String time;
+class TimeAndStatus extends StatelessWidget {
+  final DateTime createdAt;
+  final MessageStatus? status;
+  final bool showTime;
+  final bool showStatus;
   final Color? backgroundColor;
   final TextStyle? textStyle;
 
-  const TimeWidget({
+  const TimeAndStatus({
     super.key,
-    required this.time,
+    required this.createdAt,
+    this.status,
+    this.showTime = true,
+    this.showStatus = true,
     this.backgroundColor,
     this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
+    final timeFormat = context.watch<DateFormat>();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(time, style: textStyle),
+      child: Row(
+        spacing: 2,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (showTime)
+            Text(timeFormat.format(createdAt.toLocal()), style: textStyle),
+          if (showStatus && status != null)
+            if (status == MessageStatus.sending)
+              SizedBox(
+                width: 6,
+                height: 6,
+                child: CircularProgressIndicator(
+                  color: textStyle?.color,
+                  strokeWidth: 2,
+                ),
+              )
+            else
+              Icon(
+                getIconForStatus(status!),
+                color: textStyle?.color,
+                size: 12,
+              ),
+        ],
+      ),
     );
   }
 }

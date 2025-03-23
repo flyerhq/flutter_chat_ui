@@ -24,6 +24,7 @@ class Chat extends StatefulWidget {
   final OnAttachmentTapCallback? onAttachmentTap;
   final Color? backgroundColor;
   final Decoration? decoration;
+  final DateFormat? timeFormat;
 
   const Chat({
     super.key,
@@ -39,6 +40,7 @@ class Chat extends StatefulWidget {
     this.onAttachmentTap,
     this.backgroundColor = _sentinelColor,
     this.decoration,
+    this.timeFormat,
   });
 
   @override
@@ -49,6 +51,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
   late ChatTheme _theme;
   late Builders _builders;
   late final CrossCache _crossCache;
+  late DateFormat _timeFormat;
 
   @override
   void initState() {
@@ -57,6 +60,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
     _updateTheme();
     _updateBuilders();
     _crossCache = widget.crossCache ?? CrossCache();
+    _timeFormat = widget.timeFormat ?? DateFormat('HH:mm');
   }
 
   @override
@@ -94,6 +98,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: _theme),
         Provider.value(value: _builders),
         Provider.value(value: _crossCache),
+        Provider.value(value: _timeFormat),
         Provider.value(value: widget.onMessageSend),
         Provider.value(value: widget.onMessageTap),
         Provider.value(value: widget.onMessageLongPress),

@@ -21,6 +21,7 @@ Future<Message> createMessage(
       createdAt: DateTime.now().toUtc(),
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
       isOnlyEmoji: isOnlyEmoji(text ?? ''),
+      status: MessageStatus.sent,
     );
   } else {
     final orientation = ['portrait', 'square', 'wide'][Random().nextInt(3)];
@@ -55,6 +56,7 @@ Future<Message> createMessage(
       source: response.data['img'],
       thumbhash: response.data['thumbhash'],
       blurhash: response.data['blurhash'],
+      status: MessageStatus.sent,
     );
   }
 

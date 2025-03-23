@@ -10,6 +10,7 @@ export 'src/models/message_group_status.dart';
 export 'src/models/user.dart';
 export 'src/theme/chat_theme.dart';
 export 'src/theme/chat_theme_extension.dart';
+export 'src/utils/get_icon_for_status.dart';
 export 'src/utils/is_only_emoji.dart';
 export 'src/utils/typedefs.dart';
 export 'src/utils/user_cache.dart';
