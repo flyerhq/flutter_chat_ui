@@ -1,3 +1,7 @@
+## 0.0.9
+
+- Added system message for displaying system notifications and events in chat
+
 ## 0.0.8
 
 - Add `UserCache` class to store resolved users for synchronous access, preventing flickering in recycled widgets by caching user data with LRU eviction strategy

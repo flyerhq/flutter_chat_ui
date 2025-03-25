@@ -1,3 +1,8 @@
+## 0.0.9
+
+- Added message status indicators (delivered, error, seen, sending, sent)
+- Added message timestamps with customizable format, position
+
 ## 0.0.8
 
 - Changed `flutter_markdown` to `gpt_markdown`

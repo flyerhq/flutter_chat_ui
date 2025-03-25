@@ -1,3 +1,7 @@
+## 0.0.9
+
+- Added system message for displaying system notifications and events in chat
+
 ## 0.0.8
 
 - Version bump to match other packages

@@ -1,3 +1,17 @@
+## 2.0.0-dev.8
+
+**⚠️ Breaking Changes ⚠️**
+
+- Package requires `intl` package for date/time formatting
+
+**⚠️ New features ⚠️**
+
+- Added support for long press actions on messages with customizable callback
+- Added system message for displaying system notifications and events in chat
+- Added examples demonstrating both long press handling and system messages
+- Added message status indicators (delivered, error, seen, sending, sent)
+- Added message timestamps with customizable format, position
+
 ## 2.0.0-dev.7
 
 **⚠️ Breaking Changes ⚠️**
