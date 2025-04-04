@@ -34,6 +34,18 @@ sealed class Message with _$Message {
     bool? overlay,
   }) = ImageMessage;
 
+  const factory Message.file({
+    required String id,
+    required String authorId,
+    @EpochDateTimeConverter() required DateTime createdAt,
+    Map<String, dynamic>? metadata,
+    MessageStatus? status,
+    required String source,
+    required String name,
+    int? size,
+    String? mimeType,
+  }) = FileMessage;
+
   const factory Message.system({
     required String id,
     required String authorId,

@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flyer_chat_file_message/flyer_chat_file_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
@@ -112,6 +114,9 @@ class LocalState extends State<Local> {
           textMessageBuilder:
               (context, message, index) =>
                   FlyerChatTextMessage(message: message, index: index),
+          fileMessageBuilder:
+              (context, message, index) =>
+                  FlyerChatFileMessage(message: message, index: index),
           chatMessageBuilder: (
             context,
             message,
@@ -316,19 +321,75 @@ class LocalState extends State<Local> {
   }
 
   void _handleAttachmentTap() async {
-    final picker = ImagePicker();
+    await showModalBottomSheet(
+      context: context,
+      clipBehavior: Clip.hardEdge,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.image),
+                title: const Text('Image'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final picker = ImagePicker();
+                  final image = await picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
 
-    final image = await picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    final imageMessage = ImageMessage(
+                      id: _uuid.v4(),
+                      authorId: _currentUser.id,
+                      createdAt: DateTime.now().toUtc(),
+                      source: image.path,
+                      status: MessageStatus.sent,
+                    );
 
-    if (image != null) {
-      final imageMessage = ImageMessage(
-        id: _uuid.v4(),
-        authorId: _currentUser.id,
-        createdAt: DateTime.now().toUtc(),
-        source: image.path,
-      );
+                    await _chatController.insert(imageMessage);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.file_present),
+                title: const Text('File'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final result = await FilePicker.platform.pickFiles(
+                    withData: false,
+                    withReadStream: false,
+                  );
 
-      await _chatController.insert(imageMessage);
-    }
+                  if (result != null && result.files.isNotEmpty) {
+                    final file = result.files.first;
+                    final filePath = file.path!;
+                    final fileName = file.name;
+                    final fileSize = file.size;
+
+                    // Create a proper file message
+                    final fileMessage = FileMessage(
+                      id: _uuid.v4(),
+                      authorId: _currentUser.id,
+                      createdAt: DateTime.now().toUtc(),
+                      source: filePath,
+                      name: fileName,
+                      size: fileSize,
+                      mimeType:
+                          file.extension != null
+                              ? 'application/${file.extension}'
+                              : null,
+                      status: MessageStatus.sent,
+                    );
+
+                    await _chatController.insert(fileMessage);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

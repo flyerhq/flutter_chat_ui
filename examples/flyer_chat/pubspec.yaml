@@ -33,12 +33,14 @@ dependencies:
   cross_cache: ^0.0.9
   cupertino_icons: ^1.0.8
   dio: ^5.8.0+1
+  file_picker: ^9.2.1
   flutter:
     sdk: flutter
   flutter_chat_core: ^0.0.9
   flutter_chat_ui: ^2.0.0-dev.8
   flutter_dotenv: ^5.2.1
   flutter_lorem: ^2.0.0
+  flyer_chat_file_message: ^0.0.9
   flyer_chat_image_message: ^0.0.9
   flyer_chat_system_message: ^0.0.9
   flyer_chat_text_message: ^0.0.9

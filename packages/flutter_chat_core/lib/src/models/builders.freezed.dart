@@ -21,6 +21,8 @@ mixin _$Builders {
       throw _privateConstructorUsedError;
   ImageMessageBuilder? get imageMessageBuilder =>
       throw _privateConstructorUsedError;
+  FileMessageBuilder? get fileMessageBuilder =>
+      throw _privateConstructorUsedError;
   SystemMessageBuilder? get systemMessageBuilder =>
       throw _privateConstructorUsedError;
   CustomMessageBuilder? get customMessageBuilder =>
@@ -51,6 +53,7 @@ abstract class $BuildersCopyWith<$Res> {
   $Res call({
     TextMessageBuilder? textMessageBuilder,
     ImageMessageBuilder? imageMessageBuilder,
+    FileMessageBuilder? fileMessageBuilder,
     SystemMessageBuilder? systemMessageBuilder,
     CustomMessageBuilder? customMessageBuilder,
     UnsupportedMessageBuilder? unsupportedMessageBuilder,
@@ -79,6 +82,7 @@ class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
   $Res call({
     Object? textMessageBuilder = freezed,
     Object? imageMessageBuilder = freezed,
+    Object? fileMessageBuilder = freezed,
     Object? systemMessageBuilder = freezed,
     Object? customMessageBuilder = freezed,
     Object? unsupportedMessageBuilder = freezed,
@@ -100,6 +104,11 @@ class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
                     ? _value.imageMessageBuilder
                     : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
                         as ImageMessageBuilder?,
+            fileMessageBuilder:
+                freezed == fileMessageBuilder
+                    ? _value.fileMessageBuilder
+                    : fileMessageBuilder // ignore: cast_nullable_to_non_nullable
+                        as FileMessageBuilder?,
             systemMessageBuilder:
                 freezed == systemMessageBuilder
                     ? _value.systemMessageBuilder
@@ -158,6 +167,7 @@ abstract class _$$BuildersImplCopyWith<$Res>
   $Res call({
     TextMessageBuilder? textMessageBuilder,
     ImageMessageBuilder? imageMessageBuilder,
+    FileMessageBuilder? fileMessageBuilder,
     SystemMessageBuilder? systemMessageBuilder,
     CustomMessageBuilder? customMessageBuilder,
     UnsupportedMessageBuilder? unsupportedMessageBuilder,
@@ -185,6 +195,7 @@ class __$$BuildersImplCopyWithImpl<$Res>
   $Res call({
     Object? textMessageBuilder = freezed,
     Object? imageMessageBuilder = freezed,
+    Object? fileMessageBuilder = freezed,
     Object? systemMessageBuilder = freezed,
     Object? customMessageBuilder = freezed,
     Object? unsupportedMessageBuilder = freezed,
@@ -206,6 +217,11 @@ class __$$BuildersImplCopyWithImpl<$Res>
                 ? _value.imageMessageBuilder
                 : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
                     as ImageMessageBuilder?,
+        fileMessageBuilder:
+            freezed == fileMessageBuilder
+                ? _value.fileMessageBuilder
+                : fileMessageBuilder // ignore: cast_nullable_to_non_nullable
+                    as FileMessageBuilder?,
         systemMessageBuilder:
             freezed == systemMessageBuilder
                 ? _value.systemMessageBuilder
@@ -257,6 +273,7 @@ class _$BuildersImpl extends _Builders {
   const _$BuildersImpl({
     this.textMessageBuilder,
     this.imageMessageBuilder,
+    this.fileMessageBuilder,
     this.systemMessageBuilder,
     this.customMessageBuilder,
     this.unsupportedMessageBuilder,
@@ -271,6 +288,8 @@ class _$BuildersImpl extends _Builders {
   final TextMessageBuilder? textMessageBuilder;
   @override
   final ImageMessageBuilder? imageMessageBuilder;
+  @override
+  final FileMessageBuilder? fileMessageBuilder;
   @override
   final SystemMessageBuilder? systemMessageBuilder;
   @override
@@ -290,7 +309,7 @@ class _$BuildersImpl extends _Builders {
 
   @override
   String toString() {
-    return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder)';
+    return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder)';
   }
 
   @override
@@ -302,6 +321,8 @@ class _$BuildersImpl extends _Builders {
                 other.textMessageBuilder == textMessageBuilder) &&
             (identical(other.imageMessageBuilder, imageMessageBuilder) ||
                 other.imageMessageBuilder == imageMessageBuilder) &&
+            (identical(other.fileMessageBuilder, fileMessageBuilder) ||
+                other.fileMessageBuilder == fileMessageBuilder) &&
             (identical(other.systemMessageBuilder, systemMessageBuilder) ||
                 other.systemMessageBuilder == systemMessageBuilder) &&
             (identical(other.customMessageBuilder, customMessageBuilder) ||
@@ -331,6 +352,7 @@ class _$BuildersImpl extends _Builders {
     runtimeType,
     textMessageBuilder,
     imageMessageBuilder,
+    fileMessageBuilder,
     systemMessageBuilder,
     customMessageBuilder,
     unsupportedMessageBuilder,
@@ -354,6 +376,7 @@ abstract class _Builders extends Builders {
   const factory _Builders({
     final TextMessageBuilder? textMessageBuilder,
     final ImageMessageBuilder? imageMessageBuilder,
+    final FileMessageBuilder? fileMessageBuilder,
     final SystemMessageBuilder? systemMessageBuilder,
     final CustomMessageBuilder? customMessageBuilder,
     final UnsupportedMessageBuilder? unsupportedMessageBuilder,
@@ -369,6 +392,8 @@ abstract class _Builders extends Builders {
   TextMessageBuilder? get textMessageBuilder;
   @override
   ImageMessageBuilder? get imageMessageBuilder;
+  @override
+  FileMessageBuilder? get fileMessageBuilder;
   @override
   SystemMessageBuilder? get systemMessageBuilder;
   @override

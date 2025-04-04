@@ -21,6 +21,8 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
       return TextMessage.fromJson(json);
     case 'image':
       return ImageMessage.fromJson(json);
+    case 'file':
+      return FileMessage.fromJson(json);
     case 'system':
       return SystemMessage.fromJson(json);
     case 'custom':
@@ -66,6 +68,18 @@ mixin _$Message {
       bool? overlay,
     )
     image,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
     required TResult Function(
       String id,
       String authorId,
@@ -125,6 +139,18 @@ mixin _$Message {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -178,6 +204,18 @@ mixin _$Message {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -203,6 +241,7 @@ mixin _$Message {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
     required TResult Function(SystemMessage value) system,
     required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
@@ -211,6 +250,7 @@ mixin _$Message {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
     TResult? Function(SystemMessage value)? system,
     TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
@@ -219,6 +259,7 @@ mixin _$Message {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
     TResult Function(SystemMessage value)? system,
     TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
@@ -538,6 +579,18 @@ class _$TextMessageImpl extends TextMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -598,6 +651,18 @@ class _$TextMessageImpl extends TextMessage {
       bool? overlay,
     )?
     image,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
     TResult? Function(
       String id,
       String authorId,
@@ -670,6 +735,18 @@ class _$TextMessageImpl extends TextMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -711,6 +788,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
     required TResult Function(SystemMessage value) system,
     required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
@@ -723,6 +801,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
     TResult? Function(SystemMessage value)? system,
     TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
@@ -735,6 +814,7 @@ class _$TextMessageImpl extends TextMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
     TResult Function(SystemMessage value)? system,
     TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
@@ -1047,6 +1127,18 @@ class _$ImageMessageImpl extends ImageMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -1110,6 +1202,18 @@ class _$ImageMessageImpl extends ImageMessage {
       bool? overlay,
     )?
     image,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
     TResult? Function(
       String id,
       String authorId,
@@ -1185,6 +1289,18 @@ class _$ImageMessageImpl extends ImageMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1229,6 +1345,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
     required TResult Function(SystemMessage value) system,
     required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
@@ -1241,6 +1358,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
     TResult? Function(SystemMessage value)? system,
     TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
@@ -1253,6 +1371,7 @@ class _$ImageMessageImpl extends ImageMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
     TResult Function(SystemMessage value)? system,
     TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
@@ -1312,6 +1431,534 @@ abstract class ImageMessage extends Message {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ImageMessageImplCopyWith<_$ImageMessageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FileMessageImplCopyWith<$Res>
+    implements $MessageCopyWith<$Res> {
+  factory _$$FileMessageImplCopyWith(
+    _$FileMessageImpl value,
+    $Res Function(_$FileMessageImpl) then,
+  ) = __$$FileMessageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String id,
+    String authorId,
+    @EpochDateTimeConverter() DateTime createdAt,
+    Map<String, dynamic>? metadata,
+    MessageStatus? status,
+    String source,
+    String name,
+    int? size,
+    String? mimeType,
+  });
+}
+
+/// @nodoc
+class __$$FileMessageImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$FileMessageImpl>
+    implements _$$FileMessageImplCopyWith<$Res> {
+  __$$FileMessageImplCopyWithImpl(
+    _$FileMessageImpl _value,
+    $Res Function(_$FileMessageImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? authorId = null,
+    Object? createdAt = null,
+    Object? metadata = freezed,
+    Object? status = freezed,
+    Object? source = null,
+    Object? name = null,
+    Object? size = freezed,
+    Object? mimeType = freezed,
+  }) {
+    return _then(
+      _$FileMessageImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        authorId:
+            null == authorId
+                ? _value.authorId
+                : authorId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        createdAt:
+            null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        metadata:
+            freezed == metadata
+                ? _value._metadata
+                : metadata // ignore: cast_nullable_to_non_nullable
+                    as Map<String, dynamic>?,
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as MessageStatus?,
+        source:
+            null == source
+                ? _value.source
+                : source // ignore: cast_nullable_to_non_nullable
+                    as String,
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        size:
+            freezed == size
+                ? _value.size
+                : size // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        mimeType:
+            freezed == mimeType
+                ? _value.mimeType
+                : mimeType // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$FileMessageImpl extends FileMessage {
+  const _$FileMessageImpl({
+    required this.id,
+    required this.authorId,
+    @EpochDateTimeConverter() required this.createdAt,
+    final Map<String, dynamic>? metadata,
+    this.status,
+    required this.source,
+    required this.name,
+    this.size,
+    this.mimeType,
+    final String? $type,
+  }) : _metadata = metadata,
+       $type = $type ?? 'file',
+       super._();
+
+  factory _$FileMessageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FileMessageImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String authorId;
+  @override
+  @EpochDateTimeConverter()
+  final DateTime createdAt;
+  final Map<String, dynamic>? _metadata;
+  @override
+  Map<String, dynamic>? get metadata {
+    final value = _metadata;
+    if (value == null) return null;
+    if (_metadata is EqualUnmodifiableMapView) return _metadata;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  final MessageStatus? status;
+  @override
+  final String source;
+  @override
+  final String name;
+  @override
+  final int? size;
+  @override
+  final String? mimeType;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Message.file(id: $id, authorId: $authorId, createdAt: $createdAt, metadata: $metadata, status: $status, source: $source, name: $name, size: $size, mimeType: $mimeType)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FileMessageImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.authorId, authorId) ||
+                other.authorId == authorId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            const DeepCollectionEquality().equals(other._metadata, _metadata) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.source, source) || other.source == source) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.mimeType, mimeType) ||
+                other.mimeType == mimeType));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    authorId,
+    createdAt,
+    const DeepCollectionEquality().hash(_metadata),
+    status,
+    source,
+    name,
+    size,
+    mimeType,
+  );
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FileMessageImplCopyWith<_$FileMessageImpl> get copyWith =>
+      __$$FileMessageImplCopyWithImpl<_$FileMessageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String text,
+      LinkPreview? linkPreview,
+      bool? isOnlyEmoji,
+    )
+    text,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String? thumbhash,
+      String? blurhash,
+      double? width,
+      double? height,
+      bool? overlay,
+    )
+    image,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String text,
+    )
+    system,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+    )
+    custom,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+    )
+    unsupported,
+  }) {
+    return file(
+      id,
+      authorId,
+      createdAt,
+      metadata,
+      status,
+      source,
+      name,
+      size,
+      mimeType,
+    );
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String text,
+      LinkPreview? linkPreview,
+      bool? isOnlyEmoji,
+    )?
+    text,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String? thumbhash,
+      String? blurhash,
+      double? width,
+      double? height,
+      bool? overlay,
+    )?
+    image,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String text,
+    )?
+    system,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+    )?
+    custom,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+    )?
+    unsupported,
+  }) {
+    return file?.call(
+      id,
+      authorId,
+      createdAt,
+      metadata,
+      status,
+      source,
+      name,
+      size,
+      mimeType,
+    );
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String text,
+      LinkPreview? linkPreview,
+      bool? isOnlyEmoji,
+    )?
+    text,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String? thumbhash,
+      String? blurhash,
+      double? width,
+      double? height,
+      bool? overlay,
+    )?
+    image,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String text,
+    )?
+    system,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+    )?
+    custom,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+    )?
+    unsupported,
+    required TResult orElse(),
+  }) {
+    if (file != null) {
+      return file(
+        id,
+        authorId,
+        createdAt,
+        metadata,
+        status,
+        source,
+        name,
+        size,
+        mimeType,
+      );
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TextMessage value) text,
+    required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
+    required TResult Function(SystemMessage value) system,
+    required TResult Function(CustomMessage value) custom,
+    required TResult Function(UnsupportedMessage value) unsupported,
+  }) {
+    return file(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TextMessage value)? text,
+    TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
+    TResult? Function(SystemMessage value)? system,
+    TResult? Function(CustomMessage value)? custom,
+    TResult? Function(UnsupportedMessage value)? unsupported,
+  }) {
+    return file?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TextMessage value)? text,
+    TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
+    TResult Function(SystemMessage value)? system,
+    TResult Function(CustomMessage value)? custom,
+    TResult Function(UnsupportedMessage value)? unsupported,
+    required TResult orElse(),
+  }) {
+    if (file != null) {
+      return file(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FileMessageImplToJson(this);
+  }
+}
+
+abstract class FileMessage extends Message {
+  const factory FileMessage({
+    required final String id,
+    required final String authorId,
+    @EpochDateTimeConverter() required final DateTime createdAt,
+    final Map<String, dynamic>? metadata,
+    final MessageStatus? status,
+    required final String source,
+    required final String name,
+    final int? size,
+    final String? mimeType,
+  }) = _$FileMessageImpl;
+  const FileMessage._() : super._();
+
+  factory FileMessage.fromJson(Map<String, dynamic> json) =
+      _$FileMessageImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get authorId;
+  @override
+  @EpochDateTimeConverter()
+  DateTime get createdAt;
+  @override
+  Map<String, dynamic>? get metadata;
+  @override
+  MessageStatus? get status;
+  String get source;
+  String get name;
+  int? get size;
+  String? get mimeType;
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FileMessageImplCopyWith<_$FileMessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1509,6 +2156,18 @@ class _$SystemMessageImpl extends SystemMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -1560,6 +2219,18 @@ class _$SystemMessageImpl extends SystemMessage {
       bool? overlay,
     )?
     image,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
     TResult? Function(
       String id,
       String authorId,
@@ -1623,6 +2294,18 @@ class _$SystemMessageImpl extends SystemMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -1655,6 +2338,7 @@ class _$SystemMessageImpl extends SystemMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
     required TResult Function(SystemMessage value) system,
     required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
@@ -1667,6 +2351,7 @@ class _$SystemMessageImpl extends SystemMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
     TResult? Function(SystemMessage value)? system,
     TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
@@ -1679,6 +2364,7 @@ class _$SystemMessageImpl extends SystemMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
     TResult Function(SystemMessage value)? system,
     TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
@@ -1913,6 +2599,18 @@ class _$CustomMessageImpl extends CustomMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -1964,6 +2662,18 @@ class _$CustomMessageImpl extends CustomMessage {
       bool? overlay,
     )?
     image,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
     TResult? Function(
       String id,
       String authorId,
@@ -2027,6 +2737,18 @@ class _$CustomMessageImpl extends CustomMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -2059,6 +2781,7 @@ class _$CustomMessageImpl extends CustomMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
     required TResult Function(SystemMessage value) system,
     required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
@@ -2071,6 +2794,7 @@ class _$CustomMessageImpl extends CustomMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
     TResult? Function(SystemMessage value)? system,
     TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
@@ -2083,6 +2807,7 @@ class _$CustomMessageImpl extends CustomMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
     TResult Function(SystemMessage value)? system,
     TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,
@@ -2318,6 +3043,18 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )
+    file,
+    required TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )
     system,
@@ -2369,6 +3106,18 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       bool? overlay,
     )?
     image,
+    TResult? Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
     TResult? Function(
       String id,
       String authorId,
@@ -2432,6 +3181,18 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
       @EpochDateTimeConverter() DateTime createdAt,
       Map<String, dynamic>? metadata,
       MessageStatus? status,
+      String source,
+      String name,
+      int? size,
+      String? mimeType,
+    )?
+    file,
+    TResult Function(
+      String id,
+      String authorId,
+      @EpochDateTimeConverter() DateTime createdAt,
+      Map<String, dynamic>? metadata,
+      MessageStatus? status,
       String text,
     )?
     system,
@@ -2464,6 +3225,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(TextMessage value) text,
     required TResult Function(ImageMessage value) image,
+    required TResult Function(FileMessage value) file,
     required TResult Function(SystemMessage value) system,
     required TResult Function(CustomMessage value) custom,
     required TResult Function(UnsupportedMessage value) unsupported,
@@ -2476,6 +3238,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(TextMessage value)? text,
     TResult? Function(ImageMessage value)? image,
+    TResult? Function(FileMessage value)? file,
     TResult? Function(SystemMessage value)? system,
     TResult? Function(CustomMessage value)? custom,
     TResult? Function(UnsupportedMessage value)? unsupported,
@@ -2488,6 +3251,7 @@ class _$UnsupportedMessageImpl extends UnsupportedMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(TextMessage value)? text,
     TResult Function(ImageMessage value)? image,
+    TResult Function(FileMessage value)? file,
     TResult Function(SystemMessage value)? system,
     TResult Function(CustomMessage value)? custom,
     TResult Function(UnsupportedMessage value)? unsupported,

@@ -84,6 +84,37 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) =>
       'type': instance.$type,
     };
 
+_$FileMessageImpl _$$FileMessageImplFromJson(Map<String, dynamic> json) =>
+    _$FileMessageImpl(
+      id: json['id'] as String,
+      authorId: json['authorId'] as String,
+      createdAt: const EpochDateTimeConverter().fromJson(
+        (json['createdAt'] as num).toInt(),
+      ),
+      metadata: json['metadata'] as Map<String, dynamic>?,
+      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
+      source: json['source'] as String,
+      name: json['name'] as String,
+      size: (json['size'] as num?)?.toInt(),
+      mimeType: json['mimeType'] as String?,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$$FileMessageImplToJson(_$FileMessageImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (instance.metadata case final value?) 'metadata': value,
+      if (_$MessageStatusEnumMap[instance.status] case final value?)
+        'status': value,
+      'source': instance.source,
+      'name': instance.name,
+      if (instance.size case final value?) 'size': value,
+      if (instance.mimeType case final value?) 'mimeType': value,
+      'type': instance.$type,
+    };
+
 _$SystemMessageImpl _$$SystemMessageImplFromJson(Map<String, dynamic> json) =>
     _$SystemMessageImpl(
       id: json['id'] as String,

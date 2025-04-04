@@ -10,6 +10,8 @@ typedef TextMessageBuilder =
     Widget Function(BuildContext, TextMessage, int index);
 typedef ImageMessageBuilder =
     Widget Function(BuildContext, ImageMessage, int index);
+typedef FileMessageBuilder =
+    Widget Function(BuildContext, FileMessage, int index);
 typedef SystemMessageBuilder =
     Widget Function(BuildContext, SystemMessage, int index);
 typedef CustomMessageBuilder =
@@ -42,6 +44,7 @@ class Builders with _$Builders {
   const factory Builders({
     TextMessageBuilder? textMessageBuilder,
     ImageMessageBuilder? imageMessageBuilder,
+    FileMessageBuilder? fileMessageBuilder,
     SystemMessageBuilder? systemMessageBuilder,
     CustomMessageBuilder? customMessageBuilder,
     UnsupportedMessageBuilder? unsupportedMessageBuilder,
