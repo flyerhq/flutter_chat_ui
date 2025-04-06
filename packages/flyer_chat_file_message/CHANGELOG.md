@@ -1,3 +1,7 @@
+## 0.0.10
+
+- Initial file message support
+
 ## 0.0.9
 
 - Version bump to match other packages

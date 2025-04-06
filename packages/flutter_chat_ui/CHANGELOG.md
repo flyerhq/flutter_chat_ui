@@ -1,3 +1,8 @@
+## 2.0.0-dev.9
+
+- Downgrade `intl` package version for better compatibility with other Flutter packages
+- Added `FileMessage` support to the example project
+
 ## 2.0.0-dev.8
 
 **⚠️ Breaking Changes ⚠️**
