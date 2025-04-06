@@ -1,14 +1,10 @@
 import 'dart:async';
-// ignore: avoid_web_libraries_in_flutter, deprecated_member_use
-import 'dart:html';
-// ignore: uri_does_not_exist
-import 'dart:indexed_db';
 import 'dart:typed_data';
+import 'package:idb_shim/idb_browser.dart';
 
 import 'base_cache.dart';
 
 class Cache extends BaseCache {
-  // ignore: undefined_class
   Database? _db;
   Completer<void>? _dbOpenCompleter;
 
@@ -16,22 +12,22 @@ class Cache extends BaseCache {
     _open();
   }
 
-  // ignore: undefined_class
   Future<void> _onUpgradeNeeded(VersionChangeEvent event) async {
-    _db = event.target.result;
-    _db?.createObjectStore('data');
+    _db = event.database;
+    if (!_db!.objectStoreNames.contains('data')) {
+      _db!.createObjectStore('data');
+    }
   }
 
   Future<void> _open() async {
-    // ignore: undefined_identifier
-    if (!IdbFactory.supported || _dbOpenCompleter != null) {
-      return;
+    if (_dbOpenCompleter != null) {
+      return _dbOpenCompleter!.future;
     }
 
     _dbOpenCompleter = Completer<void>();
 
     try {
-      _db = await window.indexedDB!.open(
+      _db = await idbFactoryBrowser.open(
         'cross_cache_db',
         version: 1,
         onUpgradeNeeded: _onUpgradeNeeded,
@@ -40,6 +36,7 @@ class Cache extends BaseCache {
       _dbOpenCompleter?.complete();
     } catch (e) {
       _dbOpenCompleter?.completeError(e);
+      _db = null;
     } finally {
       _dbOpenCompleter = null;
     }
@@ -52,16 +49,16 @@ class Cache extends BaseCache {
       } else {
         await _open();
       }
+
+      if (_db == null) {
+        throw Exception('IndexedDB is not supported or failed to open.');
+      }
     }
   }
 
   @override
   Future<void> set(String key, Uint8List value) async {
     await _ensureDbOpen();
-
-    if (_db == null) {
-      throw Exception('IndexedDB is not supported or database failed to open');
-    }
 
     final transaction = _db!.transaction('data', 'readwrite');
     final store = transaction.objectStore('data');
@@ -73,10 +70,6 @@ class Cache extends BaseCache {
   Future<Uint8List> get(String key) async {
     await _ensureDbOpen();
 
-    if (_db == null) {
-      throw Exception('IndexedDB is not supported or database failed to open');
-    }
-
     final transaction = _db!.transaction('data', 'readonly');
     final store = transaction.objectStore('data');
     final data = await store.getObject(key);
@@ -84,6 +77,8 @@ class Cache extends BaseCache {
 
     if (data is Uint8List) {
       return data;
+    } else if (data == null) {
+      throw Exception('Key not found in cache: $key');
     } else {
       throw Exception('Data is not of type Uint8List');
     }
@@ -93,14 +88,9 @@ class Cache extends BaseCache {
   Future<bool> contains(String key) async {
     await _ensureDbOpen();
 
-    if (_db == null) {
-      throw Exception('IndexedDB is not supported or database failed to open');
-    }
-
     final transaction = _db!.transaction('data', 'readonly');
     final store = transaction.objectStore('data');
-    final request = store.getKey(key);
-    final result = await _completeRequest(request);
+    final result = await store.getObject(key);
     await transaction.completed;
 
     return result != null;
@@ -109,10 +99,6 @@ class Cache extends BaseCache {
   @override
   Future<void> delete(String key) async {
     await _ensureDbOpen();
-
-    if (_db == null) {
-      throw Exception('IndexedDB is not supported or database failed to open');
-    }
 
     final transaction = _db!.transaction('data', 'readwrite');
     final store = transaction.objectStore('data');
@@ -124,15 +110,12 @@ class Cache extends BaseCache {
   Future<void> updateKey(String key, String newKey) async {
     await _ensureDbOpen();
 
-    if (_db == null) {
-      throw Exception('IndexedDB is not supported or database failed to open');
-    }
-
     final transaction = _db!.transaction('data', 'readwrite');
     final store = transaction.objectStore('data');
     final data = await store.getObject(key);
 
     if (data == null) {
+      await transaction.completed;
       throw Exception('Key not found: $key');
     }
 
@@ -146,21 +129,13 @@ class Cache extends BaseCache {
     }
   }
 
-  // ignore: undefined_class
-  Future _completeRequest(Request request) {
-    final completer = Completer.sync();
-    request.onSuccess.listen((e) {
-      completer.complete(request.result);
-    });
-    request.onError.listen((e) {
-      completer.completeError(e);
-    });
-    return completer.future;
-  }
-
   @override
   void dispose() {
     _db?.close();
     _db = null;
+    if (_dbOpenCompleter != null && !_dbOpenCompleter!.isCompleted) {
+      _dbOpenCompleter!.completeError(Exception('Cache disposed during open'));
+      _dbOpenCompleter = null;
+    }
   }
 }

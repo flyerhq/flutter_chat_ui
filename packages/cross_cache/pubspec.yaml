@@ -16,6 +16,7 @@ dependencies:
   dio: ^5.8.0+1
   flutter:
     sdk: flutter
+  idb_shim: ^2.6.5+1
   path_provider: ^2.1.5
 
 dev_dependencies:

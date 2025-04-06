@@ -8,6 +8,7 @@
 
 - Downgrade `intl` package version for better compatibility with other Flutter packages
 - Added `FileMessage` support to the example project
+- Migrated web storage implementation from `indexed_db` to `idb_shim` for improved cross-platform compatibility and better performance
 
 ## 2.0.0-dev.8
 
