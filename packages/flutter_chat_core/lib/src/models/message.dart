@@ -12,6 +12,7 @@ sealed class Message with _$Message {
   const factory Message.text({
     required String id,
     required String authorId,
+    String? parentId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -20,6 +21,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
     Map<String, dynamic>? metadata,
     required String text,
     LinkPreview? linkPreview,
@@ -29,6 +31,7 @@ sealed class Message with _$Message {
   const factory Message.image({
     required String id,
     required String authorId,
+    String? parentId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -37,6 +40,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
     Map<String, dynamic>? metadata,
     required String source,
     String? text,
@@ -50,6 +54,7 @@ sealed class Message with _$Message {
   const factory Message.file({
     required String id,
     required String authorId,
+    String? parentId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -58,6 +63,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
     Map<String, dynamic>? metadata,
     required String source,
     required String name,
@@ -68,6 +74,7 @@ sealed class Message with _$Message {
   const factory Message.system({
     required String id,
     required String authorId,
+    String? parentId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -76,6 +83,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
     Map<String, dynamic>? metadata,
     required String text,
   }) = SystemMessage;
@@ -83,6 +91,7 @@ sealed class Message with _$Message {
   const factory Message.custom({
     required String id,
     required String authorId,
+    String? parentId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -91,12 +100,14 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
     Map<String, dynamic>? metadata,
   }) = CustomMessage;
 
   const factory Message.unsupported({
     required String id,
     required String authorId,
+    String? parentId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -105,6 +116,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
     Map<String, dynamic>? metadata,
   }) = UnsupportedMessage;
 

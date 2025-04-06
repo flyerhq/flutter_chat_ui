@@ -9,6 +9,7 @@ part of 'message.dart';
 TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  parentId: json['parentId'] as String?,
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
@@ -37,6 +38,10 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
     json['updatedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
+  reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+    (k, e) =>
+        MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+  ),
   metadata: json['metadata'] as Map<String, dynamic>?,
   text: json['text'] as String,
   linkPreview:
@@ -52,6 +57,7 @@ Map<String, dynamic> _$TextMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.parentId case final value?) 'parentId': value,
   'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
   if (_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
@@ -90,6 +96,7 @@ Map<String, dynamic> _$TextMessageToJson(
       )
       case final value?)
     'updatedAt': value,
+  if (instance.reactions case final value?) 'reactions': value,
   if (instance.metadata case final value?) 'metadata': value,
   'text': instance.text,
   if (instance.linkPreview?.toJson() case final value?) 'linkPreview': value,
@@ -110,6 +117,7 @@ Json? _$JsonConverterToJson<Json, Value>(
 ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  parentId: json['parentId'] as String?,
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
@@ -137,6 +145,10 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   updatedAt: _$JsonConverterFromJson<int, DateTime>(
     json['updatedAt'],
     const EpochDateTimeConverter().fromJson,
+  ),
+  reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+    (k, e) =>
+        MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
   ),
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
@@ -153,6 +165,7 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
+      if (instance.parentId case final value?) 'parentId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -191,6 +204,7 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
           )
           case final value?)
         'updatedAt': value,
+      if (instance.reactions case final value?) 'reactions': value,
       if (instance.metadata case final value?) 'metadata': value,
       'source': instance.source,
       if (instance.text case final value?) 'text': value,
@@ -205,6 +219,7 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
 FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  parentId: json['parentId'] as String?,
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
@@ -233,6 +248,10 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
     json['updatedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
+  reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+    (k, e) =>
+        MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+  ),
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
   name: json['name'] as String,
@@ -245,6 +264,7 @@ Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
+      if (instance.parentId case final value?) 'parentId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -283,6 +303,7 @@ Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
           )
           case final value?)
         'updatedAt': value,
+      if (instance.reactions case final value?) 'reactions': value,
       if (instance.metadata case final value?) 'metadata': value,
       'source': instance.source,
       'name': instance.name,
@@ -295,6 +316,7 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
     SystemMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      parentId: json['parentId'] as String?,
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
@@ -322,6 +344,10 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
       updatedAt: _$JsonConverterFromJson<int, DateTime>(
         json['updatedAt'],
         const EpochDateTimeConverter().fromJson,
+      ),
+      reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
       metadata: json['metadata'] as Map<String, dynamic>?,
       text: json['text'] as String,
@@ -332,6 +358,7 @@ Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
+      if (instance.parentId case final value?) 'parentId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -370,6 +397,7 @@ Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
           )
           case final value?)
         'updatedAt': value,
+      if (instance.reactions case final value?) 'reactions': value,
       if (instance.metadata case final value?) 'metadata': value,
       'text': instance.text,
       'type': instance.$type,
@@ -379,6 +407,7 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
     CustomMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      parentId: json['parentId'] as String?,
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
@@ -406,6 +435,10 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
       updatedAt: _$JsonConverterFromJson<int, DateTime>(
         json['updatedAt'],
         const EpochDateTimeConverter().fromJson,
+      ),
+      reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
       metadata: json['metadata'] as Map<String, dynamic>?,
       $type: json['type'] as String?,
@@ -415,6 +448,7 @@ Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
+      if (instance.parentId case final value?) 'parentId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -453,6 +487,7 @@ Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
           )
           case final value?)
         'updatedAt': value,
+      if (instance.reactions case final value?) 'reactions': value,
       if (instance.metadata case final value?) 'metadata': value,
       'type': instance.$type,
     };
@@ -461,6 +496,7 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
     UnsupportedMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      parentId: json['parentId'] as String?,
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
@@ -489,6 +525,10 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
         json['updatedAt'],
         const EpochDateTimeConverter().fromJson,
       ),
+      reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ),
       metadata: json['metadata'] as Map<String, dynamic>?,
       $type: json['type'] as String?,
     );
@@ -497,6 +537,7 @@ Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
+      if (instance.parentId case final value?) 'parentId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -535,6 +576,7 @@ Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
           )
           case final value?)
         'updatedAt': value,
+      if (instance.reactions case final value?) 'reactions': value,
       if (instance.metadata case final value?) 'metadata': value,
       'type': instance.$type,
     };
