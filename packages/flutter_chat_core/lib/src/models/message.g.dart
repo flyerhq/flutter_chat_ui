@@ -12,8 +12,32 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
+  deletedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deletedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sending: json['sending'] as bool?,
+  failedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['failedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sentAt: _$JsonConverterFromJson<int, DateTime>(
+    json['sentAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deliveredAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  seenAt: _$JsonConverterFromJson<int, DateTime>(
+    json['seenAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  updatedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['updatedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
   metadata: json['metadata'] as Map<String, dynamic>?,
-  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
   text: json['text'] as String,
   linkPreview:
       json['linkPreview'] == null
@@ -29,22 +53,59 @@ Map<String, dynamic> _$TextMessageToJson(
   'id': instance.id,
   'authorId': instance.authorId,
   'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.deletedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'deletedAt': value,
+  if (instance.sending case final value?) 'sending': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.failedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'failedAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.sentAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'sentAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.deliveredAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'deliveredAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.seenAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'seenAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.updatedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'updatedAt': value,
   if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
   'text': instance.text,
   if (instance.linkPreview?.toJson() case final value?) 'linkPreview': value,
   if (instance.isOnlyEmoji case final value?) 'isOnlyEmoji': value,
   'type': instance.$type,
 };
 
-const _$MessageStatusEnumMap = {
-  MessageStatus.delivered: 'delivered',
-  MessageStatus.error: 'error',
-  MessageStatus.seen: 'seen',
-  MessageStatus.sending: 'sending',
-  MessageStatus.sent: 'sent',
-};
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) => json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => value == null ? null : toJson(value);
 
 ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
@@ -52,8 +113,32 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
+  deletedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deletedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sending: json['sending'] as bool?,
+  failedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['failedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sentAt: _$JsonConverterFromJson<int, DateTime>(
+    json['sentAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deliveredAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  seenAt: _$JsonConverterFromJson<int, DateTime>(
+    json['seenAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  updatedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['updatedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
   metadata: json['metadata'] as Map<String, dynamic>?,
-  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
   source: json['source'] as String,
   thumbhash: json['thumbhash'] as String?,
   blurhash: json['blurhash'] as String?,
@@ -68,9 +153,44 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deletedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deletedAt': value,
+      if (instance.sending case final value?) 'sending': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.failedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'failedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.sentAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'sentAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deliveredAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deliveredAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.seenAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'seenAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.updatedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'updatedAt': value,
       if (instance.metadata case final value?) 'metadata': value,
-      if (_$MessageStatusEnumMap[instance.status] case final value?)
-        'status': value,
       'source': instance.source,
       if (instance.thumbhash case final value?) 'thumbhash': value,
       if (instance.blurhash case final value?) 'blurhash': value,
@@ -86,8 +206,32 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
+  deletedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deletedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sending: json['sending'] as bool?,
+  failedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['failedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sentAt: _$JsonConverterFromJson<int, DateTime>(
+    json['sentAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deliveredAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  seenAt: _$JsonConverterFromJson<int, DateTime>(
+    json['seenAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  updatedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['updatedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
   metadata: json['metadata'] as Map<String, dynamic>?,
-  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
   source: json['source'] as String,
   name: json['name'] as String,
   size: (json['size'] as num?)?.toInt(),
@@ -100,9 +244,44 @@ Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deletedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deletedAt': value,
+      if (instance.sending case final value?) 'sending': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.failedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'failedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.sentAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'sentAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deliveredAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deliveredAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.seenAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'seenAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.updatedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'updatedAt': value,
       if (instance.metadata case final value?) 'metadata': value,
-      if (_$MessageStatusEnumMap[instance.status] case final value?)
-        'status': value,
       'source': instance.source,
       'name': instance.name,
       if (instance.size case final value?) 'size': value,
@@ -117,8 +296,32 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
+      deletedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deletedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sending: json['sending'] as bool?,
+      failedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['failedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sentAt: _$JsonConverterFromJson<int, DateTime>(
+        json['sentAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deliveredAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      seenAt: _$JsonConverterFromJson<int, DateTime>(
+        json['seenAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      updatedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['updatedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
       metadata: json['metadata'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
       text: json['text'] as String,
       $type: json['type'] as String?,
     );
@@ -128,9 +331,44 @@ Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deletedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deletedAt': value,
+      if (instance.sending case final value?) 'sending': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.failedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'failedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.sentAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'sentAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deliveredAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deliveredAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.seenAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'seenAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.updatedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'updatedAt': value,
       if (instance.metadata case final value?) 'metadata': value,
-      if (_$MessageStatusEnumMap[instance.status] case final value?)
-        'status': value,
       'text': instance.text,
       'type': instance.$type,
     };
@@ -142,8 +380,32 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
+      deletedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deletedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sending: json['sending'] as bool?,
+      failedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['failedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sentAt: _$JsonConverterFromJson<int, DateTime>(
+        json['sentAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deliveredAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      seenAt: _$JsonConverterFromJson<int, DateTime>(
+        json['seenAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      updatedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['updatedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
       metadata: json['metadata'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
       $type: json['type'] as String?,
     );
 
@@ -152,9 +414,44 @@ Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deletedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deletedAt': value,
+      if (instance.sending case final value?) 'sending': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.failedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'failedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.sentAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'sentAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deliveredAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deliveredAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.seenAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'seenAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.updatedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'updatedAt': value,
       if (instance.metadata case final value?) 'metadata': value,
-      if (_$MessageStatusEnumMap[instance.status] case final value?)
-        'status': value,
       'type': instance.$type,
     };
 
@@ -165,8 +462,32 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
+      deletedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deletedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sending: json['sending'] as bool?,
+      failedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['failedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sentAt: _$JsonConverterFromJson<int, DateTime>(
+        json['sentAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deliveredAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      seenAt: _$JsonConverterFromJson<int, DateTime>(
+        json['seenAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      updatedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['updatedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
       metadata: json['metadata'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
       $type: json['type'] as String?,
     );
 
@@ -175,8 +496,43 @@ Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deletedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deletedAt': value,
+      if (instance.sending case final value?) 'sending': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.failedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'failedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.sentAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'sentAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deliveredAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deliveredAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.seenAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'seenAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.updatedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'updatedAt': value,
       if (instance.metadata case final value?) 'metadata': value,
-      if (_$MessageStatusEnumMap[instance.status] case final value?)
-        'status': value,
       'type': instance.$type,
     };

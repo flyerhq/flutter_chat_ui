@@ -13,8 +13,14 @@ sealed class Message with _$Message {
     required String id,
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    bool? sending,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
-    MessageStatus? status,
     required String text,
     LinkPreview? linkPreview,
     bool? isOnlyEmoji,
@@ -24,8 +30,14 @@ sealed class Message with _$Message {
     required String id,
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    bool? sending,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
-    MessageStatus? status,
     required String source,
     String? thumbhash,
     String? blurhash,
@@ -38,8 +50,14 @@ sealed class Message with _$Message {
     required String id,
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    bool? sending,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
-    MessageStatus? status,
     required String source,
     required String name,
     int? size,
@@ -50,8 +68,14 @@ sealed class Message with _$Message {
     required String id,
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    bool? sending,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
-    MessageStatus? status,
     required String text,
   }) = SystemMessage;
 
@@ -59,19 +83,43 @@ sealed class Message with _$Message {
     required String id,
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    bool? sending,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
-    MessageStatus? status,
   }) = CustomMessage;
 
   const factory Message.unsupported({
     required String id,
     required String authorId,
     @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    bool? sending,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
-    MessageStatus? status,
   }) = UnsupportedMessage;
 
   const Message._();
+
+  MessageStatus? get status {
+    // Message status is determined by the most recent state change in the message lifecycle.
+    // The order of checks matters - we check from most recent to oldest state.
+    // Note: createdAt, updatedAt, and deletedAt are message states rather than statuses.
+    if (sending == true) return MessageStatus.sending;
+    if (failedAt != null) return MessageStatus.error;
+    if (seenAt != null) return MessageStatus.seen;
+    if (deliveredAt != null) return MessageStatus.delivered;
+    if (sentAt != null) return MessageStatus.sent;
+    return null;
+  }
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);

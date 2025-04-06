@@ -343,8 +343,8 @@ class LocalState extends State<Local> {
                       id: _uuid.v4(),
                       authorId: _currentUser.id,
                       createdAt: DateTime.now().toUtc(),
+                      sentAt: DateTime.now().toUtc(),
                       source: image.path,
-                      status: MessageStatus.sent,
                     );
 
                     await _chatController.insert(imageMessage);
@@ -372,6 +372,7 @@ class LocalState extends State<Local> {
                       id: _uuid.v4(),
                       authorId: _currentUser.id,
                       createdAt: DateTime.now().toUtc(),
+                      sentAt: DateTime.now().toUtc(),
                       source: filePath,
                       name: fileName,
                       size: fileSize,
@@ -379,7 +380,6 @@ class LocalState extends State<Local> {
                           file.extension != null
                               ? 'application/${file.extension}'
                               : null,
-                      status: MessageStatus.sent,
                     );
 
                     await _chatController.insert(fileMessage);
