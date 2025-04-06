@@ -16,8 +16,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^0.0.10
-  image: ^4.5.2
-  provider: ^6.1.2
+  image: ^4.5.4
+  provider: ^6.1.4
   thumbhash: ^0.1.0+1
 
 dev_dependencies:

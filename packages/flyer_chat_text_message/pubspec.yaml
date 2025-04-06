@@ -13,8 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^0.0.10
-  gpt_markdown: ^1.0.12
-  provider: ^6.1.2
+  gpt_markdown: ^1.0.16
+  provider: ^6.1.4
 
 dev_dependencies:
   flutter_lints: ^5.0.0

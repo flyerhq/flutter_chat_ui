@@ -6,15 +6,14 @@ part of 'link_preview.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$LinkPreviewImpl _$$LinkPreviewImplFromJson(Map<String, dynamic> json) =>
-    _$LinkPreviewImpl(
-      link: json['link'] as String,
-      description: json['description'] as String?,
-      imageUrl: json['imageUrl'] as String?,
-      title: json['title'] as String?,
-    );
+_LinkPreview _$LinkPreviewFromJson(Map<String, dynamic> json) => _LinkPreview(
+  link: json['link'] as String,
+  description: json['description'] as String?,
+  imageUrl: json['imageUrl'] as String?,
+  title: json['title'] as String?,
+);
 
-Map<String, dynamic> _$$LinkPreviewImplToJson(_$LinkPreviewImpl instance) =>
+Map<String, dynamic> _$LinkPreviewToJson(_LinkPreview instance) =>
     <String, dynamic>{
       'link': instance.link,
       if (instance.description case final value?) 'description': value,

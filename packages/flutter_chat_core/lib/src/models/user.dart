@@ -5,8 +5,8 @@ import 'epoch_date_time_converter.dart';
 part 'user.freezed.dart';
 part 'user.g.dart';
 
-@Freezed()
-class User with _$User {
+@freezed
+abstract class User with _$User {
   const factory User({
     required String id,
     String? firstName,

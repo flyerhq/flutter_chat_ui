@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,412 +10,163 @@ part of 'builders.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$Builders {
-  TextMessageBuilder? get textMessageBuilder =>
-      throw _privateConstructorUsedError;
-  ImageMessageBuilder? get imageMessageBuilder =>
-      throw _privateConstructorUsedError;
-  FileMessageBuilder? get fileMessageBuilder =>
-      throw _privateConstructorUsedError;
-  SystemMessageBuilder? get systemMessageBuilder =>
-      throw _privateConstructorUsedError;
-  CustomMessageBuilder? get customMessageBuilder =>
-      throw _privateConstructorUsedError;
-  UnsupportedMessageBuilder? get unsupportedMessageBuilder =>
-      throw _privateConstructorUsedError;
-  InputBuilder? get inputBuilder => throw _privateConstructorUsedError;
-  ChatMessageBuilder? get chatMessageBuilder =>
-      throw _privateConstructorUsedError;
-  ChatAnimatedListBuilder? get chatAnimatedListBuilder =>
-      throw _privateConstructorUsedError;
-  ScrollToBottomBuilder? get scrollToBottomBuilder =>
-      throw _privateConstructorUsedError;
-  LoadMoreBuilder? get loadMoreBuilder => throw _privateConstructorUsedError;
 
-  /// Create a copy of Builders
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $BuildersCopyWith<Builders> get copyWith =>
-      throw _privateConstructorUsedError;
+ TextMessageBuilder? get textMessageBuilder; ImageMessageBuilder? get imageMessageBuilder; FileMessageBuilder? get fileMessageBuilder; SystemMessageBuilder? get systemMessageBuilder; CustomMessageBuilder? get customMessageBuilder; UnsupportedMessageBuilder? get unsupportedMessageBuilder; InputBuilder? get inputBuilder; ChatMessageBuilder? get chatMessageBuilder; ChatAnimatedListBuilder? get chatAnimatedListBuilder; ScrollToBottomBuilder? get scrollToBottomBuilder; LoadMoreBuilder? get loadMoreBuilder;
+/// Create a copy of Builders
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BuildersCopyWith<Builders> get copyWith => _$BuildersCopyWithImpl<Builders>(this as Builders, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Builders&&(identical(other.textMessageBuilder, textMessageBuilder) || other.textMessageBuilder == textMessageBuilder)&&(identical(other.imageMessageBuilder, imageMessageBuilder) || other.imageMessageBuilder == imageMessageBuilder)&&(identical(other.fileMessageBuilder, fileMessageBuilder) || other.fileMessageBuilder == fileMessageBuilder)&&(identical(other.systemMessageBuilder, systemMessageBuilder) || other.systemMessageBuilder == systemMessageBuilder)&&(identical(other.customMessageBuilder, customMessageBuilder) || other.customMessageBuilder == customMessageBuilder)&&(identical(other.unsupportedMessageBuilder, unsupportedMessageBuilder) || other.unsupportedMessageBuilder == unsupportedMessageBuilder)&&(identical(other.inputBuilder, inputBuilder) || other.inputBuilder == inputBuilder)&&(identical(other.chatMessageBuilder, chatMessageBuilder) || other.chatMessageBuilder == chatMessageBuilder)&&(identical(other.chatAnimatedListBuilder, chatAnimatedListBuilder) || other.chatAnimatedListBuilder == chatAnimatedListBuilder)&&(identical(other.scrollToBottomBuilder, scrollToBottomBuilder) || other.scrollToBottomBuilder == scrollToBottomBuilder)&&(identical(other.loadMoreBuilder, loadMoreBuilder) || other.loadMoreBuilder == loadMoreBuilder));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,textMessageBuilder,imageMessageBuilder,fileMessageBuilder,systemMessageBuilder,customMessageBuilder,unsupportedMessageBuilder,inputBuilder,chatMessageBuilder,chatAnimatedListBuilder,scrollToBottomBuilder,loadMoreBuilder);
+
+@override
+String toString() {
+  return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $BuildersCopyWith<$Res> {
-  factory $BuildersCopyWith(Builders value, $Res Function(Builders) then) =
-      _$BuildersCopyWithImpl<$Res, Builders>;
-  @useResult
-  $Res call({
-    TextMessageBuilder? textMessageBuilder,
-    ImageMessageBuilder? imageMessageBuilder,
-    FileMessageBuilder? fileMessageBuilder,
-    SystemMessageBuilder? systemMessageBuilder,
-    CustomMessageBuilder? customMessageBuilder,
-    UnsupportedMessageBuilder? unsupportedMessageBuilder,
-    InputBuilder? inputBuilder,
-    ChatMessageBuilder? chatMessageBuilder,
-    ChatAnimatedListBuilder? chatAnimatedListBuilder,
-    ScrollToBottomBuilder? scrollToBottomBuilder,
-    LoadMoreBuilder? loadMoreBuilder,
-  });
-}
+abstract mixin class $BuildersCopyWith<$Res>  {
+  factory $BuildersCopyWith(Builders value, $Res Function(Builders) _then) = _$BuildersCopyWithImpl;
+@useResult
+$Res call({
+ TextMessageBuilder? textMessageBuilder, ImageMessageBuilder? imageMessageBuilder, FileMessageBuilder? fileMessageBuilder, SystemMessageBuilder? systemMessageBuilder, CustomMessageBuilder? customMessageBuilder, UnsupportedMessageBuilder? unsupportedMessageBuilder, InputBuilder? inputBuilder, ChatMessageBuilder? chatMessageBuilder, ChatAnimatedListBuilder? chatAnimatedListBuilder, ScrollToBottomBuilder? scrollToBottomBuilder, LoadMoreBuilder? loadMoreBuilder
+});
 
+
+
+
+}
 /// @nodoc
-class _$BuildersCopyWithImpl<$Res, $Val extends Builders>
+class _$BuildersCopyWithImpl<$Res>
     implements $BuildersCopyWith<$Res> {
-  _$BuildersCopyWithImpl(this._value, this._then);
+  _$BuildersCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final Builders _self;
+  final $Res Function(Builders) _then;
 
-  /// Create a copy of Builders
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? textMessageBuilder = freezed,
-    Object? imageMessageBuilder = freezed,
-    Object? fileMessageBuilder = freezed,
-    Object? systemMessageBuilder = freezed,
-    Object? customMessageBuilder = freezed,
-    Object? unsupportedMessageBuilder = freezed,
-    Object? inputBuilder = freezed,
-    Object? chatMessageBuilder = freezed,
-    Object? chatAnimatedListBuilder = freezed,
-    Object? scrollToBottomBuilder = freezed,
-    Object? loadMoreBuilder = freezed,
-  }) {
-    return _then(
-      _value.copyWith(
-            textMessageBuilder:
-                freezed == textMessageBuilder
-                    ? _value.textMessageBuilder
-                    : textMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as TextMessageBuilder?,
-            imageMessageBuilder:
-                freezed == imageMessageBuilder
-                    ? _value.imageMessageBuilder
-                    : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as ImageMessageBuilder?,
-            fileMessageBuilder:
-                freezed == fileMessageBuilder
-                    ? _value.fileMessageBuilder
-                    : fileMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as FileMessageBuilder?,
-            systemMessageBuilder:
-                freezed == systemMessageBuilder
-                    ? _value.systemMessageBuilder
-                    : systemMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as SystemMessageBuilder?,
-            customMessageBuilder:
-                freezed == customMessageBuilder
-                    ? _value.customMessageBuilder
-                    : customMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as CustomMessageBuilder?,
-            unsupportedMessageBuilder:
-                freezed == unsupportedMessageBuilder
-                    ? _value.unsupportedMessageBuilder
-                    : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as UnsupportedMessageBuilder?,
-            inputBuilder:
-                freezed == inputBuilder
-                    ? _value.inputBuilder
-                    : inputBuilder // ignore: cast_nullable_to_non_nullable
-                        as InputBuilder?,
-            chatMessageBuilder:
-                freezed == chatMessageBuilder
-                    ? _value.chatMessageBuilder
-                    : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
-                        as ChatMessageBuilder?,
-            chatAnimatedListBuilder:
-                freezed == chatAnimatedListBuilder
-                    ? _value.chatAnimatedListBuilder
-                    : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
-                        as ChatAnimatedListBuilder?,
-            scrollToBottomBuilder:
-                freezed == scrollToBottomBuilder
-                    ? _value.scrollToBottomBuilder
-                    : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
-                        as ScrollToBottomBuilder?,
-            loadMoreBuilder:
-                freezed == loadMoreBuilder
-                    ? _value.loadMoreBuilder
-                    : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
-                        as LoadMoreBuilder?,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of Builders
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? textMessageBuilder = freezed,Object? imageMessageBuilder = freezed,Object? fileMessageBuilder = freezed,Object? systemMessageBuilder = freezed,Object? customMessageBuilder = freezed,Object? unsupportedMessageBuilder = freezed,Object? inputBuilder = freezed,Object? chatMessageBuilder = freezed,Object? chatAnimatedListBuilder = freezed,Object? scrollToBottomBuilder = freezed,Object? loadMoreBuilder = freezed,}) {
+  return _then(_self.copyWith(
+textMessageBuilder: freezed == textMessageBuilder ? _self.textMessageBuilder : textMessageBuilder // ignore: cast_nullable_to_non_nullable
+as TextMessageBuilder?,imageMessageBuilder: freezed == imageMessageBuilder ? _self.imageMessageBuilder : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
+as ImageMessageBuilder?,fileMessageBuilder: freezed == fileMessageBuilder ? _self.fileMessageBuilder : fileMessageBuilder // ignore: cast_nullable_to_non_nullable
+as FileMessageBuilder?,systemMessageBuilder: freezed == systemMessageBuilder ? _self.systemMessageBuilder : systemMessageBuilder // ignore: cast_nullable_to_non_nullable
+as SystemMessageBuilder?,customMessageBuilder: freezed == customMessageBuilder ? _self.customMessageBuilder : customMessageBuilder // ignore: cast_nullable_to_non_nullable
+as CustomMessageBuilder?,unsupportedMessageBuilder: freezed == unsupportedMessageBuilder ? _self.unsupportedMessageBuilder : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
+as UnsupportedMessageBuilder?,inputBuilder: freezed == inputBuilder ? _self.inputBuilder : inputBuilder // ignore: cast_nullable_to_non_nullable
+as InputBuilder?,chatMessageBuilder: freezed == chatMessageBuilder ? _self.chatMessageBuilder : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
+as ChatMessageBuilder?,chatAnimatedListBuilder: freezed == chatAnimatedListBuilder ? _self.chatAnimatedListBuilder : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
+as ChatAnimatedListBuilder?,scrollToBottomBuilder: freezed == scrollToBottomBuilder ? _self.scrollToBottomBuilder : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
+as ScrollToBottomBuilder?,loadMoreBuilder: freezed == loadMoreBuilder ? _self.loadMoreBuilder : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
+as LoadMoreBuilder?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$BuildersImplCopyWith<$Res>
-    implements $BuildersCopyWith<$Res> {
-  factory _$$BuildersImplCopyWith(
-    _$BuildersImpl value,
-    $Res Function(_$BuildersImpl) then,
-  ) = __$$BuildersImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({
-    TextMessageBuilder? textMessageBuilder,
-    ImageMessageBuilder? imageMessageBuilder,
-    FileMessageBuilder? fileMessageBuilder,
-    SystemMessageBuilder? systemMessageBuilder,
-    CustomMessageBuilder? customMessageBuilder,
-    UnsupportedMessageBuilder? unsupportedMessageBuilder,
-    InputBuilder? inputBuilder,
-    ChatMessageBuilder? chatMessageBuilder,
-    ChatAnimatedListBuilder? chatAnimatedListBuilder,
-    ScrollToBottomBuilder? scrollToBottomBuilder,
-    LoadMoreBuilder? loadMoreBuilder,
-  });
 }
 
-/// @nodoc
-class __$$BuildersImplCopyWithImpl<$Res>
-    extends _$BuildersCopyWithImpl<$Res, _$BuildersImpl>
-    implements _$$BuildersImplCopyWith<$Res> {
-  __$$BuildersImplCopyWithImpl(
-    _$BuildersImpl _value,
-    $Res Function(_$BuildersImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of Builders
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? textMessageBuilder = freezed,
-    Object? imageMessageBuilder = freezed,
-    Object? fileMessageBuilder = freezed,
-    Object? systemMessageBuilder = freezed,
-    Object? customMessageBuilder = freezed,
-    Object? unsupportedMessageBuilder = freezed,
-    Object? inputBuilder = freezed,
-    Object? chatMessageBuilder = freezed,
-    Object? chatAnimatedListBuilder = freezed,
-    Object? scrollToBottomBuilder = freezed,
-    Object? loadMoreBuilder = freezed,
-  }) {
-    return _then(
-      _$BuildersImpl(
-        textMessageBuilder:
-            freezed == textMessageBuilder
-                ? _value.textMessageBuilder
-                : textMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as TextMessageBuilder?,
-        imageMessageBuilder:
-            freezed == imageMessageBuilder
-                ? _value.imageMessageBuilder
-                : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as ImageMessageBuilder?,
-        fileMessageBuilder:
-            freezed == fileMessageBuilder
-                ? _value.fileMessageBuilder
-                : fileMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as FileMessageBuilder?,
-        systemMessageBuilder:
-            freezed == systemMessageBuilder
-                ? _value.systemMessageBuilder
-                : systemMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as SystemMessageBuilder?,
-        customMessageBuilder:
-            freezed == customMessageBuilder
-                ? _value.customMessageBuilder
-                : customMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as CustomMessageBuilder?,
-        unsupportedMessageBuilder:
-            freezed == unsupportedMessageBuilder
-                ? _value.unsupportedMessageBuilder
-                : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as UnsupportedMessageBuilder?,
-        inputBuilder:
-            freezed == inputBuilder
-                ? _value.inputBuilder
-                : inputBuilder // ignore: cast_nullable_to_non_nullable
-                    as InputBuilder?,
-        chatMessageBuilder:
-            freezed == chatMessageBuilder
-                ? _value.chatMessageBuilder
-                : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
-                    as ChatMessageBuilder?,
-        chatAnimatedListBuilder:
-            freezed == chatAnimatedListBuilder
-                ? _value.chatAnimatedListBuilder
-                : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
-                    as ChatAnimatedListBuilder?,
-        scrollToBottomBuilder:
-            freezed == scrollToBottomBuilder
-                ? _value.scrollToBottomBuilder
-                : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
-                    as ScrollToBottomBuilder?,
-        loadMoreBuilder:
-            freezed == loadMoreBuilder
-                ? _value.loadMoreBuilder
-                : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
-                    as LoadMoreBuilder?,
-      ),
-    );
-  }
-}
 
 /// @nodoc
 
-class _$BuildersImpl extends _Builders {
-  const _$BuildersImpl({
-    this.textMessageBuilder,
-    this.imageMessageBuilder,
-    this.fileMessageBuilder,
-    this.systemMessageBuilder,
-    this.customMessageBuilder,
-    this.unsupportedMessageBuilder,
-    this.inputBuilder,
-    this.chatMessageBuilder,
-    this.chatAnimatedListBuilder,
-    this.scrollToBottomBuilder,
-    this.loadMoreBuilder,
-  }) : super._();
 
-  @override
-  final TextMessageBuilder? textMessageBuilder;
-  @override
-  final ImageMessageBuilder? imageMessageBuilder;
-  @override
-  final FileMessageBuilder? fileMessageBuilder;
-  @override
-  final SystemMessageBuilder? systemMessageBuilder;
-  @override
-  final CustomMessageBuilder? customMessageBuilder;
-  @override
-  final UnsupportedMessageBuilder? unsupportedMessageBuilder;
-  @override
-  final InputBuilder? inputBuilder;
-  @override
-  final ChatMessageBuilder? chatMessageBuilder;
-  @override
-  final ChatAnimatedListBuilder? chatAnimatedListBuilder;
-  @override
-  final ScrollToBottomBuilder? scrollToBottomBuilder;
-  @override
-  final LoadMoreBuilder? loadMoreBuilder;
+class _Builders extends Builders {
+  const _Builders({this.textMessageBuilder, this.imageMessageBuilder, this.fileMessageBuilder, this.systemMessageBuilder, this.customMessageBuilder, this.unsupportedMessageBuilder, this.inputBuilder, this.chatMessageBuilder, this.chatAnimatedListBuilder, this.scrollToBottomBuilder, this.loadMoreBuilder}): super._();
+  
 
-  @override
-  String toString() {
-    return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder)';
-  }
+@override final  TextMessageBuilder? textMessageBuilder;
+@override final  ImageMessageBuilder? imageMessageBuilder;
+@override final  FileMessageBuilder? fileMessageBuilder;
+@override final  SystemMessageBuilder? systemMessageBuilder;
+@override final  CustomMessageBuilder? customMessageBuilder;
+@override final  UnsupportedMessageBuilder? unsupportedMessageBuilder;
+@override final  InputBuilder? inputBuilder;
+@override final  ChatMessageBuilder? chatMessageBuilder;
+@override final  ChatAnimatedListBuilder? chatAnimatedListBuilder;
+@override final  ScrollToBottomBuilder? scrollToBottomBuilder;
+@override final  LoadMoreBuilder? loadMoreBuilder;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$BuildersImpl &&
-            (identical(other.textMessageBuilder, textMessageBuilder) ||
-                other.textMessageBuilder == textMessageBuilder) &&
-            (identical(other.imageMessageBuilder, imageMessageBuilder) ||
-                other.imageMessageBuilder == imageMessageBuilder) &&
-            (identical(other.fileMessageBuilder, fileMessageBuilder) ||
-                other.fileMessageBuilder == fileMessageBuilder) &&
-            (identical(other.systemMessageBuilder, systemMessageBuilder) ||
-                other.systemMessageBuilder == systemMessageBuilder) &&
-            (identical(other.customMessageBuilder, customMessageBuilder) ||
-                other.customMessageBuilder == customMessageBuilder) &&
-            (identical(
-                  other.unsupportedMessageBuilder,
-                  unsupportedMessageBuilder,
-                ) ||
-                other.unsupportedMessageBuilder == unsupportedMessageBuilder) &&
-            (identical(other.inputBuilder, inputBuilder) ||
-                other.inputBuilder == inputBuilder) &&
-            (identical(other.chatMessageBuilder, chatMessageBuilder) ||
-                other.chatMessageBuilder == chatMessageBuilder) &&
-            (identical(
-                  other.chatAnimatedListBuilder,
-                  chatAnimatedListBuilder,
-                ) ||
-                other.chatAnimatedListBuilder == chatAnimatedListBuilder) &&
-            (identical(other.scrollToBottomBuilder, scrollToBottomBuilder) ||
-                other.scrollToBottomBuilder == scrollToBottomBuilder) &&
-            (identical(other.loadMoreBuilder, loadMoreBuilder) ||
-                other.loadMoreBuilder == loadMoreBuilder));
-  }
+/// Create a copy of Builders
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$BuildersCopyWith<_Builders> get copyWith => __$BuildersCopyWithImpl<_Builders>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    textMessageBuilder,
-    imageMessageBuilder,
-    fileMessageBuilder,
-    systemMessageBuilder,
-    customMessageBuilder,
-    unsupportedMessageBuilder,
-    inputBuilder,
-    chatMessageBuilder,
-    chatAnimatedListBuilder,
-    scrollToBottomBuilder,
-    loadMoreBuilder,
-  );
 
-  /// Create a copy of Builders
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$BuildersImplCopyWith<_$BuildersImpl> get copyWith =>
-      __$$BuildersImplCopyWithImpl<_$BuildersImpl>(this, _$identity);
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Builders&&(identical(other.textMessageBuilder, textMessageBuilder) || other.textMessageBuilder == textMessageBuilder)&&(identical(other.imageMessageBuilder, imageMessageBuilder) || other.imageMessageBuilder == imageMessageBuilder)&&(identical(other.fileMessageBuilder, fileMessageBuilder) || other.fileMessageBuilder == fileMessageBuilder)&&(identical(other.systemMessageBuilder, systemMessageBuilder) || other.systemMessageBuilder == systemMessageBuilder)&&(identical(other.customMessageBuilder, customMessageBuilder) || other.customMessageBuilder == customMessageBuilder)&&(identical(other.unsupportedMessageBuilder, unsupportedMessageBuilder) || other.unsupportedMessageBuilder == unsupportedMessageBuilder)&&(identical(other.inputBuilder, inputBuilder) || other.inputBuilder == inputBuilder)&&(identical(other.chatMessageBuilder, chatMessageBuilder) || other.chatMessageBuilder == chatMessageBuilder)&&(identical(other.chatAnimatedListBuilder, chatAnimatedListBuilder) || other.chatAnimatedListBuilder == chatAnimatedListBuilder)&&(identical(other.scrollToBottomBuilder, scrollToBottomBuilder) || other.scrollToBottomBuilder == scrollToBottomBuilder)&&(identical(other.loadMoreBuilder, loadMoreBuilder) || other.loadMoreBuilder == loadMoreBuilder));
 }
 
-abstract class _Builders extends Builders {
-  const factory _Builders({
-    final TextMessageBuilder? textMessageBuilder,
-    final ImageMessageBuilder? imageMessageBuilder,
-    final FileMessageBuilder? fileMessageBuilder,
-    final SystemMessageBuilder? systemMessageBuilder,
-    final CustomMessageBuilder? customMessageBuilder,
-    final UnsupportedMessageBuilder? unsupportedMessageBuilder,
-    final InputBuilder? inputBuilder,
-    final ChatMessageBuilder? chatMessageBuilder,
-    final ChatAnimatedListBuilder? chatAnimatedListBuilder,
-    final ScrollToBottomBuilder? scrollToBottomBuilder,
-    final LoadMoreBuilder? loadMoreBuilder,
-  }) = _$BuildersImpl;
-  const _Builders._() : super._();
 
-  @override
-  TextMessageBuilder? get textMessageBuilder;
-  @override
-  ImageMessageBuilder? get imageMessageBuilder;
-  @override
-  FileMessageBuilder? get fileMessageBuilder;
-  @override
-  SystemMessageBuilder? get systemMessageBuilder;
-  @override
-  CustomMessageBuilder? get customMessageBuilder;
-  @override
-  UnsupportedMessageBuilder? get unsupportedMessageBuilder;
-  @override
-  InputBuilder? get inputBuilder;
-  @override
-  ChatMessageBuilder? get chatMessageBuilder;
-  @override
-  ChatAnimatedListBuilder? get chatAnimatedListBuilder;
-  @override
-  ScrollToBottomBuilder? get scrollToBottomBuilder;
-  @override
-  LoadMoreBuilder? get loadMoreBuilder;
+@override
+int get hashCode => Object.hash(runtimeType,textMessageBuilder,imageMessageBuilder,fileMessageBuilder,systemMessageBuilder,customMessageBuilder,unsupportedMessageBuilder,inputBuilder,chatMessageBuilder,chatAnimatedListBuilder,scrollToBottomBuilder,loadMoreBuilder);
 
-  /// Create a copy of Builders
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BuildersImplCopyWith<_$BuildersImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'Builders(textMessageBuilder: $textMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, inputBuilder: $inputBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$BuildersCopyWith<$Res> implements $BuildersCopyWith<$Res> {
+  factory _$BuildersCopyWith(_Builders value, $Res Function(_Builders) _then) = __$BuildersCopyWithImpl;
+@override @useResult
+$Res call({
+ TextMessageBuilder? textMessageBuilder, ImageMessageBuilder? imageMessageBuilder, FileMessageBuilder? fileMessageBuilder, SystemMessageBuilder? systemMessageBuilder, CustomMessageBuilder? customMessageBuilder, UnsupportedMessageBuilder? unsupportedMessageBuilder, InputBuilder? inputBuilder, ChatMessageBuilder? chatMessageBuilder, ChatAnimatedListBuilder? chatAnimatedListBuilder, ScrollToBottomBuilder? scrollToBottomBuilder, LoadMoreBuilder? loadMoreBuilder
+});
+
+
+
+
+}
+/// @nodoc
+class __$BuildersCopyWithImpl<$Res>
+    implements _$BuildersCopyWith<$Res> {
+  __$BuildersCopyWithImpl(this._self, this._then);
+
+  final _Builders _self;
+  final $Res Function(_Builders) _then;
+
+/// Create a copy of Builders
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? textMessageBuilder = freezed,Object? imageMessageBuilder = freezed,Object? fileMessageBuilder = freezed,Object? systemMessageBuilder = freezed,Object? customMessageBuilder = freezed,Object? unsupportedMessageBuilder = freezed,Object? inputBuilder = freezed,Object? chatMessageBuilder = freezed,Object? chatAnimatedListBuilder = freezed,Object? scrollToBottomBuilder = freezed,Object? loadMoreBuilder = freezed,}) {
+  return _then(_Builders(
+textMessageBuilder: freezed == textMessageBuilder ? _self.textMessageBuilder : textMessageBuilder // ignore: cast_nullable_to_non_nullable
+as TextMessageBuilder?,imageMessageBuilder: freezed == imageMessageBuilder ? _self.imageMessageBuilder : imageMessageBuilder // ignore: cast_nullable_to_non_nullable
+as ImageMessageBuilder?,fileMessageBuilder: freezed == fileMessageBuilder ? _self.fileMessageBuilder : fileMessageBuilder // ignore: cast_nullable_to_non_nullable
+as FileMessageBuilder?,systemMessageBuilder: freezed == systemMessageBuilder ? _self.systemMessageBuilder : systemMessageBuilder // ignore: cast_nullable_to_non_nullable
+as SystemMessageBuilder?,customMessageBuilder: freezed == customMessageBuilder ? _self.customMessageBuilder : customMessageBuilder // ignore: cast_nullable_to_non_nullable
+as CustomMessageBuilder?,unsupportedMessageBuilder: freezed == unsupportedMessageBuilder ? _self.unsupportedMessageBuilder : unsupportedMessageBuilder // ignore: cast_nullable_to_non_nullable
+as UnsupportedMessageBuilder?,inputBuilder: freezed == inputBuilder ? _self.inputBuilder : inputBuilder // ignore: cast_nullable_to_non_nullable
+as InputBuilder?,chatMessageBuilder: freezed == chatMessageBuilder ? _self.chatMessageBuilder : chatMessageBuilder // ignore: cast_nullable_to_non_nullable
+as ChatMessageBuilder?,chatAnimatedListBuilder: freezed == chatAnimatedListBuilder ? _self.chatAnimatedListBuilder : chatAnimatedListBuilder // ignore: cast_nullable_to_non_nullable
+as ChatAnimatedListBuilder?,scrollToBottomBuilder: freezed == scrollToBottomBuilder ? _self.scrollToBottomBuilder : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
+as ScrollToBottomBuilder?,loadMoreBuilder: freezed == loadMoreBuilder ? _self.loadMoreBuilder : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
+as LoadMoreBuilder?,
+  ));
+}
+
+
+}
+
+// dart format on

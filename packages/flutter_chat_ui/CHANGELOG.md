@@ -1,5 +1,11 @@
 ## 2.0.0-dev.9
 
+**⚠️ Breaking Changes ⚠️**
+
+- Requires Freezed 3.0.0
+
+**Other changes**
+
 - Downgrade `intl` package version for better compatibility with other Flutter packages
 - Added `FileMessage` support to the example project
 

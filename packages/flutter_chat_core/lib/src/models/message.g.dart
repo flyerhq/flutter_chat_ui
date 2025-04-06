@@ -6,28 +6,25 @@ part of 'message.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TextMessageImpl _$$TextMessageImplFromJson(Map<String, dynamic> json) =>
-    _$TextMessageImpl(
-      id: json['id'] as String,
-      authorId: json['authorId'] as String,
-      createdAt: const EpochDateTimeConverter().fromJson(
-        (json['createdAt'] as num).toInt(),
-      ),
-      metadata: json['metadata'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
-      text: json['text'] as String,
-      linkPreview:
-          json['linkPreview'] == null
-              ? null
-              : LinkPreview.fromJson(
-                json['linkPreview'] as Map<String, dynamic>,
-              ),
-      isOnlyEmoji: json['isOnlyEmoji'] as bool?,
-      $type: json['type'] as String?,
-    );
+TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
+  id: json['id'] as String,
+  authorId: json['authorId'] as String,
+  createdAt: const EpochDateTimeConverter().fromJson(
+    (json['createdAt'] as num).toInt(),
+  ),
+  metadata: json['metadata'] as Map<String, dynamic>?,
+  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
+  text: json['text'] as String,
+  linkPreview:
+      json['linkPreview'] == null
+          ? null
+          : LinkPreview.fromJson(json['linkPreview'] as Map<String, dynamic>),
+  isOnlyEmoji: json['isOnlyEmoji'] as bool?,
+  $type: json['type'] as String?,
+);
 
-Map<String, dynamic> _$$TextMessageImplToJson(
-  _$TextMessageImpl instance,
+Map<String, dynamic> _$TextMessageToJson(
+  TextMessage instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
@@ -49,25 +46,24 @@ const _$MessageStatusEnumMap = {
   MessageStatus.sent: 'sent',
 };
 
-_$ImageMessageImpl _$$ImageMessageImplFromJson(Map<String, dynamic> json) =>
-    _$ImageMessageImpl(
-      id: json['id'] as String,
-      authorId: json['authorId'] as String,
-      createdAt: const EpochDateTimeConverter().fromJson(
-        (json['createdAt'] as num).toInt(),
-      ),
-      metadata: json['metadata'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
-      source: json['source'] as String,
-      thumbhash: json['thumbhash'] as String?,
-      blurhash: json['blurhash'] as String?,
-      width: (json['width'] as num?)?.toDouble(),
-      height: (json['height'] as num?)?.toDouble(),
-      overlay: json['overlay'] as bool?,
-      $type: json['type'] as String?,
-    );
+ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
+  id: json['id'] as String,
+  authorId: json['authorId'] as String,
+  createdAt: const EpochDateTimeConverter().fromJson(
+    (json['createdAt'] as num).toInt(),
+  ),
+  metadata: json['metadata'] as Map<String, dynamic>?,
+  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
+  source: json['source'] as String,
+  thumbhash: json['thumbhash'] as String?,
+  blurhash: json['blurhash'] as String?,
+  width: (json['width'] as num?)?.toDouble(),
+  height: (json['height'] as num?)?.toDouble(),
+  overlay: json['overlay'] as bool?,
+  $type: json['type'] as String?,
+);
 
-Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) =>
+Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
@@ -84,23 +80,22 @@ Map<String, dynamic> _$$ImageMessageImplToJson(_$ImageMessageImpl instance) =>
       'type': instance.$type,
     };
 
-_$FileMessageImpl _$$FileMessageImplFromJson(Map<String, dynamic> json) =>
-    _$FileMessageImpl(
-      id: json['id'] as String,
-      authorId: json['authorId'] as String,
-      createdAt: const EpochDateTimeConverter().fromJson(
-        (json['createdAt'] as num).toInt(),
-      ),
-      metadata: json['metadata'] as Map<String, dynamic>?,
-      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
-      source: json['source'] as String,
-      name: json['name'] as String,
-      size: (json['size'] as num?)?.toInt(),
-      mimeType: json['mimeType'] as String?,
-      $type: json['type'] as String?,
-    );
+FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
+  id: json['id'] as String,
+  authorId: json['authorId'] as String,
+  createdAt: const EpochDateTimeConverter().fromJson(
+    (json['createdAt'] as num).toInt(),
+  ),
+  metadata: json['metadata'] as Map<String, dynamic>?,
+  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
+  source: json['source'] as String,
+  name: json['name'] as String,
+  size: (json['size'] as num?)?.toInt(),
+  mimeType: json['mimeType'] as String?,
+  $type: json['type'] as String?,
+);
 
-Map<String, dynamic> _$$FileMessageImplToJson(_$FileMessageImpl instance) =>
+Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
@@ -115,8 +110,8 @@ Map<String, dynamic> _$$FileMessageImplToJson(_$FileMessageImpl instance) =>
       'type': instance.$type,
     };
 
-_$SystemMessageImpl _$$SystemMessageImplFromJson(Map<String, dynamic> json) =>
-    _$SystemMessageImpl(
+SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
+    SystemMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
       createdAt: const EpochDateTimeConverter().fromJson(
@@ -128,7 +123,7 @@ _$SystemMessageImpl _$$SystemMessageImplFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$SystemMessageImplToJson(_$SystemMessageImpl instance) =>
+Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
@@ -140,8 +135,8 @@ Map<String, dynamic> _$$SystemMessageImplToJson(_$SystemMessageImpl instance) =>
       'type': instance.$type,
     };
 
-_$CustomMessageImpl _$$CustomMessageImplFromJson(Map<String, dynamic> json) =>
-    _$CustomMessageImpl(
+CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
+    CustomMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
       createdAt: const EpochDateTimeConverter().fromJson(
@@ -152,7 +147,7 @@ _$CustomMessageImpl _$$CustomMessageImplFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$$CustomMessageImplToJson(_$CustomMessageImpl instance) =>
+Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
@@ -163,27 +158,25 @@ Map<String, dynamic> _$$CustomMessageImplToJson(_$CustomMessageImpl instance) =>
       'type': instance.$type,
     };
 
-_$UnsupportedMessageImpl _$$UnsupportedMessageImplFromJson(
-  Map<String, dynamic> json,
-) => _$UnsupportedMessageImpl(
-  id: json['id'] as String,
-  authorId: json['authorId'] as String,
-  createdAt: const EpochDateTimeConverter().fromJson(
-    (json['createdAt'] as num).toInt(),
-  ),
-  metadata: json['metadata'] as Map<String, dynamic>?,
-  status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
-  $type: json['type'] as String?,
-);
+UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
+    UnsupportedMessage(
+      id: json['id'] as String,
+      authorId: json['authorId'] as String,
+      createdAt: const EpochDateTimeConverter().fromJson(
+        (json['createdAt'] as num).toInt(),
+      ),
+      metadata: json['metadata'] as Map<String, dynamic>?,
+      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
+      $type: json['type'] as String?,
+    );
 
-Map<String, dynamic> _$$UnsupportedMessageImplToJson(
-  _$UnsupportedMessageImpl instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'type': instance.$type,
-};
+Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (instance.metadata case final value?) 'metadata': value,
+      if (_$MessageStatusEnumMap[instance.status] case final value?)
+        'status': value,
+      'type': instance.$type,
+    };

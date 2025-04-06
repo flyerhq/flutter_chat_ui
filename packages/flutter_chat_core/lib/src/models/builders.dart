@@ -40,7 +40,7 @@ typedef ScrollToBottomBuilder =
 typedef LoadMoreBuilder = Widget Function(BuildContext);
 
 @Freezed(fromJson: false, toJson: false)
-class Builders with _$Builders {
+abstract class Builders with _$Builders {
   const factory Builders({
     TextMessageBuilder? textMessageBuilder,
     ImageMessageBuilder? imageMessageBuilder,

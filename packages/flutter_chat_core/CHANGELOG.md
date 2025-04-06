@@ -1,5 +1,11 @@
 ## 0.0.10
 
+**⚠️ Breaking changes ⚠️**
+
+- Requires Freezed 3.0.0
+
+**Other changes**
+
 - Downgrade `intl` package version for better compatibility with other Flutter packages
 
 ## 0.0.9

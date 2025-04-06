@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'chat_theme.freezed.dart';
 
-@freezed
-class ChatTheme with _$ChatTheme {
+@Freezed(fromJson: false, toJson: false)
+abstract class ChatTheme with _$ChatTheme {
   const factory ChatTheme({
     required ChatColors colors,
     required ChatTypography typography,
@@ -41,8 +41,8 @@ class ChatTheme with _$ChatTheme {
   }
 }
 
-@freezed
-class ChatColors with _$ChatColors {
+@Freezed(fromJson: false, toJson: false)
+abstract class ChatColors with _$ChatColors {
   const factory ChatColors({
     required Color primary,
     required Color onPrimary,
@@ -99,8 +99,8 @@ class ChatColors with _$ChatColors {
   }
 }
 
-@freezed
-class ChatTypography with _$ChatTypography {
+@Freezed(fromJson: false, toJson: false)
+abstract class ChatTypography with _$ChatTypography {
   const factory ChatTypography({
     required TextStyle bodyLarge,
     required TextStyle bodyMedium,

@@ -6,7 +6,7 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+_User _$UserFromJson(Map<String, dynamic> json) => _User(
   id: json['id'] as String,
   firstName: json['firstName'] as String?,
   lastName: json['lastName'] as String?,
@@ -18,20 +18,19 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
   metadata: json['metadata'] as Map<String, dynamic>?,
 );
 
-Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      if (instance.firstName case final value?) 'firstName': value,
-      if (instance.lastName case final value?) 'lastName': value,
-      if (instance.imageSource case final value?) 'imageSource': value,
-      if (_$JsonConverterToJson<int, DateTime>(
-            instance.createdAt,
-            const EpochDateTimeConverter().toJson,
-          )
-          case final value?)
-        'createdAt': value,
-      if (instance.metadata case final value?) 'metadata': value,
-    };
+Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
+  'id': instance.id,
+  if (instance.firstName case final value?) 'firstName': value,
+  if (instance.lastName case final value?) 'lastName': value,
+  if (instance.imageSource case final value?) 'imageSource': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.createdAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'createdAt': value,
+  if (instance.metadata case final value?) 'metadata': value,
+};
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
