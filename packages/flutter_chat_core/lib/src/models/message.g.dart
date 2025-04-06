@@ -140,11 +140,12 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   ),
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
+  text: json['text'] as String?,
   thumbhash: json['thumbhash'] as String?,
   blurhash: json['blurhash'] as String?,
   width: (json['width'] as num?)?.toDouble(),
   height: (json['height'] as num?)?.toDouble(),
-  overlay: json['overlay'] as bool?,
+  hasOverlay: json['hasOverlay'] as bool?,
   $type: json['type'] as String?,
 );
 
@@ -192,11 +193,12 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
         'updatedAt': value,
       if (instance.metadata case final value?) 'metadata': value,
       'source': instance.source,
+      if (instance.text case final value?) 'text': value,
       if (instance.thumbhash case final value?) 'thumbhash': value,
       if (instance.blurhash case final value?) 'blurhash': value,
       if (instance.width case final value?) 'width': value,
       if (instance.height case final value?) 'height': value,
-      if (instance.overlay case final value?) 'overlay': value,
+      if (instance.hasOverlay case final value?) 'hasOverlay': value,
       'type': instance.$type,
     };
 

@@ -4,6 +4,7 @@
 
 - Requires Freezed 3.0.0
 - Replace `status` field with a computed getter that determines message state based on lifecycle timestamps (`createdAt`, `deletedAt`, `sending`, `failedAt`, `sentAt`, `deliveredAt`, `seenAt`, `updatedAt`). This enables granular message history tracking and status transitions, matching the behavior of popular chat applications.
+- Rename `overlay` to `hasOverlay` in `ImageMessage`
 
 **Other changes**
 

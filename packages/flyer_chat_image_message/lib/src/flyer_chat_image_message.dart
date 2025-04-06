@@ -218,7 +218,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   var content = child;
 
                   if (widget.overlay != null &&
-                      widget.message.overlay == true &&
+                      widget.message.hasOverlay == true &&
                       frame != null) {
                     content = Stack(
                       fit: StackFit.expand,

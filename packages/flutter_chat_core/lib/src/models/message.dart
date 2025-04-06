@@ -39,11 +39,12 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? updatedAt,
     Map<String, dynamic>? metadata,
     required String source,
+    String? text,
     String? thumbhash,
     String? blurhash,
     double? width,
     double? height,
-    bool? overlay,
+    bool? hasOverlay,
   }) = ImageMessage;
 
   const factory Message.file({
