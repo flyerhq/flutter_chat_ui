@@ -1,142 +1,146 @@
-## Create a new example or package
+# Contributing to [Flyer Chat](https://flyer.chat) 💬
 
-### To create a new example:
+First off, thank you for considering contributing to Flyer Chat! 🎉 We welcome any contributions that help make this project better, from reporting bugs and suggesting features to submitting code changes.
 
-1. Go to examples folder
+This document provides guidelines for contributing to the project.
 
-```bash
-cd examples
-```
+## Code of Conduct
 
-2. Run the following command:
+We expect all contributors to adhere to our [Code of Conduct](https://github.com/flyerhq/flutter_chat_ui/blob/main/CODE_OF_CONDUCT.md). Please read it to understand the standards we strive for.
 
-```bash
-flutter create example_name --org flyer.chat
-```
+## Ways to Contribute
 
-3. Go to the root folder
+There are many ways to contribute:
 
-```bash
-cd ..
-```
+*   **Reporting Bugs:** If you find a bug, please report it by opening an issue.
+*   **Suggesting Enhancements:** Have an idea for a new feature or an improvement? Open a discussion to share your thoughts with the community.
+*   **Improving Documentation:** Spot a typo or think something could be clearer? Let us know by opening an issue.
+*   **Writing Code:** Help fix bugs or implement new features.
+*   **Creating Examples/Packages:** Follow the steps below to add new examples or packages.
 
-4. Run melos bootstrap:
+## Reporting Bugs & Suggesting Enhancements
 
-```bash
-melos bs
-```
+Before creating a new issue:
 
-5. Replace `analysis_options.yaml` content with the following:
+1.  **Search existing issues and/or discussions:** Check if the bug or feature request has already been reported or suggested.
+2.  **Provide details:** If creating a new issue, please include as much detail as possible. For bugs, include steps to reproduce, expected behavior, actual behavior, Flutter version, and package versions. For enhancements, explain the motivation and proposed solution.
 
-```bash
-include: ../../analysis_options.yaml
+## Development Setup & Workflow
 
-```
+### Prerequisites
 
-### To create a new package:
+*   [Flutter SDK](https://docs.flutter.dev/get-started/install)
+*   [Melos](https://melos.invertase.dev/): Install via `dart pub global activate melos`
 
-1. Go to packages folder
+### Initial Setup
 
-```bash
-cd packages
-```
+1.  Fork the repository on GitHub.
+2.  Clone your fork locally: `git clone https://github.com/YOUR_USERNAME/flutter_chat_ui.git`
+3.  Navigate to the project directory: `cd flutter_chat_ui`
+4.  Bootstrap the project using Melos (installs dependencies for all packages): `melos bootstrap` or `melos bs`
 
-2. Run the following command:
+### Creating a New Example
 
-```bash
-flutter create package_name --template=package
-```
+1.  Navigate to the examples directory:
+    ```bash
+    cd examples
+    ```
+2.  Create the Flutter project:
+    ```bash
+    flutter create example_name --org chat.flyer
+    ```
+3.  Return to the root directory:
+    ```bash
+    cd ..
+    ```
+4.  Bootstrap Melos to link packages:
+    ```bash
+    melos bs
+    ```
+5.  Replace the content of `examples/example_name/analysis_options.yaml` with:
+    ```yaml
+    include: ../../analysis_options.yaml
+    ```
 
-3. Go to the root folder
+### Creating a New Package
 
-```bash
-cd ..
-```
+1.  Navigate to the packages directory:
+    ```bash
+    cd packages
+    ```
+2.  Create the Flutter package:
+    ```bash
+    flutter create --template=package package_name
+    ```
+3.  Return to the root directory:
+    ```bash
+    cd ..
+    ```
+4.  Bootstrap Melos:
+    ```bash
+    melos bs
+    ```
+5.  Replace the content of `packages/package_name/analysis_options.yaml` with:
+    ```yaml
+    include: ../../analysis_options.yaml
+    ```
+6.  Structure the package similarly to existing ones. Essential files include:
+    ```
+    lib/
+      src/
+        # Your Dart code
+      package_name.dart # Exports
+    analysis_options.yaml
+    CHANGELOG.md
+    LICENSE
+    pubspec.yaml
+    README.md
+    ```
+    Remove unnecessary generated files and update `pubspec.yaml`.
+7.  Run `melos bs` again after modifying `pubspec.yaml`.
 
-4. Run melos bootstrap:
+### Common Melos Commands
 
-```bash
-melos bs
-```
+*   **Get/Link Dependencies:** `melos bootstrap` or `melos bs`
+*   **Clean:** `melos clean` (removes build artifacts, pub caches, etc.)
+*   **Run All Tests:** `melos test`
+*   **Run Tests Selectively:** `melos run test:selective` (prompts for package selection)
+*   **Generate Coverage:** `melos coverage`
+*   **Generate Coverage Selectively:** `melos run coverage:selective`
+*   **Analyze Code:** `melos analyze`
+*   **Format Code:** `melos format`
+*   **Apply Fixes:** `melos run fix`
+*   **(flutter_chat_core) Build Runner:** `melos run build`
 
-5. Replace `analysis_options.yaml` content with the following:
+## Code Style
 
-```bash
-include: ../../analysis_options.yaml
+Please adhere to the code style defined in the root `analysis_options.yaml` file.
 
-```
+*   Run `melos format` to format your code before committing.
+*   Run `melos analyze` to check for static analysis issues.
 
-6. Make sure to follow other packages structure. Minimum required files are:
+## Pull Request Process
 
-```
-.dart_tool/
-lib/
-  src/
-    code.dart
-  package_name.dart
-analysis_options.yaml
-CHANGELOG.md
-LICENSE
-melos_package_name.iml
-pubspec.lock
-pubspec.yaml
-README.md
-```
+1.  Ensure you have followed the [Development Setup](#development-setup--workflow).
+2.  Create a new branch for your changes based on the `main` branch:
+    ```bash
+    git checkout main
+    git pull origin main # Ensure you have the latest changes
+    git checkout -b your-branch-name # e.g., fix/message-bug or feat/new-message-type
+    ```
+3.  Make your code changes.
+4.  Add relevant tests for your changes.
+5.  Run tests: `melos test`
+6.  Format code and check analysis: `melos format && melos analyze`
+7.  Commit your changes with a clear and concise commit message.
+8.  Push your branch to your fork:
+    ```bash
+    git push origin your-branch-name
+    ```
+9.  Open a Pull Request (PR) from your fork's branch to the `flyerhq/flutter_chat_ui` `main` branch.
+10. Provide a clear description of your PR, explaining the changes and linking to any relevant issues (e.g., `Fixes #123`).
+11. Respond to any feedback or requested changes from the maintainers.
 
-Remove all other files if needed and update `pubspec.yaml` similar to other packages.
+## License
 
-Remember to run `melos bs` again after you finished all configs and changed `pubspec.yaml` file.
-
-## Tests
-
-To run tests for a specific package:
-
-```bash
-melos test:selective
-```
-
-To run all tests:
-
-```bash
-melos test
-```
-
-To generate coverage for a specific package:
-
-```bash
-melos coverage:selective
-```
-
-To generate coverage for all packages:
-
-```bash
-melos coverage
-```
-
-## Misc
-
-Get dependencies for all packages:
-
-```bash
-melos bs
-```
-
-Clean all packages:
-
-```bash
-melos clean
-```
-
-Build types (flutter_chat_types):
-
-```bash
-melos build
-```
-
-Additional:
-
-```bash
-melos analyze
-melos format
-melos fix
-```
+By contributing, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE) that covers the project.
