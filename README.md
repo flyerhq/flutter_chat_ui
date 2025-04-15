@@ -21,15 +21,19 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
+  flutter_chat_core: ^ # Use the latest version
   flutter_chat_ui: ^2.0.0
 ```
 
 Then, import and use the `Chat` widget.
 
-## 📖 Documentation & Examples
+## 📚 Documentation & Examples
 
-- TBA - work in progress 🚧
-- **Full Example:** Explore the comprehensive example application in [`examples/flyer_chat/lib/main.dart`](https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat) to see various features and customizations in action.
+For detailed usage, customization options, different message types, controllers, and more complex scenarios, please refer to the **full documentation**:
+
+➡️ **[flyer.chat/docs/flutter](https://flyer.chat/docs/flutter)** ⬅️
+
+Explore the comprehensive [example application](https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat) to see various features and customizations in action.
 
 ## 📦 Packages
 
