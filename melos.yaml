@@ -1,8 +1,9 @@
 name: flyer_chat_workspace
+repository: https://github.com/flyerhq/flutter_chat_ui
 
 packages:
-  - examples/**
-  - packages/**
+  - examples/*
+  - packages/*
 
 scripts:
   test:selective:

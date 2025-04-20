@@ -1,3 +1,7 @@
+## 0.0.11
+
+- Version bump to match other packages
+
 ## 0.0.10
 
 - Rename `overlay` to `hasOverlay` in `ImageMessage`

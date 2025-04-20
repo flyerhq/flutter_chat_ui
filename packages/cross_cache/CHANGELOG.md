@@ -1,3 +1,7 @@
+## 0.0.11
+
+- Version bump to match other packages
+
 ## 0.0.10
 
 - Migrated web storage implementation from `indexed_db` to `idb_shim` for improved cross-platform compatibility and better performance

@@ -1,3 +1,11 @@
+## 2.0.0-dev.10
+
+**⚠️ Breaking Changes ⚠️**
+
+- Rename `ChatInput` to `Composer`
+- Rename `ChatInputHeightNotifier` to `ComposerHeightNotifier`
+- Rename `inputBuilder` to `composerBuilder`
+
 ## 2.0.0-dev.9
 
 **⚠️ Breaking Changes ⚠️**

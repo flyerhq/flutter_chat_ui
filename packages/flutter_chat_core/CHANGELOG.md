@@ -1,3 +1,9 @@
+## 0.0.11
+
+**⚠️ Breaking changes ⚠️**
+
+- Rename `inputBuilder` to `composerBuilder`
+
 ## 0.0.10
 
 **⚠️ Breaking changes ⚠️**
