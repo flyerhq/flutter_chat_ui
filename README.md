@@ -62,5 +62,4 @@ Contributions are welcome! Please see [CONTRIBUTING.md](https://github.com/flyer
 
 ## 📜 License
 
-Licensed under the Apache License, Version 2.0. See the [LICENSE](https://github.com/flyerhq/flutter_chat_ui/blob/main/packages/flutter_chat_ui/LICENSE) file for details.
-
+Licensed under the Apache License, Version 2.0. See the [LICENSE](https://github.com/flyerhq/flutter_chat_ui/blob/main/LICENSE) file for details.
