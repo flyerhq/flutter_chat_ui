@@ -10,7 +10,7 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../load_more.dart';
 import '../scroll_to_bottom.dart';
-import '../utils/chat_input_height_notifier.dart';
+import '../utils/composer_height_notifier.dart';
 import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
 import '../utils/typedefs.dart';
@@ -231,7 +231,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
                   widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
               slivers: <Widget>[
-                Consumer<ChatInputHeightNotifier>(
+                Consumer<ComposerHeightNotifier>(
                   builder: (context, heightNotifier, child) {
                     return SliverPadding(
                       padding: EdgeInsets.only(

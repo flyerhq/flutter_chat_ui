@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'chat_animated_list/chat_animated_list.dart';
-import 'chat_input.dart';
 import 'chat_message/chat_message_internal.dart';
-import 'utils/chat_input_height_notifier.dart';
+import 'composer.dart';
+import 'utils/composer_height_notifier.dart';
 import 'utils/load_more_notifier.dart';
 import 'utils/typedefs.dart';
 
@@ -103,7 +103,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: widget.onMessageTap),
         Provider.value(value: widget.onMessageLongPress),
         Provider.value(value: widget.onAttachmentTap),
-        ChangeNotifierProvider(create: (_) => ChatInputHeightNotifier()),
+        ChangeNotifierProvider(create: (_) => ComposerHeightNotifier()),
         ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
         Provider(create: (_) => UserCache(maxSize: 100)),
       ],
@@ -117,7 +117,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
           children: [
             _builders.chatAnimatedListBuilder?.call(context, _buildItem) ??
                 ChatAnimatedList(itemBuilder: _buildItem),
-            _builders.inputBuilder?.call(context) ?? const ChatInput(),
+            _builders.composerBuilder?.call(context) ?? const Composer(),
           ],
         ),
       ),

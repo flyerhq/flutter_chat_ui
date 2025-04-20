@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
-import 'utils/chat_input_height_notifier.dart';
+import 'utils/composer_height_notifier.dart';
 import 'utils/typedefs.dart';
 
-class ChatInput extends StatefulWidget {
+class Composer extends StatefulWidget {
   static const Color _sentinelColor = Colors.transparent;
 
   final TextEditingController? textEditingController;
@@ -42,7 +42,7 @@ class ChatInput extends StatefulWidget {
   final int? minLines;
   final int? maxLines;
 
-  const ChatInput({
+  const Composer({
     super.key,
     this.textEditingController,
     this.left = 0,
@@ -82,10 +82,10 @@ class ChatInput extends StatefulWidget {
   });
 
   @override
-  State<ChatInput> createState() => _ChatInputState();
+  State<Composer> createState() => _ComposerState();
 }
 
-class _ChatInputState extends State<ChatInput> {
+class _ComposerState extends State<Composer> {
   final _key = GlobalKey();
   late final TextEditingController _textController;
   late final FocusNode _focusNode;
@@ -111,7 +111,7 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   @override
-  void didUpdateWidget(covariant ChatInput oldWidget) {
+  void didUpdateWidget(covariant Composer oldWidget) {
     super.didUpdateWidget(oldWidget);
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
@@ -147,7 +147,7 @@ class _ChatInputState extends State<ChatInput> {
         child: Container(
           key: _key,
           color:
-              widget.backgroundColor == ChatInput._sentinelColor
+              widget.backgroundColor == Composer._sentinelColor
                   ? theme.colors.surfaceContainerLow
                   : widget.backgroundColor,
           child: Column(
@@ -237,8 +237,8 @@ class _ChatInputState extends State<ChatInput> {
       final height = renderBox.size.height;
       final bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
-      context.read<ChatInputHeightNotifier>().setHeight(
-        // only set real height of the input, ignoring safe area
+      context.read<ComposerHeightNotifier>().setHeight(
+        // only set real height of the composer, ignoring safe area
         widget.handleSafeArea == true ? height - bottomSafeArea : height,
       );
     }

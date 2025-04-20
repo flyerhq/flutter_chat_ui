@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
-import 'utils/chat_input_height_notifier.dart';
+import 'utils/composer_height_notifier.dart';
 
 class ScrollToBottom extends StatelessWidget {
   final Animation<double> animation;
@@ -11,7 +11,7 @@ class ScrollToBottom extends StatelessWidget {
   final double? right;
   final double? top;
   final double? bottom;
-  final bool? useChatInputHeightForBottomOffset;
+  final bool? useComposerHeightForBottomOffset;
   final bool? mini;
   final ShapeBorder? shape;
   final Widget? icon;
@@ -27,7 +27,7 @@ class ScrollToBottom extends StatelessWidget {
     this.right = 16,
     this.top,
     this.bottom = 20,
-    this.useChatInputHeightForBottomOffset = true,
+    this.useComposerHeightForBottomOffset = true,
     this.mini = true,
     this.shape = const CircleBorder(),
     this.icon = const Icon(Icons.keyboard_arrow_down),
@@ -46,14 +46,14 @@ class ScrollToBottom extends StatelessWidget {
       ),
     );
 
-    return Consumer<ChatInputHeightNotifier>(
+    return Consumer<ComposerHeightNotifier>(
       builder: (context, heightNotifier, child) {
         return Positioned(
           left: left,
           right: right,
           top: top,
           bottom:
-              useChatInputHeightForBottomOffset == true
+              useComposerHeightForBottomOffset == true
                   ? heightNotifier.height +
                       (bottom ?? 0) +
                       (handleSafeArea == true ? bottomSafeArea : 0)

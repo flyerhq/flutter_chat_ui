@@ -10,7 +10,7 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../load_more.dart';
 import '../scroll_to_bottom.dart';
-import '../utils/chat_input_height_notifier.dart';
+import '../utils/composer_height_notifier.dart';
 import '../utils/keyboard_mixin.dart';
 import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
@@ -328,7 +328,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
                   },
                 ),
                 if (widget.bottomSliver != null) widget.bottomSliver!,
-                Consumer<ChatInputHeightNotifier>(
+                Consumer<ComposerHeightNotifier>(
                   builder: (context, heightNotifier, child) {
                     return SliverPadding(
                       padding: EdgeInsets.only(

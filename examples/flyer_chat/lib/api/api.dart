@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import '../create_message.dart';
-import '../widgets/input_action_bar.dart';
+import '../widgets/composer_action_bar.dart';
 import 'api_service.dart';
 import 'connection_status.dart';
 import 'upload_file.dart';
@@ -92,16 +92,16 @@ class ApiState extends State<Api> {
               imageMessageBuilder:
                   (context, message, index) =>
                       FlyerChatImageMessage(message: message, index: index),
-              inputBuilder:
-                  (context) => ChatInput(
-                    topWidget: InputActionBar(
+              composerBuilder:
+                  (context) => Composer(
+                    topWidget: ComposerActionBar(
                       buttons: [
-                        InputActionButton(
+                        ComposerActionButton(
                           icon: Icons.shuffle,
                           title: 'Send random',
                           onPressed: () => _addItem(null),
                         ),
-                        InputActionButton(
+                        ComposerActionButton(
                           icon: Icons.delete_sweep,
                           title: 'Clear all',
                           onPressed: () async {

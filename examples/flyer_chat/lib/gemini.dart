@@ -10,7 +10,7 @@ import 'package:sembast/sembast.dart';
 import 'package:uuid/uuid.dart';
 
 import 'sembast_chat_controller.dart';
-import 'widgets/input_action_bar.dart';
+import 'widgets/composer_action_bar.dart';
 
 class Gemini extends StatefulWidget {
   final String geminiApiKey;
@@ -83,11 +83,11 @@ class GeminiState extends State<Gemini> {
           imageMessageBuilder:
               (context, message, index) =>
                   FlyerChatImageMessage(message: message, index: index),
-          inputBuilder:
-              (context) => ChatInput(
-                topWidget: InputActionBar(
+          composerBuilder:
+              (context) => Composer(
+                topWidget: ComposerActionBar(
                   buttons: [
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.delete_sweep,
                       title: 'Clear all',
                       onPressed: () {
@@ -213,7 +213,7 @@ class GeminiState extends State<Gemini> {
                 // Start with the initial scroll position
                 // Add viewport height to get to top of visible area
                 // Subtract bottom safe area
-                // Subtract input height since it is absolute positioned (104)
+                // Subtract composer height since it is absolute positioned (104)
                 // Subtract some padding for visual buffer (20)
                 final targetScroll =
                     (initialMaxScrollExtent ?? 0) +

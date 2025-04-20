@@ -18,7 +18,7 @@ typedef CustomMessageBuilder =
     Widget Function(BuildContext, CustomMessage, int index);
 typedef UnsupportedMessageBuilder =
     Widget Function(BuildContext, UnsupportedMessage, int index);
-typedef InputBuilder = Widget Function(BuildContext);
+typedef ComposerBuilder = Widget Function(BuildContext);
 typedef ChatMessageBuilder =
     Widget Function(
       BuildContext,
@@ -48,7 +48,7 @@ abstract class Builders with _$Builders {
     SystemMessageBuilder? systemMessageBuilder,
     CustomMessageBuilder? customMessageBuilder,
     UnsupportedMessageBuilder? unsupportedMessageBuilder,
-    InputBuilder? inputBuilder,
+    ComposerBuilder? composerBuilder,
     ChatMessageBuilder? chatMessageBuilder,
     ChatAnimatedListBuilder? chatAnimatedListBuilder,
     ScrollToBottomBuilder? scrollToBottomBuilder,

@@ -8,6 +8,7 @@ import 'package:sembast/sembast.dart';
 import 'api/api.dart';
 import 'api_get_chat_id.dart';
 import 'api_get_initial_messages.dart';
+import 'basic.dart';
 import 'gemini.dart';
 import 'initialize/initialize.dart';
 import 'local.dart';
@@ -279,6 +280,15 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                   ).push(MaterialPageRoute(builder: (context) => Pagination()));
                 },
                 child: const Text('pagination'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => Basic()));
+                },
+                child: const Text('basic'),
               ),
             ],
           ),

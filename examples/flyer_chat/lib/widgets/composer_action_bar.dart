@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class InputActionButton {
+class ComposerActionButton {
   final IconData icon;
   final String title;
   final VoidCallback onPressed;
   final bool destructive;
 
-  const InputActionButton({
+  const ComposerActionButton({
     required this.icon,
     required this.title,
     required this.onPressed,
@@ -14,10 +14,10 @@ class InputActionButton {
   });
 }
 
-class InputActionBar extends StatelessWidget {
-  final List<InputActionButton> buttons;
+class ComposerActionBar extends StatelessWidget {
+  final List<ComposerActionButton> buttons;
 
-  const InputActionBar({super.key, required this.buttons});
+  const ComposerActionBar({super.key, required this.buttons});
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,7 @@ import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
 
 import 'create_message.dart';
-import 'widgets/input_action_bar.dart';
+import 'widgets/composer_action_bar.dart';
 
 class Local extends StatefulWidget {
   final Dio dio;
@@ -88,21 +88,21 @@ class LocalState extends State<Local> {
           systemMessageBuilder:
               (context, message, index) =>
                   FlyerChatSystemMessage(message: message, index: index),
-          inputBuilder:
-              (context) => ChatInput(
-                topWidget: InputActionBar(
+          composerBuilder:
+              (context) => Composer(
+                topWidget: ComposerActionBar(
                   buttons: [
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.type_specimen,
                       title: 'Toggle typing',
                       onPressed: () => _toggleTyping(),
                     ),
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.shuffle,
                       title: 'Send random',
                       onPressed: () => _addItem(null),
                     ),
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.delete_sweep,
                       title: 'Clear all',
                       onPressed: () => _chatController.set([]),

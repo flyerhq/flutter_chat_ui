@@ -3,7 +3,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/input_action_bar.dart';
+import 'widgets/composer_action_bar.dart';
 
 class Pagination extends StatefulWidget {
   const Pagination({super.key});
@@ -54,21 +54,21 @@ class PaginationState extends State<Pagination> {
               onEndReached: _loadMore,
             );
           },
-          inputBuilder:
-              (context) => CustomInput(
-                topWidget: InputActionBar(
+          composerBuilder:
+              (context) => CustomComposer(
+                topWidget: ComposerActionBar(
                   buttons: [
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.call_to_action,
                       title: 'Scroll to 1',
                       onPressed: () => _scrollToMessage('1'),
                     ),
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.call_to_action,
                       title: 'Scroll to 40',
                       onPressed: () => _scrollToMessage('40'),
                     ),
-                    InputActionButton(
+                    ComposerActionButton(
                       icon: Icons.call_to_action,
                       title: 'Scroll to 80',
                       onPressed: () => _scrollToMessage('80'),
@@ -118,7 +118,7 @@ class PaginationState extends State<Pagination> {
     if (messageExists) {
       // Message is already loaded, scroll to it directly
       // If the list is reserved, we might need to add an offset that
-      // is equal to the height of the chat input (not including the safe area).
+      // is equal to the height of the chat composer (not including the safe area).
       // For this example it would be 110.
       await _chatController.scrollToMessage(messageId);
       return;
@@ -150,7 +150,7 @@ class PaginationState extends State<Pagination> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // If the list is reserved, we might need to add an offset that
-      // is equal to the height of the chat input (not including the safe area).
+      // is equal to the height of the chat composer (not including the safe area).
       // For this example it would be 110.
       _chatController.scrollToMessage(messageId);
     });
@@ -188,16 +188,16 @@ class MockDatabase {
   }
 }
 
-class CustomInput extends StatefulWidget {
+class CustomComposer extends StatefulWidget {
   final Widget topWidget;
 
-  const CustomInput({super.key, required this.topWidget});
+  const CustomComposer({super.key, required this.topWidget});
 
   @override
-  State<CustomInput> createState() => _CustomInputState();
+  State<CustomComposer> createState() => _CustomComposerState();
 }
 
-class _CustomInputState extends State<CustomInput> {
+class _CustomComposerState extends State<CustomComposer> {
   final _key = GlobalKey();
 
   @override
@@ -207,7 +207,7 @@ class _CustomInputState extends State<CustomInput> {
   }
 
   @override
-  void didUpdateWidget(covariant CustomInput oldWidget) {
+  void didUpdateWidget(covariant CustomComposer oldWidget) {
     super.didUpdateWidget(oldWidget);
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
@@ -242,9 +242,7 @@ class _CustomInputState extends State<CustomInput> {
       final height = renderBox.size.height;
       final bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
-      context.read<ChatInputHeightNotifier>().setHeight(
-        height - bottomSafeArea,
-      );
+      context.read<ComposerHeightNotifier>().setHeight(height - bottomSafeArea);
     }
   }
 }

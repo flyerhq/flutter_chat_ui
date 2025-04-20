@@ -9,6 +9,7 @@ Flyer Chat is an open-source chat UI package for Flutter applications, designed 
 ## ✨ Features
 
 - 🔄 **Backend-agnostic**: Connect to any backend service.
+- 🧬 **Adaptable**: Perfect for real-time messengers, generative AI agents and LLM-based assistants, support platforms, and beyond.
 - 🎨 **Highly Customizable**: Tailor the UI with extensive theme options and builder functions.
 - 🧩 **Modular**: Pick and choose the features you want. You can change any part of the UI or swap it with your own custom implementation.
 - ⚡ **Performance Optimized**: Built for speed and smooth animations.
@@ -26,41 +27,6 @@ dependencies:
 ```
 
 Then, import and use the `Chat` widget.
-
-## 📖 Basic Usage
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_chat_core/flutter_chat_core.dart';
-
-@override
-Widget build(BuildContext context) {
-  return Chat(
-    // A simple in-memory chat controller, you can create your own controller.
-    // See example project.
-    chatController: InMemoryChatController(),
-    // Current user id (the one that sends messages)
-    currentUserId: 'user1',
-    onMessageSend: (text) {
-      _chatController.insert(
-        TextMessage(
-          // Better to use UUID or similar for the id :)
-          id: '${Random().nextInt(1000) + 1}',
-          authorId: 'user1',
-          createdAt: DateTime.now().toUtc(),
-          text: text,
-        ),
-      );
-    },
-    // Return a user object for the given id - this way chat always gets
-    // latest user data.
-    resolveUser: (String id) async {
-      return User(id: id, firstName: 'John', lastName: 'Doe');
-    },
-  );
-}
-```
 
 ## 📚 Documentation & Examples
 
