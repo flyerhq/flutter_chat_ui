@@ -64,7 +64,28 @@ class ChatAnimatedList extends StatefulWidget {
     this.shouldScrollToEndWhenSendingMessage = true,
     this.shouldScrollToEndWhenAtBottom = true,
     this.onEndReached,
-    this.paginationThreshold = 0.2,
+    // Threshold for triggering pagination, represented as a value between 0 (top)
+    // and 1 (bottom).
+    //
+    // IMPORTANT: This value defaults to a very small number (e.g., 0.01 or 1%)
+    // for a critical reason. The scroll anchoring mechanism used to prevent
+    // content jumps during pagination relies on accurately identifying the
+    // *actual* topmost visible item *before* loading new content.
+    //
+    // A small threshold ensures that pagination is triggered only when the user
+    // is very close to the top, making it highly likely that the scroll observer
+    // correctly identifies the visually topmost item as the anchor.
+    //
+    // WARNING: Increasing this value significantly (e.g., to 0.2 or higher)
+    // means pagination might trigger when items further down the viewport are
+    // technically the "first visible" according to the observer. This will cause
+    // the anchoring logic to select the wrong item, resulting in the list
+    // jumping incorrectly after new items are loaded, potentially appearing to
+    // scroll to a random position.
+    //
+    // Modify this value at your own risk. If you increase it and experience
+    // unstable pagination jumps, revert to a smaller value like 0.01.
+    this.paginationThreshold = 0.01,
     this.messageGroupingTimeoutInSeconds,
   });
 
@@ -555,52 +576,84 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
         !_paginationShouldTrigger) {
       return;
     }
-    // Get the threshold for pagination, defaulting to 0 (very top of the list)
+    // Get the threshold for pagination.
     final threshold = widget.paginationThreshold ?? 0;
 
-    // Calculate how far the user has scrolled as a percentage from 0 to 1.
-    // For example, 0.1 means user has scrolled 10% from the top.
-    final scrollPercentage = metrics.pixels / metrics.maxScrollExtent;
+    // Calculate scroll position percentage (0 = top, 1 = bottom).
+    // For example, 0.1 means 10% from the top of the list.
+    final scrollPercentage =
+        metrics.maxScrollExtent == 0
+            ? 0
+            : metrics.pixels / metrics.maxScrollExtent;
 
-    // Check if user has scrolled past the threshold percentage from the top
+    // Trigger pagination if user scrolled past the threshold towards the top.
     if (scrollPercentage <= threshold) {
-      // Reset pagination trigger flag to prevent multiple triggers.
-      // Flag gets set back to true when user scrolls up again.
+      // Prevent multiple triggers during one scroll gesture.
       _paginationShouldTrigger = false;
 
-      // Store current scroll metrics before loading more items.
-      // We need these to properly adjust scroll position after new items are inserted.
-      // Without this, the scroll position would stay at the very top, causing pagination
-      // to trigger in a loop.
-      final extent = metrics.maxScrollExtent;
+      // Store the ID of the topmost visible item before loading new messages.
+      // This item will be used as an anchor to maintain scroll position.
+      String? anchorMessageId;
+      try {
+        final notificationResult = await _observerController
+            .dispatchOnceObserve(
+              sliverContext: _sliverListViewContext!,
+              isForce: true,
+              isDependObserveCallback: false,
+            );
+        final firstItem =
+            notificationResult
+                .observeResult
+                ?.innerDisplayingChildModelList
+                .firstOrNull;
+        final anchorIndex = firstItem?.index;
 
-      // Show loading indicator while pagination is in progress
+        if (anchorIndex != null &&
+            anchorIndex >= 0 &&
+            anchorIndex < _chatController.messages.length) {
+          anchorMessageId = _chatController.messages[anchorIndex].id;
+        }
+      } catch (e) {
+        debugPrint('Error observing scroll position for anchoring: $e');
+      }
+
+      if (!mounted) return;
+
+      // Record message count before loading to check if new items were added.
+      final initialMessageCount = _chatController.messages.length;
+
+      // Show loading indicator.
       context.read<LoadMoreNotifier>().setLoading(true);
 
-      // Call user-provided pagination callback to load more items
+      // Load older messages.
       await widget.onEndReached!();
 
-      // Wait for next frame when new items have been rendered
+      // Wait for the next frame for UI updates.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (_scrollController.hasClients && mounted) {
-          final notifier = context.read<LoadMoreNotifier>();
-          final loadMoreHeight = notifier.height;
-          // Calculate new scroll position that accounts for inserted items.
-          // We subtract loading indicator height to get true content extent.
-          // This prevents items from being cut off after scroll adjustment.
-          final newExtent =
-              _scrollController.position.maxScrollExtent - loadMoreHeight;
-          final targetOffset = newExtent - extent;
+        if (!_scrollController.hasClients || !mounted) return;
 
-          // Only adjust scroll position if new items were actually added.
-          // We add 1 to account for potential floating point differences.
-          if (newExtent > extent + 1) {
-            _scrollController.jumpTo(targetOffset);
+        final notifier = context.read<LoadMoreNotifier>();
+        final didAddMessages =
+            _chatController.messages.length > initialMessageCount;
+
+        // If new messages were loaded and we have an anchor, scroll to keep the
+        // anchor item at the top of the viewport.
+        if (didAddMessages && anchorMessageId != null) {
+          final newIndex = _chatController.messages.indexWhere(
+            (m) => m.id == anchorMessageId,
+          );
+          if (newIndex != -1) {
+            _scrollToIndex(
+              newIndex,
+              duration: Duration.zero, // Jump immediately
+              alignment: 0, // Align to the top edge
+              offset: 0, // Keep item top edge aligned with viewport top edge
+            );
           }
-
-          // Hide loading indicator now that pagination is complete
-          notifier.setLoading(false);
         }
+
+        // Hide loading indicator.
+        notifier.setLoading(false);
       });
     }
   }

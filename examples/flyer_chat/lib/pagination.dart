@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -15,18 +16,23 @@ class Pagination extends StatefulWidget {
 class PaginationState extends State<Pagination> {
   final _chatController = InMemoryChatController(
     messages:
-        List.generate(
-          20,
-          (i) => Message.text(
+        List.generate(20, (i) {
+          final random = Random();
+          final numLines = random.nextInt(4) + 1;
+          final text = List.generate(
+            numLines,
+            (lineIndex) => 'Message ${i + 1} - Line ${lineIndex + 1}',
+          ).join('\n');
+          return Message.text(
             id: (i + 1).toString(),
             authorId: 'me',
             createdAt: DateTime.fromMillisecondsSinceEpoch(
               1736893310000 - ((20 - i) * 1000),
               isUtc: true,
             ),
-            text: 'Message ${i + 1}',
-          ),
-        ).reversed.toList(),
+            text: text,
+          );
+        }).reversed.toList(),
   );
   final _currentUser = const User(id: 'me');
 
@@ -158,18 +164,23 @@ class PaginationState extends State<Pagination> {
 }
 
 class MockDatabase {
-  static final List<Message> _messages = List.generate(
-    80,
-    (i) => Message.text(
+  static final List<Message> _messages = List.generate(80, (i) {
+    final random = Random();
+    final numLines = random.nextInt(4) + 1;
+    final text = List.generate(
+      numLines,
+      (lineIndex) => 'Message ${i + 21} - Line ${lineIndex + 1}',
+    ).join('\n');
+    return Message.text(
       id: (i + 21).toString(),
       authorId: 'me',
       createdAt: DateTime.fromMillisecondsSinceEpoch(
         1736893310000 - ((80 - i) * 1000),
         isUtc: true,
       ),
-      text: 'Message ${i + 21}',
-    ),
-  );
+      text: text,
+    );
+  });
 
   static Future<List<Message>> getMessages({
     required int limit,
