@@ -19,6 +19,10 @@ class ChatMessage extends StatelessWidget {
   final Alignment receivedMessageScaleAnimationAlignment;
   final AlignmentGeometry sentMessageAlignment;
   final AlignmentGeometry receivedMessageAlignment;
+  final CrossAxisAlignment sentMessageColumnAlignment;
+  final CrossAxisAlignment receivedMessageColumnAlignment;
+  final CrossAxisAlignment sentMessageRowAlignment;
+  final CrossAxisAlignment receivedMessageRowAlignment;
   final Alignment? scaleAnimationAlignment;
   final AlignmentGeometry? alignment;
   final EdgeInsetsGeometry? padding;
@@ -43,6 +47,10 @@ class ChatMessage extends StatelessWidget {
     this.receivedMessageScaleAnimationAlignment = Alignment.centerLeft,
     this.sentMessageAlignment = AlignmentDirectional.centerEnd,
     this.receivedMessageAlignment = AlignmentDirectional.centerStart,
+    this.sentMessageColumnAlignment = CrossAxisAlignment.end,
+    this.receivedMessageColumnAlignment = CrossAxisAlignment.start,
+    this.sentMessageRowAlignment = CrossAxisAlignment.end,
+    this.receivedMessageRowAlignment = CrossAxisAlignment.end,
     this.scaleAnimationAlignment,
     this.alignment,
     this.padding = _sentinelPadding,
@@ -53,24 +61,6 @@ class ChatMessage extends StatelessWidget {
     this.verticalPadding = 12,
     this.verticalGroupedPadding = 2,
   });
-
-  Widget get messageWidget => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      if (topWidget != null) topWidget!,
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (leadingWidget != null) leadingWidget!,
-          Flexible(child: child),
-          if (trailingWidget != null) trailingWidget!,
-        ],
-      ),
-      if (bottomWidget != null) bottomWidget!,
-    ],
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -117,19 +107,41 @@ class ChatMessage extends StatelessWidget {
                             padding: resolvedPadding!,
                             duration: paddingChangeAnimationDuration!,
                             curve: Curves.linearToEaseOut,
-                            child: messageWidget,
+                            child: _buildMessage(isSentByMe: isSentByMe),
                           )
                           : Padding(
                             padding: resolvedPadding!,
-                            child: messageWidget,
+                            child: _buildMessage(isSentByMe: isSentByMe),
                           )
-                      : messageWidget,
+                      : _buildMessage(isSentByMe: isSentByMe),
             ),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildMessage({required bool isSentByMe}) => Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment:
+        isSentByMe
+            ? sentMessageColumnAlignment
+            : receivedMessageColumnAlignment,
+    children: [
+      if (topWidget != null) topWidget!,
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment:
+            isSentByMe ? sentMessageRowAlignment : receivedMessageRowAlignment,
+        children: [
+          if (leadingWidget != null) leadingWidget!,
+          Flexible(child: child),
+          if (trailingWidget != null) trailingWidget!,
+        ],
+      ),
+      if (bottomWidget != null) bottomWidget!,
+    ],
+  );
 
   EdgeInsetsGeometry _resolveDefaultPadding(BuildContext context) {
     if (index == 0) {
