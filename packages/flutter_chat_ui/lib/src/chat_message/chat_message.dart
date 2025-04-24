@@ -15,6 +15,7 @@ class ChatMessage extends StatelessWidget {
   final Widget? trailingWidget;
   final Widget? topWidget;
   final Widget? bottomWidget;
+  final Widget? headerWidget;
   final Alignment sentMessageScaleAnimationAlignment;
   final Alignment receivedMessageScaleAnimationAlignment;
   final AlignmentGeometry sentMessageAlignment;
@@ -43,6 +44,7 @@ class ChatMessage extends StatelessWidget {
     this.trailingWidget,
     this.topWidget,
     this.bottomWidget,
+    this.headerWidget,
     this.sentMessageScaleAnimationAlignment = Alignment.centerRight,
     this.receivedMessageScaleAnimationAlignment = Alignment.centerLeft,
     this.sentMessageAlignment = AlignmentDirectional.centerEnd,
@@ -76,49 +78,64 @@ class ChatMessage extends StatelessWidget {
     final resolvedPadding =
         padding == _sentinelPadding ? _resolveDefaultPadding(context) : padding;
 
-    return GestureDetector(
-      onTapUp:
-          (details) =>
-              onMessageTap?.call(message, index: index, details: details),
-      onLongPressStart:
-          (details) =>
-              onMessageLongPress?.call(message, index: index, details: details),
-      child: FadeTransition(
-        opacity: curvedAnimation,
-        child: SizeTransition(
-          sizeFactor: curvedAnimation,
-          child: ScaleTransition(
-            scale: curvedAnimation,
-            alignment:
-                scaleAnimationAlignment ??
-                (isSentByMe
-                    ? sentMessageScaleAnimationAlignment
-                    : receivedMessageScaleAnimationAlignment),
-            child: Align(
-              alignment:
-                  alignment ??
-                  (isSentByMe
-                      ? sentMessageAlignment
-                      : receivedMessageAlignment),
-              child:
-                  padding != null
-                      ? paddingChangeAnimationDuration != null
-                          ? AnimatedPadding(
-                            padding: resolvedPadding!,
-                            duration: paddingChangeAnimationDuration!,
-                            curve: Curves.linearToEaseOut,
-                            child: _buildMessage(isSentByMe: isSentByMe),
-                          )
-                          : Padding(
-                            padding: resolvedPadding!,
-                            child: _buildMessage(isSentByMe: isSentByMe),
-                          )
-                      : _buildMessage(isSentByMe: isSentByMe),
+    final Widget messageWidget = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (headerWidget != null)
+          FadeTransition(
+            opacity: curvedAnimation,
+            child: SizeTransition(
+              axisAlignment: 0,
+              sizeFactor: curvedAnimation,
+              child: headerWidget!,
+            ),
+          ),
+        GestureDetector(
+          onTapUp:
+              (details) =>
+                  onMessageTap?.call(message, index: index, details: details),
+          onLongPressStart:
+              (details) => onMessageLongPress?.call(
+                message,
+                index: index,
+                details: details,
+              ),
+          child: FadeTransition(
+            opacity: curvedAnimation,
+            child: SizeTransition(
+              sizeFactor: curvedAnimation,
+              child: ScaleTransition(
+                scale: curvedAnimation,
+                alignment:
+                    scaleAnimationAlignment ??
+                    (isSentByMe
+                        ? sentMessageScaleAnimationAlignment
+                        : receivedMessageScaleAnimationAlignment),
+                child: Align(
+                  alignment:
+                      alignment ??
+                      (isSentByMe
+                          ? sentMessageAlignment
+                          : receivedMessageAlignment),
+                  child: _buildMessage(isSentByMe: isSentByMe),
+                ),
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
+
+    return padding != null
+        ? paddingChangeAnimationDuration != null
+            ? AnimatedPadding(
+              padding: resolvedPadding!,
+              duration: paddingChangeAnimationDuration!,
+              curve: Curves.linearToEaseOut,
+              child: messageWidget,
+            )
+            : Padding(padding: resolvedPadding!, child: messageWidget)
+        : messageWidget;
   }
 
   Widget _buildMessage({required bool isSentByMe}) => Column(
