@@ -262,7 +262,12 @@ class LocalState extends State<Local> {
   void _addItem(String? text) async {
     final randomUser = Random().nextInt(2) == 0 ? _currentUser : _recipient;
 
-    final message = await createMessage(randomUser.id, widget.dio, text: text);
+    final message = await createMessage(
+      randomUser.id,
+      widget.dio,
+      localOnly: true,
+      text: text,
+    );
 
     if (mounted) {
       if (_isTyping) {
@@ -278,7 +283,6 @@ class LocalState extends State<Local> {
           SystemMessage(
             id: _uuid.v4(),
             authorId: _systemUser.id,
-            createdAt: now,
             text: formattedDate,
           ),
         );
@@ -293,7 +297,6 @@ class LocalState extends State<Local> {
         CustomMessage(
           id: _uuid.v4(),
           authorId: _systemUser.id,
-          createdAt: DateTime.now().toUtc(),
           metadata: {'type': 'typing'},
         ),
       );

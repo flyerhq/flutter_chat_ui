@@ -169,9 +169,12 @@ class ApiState extends State<Api> {
       widget.dio,
       text: text,
     );
+    final originalMetadata = message.metadata;
 
     if (mounted) {
-      await _chatController.insert(message);
+      await _chatController.insert(
+        message.copyWith(metadata: {...?originalMetadata, 'sending': true}),
+      );
     }
 
     try {
@@ -186,15 +189,17 @@ class ApiState extends State<Api> {
         );
         final nextMessage = currentMessage.copyWith(
           id: response['id'],
-          createdAt: DateTime.fromMillisecondsSinceEpoch(
-            response['createdAt'],
+          createdAt: null,
+          sentAt: DateTime.fromMillisecondsSinceEpoch(
+            response['ts'],
             isUtc: true,
           ),
+          metadata: originalMetadata,
         );
         await _chatController.update(currentMessage, nextMessage);
       }
     } catch (error) {
-      debugPrint(error.toString());
+      debugPrint('Error sending message: $error');
     }
   }
 
@@ -235,13 +240,19 @@ class ApiState extends State<Api> {
                   orElse: () => imageMessage,
                 )
                 as ImageMessage;
+        final originalMetadata = currentMessage.metadata;
         final nextMessage = currentMessage.copyWith(
           source: 'https://whatever.diamanthq.dev/blob/$blobId',
         );
         // Saves the same image to persistent cache using the new url as key
         // Alternatively, you could use updateKey to update the same content with a different key
         await _crossCache.set(nextMessage.source, bytes);
-        await _chatController.update(currentMessage, nextMessage);
+        await _chatController.update(
+          currentMessage,
+          nextMessage.copyWith(
+            metadata: {...?originalMetadata, 'sending': true},
+          ),
+        );
 
         final newMessageResponse = await _apiService.send(nextMessage);
 
@@ -254,16 +265,18 @@ class ApiState extends State<Api> {
           );
           final nextMessage2 = currentMessage2.copyWith(
             id: newMessageResponse['id'],
-            createdAt: DateTime.fromMillisecondsSinceEpoch(
-              newMessageResponse['createdAt'],
+            createdAt: null,
+            sentAt: DateTime.fromMillisecondsSinceEpoch(
+              newMessageResponse['ts'],
               isUtc: true,
             ),
+            metadata: originalMetadata,
           );
           await _chatController.update(currentMessage2, nextMessage2);
         }
       }
     } catch (error) {
-      debugPrint(error.toString());
+      debugPrint('Error uploading/sending image message: $error');
     }
   }
 

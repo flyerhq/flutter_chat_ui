@@ -10,14 +10,14 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
   replyToId: json['replyToId'] as String?,
-  createdAt: const EpochDateTimeConverter().fromJson(
-    (json['createdAt'] as num).toInt(),
+  createdAt: _$JsonConverterFromJson<int, DateTime>(
+    json['createdAt'],
+    const EpochDateTimeConverter().fromJson,
   ),
   deletedAt: _$JsonConverterFromJson<int, DateTime>(
     json['deletedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
-  sending: json['sending'] as bool?,
   failedAt: _$JsonConverterFromJson<int, DateTime>(
     json['failedAt'],
     const EpochDateTimeConverter().fromJson,
@@ -48,7 +48,6 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
       json['linkPreview'] == null
           ? null
           : LinkPreview.fromJson(json['linkPreview'] as Map<String, dynamic>),
-  isOnlyEmoji: json['isOnlyEmoji'] as bool?,
   $type: json['type'] as String?,
 );
 
@@ -58,14 +57,18 @@ Map<String, dynamic> _$TextMessageToJson(
   'id': instance.id,
   'authorId': instance.authorId,
   if (instance.replyToId case final value?) 'replyToId': value,
-  'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.createdAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'createdAt': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
       )
       case final value?)
     'deletedAt': value,
-  if (instance.sending case final value?) 'sending': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
@@ -100,7 +103,6 @@ Map<String, dynamic> _$TextMessageToJson(
   if (instance.metadata case final value?) 'metadata': value,
   'text': instance.text,
   if (instance.linkPreview?.toJson() case final value?) 'linkPreview': value,
-  if (instance.isOnlyEmoji case final value?) 'isOnlyEmoji': value,
   'type': instance.$type,
 };
 
@@ -118,14 +120,14 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
   replyToId: json['replyToId'] as String?,
-  createdAt: const EpochDateTimeConverter().fromJson(
-    (json['createdAt'] as num).toInt(),
+  createdAt: _$JsonConverterFromJson<int, DateTime>(
+    json['createdAt'],
+    const EpochDateTimeConverter().fromJson,
   ),
   deletedAt: _$JsonConverterFromJson<int, DateTime>(
     json['deletedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
-  sending: json['sending'] as bool?,
   failedAt: _$JsonConverterFromJson<int, DateTime>(
     json['failedAt'],
     const EpochDateTimeConverter().fromJson,
@@ -166,14 +168,18 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       if (instance.replyToId case final value?) 'replyToId': value,
-      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.createdAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'createdAt': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
             const EpochDateTimeConverter().toJson,
           )
           case final value?)
         'deletedAt': value,
-      if (instance.sending case final value?) 'sending': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.failedAt,
             const EpochDateTimeConverter().toJson,
@@ -220,14 +226,14 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
   replyToId: json['replyToId'] as String?,
-  createdAt: const EpochDateTimeConverter().fromJson(
-    (json['createdAt'] as num).toInt(),
+  createdAt: _$JsonConverterFromJson<int, DateTime>(
+    json['createdAt'],
+    const EpochDateTimeConverter().fromJson,
   ),
   deletedAt: _$JsonConverterFromJson<int, DateTime>(
     json['deletedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
-  sending: json['sending'] as bool?,
   failedAt: _$JsonConverterFromJson<int, DateTime>(
     json['failedAt'],
     const EpochDateTimeConverter().fromJson,
@@ -265,14 +271,18 @@ Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       if (instance.replyToId case final value?) 'replyToId': value,
-      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.createdAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'createdAt': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
             const EpochDateTimeConverter().toJson,
           )
           case final value?)
         'deletedAt': value,
-      if (instance.sending case final value?) 'sending': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.failedAt,
             const EpochDateTimeConverter().toJson,
@@ -317,14 +327,14 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       authorId: json['authorId'] as String,
       replyToId: json['replyToId'] as String?,
-      createdAt: const EpochDateTimeConverter().fromJson(
-        (json['createdAt'] as num).toInt(),
+      createdAt: _$JsonConverterFromJson<int, DateTime>(
+        json['createdAt'],
+        const EpochDateTimeConverter().fromJson,
       ),
       deletedAt: _$JsonConverterFromJson<int, DateTime>(
         json['deletedAt'],
         const EpochDateTimeConverter().fromJson,
       ),
-      sending: json['sending'] as bool?,
       failedAt: _$JsonConverterFromJson<int, DateTime>(
         json['failedAt'],
         const EpochDateTimeConverter().fromJson,
@@ -359,14 +369,18 @@ Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       if (instance.replyToId case final value?) 'replyToId': value,
-      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.createdAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'createdAt': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
             const EpochDateTimeConverter().toJson,
           )
           case final value?)
         'deletedAt': value,
-      if (instance.sending case final value?) 'sending': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.failedAt,
             const EpochDateTimeConverter().toJson,
@@ -408,14 +422,14 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       authorId: json['authorId'] as String,
       replyToId: json['replyToId'] as String?,
-      createdAt: const EpochDateTimeConverter().fromJson(
-        (json['createdAt'] as num).toInt(),
+      createdAt: _$JsonConverterFromJson<int, DateTime>(
+        json['createdAt'],
+        const EpochDateTimeConverter().fromJson,
       ),
       deletedAt: _$JsonConverterFromJson<int, DateTime>(
         json['deletedAt'],
         const EpochDateTimeConverter().fromJson,
       ),
-      sending: json['sending'] as bool?,
       failedAt: _$JsonConverterFromJson<int, DateTime>(
         json['failedAt'],
         const EpochDateTimeConverter().fromJson,
@@ -449,14 +463,18 @@ Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       if (instance.replyToId case final value?) 'replyToId': value,
-      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.createdAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'createdAt': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
             const EpochDateTimeConverter().toJson,
           )
           case final value?)
         'deletedAt': value,
-      if (instance.sending case final value?) 'sending': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.failedAt,
             const EpochDateTimeConverter().toJson,
@@ -497,14 +515,14 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       authorId: json['authorId'] as String,
       replyToId: json['replyToId'] as String?,
-      createdAt: const EpochDateTimeConverter().fromJson(
-        (json['createdAt'] as num).toInt(),
+      createdAt: _$JsonConverterFromJson<int, DateTime>(
+        json['createdAt'],
+        const EpochDateTimeConverter().fromJson,
       ),
       deletedAt: _$JsonConverterFromJson<int, DateTime>(
         json['deletedAt'],
         const EpochDateTimeConverter().fromJson,
       ),
-      sending: json['sending'] as bool?,
       failedAt: _$JsonConverterFromJson<int, DateTime>(
         json['failedAt'],
         const EpochDateTimeConverter().fromJson,
@@ -538,14 +556,18 @@ Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
       'id': instance.id,
       'authorId': instance.authorId,
       if (instance.replyToId case final value?) 'replyToId': value,
-      'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.createdAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'createdAt': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
             const EpochDateTimeConverter().toJson,
           )
           case final value?)
         'deletedAt': value,
-      if (instance.sending case final value?) 'sending': value,
       if (_$JsonConverterToJson<int, DateTime>(
             instance.failedAt,
             const EpochDateTimeConverter().toJson,

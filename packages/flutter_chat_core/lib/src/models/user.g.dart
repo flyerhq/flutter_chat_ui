@@ -8,8 +8,7 @@ part of 'user.dart';
 
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
   id: json['id'] as String,
-  firstName: json['firstName'] as String?,
-  lastName: json['lastName'] as String?,
+  name: json['name'] as String?,
   imageSource: json['imageSource'] as String?,
   createdAt: _$JsonConverterFromJson<int, DateTime>(
     json['createdAt'],
@@ -20,8 +19,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'id': instance.id,
-  if (instance.firstName case final value?) 'firstName': value,
-  if (instance.lastName case final value?) 'lastName': value,
+  if (instance.name case final value?) 'name': value,
   if (instance.imageSource case final value?) 'imageSource': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,

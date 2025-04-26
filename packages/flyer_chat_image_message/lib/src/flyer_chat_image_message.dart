@@ -139,14 +139,15 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
+    final isSentByMe = context.watch<UserID>() == widget.message.authorId;
     final textDirection = Directionality.of(context);
     final timeAndStatus =
-        widget.showTime || widget.showStatus
+        widget.showTime || (isSentByMe && widget.showStatus)
             ? TimeAndStatus(
-              createdAt: widget.message.createdAt,
+              time: widget.message.time,
               status: widget.message.status,
               showTime: widget.showTime,
-              showStatus: widget.showStatus,
+              showStatus: isSentByMe && widget.showStatus,
               backgroundColor:
                   widget.timeBackground == FlyerChatImageMessage._sentinelColor
                       ? Colors.black.withValues(alpha: 0.6)
@@ -298,7 +299,7 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 }
 
 class TimeAndStatus extends StatelessWidget {
-  final DateTime createdAt;
+  final DateTime? time;
   final MessageStatus? status;
   final bool showTime;
   final bool showStatus;
@@ -307,7 +308,7 @@ class TimeAndStatus extends StatelessWidget {
 
   const TimeAndStatus({
     super.key,
-    required this.createdAt,
+    required this.time,
     this.status,
     this.showTime = true,
     this.showStatus = true,
@@ -329,8 +330,8 @@ class TimeAndStatus extends StatelessWidget {
         spacing: 2,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (showTime)
-            Text(timeFormat.format(createdAt.toLocal()), style: textStyle),
+          if (showTime && time != null)
+            Text(timeFormat.format(time!.toLocal()), style: textStyle),
           if (showStatus && status != null)
             if (status == MessageStatus.sending)
               SizedBox(

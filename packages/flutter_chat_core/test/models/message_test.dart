@@ -365,6 +365,24 @@ void main() {
       // Should not be equal
       expect(message == messageDifferentTimestamp, false);
     });
+    test(
+      'copyWith overwrites metadata completely and does not expect any previous values',
+      () {
+        final copiedMessage = message.copyWith(
+          metadata: {'newKey': 'newValue'},
+        );
+
+        // Assert metadata contains only the new value (replacement)
+        expect(copiedMessage.metadata, {'newKey': 'newValue'});
+      },
+    );
+
+    test('copyWith with null metadata removes existing metadata', () {
+      final copiedMessage = message.copyWith(metadata: null);
+
+      // Assert metadata is null
+      expect(copiedMessage.metadata, null);
+    });
   });
 
   group('UnsupportedMessage', () {

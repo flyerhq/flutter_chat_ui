@@ -13,9 +13,8 @@ sealed class Message with _$Message {
     required MessageID id,
     required UserID authorId,
     MessageID? replyToId,
-    @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
-    bool? sending,
     @EpochDateTimeConverter() DateTime? failedAt,
     @EpochDateTimeConverter() DateTime? sentAt,
     @EpochDateTimeConverter() DateTime? deliveredAt,
@@ -25,16 +24,14 @@ sealed class Message with _$Message {
     Map<String, dynamic>? metadata,
     required String text,
     LinkPreview? linkPreview,
-    bool? isOnlyEmoji,
   }) = TextMessage;
 
   const factory Message.image({
     required MessageID id,
     required UserID authorId,
     MessageID? replyToId,
-    @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
-    bool? sending,
     @EpochDateTimeConverter() DateTime? failedAt,
     @EpochDateTimeConverter() DateTime? sentAt,
     @EpochDateTimeConverter() DateTime? deliveredAt,
@@ -55,9 +52,8 @@ sealed class Message with _$Message {
     required MessageID id,
     required UserID authorId,
     MessageID? replyToId,
-    @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
-    bool? sending,
     @EpochDateTimeConverter() DateTime? failedAt,
     @EpochDateTimeConverter() DateTime? sentAt,
     @EpochDateTimeConverter() DateTime? deliveredAt,
@@ -75,9 +71,8 @@ sealed class Message with _$Message {
     required MessageID id,
     required UserID authorId,
     MessageID? replyToId,
-    @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
-    bool? sending,
     @EpochDateTimeConverter() DateTime? failedAt,
     @EpochDateTimeConverter() DateTime? sentAt,
     @EpochDateTimeConverter() DateTime? deliveredAt,
@@ -92,9 +87,8 @@ sealed class Message with _$Message {
     required MessageID id,
     required UserID authorId,
     MessageID? replyToId,
-    @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
-    bool? sending,
     @EpochDateTimeConverter() DateTime? failedAt,
     @EpochDateTimeConverter() DateTime? sentAt,
     @EpochDateTimeConverter() DateTime? deliveredAt,
@@ -108,9 +102,8 @@ sealed class Message with _$Message {
     required MessageID id,
     required UserID authorId,
     MessageID? replyToId,
-    @EpochDateTimeConverter() required DateTime createdAt,
+    @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
-    bool? sending,
     @EpochDateTimeConverter() DateTime? failedAt,
     @EpochDateTimeConverter() DateTime? sentAt,
     @EpochDateTimeConverter() DateTime? deliveredAt,
@@ -126,12 +119,21 @@ sealed class Message with _$Message {
     // Message status is determined by the most recent state change in the message lifecycle.
     // The order of checks matters - we check from most recent to oldest state.
     // Note: createdAt, updatedAt, and deletedAt are message states rather than statuses.
-    if (sending == true) return MessageStatus.sending;
+    if (metadata?['sending'] == true) return MessageStatus.sending;
     if (failedAt != null) return MessageStatus.error;
     if (seenAt != null) return MessageStatus.seen;
     if (deliveredAt != null) return MessageStatus.delivered;
     if (sentAt != null) return MessageStatus.sent;
     return null;
+  }
+
+  /// Returns the time displayed for the user when the message is shown in a list.
+  /// This time is determined by the `sentAt` date, which represents when the message was sent to the server.
+  /// If `sentAt` is not available, it falls back to the `createdAt` date.
+  /// Other timestamps like `updatedAt` may be shown in an additional history popup,
+  /// but they are not displayed in the list itself (this functionality is not provided by the package and is left to the user to implement).
+  DateTime? get time {
+    return sentAt ?? createdAt;
   }
 
   factory Message.fromJson(Map<String, dynamic> json) =>
