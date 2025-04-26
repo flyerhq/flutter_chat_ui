@@ -6,7 +6,7 @@ import 'package:flutter_lorem/flutter_lorem.dart';
 import 'package:uuid/uuid.dart';
 
 Future<Message> createMessage(
-  String authorId,
+  UserID authorId,
   Dio dio, {
   bool? textOnly,
   String? text,

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../utils/typedefs.dart' show MessageStatus;
+import '../utils/typedefs.dart';
 import 'epoch_date_time_converter.dart';
 import 'link_preview.dart';
 
@@ -10,9 +10,9 @@ part 'message.g.dart';
 @Freezed(unionKey: 'type', fallbackUnion: 'unsupported')
 sealed class Message with _$Message {
   const factory Message.text({
-    required String id,
-    required String authorId,
-    String? replyToId,
+    required MessageID id,
+    required UserID authorId,
+    MessageID? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -21,7 +21,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
-    Map<String, List<String>>? reactions,
+    Map<String, List<UserID>>? reactions,
     Map<String, dynamic>? metadata,
     required String text,
     LinkPreview? linkPreview,
@@ -29,9 +29,9 @@ sealed class Message with _$Message {
   }) = TextMessage;
 
   const factory Message.image({
-    required String id,
-    required String authorId,
-    String? replyToId,
+    required MessageID id,
+    required UserID authorId,
+    MessageID? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -40,7 +40,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
-    Map<String, List<String>>? reactions,
+    Map<String, List<UserID>>? reactions,
     Map<String, dynamic>? metadata,
     required String source,
     String? text,
@@ -52,9 +52,9 @@ sealed class Message with _$Message {
   }) = ImageMessage;
 
   const factory Message.file({
-    required String id,
-    required String authorId,
-    String? replyToId,
+    required MessageID id,
+    required UserID authorId,
+    MessageID? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -63,7 +63,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
-    Map<String, List<String>>? reactions,
+    Map<String, List<UserID>>? reactions,
     Map<String, dynamic>? metadata,
     required String source,
     required String name,
@@ -72,9 +72,9 @@ sealed class Message with _$Message {
   }) = FileMessage;
 
   const factory Message.system({
-    required String id,
-    required String authorId,
-    String? replyToId,
+    required MessageID id,
+    required UserID authorId,
+    MessageID? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -83,15 +83,15 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
-    Map<String, List<String>>? reactions,
+    Map<String, List<UserID>>? reactions,
     Map<String, dynamic>? metadata,
     required String text,
   }) = SystemMessage;
 
   const factory Message.custom({
-    required String id,
-    required String authorId,
-    String? replyToId,
+    required MessageID id,
+    required UserID authorId,
+    MessageID? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -100,14 +100,14 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
-    Map<String, List<String>>? reactions,
+    Map<String, List<UserID>>? reactions,
     Map<String, dynamic>? metadata,
   }) = CustomMessage;
 
   const factory Message.unsupported({
-    required String id,
-    required String authorId,
-    String? replyToId,
+    required MessageID id,
+    required UserID authorId,
+    MessageID? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -116,7 +116,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? deliveredAt,
     @EpochDateTimeConverter() DateTime? seenAt,
     @EpochDateTimeConverter() DateTime? updatedAt,
-    Map<String, List<String>>? reactions,
+    Map<String, List<UserID>>? reactions,
     Map<String, dynamic>? metadata,
   }) = UnsupportedMessage;
 

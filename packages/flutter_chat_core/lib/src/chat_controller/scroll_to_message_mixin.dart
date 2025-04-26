@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
+import '../utils/typedefs.dart' show MessageID;
 
 typedef ScrollToMessageId =
     Future<void> Function(
-      String messageId, {
+      MessageID messageId, {
       Duration duration,
       Curve curve,
       double alignment,
@@ -40,7 +41,7 @@ mixin ScrollToMessageMixin {
 
   /// Scrolls to a specific message by ID.
   Future<void> scrollToMessage(
-    String messageId, {
+    MessageID messageId, {
     Duration duration = const Duration(milliseconds: 250),
     Curve curve = Curves.linearToEaseOut,
 

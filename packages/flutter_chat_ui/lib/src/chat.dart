@@ -12,7 +12,7 @@ import 'utils/typedefs.dart';
 class Chat extends StatefulWidget {
   static const Color _sentinelColor = Colors.transparent;
 
-  final String currentUserId;
+  final UserID currentUserId;
   final ResolveUserCallback resolveUser;
   final ChatController chatController;
   final Builders? builders;

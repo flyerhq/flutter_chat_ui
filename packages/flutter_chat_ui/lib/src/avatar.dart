@@ -4,7 +4,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
 class Avatar extends StatelessWidget {
-  final String userId;
+  final UserID userId;
   final double? size;
   final Color? backgroundColor;
   final Color? foregroundColor;

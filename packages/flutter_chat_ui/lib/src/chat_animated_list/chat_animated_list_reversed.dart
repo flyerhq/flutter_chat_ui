@@ -84,7 +84,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
 
   bool _userHasScrolled = false;
   bool _isScrollingToBottom = false;
-  String _lastInsertedMessageId = '';
+  MessageID _lastInsertedMessageId = '';
   // Controls whether pagination should be triggered when scrolling to the top.
   // Set to true when user scrolls up, and false after pagination is triggered.
   // This prevents infinite pagination loops when reaching the end of available messages,
@@ -324,7 +324,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
         return;
       }
 
-      final currentUserId = context.read<String>();
+      final currentUserId = context.read<UserID>();
 
       // When the user sends a new message, automatically scroll back to
       // the bottom to show their message.
@@ -434,7 +434,7 @@ class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
 
   /// Scrolls to a specific message by ID.
   Future<void> _scrollToMessageId(
-    String messageId, {
+    MessageID messageId, {
     Duration duration = const Duration(milliseconds: 250),
     Curve curve = Curves.linearToEaseOut,
     double alignment = 0,

@@ -37,7 +37,7 @@ class BasicState extends State<Basic> {
             ),
           );
         },
-        resolveUser: (String id) async {
+        resolveUser: (UserID id) async {
           return User(id: id, firstName: 'John', lastName: 'Doe');
         },
       ),

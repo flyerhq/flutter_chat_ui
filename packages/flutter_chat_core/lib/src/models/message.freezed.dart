@@ -48,7 +48,7 @@ Message _$MessageFromJson(
 /// @nodoc
 mixin _$Message {
 
- String get id; String get authorId; String? get replyToId;@EpochDateTimeConverter() DateTime get createdAt;@EpochDateTimeConverter() DateTime? get deletedAt; bool? get sending;@EpochDateTimeConverter() DateTime? get failedAt;@EpochDateTimeConverter() DateTime? get sentAt;@EpochDateTimeConverter() DateTime? get deliveredAt;@EpochDateTimeConverter() DateTime? get seenAt;@EpochDateTimeConverter() DateTime? get updatedAt; Map<String, List<String>>? get reactions; Map<String, dynamic>? get metadata;
+ MessageID get id; UserID get authorId; MessageID? get replyToId;@EpochDateTimeConverter() DateTime get createdAt;@EpochDateTimeConverter() DateTime? get deletedAt; bool? get sending;@EpochDateTimeConverter() DateTime? get failedAt;@EpochDateTimeConverter() DateTime? get sentAt;@EpochDateTimeConverter() DateTime? get deliveredAt;@EpochDateTimeConverter() DateTime? get seenAt;@EpochDateTimeConverter() DateTime? get updatedAt; Map<String, List<UserID>>? get reactions; Map<String, dynamic>? get metadata;
 /// Create a copy of Message
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -124,12 +124,12 @@ as Map<String, dynamic>?,
 @JsonSerializable()
 
 class TextMessage extends Message {
-  const TextMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.text, this.linkPreview, this.isOnlyEmoji, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
+  const TextMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, this.linkPreview, this.isOnlyEmoji, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
   factory TextMessage.fromJson(Map<String, dynamic> json) => _$TextMessageFromJson(json);
 
-@override final  String id;
-@override final  String authorId;
-@override final  String? replyToId;
+@override final  MessageID id;
+@override final  UserID authorId;
+@override final  MessageID? replyToId;
 @override@EpochDateTimeConverter() final  DateTime createdAt;
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
 @override final  bool? sending;
@@ -138,8 +138,8 @@ class TextMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
- final  Map<String, List<String>>? _reactions;
-@override Map<String, List<String>>? get reactions {
+ final  Map<String, List<UserID>>? _reactions;
+@override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -197,7 +197,7 @@ abstract mixin class $TextMessageCopyWith<$Res> implements $MessageCopyWith<$Res
   factory $TextMessageCopyWith(TextMessage value, $Res Function(TextMessage) _then) = _$TextMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata, String text, LinkPreview? linkPreview, bool? isOnlyEmoji
+ MessageID id, UserID authorId, MessageID? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata, String text, LinkPreview? linkPreview, bool? isOnlyEmoji
 });
 
 
@@ -217,9 +217,9 @@ class _$TextMessageCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = null,Object? deletedAt = freezed,Object? sending = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,Object? text = null,Object? linkPreview = freezed,Object? isOnlyEmoji = freezed,}) {
   return _then(TextMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,sending: freezed == sending ? _self.sending : sending // ignore: cast_nullable_to_non_nullable
 as bool?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
@@ -228,7 +228,7 @@ as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : delivered
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,linkPreview: freezed == linkPreview ? _self.linkPreview : linkPreview // ignore: cast_nullable_to_non_nullable
 as LinkPreview?,isOnlyEmoji: freezed == isOnlyEmoji ? _self.isOnlyEmoji : isOnlyEmoji // ignore: cast_nullable_to_non_nullable
@@ -255,12 +255,12 @@ $LinkPreviewCopyWith<$Res>? get linkPreview {
 @JsonSerializable()
 
 class ImageMessage extends Message {
-  const ImageMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
+  const ImageMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
   factory ImageMessage.fromJson(Map<String, dynamic> json) => _$ImageMessageFromJson(json);
 
-@override final  String id;
-@override final  String authorId;
-@override final  String? replyToId;
+@override final  MessageID id;
+@override final  UserID authorId;
+@override final  MessageID? replyToId;
 @override@EpochDateTimeConverter() final  DateTime createdAt;
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
 @override final  bool? sending;
@@ -269,8 +269,8 @@ class ImageMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
- final  Map<String, List<String>>? _reactions;
-@override Map<String, List<String>>? get reactions {
+ final  Map<String, List<UserID>>? _reactions;
+@override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -332,7 +332,7 @@ abstract mixin class $ImageMessageCopyWith<$Res> implements $MessageCopyWith<$Re
   factory $ImageMessageCopyWith(ImageMessage value, $Res Function(ImageMessage) _then) = _$ImageMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata, String source, String? text, String? thumbhash, String? blurhash, double? width, double? height, bool? hasOverlay
+ MessageID id, UserID authorId, MessageID? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata, String source, String? text, String? thumbhash, String? blurhash, double? width, double? height, bool? hasOverlay
 });
 
 
@@ -352,9 +352,9 @@ class _$ImageMessageCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = null,Object? deletedAt = freezed,Object? sending = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,Object? source = null,Object? text = freezed,Object? thumbhash = freezed,Object? blurhash = freezed,Object? width = freezed,Object? height = freezed,Object? hasOverlay = freezed,}) {
   return _then(ImageMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,sending: freezed == sending ? _self.sending : sending // ignore: cast_nullable_to_non_nullable
 as bool?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
@@ -363,7 +363,7 @@ as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : delivered
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as String,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String?,thumbhash: freezed == thumbhash ? _self.thumbhash : thumbhash // ignore: cast_nullable_to_non_nullable
@@ -382,12 +382,12 @@ as bool?,
 @JsonSerializable()
 
 class FileMessage extends Message {
-  const FileMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.source, required this.name, this.size, this.mimeType, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'file',super._();
+  const FileMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, required this.name, this.size, this.mimeType, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'file',super._();
   factory FileMessage.fromJson(Map<String, dynamic> json) => _$FileMessageFromJson(json);
 
-@override final  String id;
-@override final  String authorId;
-@override final  String? replyToId;
+@override final  MessageID id;
+@override final  UserID authorId;
+@override final  MessageID? replyToId;
 @override@EpochDateTimeConverter() final  DateTime createdAt;
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
 @override final  bool? sending;
@@ -396,8 +396,8 @@ class FileMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
- final  Map<String, List<String>>? _reactions;
-@override Map<String, List<String>>? get reactions {
+ final  Map<String, List<UserID>>? _reactions;
+@override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -456,7 +456,7 @@ abstract mixin class $FileMessageCopyWith<$Res> implements $MessageCopyWith<$Res
   factory $FileMessageCopyWith(FileMessage value, $Res Function(FileMessage) _then) = _$FileMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata, String source, String name, int? size, String? mimeType
+ MessageID id, UserID authorId, MessageID? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata, String source, String name, int? size, String? mimeType
 });
 
 
@@ -476,9 +476,9 @@ class _$FileMessageCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = null,Object? deletedAt = freezed,Object? sending = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,Object? source = null,Object? name = null,Object? size = freezed,Object? mimeType = freezed,}) {
   return _then(FileMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,sending: freezed == sending ? _self.sending : sending // ignore: cast_nullable_to_non_nullable
 as bool?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
@@ -487,7 +487,7 @@ as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : delivered
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
@@ -503,12 +503,12 @@ as String?,
 @JsonSerializable()
 
 class SystemMessage extends Message {
-  const SystemMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.text, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'system',super._();
+  const SystemMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'system',super._();
   factory SystemMessage.fromJson(Map<String, dynamic> json) => _$SystemMessageFromJson(json);
 
-@override final  String id;
-@override final  String authorId;
-@override final  String? replyToId;
+@override final  MessageID id;
+@override final  UserID authorId;
+@override final  MessageID? replyToId;
 @override@EpochDateTimeConverter() final  DateTime createdAt;
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
 @override final  bool? sending;
@@ -517,8 +517,8 @@ class SystemMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
- final  Map<String, List<String>>? _reactions;
-@override Map<String, List<String>>? get reactions {
+ final  Map<String, List<UserID>>? _reactions;
+@override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -574,7 +574,7 @@ abstract mixin class $SystemMessageCopyWith<$Res> implements $MessageCopyWith<$R
   factory $SystemMessageCopyWith(SystemMessage value, $Res Function(SystemMessage) _then) = _$SystemMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata, String text
+ MessageID id, UserID authorId, MessageID? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata, String text
 });
 
 
@@ -594,9 +594,9 @@ class _$SystemMessageCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = null,Object? deletedAt = freezed,Object? sending = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,Object? text = null,}) {
   return _then(SystemMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,sending: freezed == sending ? _self.sending : sending // ignore: cast_nullable_to_non_nullable
 as bool?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
@@ -605,7 +605,7 @@ as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : delivered
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -618,12 +618,12 @@ as String,
 @JsonSerializable()
 
 class CustomMessage extends Message {
-  const CustomMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'custom',super._();
+  const CustomMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'custom',super._();
   factory CustomMessage.fromJson(Map<String, dynamic> json) => _$CustomMessageFromJson(json);
 
-@override final  String id;
-@override final  String authorId;
-@override final  String? replyToId;
+@override final  MessageID id;
+@override final  UserID authorId;
+@override final  MessageID? replyToId;
 @override@EpochDateTimeConverter() final  DateTime createdAt;
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
 @override final  bool? sending;
@@ -632,8 +632,8 @@ class CustomMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
- final  Map<String, List<String>>? _reactions;
-@override Map<String, List<String>>? get reactions {
+ final  Map<String, List<UserID>>? _reactions;
+@override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -688,7 +688,7 @@ abstract mixin class $CustomMessageCopyWith<$Res> implements $MessageCopyWith<$R
   factory $CustomMessageCopyWith(CustomMessage value, $Res Function(CustomMessage) _then) = _$CustomMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata
+ MessageID id, UserID authorId, MessageID? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata
 });
 
 
@@ -708,9 +708,9 @@ class _$CustomMessageCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = null,Object? deletedAt = freezed,Object? sending = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,}) {
   return _then(CustomMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,sending: freezed == sending ? _self.sending : sending // ignore: cast_nullable_to_non_nullable
 as bool?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
@@ -719,7 +719,7 @@ as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : delivered
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,
   ));
 }
@@ -731,12 +731,12 @@ as Map<String, dynamic>?,
 @JsonSerializable()
 
 class UnsupportedMessage extends Message {
-  const UnsupportedMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'unsupported',super._();
+  const UnsupportedMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() required this.createdAt, @EpochDateTimeConverter() this.deletedAt, this.sending, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'unsupported',super._();
   factory UnsupportedMessage.fromJson(Map<String, dynamic> json) => _$UnsupportedMessageFromJson(json);
 
-@override final  String id;
-@override final  String authorId;
-@override final  String? replyToId;
+@override final  MessageID id;
+@override final  UserID authorId;
+@override final  MessageID? replyToId;
 @override@EpochDateTimeConverter() final  DateTime createdAt;
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
 @override final  bool? sending;
@@ -745,8 +745,8 @@ class UnsupportedMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
- final  Map<String, List<String>>? _reactions;
-@override Map<String, List<String>>? get reactions {
+ final  Map<String, List<UserID>>? _reactions;
+@override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -801,7 +801,7 @@ abstract mixin class $UnsupportedMessageCopyWith<$Res> implements $MessageCopyWi
   factory $UnsupportedMessageCopyWith(UnsupportedMessage value, $Res Function(UnsupportedMessage) _then) = _$UnsupportedMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata
+ MessageID id, UserID authorId, MessageID? replyToId,@EpochDateTimeConverter() DateTime createdAt,@EpochDateTimeConverter() DateTime? deletedAt, bool? sending,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata
 });
 
 
@@ -821,9 +821,9 @@ class _$UnsupportedMessageCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = null,Object? deletedAt = freezed,Object? sending = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,}) {
   return _then(UnsupportedMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
-as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,sending: freezed == sending ? _self.sending : sending // ignore: cast_nullable_to_non_nullable
 as bool?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
@@ -832,7 +832,7 @@ as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : delivered
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,
   ));
 }

@@ -19,7 +19,7 @@ class WebSocketEvent {
 class ChatWebSocketService {
   final String host;
   final String chatId;
-  final String authorId;
+  final UserID authorId;
   late WebSocketChannel _channel;
   final _statusController = StreamController<WebSocketStatus>.broadcast();
   WebSocketStatus _status = WebSocketStatus.disconnected;

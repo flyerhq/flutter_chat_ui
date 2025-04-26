@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- String get id; String? get firstName; String? get lastName; String? get imageSource;@EpochDateTimeConverter() DateTime? get createdAt; Map<String, dynamic>? get metadata;
+ UserID get id; String? get firstName; String? get lastName; String? get imageSource;@EpochDateTimeConverter() DateTime? get createdAt; Map<String, dynamic>? get metadata;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- String id, String? firstName, String? lastName, String? imageSource,@EpochDateTimeConverter() DateTime? createdAt, Map<String, dynamic>? metadata
+ UserID id, String? firstName, String? lastName, String? imageSource,@EpochDateTimeConverter() DateTime? createdAt, Map<String, dynamic>? metadata
 });
 
 
@@ -69,7 +69,7 @@ class _$UserCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = freezed,Object? lastName = freezed,Object? imageSource = freezed,Object? createdAt = freezed,Object? metadata = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as UserID,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String?,imageSource: freezed == imageSource ? _self.imageSource : imageSource // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -88,7 +88,7 @@ class _User extends User {
   const _User({required this.id, this.firstName, this.lastName, this.imageSource, @EpochDateTimeConverter() this.createdAt, final  Map<String, dynamic>? metadata}): _metadata = metadata,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-@override final  String id;
+@override final  UserID id;
 @override final  String? firstName;
 @override final  String? lastName;
 @override final  String? imageSource;
@@ -136,7 +136,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? firstName, String? lastName, String? imageSource,@EpochDateTimeConverter() DateTime? createdAt, Map<String, dynamic>? metadata
+ UserID id, String? firstName, String? lastName, String? imageSource,@EpochDateTimeConverter() DateTime? createdAt, Map<String, dynamic>? metadata
 });
 
 
@@ -156,7 +156,7 @@ class __$UserCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = freezed,Object? lastName = freezed,Object? imageSource = freezed,Object? createdAt = freezed,Object? metadata = freezed,}) {
   return _then(_User(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as UserID,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String?,imageSource: freezed == imageSource ? _self.imageSource : imageSource // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable

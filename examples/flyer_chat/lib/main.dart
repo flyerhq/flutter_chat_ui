@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sembast/sembast.dart';
@@ -67,7 +68,7 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
     text: dotenv.env['GEMINI_API_KEY'] ?? '',
   );
 
-  String _currentUserId = 'john';
+  UserID _currentUserId = 'john';
 
   @override
   void dispose() {
@@ -86,13 +87,13 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 8),
-              SegmentedButton<String>(
-                segments: const <ButtonSegment<String>>[
-                  ButtonSegment<String>(value: 'john', label: Text('John')),
-                  ButtonSegment<String>(value: 'jane', label: Text('Jane')),
+              SegmentedButton<UserID>(
+                segments: const <ButtonSegment<UserID>>[
+                  ButtonSegment<UserID>(value: 'john', label: Text('John')),
+                  ButtonSegment<UserID>(value: 'jane', label: Text('Jane')),
                 ],
-                selected: <String>{_currentUserId},
-                onSelectionChanged: (Set<String> newSender) {
+                selected: <UserID>{_currentUserId},
+                onSelectionChanged: (Set<UserID> newSender) {
                   setState(() {
                     _currentUserId = newSender.first;
                   });

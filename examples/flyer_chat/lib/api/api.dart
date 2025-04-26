@@ -21,7 +21,7 @@ const baseUrl = 'https://whatever.diamanthq.dev';
 const host = 'whatever.diamanthq.dev';
 
 class Api extends StatefulWidget {
-  final String currentUserId;
+  final UserID currentUserId;
   final String chatId;
   final List<Message> initialMessages;
   final Dio dio;

@@ -7,8 +7,8 @@ import 'typedefs.dart';
 /// When the cache reaches the maximum size, the least recently accessed user
 /// will be removed to make space for new entries.
 class UserCache {
-  final Map<String, User?> _cache = {};
-  final List<String> _accessOrder = []; // For LRU eviction
+  final Map<UserID, User?> _cache = {};
+  final List<UserID> _accessOrder = []; // For LRU eviction
 
   /// Maximum number of users to keep in the cache
   final int maxSize;
@@ -25,7 +25,7 @@ class UserCache {
   ///
   /// Updates the LRU access order when a user is found.
   /// Returns null if the user is not in the cache.
-  User? getSync(String userId) {
+  User? getSync(UserID userId) {
     if (_cache.containsKey(userId)) {
       // Update LRU order
       _accessOrder.remove(userId);
@@ -41,7 +41,7 @@ class UserCache {
   /// Otherwise, resolves the user using the provided callback,
   /// stores the result in the cache, and returns it.
   Future<User?> getOrResolve(
-    String userId,
+    UserID userId,
     ResolveUserCallback resolveUser,
   ) async {
     // If in cache, return immediately
@@ -60,7 +60,7 @@ class UserCache {
   ///
   /// Useful when user data changes and you want to update the cache
   /// without waiting for the next resolution.
-  void updateUser(String userId, User? user) {
+  void updateUser(UserID userId, User? user) {
     _cacheUser(userId, user);
   }
 
@@ -71,14 +71,14 @@ class UserCache {
   }
 
   /// Removes a specific user from the cache.
-  void remove(String userId) {
+  void remove(UserID userId) {
     _cache.remove(userId);
     _accessOrder.remove(userId);
   }
 
   /// Internal method to add or update a user in the cache.
   /// Handles LRU eviction if the cache is full.
-  void _cacheUser(String userId, User? user) {
+  void _cacheUser(UserID userId, User? user) {
     // Handle eviction if needed
     if (_accessOrder.length >= maxSize && !_cache.containsKey(userId)) {
       final oldestId = _accessOrder.removeAt(0);

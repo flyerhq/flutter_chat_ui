@@ -43,7 +43,7 @@ class SimpleTextMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
-    final isSentByMe = context.watch<String>() == message.authorId;
+    final isSentByMe = context.watch<UserID>() == message.authorId;
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final textStyle = _resolveTextStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);

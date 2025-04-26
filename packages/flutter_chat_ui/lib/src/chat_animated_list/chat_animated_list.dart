@@ -115,7 +115,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
   // This flag is used to determine if we already adjusted the initial
   // scroll position (so we can see latest messages when we enter chat)
   late bool _needsInitialScrollPositionAdjustment;
-  String _lastInsertedMessageId = '';
+  MessageID _lastInsertedMessageId = '';
   // Controls whether pagination should be triggered when scrolling to the top.
   // Set to true when user scrolls up, and false after pagination is triggered.
   // This prevents infinite pagination loops when reaching the end of available messages,
@@ -448,7 +448,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
       return;
     }
 
-    final currentUserId = context.read<String>();
+    final currentUserId = context.read<UserID>();
 
     // When the user sends a new message, automatically scroll back to
     // the bottom to show their message.
@@ -593,7 +593,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
       // Store the ID of the topmost visible item before loading new messages.
       // This item will be used as an anchor to maintain scroll position.
-      String? anchorMessageId;
+      MessageID? anchorMessageId;
       try {
         final notificationResult = await _observerController
             .dispatchOnceObserve(
@@ -660,7 +660,7 @@ class ChatAnimatedListState extends State<ChatAnimatedList>
 
   /// Scrolls to a specific message by ID.
   Future<void> _scrollToMessageId(
-    String messageId, {
+    MessageID messageId, {
     Duration duration = const Duration(milliseconds: 250),
     Curve curve = Curves.linearToEaseOut,
     double alignment = 0,

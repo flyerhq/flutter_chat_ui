@@ -36,7 +36,7 @@ class PaginationState extends State<Pagination> {
   );
   final _currentUser = const User(id: 'me');
 
-  String? _lastMessageId;
+  MessageID? _lastMessageId;
   bool _hasMore = true;
   bool _isLoading = false;
 
@@ -117,7 +117,7 @@ class PaginationState extends State<Pagination> {
   }
 
   /// Scrolls to a specific message ID, loading necessary pages first if needed
-  Future<void> _scrollToMessage(String messageId) async {
+  Future<void> _scrollToMessage(MessageID messageId) async {
     // First check if the message is already loaded
     var messageExists = _chatController.messages.any((m) => m.id == messageId);
 
@@ -184,7 +184,7 @@ class MockDatabase {
 
   static Future<List<Message>> getMessages({
     required int limit,
-    String? lastMessageId,
+    MessageID? lastMessageId,
   }) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
