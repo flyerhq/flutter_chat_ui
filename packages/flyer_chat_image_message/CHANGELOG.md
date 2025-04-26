@@ -1,3 +1,7 @@
+## 0.0.12
+
+- Do not show status for received messages
+
 ## 0.0.11
 
 - Version bump to match other packages

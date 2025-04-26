@@ -1,3 +1,17 @@
+## 0.0.12
+
+**⚠️ Breaking changes ⚠️**
+
+- Updated the `Message` model to rename `parentId` to `replyToId`
+- The `createdAt` field is now optional in the message model
+- The `sending` field has been removed from the message model; instead, you can set `sending: true` in the metadata of the Message model to achieve the same functionality.
+- The `isOnlyEmoji` property has been removed from the text message model; to indicate that a message contains only emojis, use `isOnlyEmoji: true` in the metadata of the text message.
+- The `firstName` and `lastName` fields in the `User` model have been consolidated into a single `name` field for improved simplicity.
+
+**Other changes**
+
+- Introduced `MessageID` and `UserID` typedefs to provide clearer context, while maintaining their underlying type as `String`s
+
 ## 0.0.11
 
 **⚠️ Breaking changes ⚠️**

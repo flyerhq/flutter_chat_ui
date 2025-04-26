@@ -1,3 +1,24 @@
+## 2.0.0-dev.11
+
+**⚠️ Breaking Changes ⚠️**
+
+- Enhanced pagination functionality for the `ChatAnimatedList` widget. If you utilize the `paginationThreshold` parameter, please refer to the comments in the `ChatAnimatedList` widget implementation for detailed guidance.
+- Updated the `Message` model to rename `parentId` to `replyToId`
+- The `createdAt` field is now optional in the message model
+- The `sending` field has been removed from the message model; instead, you can set `sending: true` in the metadata of the Message model to achieve the same functionality.
+- The `isOnlyEmoji` property has been removed from the text message model; to indicate that a message contains only emojis, use `isOnlyEmoji: true` in the metadata of the text message.
+- The `firstName` and `lastName` fields in the `User` model have been consolidated into a single `name` field for improved simplicity.
+
+**⚠️ New Features ⚠️**
+
+- Added a `headerWidget` to the `ChatMessage` widget, enabling the display of a custom header for each message. You have the flexibility to control the header's position; wrap it with a `Center` widget for centering.
+- Introduced new parameters: `sentMessageColumnAlignment`, `receivedMessageColumnAlignment`, `sentMessageRowAlignment`, and `receivedMessageRowAlignment` for the `ChatMessage` widget. These allow for precise control over the positioning of `leadingWidget`, `trailingWidget`, `topWidget`, and `bottomWidget`. Ensure correct defaults are set for proper alignment, especially when using the `topWidget`.
+
+**Other changes**
+
+- Introduced `MessageID` and `UserID` typedefs to provide clearer context, while maintaining their underlying type as `String`s
+- Do not show status for received messages
+
 ## 2.0.0-dev.10
 
 **⚠️ Breaking Changes ⚠️**
