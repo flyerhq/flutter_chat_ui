@@ -38,4 +38,12 @@ class ApiService {
       throw 'Failed to flush messages: $e';
     }
   }
+
+  Future<void> seen(MessageID messageId) async {
+    try {
+      await dio.post('$baseUrl/chat/$chatId/seen', data: {'msgId': messageId});
+    } catch (e) {
+      throw 'Failed to mark message as seen: $e';
+    }
+  }
 }
