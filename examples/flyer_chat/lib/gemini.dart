@@ -81,8 +81,12 @@ class GeminiState extends State<Gemini> {
             );
           },
           imageMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatImageMessage(message: message, index: index),
+              (context, message, index) => FlyerChatImageMessage(
+                message: message,
+                index: index,
+                showTime: false,
+                showStatus: false,
+              ),
           composerBuilder:
               (context) => Composer(
                 topWidget: ComposerActionBar(
@@ -100,8 +104,12 @@ class GeminiState extends State<Gemini> {
                 ),
               ),
           textMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatTextMessage(message: message, index: index),
+              (context, message, index) => FlyerChatTextMessage(
+                message: message,
+                index: index,
+                showTime: false,
+                showStatus: false,
+              ),
         ),
         chatController: _chatController,
         crossCache: _crossCache,
@@ -124,9 +132,8 @@ class GeminiState extends State<Gemini> {
       TextMessage(
         id: _uuid.v4(),
         authorId: _currentUser.id,
-        createdAt: DateTime.now().toUtc(),
         text: text,
-        isOnlyEmoji: isOnlyEmoji(text),
+        metadata: isOnlyEmoji(text) ? {'isOnlyEmoji': true} : null,
       ),
     );
 
@@ -147,7 +154,6 @@ class GeminiState extends State<Gemini> {
       ImageMessage(
         id: _uuid.v4(),
         authorId: _currentUser.id,
-        createdAt: DateTime.now().toUtc(),
         source: image.path,
       ),
     );
@@ -182,17 +188,12 @@ class GeminiState extends State<Gemini> {
             _currentGeminiResponse = TextMessage(
               id: _uuid.v4(),
               authorId: _agent.id,
-              createdAt: DateTime.now().toUtc(),
               text: accumulatedText,
-              isOnlyEmoji: isOnlyEmoji(accumulatedText),
             );
             await _chatController.insert(_currentGeminiResponse!);
           } else {
             final newUpdatedMessage = (_currentGeminiResponse as TextMessage)
-                .copyWith(
-                  text: accumulatedText,
-                  isOnlyEmoji: isOnlyEmoji(accumulatedText),
-                );
+                .copyWith(text: accumulatedText);
             await _chatController.update(
               _currentGeminiResponse!,
               newUpdatedMessage,
@@ -242,6 +243,16 @@ class GeminiState extends State<Gemini> {
             }
           }
         }
+      }
+
+      if (_currentGeminiResponse != null) {
+        await _chatController.update(
+          _currentGeminiResponse!,
+          _currentGeminiResponse!.copyWith(
+            metadata:
+                isOnlyEmoji(accumulatedText) ? {'isOnlyEmoji': true} : null,
+          ),
+        );
       }
 
       _currentGeminiResponse = null;

@@ -39,7 +39,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
   });
 
-  bool get _isOnlyEmoji => message.isOnlyEmoji == true;
+  bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +50,12 @@ class FlyerChatTextMessage extends StatelessWidget {
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
 
     final timeAndStatus =
-        showTime || showStatus
+        showTime || (isSentByMe && showStatus)
             ? TimeAndStatus(
-              createdAt: message.createdAt,
+              time: message.time,
               status: message.status,
               showTime: showTime,
-              showStatus: showStatus,
+              showStatus: isSentByMe && showStatus,
               textStyle: timeStyle,
             )
             : null;
@@ -186,7 +186,7 @@ extension on TextStyle {
 }
 
 class TimeAndStatus extends StatelessWidget {
-  final DateTime createdAt;
+  final DateTime? time;
   final MessageStatus? status;
   final bool showTime;
   final bool showStatus;
@@ -194,7 +194,7 @@ class TimeAndStatus extends StatelessWidget {
 
   const TimeAndStatus({
     super.key,
-    required this.createdAt,
+    required this.time,
     this.status,
     this.showTime = true,
     this.showStatus = true,
@@ -209,8 +209,8 @@ class TimeAndStatus extends StatelessWidget {
       spacing: 2,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showTime)
-          Text(timeFormat.format(createdAt.toLocal()), style: textStyle),
+        if (showTime && time != null)
+          Text(timeFormat.format(time!.toLocal()), style: textStyle),
         if (showStatus && status != null)
           if (status == MessageStatus.sending)
             SizedBox(

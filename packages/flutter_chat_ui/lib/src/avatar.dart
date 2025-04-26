@@ -152,12 +152,11 @@ class _AvatarContentState extends State<AvatarContent> {
   }
 
   String _getInitials(User? user) {
-    if (user?.firstName == null && user?.lastName == null) return '';
+    if (user?.name == null || user!.name!.trim().isEmpty) return '';
 
-    final firstInitial =
-        user?.firstName?.isNotEmpty == true ? user!.firstName![0] : '';
-    final lastInitial =
-        user?.lastName?.isNotEmpty == true ? user!.lastName![0] : '';
+    final nameParts = user.name!.trim().split(' ');
+    final firstInitial = nameParts.isNotEmpty ? nameParts.first[0] : '';
+    final lastInitial = nameParts.length > 1 ? nameParts.last[0] : '';
 
     return '$firstInitial$lastInitial'.toUpperCase();
   }

@@ -9,6 +9,7 @@ Future<Message> createMessage(
   UserID authorId,
   Dio dio, {
   bool? textOnly,
+  bool? localOnly,
   String? text,
 }) async {
   const uuid = Uuid();
@@ -19,9 +20,9 @@ Future<Message> createMessage(
       id: uuid.v4(),
       authorId: authorId,
       createdAt: DateTime.now().toUtc(),
-      sentAt: DateTime.now().toUtc(),
+      sentAt: localOnly == true ? DateTime.now().toUtc() : null,
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
-      isOnlyEmoji: isOnlyEmoji(text ?? ''),
+      metadata: isOnlyEmoji(text ?? '') ? {'isOnlyEmoji': true} : null,
     );
   } else {
     final orientation = ['portrait', 'square', 'wide'][Random().nextInt(3)];
@@ -53,7 +54,7 @@ Future<Message> createMessage(
       id: uuid.v4(),
       authorId: authorId,
       createdAt: DateTime.now().toUtc(),
-      sentAt: DateTime.now().toUtc(),
+      sentAt: localOnly == true ? DateTime.now().toUtc() : null,
       source: response.data['img'],
       thumbhash: response.data['thumbhash'],
       blurhash: response.data['blurhash'],
@@ -64,6 +65,7 @@ Future<Message> createMessage(
   //   id: uuid.v4(),
   //   author: author,
   //   createdAt: DateTime.now().toUtc(),
+  //   sentAt: localOnly == true ? DateTime.now().toUtc() : null,
   //   source:
   //       'https://www.hdcarwallpapers.com/walls/audi_r8_spyder_v10_performance_rwd_2021_4k_8k-HD.jpg',
   //   thumbhash: '2gcODIKwdmg9eId1l4qTb2v4xw',

@@ -15,10 +15,6 @@ void main() {
     //   final newMessage = TextMessage(
     //     id: '21',
     //     authorId: 'me',
-    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
-    //       1736893310000,
-    //       isUtc: true,
-    //     ),
     //     text: 'test',
     //   );
 
@@ -39,20 +35,12 @@ void main() {
     //   final newMessage1 = TextMessage(
     //     id: '21',
     //     authorId: 'me',
-    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
-    //       1736893310000,
-    //       isUtc: true,
-    //     ),
     //     text: 'test',
     //   );
 
     //   final newMessage2 = TextMessage(
     //     id: '22',
     //     authorId: 'me',
-    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
-    //       1736893310000,
-    //       isUtc: true,
-    //     ),
     //     text: 'test',
     //   );
 
@@ -66,10 +54,6 @@ void main() {
     //   final message = TextMessage(
     //     id: '21',
     //     authorId: 'me',
-    //     createdAt: DateTime.fromMillisecondsSinceEpoch(
-    //       1736893310000,
-    //       isUtc: true,
-    //     ),
     //     text: 'test',
     //   );
 

@@ -114,20 +114,24 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
           index < messages.length - 1 ? messages[index + 1] : null;
       final previousMessage = index > 0 ? messages[index - 1] : null;
 
+      // Get dates
+      final now = DateTime.now();
+      final currentMessageDate = currentMessage.time ?? now;
+      final nextMessageDate = nextMessage?.time ?? now;
+      final previousMessageDate = previousMessage?.time ?? now;
+
       // Check if message is part of a group with next message
       final isGroupedWithNext =
           nextMessage != null &&
           nextMessage.authorId == currentMessage.authorId &&
-          nextMessage.createdAt.difference(currentMessage.createdAt).inSeconds <
+          nextMessageDate.difference(currentMessageDate).inSeconds <
               timeoutInSeconds;
 
       // Check if message is part of a group with previous message
       final isGroupedWithPrevious =
           previousMessage != null &&
           previousMessage.authorId == currentMessage.authorId &&
-          currentMessage.createdAt
-                  .difference(previousMessage.createdAt)
-                  .inSeconds <
+          currentMessageDate.difference(previousMessageDate).inSeconds <
               timeoutInSeconds;
 
       // If not grouped with either message, return null

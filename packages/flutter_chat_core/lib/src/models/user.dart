@@ -10,8 +10,7 @@ part 'user.g.dart';
 abstract class User with _$User {
   const factory User({
     required UserID id,
-    String? firstName,
-    String? lastName,
+    String? name,
     String? imageSource,
     @EpochDateTimeConverter() DateTime? createdAt,
     Map<String, dynamic>? metadata,
