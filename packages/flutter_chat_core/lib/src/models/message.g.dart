@@ -9,7 +9,7 @@ part of 'message.dart';
 TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
-  parentId: json['parentId'] as String?,
+  replyToId: json['replyToId'] as String?,
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
@@ -57,7 +57,7 @@ Map<String, dynamic> _$TextMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
-  if (instance.parentId case final value?) 'parentId': value,
+  if (instance.replyToId case final value?) 'replyToId': value,
   'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
   if (_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
@@ -117,7 +117,7 @@ Json? _$JsonConverterToJson<Json, Value>(
 ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
-  parentId: json['parentId'] as String?,
+  replyToId: json['replyToId'] as String?,
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
@@ -165,7 +165,7 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
-      if (instance.parentId case final value?) 'parentId': value,
+      if (instance.replyToId case final value?) 'replyToId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -219,7 +219,7 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
 FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
-  parentId: json['parentId'] as String?,
+  replyToId: json['replyToId'] as String?,
   createdAt: const EpochDateTimeConverter().fromJson(
     (json['createdAt'] as num).toInt(),
   ),
@@ -264,7 +264,7 @@ Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
-      if (instance.parentId case final value?) 'parentId': value,
+      if (instance.replyToId case final value?) 'replyToId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -316,7 +316,7 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
     SystemMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
-      parentId: json['parentId'] as String?,
+      replyToId: json['replyToId'] as String?,
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
@@ -358,7 +358,7 @@ Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
-      if (instance.parentId case final value?) 'parentId': value,
+      if (instance.replyToId case final value?) 'replyToId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -407,7 +407,7 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
     CustomMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
-      parentId: json['parentId'] as String?,
+      replyToId: json['replyToId'] as String?,
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
@@ -448,7 +448,7 @@ Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
-      if (instance.parentId case final value?) 'parentId': value,
+      if (instance.replyToId case final value?) 'replyToId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,
@@ -496,7 +496,7 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
     UnsupportedMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
-      parentId: json['parentId'] as String?,
+      replyToId: json['replyToId'] as String?,
       createdAt: const EpochDateTimeConverter().fromJson(
         (json['createdAt'] as num).toInt(),
       ),
@@ -537,7 +537,7 @@ Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
     <String, dynamic>{
       'id': instance.id,
       'authorId': instance.authorId,
-      if (instance.parentId case final value?) 'parentId': value,
+      if (instance.replyToId case final value?) 'replyToId': value,
       'createdAt': const EpochDateTimeConverter().toJson(instance.createdAt),
       if (_$JsonConverterToJson<int, DateTime>(
             instance.deletedAt,

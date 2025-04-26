@@ -12,7 +12,7 @@ sealed class Message with _$Message {
   const factory Message.text({
     required String id,
     required String authorId,
-    String? parentId,
+    String? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -31,7 +31,7 @@ sealed class Message with _$Message {
   const factory Message.image({
     required String id,
     required String authorId,
-    String? parentId,
+    String? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -54,7 +54,7 @@ sealed class Message with _$Message {
   const factory Message.file({
     required String id,
     required String authorId,
-    String? parentId,
+    String? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -74,7 +74,7 @@ sealed class Message with _$Message {
   const factory Message.system({
     required String id,
     required String authorId,
-    String? parentId,
+    String? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -91,7 +91,7 @@ sealed class Message with _$Message {
   const factory Message.custom({
     required String id,
     required String authorId,
-    String? parentId,
+    String? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
@@ -107,7 +107,7 @@ sealed class Message with _$Message {
   const factory Message.unsupported({
     required String id,
     required String authorId,
-    String? parentId,
+    String? replyToId,
     @EpochDateTimeConverter() required DateTime createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     bool? sending,
