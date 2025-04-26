@@ -9,6 +9,7 @@ Flyer Chat is an open-source chat UI package for Flutter applications, designed 
 ## ✨ Features
 
 - 🔄 **Backend-agnostic**: Connect to any backend service.
+- 🧬 **Adaptable**: Perfect for real-time messengers, generative AI agents and LLM-based assistants, support platforms, and beyond.
 - 🎨 **Highly Customizable**: Tailor the UI with extensive theme options and builder functions.
 - 🧩 **Modular**: Pick and choose the features you want. You can change any part of the UI or swap it with your own custom implementation.
 - ⚡ **Performance Optimized**: Built for speed and smooth animations.
@@ -21,7 +22,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_chat_core: ^ # Use the latest version
+  flutter_chat_core: ^2.0.0
   flutter_chat_ui: ^2.0.0
 ```
 
@@ -31,7 +32,7 @@ Then, import and use the `Chat` widget.
 
 For detailed usage, customization options, different message types, controllers, and more complex scenarios, please refer to the **full documentation**:
 
-➡️ **[flyer.chat/docs/flutter](https://flyer.chat/docs/flutter)** ⬅️
+➡️ **[flyer.chat/introduction](https://flyer.chat/introduction)** ⬅️
 
 Explore the comprehensive [example application](https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat) to see various features and customizations in action.
 

@@ -22,7 +22,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_chat_core: ^ # Use the latest version
+  flutter_chat_core: ^2.0.0
   flutter_chat_ui: ^2.0.0
 ```
 
@@ -32,7 +32,7 @@ Then, import and use the `Chat` widget.
 
 For detailed usage, customization options, different message types, controllers, and more complex scenarios, please refer to the **full documentation**:
 
-➡️ **[flyer.chat/docs/flutter](https://flyer.chat/docs/flutter)** ⬅️
+➡️ **[flyer.chat/introduction](https://flyer.chat/introduction)** ⬅️
 
 Explore the comprehensive [example application](https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat) to see various features and customizations in action.
 
