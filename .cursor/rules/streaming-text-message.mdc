@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Streaming Text Message Feature
+
+This feature allows displaying text messages where the content arrives incrementally over time, commonly used for AI agent responses.
+
+## Core Components
+
+*   **Model:** A `TextStreamMessage` type was added to the `Message` sealed class in [message.dart](mdc:packages/flutter_chat_core/lib/src/models/message.dart). It primarily holds a unique `streamId` to identify the ongoing stream, alongside standard message metadata. Status fields were added for compatibility with the existing `status` getter, but their population depends on the stream's lifecycle.
+*   **UI Widget:** The [flyer_chat_text_stream_message.dart](mdc:packages/flyer_chat_text_stream_message/lib/src/flyer_chat_text_stream_message.dart) widget is responsible for rendering the streaming message.
+    *   It's a `StatefulWidget` to manage animations.
+    *   It receives the `TextStreamMessage` and an externally provided `StreamState` (`Loading`, `Streaming`, `Error`, `Completed`, defined in [stream_state.dart](mdc:packages/flyer_chat_text_stream_message/lib/src/stream_state.dart)).
+    *   It uses a segment-based approach (`StaticSegment`, `AnimatingSegment`, defined in [text_segment.dart](mdc:packages/flyer_chat_text_stream_message/lib/src/text_segment.dart)) to manage displayed text.
+    *   It implements a per-chunk, inline, fade-in animation using `AnimationController` and `setState` listeners for the `Streaming` state.
+    *   It renders the final completed text using `GptMarkdown` if the state is `Completed`.
+*   **Builder:** A `textStreamMessageBuilder` function type exists in the `Builders` class ([builders.dart](mdc:packages/flutter_chat_core/lib/src/models/builders.dart)) allowing users to provide their implementation.
+
+## State Management (Example Pattern)
+
+The library itself does not dictate state management for streams. The example project demonstrates one pattern:
+
+*   **Manager:** A dedicated manager class, like [gemini_stream_manager.dart](mdc:examples/flyer_chat/lib/gemini_stream_manager.dart), is used.
+    *   It acts as a `ChangeNotifier`.
+    *   It holds the `StreamState` for active streams, keyed by `streamId`.
+    *   It receives chunks from the source (e.g., AI API), updates the state, and calls `notifyListeners`.
+    *   It requires the `ChatController` instance.
+*   **Finalization:** Upon stream completion or error, the manager:
+    *   Waits for a duration matching the UI animation (`chunkAnimationDuration`).
+    *   Calls `chatController.update(originalStreamMessage, finalTextMessage)` to replace the `TextStreamMessage` with a standard `TextMessage` in the data source.
+    *   Cleans up its internal state for that `streamId`.
+*   **Integration:** The example ([gemini.dart](mdc:examples/flyer_chat/lib/gemini.dart)) provides the manager via `ChangeNotifierProvider` and uses `context.watch` within the `textStreamMessageBuilder` to get the current `StreamState` for the widget.
+
+## Key Interactions
+
+1.  External logic (e.g., API call) receives text chunks.
+2.  When the first chunk arrives, a `TextStreamMessage` is inserted into the `ChatController`.
+3.  The external manager is notified (`startStream`).
+4.  Subsequent chunks are sent to the manager (`addChunk`), which updates its state and notifies listeners.
+5.  The `FlyerChatTextStreamMessage` widget rebuilds via `context.watch`, receives the new `StreamState`, detects the new chunk in `didUpdateWidget`, and initiates the animation for that chunk.
+6.  When the stream ends, the manager (`completeStream`/`errorStream`) delays, then calls `chatController.update`.
+7.  The `ChatAnimatedList` reacts to the controller update, eventually causing `ChatMessageInternal` to rebuild with the final `TextMessage`, which is then rendered by the `textMessageBuilder`.
+
+This approach ensures animations occur inline, the UI handles list recycling gracefully, and the final message state is persisted correctly via the controller.

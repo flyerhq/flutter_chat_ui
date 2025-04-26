@@ -153,7 +153,6 @@ class FlyerChatFileMessage extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
-          textBaseline: TextBaseline.alphabetic,
           children: [fileContent, const SizedBox(width: 4), timeAndStatus],
         );
       case TimeAndStatusPosition.end:

@@ -116,6 +116,101 @@ Json? _$JsonConverterToJson<Json, Value>(
   Json? Function(Value value) toJson,
 ) => value == null ? null : toJson(value);
 
+TextStreamMessage _$TextStreamMessageFromJson(Map<String, dynamic> json) =>
+    TextStreamMessage(
+      id: json['id'] as String,
+      authorId: json['authorId'] as String,
+      replyToId: json['replyToId'] as String?,
+      createdAt: _$JsonConverterFromJson<int, DateTime>(
+        json['createdAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      deletedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deletedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      failedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['failedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      sentAt: _$JsonConverterFromJson<int, DateTime>(
+        json['sentAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+        json['deliveredAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      seenAt: _$JsonConverterFromJson<int, DateTime>(
+        json['seenAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      updatedAt: _$JsonConverterFromJson<int, DateTime>(
+        json['updatedAt'],
+        const EpochDateTimeConverter().fromJson,
+      ),
+      reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ),
+      metadata: json['metadata'] as Map<String, dynamic>?,
+      streamId: json['streamId'] as String,
+      $type: json['type'] as String?,
+    );
+
+Map<String, dynamic> _$TextStreamMessageToJson(TextStreamMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      if (instance.replyToId case final value?) 'replyToId': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.createdAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'createdAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deletedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deletedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.failedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'failedAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.sentAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'sentAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.deliveredAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'deliveredAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.seenAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'seenAt': value,
+      if (_$JsonConverterToJson<int, DateTime>(
+            instance.updatedAt,
+            const EpochDateTimeConverter().toJson,
+          )
+          case final value?)
+        'updatedAt': value,
+      if (instance.reactions case final value?) 'reactions': value,
+      if (instance.metadata case final value?) 'metadata': value,
+      'streamId': instance.streamId,
+      'type': instance.$type,
+    };
+
 ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,

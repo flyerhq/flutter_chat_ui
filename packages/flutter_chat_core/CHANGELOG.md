@@ -11,6 +11,8 @@
 **Other changes**
 
 - Introduced `MessageID` and `UserID` typedefs to provide clearer context, while maintaining their underlying type as `String`s
+- Introduced `TextStreamMessage` type to support text streaming
+- Added `textStreamMessageBuilder` to the `Builders` class to support text streaming UI widget
 
 ## 0.0.11
 

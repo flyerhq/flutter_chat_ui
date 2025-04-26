@@ -20,6 +20,10 @@ Message _$MessageFromJson(
           return TextMessage.fromJson(
             json
           );
+                case 'textStream':
+          return TextStreamMessage.fromJson(
+            json
+          );
                 case 'image':
           return ImageMessage.fromJson(
             json
@@ -48,7 +52,7 @@ Message _$MessageFromJson(
 /// @nodoc
 mixin _$Message {
 
- MessageID get id; UserID get authorId; MessageID? get replyToId;@EpochDateTimeConverter() DateTime? get createdAt;@EpochDateTimeConverter() DateTime? get deletedAt;@EpochDateTimeConverter() DateTime? get failedAt;@EpochDateTimeConverter() DateTime? get sentAt;@EpochDateTimeConverter() DateTime? get deliveredAt;@EpochDateTimeConverter() DateTime? get seenAt;@EpochDateTimeConverter() DateTime? get updatedAt; Map<String, List<UserID>>? get reactions; Map<String, dynamic>? get metadata;
+ String get id; String get authorId; String? get replyToId;@EpochDateTimeConverter() DateTime? get createdAt;@EpochDateTimeConverter() DateTime? get deletedAt;@EpochDateTimeConverter() DateTime? get failedAt;@EpochDateTimeConverter() DateTime? get sentAt;@EpochDateTimeConverter() DateTime? get deliveredAt;@EpochDateTimeConverter() DateTime? get seenAt;@EpochDateTimeConverter() DateTime? get updatedAt; Map<String, List<String>>? get reactions; Map<String, dynamic>? get metadata;
 /// Create a copy of Message
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -244,6 +248,119 @@ $LinkPreviewCopyWith<$Res>? get linkPreview {
     return _then(_self.copyWith(linkPreview: value));
   });
 }
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class TextStreamMessage extends Message {
+  const TextStreamMessage({required this.id, required this.authorId, this.replyToId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.streamId, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'textStream',super._();
+  factory TextStreamMessage.fromJson(Map<String, dynamic> json) => _$TextStreamMessageFromJson(json);
+
+@override final  String id;
+@override final  String authorId;
+@override final  String? replyToId;
+@override@EpochDateTimeConverter() final  DateTime? createdAt;
+@override@EpochDateTimeConverter() final  DateTime? deletedAt;
+@override@EpochDateTimeConverter() final  DateTime? failedAt;
+@override@EpochDateTimeConverter() final  DateTime? sentAt;
+@override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+@override@EpochDateTimeConverter() final  DateTime? seenAt;
+@override@EpochDateTimeConverter() final  DateTime? updatedAt;
+ final  Map<String, List<String>>? _reactions;
+@override Map<String, List<String>>? get reactions {
+  final value = _reactions;
+  if (value == null) return null;
+  if (_reactions is EqualUnmodifiableMapView) return _reactions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
+ final  Map<String, dynamic>? _metadata;
+@override Map<String, dynamic>? get metadata {
+  final value = _metadata;
+  if (value == null) return null;
+  if (_metadata is EqualUnmodifiableMapView) return _metadata;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
+ final  String streamId;
+
+@JsonKey(name: 'type')
+final String $type;
+
+
+/// Create a copy of Message
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TextStreamMessageCopyWith<TextStreamMessage> get copyWith => _$TextStreamMessageCopyWithImpl<TextStreamMessage>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$TextStreamMessageToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TextStreamMessage&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.failedAt, failedAt) || other.failedAt == failedAt)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.deliveredAt, deliveredAt) || other.deliveredAt == deliveredAt)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&const DeepCollectionEquality().equals(other._metadata, _metadata)&&(identical(other.streamId, streamId) || other.streamId == streamId));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,authorId,replyToId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(_reactions),const DeepCollectionEquality().hash(_metadata),streamId);
+
+@override
+String toString() {
+  return 'Message.textStream(id: $id, authorId: $authorId, replyToId: $replyToId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, metadata: $metadata, streamId: $streamId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $TextStreamMessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
+  factory $TextStreamMessageCopyWith(TextStreamMessage value, $Res Function(TextStreamMessage) _then) = _$TextStreamMessageCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String authorId, String? replyToId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<String>>? reactions, Map<String, dynamic>? metadata, String streamId
+});
+
+
+
+
+}
+/// @nodoc
+class _$TextStreamMessageCopyWithImpl<$Res>
+    implements $TextStreamMessageCopyWith<$Res> {
+  _$TextStreamMessageCopyWithImpl(this._self, this._then);
+
+  final TextStreamMessage _self;
+  final $Res Function(TextStreamMessage) _then;
+
+/// Create a copy of Message
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToId = freezed,Object? createdAt = freezed,Object? deletedAt = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,Object? streamId = null,}) {
+  return _then(TextStreamMessage(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as String,replyToId: freezed == replyToId ? _self.replyToId : replyToId // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,sentAt: freezed == sentAt ? _self.sentAt : sentAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : deliveredAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
+as Map<String, List<String>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,streamId: null == streamId ? _self.streamId : streamId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 /// @nodoc

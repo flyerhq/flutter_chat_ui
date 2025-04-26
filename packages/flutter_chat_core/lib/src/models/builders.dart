@@ -8,6 +8,8 @@ part 'builders.freezed.dart';
 
 typedef TextMessageBuilder =
     Widget Function(BuildContext, TextMessage, int index);
+typedef TextStreamMessageBuilder =
+    Widget Function(BuildContext, TextStreamMessage, int index);
 typedef ImageMessageBuilder =
     Widget Function(BuildContext, ImageMessage, int index);
 typedef FileMessageBuilder =
@@ -43,6 +45,7 @@ typedef LoadMoreBuilder = Widget Function(BuildContext);
 abstract class Builders with _$Builders {
   const factory Builders({
     TextMessageBuilder? textMessageBuilder,
+    TextStreamMessageBuilder? textStreamMessageBuilder,
     ImageMessageBuilder? imageMessageBuilder,
     FileMessageBuilder? fileMessageBuilder,
     SystemMessageBuilder? systemMessageBuilder,

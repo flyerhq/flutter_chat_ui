@@ -13,11 +13,14 @@
 
 - Added a `headerWidget` to the `ChatMessage` widget, enabling the display of a custom header for each message. You have the flexibility to control the header's position; wrap it with a `Center` widget for centering.
 - Introduced new parameters: `sentMessageColumnAlignment`, `receivedMessageColumnAlignment`, `sentMessageRowAlignment`, and `receivedMessageRowAlignment` for the `ChatMessage` widget. These allow for precise control over the positioning of `leadingWidget`, `trailingWidget`, `topWidget`, and `bottomWidget`. Ensure correct defaults are set for proper alignment, especially when using the `topWidget`.
+- Introduced `TextStreamMessage` type to support text streaming
+- Added `textStreamMessageBuilder` to the `Builders` class to support text streaming UI widget
 
 **Other changes**
 
 - Introduced `MessageID` and `UserID` typedefs to provide clearer context, while maintaining their underlying type as `String`s
 - Do not show status for received messages
+- Added example for text streaming
 
 ## 2.0.0-dev.10
 
