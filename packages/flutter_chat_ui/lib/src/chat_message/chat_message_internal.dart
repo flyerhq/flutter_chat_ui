@@ -159,6 +159,13 @@ class ChatMessageInternalState extends State<ChatMessageInternal> {
       case TextMessage():
         return builders.textMessageBuilder?.call(context, message, index) ??
             SimpleTextMessage(message: message, index: index);
+      case TextStreamMessage():
+        return builders.textStreamMessageBuilder?.call(
+              context,
+              message,
+              index,
+            ) ??
+            const SizedBox.shrink();
       case ImageMessage():
         final result =
             builders.imageMessageBuilder?.call(context, message, index) ??

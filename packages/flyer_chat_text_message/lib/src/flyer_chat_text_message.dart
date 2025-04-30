@@ -117,8 +117,7 @@ class FlyerChatTextMessage extends StatelessWidget {
       case TimeAndStatusPosition.inline:
         return Row(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Flexible(child: textContent),
             const SizedBox(width: 4),

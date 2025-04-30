@@ -26,6 +26,22 @@ sealed class Message with _$Message {
     LinkPreview? linkPreview,
   }) = TextMessage;
 
+  const factory Message.textStream({
+    required String id,
+    required String authorId,
+    String? replyToId,
+    @EpochDateTimeConverter() DateTime? createdAt,
+    @EpochDateTimeConverter() DateTime? deletedAt,
+    @EpochDateTimeConverter() DateTime? failedAt,
+    @EpochDateTimeConverter() DateTime? sentAt,
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+    @EpochDateTimeConverter() DateTime? seenAt,
+    @EpochDateTimeConverter() DateTime? updatedAt,
+    Map<String, List<String>>? reactions,
+    Map<String, dynamic>? metadata,
+    required String streamId,
+  }) = TextStreamMessage;
+
   const factory Message.image({
     required MessageID id,
     required UserID authorId,

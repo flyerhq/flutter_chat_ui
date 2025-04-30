@@ -4,13 +4,19 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
+import 'package:flyer_chat_text_stream_message/flyer_chat_text_stream_message.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:sembast/sembast.dart';
 import 'package:uuid/uuid.dart';
 
+import 'gemini_stream_manager.dart';
 import 'sembast_chat_controller.dart';
 import 'widgets/composer_action_bar.dart';
+
+// Define the shared animation duration
+const Duration _kChunkAnimationDuration = Duration(milliseconds: 350);
 
 class Gemini extends StatefulWidget {
   final String geminiApiKey;
@@ -34,12 +40,21 @@ class GeminiState extends State<Gemini> {
   late final GenerativeModel _model;
   late ChatSession _chatSession;
 
-  Message? _currentGeminiResponse;
+  late final GeminiStreamManager _streamManager;
+
+  // Store scroll state per stream ID
+  final Map<String, double> _initialScrollExtents = {};
+  final Map<String, bool> _reachedTargetScroll = {};
 
   @override
   void initState() {
     super.initState();
     _chatController = SembastChatController(widget.database);
+    _streamManager = GeminiStreamManager(
+      chatController: _chatController,
+      chunkAnimationDuration: _kChunkAnimationDuration,
+    );
+
     _model = GenerativeModel(
       model: 'gemini-1.5-flash-latest',
       apiKey: widget.geminiApiKey,
@@ -59,6 +74,7 @@ class GeminiState extends State<Gemini> {
 
   @override
   void dispose() {
+    _streamManager.dispose();
     _chatController.dispose();
     _scrollController.dispose();
     _crossCache.dispose();
@@ -71,58 +87,92 @@ class GeminiState extends State<Gemini> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Gemini')),
-      body: Chat(
-        builders: Builders(
-          chatAnimatedListBuilder: (context, itemBuilder) {
-            return ChatAnimatedList(
-              scrollController: _scrollController,
-              itemBuilder: itemBuilder,
-              shouldScrollToEndWhenAtBottom: false,
-            );
-          },
-          imageMessageBuilder:
-              (context, message, index) => FlyerChatImageMessage(
-                message: message,
-                index: index,
-                showTime: false,
-                showStatus: false,
-              ),
-          composerBuilder:
-              (context) => Composer(
-                topWidget: ComposerActionBar(
-                  buttons: [
-                    ComposerActionButton(
-                      icon: Icons.delete_sweep,
-                      title: 'Clear all',
-                      onPressed: () {
-                        _chatController.set([]);
-                        _chatSession = _model.startChat();
-                      },
-                      destructive: true,
-                    ),
-                  ],
+      body: ChangeNotifierProvider.value(
+        value: _streamManager,
+        child: Chat(
+          builders: Builders(
+            chatAnimatedListBuilder: (context, itemBuilder) {
+              return ChatAnimatedList(
+                scrollController: _scrollController,
+                itemBuilder: itemBuilder,
+                shouldScrollToEndWhenAtBottom: false,
+              );
+            },
+            imageMessageBuilder:
+                (context, message, index) => FlyerChatImageMessage(
+                  message: message,
+                  index: index,
+                  showTime: false,
+                  showStatus: false,
                 ),
-              ),
-          textMessageBuilder:
-              (context, message, index) => FlyerChatTextMessage(
+            composerBuilder:
+                (context) => Composer(
+                  topWidget: ComposerActionBar(
+                    buttons: [
+                      ComposerActionButton(
+                        icon: Icons.delete_sweep,
+                        title: 'Clear all',
+                        onPressed: () {
+                          _chatController.set([]);
+                          _chatSession = _model.startChat();
+                        },
+                        destructive: true,
+                      ),
+                    ],
+                  ),
+                ),
+            textMessageBuilder:
+                (context, message, index) => FlyerChatTextMessage(
+                  message: message,
+                  index: index,
+                  showTime: false,
+                  showStatus: false,
+                  receivedBackgroundColor: null,
+                  padding:
+                      message.authorId == _agent.id
+                          ? EdgeInsets.zero
+                          : const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                ),
+            textStreamMessageBuilder: (context, message, index) {
+              // Watch the manager for state updates
+              final streamState = context.watch<GeminiStreamManager>().getState(
+                message.streamId,
+              );
+              // Return the stream message widget, passing the state
+              return FlyerChatTextStreamMessage(
                 message: message,
                 index: index,
+                streamState: streamState,
+                chunkAnimationDuration: _kChunkAnimationDuration,
                 showTime: false,
                 showStatus: false,
-              ),
+                receivedBackgroundColor: null,
+                padding:
+                    message.authorId == _agent.id
+                        ? EdgeInsets.zero
+                        : const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+              );
+            },
+          ),
+          chatController: _chatController,
+          crossCache: _crossCache,
+          currentUserId: _currentUser.id,
+          onAttachmentTap: _handleAttachmentTap,
+          onMessageSend: _handleMessageSend,
+          resolveUser:
+              (id) => Future.value(switch (id) {
+                'me' => _currentUser,
+                'agent' => _agent,
+                _ => null,
+              }),
+          theme: ChatTheme.fromThemeData(theme),
         ),
-        chatController: _chatController,
-        crossCache: _crossCache,
-        currentUserId: _currentUser.id,
-        onAttachmentTap: _handleAttachmentTap,
-        onMessageSend: _handleMessageSend,
-        resolveUser:
-            (id) => Future.value(switch (id) {
-              'me' => _currentUser,
-              'agent' => _agent,
-              _ => null,
-            }),
-        theme: ChatTheme.fromThemeData(theme),
       ),
     );
   }
@@ -165,99 +215,112 @@ class GeminiState extends State<Gemini> {
   }
 
   void _sendContent(Content content) async {
+    // Generate a unique ID for the stream
+    final streamId = _uuid.v4();
+    TextStreamMessage? streamMessage;
+    var isFirstChunk = true;
+
+    // Store scroll state per stream ID
+    _reachedTargetScroll[streamId] = false;
+
     try {
       final response = _chatSession.sendMessageStream(content);
 
-      var accumulatedText = '';
-      // This implements a scrolling behavior where we stop auto-scrolling once the
-      // generated message reaches the top of the viewport. For this to work properly,
-      // make sure to set `shouldScrollToEndWhenAtBottom` to false in `ChatAnimatedList`.
-      double? initialMaxScrollExtent;
-      var hasReachedTargetScroll = false;
-
       await for (final chunk in response) {
         if (chunk.text != null) {
-          // Store the initial scroll position when user inserts the message.
-          // The chat will auto-scroll here since `shouldScrollToEndWhenSendingMessage`
-          // is enabled by default.
-          initialMaxScrollExtent ??= _scrollController.position.maxScrollExtent;
+          final textChunk = chunk.text!;
+          if (textChunk.isEmpty) continue; // Skip empty chunks
 
-          accumulatedText += chunk.text!;
+          if (isFirstChunk) {
+            isFirstChunk = false;
 
-          if (_currentGeminiResponse == null) {
-            _currentGeminiResponse = TextMessage(
-              id: _uuid.v4(),
+            // Create and insert the message ON the first chunk
+            streamMessage = TextStreamMessage(
+              id: streamId,
               authorId: _agent.id,
-              text: accumulatedText,
+              createdAt: DateTime.now().toUtc(),
+              streamId: streamId,
             );
-            await _chatController.insert(_currentGeminiResponse!);
-          } else {
-            final newUpdatedMessage = (_currentGeminiResponse as TextMessage)
-                .copyWith(text: accumulatedText);
-            await _chatController.update(
-              _currentGeminiResponse!,
-              newUpdatedMessage,
-            );
-            _currentGeminiResponse = newUpdatedMessage;
-
-            // Only attempt scrolling if:
-            // 1. We haven't already reached our target scroll position
-            // 2. The chat is actually scrollable (maxScrollExtent > 0)
-            // Note: This won't work when the UI first renders and isn't scrollable yet.
-            // That would require measuring content height instead of maxScrollExtent.
-            // Please suggest how to do this if possible.
-            if (!hasReachedTargetScroll && initialMaxScrollExtent > 0) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (!_scrollController.hasClients || !mounted) return;
-
-                // Calculate target scroll position:
-                // Start with the initial scroll position
-                // Add viewport height to get to top of visible area
-                // Subtract bottom safe area
-                // Subtract composer height since it is absolute positioned (104)
-                // Subtract some padding for visual buffer (20)
-                final targetScroll =
-                    (initialMaxScrollExtent ?? 0) +
-                    _scrollController.position.viewportDimension -
-                    MediaQuery.of(context).padding.bottom -
-                    104 -
-                    20;
-
-                if (_scrollController.position.maxScrollExtent > targetScroll) {
-                  _scrollController.animateTo(
-                    targetScroll,
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.linearToEaseOut,
-                  );
-                  // Once we've scrolled to target position, don't try to scroll again
-                  hasReachedTargetScroll = true;
-                } else {
-                  // If we haven't reached target position yet, scroll to bottom
-                  _scrollController.animateTo(
-                    _scrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.linearToEaseOut,
-                  );
-                }
-              });
-            }
+            await _chatController.insert(streamMessage);
+            _streamManager.startStream(streamId, streamMessage);
           }
+
+          // Ensure stream message exists before adding chunk
+          if (streamMessage == null) continue;
+
+          // Send chunk to the manager - this triggers notifyListeners
+          _streamManager.addChunk(streamId, textChunk);
+
+          // Schedule scroll check after the frame rebuilds
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!_scrollController.hasClients || !mounted) return;
+
+            // Retrieve state for this specific stream
+            var initialExtent = _initialScrollExtents[streamId];
+            final reachedTarget = _reachedTargetScroll[streamId] ?? false;
+
+            if (reachedTarget) return; // Already scrolled to target
+
+            // Store initial extent after first chunk caused rebuild
+            initialExtent ??=
+                _initialScrollExtents[streamId] =
+                    _scrollController.position.maxScrollExtent;
+
+            // Only scroll if the list is scrollable
+            if (initialExtent > 0) {
+              // Calculate target scroll position (copied from original logic)
+              final targetScroll =
+                  initialExtent + // Use the stored initial extent
+                  _scrollController.position.viewportDimension -
+                  MediaQuery.of(context).padding.bottom -
+                  168; // height of the composer + height of the app bar + visual buffer of 8
+
+              if (_scrollController.position.maxScrollExtent > targetScroll) {
+                _scrollController.animateTo(
+                  targetScroll,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.linearToEaseOut,
+                );
+                // Mark that we've reached the target for this stream
+                _reachedTargetScroll[streamId] = true;
+              } else {
+                // If we haven't reached target position yet, scroll to bottom
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.linearToEaseOut,
+                );
+              }
+            }
+          });
         }
       }
 
-      if (_currentGeminiResponse != null) {
-        await _chatController.update(
-          _currentGeminiResponse!,
-          _currentGeminiResponse!.copyWith(
-            metadata:
-                isOnlyEmoji(accumulatedText) ? {'isOnlyEmoji': true} : null,
-          ),
-        );
+      // Stream completed successfully (only if message was created)
+      if (streamMessage != null) {
+        await _streamManager.completeStream(streamId);
       }
-
-      _currentGeminiResponse = null;
     } on GenerativeAIException catch (error) {
-      debugPrint('Generation error $error');
+      debugPrint('Generation error for $streamId: $error');
+      // Stream failed (only if message was created)
+      if (streamMessage != null) {
+        await _streamManager.errorStream(streamId, error);
+      } else {
+        // Handle error that occurred before the first chunk
+        // Maybe show a temporary error message?
+      }
+    } catch (error) {
+      // Catch other potential errors during stream processing
+      debugPrint('Unhandled error for stream $streamId: $error');
+      if (streamMessage != null) {
+        await _streamManager.errorStream(streamId, error);
+      } else {
+        // Handle error that occurred before the first chunk
+      }
+    } finally {
+      // Clean up scroll state for this stream ID when done/errored
+      _initialScrollExtents.remove(streamId);
+      _reachedTargetScroll.remove(streamId);
     }
   }
 }
