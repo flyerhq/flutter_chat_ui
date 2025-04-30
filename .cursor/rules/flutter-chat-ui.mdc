@@ -35,6 +35,7 @@ The project uses a Melos-managed monorepo with:
 - `packages/flyer_chat_location_message`
 - `packages/flyer_chat_system_message`
 - `packages/flyer_chat_text_message`
+- `packages/flyer_chat_text_stream_message`
 - `packages/flyer_chat_video_message`
 
 ## Key Components
