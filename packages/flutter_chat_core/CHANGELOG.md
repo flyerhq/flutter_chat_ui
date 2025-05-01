@@ -1,3 +1,7 @@
+## 2.0.0
+
+- First stable release, keep the same version as flutter_chat_ui
+
 ## 0.0.12
 
 **⚠️ Breaking changes ⚠️**

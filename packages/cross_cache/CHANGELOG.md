@@ -1,3 +1,7 @@
+## 1.0.0
+
+- First stable release
+
 ## 0.0.12
 
 - Version bump to match other packages
