@@ -1,6 +1,6 @@
 # [Flyer Chat](https://flyer.chat) 💬
 
-**Ship faster with a go-to chat SDK for Flutter.**
+![Ship faster with a go-to chat SDK for Flutter](../../banner.png)
 
 [![Pub Version](https://img.shields.io/pub/v/flutter_chat_ui?logo=flutter&color=orange)](https://pub.dev/packages/flutter_chat_ui) [![Pub Likes](https://img.shields.io/pub/likes/flutter_chat_ui?logo=flutter&color=orange&label=pub%20likes)](https://pub.dev/packages/flutter_chat_ui) [![Stars](https://img.shields.io/github/stars/flyerhq/flutter_chat_ui?style=flat&color=orange&logo=github)](https://github.com/flyerhq/flutter_chat_ui/stargazers) [![melos](https://img.shields.io/badge/maintained%20with-melos-ffffff.svg?color=orange)](https://github.com/invertase/melos)
 
@@ -32,7 +32,7 @@ Then, import and use the `Chat` widget.
 
 For detailed usage, customization options, different message types, controllers, and more complex scenarios, please refer to the **full documentation**:
 
-➡️ **[flyer.chat/introduction](https://flyer.chat/introduction)** ⬅️
+➡️ **[flyer.chat/docs/flutter/introduction](https://flyer.chat/docs/flutter/introduction)** ⬅️
 
 Explore the comprehensive [example application](https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat) to see various features and customizations in action.
 

@@ -28,7 +28,7 @@ The classes and utilities within this package are used implicitly when you confi
 
 For detailed usage, customization options, different message types, controllers, and more complex scenarios, please refer to the **full documentation**:
 
-➡️ **[flyer.chat/introduction](https://flyer.chat/introduction)** ⬅️
+➡️ **[flyer.chat/docs/flutter/introduction](https://flyer.chat/docs/flutter/introduction)** ⬅️
 
 Explore the comprehensive [example application](https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat) to see various features and customizations in action.
 

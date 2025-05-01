@@ -23,7 +23,7 @@ Add this package to your `pubspec.yaml` alongside `flutter_chat_ui`:
 ```yaml
 dependencies:
   flutter_chat_ui: ^2.0.0
-  flyer_chat_image_message: ^ # Use the latest version
+  flyer_chat_image_message: ^2.0.0
 ```
 
 Then run `flutter pub get`.
