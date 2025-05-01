@@ -12,7 +12,7 @@ sealed class Message with _$Message {
   const factory Message.text({
     required MessageID id,
     required UserID authorId,
-    MessageID? replyToId,
+    MessageID? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,
@@ -29,7 +29,7 @@ sealed class Message with _$Message {
   const factory Message.textStream({
     required String id,
     required String authorId,
-    String? replyToId,
+    String? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,
@@ -45,7 +45,7 @@ sealed class Message with _$Message {
   const factory Message.image({
     required MessageID id,
     required UserID authorId,
-    MessageID? replyToId,
+    MessageID? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,
@@ -67,7 +67,7 @@ sealed class Message with _$Message {
   const factory Message.file({
     required MessageID id,
     required UserID authorId,
-    MessageID? replyToId,
+    MessageID? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,
@@ -86,7 +86,7 @@ sealed class Message with _$Message {
   const factory Message.system({
     required MessageID id,
     required UserID authorId,
-    MessageID? replyToId,
+    MessageID? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,
@@ -102,7 +102,7 @@ sealed class Message with _$Message {
   const factory Message.custom({
     required MessageID id,
     required UserID authorId,
-    MessageID? replyToId,
+    MessageID? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,
@@ -117,7 +117,7 @@ sealed class Message with _$Message {
   const factory Message.unsupported({
     required MessageID id,
     required UserID authorId,
-    MessageID? replyToId,
+    MessageID? replyToMessageId,
     @EpochDateTimeConverter() DateTime? createdAt,
     @EpochDateTimeConverter() DateTime? deletedAt,
     @EpochDateTimeConverter() DateTime? failedAt,

@@ -3,7 +3,7 @@
 **⚠️ Breaking Changes ⚠️**
 
 - Enhanced pagination functionality for the `ChatAnimatedList` widget. If you utilize the `paginationThreshold` parameter, please refer to the comments in the `ChatAnimatedList` widget implementation for detailed guidance.
-- Updated the `Message` model to rename `parentId` to `replyToId`
+- Updated the `Message` model to rename `parentId` to `replyToMessageId`
 - The `createdAt` field is now optional in the message model
 - The `sending` field has been removed from the message model; instead, you can set `sending: true` in the metadata of the Message model to achieve the same functionality.
 - The `isOnlyEmoji` property has been removed from the text message model; to indicate that a message contains only emojis, use `isOnlyEmoji: true` in the metadata of the text message.
