@@ -1,5 +1,9 @@
 ## 0.0.12
 
+**⚠️ Breaking Changes ⚠️**
+
+- The default sentinel values that previously allowed users to set specific properties to `null` have been removed. Instead, please use `Colors.transparent`, `BorderRadius.zero`, or `TextStyle()` to achieve the desired effect. Passing `null` will now use the standard configuration.
+
 - Do not show status for received messages
 
 ## 0.0.11

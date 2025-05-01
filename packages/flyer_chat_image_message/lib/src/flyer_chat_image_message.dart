@@ -12,10 +12,6 @@ import 'package:thumbhash/thumbhash.dart'
 import 'get_image_dimensions.dart';
 
 class FlyerChatImageMessage extends StatefulWidget {
-  static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
-  static const Color _sentinelColor = Colors.transparent;
-  static const TextStyle _sentinelTextStyle = TextStyle();
-
   final ImageMessage message;
   final int index;
   final BorderRadiusGeometry? borderRadius;
@@ -36,16 +32,16 @@ class FlyerChatImageMessage extends StatefulWidget {
     super.key,
     required this.message,
     required this.index,
-    this.borderRadius = _sentinelBorderRadius,
+    this.borderRadius,
     this.constraints = const BoxConstraints(maxHeight: 300),
     this.overlay,
-    this.placeholderColor = _sentinelColor,
-    this.loadingOverlayColor = _sentinelColor,
-    this.loadingIndicatorColor = _sentinelColor,
-    this.uploadOverlayColor = _sentinelColor,
-    this.uploadIndicatorColor = _sentinelColor,
-    this.timeStyle = _sentinelTextStyle,
-    this.timeBackground = _sentinelColor,
+    this.placeholderColor,
+    this.loadingOverlayColor,
+    this.loadingIndicatorColor,
+    this.uploadOverlayColor,
+    this.uploadIndicatorColor,
+    this.timeStyle,
+    this.timeBackground,
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
@@ -149,23 +145,15 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
               showTime: widget.showTime,
               showStatus: isSentByMe && widget.showStatus,
               backgroundColor:
-                  widget.timeBackground == FlyerChatImageMessage._sentinelColor
-                      ? Colors.black.withValues(alpha: 0.6)
-                      : widget.timeBackground,
+                  widget.timeBackground ?? Colors.black.withValues(alpha: 0.6),
               textStyle:
-                  widget.timeStyle == FlyerChatImageMessage._sentinelTextStyle
-                      ? theme.typography.labelSmall.copyWith(
-                        color: Colors.white,
-                      )
-                      : widget.timeStyle,
+                  widget.timeStyle ??
+                  theme.typography.labelSmall.copyWith(color: Colors.white),
             )
             : null;
 
     return ClipRRect(
-      borderRadius:
-          widget.borderRadius == FlyerChatImageMessage._sentinelBorderRadius
-              ? theme.shape
-              : (widget.borderRadius ?? BorderRadius.zero),
+      borderRadius: widget.borderRadius ?? theme.shape,
       child: Container(
         constraints: widget.constraints,
         child: AspectRatio(
@@ -177,10 +165,8 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
                   : Container(
                     color:
-                        widget.placeholderColor ==
-                                FlyerChatImageMessage._sentinelColor
-                            ? theme.colors.surfaceContainerLow
-                            : widget.placeholderColor,
+                        widget.placeholderColor ??
+                        theme.colors.surfaceContainerLow,
                   ),
               Image(
                 image: _cachedNetworkImage,
@@ -192,19 +178,13 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
                   return Container(
                     color:
-                        widget.loadingOverlayColor ==
-                                FlyerChatImageMessage._sentinelColor
-                            ? theme.colors.surfaceContainerLow.withValues(
-                              alpha: 0.5,
-                            )
-                            : widget.loadingOverlayColor,
+                        widget.loadingOverlayColor ??
+                        theme.colors.surfaceContainerLow.withValues(alpha: 0.5),
                     child: Center(
                       child: CircularProgressIndicator(
                         color:
-                            widget.loadingIndicatorColor ==
-                                    FlyerChatImageMessage._sentinelColor
-                                ? theme.colors.onSurface.withValues(alpha: 0.8)
-                                : widget.loadingIndicatorColor,
+                            widget.loadingIndicatorColor ??
+                            theme.colors.onSurface.withValues(alpha: 0.8),
                         strokeCap: StrokeCap.round,
                         value:
                             loadingProgress.expectedTotalBytes != null
@@ -250,21 +230,15 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
                     return Container(
                       color:
-                          widget.uploadOverlayColor ==
-                                  FlyerChatImageMessage._sentinelColor
-                              ? theme.colors.surfaceContainerLow.withValues(
-                                alpha: 0.5,
-                              )
-                              : widget.uploadOverlayColor,
+                          widget.uploadOverlayColor ??
+                          theme.colors.surfaceContainerLow.withValues(
+                            alpha: 0.5,
+                          ),
                       child: Center(
                         child: CircularProgressIndicator(
                           color:
-                              widget.uploadIndicatorColor ==
-                                      FlyerChatImageMessage._sentinelColor
-                                  ? theme.colors.onSurface.withValues(
-                                    alpha: 0.8,
-                                  )
-                                  : widget.uploadIndicatorColor,
+                              widget.uploadIndicatorColor ??
+                              theme.colors.onSurface.withValues(alpha: 0.8),
                           strokeCap: StrokeCap.round,
                           value: snapshot.data,
                         ),

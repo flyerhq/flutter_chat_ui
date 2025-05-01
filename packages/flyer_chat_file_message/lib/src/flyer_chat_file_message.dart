@@ -4,10 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class FlyerChatFileMessage extends StatelessWidget {
-  static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
-  static const Color _sentinelColor = Colors.transparent;
-  static const TextStyle _sentinelTextStyle = TextStyle();
-
   final FileMessage message;
   final int index;
   final EdgeInsetsGeometry? padding;
@@ -32,18 +28,18 @@ class FlyerChatFileMessage extends StatelessWidget {
     required this.message,
     required this.index,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    this.borderRadius = _sentinelBorderRadius,
+    this.borderRadius,
     this.icon,
     this.iconSize = 24,
     this.gap = 8,
-    this.iconColor = _sentinelColor,
-    this.sentBackgroundColor = _sentinelColor,
-    this.receivedBackgroundColor = _sentinelColor,
-    this.sentNameTextStyle = _sentinelTextStyle,
-    this.receivedNameTextStyle = _sentinelTextStyle,
-    this.sentSizeTextStyle = _sentinelTextStyle,
-    this.receivedSizeTextStyle = _sentinelTextStyle,
-    this.timeStyle = _sentinelTextStyle,
+    this.iconColor,
+    this.sentBackgroundColor,
+    this.receivedBackgroundColor,
+    this.sentNameTextStyle,
+    this.receivedNameTextStyle,
+    this.sentSizeTextStyle,
+    this.receivedSizeTextStyle,
+    this.timeStyle,
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
@@ -100,8 +96,7 @@ class FlyerChatFileMessage extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius:
-            borderRadius == _sentinelBorderRadius ? theme.shape : borderRadius,
+        borderRadius: borderRadius ?? theme.shape,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -109,11 +104,8 @@ class FlyerChatFileMessage extends StatelessWidget {
           Icon(
             icon ?? Icons.insert_drive_file_outlined,
             color:
-                iconColor == _sentinelColor
-                    ? (isSentByMe
-                        ? theme.colors.onPrimary
-                        : theme.colors.onSurface)
-                    : iconColor,
+                iconColor ??
+                (isSentByMe ? theme.colors.onPrimary : theme.colors.onSurface),
             size: iconSize,
           ),
           SizedBox(width: gap),
@@ -200,49 +192,37 @@ class FlyerChatFileMessage extends StatelessWidget {
 
   Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return sentBackgroundColor == _sentinelColor
-          ? theme.colors.primary
-          : sentBackgroundColor;
+      return sentBackgroundColor ?? theme.colors.primary;
     }
-    return receivedBackgroundColor == _sentinelColor
-        ? theme.colors.surfaceContainer
-        : receivedBackgroundColor;
+    return receivedBackgroundColor ?? theme.colors.surfaceContainer;
   }
 
   TextStyle? _resolveNameTextStyle(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return sentNameTextStyle == _sentinelTextStyle
-          ? theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary)
-          : sentNameTextStyle;
+      return sentNameTextStyle ??
+          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
     }
-    return receivedNameTextStyle == _sentinelTextStyle
-        ? theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface)
-        : receivedNameTextStyle;
+    return receivedNameTextStyle ??
+        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
   }
 
   TextStyle? _resolveSizeTextStyle(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return sentSizeTextStyle == _sentinelTextStyle
-          ? theme.typography.bodySmall.copyWith(
+      return sentSizeTextStyle ??
+          theme.typography.bodySmall.copyWith(
             color: theme.colors.onPrimary.withValues(alpha: 0.8),
-          )
-          : sentSizeTextStyle;
+          );
     }
-    return receivedSizeTextStyle == _sentinelTextStyle
-        ? theme.typography.bodySmall.copyWith(
+    return receivedSizeTextStyle ??
+        theme.typography.bodySmall.copyWith(
           color: theme.colors.onSurface.withValues(alpha: 0.8),
-        )
-        : receivedSizeTextStyle;
+        );
   }
 
   TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
     final color = isSentByMe ? theme.colors.onPrimary : theme.colors.onSurface;
 
-    if (timeStyle == _sentinelTextStyle) {
-      return theme.typography.labelSmall.copyWith(color: color);
-    }
-
-    return timeStyle;
+    return timeStyle ?? theme.typography.labelSmall.copyWith(color: color);
   }
 }
 

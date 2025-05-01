@@ -6,11 +6,16 @@ import 'package:provider/provider.dart';
 import 'stream_state.dart';
 import 'text_segment.dart';
 
-class FlyerChatTextStreamMessage extends StatefulWidget {
-  static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
-  static const Color _sentinelColor = Colors.transparent;
-  static const TextStyle _sentinelTextStyle = TextStyle();
+enum TextStreamMessageMode {
+  /// Renders text using RichText with per-chunk fade-in animations.
+  animatedOpacity,
 
+  /// Renders the entire accumulated text using GptMarkdown instantly on each update.
+  /// Ensures rendering consistency with the final TextMessage.
+  instantMarkdown,
+}
+
+class FlyerChatTextStreamMessage extends StatefulWidget {
   final TextStreamMessage message;
   final int index;
   final StreamState streamState;
@@ -25,6 +30,7 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
   final bool showStatus;
   final TimeAndStatusPosition timeAndStatusPosition;
   final Duration chunkAnimationDuration;
+  final TextStreamMessageMode mode;
 
   const FlyerChatTextStreamMessage({
     super.key,
@@ -32,16 +38,17 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
     required this.index,
     required this.streamState,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    this.borderRadius = _sentinelBorderRadius,
-    this.sentBackgroundColor = _sentinelColor,
-    this.receivedBackgroundColor = _sentinelColor,
-    this.sentTextStyle = _sentinelTextStyle,
-    this.receivedTextStyle = _sentinelTextStyle,
-    this.timeStyle = _sentinelTextStyle,
+    this.borderRadius,
+    this.sentBackgroundColor,
+    this.receivedBackgroundColor,
+    this.sentTextStyle,
+    this.receivedTextStyle,
+    this.timeStyle,
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.chunkAnimationDuration = const Duration(milliseconds: 350),
+    this.mode = TextStreamMessageMode.animatedOpacity,
   });
 
   @override
@@ -228,11 +235,7 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
       padding: widget.padding,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius:
-            widget.borderRadius ==
-                    FlyerChatTextStreamMessage._sentinelBorderRadius
-                ? theme.shape
-                : widget.borderRadius,
+        borderRadius: widget.borderRadius ?? theme.shape,
       ),
       child: _buildContentBasedOnPosition(
         context: context,
@@ -283,26 +286,32 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
           ),
         );
       }
-      return RichText(
-        text: TextSpan(
-          style: paragraphStyle,
-          children:
-              _segments.map<InlineSpan>((segment) {
-                if (segment is StaticSegment) {
-                  return TextSpan(text: segment.text);
-                } else if (segment is AnimatingSegment) {
-                  final currentOpacity = segment.fadeAnimation.value;
-                  final animatingStyle = paragraphStyle?.copyWith(
-                    color: paragraphStyle.color?.withValues(
-                      alpha: currentOpacity,
-                    ),
-                  );
-                  return TextSpan(text: segment.text, style: animatingStyle);
-                }
-                return const TextSpan();
-              }).toList(),
-        ),
-      );
+
+      if (widget.mode == TextStreamMessageMode.instantMarkdown) {
+        final combinedText = _segments.map((s) => s.text).join('');
+        return GptMarkdown(combinedText, style: paragraphStyle);
+      } else {
+        return RichText(
+          text: TextSpan(
+            style: paragraphStyle,
+            children:
+                _segments.map<InlineSpan>((segment) {
+                  if (segment is StaticSegment) {
+                    return TextSpan(text: segment.text);
+                  } else if (segment is AnimatingSegment) {
+                    final currentOpacity = segment.fadeAnimation.value;
+                    final animatingStyle = paragraphStyle?.copyWith(
+                      color: paragraphStyle.color?.withValues(
+                        alpha: currentOpacity,
+                      ),
+                    );
+                    return TextSpan(text: segment.text, style: animatingStyle);
+                  }
+                  return const TextSpan();
+                }).toList(),
+          ),
+        );
+      }
     }
 
     return const SizedBox.shrink();
@@ -358,39 +367,27 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
 
   Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return widget.sentBackgroundColor ==
-              FlyerChatTextStreamMessage._sentinelColor
-          ? theme.colors.primary
-          : widget.sentBackgroundColor;
+      return widget.sentBackgroundColor ?? theme.colors.primary;
     }
-    return widget.receivedBackgroundColor ==
-            FlyerChatTextStreamMessage._sentinelColor
-        ? theme.colors.surfaceContainer
-        : widget.receivedBackgroundColor;
+    return widget.receivedBackgroundColor ?? theme.colors.surfaceContainer;
   }
 
   TextStyle? _resolveParagraphStyle(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return widget.sentTextStyle ==
-              FlyerChatTextStreamMessage._sentinelTextStyle
-          ? theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary)
-          : widget.sentTextStyle;
+      return widget.sentTextStyle ??
+          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
     }
-    return widget.receivedTextStyle ==
-            FlyerChatTextStreamMessage._sentinelTextStyle
-        ? theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface)
-        : widget.receivedTextStyle;
+    return widget.receivedTextStyle ??
+        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
   }
 
   TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return widget.timeStyle == FlyerChatTextStreamMessage._sentinelTextStyle
-          ? theme.typography.labelSmall.copyWith(color: theme.colors.onPrimary)
-          : widget.timeStyle;
+      return widget.timeStyle ??
+          theme.typography.labelSmall.copyWith(color: theme.colors.onPrimary);
     }
-    return widget.timeStyle == FlyerChatTextStreamMessage._sentinelTextStyle
-        ? theme.typography.labelSmall.copyWith(color: theme.colors.onSurface)
-        : widget.timeStyle;
+    return widget.timeStyle ??
+        theme.typography.labelSmall.copyWith(color: theme.colors.onSurface);
   }
 }
 

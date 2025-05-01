@@ -56,7 +56,7 @@ class LocalState extends State<Local> {
     return Scaffold(
       appBar: AppBar(title: const Text('Local')),
       body: Chat(
-        backgroundColor: null,
+        backgroundColor: Colors.transparent,
         builders: Builders(
           chatAnimatedListBuilder: (context, itemBuilder) {
             return ChatAnimatedList(

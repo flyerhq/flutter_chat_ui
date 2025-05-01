@@ -7,8 +7,6 @@ import 'utils/composer_height_notifier.dart';
 import 'utils/typedefs.dart';
 
 class Composer extends StatefulWidget {
-  static const Color _sentinelColor = Colors.transparent;
-
   final TextEditingController? textEditingController;
   final double? left;
   final double? right;
@@ -62,7 +60,7 @@ class Composer extends StatefulWidget {
     this.filled = true,
     this.topWidget,
     this.handleSafeArea = true,
-    this.backgroundColor = _sentinelColor,
+    this.backgroundColor,
     this.attachmentIconColor,
     this.sendIconColor,
     this.hintColor,
@@ -146,10 +144,7 @@ class _ComposerState extends State<Composer> {
       child: ClipRect(
         child: Container(
           key: _key,
-          color:
-              widget.backgroundColor == Composer._sentinelColor
-                  ? theme.colors.surfaceContainerLow
-                  : widget.backgroundColor,
+          color: widget.backgroundColor ?? theme.colors.surfaceContainerLow,
           child: Column(
             children: [
               if (widget.topWidget != null) widget.topWidget!,

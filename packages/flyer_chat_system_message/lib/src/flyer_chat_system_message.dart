@@ -3,9 +3,6 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
 class FlyerChatSystemMessage extends StatelessWidget {
-  static const Color _sentinelColor = Colors.transparent;
-  static const TextStyle _sentinelTextStyle = TextStyle();
-
   final SystemMessage message;
   final int index;
   final EdgeInsetsGeometry? padding;
@@ -17,21 +14,18 @@ class FlyerChatSystemMessage extends StatelessWidget {
     required this.message,
     required this.index,
     this.padding = const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-    this.backgroundColor = _sentinelColor,
-    this.textStyle = _sentinelTextStyle,
+    this.backgroundColor,
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
     final resolvedBackgroundColor =
-        backgroundColor == _sentinelColor
-            ? theme.colors.surfaceContainer
-            : backgroundColor;
+        backgroundColor ?? theme.colors.surfaceContainer;
     final resolvedTextStyle =
-        textStyle == _sentinelTextStyle
-            ? theme.typography.bodySmall.copyWith(color: theme.colors.onSurface)
-            : textStyle;
+        textStyle ??
+        theme.typography.bodySmall.copyWith(color: theme.colors.onSurface);
 
     return Center(
       child: Container(

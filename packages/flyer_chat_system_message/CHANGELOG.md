@@ -1,6 +1,8 @@
 ## 0.0.12
 
-- Version bump to match other packages
+**⚠️ Breaking Changes ⚠️**
+
+- The default sentinel values that previously allowed users to set specific properties to `null` have been removed. Instead, please use `Colors.transparent`, `BorderRadius.zero`, or `TextStyle()` to achieve the desired effect. Passing `null` will now use the standard configuration.
 
 ## 0.0.11
 

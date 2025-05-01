@@ -10,8 +10,6 @@ import 'utils/load_more_notifier.dart';
 import 'utils/typedefs.dart';
 
 class Chat extends StatefulWidget {
-  static const Color _sentinelColor = Colors.transparent;
-
   final UserID currentUserId;
   final ResolveUserCallback resolveUser;
   final ChatController chatController;
@@ -38,7 +36,7 @@ class Chat extends StatefulWidget {
     this.onMessageTap,
     this.onMessageLongPress,
     this.onAttachmentTap,
-    this.backgroundColor = _sentinelColor,
+    this.backgroundColor,
     this.decoration,
     this.timeFormat,
   });
@@ -109,9 +107,9 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
       ],
       child: Container(
         color:
-            widget.backgroundColor == Chat._sentinelColor
-                ? _theme.colors.surface
-                : widget.backgroundColor,
+            widget.decoration != null
+                ? null
+                : (widget.backgroundColor ?? _theme.colors.surface),
         decoration: widget.decoration,
         child: Stack(
           children: [

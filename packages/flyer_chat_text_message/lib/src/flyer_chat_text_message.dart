@@ -4,10 +4,6 @@ import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
 
 class FlyerChatTextMessage extends StatelessWidget {
-  static const BorderRadiusGeometry _sentinelBorderRadius = BorderRadius.zero;
-  static const Color _sentinelColor = Colors.transparent;
-  static const TextStyle _sentinelTextStyle = TextStyle();
-
   final TextMessage message;
   final int index;
   final EdgeInsetsGeometry? padding;
@@ -27,13 +23,13 @@ class FlyerChatTextMessage extends StatelessWidget {
     required this.message,
     required this.index,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    this.borderRadius = _sentinelBorderRadius,
+    this.borderRadius,
     this.onlyEmojiFontSize = 48,
-    this.sentBackgroundColor = _sentinelColor,
-    this.receivedBackgroundColor = _sentinelColor,
-    this.sentTextStyle = _sentinelTextStyle,
-    this.receivedTextStyle = _sentinelTextStyle,
-    this.timeStyle = _sentinelTextStyle,
+    this.sentBackgroundColor,
+    this.receivedBackgroundColor,
+    this.sentTextStyle,
+    this.receivedTextStyle,
+    this.timeStyle,
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
@@ -81,10 +77,7 @@ class FlyerChatTextMessage extends StatelessWidget {
               ? null
               : BoxDecoration(
                 color: backgroundColor,
-                borderRadius:
-                    borderRadius == _sentinelBorderRadius
-                        ? theme.shape
-                        : borderRadius,
+                borderRadius: borderRadius ?? theme.shape,
               ),
       child: _buildContentBasedOnPosition(
         context: context,
@@ -145,38 +138,30 @@ class FlyerChatTextMessage extends StatelessWidget {
 
   Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return sentBackgroundColor == _sentinelColor
-          ? theme.colors.primary
-          : sentBackgroundColor;
+      return sentBackgroundColor ?? theme.colors.primary;
     }
-    return receivedBackgroundColor == _sentinelColor
-        ? theme.colors.surfaceContainer
-        : receivedBackgroundColor;
+    return receivedBackgroundColor ?? theme.colors.surfaceContainer;
   }
 
   TextStyle? _resolveParagraphStyle(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return sentTextStyle == _sentinelTextStyle
-          ? theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary)
-          : sentTextStyle;
+      return sentTextStyle ??
+          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
     }
-    return receivedTextStyle == _sentinelTextStyle
-        ? theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface)
-        : receivedTextStyle;
+    return receivedTextStyle ??
+        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
   }
 
   TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return timeStyle == _sentinelTextStyle
-          ? theme.typography.labelSmall.copyWith(
+      return timeStyle ??
+          theme.typography.labelSmall.copyWith(
             color:
                 _isOnlyEmoji ? theme.colors.onSurface : theme.colors.onPrimary,
-          )
-          : timeStyle;
+          );
     }
-    return timeStyle == _sentinelTextStyle
-        ? theme.typography.labelSmall.copyWith(color: theme.colors.onSurface)
-        : timeStyle;
+    return timeStyle ??
+        theme.typography.labelSmall.copyWith(color: theme.colors.onSurface);
   }
 }
 

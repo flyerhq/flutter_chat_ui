@@ -127,7 +127,7 @@ class GeminiState extends State<Gemini> {
                   index: index,
                   showTime: false,
                   showStatus: false,
-                  receivedBackgroundColor: null,
+                  receivedBackgroundColor: Colors.transparent,
                   padding:
                       message.authorId == _agent.id
                           ? EdgeInsets.zero
@@ -149,7 +149,7 @@ class GeminiState extends State<Gemini> {
                 chunkAnimationDuration: _kChunkAnimationDuration,
                 showTime: false,
                 showStatus: false,
-                receivedBackgroundColor: null,
+                receivedBackgroundColor: Colors.transparent,
                 padding:
                     message.authorId == _agent.id
                         ? EdgeInsets.zero

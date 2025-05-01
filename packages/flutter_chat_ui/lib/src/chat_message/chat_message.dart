@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import '../utils/typedefs.dart';
 
 class ChatMessage extends StatelessWidget {
-  static const EdgeInsetsGeometry _sentinelPadding = EdgeInsets.zero;
-
   final Message message;
   final int index;
   final Animation<double> animation;
@@ -55,7 +53,7 @@ class ChatMessage extends StatelessWidget {
     this.receivedMessageRowAlignment = CrossAxisAlignment.end,
     this.scaleAnimationAlignment,
     this.alignment,
-    this.padding = _sentinelPadding,
+    this.padding,
     this.paddingChangeAnimationDuration = const Duration(milliseconds: 250),
     this.isRemoved,
     this.groupStatus,
@@ -75,8 +73,7 @@ class ChatMessage extends StatelessWidget {
       curve: Curves.linearToEaseOut,
     );
 
-    final resolvedPadding =
-        padding == _sentinelPadding ? _resolveDefaultPadding(context) : padding;
+    final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
     final Widget messageWidget = Column(
       mainAxisSize: MainAxisSize.min,
@@ -126,16 +123,18 @@ class ChatMessage extends StatelessWidget {
       ],
     );
 
-    return padding != null
-        ? paddingChangeAnimationDuration != null
-            ? AnimatedPadding(
-              padding: resolvedPadding!,
-              duration: paddingChangeAnimationDuration!,
-              curve: Curves.linearToEaseOut,
-              child: messageWidget,
-            )
-            : Padding(padding: resolvedPadding!, child: messageWidget)
-        : messageWidget;
+    if (resolvedPadding != EdgeInsets.zero) {
+      return paddingChangeAnimationDuration != null
+          ? AnimatedPadding(
+            padding: resolvedPadding,
+            duration: paddingChangeAnimationDuration!,
+            curve: Curves.linearToEaseOut,
+            child: messageWidget,
+          )
+          : Padding(padding: resolvedPadding, child: messageWidget);
+    }
+
+    return messageWidget;
   }
 
   Widget _buildMessage({required bool isSentByMe}) => Column(

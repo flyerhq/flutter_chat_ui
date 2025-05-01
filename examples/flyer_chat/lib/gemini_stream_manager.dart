@@ -41,13 +41,16 @@ class GeminiStreamManager extends ChangeNotifier {
       return; // Stream might have finished
     }
 
-    final trimmedChunk = chunk.trim(); // Trim the chunk
-    if (trimmedChunk.isEmpty) {
-      return; // Don't process empty chunks after trimming
+    // Trim single trailing newline from the incoming chunk if present.
+    var processedChunk = chunk;
+    if (processedChunk.endsWith('\n') && !processedChunk.endsWith('\n\n')) {
+      processedChunk = processedChunk.substring(0, processedChunk.length - 1);
     }
 
+    // Use the potentially processed chunk
     _accumulatedTexts[streamId] =
-        (_accumulatedTexts[streamId] ?? '') + trimmedChunk;
+        (_accumulatedTexts[streamId] ?? '') + processedChunk;
+
     _streamStates[streamId] = StreamStateStreaming(
       _accumulatedTexts[streamId]!,
     );

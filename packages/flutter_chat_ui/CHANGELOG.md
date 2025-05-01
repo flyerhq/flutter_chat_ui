@@ -8,6 +8,7 @@
 - The `sending` field has been removed from the message model; instead, you can set `sending: true` in the metadata of the Message model to achieve the same functionality.
 - The `isOnlyEmoji` property has been removed from the text message model; to indicate that a message contains only emojis, use `isOnlyEmoji: true` in the metadata of the text message.
 - The `firstName` and `lastName` fields in the `User` model have been consolidated into a single `name` field for improved simplicity.
+- The default sentinel values that previously allowed users to set specific properties to `null` have been removed. Instead, please use `Colors.transparent`, `BorderRadius.zero`, or `TextStyle()` to achieve the desired effect. Passing `null` will now use the standard configuration.
 
 **⚠️ New Features ⚠️**
 
