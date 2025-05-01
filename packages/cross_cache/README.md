@@ -23,7 +23,7 @@ Add this package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cross_cache: ^ # Use the latest version
+  cross_cache: ^1.0.0
 ```
 
 Then run `flutter pub get`.
