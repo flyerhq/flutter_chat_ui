@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flyer Chat - Core Data Models
+
+Core data structures are defined in `flutter_chat_core`.
+
+## Message Model
+
+- Base model for all message types.
+- Defined in [message.dart](mdc:packages/flutter_chat_core/lib/src/models/message.dart).
+- Contains common fields like `id`, `authorId`, `createdAt`, `roomId`, `type`, `metadata`.
+- Includes nullable `DateTime?` fields for status tracking (`sentAt`, `deliveredAt`, `seenAt`, `failedAt`, etc.).
+- Specific message types (Text, Image, File, Custom, System, etc.) extend or implement this base structure, often adding type-specific fields (e.g., `text` for `TextMessage`, `source` for `ImageMessage`).
+
+## User Model
+
+- Represents a user in the chat.
+- Defined in [user.dart](mdc:packages/flutter_chat_core/lib/src/models/user.dart).
+- Contains fields like `id`, `name`, `imageSource`, `role`, `metadata`.
+
+## Other Models
+
+- `ChatTheme`: Configuration for UI styling ([chat_theme.dart](mdc:packages/flutter_chat_core/lib/src/theme/chat_theme.dart)).
+- `Builders`: Configuration for custom UI components ([builders.dart](mdc:packages/flutter_chat_core/lib/src/models/builders.dart)).

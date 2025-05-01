@@ -1,0 +1,23 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flyer Chat - Chat Controller
+
+The `ChatController` is the central component for managing message state within the chat UI.
+
+## Core Responsibilities
+
+- Provides methods to add, update, and remove messages.
+- Allows both user interactions (e.g., sending a message) and internal updates (e.g., an image message updating its dimensions) to modify the message list.
+
+## Implementations
+
+- **Interface**: Defined in [chat_controller.dart](mdc:packages/flutter_chat_core/lib/src/chat_controller/chat_controller.dart).
+- **Default**: `InMemoryChatController` ([in_memory_chat_controller.dart](mdc:packages/flutter_chat_core/lib/src/chat_controller/in_memory_chat_controller.dart)) is provided for easy setup, but it does not persist messages across app restarts.
+- **Custom Persistence**: Users are expected to create custom implementations for persistent storage (saving messages). Examples using Sembast ([sembast_chat_controller.dart](mdc:examples/flyer_chat/lib/sembast_chat_controller.dart)) and Hive ([hive_chat_controller.dart](mdc:examples/flyer_chat/lib/hive_chat_controller.dart)) can be found in the `/examples` directory.
+
+## Usage
+
+The `Chat` widget requires a `ChatController` instance to function.

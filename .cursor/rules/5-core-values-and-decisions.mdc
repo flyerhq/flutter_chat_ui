@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flyer Chat - Core Values & Architectural Decisions
+
+## Core Values
+
+- **Performance** - Always optimize for performance.
+- **Animations** - Smooth, polished animations are essential.
+- **Resource Management** - Properly clean up resources (e.g., controllers, streams).
+- **Customization** - Provide flexible customization options (Theme, Builders).
+- **Modularity** - Extract specific message types to separate packages.
+- **Platform Support** - Support all Flutter platforms (avoid `dart:io` in core).
+
+## Key Architectural Decisions
+
+- Minimal dependencies in core packages (`flutter_chat_core`, `flutter_chat_ui`).
+- Extraction of message type implementations to optional packages.
+- Builder pattern ([builders.dart](mdc:packages/flutter_chat_core/lib/src/models/builders.dart)) for complete customization.
+- Using `provider` for state management and dependency injection. Shared logic is registered via `MultiProvider` in the main `Chat` widget ([chat.dart](mdc:packages/flutter_chat_ui/lib/src/chat.dart)).
+- Support for both regular and reversed chat list layouts.
+- Controller-based state management (`ChatController` interface).

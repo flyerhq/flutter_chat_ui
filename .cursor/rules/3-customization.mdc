@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flyer Chat - Customization
+
+Flyer Chat offers extensive customization through two primary mechanisms:
+
+## 1. Theming (`ChatTheme`)
+
+- Controls the overall look and feel (colors, typography, shapes).
+- Defined in `flutter_chat_core`:
+    - [chat_theme.dart](mdc:packages/flutter_chat_core/lib/src/theme/chat_theme.dart)
+    - [chat_theme_extension.dart](mdc:packages/flutter_chat_core/lib/src/theme/chat_theme_extension.dart)
+- Uses Material Design principles.
+- Passed to the main `Chat` widget ([chat.dart](mdc:packages/flutter_chat_ui/lib/src/chat.dart)).
+- Widgets should use theme values by default but allow overrides via parameters.
+    - Good example: [simple_text_message.dart](mdc:packages/flutter_chat_ui/lib/src/simple_text_message.dart)
+
+## 2. Builders (`Builders`)
+
+- Allows replacing *any* UI component with a custom implementation.
+- The `Builders` model is defined in [builders.dart](mdc:packages/flutter_chat_core/lib/src/models/builders.dart).
+- Passed as a parameter to the `Chat` widget ([chat.dart](mdc:packages/flutter_chat_ui/lib/src/chat.dart)).
+- Enables swapping out the composer, message bubbles, specific message types (text, image, etc.), date headers, status indicators, and more.
+- Provides maximum flexibility for UI modifications.

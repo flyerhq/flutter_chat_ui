@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flyer Chat - Project Architecture Overview
+
+The project uses a Melos-managed monorepo structure:
+
+- `/examples` - Contains demo applications showcasing various features.
+- `/packages` - Houses the core and supplementary packages.
+
+## Core Packages
+
+- `packages/flutter_chat_core` ([flutter_chat_core/lib](mdc:packages/flutter_chat_core/lib)) - Provides the foundational models, controllers, and theming utilities. It has minimal dependencies.
+- `packages/flutter_chat_ui` ([flutter_chat_ui/lib](mdc:packages/flutter_chat_ui/lib)) - The main UI package containing the primary chat widgets. Also designed with minimal dependencies.
+- `packages/cross_cache` ([cross_cache/lib](mdc:packages/cross_cache/lib)) - Handles image caching across different platforms (IO and web).
+
+## Message Type Packages
+
+Additional message types are implemented in separate packages, typically prefixed with `flyer_chat_`. These are optional and allow users to include only the message types they need.
+
+- Example: `packages/flyer_chat_text_message` ([flyer_chat_text_message/lib](mdc:packages/flyer_chat_text_message/lib))
+- Example: `packages/flyer_chat_image_message` ([flyer_chat_image_message/lib](mdc:packages/flyer_chat_image_message/lib))
+
+Refer to the `packages` directory for a full list.
+
+## Key Goal
+
+Support all Flutter platforms (iOS, Android, Web, macOS, Windows, Linux). Avoid platform-specific imports (like `dart:io`) in core packages.
