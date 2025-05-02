@@ -15,10 +15,16 @@ class ScrollToBottom extends StatelessWidget {
   /// Callback triggered when the button is pressed.
   final VoidCallback onPressed;
 
-  /// Optional positioning properties.
+  /// Optional left position.
   final double? left;
+
+  /// Optional right position.
   final double? right;
+
+  /// Optional top position.
   final double? top;
+
+  /// Optional bottom position.
   final double? bottom;
 
   /// Whether to offset the button's bottom position by the composer's height.

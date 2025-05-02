@@ -13,14 +13,22 @@ class Composer extends StatefulWidget {
   /// Optional controller for the text input field.
   final TextEditingController? textEditingController;
 
-  /// Optional positioning properties.
+  /// Optional left position.
   final double? left;
+
+  /// Optional right position.
   final double? right;
+
+  /// Optional top position.
   final double? top;
+
+  /// Optional bottom position.
   final double? bottom;
 
-  /// Optional blur values for the background (if using glassmorphism).
+  /// Optional X blur value for the background (if using glassmorphism).
   final double? sigmaX;
+
+  /// Optional Y blur value for the background (if using glassmorphism).
   final double? sigmaY;
 
   /// Padding around the composer content.

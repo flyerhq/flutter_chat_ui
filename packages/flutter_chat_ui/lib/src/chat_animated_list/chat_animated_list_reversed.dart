@@ -111,12 +111,13 @@ class ChatAnimatedListReversed extends StatefulWidget {
   });
 
   @override
-  ChatAnimatedListReversedState createState() =>
-      ChatAnimatedListReversedState();
+  // ignore: library_private_types_in_public_api
+  _ChatAnimatedListReversedState createState() =>
+      _ChatAnimatedListReversedState();
 }
 
 /// State for [ChatAnimatedListReversed].
-class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
+class _ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
     with SingleTickerProviderStateMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;

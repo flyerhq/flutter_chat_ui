@@ -85,11 +85,12 @@ class FlyerChatImageMessage extends StatefulWidget {
   });
 
   @override
-  FlyerChatImageMessageState createState() => FlyerChatImageMessageState();
+  // ignore: library_private_types_in_public_api
+  _FlyerChatImageMessageState createState() => _FlyerChatImageMessageState();
 }
 
 /// State for [FlyerChatImageMessage].
-class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
+class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     with TickerProviderStateMixin {
   late final ChatController _chatController;
   late CachedNetworkImage _cachedNetworkImage;

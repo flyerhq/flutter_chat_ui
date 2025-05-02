@@ -40,11 +40,11 @@ class ChatMessageInternal extends StatefulWidget {
   });
 
   @override
-  State<ChatMessageInternal> createState() => ChatMessageInternalState();
+  State<ChatMessageInternal> createState() => _ChatMessageInternalState();
 }
 
 /// State for [ChatMessageInternal].
-class ChatMessageInternalState extends State<ChatMessageInternal> {
+class _ChatMessageInternalState extends State<ChatMessageInternal> {
   late StreamSubscription<ChatOperation>? _operationsSubscription;
   late Message _updatedMessage;
 

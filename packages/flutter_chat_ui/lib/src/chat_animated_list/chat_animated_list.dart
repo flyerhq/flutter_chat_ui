@@ -144,11 +144,12 @@ class ChatAnimatedList extends StatefulWidget {
   });
 
   @override
-  ChatAnimatedListState createState() => ChatAnimatedListState();
+  // ignore: library_private_types_in_public_api
+  _ChatAnimatedListState createState() => _ChatAnimatedListState();
 }
 
 /// State for [ChatAnimatedList].
-class ChatAnimatedListState extends State<ChatAnimatedList>
+class _ChatAnimatedListState extends State<ChatAnimatedList>
     with TickerProviderStateMixin, WidgetsBindingObserver, KeyboardMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;

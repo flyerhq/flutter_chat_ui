@@ -1,3 +1,6 @@
+/// Flutter Chat Core package. Provides the core functionality for the flutter_chat_ui package.
+library;
+
 export 'src/chat_controller/chat_controller.dart';
 export 'src/chat_controller/chat_operation.dart';
 export 'src/chat_controller/in_memory_chat_controller.dart';
