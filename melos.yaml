@@ -35,3 +35,7 @@ scripts:
   fix:
     run: dart fix --apply .
     description: run `dart fix --apply .` in all packages
+
+command:
+  version:
+    workspaceChangelog: false
