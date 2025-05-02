@@ -1,3 +1,7 @@
+## 2.0.1
+
+ - **FIX**: document public APIs.
+
 ## 2.0.0
 
 - Version 2.0.0 is a major update where we completely rebuilt the library. This version focuses on better performance, more customization options, and improved stability. We have added many new features and improvements to make your experience better. For more details, check out our blog post: https://flyer.chat/blog/v2-announcement/ 🚀

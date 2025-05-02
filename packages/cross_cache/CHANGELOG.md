@@ -1,3 +1,7 @@
+## 1.0.1
+
+ - **FIX**: document public APIs.
+
 ## 1.0.0
 
 - First stable release
