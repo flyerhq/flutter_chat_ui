@@ -1,8 +1,8 @@
 name: flutter_chat_ui
 version: 2.0.0
 description: >
-  Community-driven, animated chat UI for Flutter with top-tier performance and
-  customization for chat apps and generative AI agents. #firebase #gemini #chatgpt
+  Free and open-source chat SDK. Build fast, real-time apps and generative
+  AI agents with a high-performance, customizable, cross-platform UI.
 homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
