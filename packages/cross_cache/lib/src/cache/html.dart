@@ -4,10 +4,12 @@ import 'package:idb_shim/idb_browser.dart';
 
 import 'base_cache.dart';
 
+/// Web (HTML) implementation of [BaseCache] using IndexedDB.
 class Cache extends BaseCache {
   Database? _db;
   Completer<void>? _dbOpenCompleter;
 
+  /// Initializes the IndexedDB database connection.
   Cache() {
     _open();
   }

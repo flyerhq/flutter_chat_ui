@@ -1,18 +1,32 @@
 import '../models/message.dart';
 
+/// Enum representing the type of operation performed on the chat message list.
 enum ChatOperationType { insert, update, remove, set }
 
+/// Represents a single operation performed on the message list managed by a [ChatController].
+///
+/// Instances of this class are emitted by the [ChatController.operationsStream]
+/// to notify listeners about changes.
 class ChatOperation {
+  /// The type of operation performed.
   final ChatOperationType type;
+
+  /// The message before an update operation. Null for other types.
   final Message? oldMessage;
+
+  /// The affected message (inserted, updated, removed). Null for `set`.
   final Message? message;
+
+  /// The index where the message was inserted or removed. Null for `update` and `set`.
   final int? index;
 
   ChatOperation._(this.type, {this.oldMessage, this.message, this.index});
 
+  /// Creates an insert operation.
   factory ChatOperation.insert(Message message, int index) =>
       ChatOperation._(ChatOperationType.insert, message: message, index: index);
 
+  /// Creates an update operation.
   factory ChatOperation.update(Message oldMessage, Message message) =>
       ChatOperation._(
         ChatOperationType.update,
@@ -20,8 +34,10 @@ class ChatOperation {
         message: message,
       );
 
+  /// Creates a remove operation.
   factory ChatOperation.remove(Message message, int index) =>
       ChatOperation._(ChatOperationType.remove, message: message, index: index);
 
+  /// Creates a set operation (signifying a full list replacement).
   factory ChatOperation.set() => ChatOperation._(ChatOperationType.set);
 }

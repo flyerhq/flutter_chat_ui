@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/typedefs.dart' show MessageStatus;
 
+/// Returns the appropriate [IconData] for a given [MessageStatus].
 IconData getIconForStatus(MessageStatus status) {
   switch (status) {
     case MessageStatus.delivered:

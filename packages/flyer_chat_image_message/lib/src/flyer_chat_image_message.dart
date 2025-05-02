@@ -11,23 +11,60 @@ import 'package:thumbhash/thumbhash.dart'
 
 import 'get_image_dimensions.dart';
 
+/// A widget that displays an image message.
+///
+/// Uses [CachedNetworkImage] for efficient loading and caching.
+/// Supports BlurHash and ThumbHash placeholders.
+/// Optionally displays upload progress if the [ChatController]
+/// implements [UploadProgressMixin].
 class FlyerChatImageMessage extends StatefulWidget {
+  /// The image message data model.
   final ImageMessage message;
+
+  /// The index of the message in the list.
   final int index;
+
+  /// Border radius of the image container.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Constraints for the image size.
   final BoxConstraints? constraints;
+
+  /// An optional overlay widget to display on top of the image (e.g., NSFW content).
+  /// Requires `message.hasOverlay` to be true.
   final Widget? overlay;
+
+  /// Background color used while the placeholder is visible.
   final Color? placeholderColor;
+
+  /// Color of the overlay shown during image loading.
   final Color? loadingOverlayColor;
+
+  /// Color of the circular progress indicator shown during image loading.
   final Color? loadingIndicatorColor;
+
+  /// Color of the overlay shown during image upload.
   final Color? uploadOverlayColor;
+
+  /// Color of the circular progress indicator shown during image upload.
   final Color? uploadIndicatorColor;
+
+  /// Text style for the message timestamp and status.
   final TextStyle? timeStyle;
+
+  /// Background color for the timestamp and status display.
   final Color? timeBackground;
+
+  /// Whether to display the message timestamp.
   final bool showTime;
+
+  /// Whether to display the message status (sent, delivered, seen) for sent messages.
   final bool showStatus;
+
+  /// Position of the timestamp and status indicator relative to the image.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
     required this.message,
@@ -51,6 +88,7 @@ class FlyerChatImageMessage extends StatefulWidget {
   FlyerChatImageMessageState createState() => FlyerChatImageMessageState();
 }
 
+/// State for [FlyerChatImageMessage].
 class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     with TickerProviderStateMixin {
   late final ChatController _chatController;
@@ -272,14 +310,27 @@ class FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   }
 }
 
+/// A widget to display the message timestamp and status indicator over an image.
 class TimeAndStatus extends StatelessWidget {
+  /// The time the message was created.
   final DateTime? time;
+
+  /// The status of the message.
   final MessageStatus? status;
+
+  /// Whether to display the timestamp.
   final bool showTime;
+
+  /// Whether to display the status indicator.
   final bool showStatus;
+
+  /// Background color for the time and status container.
   final Color? backgroundColor;
+
+  /// Text style for the time and status.
   final TextStyle? textStyle;
 
+  /// Creates a widget for displaying time and status over an image.
   const TimeAndStatus({
     super.key,
     required this.time,

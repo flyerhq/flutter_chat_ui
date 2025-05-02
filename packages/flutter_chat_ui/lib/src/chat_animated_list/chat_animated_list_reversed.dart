@@ -15,30 +15,73 @@ import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
 import '../utils/typedefs.dart';
 
+/// An animated list widget specifically designed for displaying chat messages,
+/// growing from bottom to top (reversed).
+///
+/// Handles message insertion/removal animations, pagination (loading older messages),
+/// automatic scrolling, keyboard handling, and scroll-to-bottom functionality.
+/// It listens to a [ChatController] for message updates.
 class ChatAnimatedListReversed extends StatefulWidget {
+  /// Builder function for creating individual chat message widgets.
   final ChatItem itemBuilder;
+
+  /// Optional scroll controller for the underlying [CustomScrollView].
   final ScrollController? scrollController;
+
+  /// Default duration for message insertion animations.
   final Duration insertAnimationDuration;
+
+  /// Default duration for message removal animations.
   final Duration removeAnimationDuration;
+
+  /// Optional function to resolve custom insertion animation duration per message.
   final MessageAnimationDurationResolver? insertAnimationDurationResolver;
+
+  /// Optional function to resolve custom removal animation duration per message.
   final MessageAnimationDurationResolver? removeAnimationDurationResolver;
+
+  /// Duration for scrolling to the end/bottom of the list.
   final Duration scrollToEndAnimationDuration;
+
+  /// Delay before the scroll-to-bottom button appears after scrolling up.
   final Duration scrollToBottomAppearanceDelay;
+
+  /// Padding added above the first item (visually the bottom-most).
   final double? topPadding;
+
+  /// Padding added below the last item (visually the top-most, before the composer).
   final double? bottomPadding;
+
+  /// Optional sliver widget to place at the very top (visually bottom) of the scroll view.
   final Widget? topSliver;
+
+  /// Optional sliver widget to place at the very bottom (visually top) of the scroll view.
   final Widget? bottomSliver;
+
+  /// Whether to handle bottom safe area padding automatically.
   final bool? handleSafeArea;
+
+  /// How the scroll view should dismiss the keyboard.
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+
+  // Note: Initial scroll is implicitly handled by `reverse: true`.
+
+  /// Whether to automatically scroll to the end (bottom) when a new message is sent (inserted).
   final bool? shouldScrollToEndWhenSendingMessage;
+
+  // Note: `shouldScrollToEndWhenAtBottom` is not applicable as new items appear at the bottom.
+
+  /// Callback triggered when the user scrolls near the top (visually bottom), requesting older messages.
   final PaginationCallback? onEndReached;
 
-  /// Threshold for triggering pagination, represented as a value between 0 and 1.
-  /// 0 represents the top of the list, while 1 represents the bottom.
-  /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
+  /// Threshold (0.0 to 1.0) from the top (visually bottom) to trigger [onEndReached].
+  /// Defaults to 0.2. See note below.
   final double? paginationThreshold;
+
+  /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
+  /// Creates a reversed animated chat list.
   const ChatAnimatedListReversed({
     super.key,
     required this.itemBuilder,
@@ -57,6 +100,12 @@ class ChatAnimatedListReversed extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     this.shouldScrollToEndWhenSendingMessage = true,
     this.onEndReached,
+    // Threshold for triggering pagination, represented as a value between 0 (top)
+    // and 1 (bottom). In reversed list, 0 is visually the bottom, 1 is visually the top.
+    //
+    // Unlike the non-reversed list, scroll anchoring isn't typically needed here
+    // because new items are added at the bottom (index 0). The default of 0.2
+    // triggers pagination when 20% from the visual top is reached.
     this.paginationThreshold = 0.2,
     this.messageGroupingTimeoutInSeconds,
   });
@@ -66,6 +115,7 @@ class ChatAnimatedListReversed extends StatefulWidget {
       ChatAnimatedListReversedState();
 }
 
+/// State for [ChatAnimatedListReversed].
 class ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
     with SingleTickerProviderStateMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();

@@ -2,7 +2,11 @@ import 'dart:ui';
 
 import 'chat_theme.dart';
 
+/// Extension methods for [ChatTheme] to simplify modifications.
 extension ChatThemeExtensions on ChatTheme {
+  /// Creates a copy of the theme with updated light colors.
+  ///
+  /// Uses [ChatColors.light] as the base and overrides specified colors.
   ChatTheme withLightColors({
     Color? primary,
     Color? onPrimary,
@@ -27,6 +31,9 @@ extension ChatThemeExtensions on ChatTheme {
     );
   }
 
+  /// Creates a copy of the theme with updated dark colors.
+  ///
+  /// Uses [ChatColors.dark] as the base and overrides specified colors.
   ChatTheme withDarkColors({
     Color? primary,
     Color? onPrimary,

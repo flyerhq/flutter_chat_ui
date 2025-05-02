@@ -16,7 +16,12 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- UserID get id; String? get name; String? get imageSource;@EpochDateTimeConverter() DateTime? get createdAt; Map<String, dynamic>? get metadata;
+/// Unique identifier for the user.
+ UserID get id;/// The user's display name.
+ String? get name;/// URL or source string for the user's avatar image.
+ String? get imageSource;/// Timestamp when the user was created.
+@EpochDateTimeConverter() DateTime? get createdAt;/// Additional custom metadata associated with the user.
+ Map<String, dynamic>? get metadata;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -87,11 +92,17 @@ class _User extends User {
   const _User({required this.id, this.name, this.imageSource, @EpochDateTimeConverter() this.createdAt, final  Map<String, dynamic>? metadata}): _metadata = metadata,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
+/// Unique identifier for the user.
 @override final  UserID id;
+/// The user's display name.
 @override final  String? name;
+/// URL or source string for the user's avatar image.
 @override final  String? imageSource;
+/// Timestamp when the user was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Additional custom metadata associated with the user.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the user.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;

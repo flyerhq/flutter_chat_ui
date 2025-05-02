@@ -10,7 +10,7 @@ class UserCache {
   final Map<UserID, User?> _cache = {};
   final List<UserID> _accessOrder = []; // For LRU eviction
 
-  /// Maximum number of users to keep in the cache
+  /// Maximum number of users to keep in the cache.
   final int maxSize;
 
   /// Creates a user cache with the specified maximum size.

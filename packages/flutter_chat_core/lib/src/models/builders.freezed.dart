@@ -15,7 +15,19 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Builders {
 
- TextMessageBuilder? get textMessageBuilder; TextStreamMessageBuilder? get textStreamMessageBuilder; ImageMessageBuilder? get imageMessageBuilder; FileMessageBuilder? get fileMessageBuilder; SystemMessageBuilder? get systemMessageBuilder; CustomMessageBuilder? get customMessageBuilder; UnsupportedMessageBuilder? get unsupportedMessageBuilder; ComposerBuilder? get composerBuilder; ChatMessageBuilder? get chatMessageBuilder; ChatAnimatedListBuilder? get chatAnimatedListBuilder; ScrollToBottomBuilder? get scrollToBottomBuilder; LoadMoreBuilder? get loadMoreBuilder;
+/// Custom builder for text messages.
+ TextMessageBuilder? get textMessageBuilder;/// Custom builder for streaming text messages.
+ TextStreamMessageBuilder? get textStreamMessageBuilder;/// Custom builder for image messages.
+ ImageMessageBuilder? get imageMessageBuilder;/// Custom builder for file messages.
+ FileMessageBuilder? get fileMessageBuilder;/// Custom builder for system messages.
+ SystemMessageBuilder? get systemMessageBuilder;/// Custom builder for custom message types.
+ CustomMessageBuilder? get customMessageBuilder;/// Custom builder for unsupported message types.
+ UnsupportedMessageBuilder? get unsupportedMessageBuilder;/// Custom builder for the message composer.
+ ComposerBuilder? get composerBuilder;/// Custom builder for the wrapper around each chat message.
+ ChatMessageBuilder? get chatMessageBuilder;/// Custom builder for the main chat list.
+ ChatAnimatedListBuilder? get chatAnimatedListBuilder;/// Custom builder for the "scroll to bottom" button.
+ ScrollToBottomBuilder? get scrollToBottomBuilder;/// Custom builder for the load more indicator.
+ LoadMoreBuilder? get loadMoreBuilder;
 /// Create a copy of Builders
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -91,17 +103,29 @@ class _Builders extends Builders {
   const _Builders({this.textMessageBuilder, this.textStreamMessageBuilder, this.imageMessageBuilder, this.fileMessageBuilder, this.systemMessageBuilder, this.customMessageBuilder, this.unsupportedMessageBuilder, this.composerBuilder, this.chatMessageBuilder, this.chatAnimatedListBuilder, this.scrollToBottomBuilder, this.loadMoreBuilder}): super._();
   
 
+/// Custom builder for text messages.
 @override final  TextMessageBuilder? textMessageBuilder;
+/// Custom builder for streaming text messages.
 @override final  TextStreamMessageBuilder? textStreamMessageBuilder;
+/// Custom builder for image messages.
 @override final  ImageMessageBuilder? imageMessageBuilder;
+/// Custom builder for file messages.
 @override final  FileMessageBuilder? fileMessageBuilder;
+/// Custom builder for system messages.
 @override final  SystemMessageBuilder? systemMessageBuilder;
+/// Custom builder for custom message types.
 @override final  CustomMessageBuilder? customMessageBuilder;
+/// Custom builder for unsupported message types.
 @override final  UnsupportedMessageBuilder? unsupportedMessageBuilder;
+/// Custom builder for the message composer.
 @override final  ComposerBuilder? composerBuilder;
+/// Custom builder for the wrapper around each chat message.
 @override final  ChatMessageBuilder? chatMessageBuilder;
+/// Custom builder for the main chat list.
 @override final  ChatAnimatedListBuilder? chatAnimatedListBuilder;
+/// Custom builder for the "scroll to bottom" button.
 @override final  ScrollToBottomBuilder? scrollToBottomBuilder;
+/// Custom builder for the load more indicator.
 @override final  LoadMoreBuilder? loadMoreBuilder;
 
 /// Create a copy of Builders

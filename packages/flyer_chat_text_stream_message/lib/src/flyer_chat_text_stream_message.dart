@@ -6,32 +6,77 @@ import 'package:provider/provider.dart';
 import 'stream_state.dart';
 import 'text_segment.dart';
 
+/// Defines how the text stream message content is rendered.
 enum TextStreamMessageMode {
-  /// Renders text using RichText with per-chunk fade-in animations.
+  /// Renders text using [RichText] with per-chunk fade-in animations.
+  ///
+  /// This provides a dynamic visual effect as text arrives.
   animatedOpacity,
 
-  /// Renders the entire accumulated text using GptMarkdown instantly on each update.
-  /// Ensures rendering consistency with the final TextMessage.
+  /// Renders the entire accumulated text using [GptMarkdown] instantly on each update.
+  ///
+  /// This ensures rendering consistency with the final `TextMessage` (if it also
+  /// uses Markdown), but lacks the chunk-by-chunk animation.
   instantMarkdown,
 }
 
+/// A widget that displays a text message which is being streamed incrementally.
+///
+/// This widget expects a [TextStreamMessage] and the current [StreamState]
+/// (managed externally) to render the incoming text dynamically.
+///
+/// It supports two rendering modes via [TextStreamMessageMode]:
+/// - `animatedOpacity`: Fades in each new chunk of text.
+/// - `instantMarkdown`: Renders the full accumulated text with Markdown on each update.
 class FlyerChatTextStreamMessage extends StatefulWidget {
+  /// The underlying `TextStreamMessage` data model.
   final TextStreamMessage message;
+
+  /// The index of the message in the list.
   final int index;
+
+  /// The current state of the stream, determining what to display (loading,
+  /// streaming text, completed text, error).
   final StreamState streamState;
+
+  /// Padding around the message bubble content.
   final EdgeInsetsGeometry? padding;
+
+  /// Border radius of the message bubble.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Background color for messages sent by the current user.
   final Color? sentBackgroundColor;
+
+  /// Background color for messages received from other users.
   final Color? receivedBackgroundColor;
+
+  /// Text style for messages sent by the current user.
   final TextStyle? sentTextStyle;
+
+  /// Text style for messages received from other users.
   final TextStyle? receivedTextStyle;
+
+  /// Text style for the message timestamp.
   final TextStyle? timeStyle;
+
+  /// Whether to display the message timestamp.
   final bool showTime;
+
+  /// Whether to display the message status (sent, delivered, seen) for sent messages.
   final bool showStatus;
+
+  /// Position of the timestamp and status indicator relative to the text.
   final TimeAndStatusPosition timeAndStatusPosition;
+
+  /// Duration for the fade-in animation of each text chunk when
+  /// `mode` is [TextStreamMessageMode.animatedOpacity].
   final Duration chunkAnimationDuration;
+
+  /// The rendering mode for the text content.
   final TextStreamMessageMode mode;
 
+  /// Creates a widget to display a streaming text message.
   const FlyerChatTextStreamMessage({
     super.key,
     required this.message,
@@ -391,17 +436,30 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
   }
 }
 
+/// Internal extension for calculating the visual line height of a TextStyle.
 extension on TextStyle {
+  /// Calculates the line height based on the style's `height` and `fontSize`.
   double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }
 
+/// A widget to display the message timestamp and status indicator.
 class TimeAndStatus extends StatelessWidget {
+  /// The time the message was created.
   final DateTime? time;
+
+  /// The status of the message.
   final MessageStatus? status;
+
+  /// Whether to display the timestamp.
   final bool showTime;
+
+  /// Whether to display the status indicator.
   final bool showStatus;
+
+  /// The text style for the time and status.
   final TextStyle? textStyle;
 
+  /// Creates a widget for displaying time and status.
   const TimeAndStatus({
     super.key,
     required this.time,

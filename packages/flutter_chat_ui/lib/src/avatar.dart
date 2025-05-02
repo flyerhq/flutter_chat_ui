@@ -3,13 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
+/// A widget that displays a user's avatar.
+///
+/// Fetches user data using the provided [userId] and [ResolveUserCallback].
+/// Uses [UserCache] for efficient user data retrieval.
+/// Displays the user's image if available, otherwise shows initials or a default icon.
 class Avatar extends StatelessWidget {
+  /// The ID of the user whose avatar is to be displayed.
   final UserID userId;
+
+  /// The size (diameter) of the avatar circle.
   final double? size;
+
+  /// Background color for the avatar circle if no image is available.
   final Color? backgroundColor;
+
+  /// Foreground color for the initials text or default icon.
   final Color? foregroundColor;
+
+  /// Optional callback triggered when the avatar is tapped.
   final VoidCallback? onTap;
 
+  /// Creates an avatar widget.
   const Avatar({
     super.key,
     required this.userId,
@@ -70,12 +85,22 @@ class Avatar extends StatelessWidget {
   }
 }
 
+/// Internal widget responsible for rendering the actual avatar content
+/// (image, initials, or icon) based on the resolved [User] data.
 class AvatarContent extends StatefulWidget {
+  /// The resolved user data (can be null if resolution fails or is pending).
   final User? user;
+
+  /// The size (diameter) of the avatar.
   final double? size;
+
+  /// The foreground color for initials or the default icon.
   final Color foregroundColor;
+
+  /// The text style for the initials.
   final TextStyle? textStyle;
 
+  /// Creates an [AvatarContent] widget.
   const AvatarContent({
     super.key,
     required this.user,

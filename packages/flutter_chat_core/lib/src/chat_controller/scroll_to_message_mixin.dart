@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import '../utils/typedefs.dart' show MessageID;
 
+/// Signature for a function that scrolls the chat list to a specific message ID.
 typedef ScrollToMessageId =
     Future<void> Function(
       MessageID messageId, {
@@ -10,6 +11,7 @@ typedef ScrollToMessageId =
       double offset,
     });
 
+/// Signature for a function that scrolls the chat list to a specific index.
 typedef ScrollToIndex =
     Future<void> Function(
       int index, {
@@ -19,6 +21,11 @@ typedef ScrollToIndex =
       double offset,
     });
 
+/// A mixin for [ChatController] implementations that adds programmatic
+/// scrolling capabilities.
+///
+/// The actual scrolling logic is provided by the UI layer (e.g., `ChatAnimatedList`)
+/// via the [attachScrollMethods] function.
 mixin ScrollToMessageMixin {
   ScrollToMessageId? _scrollToMessageId;
   ScrollToIndex? _scrollToIndex;

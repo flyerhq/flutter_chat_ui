@@ -15,7 +15,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChatTheme {
 
- ChatColors get colors; ChatTypography get typography; BorderRadiusGeometry get shape;
+/// The color scheme used throughout the chat UI.
+ ChatColors get colors;/// The text styles used for various elements.
+ ChatTypography get typography;/// The default border radius for message bubbles only.
+ BorderRadiusGeometry get shape;
 /// Create a copy of ChatTheme
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -100,8 +103,11 @@ class _ChatTheme extends ChatTheme {
   const _ChatTheme({required this.colors, required this.typography, required this.shape}): super._();
   
 
+/// The color scheme used throughout the chat UI.
 @override final  ChatColors colors;
+/// The text styles used for various elements.
 @override final  ChatTypography typography;
+/// The default border radius for message bubbles only.
 @override final  BorderRadiusGeometry shape;
 
 /// Create a copy of ChatTheme
@@ -184,7 +190,14 @@ $ChatTypographyCopyWith<$Res> get typography {
 /// @nodoc
 mixin _$ChatColors {
 
- Color get primary; Color get onPrimary; Color get surface; Color get onSurface; Color get surfaceContainer; Color get surfaceContainerLow; Color get surfaceContainerHigh;
+/// Primary color, often used for sent messages and accents.
+ Color get primary;/// Color for text and icons displayed on top of [primary].
+ Color get onPrimary;/// The main background color of the chat screen.
+ Color get surface;/// Color for text and icons displayed on top of [surface].
+ Color get onSurface;/// Background color for elements like received messages.
+ Color get surfaceContainer;/// A slightly lighter/darker variant of [surfaceContainer].
+ Color get surfaceContainerLow;/// A slightly lighter/darker variant of [surfaceContainer].
+ Color get surfaceContainerHigh;
 /// Create a copy of ChatColors
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -255,12 +268,19 @@ class _ChatColors extends ChatColors {
   const _ChatColors({required this.primary, required this.onPrimary, required this.surface, required this.onSurface, required this.surfaceContainer, required this.surfaceContainerLow, required this.surfaceContainerHigh}): super._();
   
 
+/// Primary color, often used for sent messages and accents.
 @override final  Color primary;
+/// Color for text and icons displayed on top of [primary].
 @override final  Color onPrimary;
+/// The main background color of the chat screen.
 @override final  Color surface;
+/// Color for text and icons displayed on top of [surface].
 @override final  Color onSurface;
+/// Background color for elements like received messages.
 @override final  Color surfaceContainer;
+/// A slightly lighter/darker variant of [surfaceContainer].
 @override final  Color surfaceContainerLow;
+/// A slightly lighter/darker variant of [surfaceContainer].
 @override final  Color surfaceContainerHigh;
 
 /// Create a copy of ChatColors
@@ -329,7 +349,13 @@ as Color,
 /// @nodoc
 mixin _$ChatTypography {
 
- TextStyle get bodyLarge; TextStyle get bodyMedium; TextStyle get bodySmall; TextStyle get labelLarge; TextStyle get labelMedium; TextStyle get labelSmall;
+/// Style for large body text (e.g., potentially message content).
+ TextStyle get bodyLarge;/// Style for medium body text (e.g., default message content).
+ TextStyle get bodyMedium;/// Style for small body text (e.g., file sizes).
+ TextStyle get bodySmall;/// Style for large labels (e.g., potentially user names).
+ TextStyle get labelLarge;/// Style for medium labels.
+ TextStyle get labelMedium;/// Style for small labels (e.g., timestamps, status).
+ TextStyle get labelSmall;
 /// Create a copy of ChatTypography
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -399,11 +425,17 @@ class _ChatTypography extends ChatTypography {
   const _ChatTypography({required this.bodyLarge, required this.bodyMedium, required this.bodySmall, required this.labelLarge, required this.labelMedium, required this.labelSmall}): super._();
   
 
+/// Style for large body text (e.g., potentially message content).
 @override final  TextStyle bodyLarge;
+/// Style for medium body text (e.g., default message content).
 @override final  TextStyle bodyMedium;
+/// Style for small body text (e.g., file sizes).
 @override final  TextStyle bodySmall;
+/// Style for large labels (e.g., potentially user names).
 @override final  TextStyle labelLarge;
+/// Style for medium labels.
 @override final  TextStyle labelMedium;
+/// Style for small labels (e.g., timestamps, status).
 @override final  TextStyle labelSmall;
 
 /// Create a copy of ChatTypography

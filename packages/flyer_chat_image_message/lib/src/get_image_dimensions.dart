@@ -1,8 +1,16 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 
+/// Represents the width and height dimensions of an image.
 typedef Dimensions = (double width, double height);
 
+/// Asynchronously retrieves the dimensions (width and height) of an image
+/// provided by an [ImageProvider].
+///
+/// Uses an [ImageStreamListener] to get the image details once resolved.
+///
+/// Returns a [Future] that completes with a [Dimensions] record, or completes
+/// with an error if the image cannot be resolved or its dimensions determined.
 Future<Dimensions> getImageDimensions(ImageProvider provider) {
   final completer = Completer<Dimensions>();
   const config = ImageConfiguration.empty;

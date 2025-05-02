@@ -9,21 +9,58 @@ import 'utils/composer_height_notifier.dart';
 import 'utils/load_more_notifier.dart';
 import 'utils/typedefs.dart';
 
+/// The main widget that orchestrates the chat UI.
+///
+/// Sets up necessary providers ([ChatController], [ChatTheme], [Builders], etc.)
+/// and displays the chat list and composer.
 class Chat extends StatefulWidget {
+  /// The ID of the currently logged-in user.
   final UserID currentUserId;
+
+  /// Callback to resolve a [User] object from a [UserID].
+  /// Used for displaying user avatars and potentially names.
   final ResolveUserCallback resolveUser;
+
+  /// The controller managing the chat message state.
   final ChatController chatController;
+
+  /// Collection of custom builder functions for UI components.
   final Builders? builders;
+
+  /// Cross-platform cache utility, primarily for images.
+  /// If not provided, a default instance is created.
   final CrossCache? crossCache;
+
+  /// The visual theme for the chat UI.
+  /// If not provided, defaults to [ChatTheme.light].
   final ChatTheme? theme;
+
+  /// Callback triggered when the user attempts to send a message.
   final OnMessageSendCallback? onMessageSend;
+
+  /// Callback triggered when a message is tapped.
   final OnMessageTapCallback? onMessageTap;
+
+  /// Callback triggered when a message is long-pressed.
   final OnMessageLongPressCallback? onMessageLongPress;
+
+  /// Callback triggered when the attachment button in the composer is tapped.
   final OnAttachmentTapCallback? onAttachmentTap;
+
+  /// Background color for the main chat container.
+  /// Overrides the color provided by [theme] if set.
+  /// Ignored if [decoration] is provided.
   final Color? backgroundColor;
+
+  /// Decoration for the main chat container.
+  /// Overrides [backgroundColor].
   final Decoration? decoration;
+
+  /// Date format for displaying message timestamps.
+  /// Defaults to 'HH:mm' (e.g., 14:30).
   final DateFormat? timeFormat;
 
+  /// Creates the main chat widget.
   const Chat({
     super.key,
     required this.currentUserId,

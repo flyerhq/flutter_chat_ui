@@ -7,13 +7,29 @@ import 'package:provider/provider.dart';
 import '../simple_text_message.dart';
 import 'chat_message.dart';
 
+/// Internal widget responsible for building and updating a single chat message item.
+///
+/// It listens to the [ChatController.operationsStream] for updates to the specific
+/// message it represents and rebuilds accordingly.
+/// It also resolves the appropriate message builder based on the message type
+/// and determines the message's grouping status.
 class ChatMessageInternal extends StatefulWidget {
+  /// The message data to display.
   final Message message;
+
+  /// The index of the message in the overall list.
   final int index;
+
+  /// Animation provided by the parent [SliverAnimatedList].
   final Animation<double> animation;
+
+  /// Timeout in seconds for grouping messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
+
+  /// Flag indicating if this item is being animated out (removed).
   final bool? isRemoved;
 
+  /// Creates an internal chat message widget.
   const ChatMessageInternal({
     super.key,
     required this.message,
@@ -27,6 +43,7 @@ class ChatMessageInternal extends StatefulWidget {
   State<ChatMessageInternal> createState() => ChatMessageInternalState();
 }
 
+/// State for [ChatMessageInternal].
 class ChatMessageInternalState extends State<ChatMessageInternal> {
   late StreamSubscription<ChatOperation>? _operationsSubscription;
   late Message _updatedMessage;

@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
+/// An animated indicator showing three dots bouncing, typically used to show
+/// that another user is typing.
 class IsTypingIndicator extends StatefulWidget {
+  /// Size of each dot.
   final double size;
+
+  /// Color of the dots. Defaults to the theme's `onSurface` color.
   final Color? color;
+
+  /// Duration of a single bounce animation cycle for a dot.
   final Duration? duration;
+
+  /// Horizontal spacing between the dots.
   final double spacing;
 
+  /// Creates an animated typing indicator.
   const IsTypingIndicator({
     super.key,
     this.size = 6,

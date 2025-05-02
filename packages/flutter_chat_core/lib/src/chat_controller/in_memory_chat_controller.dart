@@ -6,12 +6,22 @@ import 'chat_operation.dart';
 import 'scroll_to_message_mixin.dart';
 import 'upload_progress_mixin.dart';
 
+/// A basic [ChatController] implementation that stores messages in memory.
+///
+/// This controller does not persist messages across app restarts.
+/// It includes [UploadProgressMixin] for upload progress tracking and
+/// [ScrollToMessageMixin] for programmatic scrolling.
+///
+/// **Important:** Ensures that all message IDs are unique during initialization
+/// and insertion to prevent issues with animations and state management.
 class InMemoryChatController
     with UploadProgressMixin, ScrollToMessageMixin
     implements ChatController {
   List<Message> _messages;
   final _operationsController = StreamController<ChatOperation>.broadcast();
 
+  /// Creates an in-memory chat controller.
+  /// Optionally initializes with a list of [messages].
   InMemoryChatController({List<Message>? messages})
     : _messages = messages ?? [] {
     // Check for duplicate IDs in the initial messages

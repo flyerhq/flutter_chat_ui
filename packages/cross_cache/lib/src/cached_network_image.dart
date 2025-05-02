@@ -10,6 +10,12 @@ import '../cross_cache.dart';
 typedef _SimpleDecoderCallback =
     Future<ui.Codec> Function(ui.ImmutableBuffer buffer);
 
+/// An [ImageProvider] that fetches an image from a URL using [CrossCache].
+/// Copied from Flutter's [NetworkImage] class.
+///
+/// This provider integrates with [CrossCache] to download the image data,
+/// store it in the cache, and then load it for display.
+/// It also handles reporting chunk events for download progress.
 @immutable
 class CachedNetworkImage extends ImageProvider<NetworkImage>
     implements NetworkImage {
@@ -22,13 +28,23 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
     this.webHtmlElementStrategy = WebHtmlElementStrategy.never,
   });
 
+  /// The URL from which the image will be fetched.
   @override
   final String url;
+
+  /// The [CrossCache] instance used for downloading and caching the image.
   final CrossCache crossCache;
+
+  /// The scale factor for the image.
   @override
   final double scale;
+
+  /// HTTP headers to be included in the image request.
   @override
   final Map<String, String>? headers;
+
+  /// Strategy for handling HTML elements when running on the web.
+  /// See [WebHtmlElementStrategy].
   @override
   final WebHtmlElementStrategy webHtmlElementStrategy;
 

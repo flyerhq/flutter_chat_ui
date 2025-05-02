@@ -3,26 +3,65 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+/// A widget that displays a file message.
+///
+/// Shows the file name, size, and an icon.
 class FlyerChatFileMessage extends StatelessWidget {
+  /// The file message data model.
   final FileMessage message;
+
+  /// The index of the message in the list.
   final int index;
+
+  /// Padding around the message bubble content.
   final EdgeInsetsGeometry? padding;
+
+  /// Border radius of the message bubble.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Size of the file icon.
   final double? iconSize;
+
+  /// IconData to represent the file type. Defaults to a generic file icon.
   final IconData? icon;
+
+  /// Color of the file icon.
   final Color? iconColor;
+
+  /// Gap between the icon and the text content.
   final double? gap;
+
+  /// Background color for messages sent by the current user.
   final Color? sentBackgroundColor;
+
+  /// Background color for messages received from other users.
   final Color? receivedBackgroundColor;
+
+  /// Text style for the file name in messages sent by the current user.
   final TextStyle? sentNameTextStyle;
+
+  /// Text style for the file name in messages received from other users.
   final TextStyle? receivedNameTextStyle;
+
+  /// Text style for the file size in messages sent by the current user.
   final TextStyle? sentSizeTextStyle;
+
+  /// Text style for the file size in messages received from other users.
   final TextStyle? receivedSizeTextStyle;
+
+  /// Text style for the message timestamp and status.
   final TextStyle? timeStyle;
+
+  /// Whether to display the message timestamp.
   final bool showTime;
+
+  /// Whether to display the message status (sent, delivered, seen) for sent messages.
   final bool showStatus;
+
+  /// Position of the timestamp and status indicator relative to the text content.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// Creates a widget to display a file message.
   const FlyerChatFileMessage({
     super.key,
     required this.message,
@@ -226,17 +265,30 @@ class FlyerChatFileMessage extends StatelessWidget {
   }
 }
 
+/// Internal extension for calculating the visual line height of a TextStyle.
 extension on TextStyle {
+  /// Calculates the line height based on the style's `height` and `fontSize`.
   double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }
 
+/// A widget to display the message timestamp and status indicator.
 class TimeAndStatus extends StatelessWidget {
+  /// The time the message was created.
   final DateTime? time;
+
+  /// The status of the message.
   final MessageStatus? status;
+
+  /// Whether to display the timestamp.
   final bool showTime;
+
+  /// Whether to display the status indicator.
   final bool showStatus;
+
+  /// The text style for the time and status.
   final TextStyle? textStyle;
 
+  /// Creates a widget for displaying time and status.
   const TimeAndStatus({
     super.key,
     required this.time,

@@ -4,34 +4,92 @@ import 'package:provider/provider.dart';
 
 import '../utils/typedefs.dart';
 
+/// Default wrapper widget for a single chat message item.
+///
+/// Handles layout (alignment based on sender), animation (fade, scale, size),
+/// padding (adjusting for grouped messages), and tap/long-press gestures.
+/// It arranges the core message [child] with optional surrounding widgets
+/// ([leadingWidget], [trailingWidget], [topWidget], [bottomWidget], [headerWidget]).
 class ChatMessage extends StatelessWidget {
+  /// The message data being displayed.
   final Message message;
+
+  /// The index of the message in the list.
   final int index;
+
+  /// Animation provided by the parent [SliverAnimatedList].
   final Animation<double> animation;
+
+  /// The core widget representing the message content (e.g., text bubble, image).
   final Widget child;
+
+  /// Widget to display to the left/start of the message content.
   final Widget? leadingWidget;
+
+  /// Widget to display to the right/end of the message content.
   final Widget? trailingWidget;
+
+  /// Widget to display above the main message row.
   final Widget? topWidget;
+
+  /// Widget to display below the main message row.
   final Widget? bottomWidget;
+
+  /// Widget to display above the entire message structure (including potential topWidget).
   final Widget? headerWidget;
+
+  /// Alignment for the scale animation origin for sent messages.
   final Alignment sentMessageScaleAnimationAlignment;
+
+  /// Alignment for the scale animation origin for received messages.
   final Alignment receivedMessageScaleAnimationAlignment;
+
+  /// Alignment for the message container for sent messages.
   final AlignmentGeometry sentMessageAlignment;
+
+  /// Alignment for the message container for received messages.
   final AlignmentGeometry receivedMessageAlignment;
+
+  /// Cross-axis alignment for the main column for sent messages.
   final CrossAxisAlignment sentMessageColumnAlignment;
+
+  /// Cross-axis alignment for the main column for received messages.
   final CrossAxisAlignment receivedMessageColumnAlignment;
+
+  /// Cross-axis alignment for the content row for sent messages.
   final CrossAxisAlignment sentMessageRowAlignment;
+
+  /// Cross-axis alignment for the content row for received messages.
   final CrossAxisAlignment receivedMessageRowAlignment;
+
+  /// Overrides the sender-based scale animation alignment if provided.
   final Alignment? scaleAnimationAlignment;
+
+  /// Overrides the sender-based message container alignment if provided.
   final AlignmentGeometry? alignment;
+
+  /// Overrides the default padding calculation if provided.
   final EdgeInsetsGeometry? padding;
+
+  /// Duration for the animated padding change (e.g., when grouping status changes).
   final Duration? paddingChangeAnimationDuration;
+
+  /// Flag indicating if this item is being animated out (removed).
   final bool? isRemoved;
+
+  /// Status indicating if this message is part of a group (first, middle, last).
   final MessageGroupStatus? groupStatus;
+
+  /// Default horizontal padding for message items.
   final double? horizontalPadding;
+
+  /// Default vertical padding between non-grouped messages.
   final double? verticalPadding;
+
+  /// Vertical padding between grouped messages.
   final double? verticalGroupedPadding;
 
+  /// Creates a default chat message wrapper widget.
   const ChatMessage({
     super.key,
     required this.message,

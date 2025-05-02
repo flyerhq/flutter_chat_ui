@@ -16,7 +16,11 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LinkPreview {
 
- String get link; String? get description; String? get imageUrl; String? get title;
+/// The original URL link.
+ String get link;/// A description extracted from the link source.
+ String? get description;/// The URL of an image associated with the link.
+ String? get imageUrl;/// The title extracted from the link source.
+ String? get title;
 /// Create a copy of LinkPreview
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -86,9 +90,13 @@ class _LinkPreview extends LinkPreview {
   const _LinkPreview({required this.link, this.description, this.imageUrl, this.title}): super._();
   factory _LinkPreview.fromJson(Map<String, dynamic> json) => _$LinkPreviewFromJson(json);
 
+/// The original URL link.
 @override final  String link;
+/// A description extracted from the link source.
 @override final  String? description;
+/// The URL of an image associated with the link.
 @override final  String? imageUrl;
+/// The title extracted from the link source.
 @override final  String? title;
 
 /// Create a copy of LinkPreview

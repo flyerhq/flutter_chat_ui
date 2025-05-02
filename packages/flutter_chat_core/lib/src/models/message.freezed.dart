@@ -52,7 +52,19 @@ Message _$MessageFromJson(
 /// @nodoc
 mixin _$Message {
 
- String get id; String get authorId; String? get replyToMessageId;@EpochDateTimeConverter() DateTime? get createdAt;@EpochDateTimeConverter() DateTime? get deletedAt;@EpochDateTimeConverter() DateTime? get failedAt;@EpochDateTimeConverter() DateTime? get sentAt;@EpochDateTimeConverter() DateTime? get deliveredAt;@EpochDateTimeConverter() DateTime? get seenAt;@EpochDateTimeConverter() DateTime? get updatedAt; Map<String, List<String>>? get reactions; Map<String, dynamic>? get metadata;
+/// Unique identifier for the message.
+ String get id;/// ID of the user who sent the message.
+ String get authorId;/// ID of the message this one is replying to.
+ String? get replyToMessageId;/// Timestamp when the message was created.
+@EpochDateTimeConverter() DateTime? get createdAt;/// Timestamp when the message was marked as deleted.
+@EpochDateTimeConverter() DateTime? get deletedAt;/// Timestamp when the message failed to send.
+@EpochDateTimeConverter() DateTime? get failedAt;/// Timestamp when the message was successfully sent.
+@EpochDateTimeConverter() DateTime? get sentAt;/// Timestamp when the message was delivered to the recipient.
+@EpochDateTimeConverter() DateTime? get deliveredAt;/// Timestamp when the message was seen by the recipient.
+@EpochDateTimeConverter() DateTime? get seenAt;/// Timestamp when the message was last updated.
+@EpochDateTimeConverter() DateTime? get updatedAt;/// Map of reaction keys to lists of user IDs who reacted.
+ Map<String, List<String>>? get reactions;/// Additional custom metadata associated with the message.
+ Map<String, dynamic>? get metadata;
 /// Create a copy of Message
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -130,17 +142,29 @@ class TextMessage extends Message {
   const TextMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, this.linkPreview, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
   factory TextMessage.fromJson(Map<String, dynamic> json) => _$TextMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  MessageID id;
+/// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
+/// Timestamp when the message was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send.
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent.
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered to the recipient.
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen by the recipient.
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -149,7 +173,9 @@ class TextMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Additional custom metadata associated with the message.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;
@@ -158,7 +184,9 @@ class TextMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// The text content of the message.
  final  String text;
+/// Optional preview data for a link found in the [text].
  final  LinkPreview? linkPreview;
 
 @JsonKey(name: 'type')
@@ -257,17 +285,29 @@ class TextStreamMessage extends Message {
   const TextStreamMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.streamId, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'textStream',super._();
   factory TextStreamMessage.fromJson(Map<String, dynamic> json) => _$TextStreamMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  String id;
+/// ID of the user (typically the AI) sending the message.
 @override final  String authorId;
+/// ID of the message this one is replying to.
 @override final  String? replyToMessageId;
+/// Timestamp when the message was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message sending failed (e.g., network error during stream).
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent (e.g., stream completed).
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was fully delivered (stream completed).
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was delivered to the recipient.
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<String>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<String>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -276,7 +316,9 @@ class TextStreamMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Additional custom metadata associated with the message.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;
@@ -285,6 +327,7 @@ class TextStreamMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Identifier for the stream this message belongs to.
  final  String streamId;
 
 @JsonKey(name: 'type')
@@ -370,17 +413,29 @@ class ImageMessage extends Message {
   const ImageMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
   factory ImageMessage.fromJson(Map<String, dynamic> json) => _$ImageMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  MessageID id;
+/// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
+/// Timestamp when the message was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send.
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent.
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered to the recipient.
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen by the recipient.
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -389,7 +444,9 @@ class ImageMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Additional custom metadata associated with the message.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;
@@ -398,12 +455,19 @@ class ImageMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Source URL or path of the image.
  final  String source;
+/// Optional text caption accompanying the image.
  final  String? text;
+/// ThumbHash string for a low-resolution placeholder.
  final  String? thumbhash;
+/// BlurHash string for a low-resolution placeholder.
  final  String? blurhash;
+/// Width of the image in pixels.
  final  double? width;
+/// Height of the image in pixels.
  final  double? height;
+/// Indicates if an overlay should be shown (e.g., for NSFW content).
  final  bool? hasOverlay;
 
 @JsonKey(name: 'type')
@@ -495,17 +559,29 @@ class FileMessage extends Message {
   const FileMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, required this.name, this.size, this.mimeType, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'file',super._();
   factory FileMessage.fromJson(Map<String, dynamic> json) => _$FileMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  MessageID id;
+/// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
+/// Timestamp when the message was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send.
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent.
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered to the recipient.
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen by the recipient.
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -514,7 +590,9 @@ class FileMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Additional custom metadata associated with the message.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;
@@ -523,9 +601,13 @@ class FileMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Source URL or path of the file.
  final  String source;
+/// Name of the file.
  final  String name;
+/// Size of the file in bytes.
  final  int? size;
+/// MIME type of the file.
  final  String? mimeType;
 
 @JsonKey(name: 'type')
@@ -614,17 +696,29 @@ class SystemMessage extends Message {
   const SystemMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'system',super._();
   factory SystemMessage.fromJson(Map<String, dynamic> json) => _$SystemMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  MessageID id;
+/// ID of the user associated with the system event (often a system ID).
 @override final  UserID authorId;
+/// ID of the message this one is replying to (usually null for system messages).
 @override final  MessageID? replyToMessageId;
+/// Timestamp when the system event occurred.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send (usually null for system messages).
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent (usually null for system messages).
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered (usually null for system messages).
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen (usually null for system messages).
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -633,7 +727,9 @@ class SystemMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Additional custom metadata associated with the message.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;
@@ -642,6 +738,7 @@ class SystemMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// The text content of the system message.
  final  String text;
 
 @JsonKey(name: 'type')
@@ -727,17 +824,29 @@ class CustomMessage extends Message {
   const CustomMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'custom',super._();
   factory CustomMessage.fromJson(Map<String, dynamic> json) => _$CustomMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  MessageID id;
+/// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
+/// Timestamp when the message was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send.
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent.
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered to the recipient.
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen by the recipient.
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -746,7 +855,9 @@ class CustomMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Application-specific custom metadata.
  final  Map<String, dynamic>? _metadata;
+/// Application-specific custom metadata.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;
@@ -838,17 +949,29 @@ class UnsupportedMessage extends Message {
   const UnsupportedMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'unsupported',super._();
   factory UnsupportedMessage.fromJson(Map<String, dynamic> json) => _$UnsupportedMessageFromJson(json);
 
+/// Unique identifier for the message.
 @override final  MessageID id;
+/// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
+/// Timestamp when the message was created.
 @override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
 @override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send.
 @override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent.
 @override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered to the recipient.
 @override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen by the recipient.
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
 @override Map<String, List<UserID>>? get reactions {
   final value = _reactions;
   if (value == null) return null;
@@ -857,7 +980,9 @@ class UnsupportedMessage extends Message {
   return EqualUnmodifiableMapView(value);
 }
 
+/// Additional custom metadata associated with the message.
  final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
 @override Map<String, dynamic>? get metadata {
   final value = _metadata;
   if (value == null) return null;

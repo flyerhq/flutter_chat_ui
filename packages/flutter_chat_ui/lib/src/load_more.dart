@@ -4,11 +4,21 @@ import 'package:provider/provider.dart';
 
 import 'utils/load_more_notifier.dart';
 
+/// A widget displayed at the top of the chat list when paginating
+/// (loading more historical messages).
+///
+/// Typically shows a [CircularProgressIndicator].
 class LoadMore extends StatefulWidget {
+  /// Color of the progress indicator. Defaults to theme's `onSurface`.
   final Color? color;
+
+  /// Vertical padding around the indicator.
   final double? padding;
+
+  /// Size (diameter) of the progress indicator.
   final double? size;
 
+  /// Creates a load more indicator widget.
   const LoadMore({super.key, this.color, this.padding = 20, this.size = 20});
 
   @override

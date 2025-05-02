@@ -2,6 +2,10 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+/// A mixin for State classes that provides keyboard height detection and notification.
+///
+/// Automatically handles listening to `WidgetsBinding` for metrics changes
+/// and debounces updates to avoid rapid firing during keyboard animations.
 mixin KeyboardMixin<T extends StatefulWidget>
     on State<T>, WidgetsBindingObserver {
   Timer? _keyboardDebounceTimer;
@@ -9,7 +13,9 @@ mixin KeyboardMixin<T extends StatefulWidget>
   double _initialSafeArea = 0;
   bool _initialized = false;
 
-  /// Override this method to handle keyboard height changes
+  /// Abstract method to be implemented by the consuming State.
+  /// Called when the keyboard height changes (after debouncing).
+  /// The provided [height] is adjusted for the initial bottom safe area.
   void onKeyboardHeightChanged(double height);
 
   @override

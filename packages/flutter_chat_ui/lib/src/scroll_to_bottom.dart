@@ -4,21 +4,45 @@ import 'package:provider/provider.dart';
 
 import 'utils/composer_height_notifier.dart';
 
+/// A floating action button typically displayed near the composer
+/// that scrolls the chat list to the bottom when pressed.
+///
+/// Animates its appearance/disappearance based on the provided [animation].
 class ScrollToBottom extends StatelessWidget {
+  /// Animation controlling the visibility and scale of the button.
   final Animation<double> animation;
+
+  /// Callback triggered when the button is pressed.
   final VoidCallback onPressed;
+
+  /// Optional positioning properties.
   final double? left;
   final double? right;
   final double? top;
   final double? bottom;
+
+  /// Whether to offset the button's bottom position by the composer's height.
   final bool? useComposerHeightForBottomOffset;
+
+  /// Whether to use the smaller mini FAB size.
   final bool? mini;
+
+  /// The shape of the button.
   final ShapeBorder? shape;
+
+  /// The icon displayed inside the button.
   final Widget? icon;
+
+  /// Whether to adjust the bottom position for the bottom safe area.
   final bool? handleSafeArea;
+
+  /// Background color of the button.
   final Color? backgroundColor;
+
+  /// Foreground color (icon color) of the button.
   final Color? foregroundColor;
 
+  /// Creates a scroll-to-bottom button.
   const ScrollToBottom({
     super.key,
     required this.animation,

@@ -7,130 +7,336 @@ import 'link_preview.dart';
 part 'message.freezed.dart';
 part 'message.g.dart';
 
+/// Base class for all message types.
+///
+/// Uses a sealed class hierarchy with Freezed for immutability and union types.
+/// The `type` field serves as the discriminator for JSON serialization/deserialization.
 @Freezed(unionKey: 'type', fallbackUnion: 'unsupported')
 sealed class Message with _$Message {
+  /// Creates a text message.
   const factory Message.text({
+    /// Unique identifier for the message.
     required MessageID id,
+
+    /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// The text content of the message.
     required String text,
+
+    /// Optional preview data for a link found in the [text].
     LinkPreview? linkPreview,
   }) = TextMessage;
 
+  /// Creates a streaming text message placeholder.
+  /// Used while the text content is being streamed.
   const factory Message.textStream({
+    /// Unique identifier for the message.
     required String id,
+
+    /// ID of the user (typically the AI) sending the message.
     required String authorId,
+
+    /// ID of the message this one is replying to.
     String? replyToMessageId,
+
+    /// Timestamp when the message was created.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message sending failed (e.g., network error during stream).
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent (e.g., stream completed).
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was fully delivered (stream completed).
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was delivered to the recipient.
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<String>>? reactions,
+
+    /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// Identifier for the stream this message belongs to.
     required String streamId,
   }) = TextStreamMessage;
 
+  /// Creates an image message.
   const factory Message.image({
+    /// Unique identifier for the message.
     required MessageID id,
+
+    /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// Source URL or path of the image.
     required String source,
+
+    /// Optional text caption accompanying the image.
     String? text,
+
+    /// ThumbHash string for a low-resolution placeholder.
     String? thumbhash,
+
+    /// BlurHash string for a low-resolution placeholder.
     String? blurhash,
+
+    /// Width of the image in pixels.
     double? width,
+
+    /// Height of the image in pixels.
     double? height,
+
+    /// Indicates if an overlay should be shown (e.g., for NSFW content).
     bool? hasOverlay,
   }) = ImageMessage;
 
+  /// Creates a file message.
   const factory Message.file({
+    /// Unique identifier for the message.
     required MessageID id,
+
+    /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// Source URL or path of the file.
     required String source,
+
+    /// Name of the file.
     required String name,
+
+    /// Size of the file in bytes.
     int? size,
+
+    /// MIME type of the file.
     String? mimeType,
   }) = FileMessage;
 
+  /// Creates a system message (e.g., "User joined the chat").
   const factory Message.system({
+    /// Unique identifier for the message.
     required MessageID id,
+
+    /// ID of the user associated with the system event (often a system ID).
     required UserID authorId,
+
+    /// ID of the message this one is replying to (usually null for system messages).
     MessageID? replyToMessageId,
+
+    /// Timestamp when the system event occurred.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send (usually null for system messages).
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent (usually null for system messages).
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered (usually null for system messages).
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen (usually null for system messages).
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// The text content of the system message.
     required String text,
   }) = SystemMessage;
 
+  /// Creates a custom message with application-specific data.
   const factory Message.custom({
+    /// Unique identifier for the message.
     required MessageID id,
+
+    /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Application-specific custom metadata.
     Map<String, dynamic>? metadata,
   }) = CustomMessage;
 
+  /// Represents a message type that is not recognized or supported by the current version.
+  /// Used as a fallback during JSON deserialization.
   const factory Message.unsupported({
+    /// Unique identifier for the message.
     required MessageID id,
+
+    /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
     @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
     @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
     @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
     @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
     @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
     @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
   }) = UnsupportedMessage;
 
   const Message._();
 
+  /// Calculates the current status of the message based on its timestamps.
+  /// Returns `null` if the message has no specific status yet (only `createdAt`).
   MessageStatus? get status {
     // Message status is determined by the most recent state change in the message lifecycle.
     // The order of checks matters - we check from most recent to oldest state.
@@ -143,15 +349,15 @@ sealed class Message with _$Message {
     return null;
   }
 
-  /// Returns the time displayed for the user when the message is shown in a list.
-  /// This time is determined by the `sentAt` date, which represents when the message was sent to the server.
-  /// If `sentAt` is not available, it falls back to the `createdAt` date.
-  /// Other timestamps like `updatedAt` may be shown in an additional history popup,
-  /// but they are not displayed in the list itself (this functionality is not provided by the package and is left to the user to implement).
+  /// Returns the primary time associated with the message, used for display.
+  ///
+  /// This is typically the time the message was successfully sent ([sentAt]).
+  /// If [sentAt] is null (e.g., message is sending or failed), it falls back to [createdAt].
   DateTime? get time {
     return sentAt ?? createdAt;
   }
 
+  /// Creates a [Message] instance from a JSON map.
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
 }

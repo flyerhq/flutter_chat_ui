@@ -16,34 +16,88 @@ import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
 import '../utils/typedefs.dart';
 
-enum InitialScrollToEndMode { none, jump, animate }
+/// Enum controlling the initial scroll behavior of the chat list.
+enum InitialScrollToEndMode {
+  /// Do not scroll initially.
+  none,
 
+  /// Jump directly to the end without animation.
+  jump,
+
+  /// Animate scrolling to the end.
+  animate,
+}
+
+/// An animated list widget specifically designed for displaying chat messages.
+///
+/// Handles message insertion/removal animations, pagination (loading older messages),
+/// automatic scrolling, keyboard handling, and scroll-to-bottom functionality.
+/// It listens to a [ChatController] for message updates.
 class ChatAnimatedList extends StatefulWidget {
+  /// Builder function for creating individual chat message widgets.
   final ChatItem itemBuilder;
+
+  /// Optional scroll controller for the underlying [CustomScrollView].
   final ScrollController? scrollController;
+
+  /// Default duration for message insertion animations.
   final Duration insertAnimationDuration;
+
+  /// Default duration for message removal animations.
   final Duration removeAnimationDuration;
+
+  /// Optional function to resolve custom insertion animation duration per message.
   final MessageAnimationDurationResolver? insertAnimationDurationResolver;
+
+  /// Optional function to resolve custom removal animation duration per message.
   final MessageAnimationDurationResolver? removeAnimationDurationResolver;
+
+  /// Duration for scrolling to the end/bottom of the list.
   final Duration scrollToEndAnimationDuration;
+
+  /// Delay before the scroll-to-bottom button appears after scrolling up.
   final Duration scrollToBottomAppearanceDelay;
+
+  /// Padding added above the first item in the list.
   final double? topPadding;
+
+  /// Padding added below the last item (before the composer).
   final double? bottomPadding;
+
+  /// Optional sliver widget to place at the very top of the scroll view.
   final Widget? topSliver;
+
+  /// Optional sliver widget to place at the very bottom of the scroll view.
   final Widget? bottomSliver;
+
+  /// Whether to handle bottom safe area padding automatically.
   final bool? handleSafeArea;
+
+  /// How the scroll view should dismiss the keyboard.
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+
+  /// How the list should initially scroll to the end.
   final InitialScrollToEndMode? initialScrollToEndMode;
+
+  /// Whether to automatically scroll to the end when a new message is sent (inserted).
   final bool? shouldScrollToEndWhenSendingMessage;
+
+  /// Whether to automatically scroll to the end if the user is already at the bottom
+  /// when a new message arrives.
   final bool? shouldScrollToEndWhenAtBottom;
+
+  /// Callback triggered when the user scrolls near the top, requesting older messages.
   final PaginationCallback? onEndReached;
 
   /// Threshold for triggering pagination, represented as a value between 0 and 1.
   /// 0 represents the top of the list, while 1 represents the bottom.
   /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
   final double? paginationThreshold;
+
+  /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
+  /// Creates an animated chat list.
   const ChatAnimatedList({
     super.key,
     required this.itemBuilder,
@@ -93,6 +147,7 @@ class ChatAnimatedList extends StatefulWidget {
   ChatAnimatedListState createState() => ChatAnimatedListState();
 }
 
+/// State for [ChatAnimatedList].
 class ChatAnimatedListState extends State<ChatAnimatedList>
     with TickerProviderStateMixin, WidgetsBindingObserver, KeyboardMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();

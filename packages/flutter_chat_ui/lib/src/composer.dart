@@ -6,40 +6,99 @@ import 'package:provider/provider.dart';
 import 'utils/composer_height_notifier.dart';
 import 'utils/typedefs.dart';
 
+/// The message composer widget positioned at the bottom of the chat screen.
+///
+/// Includes a text input field, an optional attachment button, and a send button.
 class Composer extends StatefulWidget {
+  /// Optional controller for the text input field.
   final TextEditingController? textEditingController;
+
+  /// Optional positioning properties.
   final double? left;
   final double? right;
   final double? top;
   final double? bottom;
+
+  /// Optional blur values for the background (if using glassmorphism).
   final double? sigmaX;
   final double? sigmaY;
+
+  /// Padding around the composer content.
   final EdgeInsetsGeometry? padding;
+
+  /// Icon for the attachment button. Defaults to [Icons.attachment].
   final Widget? attachmentIcon;
+
+  /// Icon for the send button. Defaults to [Icons.send].
   final Widget? sendIcon;
+
+  /// Horizontal gap between elements (attachment icon, text field, send icon).
   final double? gap;
+
+  /// Border style for the text input field.
   final InputBorder? inputBorder;
+
+  /// Whether the text input field should be filled.
   final bool? filled;
+
+  /// Optional widget to display above the main composer row.
   final Widget? topWidget;
+
+  /// Whether to adjust padding for the bottom safe area.
   final bool? handleSafeArea;
+
+  /// Background color of the composer container.
   final Color? backgroundColor;
+
+  /// Color of the attachment icon.
   final Color? attachmentIconColor;
+
+  /// Color of the send icon.
   final Color? sendIconColor;
+
+  /// Color of the hint text in the input field.
   final Color? hintColor;
+
+  /// Color of the text entered in the input field.
   final Color? textColor;
+
+  /// Fill color for the text input field when [filled] is true.
   final Color? inputFillColor;
+
+  /// Placeholder text for the input field.
   final String? hintText;
+
+  /// Appearance of the keyboard.
   final Brightness? keyboardAppearance;
+
+  /// Whether to enable autocorrect for the input field.
   final bool? autocorrect;
+
+  /// Whether the input field should autofocus.
   final bool autofocus;
+
+  /// Capitalization behavior for the input field.
   final TextCapitalization textCapitalization;
+
+  /// Type of keyboard to display.
   final TextInputType? keyboardType;
+
+  /// Action button type for the keyboard (e.g., newline, send).
   final TextInputAction? textInputAction;
+
+  /// Focus node for the text input field.
   final FocusNode? focusNode;
+
+  /// Maximum character length for the input field.
   final int? maxLength;
+
+  /// Minimum number of lines for the input field.
   final int? minLines;
+
+  /// Maximum number of lines the input field can expand to.
   final int? maxLines;
 
+  /// Creates a message composer widget.
   const Composer({
     super.key,
     this.textEditingController,

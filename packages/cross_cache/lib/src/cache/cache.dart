@@ -2,6 +2,9 @@ import 'dart:typed_data';
 
 import 'base_cache.dart';
 
+/// Default [BaseCache] implementation for unsupported platforms.
+///
+/// All methods throw [UnimplementedError].
 class Cache extends BaseCache {
   @override
   Future<void> set(String key, Uint8List value) {

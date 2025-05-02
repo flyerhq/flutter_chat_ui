@@ -7,6 +7,11 @@ import 'package:path_provider/path_provider.dart';
 
 import 'base_cache.dart';
 
+/// IO (Mobile/Desktop) implementation of [BaseCache] using the file system.
+///
+/// Stores cached data in files within a dedicated directory (`cross_cache`)
+/// inside the application's cache directory.
+/// File names are SHA256 hashes of the cache keys.
 class Cache extends BaseCache {
   @override
   Future<void> set(String key, Uint8List value) async {
