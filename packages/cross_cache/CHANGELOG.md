@@ -1,3 +1,7 @@
+## 1.0.2
+
+ - **FIX**: improve documentation and add example. ([113141b3](https://github.com/flyerhq/flutter_chat_ui/commit/113141b31de52a166eea54625f4cdd5b80bb897a))
+
 ## 1.0.1
 
  - **FIX**: document public APIs.

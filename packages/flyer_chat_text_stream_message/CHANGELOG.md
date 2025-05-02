@@ -1,3 +1,7 @@
+## 2.0.4
+
+ - Update a dependency to the latest release.
+
 ## 2.0.3
 
  - **FIX**: add example. ([77c55e82](https://github.com/flyerhq/flutter_chat_ui/commit/77c55e829ebac99a0e7c754258b7e4f39767ca9e))
