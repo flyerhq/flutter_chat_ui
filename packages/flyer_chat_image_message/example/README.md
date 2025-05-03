@@ -42,7 +42,7 @@ class BasicState extends State<Basic> {
             createdAt: DateTime.now().toUtc(),
             source: image.path,
           );
-          _chatController.insert(imageMessage);
+          _chatController.insertMessage(imageMessage);
         },
         onMessageSend: (text) {},
         resolveUser: (UserID id) async {

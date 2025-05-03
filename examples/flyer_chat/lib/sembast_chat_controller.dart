@@ -10,7 +10,7 @@ class SembastChatController implements ChatController {
   SembastChatController(this.database);
 
   @override
-  Future<void> insert(Message message, {int? index}) async {
+  Future<void> insertMessage(Message message, {int? index}) async {
     final store = intMapStoreFactory.store();
 
     final record = await store.findFirst(
@@ -33,7 +33,7 @@ class SembastChatController implements ChatController {
   }
 
   @override
-  Future<void> remove(Message message) async {
+  Future<void> removeMessage(Message message) async {
     final store = intMapStoreFactory.store();
     final records = await store.find(database);
 
@@ -55,7 +55,7 @@ class SembastChatController implements ChatController {
   }
 
   @override
-  Future<void> update(Message oldMessage, Message newMessage) async {
+  Future<void> updateMessage(Message oldMessage, Message newMessage) async {
     if (oldMessage == newMessage) return;
 
     final store = intMapStoreFactory.store();
@@ -74,7 +74,7 @@ class SembastChatController implements ChatController {
   }
 
   @override
-  Future<void> set(List<Message> messages) async {
+  Future<void> setMessages(List<Message> messages) async {
     final store = intMapStoreFactory.store();
     await store.delete(database);
     _operationsController.add(ChatOperation.set());

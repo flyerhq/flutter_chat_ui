@@ -97,7 +97,7 @@ class GeminiStreamManager extends ChangeNotifier {
     try {
       // Attempt to update the message. The controller should handle
       // cases where the original message might have been removed.
-      await _chatController.update(originalMessage, finalTextMessage);
+      await _chatController.updateMessage(originalMessage, finalTextMessage);
     } catch (e) {
       // Log potential errors during update (e.g., message not found, controller disposed)
       debugPrint(
@@ -131,7 +131,7 @@ class GeminiStreamManager extends ChangeNotifier {
     );
 
     try {
-      await _chatController.update(originalMessage, errorTextMessage);
+      await _chatController.updateMessage(originalMessage, errorTextMessage);
     } catch (e) {
       debugPrint(
         'GeminiStreamManager: Failed to update message $streamId after error: $e',

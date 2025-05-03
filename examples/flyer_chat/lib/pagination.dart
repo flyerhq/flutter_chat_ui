@@ -111,7 +111,10 @@ class PaginationState extends State<Pagination> {
       return;
     }
 
-    await _chatController.set([...messages, ..._chatController.messages]);
+    await _chatController.setMessages([
+      ...messages,
+      ..._chatController.messages,
+    ]);
     _lastMessageId = messages.first.id;
     _isLoading = false;
   }

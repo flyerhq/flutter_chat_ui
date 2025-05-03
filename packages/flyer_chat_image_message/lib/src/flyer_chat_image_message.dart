@@ -136,7 +136,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       getImageDimensions(_cachedNetworkImage).then((dimensions) {
         if (mounted) {
           _aspectRatio = dimensions.$1 / dimensions.$2;
-          _chatController.update(
+          _chatController.updateMessage(
             widget.message,
             widget.message.copyWith(
               width: dimensions.$1,

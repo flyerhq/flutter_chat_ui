@@ -49,7 +49,7 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> insert(Message message, {int? index}) async {
+  Future<void> insertMessage(Message message, {int? index}) async {
     if (_messages.contains(message)) return;
 
     // Check if this message ID already exists in the list
@@ -75,7 +75,7 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> remove(Message message) async {
+  Future<void> removeMessage(Message message) async {
     final index = _messages.indexOf(message);
 
     if (index > -1) {
@@ -85,7 +85,7 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> update(Message oldMessage, Message newMessage) async {
+  Future<void> updateMessage(Message oldMessage, Message newMessage) async {
     if (oldMessage == newMessage) return;
 
     final index = _messages.indexOf(oldMessage);
@@ -97,7 +97,7 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> set(List<Message> messages) async {
+  Future<void> setMessages(List<Message> messages) async {
     _assertNoMessageIdDuplicates(messages, 'set');
     _messages = messages;
     _operationsController.add(ChatOperation.set());

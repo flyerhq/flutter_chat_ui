@@ -108,7 +108,7 @@ class ApiState extends State<Api> {
                             try {
                               await _apiService.flush();
                               if (mounted) {
-                                await _chatController.set([]);
+                                await _chatController.setMessages([]);
                                 await _showInfo('All messages cleared');
                               }
                             } catch (error) {
@@ -146,13 +146,13 @@ class ApiState extends State<Api> {
 
       switch (event.type) {
         case WebSocketEventType.newMessage:
-          _chatController.insert(event.message!);
+          _chatController.insertMessage(event.message!);
           break;
         case WebSocketEventType.deleteMessage:
-          _chatController.remove(event.message!);
+          _chatController.removeMessage(event.message!);
           break;
         case WebSocketEventType.flush:
-          _chatController.set([]);
+          _chatController.setMessages([]);
           break;
         case WebSocketEventType.error:
           _showInfo('Error: ${event.error}');
@@ -172,7 +172,7 @@ class ApiState extends State<Api> {
     final originalMetadata = message.metadata;
 
     if (mounted) {
-      await _chatController.insert(
+      await _chatController.insertMessage(
         message.copyWith(metadata: {...?originalMetadata, 'sending': true}),
       );
     }
@@ -196,7 +196,7 @@ class ApiState extends State<Api> {
           ),
           metadata: originalMetadata,
         );
-        await _chatController.update(currentMessage, nextMessage);
+        await _chatController.updateMessage(currentMessage, nextMessage);
       }
     } catch (error) {
       debugPrint('Error sending message: $error');
@@ -224,7 +224,7 @@ class ApiState extends State<Api> {
     );
 
     // Insert message to UI before uploading
-    await _chatController.insert(imageMessage);
+    await _chatController.insertMessage(imageMessage);
 
     try {
       final response = await uploadFile(image.path, bytes, id, _chatController);
@@ -247,7 +247,7 @@ class ApiState extends State<Api> {
         // Saves the same image to persistent cache using the new url as key
         // Alternatively, you could use updateKey to update the same content with a different key
         await _crossCache.set(nextMessage.source, bytes);
-        await _chatController.update(
+        await _chatController.updateMessage(
           currentMessage,
           nextMessage.copyWith(
             metadata: {...?originalMetadata, 'sending': true},
@@ -272,7 +272,7 @@ class ApiState extends State<Api> {
             ),
             metadata: originalMetadata,
           );
-          await _chatController.update(currentMessage2, nextMessage2);
+          await _chatController.updateMessage(currentMessage2, nextMessage2);
         }
       }
     } catch (error) {
@@ -281,7 +281,7 @@ class ApiState extends State<Api> {
   }
 
   void _removeItem(Message item, {int? index, TapUpDetails? details}) async {
-    await _chatController.remove(item);
+    await _chatController.removeMessage(item);
 
     try {
       await _apiService.delete(item);

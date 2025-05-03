@@ -18,7 +18,7 @@ void main() {
     //     text: 'test',
     //   );
 
-    //   inMemoryChatController.insert(newMessage);
+    //   inMemoryChatController.insertMessage(newMessage);
 
     //   expect(inMemoryChatController.get(20), newMessage);
     // });
@@ -26,7 +26,7 @@ void main() {
     // test('removes first message using set', () {
     //   final newData = mockData.sublist(1);
 
-    //   inMemoryChatController.set(newData);
+    //   inMemoryChatController.setMessages(newData);
 
     //   expect(inMemoryChatController.get(0).id, '2');
     // });
@@ -44,7 +44,7 @@ void main() {
     //     text: 'test',
     //   );
 
-    //   inMemoryChatController.set([...mockData, newMessage1, newMessage2]);
+    //   inMemoryChatController.setMessages([...mockData, newMessage1, newMessage2]);
 
     //   expect(inMemoryChatController.get(20), newMessage1);
     //   expect(inMemoryChatController.get(21), newMessage2);
@@ -57,11 +57,11 @@ void main() {
     //     text: 'test',
     //   );
 
-    //   inMemoryChatController.insert(message);
+    //   inMemoryChatController.insertMessage(message);
 
     //   expect(inMemoryChatController.get(20), message);
 
-    //   inMemoryChatController.set(mockData);
+    //   inMemoryChatController.setMessages(mockData);
 
     //   expect(inMemoryChatController.get(20), message);
     // });

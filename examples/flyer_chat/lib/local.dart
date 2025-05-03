@@ -105,7 +105,7 @@ class LocalState extends State<Local> {
                     ComposerActionButton(
                       icon: Icons.delete_sweep,
                       title: 'Clear all',
-                      onPressed: () => _chatController.set([]),
+                      onPressed: () => _chatController.setMessages([]),
                       destructive: true,
                     ),
                   ],
@@ -279,7 +279,7 @@ class LocalState extends State<Local> {
         final formattedDate = DateFormat(
           'd MMMM yyyy, HH:mm',
         ).format(now.toLocal());
-        await _chatController.insert(
+        await _chatController.insertMessage(
           SystemMessage(
             id: _uuid.v4(),
             authorId: _systemUser.id,
@@ -287,13 +287,13 @@ class LocalState extends State<Local> {
           ),
         );
       }
-      await _chatController.insert(message);
+      await _chatController.insertMessage(message);
     }
   }
 
   Future<void> _toggleTyping() async {
     if (!_isTyping) {
-      await _chatController.insert(
+      await _chatController.insertMessage(
         CustomMessage(
           id: _uuid.v4(),
           authorId: _systemUser.id,
@@ -307,7 +307,7 @@ class LocalState extends State<Local> {
           (message) => message.metadata?['type'] == 'typing',
         );
 
-        await _chatController.remove(typingMessage);
+        await _chatController.removeMessage(typingMessage);
         _isTyping = false;
       } catch (e) {
         _isTyping = false;
@@ -317,9 +317,9 @@ class LocalState extends State<Local> {
   }
 
   void _removeItem(Message item) async {
-    await _chatController.remove(item);
+    await _chatController.removeMessage(item);
     if (_chatController.messages.length == 1) {
-      await _chatController.remove(_chatController.messages[0]);
+      await _chatController.removeMessage(_chatController.messages[0]);
     }
   }
 
@@ -350,7 +350,7 @@ class LocalState extends State<Local> {
                       source: image.path,
                     );
 
-                    await _chatController.insert(imageMessage);
+                    await _chatController.insertMessage(imageMessage);
                   }
                 },
               ),
@@ -385,7 +385,7 @@ class LocalState extends State<Local> {
                               : null,
                     );
 
-                    await _chatController.insert(fileMessage);
+                    await _chatController.insertMessage(fileMessage);
                   }
                 },
               ),

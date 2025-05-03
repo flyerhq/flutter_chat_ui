@@ -29,7 +29,7 @@ The library itself does not dictate state management for streams. The example pr
     *   It requires the `ChatController` instance.
 *   **Finalization:** Upon stream completion or error, the manager:
     *   Waits for a duration matching the UI animation (`chunkAnimationDuration`).
-    *   Calls `chatController.update(originalStreamMessage, finalTextMessage)` to replace the `TextStreamMessage` with a standard `TextMessage` in the data source.
+    *   Calls `chatController.updateMessage(originalStreamMessage, finalTextMessage)` to replace the `TextStreamMessage` with a standard `TextMessage` in the data source.
     *   Cleans up its internal state for that `streamId`.
 *   **Integration:** The example ([gemini.dart](mdc:examples/flyer_chat/lib/gemini.dart)) provides the manager via `ChangeNotifierProvider` and uses `context.watch` within the `textStreamMessageBuilder` to get the current `StreamState` for the widget.
 
@@ -40,7 +40,7 @@ The library itself does not dictate state management for streams. The example pr
 3.  The external manager is notified (`startStream`).
 4.  Subsequent chunks are sent to the manager (`addChunk`), which updates its state and notifies listeners.
 5.  The `FlyerChatTextStreamMessage` widget rebuilds via `context.watch`, receives the new `StreamState`, detects the new chunk in `didUpdateWidget`, and initiates the animation for that chunk.
-6.  When the stream ends, the manager (`completeStream`/`errorStream`) delays, then calls `chatController.update`.
+6.  When the stream ends, the manager (`completeStream`/`errorStream`) delays, then calls `chatController.updateMessage`.
 7.  The `ChatAnimatedList` reacts to the controller update, eventually causing `ChatMessageInternal` to rebuild with the final `TextMessage`, which is then rendered by the `textMessageBuilder`.
 
 This approach ensures animations occur inline, the UI handles list recycling gracefully, and the final message state is persisted correctly via the controller.

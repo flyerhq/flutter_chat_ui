@@ -33,7 +33,7 @@ class BasicState extends State<Basic> {
         chatController: _chatController,
         currentUserId: 'user1',
         onMessageSend: (text) {
-          _chatController.insert(
+          _chatController.insertMessage(
             SystemMessage(
               // Better to use UUID or similar for the ID - IDs must be unique
               id: '${Random().nextInt(1000) + 1}',

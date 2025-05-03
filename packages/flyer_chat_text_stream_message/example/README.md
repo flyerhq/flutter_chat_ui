@@ -44,7 +44,7 @@ class BasicState extends State<Basic> {
         chatController: _chatController,
         currentUserId: 'user1',
         onMessageSend: (text) {
-          _chatController.insert(
+          _chatController.insertMessage(
             // For a comprehensive example of how to implement the stream manager and work with streamIds, refer to the main example application available at
             // https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat
             TextStreamMessage(

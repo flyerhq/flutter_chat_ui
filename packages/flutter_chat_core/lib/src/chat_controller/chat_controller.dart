@@ -8,16 +8,16 @@ import 'chat_operation.dart';
 /// about changes to the message list.
 abstract class ChatController {
   /// Inserts a new [message] into the list, optionally at a specific [index].
-  Future<void> insert(Message message, {int? index});
+  Future<void> insertMessage(Message message, {int? index});
 
   /// Replaces an [oldMessage] with a [newMessage].
-  Future<void> update(Message oldMessage, Message newMessage);
+  Future<void> updateMessage(Message oldMessage, Message newMessage);
 
   /// Removes a specific [message] from the list.
-  Future<void> remove(Message message);
+  Future<void> removeMessage(Message message);
 
   /// Replaces the entire message list with the provided [messages].
-  Future<void> set(List<Message> messages);
+  Future<void> setMessages(List<Message> messages);
 
   /// Gets the current list of messages.
   List<Message> get messages;

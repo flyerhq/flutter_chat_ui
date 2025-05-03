@@ -44,7 +44,7 @@ class BasicState extends State<Basic> {
             name: fileName,
             size: fileSize,
           );
-          _chatController.insert(fileMessage);
+          _chatController.insertMessage(fileMessage);
         },
         onMessageSend: (text) {},
         resolveUser: (UserID id) async {

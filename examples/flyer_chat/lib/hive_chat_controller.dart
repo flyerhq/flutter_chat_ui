@@ -8,7 +8,7 @@ class HiveChatController implements ChatController {
   final _operationsController = StreamController<ChatOperation>.broadcast();
 
   @override
-  Future<void> insert(Message message, {int? index}) async {
+  Future<void> insertMessage(Message message, {int? index}) async {
     if (_box.containsKey(message.id)) return;
 
     _box.write(() {
@@ -25,7 +25,7 @@ class HiveChatController implements ChatController {
   }
 
   @override
-  Future<void> remove(Message message) async {
+  Future<void> removeMessage(Message message) async {
     final index = _box
         .getRange(0, _box.length)
         .map((json) => Message.fromJson(json))
@@ -41,7 +41,7 @@ class HiveChatController implements ChatController {
   }
 
   @override
-  Future<void> update(Message oldMessage, Message newMessage) async {
+  Future<void> updateMessage(Message oldMessage, Message newMessage) async {
     if (oldMessage == newMessage) return;
 
     final index = _box
@@ -59,7 +59,7 @@ class HiveChatController implements ChatController {
   }
 
   @override
-  Future<void> set(List<Message> messages) async {
+  Future<void> setMessages(List<Message> messages) async {
     _box.clear();
     if (messages.isEmpty) {
       _operationsController.add(ChatOperation.set());

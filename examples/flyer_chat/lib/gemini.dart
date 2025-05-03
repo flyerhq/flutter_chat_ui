@@ -113,7 +113,7 @@ class GeminiState extends State<Gemini> {
                         icon: Icons.delete_sweep,
                         title: 'Clear all',
                         onPressed: () {
-                          _chatController.set([]);
+                          _chatController.setMessages([]);
                           _chatSession = _model.startChat();
                         },
                         destructive: true,
@@ -178,7 +178,7 @@ class GeminiState extends State<Gemini> {
   }
 
   void _handleMessageSend(String text) async {
-    await _chatController.insert(
+    await _chatController.insertMessage(
       TextMessage(
         id: _uuid.v4(),
         authorId: _currentUser.id,
@@ -200,7 +200,7 @@ class GeminiState extends State<Gemini> {
 
     await _crossCache.downloadAndSave(image.path);
 
-    await _chatController.insert(
+    await _chatController.insertMessage(
       ImageMessage(
         id: _uuid.v4(),
         authorId: _currentUser.id,
@@ -241,7 +241,7 @@ class GeminiState extends State<Gemini> {
               createdAt: DateTime.now().toUtc(),
               streamId: streamId,
             );
-            await _chatController.insert(streamMessage);
+            await _chatController.insertMessage(streamMessage);
             _streamManager.startStream(streamId, streamMessage);
           }
 
