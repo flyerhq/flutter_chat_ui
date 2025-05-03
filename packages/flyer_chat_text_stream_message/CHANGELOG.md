@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - **FEAT**: rename chat controller methods. ([dc1bf57d](https://github.com/flyerhq/flutter_chat_ui/commit/dc1bf57d9b5f9655805589fdda5581759b9cc1a9))
+
 ## 2.0.4
 
  - Update a dependency to the latest release.
