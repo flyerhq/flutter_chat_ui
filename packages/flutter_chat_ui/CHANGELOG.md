@@ -1,3 +1,7 @@
+## 2.1.1
+
+ - **FIX**: add video message type. ([93a13840](https://github.com/flyerhq/flutter_chat_ui/commit/93a13840c2ae3fae7e36093efeb4f9bf69e8a755))
+
 ## 2.1.0
 
 **⚠️ Breaking Changes ⚠️**
