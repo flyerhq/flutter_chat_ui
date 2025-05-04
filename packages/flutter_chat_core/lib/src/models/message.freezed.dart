@@ -32,6 +32,10 @@ Message _$MessageFromJson(
           return FileMessage.fromJson(
             json
           );
+                case 'video':
+          return VideoMessage.fromJson(
+            json
+          );
                 case 'system':
           return SystemMessage.fromJson(
             json
@@ -683,6 +687,149 @@ as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non
 as String,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as int?,mimeType: freezed == mimeType ? _self.mimeType : mimeType // ignore: cast_nullable_to_non_nullable
 as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class VideoMessage extends Message {
+  const VideoMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.name, this.size, this.width, this.height, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'video',super._();
+  factory VideoMessage.fromJson(Map<String, dynamic> json) => _$VideoMessageFromJson(json);
+
+/// Unique identifier for the message.
+@override final  MessageID id;
+/// ID of the user who sent the message.
+@override final  UserID authorId;
+/// ID of the message this one is replying to.
+@override final  MessageID? replyToMessageId;
+/// Timestamp when the message was created.
+@override@EpochDateTimeConverter() final  DateTime? createdAt;
+/// Timestamp when the message was marked as deleted.
+@override@EpochDateTimeConverter() final  DateTime? deletedAt;
+/// Timestamp when the message failed to send.
+@override@EpochDateTimeConverter() final  DateTime? failedAt;
+/// Timestamp when the message was successfully sent.
+@override@EpochDateTimeConverter() final  DateTime? sentAt;
+/// Timestamp when the message was delivered to the recipient.
+@override@EpochDateTimeConverter() final  DateTime? deliveredAt;
+/// Timestamp when the message was seen by the recipient.
+@override@EpochDateTimeConverter() final  DateTime? seenAt;
+/// Timestamp when the message was last updated.
+@override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Map of reaction keys to lists of user IDs who reacted.
+ final  Map<String, List<UserID>>? _reactions;
+/// Map of reaction keys to lists of user IDs who reacted.
+@override Map<String, List<UserID>>? get reactions {
+  final value = _reactions;
+  if (value == null) return null;
+  if (_reactions is EqualUnmodifiableMapView) return _reactions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
+/// Additional custom metadata associated with the message.
+ final  Map<String, dynamic>? _metadata;
+/// Additional custom metadata associated with the message.
+@override Map<String, dynamic>? get metadata {
+  final value = _metadata;
+  if (value == null) return null;
+  if (_metadata is EqualUnmodifiableMapView) return _metadata;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
+/// Source URL or path of the video.
+ final  String source;
+/// Optional text caption accompanying the video.
+ final  String? text;
+/// Name of the video.
+ final  String? name;
+/// Size of the video in bytes.
+ final  int? size;
+/// Width of the video in pixels.
+ final  double? width;
+/// Height of the video in pixels.
+ final  double? height;
+
+@JsonKey(name: 'type')
+final String $type;
+
+
+/// Create a copy of Message
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VideoMessageCopyWith<VideoMessage> get copyWith => _$VideoMessageCopyWithImpl<VideoMessage>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$VideoMessageToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VideoMessage&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.replyToMessageId, replyToMessageId) || other.replyToMessageId == replyToMessageId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.failedAt, failedAt) || other.failedAt == failedAt)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.deliveredAt, deliveredAt) || other.deliveredAt == deliveredAt)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&const DeepCollectionEquality().equals(other._metadata, _metadata)&&(identical(other.source, source) || other.source == source)&&(identical(other.text, text) || other.text == text)&&(identical(other.name, name) || other.name == name)&&(identical(other.size, size) || other.size == size)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,authorId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(_reactions),const DeepCollectionEquality().hash(_metadata),source,text,name,size,width,height);
+
+@override
+String toString() {
+  return 'Message.video(id: $id, authorId: $authorId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, metadata: $metadata, source: $source, text: $text, name: $name, size: $size, width: $width, height: $height)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $VideoMessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
+  factory $VideoMessageCopyWith(VideoMessage value, $Res Function(VideoMessage) _then) = _$VideoMessageCopyWithImpl;
+@override @useResult
+$Res call({
+ MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, Map<String, dynamic>? metadata, String source, String? text, String? name, int? size, double? width, double? height
+});
+
+
+
+
+}
+/// @nodoc
+class _$VideoMessageCopyWithImpl<$Res>
+    implements $VideoMessageCopyWith<$Res> {
+  _$VideoMessageCopyWithImpl(this._self, this._then);
+
+  final VideoMessage _self;
+  final $Res Function(VideoMessage) _then;
+
+/// Create a copy of Message
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToMessageId = freezed,Object? createdAt = freezed,Object? deletedAt = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? metadata = freezed,Object? source = null,Object? text = freezed,Object? name = freezed,Object? size = freezed,Object? width = freezed,Object? height = freezed,}) {
+  return _then(VideoMessage(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as UserID,replyToMessageId: freezed == replyToMessageId ? _self.replyToMessageId : replyToMessageId // ignore: cast_nullable_to_non_nullable
+as MessageID?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,failedAt: freezed == failedAt ? _self.failedAt : failedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,sentAt: freezed == sentAt ? _self.sentAt : sentAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : deliveredAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
+as Map<String, List<UserID>>?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int?,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
+as double?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 

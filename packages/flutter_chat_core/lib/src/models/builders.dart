@@ -22,6 +22,10 @@ typedef ImageMessageBuilder =
 typedef FileMessageBuilder =
     Widget Function(BuildContext, FileMessage, int index);
 
+/// Signature for building a video message widget.
+typedef VideoMessageBuilder =
+    Widget Function(BuildContext, VideoMessage, int index);
+
 /// Signature for building a system message widget.
 typedef SystemMessageBuilder =
     Widget Function(BuildContext, SystemMessage, int index);
@@ -84,6 +88,9 @@ abstract class Builders with _$Builders {
 
     /// Custom builder for file messages.
     FileMessageBuilder? fileMessageBuilder,
+
+    /// Custom builder for video messages.
+    VideoMessageBuilder? videoMessageBuilder,
 
     /// Custom builder for system messages.
     SystemMessageBuilder? systemMessageBuilder,

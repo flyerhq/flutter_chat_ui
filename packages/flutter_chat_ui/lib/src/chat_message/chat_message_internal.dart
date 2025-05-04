@@ -197,6 +197,9 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
       case FileMessage():
         return builders.fileMessageBuilder?.call(context, message, index) ??
             const SizedBox.shrink();
+      case VideoMessage():
+        return builders.videoMessageBuilder?.call(context, message, index) ??
+            const SizedBox.shrink();
       case SystemMessage():
         return builders.systemMessageBuilder?.call(context, message, index) ??
             const SizedBox.shrink();

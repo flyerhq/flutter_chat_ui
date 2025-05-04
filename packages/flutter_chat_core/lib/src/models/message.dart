@@ -212,6 +212,63 @@ sealed class Message with _$Message {
     String? mimeType,
   }) = FileMessage;
 
+  /// Creates a video message.
+  const factory Message.video({
+    /// Unique identifier for the message.
+    required MessageID id,
+
+    /// ID of the user who sent the message.
+    required UserID authorId,
+
+    /// ID of the message this one is replying to.
+    MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
+    @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
+    @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
+    @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
+    @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
+    @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
+    @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
+    Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
+    Map<String, dynamic>? metadata,
+
+    /// Source URL or path of the video.
+    required String source,
+
+    /// Optional text caption accompanying the video.
+    String? text,
+
+    /// Name of the video.
+    String? name,
+
+    /// Size of the video in bytes.
+    int? size,
+
+    /// Width of the video in pixels.
+    double? width,
+
+    /// Height of the video in pixels.
+    double? height,
+  }) = VideoMessage;
+
   /// Creates a system message (e.g., "User joined the chat").
   const factory Message.system({
     /// Unique identifier for the message.
