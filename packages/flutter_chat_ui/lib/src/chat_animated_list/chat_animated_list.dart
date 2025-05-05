@@ -211,8 +211,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             event.message != null,
             'Message must be provided when removing a message.',
           );
+          _oldList.removeAt(event.index!);
           _onRemoved(event.index!, event.message!);
-          _oldList = List.from(_chatController.messages);
           break;
         case ChatOperationType.set:
           final newList = _chatController.messages;
