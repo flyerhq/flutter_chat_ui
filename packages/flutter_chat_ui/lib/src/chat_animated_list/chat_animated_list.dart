@@ -199,8 +199,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             event.message != null,
             'Message must be provided when inserting a message.',
           );
+          _oldList.insert(event.index!, event.message!);
           _onInserted(event.index!, event.message!);
-          _oldList = List.from(_chatController.messages);
           break;
         case ChatOperationType.remove:
           assert(
