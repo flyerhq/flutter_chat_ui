@@ -163,7 +163,7 @@ class _ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
             event.message != null,
             'Message must be provided when inserting a message.',
           );
-          _onInserted(0, event.message!);
+          _onInserted(event.index!, event.message!);
           _oldList = List.from(_chatController.messages);
           break;
         case ChatOperationType.remove:
@@ -570,7 +570,10 @@ class _ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
                 widget.insertAnimationDuration)
             : widget.insertAnimationDuration;
 
-    _listKey.currentState!.insertItem(position, duration: duration);
+    _listKey.currentState!.insertItem(
+      max(_oldList.length - 1 - position, 0).toInt(),
+      duration: duration,
+    );
 
     // Used later to trigger scroll to end only for the last inserted message.
     _lastInsertedMessageId = data.id;
