@@ -299,18 +299,15 @@ class _ChatAnimatedListReversedState extends State<ChatAnimatedListReversed>
                 if (widget.bottomSliver != null) widget.bottomSliver!,
                 SliverAnimatedList(
                   key: _listKey,
-                  initialItemCount: _chatController.messages.length,
+                  initialItemCount: _oldList.length,
                   itemBuilder: (
                     BuildContext context,
                     int index,
                     Animation<double> animation,
                   ) {
                     _sliverListViewContext ??= context;
-                    final currentIndex = max(
-                      _chatController.messages.length - 1 - index,
-                      0,
-                    );
-                    final message = _chatController.messages[currentIndex];
+                    final currentIndex = max(_oldList.length - 1 - index, 0);
+                    final message = _oldList[currentIndex];
 
                     return widget.itemBuilder(
                       context,

@@ -385,14 +385,14 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                   ),
                 SliverAnimatedList(
                   key: _listKey,
-                  initialItemCount: _chatController.messages.length,
+                  initialItemCount: _oldList.length,
                   itemBuilder: (
                     BuildContext context,
                     int index,
                     Animation<double> animation,
                   ) {
                     _sliverListViewContext ??= context;
-                    final message = _chatController.messages[index];
+                    final message = _oldList  [index];
 
                     return widget.itemBuilder(
                       context,
@@ -744,7 +744,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     double alignment = 0,
     double offset = 0,
   }) async {
-    if (index < 0 || index >= _chatController.messages.length) {
+    if (index < 0 || index >= _oldList.length) {
       return;
     }
 
