@@ -158,6 +158,10 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   late List<Message> _oldList;
   late final StreamSubscription<ChatOperation> _operationsSubscription;
 
+  // Queue of operations to be processed
+  final List<ChatOperation> _operationsQueue = [];
+  bool _isProcessingOperations = false;
+
   // Used by scrollview_observer to allow for scroll to specific item
   BuildContext? _sliverListViewContext;
 
@@ -189,48 +193,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
     _oldList = List.from(_chatController.messages);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
-      switch (event.type) {
-        case ChatOperationType.insert:
-          assert(
-            event.index != null,
-            'Index must be provided when inserting a message.',
-          );
-          assert(
-            event.message != null,
-            'Message must be provided when inserting a message.',
-          );
-          _oldList.insert(event.index!, event.message!);
-          _onInserted(event.index!, event.message!);
-          break;
-        case ChatOperationType.remove:
-          assert(
-            event.index != null,
-            'Index must be provided when removing a message.',
-          );
-          assert(
-            event.message != null,
-            'Message must be provided when removing a message.',
-          );
-          _oldList.removeAt(event.index!);
-          _onRemoved(event.index!, event.message!);
-          break;
-        case ChatOperationType.set:
-          final newList = _chatController.messages;
-
-          final updates =
-              diffutil
-                  .calculateDiff<Message>(MessageListDiff(_oldList, newList))
-                  .getUpdatesWithData();
-
-          for (final update in updates) {
-            _onDiffUpdate(update);
-          }
-
-          _oldList = List.from(newList);
-          break;
-        default:
-          break;
-      }
+      _operationsQueue.add(event);
+      _processOperationsQueue();
     });
 
     _scrollAnimationController = AnimationController(
@@ -807,6 +771,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       duration = Duration.zero;
     }
 
+    _oldList.insert(position, data);
     _listKey.currentState!.insertItem(
       position,
       // We are only animating items when scroll view is not yet scrollable,
@@ -828,6 +793,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             ? (widget.removeAnimationDurationResolver!(data) ??
                 widget.removeAnimationDuration)
             : widget.removeAnimationDuration;
+
+    _oldList.removeAt(position);
 
     _listKey.currentState!.removeItem(
       position,
@@ -862,5 +829,61 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       change: (pos, oldData, newData) => _onChanged(pos, oldData, newData),
       move: (_, __, ___) => throw UnimplementedError('unused'),
     );
+  }
+
+  /// Processes the queue of chat operations.
+  void _processOperationsQueue() {
+    // Safety to no process twice, should not really happen
+    if (_isProcessingOperations) return;
+    _isProcessingOperations = true;
+    while (_operationsQueue.isNotEmpty) {
+      final ops = List.of(_operationsQueue);
+      _operationsQueue.clear();
+      for (final op in ops) {
+        switch (op.type) {
+          case ChatOperationType.insert:
+            assert(
+              op.index != null,
+              'Index must be provided when inserting a message.',
+            );
+            assert(
+              op.message != null,
+              'Message must be provided when inserting a message.',
+            );
+            _onInserted(op.index!, op.message!);
+            break;
+          case ChatOperationType.remove:
+            assert(
+              op.index != null,
+              'Index must be provided when removing a message.',
+            );
+            assert(
+              op.message != null,
+              'Message must be provided when removing a message.',
+            );
+            _onRemoved(op.index!, op.message!);
+            break;
+          case ChatOperationType.set:
+            // TODO Pass the new list in the operation to prevent async
+            // operations from interfering with each other
+            final newList = _chatController.messages;
+
+            final updates =
+                diffutil
+                    .calculateDiff<Message>(MessageListDiff(_oldList, newList))
+                    .getUpdatesWithData();
+
+            for (var i = updates.length - 1; i >= 0; i--) {
+              _onDiffUpdate(updates.elementAt(i));
+            }
+
+            _oldList = List.from(newList);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    _isProcessingOperations = false;
   }
 }
