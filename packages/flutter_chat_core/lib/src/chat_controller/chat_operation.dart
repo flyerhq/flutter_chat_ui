@@ -58,5 +58,6 @@ class ChatOperation {
       ChatOperation._(ChatOperationType.remove, message: message, index: index);
 
   /// Creates a set operation (signifying a full list replacement).
-  factory ChatOperation.set() => ChatOperation._(ChatOperationType.set);
+  factory ChatOperation.set({List<Message>? messages}) =>
+      ChatOperation._(ChatOperationType.set, messages: messages);
 }

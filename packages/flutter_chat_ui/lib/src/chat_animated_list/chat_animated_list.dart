@@ -923,9 +923,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             _onRemoved(op.index!, op.message!);
             break;
           case ChatOperationType.set:
-            // TODO Pass the new list in the operation to prevent async
-            // operations from interfering with each other
-            final newList = _chatController.messages;
+            // TODO : I kept the old logic for retrocompatibility,
+            // but this can cause the issue discussed in #754 #755
+            final newList = op.messages ?? _chatController.messages;
 
             final updates =
                 diffutil
@@ -935,8 +935,6 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             for (var i = updates.length - 1; i >= 0; i--) {
               _onDiffUpdate(updates.elementAt(i));
             }
-
-            _oldList = List.from(newList);
             break;
           case ChatOperationType.insertAll:
             final newList = op.messages?.reversed ?? [];
