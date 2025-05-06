@@ -811,15 +811,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _onChanged(int position, Message oldData, Message newData) {
-    // Use animation duration resolver if provided, otherwise use default duration.
-    final duration =
-        widget.insertAnimationDurationResolver != null
-            ? (widget.insertAnimationDurationResolver!(newData) ??
-                widget.insertAnimationDuration)
-            : widget.insertAnimationDuration;
-
     _onRemoved(position, oldData);
-    _listKey.currentState!.insertItem(position, duration: duration);
+    _onInserted(position, newData);
   }
 
   void _onDiffUpdate(diffutil.DataDiffUpdate<Message> update) {
