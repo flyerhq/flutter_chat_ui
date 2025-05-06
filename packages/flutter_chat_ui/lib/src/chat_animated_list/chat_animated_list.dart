@@ -938,6 +938,12 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
             _oldList = List.from(newList);
             break;
+          case ChatOperationType.insertAll:
+            final newList = op.messages?.reversed ?? [];
+            for (final message in newList) {
+              _onInserted(op.index!, message);
+            }
+            break;
           default:
             break;
         }

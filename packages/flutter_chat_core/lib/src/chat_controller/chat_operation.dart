@@ -1,7 +1,7 @@
 import '../models/message.dart';
 
 /// Enum representing the type of operation performed on the chat message list.
-enum ChatOperationType { insert, update, remove, set }
+enum ChatOperationType { insert, update, remove, set, insertAll }
 
 /// Represents a single operation performed on the message list managed by a [ChatController].
 ///
@@ -20,11 +20,30 @@ class ChatOperation {
   /// The index where the message was inserted or removed. Null for `update` and `set`.
   final int? index;
 
-  ChatOperation._(this.type, {this.oldMessage, this.message, this.index});
+  /// The affected messages (set, insertSeveral)
+  final List<Message>? messages;
+
+  ChatOperation._(
+    this.type, {
+    this.oldMessage,
+    this.message,
+    this.index,
+    this.messages,
+  });
 
   /// Creates an insert operation.
   factory ChatOperation.insert(Message message, int index) =>
       ChatOperation._(ChatOperationType.insert, message: message, index: index);
+
+  /// Creates an insertAll operation. Works as the insertAll method on a [List].
+  /// TODO We could change insert to take an array if one but it would break the API
+  /// We could also have 2 optionals parameters
+  factory ChatOperation.insertAll(List<Message> messages, int index) =>
+      ChatOperation._(
+        ChatOperationType.insertAll,
+        messages: messages,
+        index: index,
+      );
 
   /// Creates an update operation.
   factory ChatOperation.update(Message oldMessage, Message message) =>
