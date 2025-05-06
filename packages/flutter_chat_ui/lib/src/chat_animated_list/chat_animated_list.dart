@@ -97,6 +97,10 @@ class ChatAnimatedList extends StatefulWidget {
   /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
+  /// Whether the list should be reversed (growing from bottom to top).
+  /// When true, new messages appear at the bottom and the list grows upwards.
+  final bool reversed;
+
   /// Creates an animated chat list.
   const ChatAnimatedList({
     super.key,
@@ -141,6 +145,7 @@ class ChatAnimatedList extends StatefulWidget {
     // unstable pagination jumps, revert to a smaller value like 0.01.
     this.paginationThreshold = 0.01,
     this.messageGroupingTimeoutInSeconds,
+    this.reversed = false,
   });
 
   @override
@@ -235,6 +240,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         return;
       }
 
+      if (widget.reversed) {
+        // Reversed list is anchored at the bottom
+        return;
+      }
+
       if (widget.scrollToEndAnimationDuration == Duration.zero) {
         _scrollController.jumpTo(
           min(
@@ -279,6 +289,36 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     super.dispose();
   }
 
+  Widget _buildLoadMoreSliver(Builders builders) {
+    return SliverToBoxAdapter(
+      child: Consumer<LoadMoreNotifier>(
+        builder: (context, notifier, child) {
+          return Visibility(
+            visible: notifier.isLoading,
+            maintainState: true,
+            child: child!,
+          );
+        },
+        child: builders.loadMoreBuilder?.call(context) ?? LoadMore(),
+      ),
+    );
+  }
+
+  Widget _buildComposerHeightSliver(Builders builders, double bottomSafeArea) {
+    return Consumer<ComposerHeightNotifier>(
+      builder: (context, heightNotifier, child) {
+        return SliverPadding(
+          padding: EdgeInsets.only(
+            bottom:
+                heightNotifier.height +
+                (widget.bottomPadding ?? 0) +
+                (widget.handleSafeArea == true ? bottomSafeArea : 0),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
@@ -295,13 +335,15 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
         if (notification is UserScrollNotification) {
           // When user scrolls up, save it to `_userHasScrolled`
-          if (notification.direction == ScrollDirection.forward) {
+          if (notification.direction ==
+              (widget.reversed
+                  ? ScrollDirection.reverse
+                  : ScrollDirection.forward)) {
             _paginationShouldTrigger = true;
             _userHasScrolled = true;
           } else {
             // When user overscolls to the bottom or stays idle at the bottom, set `_userHasScrolled` to false
-            if (notification.metrics.pixels ==
-                notification.metrics.maxScrollExtent) {
+            if (_isAtScrollBottom) {
               _userHasScrolled = false;
             }
           }
@@ -323,30 +365,21 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                   if (_sliverListViewContext != null) _sliverListViewContext!,
                 ],
             child: CustomScrollView(
+              reverse: widget.reversed,
               controller: _scrollController,
               keyboardDismissBehavior:
                   widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
               slivers: <Widget>[
+                if (widget.reversed)
+                  _buildComposerHeightSliver(builders, bottomSafeArea),
                 if (widget.topPadding != null)
                   SliverPadding(
                     padding: EdgeInsets.only(top: widget.topPadding!),
                   ),
                 if (widget.topSliver != null) widget.topSliver!,
-                if (widget.onEndReached != null)
-                  SliverToBoxAdapter(
-                    child: Consumer<LoadMoreNotifier>(
-                      builder: (context, notifier, child) {
-                        return Visibility(
-                          visible: notifier.isLoading,
-                          maintainState: true,
-                          child: child!,
-                        );
-                      },
-                      child:
-                          builders.loadMoreBuilder?.call(context) ?? LoadMore(),
-                    ),
-                  ),
+                if (widget.onEndReached != null && !widget.reversed)
+                  _buildLoadMoreSliver(builders),
                 SliverAnimatedList(
                   key: _listKey,
                   initialItemCount: _oldList.length,
@@ -356,7 +389,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                     Animation<double> animation,
                   ) {
                     _sliverListViewContext ??= context;
-                    final message = _oldList  [index];
+                    final message = _oldList[visualPosition(index)];
 
                     return widget.itemBuilder(
                       context,
@@ -368,21 +401,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                     );
                   },
                 ),
+                if (widget.onEndReached != null && widget.reversed)
+                  _buildLoadMoreSliver(builders),
                 if (widget.bottomSliver != null) widget.bottomSliver!,
-                Consumer<ComposerHeightNotifier>(
-                  builder: (context, heightNotifier, child) {
-                    return SliverPadding(
-                      padding: EdgeInsets.only(
-                        bottom:
-                            heightNotifier.height +
-                            (widget.bottomPadding ?? 0) +
-                            (widget.handleSafeArea == true
-                                ? bottomSafeArea
-                                : 0),
-                      ),
-                    );
-                  },
-                ),
+                if (!widget.reversed)
+                  _buildComposerHeightSliver(builders, bottomSafeArea),
               ],
             ),
           ),
@@ -400,10 +423,26 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     );
   }
 
+  bool get _isAtScrollBottom {
+    return widget.reversed
+        ? _scrollController.offset <= 0
+        : _scrollController.offset >=
+            _scrollController.position.maxScrollExtent;
+  }
+
+  double get _endScrollPosition {
+    return widget.reversed ? 0.0 : _scrollController.position.maxScrollExtent;
+  }
+
   /// Joins the `AnimationController` to the `ScrollController`, providing ample
   /// time for the lazy list to render its contents while scrolling to the bottom.
   /// See https://stackoverflow.com/a/77175903 for more details.
   void _linkAnimationToScroll() {
+    // TODO: Not sure why this was not done for reversed lists
+    if (widget.reversed) {
+      return;
+    }
+
     _scrollController.jumpTo(
       _scrollAnimationController.value *
           _scrollController.position.maxScrollExtent,
@@ -415,18 +454,15 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // maxScrollExtent is not yet updated and the animation might not work.
     await Future.delayed(widget.insertAnimationDuration);
 
+    // TODO: Why not call _handleScrollToBottom here?
+
     if (!_scrollController.hasClients || !mounted) return;
 
-    if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent) {
-      return;
-    }
-
     if (widget.scrollToEndAnimationDuration == Duration.zero) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      _scrollController.jumpTo(_endScrollPosition);
     } else {
       await _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+        _endScrollPosition,
         duration: widget.scrollToEndAnimationDuration,
         curve: Curves.linearToEaseOut,
       );
@@ -445,9 +481,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // Skip scroll logic if this is not the most recently inserted message
     // or if the list is already scrolled to the bottom. This prevents
     // duplicate scrolling when multiple messages are inserted at once.
-    if (data.id != _lastInsertedMessageId ||
-        _scrollController.offset >=
-            _scrollController.position.maxScrollExtent) {
+
+    if (data.id != _lastInsertedMessageId || _isAtScrollBottom) {
       return;
     }
 
@@ -457,10 +492,10 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // After scrolling, exit the function since no other scroll behavior is needed.
     if (widget.shouldScrollToEndWhenAtBottom == true && !_userHasScrolled) {
       if (widget.scrollToEndAnimationDuration == Duration.zero) {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollController.jumpTo(_endScrollPosition);
       } else {
         await _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
+          _endScrollPosition,
           duration: widget.scrollToEndAnimationDuration,
           curve: Curves.linearToEaseOut,
         );
@@ -481,17 +516,24 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       // When scrolled up in chat history use fling to guarantee scrolling
       // to the very end of the list.
       // See https://stackoverflow.com/a/77175903 for more details.
-      if (_userHasScrolled) {
+
+      // TODO: Why not use _handleScrollToBottom here too ? this could wrap this whole logic.
+      // Currently the fling is not used when tapping the scroll to bottom button.
+      if (_userHasScrolled && !widget.reversed) {
+        // TODO not really sure why this is not done for reversed lists
         _scrollAnimationController.value =
             _scrollController.position.pixels /
             _scrollController.position.maxScrollExtent;
         await _scrollAnimationController.fling();
       } else {
+        // TODO: Not sure why there was an else, if the user has not scrolled we dont need to animate?
+        // Maybe juste handle the reverse case here?
+
         if (widget.scrollToEndAnimationDuration == Duration.zero) {
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          _scrollController.jumpTo(_endScrollPosition);
         } else {
           await _scrollController.animateTo(
-            _scrollController.position.maxScrollExtent,
+            _endScrollPosition,
             duration: widget.scrollToEndAnimationDuration,
             curve: Curves.linearToEaseOut,
           );
@@ -507,7 +549,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
       // We need this condition because if scroll view is not yet scrollable,
       // we want to wait for the insert animation to finish before scrolling to the end.
-      if (_scrollController.position.maxScrollExtent == 0) {
+      if (!widget.reversed && _scrollController.position.maxScrollExtent == 0) {
         // Scroll view is not yet scrollable, scroll to the end if
         // new message makes it scrollable.
         _initialScrollToEnd();
@@ -520,6 +562,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   void _adjustInitialScrollPosition(ScrollMetricsNotification notification) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients || !mounted) return;
+      // TODO: Up to you to decide if you want to keep this or not.
+      // if (widget.reversed) {
+      //   // Reversed lists don't need to adjust the initial scroll position.
+      //   return;
+      // }
 
       // If the list is empty there is no need to adjust the initial scroll position.
       if (_oldList.isEmpty) {
@@ -534,12 +581,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
           return;
         }
 
-        // jump until pixels == maxScrollExtent, i.e. end of the list
-        if (notification.metrics.pixels ==
-            notification.metrics.maxScrollExtent) {
+        // jump until pixels == maxScrollExtent or 0 for reversed lists, i.e. end of the list
+        if (notification.metrics.pixels == _endScrollPosition) {
           _needsInitialScrollPositionAdjustment = false;
         } else {
-          _scrollController.jumpTo(notification.metrics.maxScrollExtent);
+          _scrollController.jumpTo(_endScrollPosition);
         }
       }
     });
@@ -553,10 +599,15 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
       _scrollToBottomController.reverse();
 
-      _scrollAnimationController.value =
-          _scrollController.position.pixels /
-          _scrollController.position.maxScrollExtent;
-      _scrollAnimationController.fling();
+      if (widget.scrollToEndAnimationDuration == Duration.zero) {
+        _scrollController.jumpTo(_endScrollPosition);
+      } else {
+        _scrollController.animateTo(
+          _endScrollPosition,
+          duration: widget.scrollToEndAnimationDuration,
+          curve: Curves.linearToEaseOut,
+        );
+      }
 
       _userHasScrolled = false;
       _isScrollingToBottom = false;
@@ -566,8 +617,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   void _handleToggleScrollToBottom() {
     if (!_isScrollingToBottom) {
       _scrollToBottomShowTimer?.cancel();
-      if (_scrollController.offset <
-          _scrollController.position.maxScrollExtent) {
+      if (!_isAtScrollBottom) {
         _scrollToBottomShowTimer = Timer(
           widget.scrollToBottomAppearanceDelay,
           () {
@@ -596,18 +646,27 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         !_paginationShouldTrigger) {
       return;
     }
-    // Get the threshold for pagination.
-    final threshold = widget.paginationThreshold ?? 0;
 
-    // Calculate scroll position percentage (0 = top, 1 = bottom).
-    // For example, 0.1 means 10% from the top of the list.
+    // Get the threshold for pagination, defaulting to the very top of the list
+    var threshold = (widget.paginationThreshold ?? 0);
+    if (widget.reversed) {
+      threshold = 1 - threshold;
+    }
+    // Calculate how far the user has scrolled as a percentage from 0 to 1.
+    // For a normal list this is 0 at the top and 1 at the bottom.
+    // For a reversed list this is 1 at the top and 0 at the bottom.
     final scrollPercentage =
         metrics.maxScrollExtent == 0
             ? 0
             : metrics.pixels / metrics.maxScrollExtent;
 
+    final shouldTrigger =
+        widget.reversed
+            ? scrollPercentage >= threshold
+            : scrollPercentage <= threshold;
+
     // Trigger pagination if user scrolled past the threshold towards the top.
-    if (scrollPercentage <= threshold) {
+    if (shouldTrigger) {
       // Prevent multiple triggers during one scroll gesture.
       _paginationShouldTrigger = false;
 
@@ -750,10 +809,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
   void _onInserted(final int position, final Message data) {
     // If for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
-    // set `_userHasScrolled` to false so that the scroll to end animation is triggered.
-    if (_userHasScrolled &&
-        _scrollController.offset >=
-            _scrollController.position.maxScrollExtent) {
+    // set `_userHasScrolled` to false
+    if (_userHasScrolled && _isAtScrollBottom) {
       _userHasScrolled = false;
     }
 
@@ -772,8 +829,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     }
 
     _oldList.insert(position, data);
+    // The insertItem method requires the position of the item after the insert
     _listKey.currentState!.insertItem(
-      position,
+      visualPosition(position),
       // We are only animating items when scroll view is not yet scrollable,
       // otherwise we just insert the item without animation.
       // (animation is replaced with scroll to bottom animation)
@@ -797,11 +855,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     _oldList.removeAt(position);
 
     _listKey.currentState!.removeItem(
-      position,
+      visualPosition(position),
       (context, animation) => widget.itemBuilder(
         context,
         data,
-        position,
+        visualPosition(position),
         animation,
         messageGroupingTimeoutInSeconds: widget.messageGroupingTimeoutInSeconds,
         isRemoved: true,
@@ -813,6 +871,14 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   void _onChanged(int position, Message oldData, Message newData) {
     _onRemoved(position, oldData);
     _onInserted(position, newData);
+  }
+
+  /// Maps a content position to its visual position in the list.
+  /// For reversed lists, this transforms the index to account for reversed order.
+  int visualPosition(int indexPosition) {
+    return widget.reversed
+        ? max(_oldList.length - indexPosition - 1, 0)
+        : indexPosition;
   }
 
   void _onDiffUpdate(diffutil.DataDiffUpdate<Message> update) {
