@@ -225,7 +225,7 @@ class _ComposerState extends State<Composer> {
                         : (widget.padding ?? EdgeInsets.zero),
                 child: Row(
                   children: [
-                    widget.attachmentIcon != null
+                    widget.attachmentIcon != null && onAttachmentTap != null
                         ? IconButton(
                           icon: widget.attachmentIcon!,
                           color:
