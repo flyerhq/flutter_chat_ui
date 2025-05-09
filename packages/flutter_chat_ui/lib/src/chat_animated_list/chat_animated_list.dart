@@ -394,7 +394,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                     return widget.itemBuilder(
                       context,
                       message,
-                      index,
+                      visualPosition(index),
                       animation,
                       messageGroupingTimeoutInSeconds:
                           widget.messageGroupingTimeoutInSeconds,
