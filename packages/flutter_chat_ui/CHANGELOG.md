@@ -1,3 +1,7 @@
+## 2.1.3
+
+ - **FIX**: hide attachmentButton if no there is no onAttachmentTap provided ([#757](https://github.com/flyerhq/flutter_chat_ui/issues/757)). ([2eae2002](https://github.com/flyerhq/flutter_chat_ui/commit/2eae2002a9c846062902d7582724d0a932fae623))
+
 ## 2.1.2
 
  - **FIX**: add audio message type. ([8d2b705a](https://github.com/flyerhq/flutter_chat_ui/commit/8d2b705ad261275368d8c92d91ccdd53193d58ca))
