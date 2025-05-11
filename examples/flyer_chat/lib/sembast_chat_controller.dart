@@ -33,6 +33,29 @@ class SembastChatController implements ChatController {
   }
 
   @override
+  Future<void> insertAllMessages(List<Message> messages, {int? index}) async {
+    // Implementing a fully order-preserving `insertAllMessages` at an arbitrary `index`
+    // that also ensures `this.messages` getter returns the Sembast data in that
+    // specific logical order is complex for this simple example controller.
+    // It would typically require managing an explicit order field within Sembast
+    // and sorting by it, or significant data shifting.
+    //
+    // For this example, if batch insertion is needed with Sembast, users might:
+    // 1. Implement a more sophisticated ordering mechanism (e.g., sort by createdAt
+    //    or a dedicated order field, and adjust that field on insertAll).
+    // 2. Rely on the UI to manage the visual order based on ChatOperation.insertAll,
+    //    understanding that `this.messages` will return Sembast's key-based order.
+    // 3. Use `setMessages` if the goal is to completely replace the list.
+    //
+    // This method is marked UnimplementedError to highlight this complexity.
+    // The `index` parameter, if not null, would guide where the UI should
+    // visually place the messages.
+    throw UnimplementedError(
+      'SembastChatController.insertAllMessages with arbitrary index is not fully implemented due to ordering complexities with Sembast in this simple example. See comments in code.',
+    );
+  }
+
+  @override
   Future<void> removeMessage(Message message) async {
     final store = intMapStoreFactory.store();
     final records = await store.find(database);
@@ -49,15 +72,14 @@ class SembastChatController implements ChatController {
     }
 
     if (index != null && record != null) {
+      final messageToRemove = Message.fromJson(record.value);
       await store.record(record.key).delete(database);
-      _operationsController.add(ChatOperation.remove(message, index));
+      _operationsController.add(ChatOperation.remove(messageToRemove, index));
     }
   }
 
   @override
   Future<void> updateMessage(Message oldMessage, Message newMessage) async {
-    if (oldMessage == newMessage) return;
-
     final store = intMapStoreFactory.store();
 
     final record = await store.findFirst(
@@ -68,8 +90,16 @@ class SembastChatController implements ChatController {
     );
 
     if (record != null) {
+      final actualOldMessage = Message.fromJson(record.value);
+
+      if (actualOldMessage == newMessage) {
+        return;
+      }
+
       await store.record(record.key).update(database, newMessage.toJson());
-      _operationsController.add(ChatOperation.update(oldMessage, newMessage));
+      _operationsController.add(
+        ChatOperation.update(actualOldMessage, newMessage),
+      );
     }
   }
 
@@ -77,7 +107,10 @@ class SembastChatController implements ChatController {
   Future<void> setMessages(List<Message> messages) async {
     final store = intMapStoreFactory.store();
     await store.delete(database);
-    _operationsController.add(ChatOperation.set());
+    for (final message in messages) {
+      await store.add(database, message.toJson());
+    }
+    _operationsController.add(ChatOperation.set(messages: messages));
   }
 
   @override

@@ -26,34 +26,45 @@ class HiveChatController implements ChatController {
 
   @override
   Future<void> removeMessage(Message message) async {
-    final index = _box
-        .getRange(0, _box.length)
-        .map((json) => Message.fromJson(json))
-        .toList()
-        .indexOf(message);
+    final messages =
+        _box
+            .getRange(0, _box.length)
+            .map((json) => Message.fromJson(json))
+            .toList();
 
-    if (index > -1) {
+    final index = messages.indexWhere((m) => m.id == message.id);
+
+    if (index != -1) {
+      final messageToRemove = messages[index];
       _box.write(() {
         _box.deleteAt(index);
-        _operationsController.add(ChatOperation.remove(message, index));
+        _operationsController.add(ChatOperation.remove(messageToRemove, index));
       });
     }
   }
 
   @override
   Future<void> updateMessage(Message oldMessage, Message newMessage) async {
-    if (oldMessage == newMessage) return;
+    final messages =
+        _box
+            .getRange(0, _box.length)
+            .map((json) => Message.fromJson(json))
+            .toList();
 
-    final index = _box
-        .getRange(0, _box.length)
-        .map((json) => Message.fromJson(json))
-        .toList()
-        .indexOf(oldMessage);
+    final index = messages.indexWhere((m) => m.id == oldMessage.id);
 
-    if (index > -1) {
+    if (index != -1) {
+      final actualOldMessage = messages[index];
+
+      if (actualOldMessage == newMessage) {
+        return;
+      }
+
       _box.write(() {
         _box.putAt(index, newMessage.toJson());
-        _operationsController.add(ChatOperation.update(oldMessage, newMessage));
+        _operationsController.add(
+          ChatOperation.update(actualOldMessage, newMessage),
+        );
       });
     }
   }
@@ -72,9 +83,33 @@ class HiveChatController implements ChatController {
               .toList()
               .reduce((acc, map) => {...acc, ...map}),
         );
-        _operationsController.add(ChatOperation.set());
+        _operationsController.add(ChatOperation.set(messages: messages));
       });
     }
+  }
+
+  @override
+  Future<void> insertAllMessages(List<Message> messages, {int? index}) async {
+    // Implementing a fully order-preserving `insertAllMessages` at an arbitrary `index`
+    // that also ensures `this.messages` (derived from _box.getRange) reflects that
+    // specific logical order is complex for this simple example controller, especially
+    // if performance with large datasets is a concern (e.g., avoiding read-all,
+    // modify-list, clear-box, write-all).
+    //
+    // For this example, if batch insertion is needed with Hive, users might:
+    // 1. Implement a more sophisticated strategy, potentially involving managing order
+    //    explicitly if Hive's natural order (based on put/putAt) isn't sufficient
+    //    for their exact needs after complex indexed insertions.
+    // 2. Rely on the UI to manage the visual order based on ChatOperation.insertAll,
+    //    understanding that `this.messages` will reflect Hive's current stored order.
+    // 3. Use `setMessages` if the goal is to completely replace the list.
+    //
+    // This method is marked UnimplementedError to highlight this complexity.
+    // The `index` parameter, if not null, would guide where the UI should
+    // visually place the messages.
+    throw UnimplementedError(
+      'HiveChatController.insertAllMessages with arbitrary index is not fully implemented due to ordering and performance complexities with Hive in this simple example. See comments in code.',
+    );
   }
 
   @override

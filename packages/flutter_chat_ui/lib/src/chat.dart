@@ -168,7 +168,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
     bool? isRemoved,
   }) {
     return ChatMessageInternal(
-      key: ValueKey(message),
+      key: ValueKey(message.id),
       message: message,
       index: index,
       animation: animation,

@@ -84,6 +84,12 @@ class ChatAnimatedListReversed extends StatelessWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     this.shouldScrollToEndWhenSendingMessage = true,
     this.onEndReached,
+    // Threshold for triggering pagination, represented as a value between 0 (top)
+    // and 1 (bottom). In reversed list, 0 is visually the bottom, 1 is visually the top.
+    //
+    // Unlike the non-reversed list, scroll anchoring isn't typically needed here
+    // because new items are added at the bottom (index 0). The default of 0.2
+    // triggers pagination when 20% from the visual top is reached.
     this.paginationThreshold = 0.2,
     this.messageGroupingTimeoutInSeconds,
   });
@@ -94,23 +100,25 @@ class ChatAnimatedListReversed extends StatelessWidget {
       key: key,
       itemBuilder: itemBuilder,
       scrollController: scrollController,
+      reversed: true,
       insertAnimationDuration: insertAnimationDuration,
       removeAnimationDuration: removeAnimationDuration,
       insertAnimationDurationResolver: insertAnimationDurationResolver,
       removeAnimationDurationResolver: removeAnimationDurationResolver,
       scrollToEndAnimationDuration: scrollToEndAnimationDuration,
       scrollToBottomAppearanceDelay: scrollToBottomAppearanceDelay,
-      topPadding: bottomPadding,
-      bottomPadding: topPadding,
-      topSliver: bottomSliver,
-      bottomSliver: topSliver,
+      topPadding: topPadding,
+      bottomPadding: bottomPadding,
+      topSliver: topSliver,
+      bottomSliver: bottomSliver,
       handleSafeArea: handleSafeArea,
       keyboardDismissBehavior: keyboardDismissBehavior,
+      initialScrollToEndMode: InitialScrollToEndMode.none,
       shouldScrollToEndWhenSendingMessage: shouldScrollToEndWhenSendingMessage,
+      shouldScrollToEndWhenAtBottom: false,
       onEndReached: onEndReached,
       paginationThreshold: paginationThreshold,
       messageGroupingTimeoutInSeconds: messageGroupingTimeoutInSeconds,
-      reversed: true,
     );
   }
 }
