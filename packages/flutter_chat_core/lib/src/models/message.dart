@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../utils/typedefs.dart';
+import 'duration_converter.dart';
 import 'epoch_date_time_converter.dart';
 import 'link_preview.dart';
 
@@ -268,6 +269,60 @@ sealed class Message with _$Message {
     /// Height of the video in pixels.
     double? height,
   }) = VideoMessage;
+
+  /// Creates an audio message.
+  const factory Message.audio({
+    /// Unique identifier for the message.
+    required MessageID id,
+
+    /// ID of the user who sent the message.
+    required UserID authorId,
+
+    /// ID of the message this one is replying to.
+    MessageID? replyToMessageId,
+
+    /// Timestamp when the message was created.
+    @EpochDateTimeConverter() DateTime? createdAt,
+
+    /// Timestamp when the message was marked as deleted.
+    @EpochDateTimeConverter() DateTime? deletedAt,
+
+    /// Timestamp when the message failed to send.
+    @EpochDateTimeConverter() DateTime? failedAt,
+
+    /// Timestamp when the message was successfully sent.
+    @EpochDateTimeConverter() DateTime? sentAt,
+
+    /// Timestamp when the message was delivered to the recipient.
+    @EpochDateTimeConverter() DateTime? deliveredAt,
+
+    /// Timestamp when the message was seen by the recipient.
+    @EpochDateTimeConverter() DateTime? seenAt,
+
+    /// Timestamp when the message was last updated.
+    @EpochDateTimeConverter() DateTime? updatedAt,
+
+    /// Map of reaction keys to lists of user IDs who reacted.
+    Map<String, List<UserID>>? reactions,
+
+    /// Additional custom metadata associated with the message.
+    Map<String, dynamic>? metadata,
+
+    /// Source URL or path of the audio.
+    required String source,
+
+    /// Duration of the audio.
+    @DurationConverter() required Duration duration,
+
+    /// Optional text caption accompanying the audio.
+    String? text,
+
+    /// Size of the audio in bytes.
+    int? size,
+
+    /// Waveform data for the audio.
+    List<double>? waveform,
+  }) = AudioMessage;
 
   /// Creates a system message (e.g., "User joined the chat").
   const factory Message.system({

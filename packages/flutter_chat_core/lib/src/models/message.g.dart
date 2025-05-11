@@ -525,6 +525,114 @@ Map<String, dynamic> _$VideoMessageToJson(
   'type': instance.$type,
 };
 
+AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
+  id: json['id'] as String,
+  authorId: json['authorId'] as String,
+  replyToMessageId: json['replyToMessageId'] as String?,
+  createdAt: _$JsonConverterFromJson<int, DateTime>(
+    json['createdAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  deletedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deletedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  failedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['failedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  sentAt: _$JsonConverterFromJson<int, DateTime>(
+    json['sentAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  deliveredAt: _$JsonConverterFromJson<int, DateTime>(
+    json['deliveredAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  seenAt: _$JsonConverterFromJson<int, DateTime>(
+    json['seenAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  updatedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['updatedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
+  reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
+    (k, e) =>
+        MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+  ),
+  metadata: json['metadata'] as Map<String, dynamic>?,
+  source: json['source'] as String,
+  duration: const DurationConverter().fromJson(
+    (json['duration'] as num).toInt(),
+  ),
+  text: json['text'] as String?,
+  size: (json['size'] as num?)?.toInt(),
+  waveform:
+      (json['waveform'] as List<dynamic>?)
+          ?.map((e) => (e as num).toDouble())
+          .toList(),
+  $type: json['type'] as String?,
+);
+
+Map<String, dynamic> _$AudioMessageToJson(
+  AudioMessage instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'authorId': instance.authorId,
+  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.createdAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'createdAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.deletedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'deletedAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.failedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'failedAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.sentAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'sentAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.deliveredAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'deliveredAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.seenAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'seenAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.updatedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'updatedAt': value,
+  if (instance.reactions case final value?) 'reactions': value,
+  if (instance.metadata case final value?) 'metadata': value,
+  'source': instance.source,
+  'duration': const DurationConverter().toJson(instance.duration),
+  if (instance.text case final value?) 'text': value,
+  if (instance.size case final value?) 'size': value,
+  if (instance.waveform case final value?) 'waveform': value,
+  'type': instance.$type,
+};
+
 SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
     SystemMessage(
       id: json['id'] as String,
