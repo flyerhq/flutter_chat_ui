@@ -8,6 +8,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
+import '../empty_chat_list.dart';
 import '../load_more.dart';
 import '../scroll_to_bottom.dart';
 import '../utils/composer_height_notifier.dart';
@@ -411,6 +412,12 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       },
       child: Stack(
         children: [
+          if (_oldList.isEmpty)
+            Positioned.fill(
+              child:
+                  builders.emptyChatListBuilder?.call(context) ??
+                  const EmptyChatList(),
+            ),
           SliverViewObserver(
             controller: _observerController,
             sliverContexts:
