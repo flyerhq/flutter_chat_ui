@@ -72,6 +72,9 @@ typedef ScrollToBottomBuilder =
 /// Signature for building the loading indicator shown when fetching more messages.
 typedef LoadMoreBuilder = Widget Function(BuildContext);
 
+/// Signature for building the empty chat list widget.
+typedef EmptyChatListBuilder = Widget Function(BuildContext);
+
 /// A collection of builder functions used to customize the UI components
 /// of the chat interface.
 @Freezed(fromJson: false, toJson: false)
@@ -122,6 +125,9 @@ abstract class Builders with _$Builders {
 
     /// Custom builder for the load more indicator.
     LoadMoreBuilder? loadMoreBuilder,
+
+    /// Custom builder for the empty chat list.
+    EmptyChatListBuilder? emptyChatListBuilder,
   }) = _Builders;
 
   const Builders._();
