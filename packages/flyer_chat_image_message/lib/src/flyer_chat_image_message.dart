@@ -64,6 +64,9 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// Position of the timestamp and status indicator relative to the image.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// ImageProvider, otherwise crossCache's CachedNetworkImage will be used.
+  final ImageProvider? imageProvider;
+
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
@@ -82,6 +85,7 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.imageProvider,
   });
 
   @override
@@ -93,7 +97,7 @@ class FlyerChatImageMessage extends StatefulWidget {
 class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     with TickerProviderStateMixin {
   late final ChatController _chatController;
-  late CachedNetworkImage _cachedNetworkImage;
+  late ImageProvider _imageProvider;
   late double _aspectRatio;
   ImageProvider? _placeholderProvider;
 
@@ -130,10 +134,12 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     final crossCache = context.read<CrossCache>();
 
     _chatController = context.read<ChatController>();
-    _cachedNetworkImage = CachedNetworkImage(widget.message.source, crossCache);
+    _imageProvider =
+        widget.imageProvider ??
+        CachedNetworkImage(widget.message.source, crossCache);
 
     if (width == null || height == null) {
-      getImageDimensions(_cachedNetworkImage).then((dimensions) {
+      getImageDimensions(_imageProvider).then((dimensions) {
         if (mounted) {
           _aspectRatio = dimensions.$1 / dimensions.$2;
           _chatController.updateMessage(
@@ -153,11 +159,13 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.message.source != widget.message.source) {
       final crossCache = context.read<CrossCache>();
-      final newImage = CachedNetworkImage(widget.message.source, crossCache);
+      final newImage =
+          widget.imageProvider ??
+          CachedNetworkImage(widget.message.source, crossCache);
 
       precacheImage(newImage, context).then((_) {
         if (mounted) {
-          _cachedNetworkImage = newImage;
+          _imageProvider = newImage;
         }
       });
     }
@@ -208,7 +216,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                         theme.colors.surfaceContainerLow,
                   ),
               Image(
-                image: _cachedNetworkImage,
+                image: _imageProvider,
                 fit: BoxFit.fill,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) {
