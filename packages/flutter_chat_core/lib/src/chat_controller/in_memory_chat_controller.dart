@@ -75,32 +75,76 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> removeMessage(Message message) async {
-    final index = _messages.indexOf(message);
+  Future<void> insertAllMessages(List<Message> messages, {int? index}) async {
+    if (messages.isEmpty) return;
 
-    if (index > -1) {
-      _messages.removeAt(index);
-      _operationsController.add(ChatOperation.remove(message, index));
+    // Check for duplicates within the incoming list and against existing messages
+    _assertNoMessageIdDuplicates(messages, 'insertAllMessages (incoming list)');
+    assert(() {
+      final existingIds = _messages.map((m) => m.id).toSet();
+      for (final message in messages) {
+        if (existingIds.contains(message.id)) {
+          throw ArgumentError(
+            'InMemoryChatController: Cannot insertAllMessages, message with ID: ${message.id} already exists. '
+            'Each message must have a unique ID.',
+          );
+        }
+      }
+      return true;
+    }(), 'Incoming message IDs must not already exist in the controller');
+
+    if (index == null) {
+      final originalLength = _messages.length;
+      _messages.addAll(messages);
+      _operationsController.add(
+        ChatOperation.insertAll(messages, originalLength),
+      );
+    } else {
+      _messages.insertAll(index, messages);
+      _operationsController.add(ChatOperation.insertAll(messages, index));
+    }
+  }
+
+  @override
+  Future<void> removeMessage(Message message) async {
+    final index = _messages.indexWhere((m) => m.id == message.id);
+
+    if (index != -1) {
+      // Get the actual message instance from the list before removing it.
+      final messageToRemove = _messages[index];
+      _messages.removeAt(index); // Remove from the internal list
+
+      // Emit the operation with the actual message instance from the list and its original index.
+      _operationsController.add(ChatOperation.remove(messageToRemove, index));
     }
   }
 
   @override
   Future<void> updateMessage(Message oldMessage, Message newMessage) async {
-    if (oldMessage == newMessage) return;
+    final index = _messages.indexWhere((m) => m.id == oldMessage.id);
 
-    final index = _messages.indexOf(oldMessage);
+    if (index != -1) {
+      final actualOldMessage = _messages[index];
 
-    if (index > -1) {
+      // If the newMessage is identical to what's already in the list for that ID,
+      // no actual update is needed, and no operation should be emitted.
+      if (actualOldMessage == newMessage) {
+        return;
+      }
+
       _messages[index] = newMessage;
-      _operationsController.add(ChatOperation.update(oldMessage, newMessage));
+      // Emit the operation with the state *before* this update and the new state.
+      _operationsController.add(
+        ChatOperation.update(actualOldMessage, newMessage),
+      );
     }
   }
 
   @override
   Future<void> setMessages(List<Message> messages) async {
     _assertNoMessageIdDuplicates(messages, 'set');
-    _messages = messages;
-    _operationsController.add(ChatOperation.set());
+    _messages = List.from(messages);
+    _operationsController.add(ChatOperation.set(messages: _messages));
   }
 
   @override
