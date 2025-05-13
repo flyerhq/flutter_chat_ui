@@ -159,7 +159,9 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.message.source != widget.message.source) {
       final crossCache = context.read<CrossCache>();
-      final newImage = CachedNetworkImage(widget.message.source, crossCache);
+      final newImage =
+          widget.imageProvider ??
+          CachedNetworkImage(widget.message.source, crossCache);
 
       precacheImage(newImage, context).then((_) {
         if (mounted) {
