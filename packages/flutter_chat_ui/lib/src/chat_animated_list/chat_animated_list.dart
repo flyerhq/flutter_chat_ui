@@ -62,6 +62,9 @@ class ChatAnimatedList extends StatefulWidget {
   /// Delay before the scroll-to-bottom button appears after scrolling up.
   final Duration scrollToBottomAppearanceDelay;
 
+  /// Threshold for triggering scroll-to-bottom button appearance.
+  final double scrollToBottomAppearanceThreshold;
+
   /// Padding added above the first item in the list.
   final double? topPadding;
 
@@ -115,6 +118,7 @@ class ChatAnimatedList extends StatefulWidget {
     this.removeAnimationDurationResolver,
     this.scrollToEndAnimationDuration = const Duration(milliseconds: 250),
     this.scrollToBottomAppearanceDelay = const Duration(milliseconds: 250),
+    this.scrollToBottomAppearanceThreshold = 0,
     this.topPadding = 8,
     this.bottomPadding = 20,
     this.topSliver,
@@ -315,6 +319,16 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   /// For a normal list, this is `maxScrollExtent`.
   double get _chatEndScrollPosition {
     return widget.reversed ? 0 : _scrollController.position.maxScrollExtent;
+  }
+
+  /// If the scroll-to-bottom button should be shown.
+  bool get _shouldShowScrollToBottomButton {
+    final scrollOffsetFromBottom =
+        widget.reversed
+            ? _scrollController.offset
+            : _chatEndScrollPosition - _scrollController.offset;
+
+    return scrollOffsetFromBottom > widget.scrollToBottomAppearanceThreshold;
   }
 
   @override
@@ -662,7 +676,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   void _handleToggleScrollToBottom() {
     if (!_isScrollingToBottom) {
       _scrollToBottomShowTimer?.cancel();
-      if (!_isAtChatEndScrollPosition) {
+      if (_shouldShowScrollToBottomButton) {
         _scrollToBottomShowTimer = Timer(
           widget.scrollToBottomAppearanceDelay,
           () {
