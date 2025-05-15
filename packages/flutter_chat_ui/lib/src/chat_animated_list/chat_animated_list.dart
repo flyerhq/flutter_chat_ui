@@ -306,9 +306,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   /// For a normal list, this means the scroll offset is at or beyond `maxScrollExtent`.
   bool get _isAtChatEndScrollPosition {
     return widget.reversed
-        ? _scrollController.offset <= 0
-        : _scrollController.offset >=
-            _scrollController.position.maxScrollExtent;
+        ? _scrollController.offset <= _chatEndScrollPosition
+        : _scrollController.offset >= _chatEndScrollPosition;
   }
 
   /// The scroll position that represents the end of the chat list.
