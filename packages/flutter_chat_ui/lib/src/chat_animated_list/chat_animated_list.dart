@@ -1130,7 +1130,12 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             );
             _onInsertedAll(op.index!, op.messages!);
             break;
-          default:
+          case ChatOperationType.update:
+            assert(
+              op.index != null,
+              'Index must be provided when updating a message.',
+            );
+            _oldList[op.index!] = op.message!;
             break;
         }
       }

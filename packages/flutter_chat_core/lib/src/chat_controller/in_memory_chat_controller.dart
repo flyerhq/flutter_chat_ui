@@ -135,7 +135,7 @@ class InMemoryChatController
       _messages[index] = newMessage;
       // Emit the operation with the state *before* this update and the new state.
       _operationsController.add(
-        ChatOperation.update(actualOldMessage, newMessage),
+        ChatOperation.update(actualOldMessage, newMessage, index),
       );
     }
   }
