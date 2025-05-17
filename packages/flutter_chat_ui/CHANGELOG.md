@@ -1,5 +1,26 @@
 ## 2.2.0
 
+**⚠️ Breaking Changes ⚠️**
+
+- **`ChatAnimatedList` Redesign**:
+    - Significantly overhauled for robust handling of asynchronous controller updates.
+    - The `update` operation (`ChatOperation.update`) now requires the `index` of the message to be updated.
+- **CRITICAL**: When implementing custom `ChatController`s, you **MUST** now fetch the most up-to-date message instance from your data source *before* passing it to `remove` or `update` operations. The internal list now relies on the exact object reference. Failing to do so will lead to errors or unexpected behavior. (See `InMemoryChatController` for an example of fetching the actual message before emitting `ChatOperation.remove` or `ChatOperation.update`).
+
+**✨ Key Enhancements & Fixes ✨**
+
+- **Asynchronous Operations**: `ChatAnimatedList` now uses an internal operation queue to serialize updates, preventing race conditions and resolving prior `StreamOperation` issues.
+- **List Factorization**: Common logic between normal and reversed `ChatAnimatedList` instances has been factorized, improving maintainability.
+- **Bulk Insertions**: Added `insertAllMessages` to `ChatController` and `ChatAnimatedList` for efficient bulk message additions with animations.
+- **Diffing & Stability**: `ChatController`'s `setMessages` now uses an improved `DiffUtil` (with move support), fixing "out of bounds" errors during complex list updates.
+- **Data Consistency**: The controller now fetches the latest message version before updates or deletions to ensure operations use current data.
+- **Bug Fixes**:
+    - Corrected message insertion position in reversed lists ([#754](https://github.com/flyerhq/flutter_chat_ui/issues/754), [#755](https://github.com/flyerhq/flutter_chat_ui/issues/755)).
+    - Ensured message update operations are correctly persisted ([#778](https://github.com/flyerhq/flutter_chat_ui/issues/778)).
+- **Testing**: Introduced integration tests for `ChatAnimatedList` to validate list operations and item positioning.
+
+---
+
  - **FIX**: update operation not persisted in the list ([#778](https://github.com/flyerhq/flutter_chat_ui/issues/778)). ([37472015](https://github.com/flyerhq/flutter_chat_ui/commit/374720152912648643c03f761b0a27eafcf0a46f))
  - **FEAT**: Fix StreamOperation Async issues / create insertAll / fixInsert on reverted list ([#756](https://github.com/flyerhq/flutter_chat_ui/issues/756)). ([60395f9b](https://github.com/flyerhq/flutter_chat_ui/commit/60395f9ba97ac4b8000aea70c7040d55bb40b6aa))
 
