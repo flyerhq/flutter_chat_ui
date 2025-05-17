@@ -1,3 +1,8 @@
+## 2.2.0
+
+ - **FIX**: update operation not persisted in the list ([#778](https://github.com/flyerhq/flutter_chat_ui/issues/778)). ([37472015](https://github.com/flyerhq/flutter_chat_ui/commit/374720152912648643c03f761b0a27eafcf0a46f))
+ - **FEAT**: Fix StreamOperation Async issues / create insertAll / fixInsert on reverted list ([#756](https://github.com/flyerhq/flutter_chat_ui/issues/756)). ([60395f9b](https://github.com/flyerhq/flutter_chat_ui/commit/60395f9ba97ac4b8000aea70c7040d55bb40b6aa))
+
 ## 2.1.2
 
  - **FIX**: add audio message type. ([8d2b705a](https://github.com/flyerhq/flutter_chat_ui/commit/8d2b705ad261275368d8c92d91ccdd53193d58ca))
