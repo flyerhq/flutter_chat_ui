@@ -46,12 +46,16 @@ class ChatOperation {
       );
 
   /// Creates an update operation.
-  factory ChatOperation.update(Message oldMessage, Message message) =>
-      ChatOperation._(
-        ChatOperationType.update,
-        oldMessage: oldMessage,
-        message: message,
-      );
+  factory ChatOperation.update(
+    Message oldMessage,
+    Message message,
+    int index,
+  ) => ChatOperation._(
+    ChatOperationType.update,
+    oldMessage: oldMessage,
+    message: message,
+    index: index,
+  );
 
   /// Creates a remove operation.
   factory ChatOperation.remove(Message message, int index) =>

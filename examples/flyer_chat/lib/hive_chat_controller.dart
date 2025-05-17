@@ -63,7 +63,7 @@ class HiveChatController implements ChatController {
       _box.write(() {
         _box.putAt(index, newMessage.toJson());
         _operationsController.add(
-          ChatOperation.update(actualOldMessage, newMessage),
+          ChatOperation.update(actualOldMessage, newMessage, index),
         );
       });
     }

@@ -98,7 +98,7 @@ class SembastChatController implements ChatController {
 
       await store.record(record.key).update(database, newMessage.toJson());
       _operationsController.add(
-        ChatOperation.update(actualOldMessage, newMessage),
+        ChatOperation.update(actualOldMessage, newMessage, record.key),
       );
     }
   }
