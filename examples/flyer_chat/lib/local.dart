@@ -284,6 +284,9 @@ class LocalState extends State<Local> {
             id: _uuid.v4(),
             authorId: _systemUser.id,
             text: formattedDate,
+            createdAt: DateTime.now().toUtc().subtract(
+              const Duration(seconds: 1),
+            ),
           ),
         );
       }
@@ -298,6 +301,7 @@ class LocalState extends State<Local> {
           id: _uuid.v4(),
           authorId: _systemUser.id,
           metadata: {'type': 'typing'},
+          createdAt: DateTime.now().toUtc(),
         ),
       );
       _isTyping = true;

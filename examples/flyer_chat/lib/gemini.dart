@@ -8,11 +8,10 @@ import 'package:flyer_chat_text_stream_message/flyer_chat_text_stream_message.da
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:sembast/sembast.dart';
 import 'package:uuid/uuid.dart';
 
 import 'gemini_stream_manager.dart';
-import 'sembast_chat_controller.dart';
+import 'hive_chat_controller.dart';
 import 'widgets/composer_action_bar.dart';
 
 // Define the shared animation duration
@@ -20,9 +19,8 @@ const Duration _kChunkAnimationDuration = Duration(milliseconds: 350);
 
 class Gemini extends StatefulWidget {
   final String geminiApiKey;
-  final Database database;
 
-  const Gemini({super.key, required this.geminiApiKey, required this.database});
+  const Gemini({super.key, required this.geminiApiKey});
 
   @override
   GeminiState createState() => GeminiState();
@@ -32,11 +30,11 @@ class GeminiState extends State<Gemini> {
   final _uuid = const Uuid();
   final _crossCache = CrossCache();
   final _scrollController = ScrollController();
+  final _chatController = HiveChatController();
 
   final _currentUser = const User(id: 'me');
   final _agent = const User(id: 'agent');
 
-  late final ChatController _chatController;
   late final GenerativeModel _model;
   late ChatSession _chatSession;
 
@@ -49,7 +47,6 @@ class GeminiState extends State<Gemini> {
   @override
   void initState() {
     super.initState();
-    _chatController = SembastChatController(widget.database);
     _streamManager = GeminiStreamManager(
       chatController: _chatController,
       chunkAnimationDuration: _kChunkAnimationDuration,
@@ -182,6 +179,7 @@ class GeminiState extends State<Gemini> {
       TextMessage(
         id: _uuid.v4(),
         authorId: _currentUser.id,
+        createdAt: DateTime.now().toUtc(),
         text: text,
         metadata: isOnlyEmoji(text) ? {'isOnlyEmoji': true} : null,
       ),
@@ -204,6 +202,7 @@ class GeminiState extends State<Gemini> {
       ImageMessage(
         id: _uuid.v4(),
         authorId: _currentUser.id,
+        createdAt: DateTime.now().toUtc(),
         source: image.path,
       ),
     );

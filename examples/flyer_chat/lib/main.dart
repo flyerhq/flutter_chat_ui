@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sembast/sembast.dart';
 
 import 'api/api.dart';
 import 'api_get_chat_id.dart';
 import 'api_get_initial_messages.dart';
 import 'basic.dart';
 import 'gemini.dart';
-import 'initialize/initialize.dart';
 import 'local.dart';
 import 'pagination.dart';
 
@@ -19,14 +18,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
   await dotenv.load();
-  final database = await initialize();
-  runApp(FlyerChat(database: database));
+  await Hive.initFlutter();
+  await Hive.openBox('chat');
+  runApp(FlyerChat());
 }
 
 class FlyerChat extends StatelessWidget {
-  final Database database;
-
-  const FlyerChat({super.key, required this.database});
+  const FlyerChat({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +42,13 @@ class FlyerChat extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: FlyerChatHomePage(database: database),
+      home: const FlyerChatHomePage(),
     );
   }
 }
 
 class FlyerChatHomePage extends StatefulWidget {
-  final Database database;
-
-  const FlyerChatHomePage({super.key, required this.database});
+  const FlyerChatHomePage({super.key});
 
   @override
   State<FlyerChatHomePage> createState() => _FlyerChatHomePageState();
@@ -251,7 +247,6 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                       builder:
                           (context) => Gemini(
                             geminiApiKey: _geminiApiKeyController.text,
-                            database: widget.database,
                           ),
                     ),
                   );
