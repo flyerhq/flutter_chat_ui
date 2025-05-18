@@ -63,7 +63,7 @@ void main() {
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
-        'linkPreview': {
+        'linkPreviewData': {
           'title': 'Google',
           'description': 'Google homepage',
           'imageUrl': 'https://google.com/logo.png',
@@ -83,10 +83,10 @@ void main() {
       );
       expect(message.text, 'Hello, world!');
       expect(message.metadata, {'key': 'value'});
-      expect(message.linkPreview!.title, 'Google');
-      expect(message.linkPreview!.description, 'Google homepage');
-      expect(message.linkPreview!.imageUrl, 'https://google.com/logo.png');
-      expect(message.linkPreview!.link, 'https://google.com');
+      expect(message.linkPreviewData!.title, 'Google');
+      expect(message.linkPreviewData!.description, 'Google homepage');
+      expect(message.linkPreviewData!.imageUrl, 'https://google.com/logo.png');
+      expect(message.linkPreviewData!.link, 'https://google.com');
     });
 
     test('converts correctly to a JSON', () {
@@ -97,7 +97,7 @@ void main() {
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
-        'linkPreview': {
+        'linkPreviewData': {
           'title': 'Google',
           'description': 'Google homepage',
           'imageUrl': 'https://google.com/logo.png',
@@ -120,7 +120,7 @@ void main() {
         ),
         metadata: {'key': 'newValue'},
         text: 'New text',
-        linkPreview: const LinkPreview(
+        linkPreviewData: const LinkPreviewData(
           title: 'New Title',
           description: 'New description',
           imageUrl: 'https://newwebsite.com/logo.png',
@@ -137,13 +137,13 @@ void main() {
       );
       expect(copiedMessage.text, 'New text');
       expect(copiedMessage.metadata, {'key': 'newValue'});
-      expect(copiedMessage.linkPreview!.title, 'New Title');
-      expect(copiedMessage.linkPreview!.description, 'New description');
+      expect(copiedMessage.linkPreviewData!.title, 'New Title');
+      expect(copiedMessage.linkPreviewData!.description, 'New description');
       expect(
-        copiedMessage.linkPreview!.imageUrl,
+        copiedMessage.linkPreviewData!.imageUrl,
         'https://newwebsite.com/logo.png',
       );
-      expect(copiedMessage.linkPreview!.link, 'https://newwebsite.com');
+      expect(copiedMessage.linkPreviewData!.link, 'https://newwebsite.com');
     });
 
     test(
@@ -171,7 +171,7 @@ void main() {
         'type': 'text',
         'text': 'Hello, world!',
         'metadata': {'key': 'value'},
-        'linkPreview': {
+        'linkPreviewData': {
           'title': 'Google',
           'description': 'Google homepage',
           'imageUrl': 'https://google.com/logo.png',

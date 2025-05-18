@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../utils/typedefs.dart';
 import 'duration_converter.dart';
 import 'epoch_date_time_converter.dart';
-import 'link_preview.dart';
+import 'link_preview_data.dart';
 
 part 'message.freezed.dart';
 part 'message.g.dart';
@@ -56,7 +56,7 @@ sealed class Message with _$Message {
     required String text,
 
     /// Optional preview data for a link found in the [text].
-    LinkPreview? linkPreview,
+    LinkPreviewData? linkPreviewData,
   }) = TextMessage;
 
   /// Creates a streaming text message placeholder.

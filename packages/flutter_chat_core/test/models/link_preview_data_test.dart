@@ -2,8 +2,8 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('LinkPreview', () {
-    late LinkPreview linkPreview;
+  group('LinkPreviewData', () {
+    late LinkPreviewData linkPreviewData;
 
     setUp(() {
       final json = {
@@ -13,7 +13,7 @@ void main() {
         'title': 'Google',
       };
 
-      linkPreview = LinkPreview.fromJson(json);
+      linkPreviewData = LinkPreviewData.fromJson(json);
     });
 
     test('treats objects with the same properties as equal', () {
@@ -24,16 +24,16 @@ void main() {
         'title': 'Google',
       };
 
-      final linkPreview2 = LinkPreview.fromJson(json);
+      final linkPreviewData2 = LinkPreviewData.fromJson(json);
 
       // Two objects with the same properties should be equal.
-      expect(linkPreview == linkPreview2, true);
+      expect(linkPreviewData == linkPreviewData2, true);
 
-      // Change one property of linkPreview2.
-      final copiedLinkPreview = linkPreview2.copyWith(title: null);
+      // Change one property of linkPreviewData2.
+      final copiedLinkPreview = linkPreviewData2.copyWith(title: null);
 
       // The original and the changed objects should not be equal.
-      expect(linkPreview == copiedLinkPreview, false);
+      expect(linkPreviewData == copiedLinkPreview, false);
     });
   });
 }

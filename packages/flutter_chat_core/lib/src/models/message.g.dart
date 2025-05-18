@@ -44,10 +44,12 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   ),
   metadata: json['metadata'] as Map<String, dynamic>?,
   text: json['text'] as String,
-  linkPreview:
-      json['linkPreview'] == null
+  linkPreviewData:
+      json['linkPreviewData'] == null
           ? null
-          : LinkPreview.fromJson(json['linkPreview'] as Map<String, dynamic>),
+          : LinkPreviewData.fromJson(
+            json['linkPreviewData'] as Map<String, dynamic>,
+          ),
   $type: json['type'] as String?,
 );
 
@@ -102,7 +104,8 @@ Map<String, dynamic> _$TextMessageToJson(
   if (instance.reactions case final value?) 'reactions': value,
   if (instance.metadata case final value?) 'metadata': value,
   'text': instance.text,
-  if (instance.linkPreview?.toJson() case final value?) 'linkPreview': value,
+  if (instance.linkPreviewData?.toJson() case final value?)
+    'linkPreviewData': value,
   'type': instance.$type,
 };
 
