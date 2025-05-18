@@ -46,6 +46,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// The callback function to handle link clicks.
+  final void Function(String url, String title)? onLinkTab;
+
   /// Creates a widget to display a text message.
   const FlyerChatTextMessage({
     super.key,
@@ -62,6 +65,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.onLinkTab,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -91,6 +95,7 @@ class FlyerChatTextMessage extends StatelessWidget {
           _isOnlyEmoji
               ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
               : paragraphStyle,
+      onLinkTab: onLinkTab,
     );
 
     return Container(
