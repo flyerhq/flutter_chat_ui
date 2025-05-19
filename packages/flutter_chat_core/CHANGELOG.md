@@ -1,3 +1,7 @@
+## 2.2.1
+
+ - **FIX**: add emptyChatListWidget ([#771](https://github.com/flyerhq/flutter_chat_ui/issues/771)). ([69954654](https://github.com/flyerhq/flutter_chat_ui/commit/699546546ca4df7d4271316b52332364fde55ed8))
+
 ## 2.2.0
 
  - **FIX**: update operation not persisted in the list ([#778](https://github.com/flyerhq/flutter_chat_ui/issues/778)). ([37472015](https://github.com/flyerhq/flutter_chat_ui/commit/374720152912648643c03f761b0a27eafcf0a46f))

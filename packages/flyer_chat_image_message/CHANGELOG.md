@@ -1,3 +1,7 @@
+## 2.1.5
+
+ - Update a dependency to the latest release.
+
 ## 2.1.4
 
  - **FIX**: allow custom ImageProvider ([#766](https://github.com/flyerhq/flutter_chat_ui/issues/766)). ([d99d556c](https://github.com/flyerhq/flutter_chat_ui/commit/d99d556c58d624f09c35d3c84d1d5de96a02fe9e))

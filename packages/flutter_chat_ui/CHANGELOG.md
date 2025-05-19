@@ -1,3 +1,7 @@
+## 2.2.3
+
+ - **FIX**: add emptyChatListWidget ([#771](https://github.com/flyerhq/flutter_chat_ui/issues/771)). ([69954654](https://github.com/flyerhq/flutter_chat_ui/commit/699546546ca4df7d4271316b52332364fde55ed8))
+
 ## 2.2.2
 
  - **FIX**: scroll to bottom button appearance threshold [#769](https://github.com/flyerhq/flutter_chat_ui/issues/769) ([#774](https://github.com/flyerhq/flutter_chat_ui/issues/774)). ([e97d5c13](https://github.com/flyerhq/flutter_chat_ui/commit/e97d5c13b6461bde91a6ac55ffeb1c7f302b5415))
