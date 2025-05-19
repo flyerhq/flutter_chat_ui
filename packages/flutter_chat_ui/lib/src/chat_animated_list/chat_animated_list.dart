@@ -8,6 +8,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollview_observer/scrollview_observer.dart';
 
+import '../empty_chat_list.dart';
 import '../load_more.dart';
 import '../scroll_to_bottom.dart';
 import '../utils/load_more_notifier.dart';
@@ -166,6 +167,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   late final SliverObserverController _observerController;
   late final ScrollController _scrollController;
   late List<Message> _oldList;
+  late ValueNotifier<bool> _oldListEmptyNotifier;
   late final StreamSubscription<ChatOperation> _operationsSubscription;
 
   // Queue of operations to be processed
@@ -202,6 +204,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     )..cacheJumpIndexOffset = false;
 
     _oldList = List.from(_chatController.messages);
+    _oldListEmptyNotifier = ValueNotifier(_oldList.isEmpty);
     _operationsSubscription = _chatController.operationsStream.listen((event) {
       _operationsQueue.add(event);
       _processOperationsQueue();
@@ -283,6 +286,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
   @override
   void dispose() {
+    _oldListEmptyNotifier.dispose();
     _scrollToBottomShowTimer?.cancel();
     _scrollToBottomController.dispose();
     _scrollAnimationController.removeListener(_linkAnimationToScroll);
@@ -421,6 +425,19 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       },
       child: Stack(
         children: [
+          ValueListenableBuilder<bool>(
+            valueListenable: _oldListEmptyNotifier,
+            builder: (context, isEmpty, child) {
+              if (isEmpty) {
+                return Positioned.fill(
+                  child:
+                      builders.emptyChatListBuilder?.call(context) ??
+                      const EmptyChatList(),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
           SliverViewObserver(
             controller: _observerController,
             sliverContexts:
@@ -896,6 +913,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     }
 
     _oldList.insert(position, data);
+    _updateOldListEmptyNotifier();
     // The insertItem method requires the position of the item after the insert
     _listKey.currentState!.insertItem(
       visualPosition(position),
@@ -938,6 +956,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     }
 
     _oldList.insertAll(position, messagesToInsert);
+    _updateOldListEmptyNotifier();
 
     int visualStartIndexForInsertAllItems;
 
@@ -983,6 +1002,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     final visualIndex = visualPosition(position);
 
     _oldList.removeAt(position);
+    _updateOldListEmptyNotifier();
 
     _listKey.currentState!.removeItem(
       visualIndex, // Use the pre-calculated visual index.
@@ -1069,6 +1089,14 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       change: (pos, oldData, newData) => _onChanged(pos, oldData, newData),
       move: (oldPos, newPos, data) => _onMove(oldPos, newPos, data),
     );
+  }
+
+  /// Update the _oldListEmptyNotifier if necessary
+  void _updateOldListEmptyNotifier() {
+    final newIsEmpty = _oldList.isEmpty;
+    if (newIsEmpty != _oldListEmptyNotifier.value) {
+      _oldListEmptyNotifier.value = newIsEmpty;
+    }
   }
 
   /// Processes the queue of chat operations.
