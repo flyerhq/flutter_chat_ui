@@ -1,3 +1,7 @@
+## 2.1.4
+
+ - **FIX**: add tap callback function for the GptMarkdown link ([#781](https://github.com/flyerhq/flutter_chat_ui/issues/781)). ([89998bfe](https://github.com/flyerhq/flutter_chat_ui/commit/89998bfe081c9d46b6beb8f286176aac66033afa))
+
 ## 2.1.3
 
  - Update a dependency to the latest release.
