@@ -1,3 +1,7 @@
+## 2.2.2
+
+ - **FIX**: scroll to bottom button appearance threshold [#769](https://github.com/flyerhq/flutter_chat_ui/issues/769) ([#774](https://github.com/flyerhq/flutter_chat_ui/issues/774)). ([e97d5c13](https://github.com/flyerhq/flutter_chat_ui/commit/e97d5c13b6461bde91a6ac55ffeb1c7f302b5415))
+
 ## 2.2.1
 
  - **FIX**: list rebuilding when keyboard opens/closes. ([48e28e7e](https://github.com/flyerhq/flutter_chat_ui/commit/48e28e7e2e5f36d27dcec8d0532b1d697684c541))
