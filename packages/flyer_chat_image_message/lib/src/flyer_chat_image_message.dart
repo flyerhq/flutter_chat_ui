@@ -24,6 +24,11 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// The index of the message in the list.
   final int index;
 
+  /// Optional custom [ImageProvider] to use for loading the image.
+  /// If not provided, defaults to using [CachedNetworkImage] from `cross_cache`
+  /// with the `message.source`.
+  final ImageProvider? customImageProvider;
+
   /// Border radius of the image container.
   final BorderRadiusGeometry? borderRadius;
 
@@ -64,14 +69,12 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// Position of the timestamp and status indicator relative to the image.
   final TimeAndStatusPosition timeAndStatusPosition;
 
-  /// ImageProvider, otherwise crossCache's CachedNetworkImage will be used.
-  final ImageProvider? imageProvider;
-
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
     required this.message,
     required this.index,
+    this.customImageProvider,
     this.borderRadius,
     this.constraints = const BoxConstraints(maxHeight: 300),
     this.overlay,
@@ -85,7 +88,6 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
-    this.imageProvider,
   });
 
   @override
@@ -131,12 +133,8 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       _aspectRatio = 1;
     }
 
-    final crossCache = context.read<CrossCache>();
-
     _chatController = context.read<ChatController>();
-    _imageProvider =
-        widget.imageProvider ??
-        CachedNetworkImage(widget.message.source, crossCache);
+    _imageProvider = _targetProvider;
 
     if (width == null || height == null) {
       getImageDimensions(_imageProvider).then((dimensions) {
@@ -158,10 +156,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.message.source != widget.message.source) {
-      final crossCache = context.read<CrossCache>();
-      final newImage =
-          widget.imageProvider ??
-          CachedNetworkImage(widget.message.source, crossCache);
+      final newImage = _targetProvider;
 
       precacheImage(newImage, context).then((_) {
         if (mounted) {
@@ -174,8 +169,8 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   void dispose() {
     _placeholderProvider?.evict();
-    // Evicting the cached network image on dispose will result in images flickering
-    // _cachedNetworkImage.evict();
+    // Evicting the image on dispose will result in images flickering
+    // PaintingBinding.instance.imageCache.evict(_imageProvider);
     super.dispose();
   }
 
@@ -316,6 +311,15 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
         ),
       ),
     );
+  }
+
+  ImageProvider get _targetProvider {
+    if (widget.customImageProvider != null) {
+      return widget.customImageProvider!;
+    } else {
+      final crossCache = context.read<CrossCache>();
+      return CachedNetworkImage(widget.message.source, crossCache);
+    }
   }
 }
 
