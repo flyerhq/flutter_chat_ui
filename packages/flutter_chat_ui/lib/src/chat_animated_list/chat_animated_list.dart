@@ -10,11 +10,10 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 
 import '../load_more.dart';
 import '../scroll_to_bottom.dart';
-import '../utils/composer_height_notifier.dart';
-import '../utils/keyboard_mixin.dart';
 import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
 import '../utils/typedefs.dart';
+import 'sliver_spacing.dart';
 
 /// Enum controlling the initial scroll behavior of the chat list.
 enum InitialScrollToEndMode {
@@ -157,7 +156,7 @@ class ChatAnimatedList extends StatefulWidget {
 
 /// State for [ChatAnimatedList].
 class _ChatAnimatedListState extends State<ChatAnimatedList>
-    with TickerProviderStateMixin, WidgetsBindingObserver, KeyboardMixin {
+    with TickerProviderStateMixin {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey();
   late final ChatController _chatController;
   late final SliverObserverController _observerController;
@@ -245,7 +244,6 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     }
   }
 
-  @override
   void onKeyboardHeightChanged(double height) {
     // Reversed lists handle keyboard automatically
     if (widget.reversed) {
@@ -320,8 +318,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
   @override
   Widget build(BuildContext context) {
-    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
-    final builders = context.watch<Builders>();
+    final builders = context.read<Builders>();
 
     // Define the SliverAnimatedList once as it's used for both
     // reversed and non-reversed lists.
@@ -352,7 +349,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         // Order for CustomScrollView(reverse: true) -> Visual Bottom to Top
         return <Widget>[
           // Visually at the bottom (first in sliver list for reverse: true)
-          _buildComposerHeightSliver(builders, bottomSafeArea),
+          _buildComposerHeightSliver(context),
           if (widget.bottomSliver != null) widget.bottomSliver!,
           sliverAnimatedList,
           if (widget.onEndReached != null) _buildLoadMoreSliver(builders),
@@ -371,7 +368,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
           if (widget.onEndReached != null) _buildLoadMoreSliver(builders),
           sliverAnimatedList,
           if (widget.bottomSliver != null) widget.bottomSliver!,
-          _buildComposerHeightSliver(builders, bottomSafeArea),
+          _buildComposerHeightSliver(context),
           // Visually at the bottom
         ];
       }
@@ -440,20 +437,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     );
   }
 
-  Widget _buildComposerHeightSliver(Builders builders, double bottomSafeArea) {
-    return Consumer<ComposerHeightNotifier>(
-      builder: (context, heightNotifier, child) {
-        return SliverPadding(
-          padding: EdgeInsets.only(
-            bottom:
-                heightNotifier.height +
-                (widget.bottomPadding ?? 0) +
-                (widget.handleSafeArea == true ? bottomSafeArea : 0),
-          ),
-        );
-      },
-    );
-  }
+  Widget _buildComposerHeightSliver(BuildContext context) => SliverSpacing(
+    bottomPadding: widget.bottomPadding,
+    handleSafeArea: widget.handleSafeArea,
+    onKeyboardHeightChanged: widget.reversed ? null : onKeyboardHeightChanged,
+  );
 
   Widget _buildLoadMoreSliver(Builders builders) {
     return SliverToBoxAdapter(
