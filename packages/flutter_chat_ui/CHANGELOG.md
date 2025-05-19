@@ -1,3 +1,7 @@
+## 2.2.1
+
+ - **FIX**: list rebuilding when keyboard opens/closes. ([48e28e7e](https://github.com/flyerhq/flutter_chat_ui/commit/48e28e7e2e5f36d27dcec8d0532b1d697684c541))
+
 ## 2.2.0
 
 **⚠️ Breaking Changes ⚠️**
