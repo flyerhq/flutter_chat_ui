@@ -9,6 +9,7 @@ export 'src/chat_message/chat_message.dart';
 export 'src/composer.dart';
 export 'src/empty_chat_list.dart';
 export 'src/is_typing.dart';
+export 'src/link_preview.dart';
 export 'src/load_more.dart';
 export 'src/scroll_to_bottom.dart';
 export 'src/simple_text_message.dart';

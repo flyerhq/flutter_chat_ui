@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
+import 'link_preview.dart';
+
 /// A widget that displays a simple text message.
 class SimpleTextMessage extends StatelessWidget {
   /// The text message data model.
@@ -43,8 +45,10 @@ class SimpleTextMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text.
   final TimeAndStatusPosition timeAndStatusPosition;
 
-  /// Whether to display the link preview widget.
-  final bool showLinkPreview;
+  /// The position of the link preview widget relative to the text.
+  /// If set to [LinkPreviewPosition.none], the link preview widget will not be displayed.
+  /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
+  final LinkPreviewPosition linkPreviewPosition;
 
   /// Creates a widget to display a simple text message.
   const SimpleTextMessage({
@@ -62,7 +66,7 @@ class SimpleTextMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
-    this.showLinkPreview = true,
+    this.linkPreviewPosition = LinkPreviewPosition.bottom,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -95,7 +99,7 @@ class SimpleTextMessage extends StatelessWidget {
     );
 
     final linkPreviewWidget =
-        showLinkPreview
+        linkPreviewPosition != LinkPreviewPosition.none
             ? context.watch<Builders>().linkPreviewBuilder?.call(
               context,
               message,
@@ -116,6 +120,9 @@ class SimpleTextMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (linkPreviewWidget != null &&
+                linkPreviewPosition == LinkPreviewPosition.top)
+              linkPreviewWidget,
             Container(
               padding:
                   _isOnlyEmoji
@@ -131,7 +138,9 @@ class SimpleTextMessage extends StatelessWidget {
                 textStyle: textStyle,
               ),
             ),
-            if (linkPreviewWidget != null) linkPreviewWidget,
+            if (linkPreviewWidget != null &&
+                linkPreviewPosition == LinkPreviewPosition.bottom)
+              linkPreviewWidget,
           ],
         ),
       ),
