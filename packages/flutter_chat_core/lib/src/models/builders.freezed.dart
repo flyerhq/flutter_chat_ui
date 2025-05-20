@@ -30,7 +30,8 @@ mixin _$Builders {
  ChatAnimatedListBuilder? get chatAnimatedListBuilder;/// Custom builder for the "scroll to bottom" button.
  ScrollToBottomBuilder? get scrollToBottomBuilder;/// Custom builder for the load more indicator.
  LoadMoreBuilder? get loadMoreBuilder;/// Custom builder for the empty chat list.
- EmptyChatListBuilder? get emptyChatListBuilder;
+ EmptyChatListBuilder? get emptyChatListBuilder;/// Custom builder for the link preview widget.
+ LinkPreviewBuilder? get linkPreviewBuilder;
 /// Create a copy of Builders
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -41,16 +42,16 @@ $BuildersCopyWith<Builders> get copyWith => _$BuildersCopyWithImpl<Builders>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Builders&&(identical(other.textMessageBuilder, textMessageBuilder) || other.textMessageBuilder == textMessageBuilder)&&(identical(other.textStreamMessageBuilder, textStreamMessageBuilder) || other.textStreamMessageBuilder == textStreamMessageBuilder)&&(identical(other.imageMessageBuilder, imageMessageBuilder) || other.imageMessageBuilder == imageMessageBuilder)&&(identical(other.fileMessageBuilder, fileMessageBuilder) || other.fileMessageBuilder == fileMessageBuilder)&&(identical(other.videoMessageBuilder, videoMessageBuilder) || other.videoMessageBuilder == videoMessageBuilder)&&(identical(other.audioMessageBuilder, audioMessageBuilder) || other.audioMessageBuilder == audioMessageBuilder)&&(identical(other.systemMessageBuilder, systemMessageBuilder) || other.systemMessageBuilder == systemMessageBuilder)&&(identical(other.customMessageBuilder, customMessageBuilder) || other.customMessageBuilder == customMessageBuilder)&&(identical(other.unsupportedMessageBuilder, unsupportedMessageBuilder) || other.unsupportedMessageBuilder == unsupportedMessageBuilder)&&(identical(other.composerBuilder, composerBuilder) || other.composerBuilder == composerBuilder)&&(identical(other.chatMessageBuilder, chatMessageBuilder) || other.chatMessageBuilder == chatMessageBuilder)&&(identical(other.chatAnimatedListBuilder, chatAnimatedListBuilder) || other.chatAnimatedListBuilder == chatAnimatedListBuilder)&&(identical(other.scrollToBottomBuilder, scrollToBottomBuilder) || other.scrollToBottomBuilder == scrollToBottomBuilder)&&(identical(other.loadMoreBuilder, loadMoreBuilder) || other.loadMoreBuilder == loadMoreBuilder)&&(identical(other.emptyChatListBuilder, emptyChatListBuilder) || other.emptyChatListBuilder == emptyChatListBuilder));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Builders&&(identical(other.textMessageBuilder, textMessageBuilder) || other.textMessageBuilder == textMessageBuilder)&&(identical(other.textStreamMessageBuilder, textStreamMessageBuilder) || other.textStreamMessageBuilder == textStreamMessageBuilder)&&(identical(other.imageMessageBuilder, imageMessageBuilder) || other.imageMessageBuilder == imageMessageBuilder)&&(identical(other.fileMessageBuilder, fileMessageBuilder) || other.fileMessageBuilder == fileMessageBuilder)&&(identical(other.videoMessageBuilder, videoMessageBuilder) || other.videoMessageBuilder == videoMessageBuilder)&&(identical(other.audioMessageBuilder, audioMessageBuilder) || other.audioMessageBuilder == audioMessageBuilder)&&(identical(other.systemMessageBuilder, systemMessageBuilder) || other.systemMessageBuilder == systemMessageBuilder)&&(identical(other.customMessageBuilder, customMessageBuilder) || other.customMessageBuilder == customMessageBuilder)&&(identical(other.unsupportedMessageBuilder, unsupportedMessageBuilder) || other.unsupportedMessageBuilder == unsupportedMessageBuilder)&&(identical(other.composerBuilder, composerBuilder) || other.composerBuilder == composerBuilder)&&(identical(other.chatMessageBuilder, chatMessageBuilder) || other.chatMessageBuilder == chatMessageBuilder)&&(identical(other.chatAnimatedListBuilder, chatAnimatedListBuilder) || other.chatAnimatedListBuilder == chatAnimatedListBuilder)&&(identical(other.scrollToBottomBuilder, scrollToBottomBuilder) || other.scrollToBottomBuilder == scrollToBottomBuilder)&&(identical(other.loadMoreBuilder, loadMoreBuilder) || other.loadMoreBuilder == loadMoreBuilder)&&(identical(other.emptyChatListBuilder, emptyChatListBuilder) || other.emptyChatListBuilder == emptyChatListBuilder)&&(identical(other.linkPreviewBuilder, linkPreviewBuilder) || other.linkPreviewBuilder == linkPreviewBuilder));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,textMessageBuilder,textStreamMessageBuilder,imageMessageBuilder,fileMessageBuilder,videoMessageBuilder,audioMessageBuilder,systemMessageBuilder,customMessageBuilder,unsupportedMessageBuilder,composerBuilder,chatMessageBuilder,chatAnimatedListBuilder,scrollToBottomBuilder,loadMoreBuilder,emptyChatListBuilder);
+int get hashCode => Object.hash(runtimeType,textMessageBuilder,textStreamMessageBuilder,imageMessageBuilder,fileMessageBuilder,videoMessageBuilder,audioMessageBuilder,systemMessageBuilder,customMessageBuilder,unsupportedMessageBuilder,composerBuilder,chatMessageBuilder,chatAnimatedListBuilder,scrollToBottomBuilder,loadMoreBuilder,emptyChatListBuilder,linkPreviewBuilder);
 
 @override
 String toString() {
-  return 'Builders(textMessageBuilder: $textMessageBuilder, textStreamMessageBuilder: $textStreamMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, videoMessageBuilder: $videoMessageBuilder, audioMessageBuilder: $audioMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, composerBuilder: $composerBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder, emptyChatListBuilder: $emptyChatListBuilder)';
+  return 'Builders(textMessageBuilder: $textMessageBuilder, textStreamMessageBuilder: $textStreamMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, videoMessageBuilder: $videoMessageBuilder, audioMessageBuilder: $audioMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, composerBuilder: $composerBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder, emptyChatListBuilder: $emptyChatListBuilder, linkPreviewBuilder: $linkPreviewBuilder)';
 }
 
 
@@ -61,7 +62,7 @@ abstract mixin class $BuildersCopyWith<$Res>  {
   factory $BuildersCopyWith(Builders value, $Res Function(Builders) _then) = _$BuildersCopyWithImpl;
 @useResult
 $Res call({
- TextMessageBuilder? textMessageBuilder, TextStreamMessageBuilder? textStreamMessageBuilder, ImageMessageBuilder? imageMessageBuilder, FileMessageBuilder? fileMessageBuilder, VideoMessageBuilder? videoMessageBuilder, AudioMessageBuilder? audioMessageBuilder, SystemMessageBuilder? systemMessageBuilder, CustomMessageBuilder? customMessageBuilder, UnsupportedMessageBuilder? unsupportedMessageBuilder, ComposerBuilder? composerBuilder, ChatMessageBuilder? chatMessageBuilder, ChatAnimatedListBuilder? chatAnimatedListBuilder, ScrollToBottomBuilder? scrollToBottomBuilder, LoadMoreBuilder? loadMoreBuilder, EmptyChatListBuilder? emptyChatListBuilder
+ TextMessageBuilder? textMessageBuilder, TextStreamMessageBuilder? textStreamMessageBuilder, ImageMessageBuilder? imageMessageBuilder, FileMessageBuilder? fileMessageBuilder, VideoMessageBuilder? videoMessageBuilder, AudioMessageBuilder? audioMessageBuilder, SystemMessageBuilder? systemMessageBuilder, CustomMessageBuilder? customMessageBuilder, UnsupportedMessageBuilder? unsupportedMessageBuilder, ComposerBuilder? composerBuilder, ChatMessageBuilder? chatMessageBuilder, ChatAnimatedListBuilder? chatAnimatedListBuilder, ScrollToBottomBuilder? scrollToBottomBuilder, LoadMoreBuilder? loadMoreBuilder, EmptyChatListBuilder? emptyChatListBuilder, LinkPreviewBuilder? linkPreviewBuilder
 });
 
 
@@ -78,7 +79,7 @@ class _$BuildersCopyWithImpl<$Res>
 
 /// Create a copy of Builders
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? textMessageBuilder = freezed,Object? textStreamMessageBuilder = freezed,Object? imageMessageBuilder = freezed,Object? fileMessageBuilder = freezed,Object? videoMessageBuilder = freezed,Object? audioMessageBuilder = freezed,Object? systemMessageBuilder = freezed,Object? customMessageBuilder = freezed,Object? unsupportedMessageBuilder = freezed,Object? composerBuilder = freezed,Object? chatMessageBuilder = freezed,Object? chatAnimatedListBuilder = freezed,Object? scrollToBottomBuilder = freezed,Object? loadMoreBuilder = freezed,Object? emptyChatListBuilder = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? textMessageBuilder = freezed,Object? textStreamMessageBuilder = freezed,Object? imageMessageBuilder = freezed,Object? fileMessageBuilder = freezed,Object? videoMessageBuilder = freezed,Object? audioMessageBuilder = freezed,Object? systemMessageBuilder = freezed,Object? customMessageBuilder = freezed,Object? unsupportedMessageBuilder = freezed,Object? composerBuilder = freezed,Object? chatMessageBuilder = freezed,Object? chatAnimatedListBuilder = freezed,Object? scrollToBottomBuilder = freezed,Object? loadMoreBuilder = freezed,Object? emptyChatListBuilder = freezed,Object? linkPreviewBuilder = freezed,}) {
   return _then(_self.copyWith(
 textMessageBuilder: freezed == textMessageBuilder ? _self.textMessageBuilder : textMessageBuilder // ignore: cast_nullable_to_non_nullable
 as TextMessageBuilder?,textStreamMessageBuilder: freezed == textStreamMessageBuilder ? _self.textStreamMessageBuilder : textStreamMessageBuilder // ignore: cast_nullable_to_non_nullable
@@ -95,7 +96,8 @@ as ChatMessageBuilder?,chatAnimatedListBuilder: freezed == chatAnimatedListBuild
 as ChatAnimatedListBuilder?,scrollToBottomBuilder: freezed == scrollToBottomBuilder ? _self.scrollToBottomBuilder : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
 as ScrollToBottomBuilder?,loadMoreBuilder: freezed == loadMoreBuilder ? _self.loadMoreBuilder : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
 as LoadMoreBuilder?,emptyChatListBuilder: freezed == emptyChatListBuilder ? _self.emptyChatListBuilder : emptyChatListBuilder // ignore: cast_nullable_to_non_nullable
-as EmptyChatListBuilder?,
+as EmptyChatListBuilder?,linkPreviewBuilder: freezed == linkPreviewBuilder ? _self.linkPreviewBuilder : linkPreviewBuilder // ignore: cast_nullable_to_non_nullable
+as LinkPreviewBuilder?,
   ));
 }
 
@@ -106,7 +108,7 @@ as EmptyChatListBuilder?,
 
 
 class _Builders extends Builders {
-  const _Builders({this.textMessageBuilder, this.textStreamMessageBuilder, this.imageMessageBuilder, this.fileMessageBuilder, this.videoMessageBuilder, this.audioMessageBuilder, this.systemMessageBuilder, this.customMessageBuilder, this.unsupportedMessageBuilder, this.composerBuilder, this.chatMessageBuilder, this.chatAnimatedListBuilder, this.scrollToBottomBuilder, this.loadMoreBuilder, this.emptyChatListBuilder}): super._();
+  const _Builders({this.textMessageBuilder, this.textStreamMessageBuilder, this.imageMessageBuilder, this.fileMessageBuilder, this.videoMessageBuilder, this.audioMessageBuilder, this.systemMessageBuilder, this.customMessageBuilder, this.unsupportedMessageBuilder, this.composerBuilder, this.chatMessageBuilder, this.chatAnimatedListBuilder, this.scrollToBottomBuilder, this.loadMoreBuilder, this.emptyChatListBuilder, this.linkPreviewBuilder}): super._();
   
 
 /// Custom builder for text messages.
@@ -139,6 +141,8 @@ class _Builders extends Builders {
 @override final  LoadMoreBuilder? loadMoreBuilder;
 /// Custom builder for the empty chat list.
 @override final  EmptyChatListBuilder? emptyChatListBuilder;
+/// Custom builder for the link preview widget.
+@override final  LinkPreviewBuilder? linkPreviewBuilder;
 
 /// Create a copy of Builders
 /// with the given fields replaced by the non-null parameter values.
@@ -150,16 +154,16 @@ _$BuildersCopyWith<_Builders> get copyWith => __$BuildersCopyWithImpl<_Builders>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Builders&&(identical(other.textMessageBuilder, textMessageBuilder) || other.textMessageBuilder == textMessageBuilder)&&(identical(other.textStreamMessageBuilder, textStreamMessageBuilder) || other.textStreamMessageBuilder == textStreamMessageBuilder)&&(identical(other.imageMessageBuilder, imageMessageBuilder) || other.imageMessageBuilder == imageMessageBuilder)&&(identical(other.fileMessageBuilder, fileMessageBuilder) || other.fileMessageBuilder == fileMessageBuilder)&&(identical(other.videoMessageBuilder, videoMessageBuilder) || other.videoMessageBuilder == videoMessageBuilder)&&(identical(other.audioMessageBuilder, audioMessageBuilder) || other.audioMessageBuilder == audioMessageBuilder)&&(identical(other.systemMessageBuilder, systemMessageBuilder) || other.systemMessageBuilder == systemMessageBuilder)&&(identical(other.customMessageBuilder, customMessageBuilder) || other.customMessageBuilder == customMessageBuilder)&&(identical(other.unsupportedMessageBuilder, unsupportedMessageBuilder) || other.unsupportedMessageBuilder == unsupportedMessageBuilder)&&(identical(other.composerBuilder, composerBuilder) || other.composerBuilder == composerBuilder)&&(identical(other.chatMessageBuilder, chatMessageBuilder) || other.chatMessageBuilder == chatMessageBuilder)&&(identical(other.chatAnimatedListBuilder, chatAnimatedListBuilder) || other.chatAnimatedListBuilder == chatAnimatedListBuilder)&&(identical(other.scrollToBottomBuilder, scrollToBottomBuilder) || other.scrollToBottomBuilder == scrollToBottomBuilder)&&(identical(other.loadMoreBuilder, loadMoreBuilder) || other.loadMoreBuilder == loadMoreBuilder)&&(identical(other.emptyChatListBuilder, emptyChatListBuilder) || other.emptyChatListBuilder == emptyChatListBuilder));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Builders&&(identical(other.textMessageBuilder, textMessageBuilder) || other.textMessageBuilder == textMessageBuilder)&&(identical(other.textStreamMessageBuilder, textStreamMessageBuilder) || other.textStreamMessageBuilder == textStreamMessageBuilder)&&(identical(other.imageMessageBuilder, imageMessageBuilder) || other.imageMessageBuilder == imageMessageBuilder)&&(identical(other.fileMessageBuilder, fileMessageBuilder) || other.fileMessageBuilder == fileMessageBuilder)&&(identical(other.videoMessageBuilder, videoMessageBuilder) || other.videoMessageBuilder == videoMessageBuilder)&&(identical(other.audioMessageBuilder, audioMessageBuilder) || other.audioMessageBuilder == audioMessageBuilder)&&(identical(other.systemMessageBuilder, systemMessageBuilder) || other.systemMessageBuilder == systemMessageBuilder)&&(identical(other.customMessageBuilder, customMessageBuilder) || other.customMessageBuilder == customMessageBuilder)&&(identical(other.unsupportedMessageBuilder, unsupportedMessageBuilder) || other.unsupportedMessageBuilder == unsupportedMessageBuilder)&&(identical(other.composerBuilder, composerBuilder) || other.composerBuilder == composerBuilder)&&(identical(other.chatMessageBuilder, chatMessageBuilder) || other.chatMessageBuilder == chatMessageBuilder)&&(identical(other.chatAnimatedListBuilder, chatAnimatedListBuilder) || other.chatAnimatedListBuilder == chatAnimatedListBuilder)&&(identical(other.scrollToBottomBuilder, scrollToBottomBuilder) || other.scrollToBottomBuilder == scrollToBottomBuilder)&&(identical(other.loadMoreBuilder, loadMoreBuilder) || other.loadMoreBuilder == loadMoreBuilder)&&(identical(other.emptyChatListBuilder, emptyChatListBuilder) || other.emptyChatListBuilder == emptyChatListBuilder)&&(identical(other.linkPreviewBuilder, linkPreviewBuilder) || other.linkPreviewBuilder == linkPreviewBuilder));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,textMessageBuilder,textStreamMessageBuilder,imageMessageBuilder,fileMessageBuilder,videoMessageBuilder,audioMessageBuilder,systemMessageBuilder,customMessageBuilder,unsupportedMessageBuilder,composerBuilder,chatMessageBuilder,chatAnimatedListBuilder,scrollToBottomBuilder,loadMoreBuilder,emptyChatListBuilder);
+int get hashCode => Object.hash(runtimeType,textMessageBuilder,textStreamMessageBuilder,imageMessageBuilder,fileMessageBuilder,videoMessageBuilder,audioMessageBuilder,systemMessageBuilder,customMessageBuilder,unsupportedMessageBuilder,composerBuilder,chatMessageBuilder,chatAnimatedListBuilder,scrollToBottomBuilder,loadMoreBuilder,emptyChatListBuilder,linkPreviewBuilder);
 
 @override
 String toString() {
-  return 'Builders(textMessageBuilder: $textMessageBuilder, textStreamMessageBuilder: $textStreamMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, videoMessageBuilder: $videoMessageBuilder, audioMessageBuilder: $audioMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, composerBuilder: $composerBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder, emptyChatListBuilder: $emptyChatListBuilder)';
+  return 'Builders(textMessageBuilder: $textMessageBuilder, textStreamMessageBuilder: $textStreamMessageBuilder, imageMessageBuilder: $imageMessageBuilder, fileMessageBuilder: $fileMessageBuilder, videoMessageBuilder: $videoMessageBuilder, audioMessageBuilder: $audioMessageBuilder, systemMessageBuilder: $systemMessageBuilder, customMessageBuilder: $customMessageBuilder, unsupportedMessageBuilder: $unsupportedMessageBuilder, composerBuilder: $composerBuilder, chatMessageBuilder: $chatMessageBuilder, chatAnimatedListBuilder: $chatAnimatedListBuilder, scrollToBottomBuilder: $scrollToBottomBuilder, loadMoreBuilder: $loadMoreBuilder, emptyChatListBuilder: $emptyChatListBuilder, linkPreviewBuilder: $linkPreviewBuilder)';
 }
 
 
@@ -170,7 +174,7 @@ abstract mixin class _$BuildersCopyWith<$Res> implements $BuildersCopyWith<$Res>
   factory _$BuildersCopyWith(_Builders value, $Res Function(_Builders) _then) = __$BuildersCopyWithImpl;
 @override @useResult
 $Res call({
- TextMessageBuilder? textMessageBuilder, TextStreamMessageBuilder? textStreamMessageBuilder, ImageMessageBuilder? imageMessageBuilder, FileMessageBuilder? fileMessageBuilder, VideoMessageBuilder? videoMessageBuilder, AudioMessageBuilder? audioMessageBuilder, SystemMessageBuilder? systemMessageBuilder, CustomMessageBuilder? customMessageBuilder, UnsupportedMessageBuilder? unsupportedMessageBuilder, ComposerBuilder? composerBuilder, ChatMessageBuilder? chatMessageBuilder, ChatAnimatedListBuilder? chatAnimatedListBuilder, ScrollToBottomBuilder? scrollToBottomBuilder, LoadMoreBuilder? loadMoreBuilder, EmptyChatListBuilder? emptyChatListBuilder
+ TextMessageBuilder? textMessageBuilder, TextStreamMessageBuilder? textStreamMessageBuilder, ImageMessageBuilder? imageMessageBuilder, FileMessageBuilder? fileMessageBuilder, VideoMessageBuilder? videoMessageBuilder, AudioMessageBuilder? audioMessageBuilder, SystemMessageBuilder? systemMessageBuilder, CustomMessageBuilder? customMessageBuilder, UnsupportedMessageBuilder? unsupportedMessageBuilder, ComposerBuilder? composerBuilder, ChatMessageBuilder? chatMessageBuilder, ChatAnimatedListBuilder? chatAnimatedListBuilder, ScrollToBottomBuilder? scrollToBottomBuilder, LoadMoreBuilder? loadMoreBuilder, EmptyChatListBuilder? emptyChatListBuilder, LinkPreviewBuilder? linkPreviewBuilder
 });
 
 
@@ -187,7 +191,7 @@ class __$BuildersCopyWithImpl<$Res>
 
 /// Create a copy of Builders
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? textMessageBuilder = freezed,Object? textStreamMessageBuilder = freezed,Object? imageMessageBuilder = freezed,Object? fileMessageBuilder = freezed,Object? videoMessageBuilder = freezed,Object? audioMessageBuilder = freezed,Object? systemMessageBuilder = freezed,Object? customMessageBuilder = freezed,Object? unsupportedMessageBuilder = freezed,Object? composerBuilder = freezed,Object? chatMessageBuilder = freezed,Object? chatAnimatedListBuilder = freezed,Object? scrollToBottomBuilder = freezed,Object? loadMoreBuilder = freezed,Object? emptyChatListBuilder = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? textMessageBuilder = freezed,Object? textStreamMessageBuilder = freezed,Object? imageMessageBuilder = freezed,Object? fileMessageBuilder = freezed,Object? videoMessageBuilder = freezed,Object? audioMessageBuilder = freezed,Object? systemMessageBuilder = freezed,Object? customMessageBuilder = freezed,Object? unsupportedMessageBuilder = freezed,Object? composerBuilder = freezed,Object? chatMessageBuilder = freezed,Object? chatAnimatedListBuilder = freezed,Object? scrollToBottomBuilder = freezed,Object? loadMoreBuilder = freezed,Object? emptyChatListBuilder = freezed,Object? linkPreviewBuilder = freezed,}) {
   return _then(_Builders(
 textMessageBuilder: freezed == textMessageBuilder ? _self.textMessageBuilder : textMessageBuilder // ignore: cast_nullable_to_non_nullable
 as TextMessageBuilder?,textStreamMessageBuilder: freezed == textStreamMessageBuilder ? _self.textStreamMessageBuilder : textStreamMessageBuilder // ignore: cast_nullable_to_non_nullable
@@ -204,7 +208,8 @@ as ChatMessageBuilder?,chatAnimatedListBuilder: freezed == chatAnimatedListBuild
 as ChatAnimatedListBuilder?,scrollToBottomBuilder: freezed == scrollToBottomBuilder ? _self.scrollToBottomBuilder : scrollToBottomBuilder // ignore: cast_nullable_to_non_nullable
 as ScrollToBottomBuilder?,loadMoreBuilder: freezed == loadMoreBuilder ? _self.loadMoreBuilder : loadMoreBuilder // ignore: cast_nullable_to_non_nullable
 as LoadMoreBuilder?,emptyChatListBuilder: freezed == emptyChatListBuilder ? _self.emptyChatListBuilder : emptyChatListBuilder // ignore: cast_nullable_to_non_nullable
-as EmptyChatListBuilder?,
+as EmptyChatListBuilder?,linkPreviewBuilder: freezed == linkPreviewBuilder ? _self.linkPreviewBuilder : linkPreviewBuilder // ignore: cast_nullable_to_non_nullable
+as LinkPreviewBuilder?,
   ));
 }
 
