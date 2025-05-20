@@ -49,6 +49,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// The callback function to handle link clicks.
   final void Function(String url, String title)? onLinkTab;
 
+  /// Whether to display the link preview widget.
+  final bool showLinkPreview;
+
   /// Creates a widget to display a text message.
   const FlyerChatTextMessage({
     super.key,
@@ -66,6 +69,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.onLinkTab,
+    this.showLinkPreview = true,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -98,26 +102,46 @@ class FlyerChatTextMessage extends StatelessWidget {
       onLinkTab: onLinkTab,
     );
 
-    return Container(
-      padding:
-          _isOnlyEmoji
-              ? EdgeInsets.symmetric(
-                horizontal: (padding?.horizontal ?? 0) / 2,
-                vertical: 0,
-              )
-              : padding,
-      decoration:
-          _isOnlyEmoji
-              ? null
-              : BoxDecoration(
-                color: backgroundColor,
-                borderRadius: borderRadius ?? theme.shape,
+    final linkPreviewWidget =
+        showLinkPreview
+            ? context.watch<Builders>().linkPreviewBuilder?.call(
+              context,
+              message,
+            )
+            : null;
+
+    return ClipRRect(
+      borderRadius: borderRadius ?? theme.shape,
+      child: Container(
+        decoration:
+            _isOnlyEmoji
+                ? null
+                : BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: borderRadius ?? theme.shape,
+                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding:
+                  _isOnlyEmoji
+                      ? EdgeInsets.symmetric(
+                        horizontal: (padding?.horizontal ?? 0) / 2,
+                        vertical: 0,
+                      )
+                      : padding,
+              child: _buildContentBasedOnPosition(
+                context: context,
+                textContent: textContent,
+                timeAndStatus: timeAndStatus,
+                paragraphStyle: paragraphStyle,
               ),
-      child: _buildContentBasedOnPosition(
-        context: context,
-        textContent: textContent,
-        timeAndStatus: timeAndStatus,
-        paragraphStyle: paragraphStyle,
+            ),
+            if (linkPreviewWidget != null) linkPreviewWidget,
+          ],
+        ),
       ),
     );
   }

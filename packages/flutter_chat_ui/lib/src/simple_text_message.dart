@@ -43,6 +43,9 @@ class SimpleTextMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// Whether to display the link preview widget.
+  final bool showLinkPreview;
+
   /// Creates a widget to display a simple text message.
   const SimpleTextMessage({
     super.key,
@@ -59,6 +62,7 @@ class SimpleTextMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.showLinkPreview = true,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -90,26 +94,46 @@ class SimpleTextMessage extends StatelessWidget {
               : textStyle,
     );
 
-    return Container(
-      padding:
-          _isOnlyEmoji
-              ? EdgeInsets.symmetric(
-                horizontal: (padding?.horizontal ?? 0) / 2,
-                vertical: 0,
-              )
-              : padding,
-      decoration:
-          _isOnlyEmoji
-              ? null
-              : BoxDecoration(
-                color: backgroundColor,
-                borderRadius: borderRadius ?? theme.shape,
+    final linkPreviewWidget =
+        showLinkPreview
+            ? context.watch<Builders>().linkPreviewBuilder?.call(
+              context,
+              message,
+            )
+            : null;
+
+    return ClipRRect(
+      borderRadius: borderRadius ?? theme.shape,
+      child: Container(
+        decoration:
+            _isOnlyEmoji
+                ? null
+                : BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: borderRadius ?? theme.shape,
+                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding:
+                  _isOnlyEmoji
+                      ? EdgeInsets.symmetric(
+                        horizontal: (padding?.horizontal ?? 0) / 2,
+                        vertical: 0,
+                      )
+                      : padding,
+              child: _buildContentBasedOnPosition(
+                context: context,
+                textContent: textContent,
+                timeAndStatus: timeAndStatus,
+                textStyle: textStyle,
               ),
-      child: _buildContentBasedOnPosition(
-        context: context,
-        textContent: textContent,
-        timeAndStatus: timeAndStatus,
-        textStyle: textStyle,
+            ),
+            if (linkPreviewWidget != null) linkPreviewWidget,
+          ],
+        ),
       ),
     );
   }
