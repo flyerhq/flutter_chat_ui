@@ -118,7 +118,7 @@ class SimpleTextMessage extends StatelessWidget {
                 ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             if (linkPreviewWidget != null &&
                 linkPreviewPosition == LinkPreviewPosition.top)
