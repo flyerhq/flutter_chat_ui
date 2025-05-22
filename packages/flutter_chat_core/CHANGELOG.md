@@ -1,3 +1,7 @@
+## 2.3.0
+
+ - **FEAT**: link preview v2 ([#784](https://github.com/flyerhq/flutter_chat_ui/issues/784)). ([b65060e1](https://github.com/flyerhq/flutter_chat_ui/commit/b65060e11036402934489976c702dab28c7feb80))
+
 ## 2.2.1
 
  - **FIX**: add emptyChatListWidget ([#771](https://github.com/flyerhq/flutter_chat_ui/issues/771)). ([69954654](https://github.com/flyerhq/flutter_chat_ui/commit/699546546ca4df7d4271316b52332364fde55ed8))

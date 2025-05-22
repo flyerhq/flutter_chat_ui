@@ -1,3 +1,7 @@
+## 2.3.0
+
+ - **FEAT**: link preview v2 ([#784](https://github.com/flyerhq/flutter_chat_ui/issues/784)). ([b65060e1](https://github.com/flyerhq/flutter_chat_ui/commit/b65060e11036402934489976c702dab28c7feb80))
+
 ## 2.2.4
 
  - **FIX**: add physics param to the ChatAnimatedList(Reversed). ([ede3a170](https://github.com/flyerhq/flutter_chat_ui/commit/ede3a1709ea3d496e906925efa863a13b54d84bc))
