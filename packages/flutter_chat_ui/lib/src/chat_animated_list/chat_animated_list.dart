@@ -425,19 +425,6 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       },
       child: Stack(
         children: [
-          ValueListenableBuilder<bool>(
-            valueListenable: _oldListEmptyNotifier,
-            builder: (context, isEmpty, child) {
-              if (isEmpty) {
-                return Positioned.fill(
-                  child:
-                      builders.emptyChatListBuilder?.call(context) ??
-                      const EmptyChatList(),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
           SliverViewObserver(
             controller: _observerController,
             sliverContexts:
@@ -462,6 +449,19 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                 animation: _scrollToBottomAnimation,
                 onPressed: _handleScrollToBottom,
               ),
+          ValueListenableBuilder<bool>(
+            valueListenable: _oldListEmptyNotifier,
+            builder: (context, isEmpty, child) {
+              if (isEmpty) {
+                return Positioned.fill(
+                  child:
+                      builders.emptyChatListBuilder?.call(context) ??
+                      const EmptyChatList(),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ],
       ),
     );
