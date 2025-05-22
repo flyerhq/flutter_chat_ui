@@ -65,6 +65,9 @@ class ChatAnimatedListReversed extends StatelessWidget {
   /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
+  /// Physics for the scroll view.
+  final ScrollPhysics? physics;
+
   /// Creates a reversed animated chat list.
   const ChatAnimatedListReversed({
     super.key,
@@ -92,6 +95,7 @@ class ChatAnimatedListReversed extends StatelessWidget {
     // triggers pagination when 20% from the visual top is reached.
     this.paginationThreshold = 0.2,
     this.messageGroupingTimeoutInSeconds,
+    this.physics,
   });
 
   @override
@@ -119,6 +123,7 @@ class ChatAnimatedListReversed extends StatelessWidget {
       onEndReached: onEndReached,
       paginationThreshold: paginationThreshold,
       messageGroupingTimeoutInSeconds: messageGroupingTimeoutInSeconds,
+      physics: physics,
     );
   }
 }

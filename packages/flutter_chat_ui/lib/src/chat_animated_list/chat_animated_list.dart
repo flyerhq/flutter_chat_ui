@@ -106,6 +106,9 @@ class ChatAnimatedList extends StatefulWidget {
   /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
+  /// Physics for the scroll view.
+  final ScrollPhysics? physics;
+
   /// Creates an animated chat list.
   const ChatAnimatedList({
     super.key,
@@ -152,6 +155,7 @@ class ChatAnimatedList extends StatefulWidget {
     // unstable pagination jumps, revert to a smaller value like 0.01.
     this.paginationThreshold = 0.01,
     this.messageGroupingTimeoutInSeconds,
+    this.physics,
   });
 
   @override
@@ -434,6 +438,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             child: CustomScrollView(
               controller: _scrollController,
               reverse: widget.reversed,
+              physics: widget.physics,
               keyboardDismissBehavior:
                   widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
