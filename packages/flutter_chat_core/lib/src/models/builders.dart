@@ -75,6 +75,9 @@ typedef LoadMoreBuilder = Widget Function(BuildContext);
 /// Signature for building the empty chat list widget.
 typedef EmptyChatListBuilder = Widget Function(BuildContext);
 
+/// Signature for building the link preview widget.
+typedef LinkPreviewBuilder = Widget? Function(BuildContext, TextMessage);
+
 /// A collection of builder functions used to customize the UI components
 /// of the chat interface.
 @Freezed(fromJson: false, toJson: false)
@@ -128,6 +131,9 @@ abstract class Builders with _$Builders {
 
     /// Custom builder for the empty chat list.
     EmptyChatListBuilder? emptyChatListBuilder,
+
+    /// Custom builder for the link preview widget.
+    LinkPreviewBuilder? linkPreviewBuilder,
   }) = _Builders;
 
   const Builders._();

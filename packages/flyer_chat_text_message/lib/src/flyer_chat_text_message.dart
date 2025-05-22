@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart' show LinkPreviewPosition;
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,11 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// The callback function to handle link clicks.
   final void Function(String url, String title)? onLinkTab;
 
+  /// The position of the link preview widget relative to the text.
+  /// If set to [LinkPreviewPosition.none], the link preview widget will not be displayed.
+  /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
+  final LinkPreviewPosition linkPreviewPosition;
+
   /// Creates a widget to display a text message.
   const FlyerChatTextMessage({
     super.key,
@@ -66,6 +72,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.onLinkTab,
+    this.linkPreviewPosition = LinkPreviewPosition.bottom,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -98,26 +105,51 @@ class FlyerChatTextMessage extends StatelessWidget {
       onLinkTab: onLinkTab,
     );
 
-    return Container(
-      padding:
-          _isOnlyEmoji
-              ? EdgeInsets.symmetric(
-                horizontal: (padding?.horizontal ?? 0) / 2,
-                vertical: 0,
-              )
-              : padding,
-      decoration:
-          _isOnlyEmoji
-              ? null
-              : BoxDecoration(
-                color: backgroundColor,
-                borderRadius: borderRadius ?? theme.shape,
+    final linkPreviewWidget =
+        linkPreviewPosition != LinkPreviewPosition.none
+            ? context.watch<Builders>().linkPreviewBuilder?.call(
+              context,
+              message,
+            )
+            : null;
+
+    return ClipRRect(
+      borderRadius: borderRadius ?? theme.shape,
+      child: Container(
+        decoration:
+            _isOnlyEmoji
+                ? null
+                : BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: borderRadius ?? theme.shape,
+                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (linkPreviewWidget != null &&
+                linkPreviewPosition == LinkPreviewPosition.top)
+              linkPreviewWidget,
+            Container(
+              padding:
+                  _isOnlyEmoji
+                      ? EdgeInsets.symmetric(
+                        horizontal: (padding?.horizontal ?? 0) / 2,
+                        vertical: 0,
+                      )
+                      : padding,
+              child: _buildContentBasedOnPosition(
+                context: context,
+                textContent: textContent,
+                timeAndStatus: timeAndStatus,
+                paragraphStyle: paragraphStyle,
               ),
-      child: _buildContentBasedOnPosition(
-        context: context,
-        textContent: textContent,
-        timeAndStatus: timeAndStatus,
-        paragraphStyle: paragraphStyle,
+            ),
+            if (linkPreviewWidget != null &&
+                linkPreviewPosition == LinkPreviewPosition.bottom)
+              linkPreviewWidget,
+          ],
+        ),
       ),
     );
   }

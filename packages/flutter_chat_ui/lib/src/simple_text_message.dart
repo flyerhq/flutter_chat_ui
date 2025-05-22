@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
+import 'link_preview.dart';
+
 /// A widget that displays a simple text message.
 class SimpleTextMessage extends StatelessWidget {
   /// The text message data model.
@@ -43,6 +45,11 @@ class SimpleTextMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// The position of the link preview widget relative to the text.
+  /// If set to [LinkPreviewPosition.none], the link preview widget will not be displayed.
+  /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
+  final LinkPreviewPosition linkPreviewPosition;
+
   /// Creates a widget to display a simple text message.
   const SimpleTextMessage({
     super.key,
@@ -59,6 +66,7 @@ class SimpleTextMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.linkPreviewPosition = LinkPreviewPosition.bottom,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -90,26 +98,51 @@ class SimpleTextMessage extends StatelessWidget {
               : textStyle,
     );
 
-    return Container(
-      padding:
-          _isOnlyEmoji
-              ? EdgeInsets.symmetric(
-                horizontal: (padding?.horizontal ?? 0) / 2,
-                vertical: 0,
-              )
-              : padding,
-      decoration:
-          _isOnlyEmoji
-              ? null
-              : BoxDecoration(
-                color: backgroundColor,
-                borderRadius: borderRadius ?? theme.shape,
+    final linkPreviewWidget =
+        linkPreviewPosition != LinkPreviewPosition.none
+            ? context.watch<Builders>().linkPreviewBuilder?.call(
+              context,
+              message,
+            )
+            : null;
+
+    return ClipRRect(
+      borderRadius: borderRadius ?? theme.shape,
+      child: Container(
+        decoration:
+            _isOnlyEmoji
+                ? null
+                : BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: borderRadius ?? theme.shape,
+                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (linkPreviewWidget != null &&
+                linkPreviewPosition == LinkPreviewPosition.top)
+              linkPreviewWidget,
+            Container(
+              padding:
+                  _isOnlyEmoji
+                      ? EdgeInsets.symmetric(
+                        horizontal: (padding?.horizontal ?? 0) / 2,
+                        vertical: 0,
+                      )
+                      : padding,
+              child: _buildContentBasedOnPosition(
+                context: context,
+                textContent: textContent,
+                timeAndStatus: timeAndStatus,
+                textStyle: textStyle,
               ),
-      child: _buildContentBasedOnPosition(
-        context: context,
-        textContent: textContent,
-        timeAndStatus: timeAndStatus,
-        textStyle: textStyle,
+            ),
+            if (linkPreviewWidget != null &&
+                linkPreviewPosition == LinkPreviewPosition.bottom)
+              linkPreviewWidget,
+          ],
+        ),
       ),
     );
   }
