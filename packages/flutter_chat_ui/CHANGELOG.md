@@ -1,3 +1,8 @@
+## 2.2.4
+
+ - **FIX**: add physics param to the ChatAnimatedList(Reversed). ([ede3a170](https://github.com/flyerhq/flutter_chat_ui/commit/ede3a1709ea3d496e906925efa863a13b54d84bc))
+ - **FIX**: emptyChatList not clickable ([#787](https://github.com/flyerhq/flutter_chat_ui/issues/787)). ([88937baa](https://github.com/flyerhq/flutter_chat_ui/commit/88937baa657c5ca0842e77190756e521453f04cf))
+
 ## 2.2.3
 
  - **FIX**: add emptyChatListWidget ([#771](https://github.com/flyerhq/flutter_chat_ui/issues/771)). ([69954654](https://github.com/flyerhq/flutter_chat_ui/commit/699546546ca4df7d4271316b52332364fde55ed8))
