@@ -89,7 +89,7 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
 
   @override
   Widget build(BuildContext context) {
-    final builders = context.watch<Builders>();
+    final builders = context.read<Builders>();
     final child = _buildMessage(
       context,
       builders,

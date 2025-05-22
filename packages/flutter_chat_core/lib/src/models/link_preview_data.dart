@@ -19,7 +19,6 @@ abstract class LinkPreviewData with _$LinkPreviewData {
 
     /// The title extracted from the link source.
     String? title,
-
   }) = _LinkPreviewData;
 
   const LinkPreviewData._();
@@ -34,7 +33,6 @@ abstract class LinkPreviewData with _$LinkPreviewData {
 abstract class ImagePreviewData with _$ImagePreviewData {
   /// Creates a [ImagePreviewData] instance.
   const factory ImagePreviewData({
-
     /// The URL of an image associated with the link.
     required String url,
 
@@ -43,7 +41,6 @@ abstract class ImagePreviewData with _$ImagePreviewData {
 
     /// The image height.
     required double height,
-
   }) = _ImagePreviewData;
 
   const ImagePreviewData._();

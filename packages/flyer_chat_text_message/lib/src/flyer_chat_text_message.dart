@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart' show LinkPreviewPosition;
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +18,9 @@ class FlyerChatTextMessage extends StatelessWidget {
 
   /// Border radius of the message bubble.
   final BorderRadiusGeometry? borderRadius;
+
+  /// Box constraints for the message bubble.
+  final BoxConstraints? constraints;
 
   /// Font size for messages containing only emojis.
   final double? onlyEmojiFontSize;
@@ -47,6 +49,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// Insets for the timestamp and status indicator when [timeAndStatusPosition] is [TimeAndStatusPosition.inline].
+  final EdgeInsetsGeometry? timeAndStatusPositionInlineInsets;
+
   /// The callback function to handle link clicks.
   final void Function(String url, String title)? onLinkTab;
 
@@ -62,6 +67,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     required this.index,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     this.borderRadius,
+    this.constraints,
     this.onlyEmojiFontSize = 48,
     this.sentBackgroundColor,
     this.receivedBackgroundColor,
@@ -71,6 +77,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.timeAndStatusPositionInlineInsets = const EdgeInsets.only(bottom: 2),
     this.onLinkTab,
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
   });
@@ -107,7 +114,7 @@ class FlyerChatTextMessage extends StatelessWidget {
 
     final linkPreviewWidget =
         linkPreviewPosition != LinkPreviewPosition.none
-            ? context.watch<Builders>().linkPreviewBuilder?.call(
+            ? context.read<Builders>().linkPreviewBuilder?.call(
               context,
               message,
             )
@@ -116,16 +123,11 @@ class FlyerChatTextMessage extends StatelessWidget {
     return ClipRRect(
       borderRadius: borderRadius ?? theme.shape,
       child: Container(
-        decoration:
-            _isOnlyEmoji
-                ? null
-                : BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: borderRadius ?? theme.shape,
-                ),
+        constraints: constraints,
+        decoration: _isOnlyEmoji ? null : BoxDecoration(color: backgroundColor),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (linkPreviewWidget != null &&
                 linkPreviewPosition == LinkPreviewPosition.top)
@@ -180,7 +182,10 @@ class FlyerChatTextMessage extends StatelessWidget {
           children: [
             Flexible(child: textContent),
             const SizedBox(width: 4),
-            timeAndStatus,
+            Padding(
+              padding: timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
+              child: timeAndStatus,
+            ),
           ],
         );
       case TimeAndStatusPosition.end:
