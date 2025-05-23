@@ -9,6 +9,7 @@ import 'helpers/reaction_text.dart';
 import 'helpers/text_size_extension.dart';
 import 'models/reaction.dart';
 import 'widgets/reaction_tile.dart';
+import 'widgets/reactions_list.dart';
 
 /// Direction in which the reactions will grow when there are multiple reactions.
 enum FlyerChatReactionsGrowDirection { left, right }
@@ -153,6 +154,15 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
     return visibleCount;
   }
 
+  void _showReactionList() {
+    showReactionsList(
+      context: context,
+      reactions: _reactions,
+      resolveUser: context.read<ResolveUserCallback>(),
+      userCache: context.read<UserCache>(),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -222,10 +232,11 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
               borderColor: theme.colors.surface,
               backgroundColor: backgroundColor,
               reactedBackgroundColor: reactedBackgroundColor,
-              reactedByUser: _reactions[i].reactedByUser,
+              reactedByUser: _reactions[i].isReactedByUser(currentUserId),
               onTap: () {
                 onReactionTap?.call(1, _reactions[i].emoji);
               },
+              onLongPress: () => _showReactionList,
             ),
           );
         }
@@ -245,6 +256,8 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
               textStyle: _countTextStyle,
               emojiFontSize: widget.emojiFontSize,
               borderColor: theme.colors.surface,
+              onTap: _showReactionList,
+              onLongPress: _showReactionList,
             ),
           );
         }
