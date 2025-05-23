@@ -29,6 +29,10 @@ typedef OnMessageLongPressCallback =
       LongPressStartDetails details,
     });
 
+/// Callback signature for when a message is reacted.
+typedef OnMessageReactionCallback =
+    void Function(int index, String? reaction);
+
 /// Callback signature for when the user attempts to send a message.
 /// Provides the [text] entered by the user.
 typedef OnMessageSendCallback = void Function(String text);

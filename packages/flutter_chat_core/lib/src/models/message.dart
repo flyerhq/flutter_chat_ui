@@ -8,6 +8,8 @@ import 'link_preview_data.dart';
 part 'message.freezed.dart';
 part 'message.g.dart';
 
+typedef MessageReactions = Map<String, List<UserID>>;
+
 /// Base class for all message types.
 ///
 /// Uses a sealed class hierarchy with Freezed for immutability and union types.
@@ -50,7 +52,7 @@ sealed class Message with _$Message {
     @EpochDateTimeConverter() DateTime? editedAt,
 
     /// Map of reaction keys to lists of user IDs who reacted.
-    Map<String, List<UserID>>? reactions,
+    MessageReactions? reactions,
 
     /// Indicates if the message is pinned.
     bool? pinned,
