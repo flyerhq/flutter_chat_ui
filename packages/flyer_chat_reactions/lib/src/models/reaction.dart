@@ -2,14 +2,13 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 
 class Reaction {
   final String emoji;
-  final int count;
-  final bool reactedByUser;
+  final List<String> userIds;
 
-  Reaction({
-    required this.emoji,
-    required this.count,
-    required this.reactedByUser,
-  });
+  const Reaction({required this.emoji, required this.userIds});
+
+  int get count => userIds.length;
+
+  bool isReactedByUser(String userId) => userIds.contains(userId);
 }
 
 /// Converts a map of reactions to a list of [Reaction] objects
@@ -23,10 +22,6 @@ List<Reaction> reactionsFromMessageReactions({
   return reactions.entries.map((entry) {
     final emoji = entry.key;
     final userIds = entry.value;
-    return Reaction(
-      emoji: emoji,
-      count: userIds.length,
-      reactedByUser: userIds.contains(currentUserId),
-    );
+    return Reaction(emoji: emoji, userIds: userIds);
   }).toList();
 }
