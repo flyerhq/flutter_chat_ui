@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/typedefs.dart';
@@ -203,6 +204,26 @@ class ChatMessage extends StatelessWidget {
     return messageWidget;
   }
 
+  Widget _addReactions(Widget child, {required bool isSentByMe}) {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            child,
+            // TODO find a better way to determine the height
+            SizedBox(height: 16),
+          ],
+        ),
+        Positioned(
+          bottom: 0,
+          left: isSentByMe ? 8 : 0,
+          right: isSentByMe ? 0 : 8,
+          child: FlyerChatReactions(reactions: message.reactions),
+        ),
+      ],
+    );
+  }
+
   Widget _buildMessage({required bool isSentByMe}) => Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment:
@@ -217,7 +238,7 @@ class ChatMessage extends StatelessWidget {
             isSentByMe ? sentMessageRowAlignment : receivedMessageRowAlignment,
         children: [
           if (leadingWidget != null) leadingWidget!,
-          Flexible(child: child),
+          Flexible(child: _addReactions(child, isSentByMe: isSentByMe)),
           if (trailingWidget != null) trailingWidget!,
         ],
       ),

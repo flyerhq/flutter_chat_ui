@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.7.0
+  flyer_chat_reactions: ^0.0.12
   provider: ^6.1.5
   scrollview_observer: ^1.26.1
 
