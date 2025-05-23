@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/composer_action_bar.dart';
@@ -30,10 +31,17 @@ class PaginationState extends State<Pagination> {
           isUtc: true,
         ),
         text: text,
+        reactions: {
+          '👍': ['me'],
+          '👎': ['user2', 'me'],
+          '🥨': ['author'],
+          '👌': ['me', 'user3', 'user4'],
+          '👊': ['me'],
+        },
       );
     }).reversed.toList(),
   );
-  final _currentUser = const User(id: 'me');
+  final _currentUser = const User(id: 'me', name: 'This is me');
 
   MessageID? _lastMessageId;
   bool _hasMore = true;
@@ -45,6 +53,10 @@ class PaginationState extends State<Pagination> {
     super.dispose();
   }
 
+  void _onMessageReaction(int index, String? reaction) {
+    print('reaction: $reaction');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -52,6 +64,7 @@ class PaginationState extends State<Pagination> {
     return Scaffold(
       appBar: AppBar(title: const Text('Pagination')),
       body: Chat(
+        onMessageReaction: _onMessageReaction,
         builders: Builders(
           chatAnimatedListBuilder: (context, itemBuilder) {
             return ChatAnimatedList(
@@ -176,6 +189,13 @@ class MockDatabase {
         isUtc: true,
       ),
       text: text,
+      reactions: {
+        '👍': ['me'],
+        '👎': ['me'],
+        '🥨': ['author'],
+        '👌': ['me'],
+        '👊': ['me'],
+      },
     );
   });
 
