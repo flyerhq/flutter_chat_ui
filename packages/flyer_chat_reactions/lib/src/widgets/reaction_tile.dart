@@ -33,6 +33,10 @@ class ReactionTile extends StatefulWidget {
   /// Used to handle reaction selection/deselection.
   final VoidCallback? onTap;
 
+  /// Callback triggered when the reaction tile is long pressed.
+  /// Used to handle additional actions like showing a menu or details.
+  final VoidCallback? onLongPress;
+
   /// Background color for the reaction tile when not reacted by the user.
   /// If null, uses the default theme color.
   final Color? backgroundColor;
@@ -77,6 +81,7 @@ class ReactionTile extends StatefulWidget {
     this.extraText,
     this.reactedByUser = false,
     this.onTap,
+    this.onLongPress,
     this.backgroundColor,
     this.reactedBackgroundColor,
     this.borderColor,
@@ -125,7 +130,7 @@ class _ReactionTileState extends State<ReactionTile> {
           }
           widget.onTap?.call();
         },
-
+        onLongPress: widget.onLongPress,
         child: Container(
           padding: widget.padding,
           decoration: BoxDecoration(
