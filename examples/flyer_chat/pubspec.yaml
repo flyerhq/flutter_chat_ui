@@ -39,6 +39,9 @@ dependencies:
   flutter_chat_core: ^2.3.0
   flutter_chat_ui: ^2.3.0
   flutter_dotenv: ^5.2.1
+  # TODO: remove this when the package is published
+  flutter_link_previewer:
+    path: /Users/nicolasbraun/Sources/flutter_link_previewer
   flutter_lorem: ^2.0.0
   flyer_chat_file_message: ^2.1.5
   flyer_chat_image_message: ^2.1.6
