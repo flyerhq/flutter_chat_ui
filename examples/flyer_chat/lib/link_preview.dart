@@ -49,7 +49,7 @@ class LinkPreviewExampleState extends State<LinkPreviewExample> {
       ),
       Message.text(
         id: 'complete',
-        authorId: _currentUser.id,
+        authorId: 'someone',
         text: 'https://flyer.chat/ Already fetched',
         createdAt: DateTime.now().toUtc().subtract(const Duration(hours: 3)),
         linkPreviewData: LinkPreviewData(
@@ -154,7 +154,7 @@ class LinkPreviewExampleState extends State<LinkPreviewExample> {
       body: Chat(
         backgroundColor: Colors.transparent,
         builders: Builders(
-          linkPreviewBuilder: (context, message) {
+          linkPreviewBuilder: (context, message, isSentByMe) {
             final isLinkPreviewDataFetched =
                 message.metadata?.containsKey(metadataLinkPreviewFetchedKey) ??
                 false;
@@ -174,8 +174,12 @@ class LinkPreviewExampleState extends State<LinkPreviewExample> {
                 linkPreviewData: message.linkPreviewData,
                 hideDescription: message.id == 'display-only-image',
                 hideTitle: message.id == 'display-only-image',
-                backgroundColor: Colors.white.withAlpha(180),
-                sideBorderColor: Colors.white,
+                backgroundColor:
+                    isSentByMe
+                        ? Colors.white.withAlpha(100)
+                        : chatTheme.colors.primary.withAlpha(100),
+                sideBorderColor:
+                    isSentByMe ? Colors.white : chatTheme.colors.primary,
                 onLinkPreviewDataFetched: (linkPreviewData) {
                   _chatController.updateMessage(
                     message,
