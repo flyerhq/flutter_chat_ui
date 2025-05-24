@@ -81,9 +81,18 @@ class SimpleTextMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
     final isSentByMe = context.watch<UserID>() == message.authorId;
-    final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
-    final textStyle = _resolveTextStyle(isSentByMe, theme);
-    final timeStyle = _resolveTimeStyle(isSentByMe, theme);
+    final backgroundColor =
+        isSentByMe
+            ? theme.sentMessageBackgroundColor
+            : theme.receivedMessageBackgroundColor;
+    final textStyle =
+        isSentByMe
+            ? theme.sentMessageTextColor
+            : theme.receivedMessageTextColor;
+    final timeStyle =
+        isSentByMe
+            ? theme.sentMessageTimeColor
+            : theme.receivedMessageTimeColor;
 
     final timeAndStatus =
         showTime || (isSentByMe && showStatus)
@@ -100,7 +109,7 @@ class SimpleTextMessage extends StatelessWidget {
       message.text,
       style:
           _isOnlyEmoji
-              ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
+              ? textStyle.copyWith(fontSize: onlyEmojiFontSize)
               : textStyle,
     );
 
@@ -189,35 +198,6 @@ class SimpleTextMessage extends StatelessWidget {
       ],
     );
   }
-
-  Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
-    if (isSentByMe) {
-      return sentBackgroundColor ?? theme.colors.primary;
-    }
-    return receivedBackgroundColor ?? theme.colors.surfaceContainer;
-  }
-
-  TextStyle? _resolveTextStyle(bool isSentByMe, ChatTheme theme) {
-    if (isSentByMe) {
-      return sentTextStyle ??
-          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
-    }
-    return receivedTextStyle ??
-        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
-  }
-
-  TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
-    if (isSentByMe) {
-      return timeStyle ??
-          theme.typography.labelSmall.copyWith(
-            color:
-                _isOnlyEmoji ? theme.colors.onSurface : theme.colors.onPrimary,
-          );
-    }
-    return timeStyle ??
-        theme.typography.labelSmall.copyWith(color: theme.colors.onSurface);
-  }
-}
 }
 
 /// A widget to display the message timestamp and status indicator.
