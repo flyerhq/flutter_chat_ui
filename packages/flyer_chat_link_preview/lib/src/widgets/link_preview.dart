@@ -21,7 +21,9 @@ class LinkPreview extends StatefulWidget {
     this.enableAnimation = false,
     this.animationDuration,
     this.titleTextStyle,
+    this.maxTitleLines = 2,
     this.descriptionTextStyle,
+    this.maxDescriptionLines = 3,
     this.imageBuilder,
     this.onLinkPressed,
     this.openOnPreviewImageTap = true,
@@ -37,6 +39,8 @@ class LinkPreview extends StatefulWidget {
     this.sideBorderWidth = 4,
     this.borderRadius = 4,
     this.maxImageHeight = 150,
+    this.maxWidth,
+    this.maxHeight,
   });
 
   /// Text used for parsing.
@@ -70,8 +74,14 @@ class LinkPreview extends StatefulWidget {
   /// Style of preview's title.
   final TextStyle? titleTextStyle;
 
+  /// Maximum number of lines for the title text.
+  final int maxTitleLines;
+
   /// Style of preview's description.
   final TextStyle? descriptionTextStyle;
+
+  /// Maximum number of lines for the description text.
+  final int maxDescriptionLines;
 
   /// Function that allows you to build a custom image.
   final Widget Function(String)? imageBuilder;
@@ -118,6 +128,12 @@ class LinkPreview extends StatefulWidget {
   /// Max image height.
   final double maxImageHeight;
 
+  /// Max width.
+  final double? maxWidth;
+
+  /// Max height.
+  final double? maxHeight;
+
   @override
   State<LinkPreview> createState() => _LinkPreviewState();
 }
@@ -163,6 +179,10 @@ class _LinkPreviewState extends State<LinkPreview>
     final preview = Stack(
       children: [
         Container(
+          constraints: BoxConstraints(
+            maxWidth: widget.maxWidth ?? double.infinity,
+            maxHeight: widget.maxHeight ?? double.infinity,
+          ),
           margin: widget.outsidePadding,
           decoration: BoxDecoration(
             color: widget.backgroundColor ?? Theme.of(context).cardColor,
@@ -253,7 +273,7 @@ class _LinkPreviewState extends State<LinkPreview>
         const TextStyle(fontWeight: FontWeight.bold);
     return Text(
       title,
-      maxLines: 2,
+      maxLines: widget.maxTitleLines,
       overflow: TextOverflow.ellipsis,
       style: style,
     );
@@ -261,7 +281,7 @@ class _LinkPreviewState extends State<LinkPreview>
 
   Widget _descriptionWidget(String description) => Text(
     description,
-    maxLines: 3,
+    maxLines: widget.maxDescriptionLines,
     overflow: TextOverflow.ellipsis,
     style: widget.titleTextStyle,
   );
