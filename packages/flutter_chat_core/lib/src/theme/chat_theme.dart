@@ -58,6 +58,22 @@ abstract class ChatTheme with _$ChatTheme {
       shape: other.shape,
     );
   }
+
+  Color get sentMessageBackgroundColor => colors.primary;
+
+  Color get receivedMessageBackgroundColor => colors.surfaceContainer;
+
+  TextStyle get sentMessageTextColor =>
+      typography.bodyMedium.copyWith(color: colors.onPrimary);
+
+  TextStyle get receivedMessageTextColor =>
+      typography.bodyMedium.copyWith(color: colors.onSurface);
+
+  TextStyle get sentMessageTimeColor =>
+      typography.labelSmall.copyWith(color: colors.onPrimary);
+
+  TextStyle get receivedMessageTimeColor =>
+      typography.labelSmall.copyWith(color: colors.onSurface);
 }
 
 /// Defines the color palette for the chat UI.
