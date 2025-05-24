@@ -117,6 +117,7 @@ class FlyerChatTextMessage extends StatelessWidget {
             ? context.read<Builders>().linkPreviewBuilder?.call(
               context,
               message,
+              isSentByMe,
             )
             : null;
 
