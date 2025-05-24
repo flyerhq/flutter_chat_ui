@@ -60,7 +60,7 @@ class HiveChatController
     await _box.clear();
     if (messages.isEmpty) {
       _invalidateCache();
-      _operationsController.add(ChatOperation.set());
+      _operationsController.add(ChatOperation.set([]));
       return;
     } else {
       await _box.putAll(
@@ -70,7 +70,7 @@ class HiveChatController
             .reduce((acc, map) => {...acc, ...map}),
       );
       _invalidateCache();
-      _operationsController.add(ChatOperation.set(messages: messages));
+      _operationsController.add(ChatOperation.set(messages));
     }
   }
 

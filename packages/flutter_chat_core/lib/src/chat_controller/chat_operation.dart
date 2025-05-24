@@ -63,8 +63,8 @@ class ChatOperation {
 
   /// Creates a set operation (signifying a full list replacement).
   ///
-  /// The [messages] parameter contains the new list of messages. If null or empty,
-  /// it signifies that the chat list should be cleared.
-  factory ChatOperation.set({List<Message>? messages}) =>
+  /// The [messages] parameter contains the new list of messages. Passing an empty list
+  /// signifies that the chat list should be cleared.
+  factory ChatOperation.set(List<Message> messages) =>
       ChatOperation._(ChatOperationType.set, messages: messages);
 }

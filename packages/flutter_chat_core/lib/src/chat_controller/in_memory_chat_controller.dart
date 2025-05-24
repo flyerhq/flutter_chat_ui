@@ -144,7 +144,7 @@ class InMemoryChatController
   Future<void> setMessages(List<Message> messages) async {
     _assertNoMessageIdDuplicates(messages, 'set');
     _messages = List.from(messages);
-    _operationsController.add(ChatOperation.set(messages: _messages));
+    _operationsController.add(ChatOperation.set(_messages));
   }
 
   @override
