@@ -127,7 +127,7 @@ class GeminiStreamManager extends ChangeNotifier {
       id: originalMessage.id,
       authorId: originalMessage.authorId,
       createdAt: originalMessage.createdAt,
-      text: '$currentText\n\n[Error generating response]',
+      text: '$currentText\n\n[${error.toString()}]',
     );
 
     try {
