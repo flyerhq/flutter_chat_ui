@@ -204,20 +204,26 @@ class _LinkPreviewState extends State<LinkPreview>
                     children: [
                       if (_shouldShowTitle())
                         Flexible(
+                          flex: 1,
                           fit: FlexFit.loose,
                           child: _titleWidget(_linkPreviewData!.title!),
                         ),
                       if (_shouldShowDescription())
                         Flexible(
+                          flex: 1,
                           fit: FlexFit.loose,
                           child: _descriptionWidget(
                             widget.linkPreviewData!.description!,
                           ),
                         ),
                       if (imagePosition == LinkPreviewImagePosition.bottom)
-                        _imageWidget(
-                          imageUrl: _linkPreviewData!.image!.url,
-                          linkUrl: _linkPreviewData!.link,
+                        Flexible(
+                          flex: 2,
+                          fit: FlexFit.loose,
+                          child: _imageWidget(
+                            imageUrl: _linkPreviewData!.image!.url,
+                            linkUrl: _linkPreviewData!.link,
+                          ),
                         ),
                     ],
                   ),
@@ -228,12 +234,15 @@ class _LinkPreviewState extends State<LinkPreview>
                     flex: 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        _imageWidget(
-                          imageUrl: _linkPreviewData!.image!.url,
-                          linkUrl: _linkPreviewData!.link,
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: _imageWidget(
+                            imageUrl: _linkPreviewData!.image!.url,
+                            linkUrl: _linkPreviewData!.link,
+                          ),
                         ),
                       ],
                     ),
@@ -289,24 +298,12 @@ class _LinkPreviewState extends State<LinkPreview>
   Widget _imageWidget({required String imageUrl, required String linkUrl}) =>
       GestureDetector(
         onTap: widget.openOnPreviewImageTap ? () => _onOpen(linkUrl) : null,
-        child: Center(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(widget.borderRadius),
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxHeight: constraints.maxWidth,
-                    maxWidth: constraints.maxWidth,
-                  ),
-                  child:
-                      widget.imageBuilder != null
-                          ? widget.imageBuilder!(imageUrl)
-                          : Image.network(imageUrl, fit: BoxFit.contain),
-                ),
-              );
-            },
-          ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          child:
+              widget.imageBuilder != null
+                  ? widget.imageBuilder!(imageUrl)
+                  : Image.network(imageUrl, fit: BoxFit.contain),
         ),
       );
 
