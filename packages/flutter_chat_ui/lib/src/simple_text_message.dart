@@ -207,8 +207,10 @@ class SimpleTextMessage extends StatelessWidget {
                 : textContent,
             if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
               linkPreviewWidget!,
-            if (timeAndStatusPosition == TimeAndStatusPosition.end)
-              SizedBox(height: textStyle?.lineHeight ?? 0),
+            if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
           ],
         ),
         if (timeAndStatusPosition != TimeAndStatusPosition.inline)
@@ -248,12 +250,6 @@ class SimpleTextMessage extends StatelessWidget {
     }
     return timeStyle ?? theme.labelSmall.copyWith(color: theme.onSurface);
   }
-}
-
-/// Internal extension for calculating the visual line height of a TextStyle.
-extension on TextStyle {
-  /// Calculates the line height based on the style's `height` and `fontSize`.
-  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }
 
 /// A widget to display the message timestamp and status indicator.
