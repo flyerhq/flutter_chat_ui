@@ -24,6 +24,10 @@ class Avatar extends StatelessWidget {
   /// Optional callback triggered when the avatar is tapped.
   final VoidCallback? onTap;
 
+  /// Optional HTTP headers for authenticated image requests.
+  /// Commonly used for authorization tokens, e.g., {'Authorization': 'Bearer token'}.
+  final Map<String, String>? headers;
+
   /// Creates an avatar widget.
   const Avatar({
     super.key,
@@ -32,6 +36,7 @@ class Avatar extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.onTap,
+    this.headers,
   });
 
   @override
@@ -70,6 +75,7 @@ class Avatar extends StatelessWidget {
         user: user,
         size: size,
         foregroundColor: foregroundColor ?? theme.colors.onSurface,
+        headers: headers,
         textStyle: theme.typography.labelLarge.copyWith(
           color: foregroundColor ?? theme.colors.onSurface,
           fontWeight: FontWeight.bold,
@@ -100,6 +106,10 @@ class AvatarContent extends StatefulWidget {
   /// The text style for the initials.
   final TextStyle? textStyle;
 
+  /// Optional HTTP headers for authenticated image requests.
+  /// Commonly used for authorization tokens, e.g., {'Authorization': 'Bearer token'}.
+  final Map<String, String>? headers;
+
   /// Creates an [AvatarContent] widget.
   const AvatarContent({
     super.key,
@@ -107,6 +117,7 @@ class AvatarContent extends StatefulWidget {
     required this.size,
     required this.foregroundColor,
     this.textStyle,
+    this.headers,
   });
 
   @override
@@ -124,19 +135,25 @@ class _AvatarContentState extends State<AvatarContent> {
 
     _cachedNetworkImage =
         widget.user?.imageSource != null
-            ? CachedNetworkImage(widget.user!.imageSource!, crossCache)
+            ? CachedNetworkImage(
+              widget.user!.imageSource!,
+              crossCache,
+              headers: widget.headers,
+            )
             : null;
   }
 
   @override
   void didUpdateWidget(covariant AvatarContent oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.user?.imageSource != widget.user?.imageSource) {
+    if (oldWidget.user?.imageSource != widget.user?.imageSource ||
+        oldWidget.headers != widget.headers) {
       if (widget.user?.imageSource != null) {
         final crossCache = context.read<CrossCache>();
         final newImage = CachedNetworkImage(
           widget.user!.imageSource!,
           crossCache,
+          headers: widget.headers,
         );
 
         precacheImage(newImage, context).then((_) {

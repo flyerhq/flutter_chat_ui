@@ -29,6 +29,11 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// with the `message.source`.
   final ImageProvider? customImageProvider;
 
+  /// Optional HTTP headers for authenticated image requests.
+  /// Commonly used for authorization tokens, e.g., {'Authorization': 'Bearer token'}.
+  /// Only used when [customImageProvider] is null.
+  final Map<String, String>? headers;
+
   /// Border radius of the image container.
   final BorderRadiusGeometry? borderRadius;
 
@@ -75,6 +80,7 @@ class FlyerChatImageMessage extends StatefulWidget {
     required this.message,
     required this.index,
     this.customImageProvider,
+    this.headers,
     this.borderRadius,
     this.constraints = const BoxConstraints(maxHeight: 300),
     this.overlay,
@@ -155,7 +161,8 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.message.source != widget.message.source) {
+    if (oldWidget.message.source != widget.message.source ||
+        oldWidget.headers != widget.headers) {
       final newImage = _targetProvider;
 
       precacheImage(newImage, context).then((_) {
@@ -318,7 +325,11 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       return widget.customImageProvider!;
     } else {
       final crossCache = context.read<CrossCache>();
-      return CachedNetworkImage(widget.message.source, crossCache);
+      return CachedNetworkImage(
+        widget.message.source,
+        crossCache,
+        headers: widget.headers,
+      );
     }
   }
 }
