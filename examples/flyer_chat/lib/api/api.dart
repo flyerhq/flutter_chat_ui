@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,51 +85,53 @@ class ApiState extends State<Api> {
       appBar: AppBar(title: const Text('Api')),
       body: Stack(
         children: [
-          Chat(
-            builders: Builders(
-              textMessageBuilder:
-                  (context, message, index) =>
-                      FlyerChatTextMessage(message: message, index: index),
-              imageMessageBuilder:
-                  (context, message, index) =>
-                      FlyerChatImageMessage(message: message, index: index),
-              composerBuilder:
-                  (context) => Composer(
-                    topWidget: ComposerActionBar(
-                      buttons: [
-                        ComposerActionButton(
-                          icon: Icons.shuffle,
-                          title: 'Send random',
-                          onPressed: () => _addItem(null),
-                        ),
-                        ComposerActionButton(
-                          icon: Icons.delete_sweep,
-                          title: 'Clear all',
-                          onPressed: () async {
-                            try {
-                              await _apiService.flush();
-                              if (mounted) {
-                                await _chatController.setMessages([]);
-                                await _showInfo('All messages cleared');
+          ProviderScope(
+            child: Chat(
+              builders: Builders(
+                textMessageBuilder:
+                    (context, message, index) =>
+                        FlyerChatTextMessage(message: message, index: index),
+                imageMessageBuilder:
+                    (context, message, index) =>
+                        FlyerChatImageMessage(message: message, index: index),
+                composerBuilder:
+                    (context) => Composer(
+                      topWidget: ComposerActionBar(
+                        buttons: [
+                          ComposerActionButton(
+                            icon: Icons.shuffle,
+                            title: 'Send random',
+                            onPressed: () => _addItem(null),
+                          ),
+                          ComposerActionButton(
+                            icon: Icons.delete_sweep,
+                            title: 'Clear all',
+                            onPressed: () async {
+                              try {
+                                await _apiService.flush();
+                                if (mounted) {
+                                  await _chatController.setMessages([]);
+                                  await _showInfo('All messages cleared');
+                                }
+                              } catch (error) {
+                                await _showInfo('Error: $error');
                               }
-                            } catch (error) {
-                              await _showInfo('Error: $error');
-                            }
-                          },
-                          destructive: true,
-                        ),
-                      ],
+                            },
+                            destructive: true,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+              ),
+              chatController: _chatController,
+              crossCache: _crossCache,
+              currentUserId: widget.currentUserId,
+              onAttachmentTap: _handleAttachmentTap,
+              onMessageSend: _addItem,
+              onMessageTap: _removeItem,
+              resolveUser: (id) => Future.value(users[id]),
+              theme: ChatTheme.fromThemeData(theme),
             ),
-            chatController: _chatController,
-            crossCache: _crossCache,
-            currentUserId: widget.currentUserId,
-            onAttachmentTap: _handleAttachmentTap,
-            onMessageSend: _addItem,
-            onMessageTap: _removeItem,
-            resolveUser: (id) => Future.value(users[id]),
-            theme: ChatTheme.fromThemeData(theme),
           ),
           Positioned(
             top: 16,
