@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.7.0
+  flutter_riverpod: ^3.0.0-dev.15
   flyer_chat_reactions: ^0.0.12
   provider: ^6.1.5
   scrollview_observer: ^1.26.1
@@ -24,3 +25,11 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
+  riverpod_generator: ^3.0.0-dev.15
+  riverpod_lint: ^3.0.0-dev.15
+
+# https://github.com/dart-lang/sdk/issues/60784
+dependency_overrides:
+  analyzer: 7.3.0
+  analyzer_plugin: 0.12.0
+  custom_lint_visitor: 1.0.0+7.3.0

@@ -152,7 +152,7 @@ as MessageStatus?,
 @JsonSerializable()
 
 class TextMessage extends Message {
-  const TextMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, @EpochDateTimeConverter() this.editedAt, final  Map<String, List<UserID>>? reactions, this.pinned, final  Map<String, dynamic>? metadata, this.status, required this.text, this.linkPreviewData, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
+  const TextMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, @EpochDateTimeConverter() this.editedAt, final  MessageReactions? reactions, this.pinned, final  Map<String, dynamic>? metadata, this.status, required this.text, this.linkPreviewData, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
   factory TextMessage.fromJson(Map<String, dynamic> json) => _$TextMessageFromJson(json);
 
 /// Unique identifier for the message.
@@ -178,9 +178,9 @@ class TextMessage extends Message {
 /// Timestamp when the message was last edited.
 @EpochDateTimeConverter() final  DateTime? editedAt;
 /// Map of reaction keys to lists of user IDs who reacted.
- final  Map<String, List<UserID>>? _reactions;
+ final  MessageReactions? _reactions;
 /// Map of reaction keys to lists of user IDs who reacted.
-@override Map<String, List<UserID>>? get reactions {
+@override MessageReactions? get reactions {
   final value = _reactions;
   if (value == null) return null;
   if (_reactions is EqualUnmodifiableMapView) return _reactions;
@@ -246,7 +246,7 @@ abstract mixin class $TextMessageCopyWith<$Res> implements $MessageCopyWith<$Res
   factory $TextMessageCopyWith(TextMessage value, $Res Function(TextMessage) _then) = _$TextMessageCopyWithImpl;
 @override @useResult
 $Res call({
- MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt,@EpochDateTimeConverter() DateTime? editedAt, Map<String, List<UserID>>? reactions, bool? pinned, Map<String, dynamic>? metadata, MessageStatus? status, String text, LinkPreviewData? linkPreviewData
+ MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt,@EpochDateTimeConverter() DateTime? editedAt, MessageReactions? reactions, bool? pinned, Map<String, dynamic>? metadata, MessageStatus? status, String text, LinkPreviewData? linkPreviewData
 });
 
 
@@ -277,7 +277,7 @@ as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_n
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,editedAt: freezed == editedAt ? _self.editedAt : editedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<UserID>>?,pinned: freezed == pinned ? _self.pinned : pinned // ignore: cast_nullable_to_non_nullable
+as MessageReactions?,pinned: freezed == pinned ? _self.pinned : pinned // ignore: cast_nullable_to_non_nullable
 as bool?,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as MessageStatus?,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
