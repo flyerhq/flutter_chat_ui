@@ -17,7 +17,7 @@ class Pagination extends StatefulWidget {
 class PaginationState extends State<Pagination> {
   final _chatController = InMemoryChatController(
     messages:
-        List.generate(20, (i) {
+        List.generate(1, (i) {
           final random = Random();
           final numLines = random.nextInt(4) + 1;
           final text = List.generate(
