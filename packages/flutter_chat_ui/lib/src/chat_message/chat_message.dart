@@ -135,59 +135,125 @@ class ChatMessage extends StatelessWidget {
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
-    final Widget messageWidget = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (headerWidget != null)
-          FadeTransition(
-            opacity: curvedAnimation,
-            child: SizeTransition(
-              axisAlignment: 0,
-              sizeFactor: curvedAnimation,
-              child: headerWidget!,
-            ),
+    final Widget messageWidget = Hero(
+      tag: message.id,
+      // During transition we are in a Third context, we could also pass the providers here
+      // Or maybe just use a colored box (resolving the theme here)
+      flightShuttleBuilder:
+          (
+            BuildContext flightContext,
+            Animation<double> animation,
+            HeroFlightDirection flightDirection,
+            BuildContext fromHeroContext,
+            BuildContext toHeroContext,
+          ) => ColoredBox(
+            color: Colors.red,
+            child: SizedBox(height: 100, width: 100),
           ),
-        GestureDetector(
-          onTapUp:
-              (details) => onMessageTap?.call(
-                context,
-                message,
-                index: index,
-                details: details,
+
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (headerWidget != null)
+            FadeTransition(
+              opacity: curvedAnimation,
+              child: SizeTransition(
+                axisAlignment: 0,
+                sizeFactor: curvedAnimation,
+                child: headerWidget!,
               ),
-          onDoubleTap:
-              () => onMessageDoubleTap?.call(context, message, index: index),
-          onLongPressStart:
-              (details) => onMessageLongPress?.call(
-                context,
-                message,
-                index: index,
-                details: details,
-              ),
-          child: FadeTransition(
-            opacity: curvedAnimation,
-            child: SizeTransition(
-              sizeFactor: curvedAnimation,
-              child: ScaleTransition(
-                scale: curvedAnimation,
-                alignment:
-                    scaleAnimationAlignment ??
-                    (isSentByMe
-                        ? sentMessageScaleAnimationAlignment
-                        : receivedMessageScaleAnimationAlignment),
-                child: Align(
+            ),
+          GestureDetector(
+            onTapUp:
+                (details) => onMessageTap?.call(
+                  context,
+                  message,
+                  index: index,
+                  details: details,
+                ),
+            // onLongPressStart:
+            //     (details) => onMessageLongPress?.call(
+            //       message,
+            //       index: index,
+            //       details: details,
+            //     ),
+            onLongPress: () {
+              final theme = context.read<ChatTheme>();
+              final builder = context.read<Builders>();
+              final user = context.read<UserID>();
+              final timeFormat = context.read<DateFormat>();
+
+              Navigator.of(context).push(
+                HeroDialogRoute(
+                  // The HeroRoute (and herotransitoon^hero)
+                  builder: (context) {
+                    // We have to pass the necessary providers to the reactions dialog
+                    // This is from py PoV prone to error since me need to be sure to pass all the providers
+                    // the widget in the new tree might need (should be only SimpletextMessage and FlyerTextMessage)
+                    return MultiProvider(
+                      providers: [
+                        Provider.value(value: theme),
+                        Provider.value(value: builder),
+                        Provider.value(value: user),
+                        Provider.value(value: timeFormat),
+                      ],
+                      child: ReactionsDialogWidget(
+                        id: message.id,
+                        messageWidget: ChatMessageWidget(
+                          message: message,
+                          isSentByMe: isSentByMe,
+                          showReactions: false,
+                          child: child,
+                        ),
+                        onReactionTap: (reaction) {
+                          print('reaction: $reaction');
+
+                          if (reaction == '➕') {
+                            // show emoji picker container
+                          } else {
+                            // add reaction to message
+                          }
+                        },
+                        onContextMenuTap: (menuItem) {
+                          print('menu item: $menuItem');
+                          // handle context menu item
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+            child: FadeTransition(
+              opacity: curvedAnimation,
+              child: SizeTransition(
+                sizeFactor: curvedAnimation,
+                child: ScaleTransition(
+                  scale: curvedAnimation,
                   alignment:
-                      alignment ??
+                      scaleAnimationAlignment ??
                       (isSentByMe
-                          ? sentMessageAlignment
-                          : receivedMessageAlignment),
-                  child: _buildMessage(isSentByMe: isSentByMe),
+                          ? sentMessageScaleAnimationAlignment
+                          : receivedMessageScaleAnimationAlignment),
+                  child: Align(
+                    alignment:
+                        alignment ??
+                        (isSentByMe
+                            ? sentMessageAlignment
+                            : receivedMessageAlignment),
+                    child: ChatMessageWidget(
+                      message: message,
+                      isSentByMe: isSentByMe,
+                      showReactions: true,
+                      child: child,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
 
     if (resolvedPadding != EdgeInsets.zero) {
@@ -203,48 +269,6 @@ class ChatMessage extends StatelessWidget {
 
     return messageWidget;
   }
-
-  Widget _addReactions(Widget child, {required bool isSentByMe}) {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            child,
-            // TODO find a better way to determine the height
-            SizedBox(height: 16),
-          ],
-        ),
-        Positioned(
-          bottom: 0,
-          left: isSentByMe ? 8 : 0,
-          right: isSentByMe ? 0 : 8,
-          child: FlyerChatReactions(reactions: message.reactions),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMessage({required bool isSentByMe}) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment:
-        isSentByMe
-            ? sentMessageColumnAlignment
-            : receivedMessageColumnAlignment,
-    children: [
-      if (topWidget != null) topWidget!,
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment:
-            isSentByMe ? sentMessageRowAlignment : receivedMessageRowAlignment,
-        children: [
-          if (leadingWidget != null) leadingWidget!,
-          Flexible(child: _addReactions(child, isSentByMe: isSentByMe)),
-          if (trailingWidget != null) trailingWidget!,
-        ],
-      ),
-      if (bottomWidget != null) bottomWidget!,
-    ],
-  );
 
   EdgeInsetsGeometry _resolveDefaultPadding(BuildContext context) {
     if (index == 0) {
@@ -264,5 +288,85 @@ class ChatMessage extends StatelessWidget {
           horizontalPadding ?? 0,
           0,
         );
+  }
+}
+
+class ChatMessageWidget extends StatelessWidget {
+  final Message message;
+  final bool isSentByMe;
+  final bool showReactions;
+  final Widget? topWidget;
+  final Widget? bottomWidget;
+  final Widget? leadingWidget;
+  final Widget? trailingWidget;
+  final CrossAxisAlignment sentMessageColumnAlignment;
+  final CrossAxisAlignment receivedMessageColumnAlignment;
+  final CrossAxisAlignment sentMessageRowAlignment;
+  final CrossAxisAlignment receivedMessageRowAlignment;
+  final Widget child;
+
+  const ChatMessageWidget({
+    super.key,
+    required this.message,
+    required this.isSentByMe,
+    required this.child,
+    this.showReactions = true,
+    this.topWidget,
+    this.bottomWidget,
+    this.leadingWidget,
+    this.trailingWidget,
+    this.sentMessageColumnAlignment = CrossAxisAlignment.end,
+    this.receivedMessageColumnAlignment = CrossAxisAlignment.start,
+    this.sentMessageRowAlignment = CrossAxisAlignment.end,
+    this.receivedMessageRowAlignment = CrossAxisAlignment.end,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? reactionsWidget;
+    if (showReactions) {
+      reactionsWidget = FlyerChatReactions(reactions: message.reactions);
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment:
+          isSentByMe
+              ? sentMessageColumnAlignment
+              : receivedMessageColumnAlignment,
+      children: [
+        if (topWidget != null) topWidget!,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment:
+              isSentByMe
+                  ? sentMessageRowAlignment
+                  : receivedMessageRowAlignment,
+          children: [
+            if (leadingWidget != null) leadingWidget!,
+            Flexible(
+              child:
+                  showReactions
+                      ? Stack(
+                        children: [
+                          // TODO Find better way to add height for the reactions widget
+                          // But the reaction Widget width depends on it's constraints and there is none in the column
+                          Column(children: [child, SizedBox(height: 16)]),
+                          Positioned(
+                            bottom: 0,
+                            left: isSentByMe ? 8 : 0,
+                            right: isSentByMe ? 0 : 8,
+                            child: reactionsWidget!,
+                          ),
+                        ],
+                      )
+                      : Container(child: child),
+            ),
+            if (trailingWidget != null) trailingWidget!,
+          ],
+        ),
+        if (bottomWidget != null) bottomWidget!,
+      ],
+    );
   }
 }
