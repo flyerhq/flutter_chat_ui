@@ -43,7 +43,7 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
     final resolveUser = context.read<ResolveUserCallback>();
-    final userCache = context.read<UserCache>();
+    final userCache = context.watch<UserCache>();
 
     // Try to get from cache synchronously first
     final cachedUser = userCache.getSync(userId);
