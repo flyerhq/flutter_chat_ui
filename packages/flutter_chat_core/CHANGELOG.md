@@ -1,3 +1,8 @@
+## 2.4.0
+
+ - **FIX**: expose user_cache and make it a changenotifier. ([baa7eee6](https://github.com/flyerhq/flutter_chat_ui/commit/baa7eee65201507eaf05574c8fcbd9afb9120d4a))
+ - **FEAT**: make messages required for set operation. ([9e123732](https://github.com/flyerhq/flutter_chat_ui/commit/9e1237321d0ee3781576d3486f695df8834de3b8))
+
 ## 2.3.0
 
  - **FEAT**: link preview v2 ([#784](https://github.com/flyerhq/flutter_chat_ui/issues/784)). ([b65060e1](https://github.com/flyerhq/flutter_chat_ui/commit/b65060e11036402934489976c702dab28c7feb80))

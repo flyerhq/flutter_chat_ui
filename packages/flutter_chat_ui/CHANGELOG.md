@@ -1,3 +1,10 @@
+## 2.3.1
+
+ - **FIX**: add username widget. ([892ee622](https://github.com/flyerhq/flutter_chat_ui/commit/892ee6220273431ef90f51ce305c06dcca6944f7))
+ - **FIX**: expose user_cache and make it a changenotifier. ([baa7eee6](https://github.com/flyerhq/flutter_chat_ui/commit/baa7eee65201507eaf05574c8fcbd9afb9120d4a))
+ - **FIX**: expose headers for avatar and image message. ([0261ce1c](https://github.com/flyerhq/flutter_chat_ui/commit/0261ce1cbace258836f90c83d7d1348fc6253ab5))
+ - **FIX**: gemini example with option to stop a stream. ([fa558e46](https://github.com/flyerhq/flutter_chat_ui/commit/fa558e4631708dd590468f8a0ea4cf2dcb1e68fc))
+
 ## 2.3.0
 
  - **FEAT**: link preview v2 ([#784](https://github.com/flyerhq/flutter_chat_ui/issues/784)). ([b65060e1](https://github.com/flyerhq/flutter_chat_ui/commit/b65060e11036402934489976c702dab28c7feb80))

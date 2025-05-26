@@ -1,3 +1,7 @@
+## 2.1.7
+
+ - **FIX**: expose headers for avatar and image message. ([0261ce1c](https://github.com/flyerhq/flutter_chat_ui/commit/0261ce1cbace258836f90c83d7d1348fc6253ab5))
+
 ## 2.1.6
 
  - Update a dependency to the latest release.

@@ -36,15 +36,15 @@ dependencies:
   file_picker: ^10.0.0
   flutter:
     sdk: flutter
-  flutter_chat_core: ^2.3.0
-  flutter_chat_ui: ^2.3.0
+  flutter_chat_core: ^2.4.0
+  flutter_chat_ui: ^2.3.1
   flutter_dotenv: ^5.2.1
   flutter_lorem: ^2.0.0
-  flyer_chat_file_message: ^2.1.5
-  flyer_chat_image_message: ^2.1.6
-  flyer_chat_system_message: ^2.1.5
-  flyer_chat_text_message: ^2.2.0
-  flyer_chat_text_stream_message: ^2.1.5
+  flyer_chat_file_message: ^2.1.6
+  flyer_chat_image_message: ^2.1.7
+  flyer_chat_system_message: ^2.1.6
+  flyer_chat_text_message: ^2.2.1
+  flyer_chat_text_stream_message: ^2.1.6
   google_generative_ai: ^0.4.6
   hive_ce: ^2.11.2
   hive_ce_flutter: ^2.3.1
