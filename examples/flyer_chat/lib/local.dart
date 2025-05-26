@@ -34,10 +34,12 @@ class LocalState extends State<Local> {
   final _currentUser = const User(
     id: 'me',
     imageSource: 'https://picsum.photos/id/65/200/200',
+    name: 'Jane Doe',
   );
   final _recipient = const User(
     id: 'recipient',
     imageSource: 'https://picsum.photos/id/265/200/200',
+    name: 'John Doe',
   );
   final _systemUser = const User(id: 'system');
 
@@ -127,10 +129,12 @@ class LocalState extends State<Local> {
             MessageGroupStatus? groupStatus,
           }) {
             final isSystemMessage = message.authorId == 'system';
+            final isFirstInGroup = groupStatus?.isFirst ?? true;
             final isLastInGroup = groupStatus?.isLast ?? true;
             final shouldShowAvatar =
                 !isSystemMessage && isLastInGroup && isRemoved != true;
             final isCurrentUser = message.authorId == _currentUser.id;
+            final shouldShowUsername = !isSystemMessage && isFirstInGroup;
 
             Widget? avatar;
             if (shouldShowAvatar) {
@@ -150,6 +154,17 @@ class LocalState extends State<Local> {
               index: index,
               animation: animation,
               groupStatus: groupStatus,
+              topWidget:
+                  shouldShowUsername
+                      ? Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 4,
+                          left: isCurrentUser ? 0 : 48,
+                          right: isCurrentUser ? 48 : 0,
+                        ),
+                        child: Username(userId: message.authorId),
+                      )
+                      : null,
               leadingWidget:
                   !isCurrentUser
                       ? avatar
