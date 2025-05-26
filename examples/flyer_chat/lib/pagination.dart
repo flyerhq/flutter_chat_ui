@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/composer_action_bar.dart';
@@ -16,12 +18,12 @@ class Pagination extends StatefulWidget {
 class PaginationState extends State<Pagination> {
   final _chatController = InMemoryChatController(
     messages:
-        List.generate(20, (i) {
+        List.generate(1, (i) {
           final random = Random();
           final numLines = random.nextInt(4) + 1;
           final text = List.generate(
             numLines,
-            (lineIndex) => 'Message ${i + 1} - Line ${lineIndex + 1}',
+            (lineIndex) => 'Message  ${i + 1} - Line ${lineIndex + 1}',
           ).join('\n');
           return Message.text(
             id: (i + 1).toString(),
@@ -31,10 +33,17 @@ class PaginationState extends State<Pagination> {
               isUtc: true,
             ),
             text: text,
+            reactions: {
+              '👍': ['me'],
+              '👎': ['user2', 'me'],
+              '🥨': ['author'],
+              '👌': ['me', 'user3', 'user4'],
+              '👊': ['me'],
+            },
           );
         }).reversed.toList(),
   );
-  final _currentUser = const User(id: 'me');
+  final _currentUser = const User(id: 'me', name: 'This is me');
 
   MessageID? _lastMessageId;
   bool _hasMore = true;
@@ -46,51 +55,61 @@ class PaginationState extends State<Pagination> {
     super.dispose();
   }
 
+  void _onMessageReaction(int index, String? reaction) {
+    print('reaction: $reaction');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Pagination')),
-      body: Chat(
-        builders: Builders(
-          chatAnimatedListBuilder: (context, itemBuilder) {
-            return ChatAnimatedList(
-              itemBuilder: itemBuilder,
-              onEndReached: _loadMore,
-            );
-          },
-          composerBuilder:
-              (context) => CustomComposer(
-                topWidget: ComposerActionBar(
-                  buttons: [
-                    ComposerActionButton(
-                      icon: Icons.call_to_action,
-                      title: 'Scroll to 1',
-                      onPressed: () => _scrollToMessage('1'),
-                    ),
-                    ComposerActionButton(
-                      icon: Icons.call_to_action,
-                      title: 'Scroll to 40',
-                      onPressed: () => _scrollToMessage('40'),
-                    ),
-                    ComposerActionButton(
-                      icon: Icons.call_to_action,
-                      title: 'Scroll to 80',
-                      onPressed: () => _scrollToMessage('80'),
-                    ),
-                  ],
+      body: ProviderScope(
+        child: Chat(
+          onMessageReaction: _onMessageReaction,
+          builders: Builders(
+            chatAnimatedListBuilder: (context, itemBuilder) {
+              return ChatAnimatedList(
+                itemBuilder: itemBuilder,
+                onEndReached: _loadMore,
+              );
+            },
+            textMessageBuilder: (context, message, index) {
+              return SimpleTextMessage(message: message, index: index);
+            },
+            composerBuilder:
+                (context) => CustomComposer(
+                  topWidget: ComposerActionBar(
+                    buttons: [
+                      ComposerActionButton(
+                        icon: Icons.call_to_action,
+                        title: 'Scroll to 1',
+                        onPressed: () => _scrollToMessage('1'),
+                      ),
+                      ComposerActionButton(
+                        icon: Icons.call_to_action,
+                        title: 'Scroll to 40',
+                        onPressed: () => _scrollToMessage('40'),
+                      ),
+                      ComposerActionButton(
+                        icon: Icons.call_to_action,
+                        title: 'Scroll to 80',
+                        onPressed: () => _scrollToMessage('80'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+          ),
+          chatController: _chatController,
+          currentUserId: _currentUser.id,
+          resolveUser:
+              (id) => Future.value(switch (id) {
+                'me' => _currentUser,
+                _ => null,
+              }),
+          theme: ChatTheme.fromThemeData(theme),
         ),
-        chatController: _chatController,
-        currentUserId: _currentUser.id,
-        resolveUser:
-            (id) => Future.value(switch (id) {
-              'me' => _currentUser,
-              _ => null,
-            }),
-        theme: ChatTheme.fromThemeData(theme),
       ),
     );
   }
@@ -179,6 +198,13 @@ class MockDatabase {
         isUtc: true,
       ),
       text: text,
+      reactions: {
+        '👍': ['me'],
+        '👎': ['me'],
+        '🥨': ['author'],
+        '👌': ['me'],
+        '👊': ['me'],
+      },
     );
   });
 

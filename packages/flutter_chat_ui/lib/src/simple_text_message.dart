@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
 /// A widget that displays a simple text message.
-class SimpleTextMessage extends StatelessWidget {
+class SimpleTextMessage extends ConsumerWidget {
   /// The text message data model.
   final TextMessage message;
 
@@ -78,8 +79,13 @@ class SimpleTextMessage extends StatelessWidget {
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final oldtheme = context.watch<ChatTheme>();
+
+    //Here we can now access the theme
+    final theme = ref.watch(riverpodChatThemeProvider);
+    print('themeFromRiverpod: $theme');
+    print('context in simple text message: ${context.hashCode}');
     final isSentByMe = context.watch<UserID>() == message.authorId;
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final textStyle = _resolveTextStyle(isSentByMe, theme);

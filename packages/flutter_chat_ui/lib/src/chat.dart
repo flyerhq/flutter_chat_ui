@@ -1,7 +1,8 @@
 import 'package:cross_cache/cross_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart' as provider;
 import 'chat_animated_list/chat_animated_list.dart';
 import 'chat_message/chat_message_internal.dart';
 import 'composer.dart';
@@ -13,7 +14,7 @@ import 'utils/typedefs.dart';
 ///
 /// Sets up necessary providers ([ChatController], [ChatTheme], [Builders], etc.)
 /// and displays the chat list and composer.
-class Chat extends StatefulWidget {
+class Chat extends ConsumerStatefulWidget {
   /// The ID of the currently logged-in user.
   final UserID currentUserId;
 
@@ -44,6 +45,9 @@ class Chat extends StatefulWidget {
   /// Callback triggered when a message is long-pressed.
   final OnMessageLongPressCallback? onMessageLongPress;
 
+  /// Callback triggered when a message is reacted.
+  final OnMessageReactionCallback? onMessageReaction;
+
   /// Callback triggered when the attachment button in the composer is tapped.
   final OnAttachmentTapCallback? onAttachmentTap;
 
@@ -72,6 +76,7 @@ class Chat extends StatefulWidget {
     this.onMessageSend,
     this.onMessageTap,
     this.onMessageLongPress,
+    this.onMessageReaction,
     this.onAttachmentTap,
     this.backgroundColor,
     this.decoration,
@@ -79,10 +84,10 @@ class Chat extends StatefulWidget {
   });
 
   @override
-  State<Chat> createState() => _ChatState();
+  ConsumerState<Chat> createState() => _ChatState();
 }
 
-class _ChatState extends State<Chat> with WidgetsBindingObserver {
+class _ChatState extends ConsumerState<Chat> with WidgetsBindingObserver {
   late ChatTheme _theme;
   late Builders _builders;
   late final CrossCache _crossCache;
@@ -96,6 +101,11 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
     _updateBuilders();
     _crossCache = widget.crossCache ?? CrossCache();
     _timeFormat = widget.timeFormat ?? DateFormat('HH:mm');
+
+    // Here we get the class that manages the theme
+    // and set it
+    final chatThemeProvider = ref.read(riverpodChatThemeProvider.notifier);
+    chatThemeProvider.setTheme(widget.theme ?? ChatTheme.light());
   }
 
   @override
@@ -125,22 +135,25 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return provider.MultiProvider(
       providers: [
-        Provider.value(value: widget.currentUserId),
-        Provider.value(value: widget.resolveUser),
-        Provider.value(value: widget.chatController),
-        Provider.value(value: _theme),
-        Provider.value(value: _builders),
-        Provider.value(value: _crossCache),
-        Provider.value(value: _timeFormat),
-        Provider.value(value: widget.onMessageSend),
-        Provider.value(value: widget.onMessageTap),
-        Provider.value(value: widget.onMessageLongPress),
-        Provider.value(value: widget.onAttachmentTap),
-        ChangeNotifierProvider(create: (_) => ComposerHeightNotifier()),
-        ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
-        Provider(create: (_) => UserCache(maxSize: 100)),
+        provider.Provider.value(value: widget.currentUserId),
+        provider.Provider.value(value: widget.resolveUser),
+        provider.Provider.value(value: widget.chatController),
+        provider.Provider.value(value: _theme),
+        provider.Provider.value(value: _builders),
+        provider.Provider.value(value: _crossCache),
+        provider.Provider.value(value: _timeFormat),
+        provider.Provider.value(value: widget.onMessageSend),
+        provider.Provider.value(value: widget.onMessageTap),
+        provider.Provider.value(value: widget.onMessageReaction),
+        provider.Provider.value(value: widget.onMessageLongPress),
+        provider.Provider.value(value: widget.onAttachmentTap),
+        provider.ChangeNotifierProvider(
+          create: (_) => ComposerHeightNotifier(),
+        ),
+        provider.ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
+        provider.Provider(create: (_) => UserCache(maxSize: 100)),
       ],
       child: Container(
         color:
