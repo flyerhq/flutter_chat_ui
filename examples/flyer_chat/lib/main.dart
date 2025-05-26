@@ -12,6 +12,7 @@ import 'api_get_initial_messages.dart';
 import 'basic.dart';
 import 'gemini.dart';
 import 'local.dart';
+import 'link_preview.dart';
 import 'pagination.dart';
 
 void main() async {
@@ -285,6 +286,17 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                   ).push(MaterialPageRoute(builder: (context) => Basic()));
                 },
                 child: const Text('basic'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LinkPreviewExample(dio: _dio),
+                    ),
+                  );
+                },
+                child: const Text('link preview'),
               ),
             ],
           ),

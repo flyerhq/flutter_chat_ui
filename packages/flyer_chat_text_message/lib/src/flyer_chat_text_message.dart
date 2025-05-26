@@ -88,9 +88,18 @@ class FlyerChatTextMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<ChatTheme>();
     final isSentByMe = context.watch<UserID>() == message.authorId;
-    final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
-    final paragraphStyle = _resolveParagraphStyle(isSentByMe, theme);
-    final timeStyle = _resolveTimeStyle(isSentByMe, theme);
+    final backgroundColor =
+        isSentByMe
+            ? theme.sentMessageBackgroundColor
+            : theme.receivedMessageBackgroundColor;
+    final paragraphStyle =
+        isSentByMe
+            ? theme.sentMessageTextColor
+            : theme.receivedMessageTextColor;
+    final timeStyle =
+        isSentByMe
+            ? theme.sentMessageTimeColor
+            : theme.receivedMessageTimeColor;
 
     final timeAndStatus =
         showTime || (isSentByMe && showStatus)
@@ -107,7 +116,7 @@ class FlyerChatTextMessage extends StatelessWidget {
       message.text,
       style:
           _isOnlyEmoji
-              ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+              ? paragraphStyle.copyWith(fontSize: onlyEmojiFontSize)
               : paragraphStyle,
       onLinkTab: onLinkTab,
     );
@@ -117,6 +126,7 @@ class FlyerChatTextMessage extends StatelessWidget {
             ? context.read<Builders>().linkPreviewBuilder?.call(
               context,
               message,
+              isSentByMe,
             )
             : null;
 
@@ -129,9 +139,6 @@ class FlyerChatTextMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (linkPreviewWidget != null &&
-                linkPreviewPosition == LinkPreviewPosition.top)
-              linkPreviewWidget,
             Container(
               padding:
                   _isOnlyEmoji
@@ -145,11 +152,9 @@ class FlyerChatTextMessage extends StatelessWidget {
                 textContent: textContent,
                 timeAndStatus: timeAndStatus,
                 paragraphStyle: paragraphStyle,
+                linkPreviewWidget: linkPreviewWidget,
               ),
             ),
-            if (linkPreviewWidget != null &&
-                linkPreviewPosition == LinkPreviewPosition.bottom)
-              linkPreviewWidget,
           ],
         ),
       ),
@@ -161,85 +166,47 @@ class FlyerChatTextMessage extends StatelessWidget {
     required Widget textContent,
     TimeAndStatus? timeAndStatus,
     TextStyle? paragraphStyle,
+    Widget? linkPreviewWidget,
   }) {
     if (timeAndStatus == null) {
       return textContent;
     }
 
     final textDirection = Directionality.of(context);
+    final effectiveLinkPreviewPosition =
+        linkPreviewWidget != null
+            ? linkPreviewPosition
+            : LinkPreviewPosition.none;
 
-    switch (timeAndStatusPosition) {
-      case TimeAndStatusPosition.start:
-        return Column(
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [textContent, timeAndStatus],
-        );
-      case TimeAndStatusPosition.inline:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Flexible(child: textContent),
-            const SizedBox(width: 4),
-            Padding(
-              padding: timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
-              child: timeAndStatus,
-            ),
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.top)
+              linkPreviewWidget!,
+            textContent,
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
+              linkPreviewWidget!,
+            if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
           ],
-        );
-      case TimeAndStatusPosition.end:
-        return Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: paragraphStyle?.lineHeight ?? 0),
-              child: textContent,
-            ),
-            Opacity(opacity: 0, child: timeAndStatus),
-            Positioned.directional(
-              textDirection: textDirection,
-              end: 0,
-              bottom: 0,
-              child: timeAndStatus,
-            ),
-          ],
-        );
-    }
+        ),
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+          Positioned.directional(
+            textDirection: textDirection,
+            end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
+            start:
+                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            bottom: 0,
+            child: timeAndStatus,
+          ),
+      ],
+    );
   }
-
-  Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
-    if (isSentByMe) {
-      return sentBackgroundColor ?? theme.colors.primary;
-    }
-    return receivedBackgroundColor ?? theme.colors.surfaceContainer;
-  }
-
-  TextStyle? _resolveParagraphStyle(bool isSentByMe, ChatTheme theme) {
-    if (isSentByMe) {
-      return sentTextStyle ??
-          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
-    }
-    return receivedTextStyle ??
-        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
-  }
-
-  TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
-    if (isSentByMe) {
-      return timeStyle ??
-          theme.typography.labelSmall.copyWith(
-            color:
-                _isOnlyEmoji ? theme.colors.onSurface : theme.colors.onPrimary,
-          );
-    }
-    return timeStyle ??
-        theme.typography.labelSmall.copyWith(color: theme.colors.onSurface);
-  }
-}
-
-/// Internal extension for calculating the visual line height of a TextStyle.
-extension on TextStyle {
-  /// Calculates the line height based on the style's `height` and `fontSize`.
-  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }
 
 /// A widget to display the message timestamp and status indicator.
