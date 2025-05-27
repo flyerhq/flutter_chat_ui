@@ -202,6 +202,8 @@ class FlyerChatFileMessage extends StatelessWidget {
             ),
           ],
         );
+      case TimeAndStatusPosition.none:
+        return fileContent;
     }
   }
 
