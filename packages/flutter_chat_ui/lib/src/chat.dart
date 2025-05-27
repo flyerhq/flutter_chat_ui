@@ -176,6 +176,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
     Message message,
     int index,
     Animation<double> animation, {
+    MessagesGroupingMode? messagesGroupingMode,
     int? messageGroupingTimeoutInSeconds,
     bool? isRemoved,
   }) {
@@ -184,6 +185,7 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
       message: message,
       index: index,
       animation: animation,
+      messagesGroupingMode: messagesGroupingMode,
       messageGroupingTimeoutInSeconds: messageGroupingTimeoutInSeconds,
       isRemoved: isRemoved,
     );

@@ -62,6 +62,9 @@ class ChatAnimatedListReversed extends StatelessWidget {
   /// Defaults to 0.2. See note below.
   final double? paginationThreshold;
 
+  /// The mode to use for grouping messages.
+  final MessagesGroupingMode? messagesGroupingMode;
+
   /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
@@ -94,6 +97,7 @@ class ChatAnimatedListReversed extends StatelessWidget {
     // because new items are added at the bottom (index 0). The default of 0.2
     // triggers pagination when 20% from the visual top is reached.
     this.paginationThreshold = 0.2,
+    this.messagesGroupingMode,
     this.messageGroupingTimeoutInSeconds,
     this.physics,
   });
