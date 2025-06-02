@@ -63,6 +63,7 @@ mixin _$Message {
 /// Unique identifier for the message.
  String get id;/// ID of the user who sent the message.
  String get authorId;/// ID of the message this one is replying to.
+ String get peerId;/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
  String? get replyToMessageId;/// Timestamp when the message was created.
 @EpochDateTimeConverter() DateTime? get createdAt;/// Timestamp when the message was marked as deleted.
 @EpochDateTimeConverter() DateTime? get deletedAt;/// Timestamp when the message failed to send.
@@ -90,11 +91,11 @@ bool operator ==(Object other) {
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,authorId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(reactions),const DeepCollectionEquality().hash(metadata));
+int get hashCode => Object.hash(runtimeType,id,authorId, peerId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(reactions),const DeepCollectionEquality().hash(metadata));
 
 @override
 String toString() {
-  return 'Message(id: $id, authorId: $authorId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, metadata: $metadata)';
+  return 'Message(id: $id, authorId: $authorId, peerId: $peerId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, metadata: $metadata)';
 }
 
 
@@ -126,6 +127,7 @@ class _$MessageCopyWithImpl<$Res>
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
+as String,peerId: null == peerId ? _self.peerId : peerId // ignore: cast_nullable_to_non_nullable
 as String,replyToMessageId: freezed == replyToMessageId ? _self.replyToMessageId : replyToMessageId // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
