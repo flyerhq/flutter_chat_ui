@@ -12,6 +12,7 @@ import 'package:flyer_chat_file_message/flyer_chat_file_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
+import 'package:flyer_chat_video_message/flyer_chat_video_message.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
@@ -98,6 +99,15 @@ class LocalState extends State<Local> {
                 required bool isSentByMe,
                 MessageGroupStatus? groupStatus,
               }) => FlyerChatImageMessage(message: message, index: index),
+
+          videoMessageBuilder:
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => FlyerChatVideoMessage(message: message),
           systemMessageBuilder:
               (
                 context,
@@ -447,6 +457,25 @@ class LocalState extends State<Local> {
 
                     await _chatController.insertMessage(fileMessage);
                   }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.video_camera_front),
+                title: const Text('Video'),
+                onTap: () async {
+                  Navigator.pop(context);
+
+                  // Create a proper file message
+                  final fileMessage = VideoMessage(
+                    id: _uuid.v4(),
+                    authorId: _currentUser.id,
+                    createdAt: DateTime.now().toUtc(),
+                    sentAt: DateTime.now().toUtc(),
+                    source:
+                        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+                  );
+
+                  await _chatController.insertMessage(fileMessage);
                 },
               ),
             ],
