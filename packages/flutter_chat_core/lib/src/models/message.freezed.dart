@@ -149,7 +149,7 @@ as Map<String, dynamic>?,
 @JsonSerializable()
 
 class TextMessage extends Message {
-  const TextMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, this.pinned = false, final  Map<String, dynamic>? metadata, required this.text, this.linkPreviewData, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
+  const TextMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, @EpochDateTimeConverter() this.editedAt, this.editedByUserId, final  Map<String, List<UserID>>? reactions, this.pinned = false, final  Map<String, dynamic>? metadata, required this.text, this.linkPreviewData, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
   factory TextMessage.fromJson(Map<String, dynamic> json) => _$TextMessageFromJson(json);
 
 /// Unique identifier for the message.
@@ -172,6 +172,10 @@ class TextMessage extends Message {
 @override@EpochDateTimeConverter() final  DateTime? seenAt;
 /// Timestamp when the message was last updated.
 @override@EpochDateTimeConverter() final  DateTime? updatedAt;
+/// Timestamp when the message was last edited.
+@EpochDateTimeConverter() final  DateTime? editedAt;
+/// ID of the user who last edited the message.
+ final  UserID? editedByUserId;
 /// Map of reaction keys to lists of user IDs who reacted.
  final  Map<String, List<UserID>>? _reactions;
 /// Map of reaction keys to lists of user IDs who reacted.
@@ -218,16 +222,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TextMessage&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.replyToMessageId, replyToMessageId) || other.replyToMessageId == replyToMessageId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.failedAt, failedAt) || other.failedAt == failedAt)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.deliveredAt, deliveredAt) || other.deliveredAt == deliveredAt)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&(identical(other.pinned, pinned) || other.pinned == pinned)&&const DeepCollectionEquality().equals(other._metadata, _metadata)&&(identical(other.text, text) || other.text == text)&&(identical(other.linkPreviewData, linkPreviewData) || other.linkPreviewData == linkPreviewData));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TextMessage&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.replyToMessageId, replyToMessageId) || other.replyToMessageId == replyToMessageId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.failedAt, failedAt) || other.failedAt == failedAt)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.deliveredAt, deliveredAt) || other.deliveredAt == deliveredAt)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.editedByUserId, editedByUserId) || other.editedByUserId == editedByUserId)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&(identical(other.pinned, pinned) || other.pinned == pinned)&&const DeepCollectionEquality().equals(other._metadata, _metadata)&&(identical(other.text, text) || other.text == text)&&(identical(other.linkPreviewData, linkPreviewData) || other.linkPreviewData == linkPreviewData));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,authorId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(_reactions),pinned,const DeepCollectionEquality().hash(_metadata),text,linkPreviewData);
+int get hashCode => Object.hash(runtimeType,id,authorId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,editedAt,editedByUserId,const DeepCollectionEquality().hash(_reactions),pinned,const DeepCollectionEquality().hash(_metadata),text,linkPreviewData);
 
 @override
 String toString() {
-  return 'Message.text(id: $id, authorId: $authorId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, pinned: $pinned, metadata: $metadata, text: $text, linkPreviewData: $linkPreviewData)';
+  return 'Message.text(id: $id, authorId: $authorId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, editedAt: $editedAt, editedByUserId: $editedByUserId, reactions: $reactions, pinned: $pinned, metadata: $metadata, text: $text, linkPreviewData: $linkPreviewData)';
 }
 
 
@@ -238,7 +242,7 @@ abstract mixin class $TextMessageCopyWith<$Res> implements $MessageCopyWith<$Res
   factory $TextMessageCopyWith(TextMessage value, $Res Function(TextMessage) _then) = _$TextMessageCopyWithImpl;
 @override @useResult
 $Res call({
- MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, bool pinned, Map<String, dynamic>? metadata, String text, LinkPreviewData? linkPreviewData
+ MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt,@EpochDateTimeConverter() DateTime? editedAt, UserID? editedByUserId, Map<String, List<UserID>>? reactions, bool pinned, Map<String, dynamic>? metadata, String text, LinkPreviewData? linkPreviewData
 });
 
 
@@ -255,7 +259,7 @@ class _$TextMessageCopyWithImpl<$Res>
 
 /// Create a copy of Message
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToMessageId = freezed,Object? createdAt = freezed,Object? deletedAt = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? pinned = null,Object? metadata = freezed,Object? text = null,Object? linkPreviewData = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToMessageId = freezed,Object? createdAt = freezed,Object? deletedAt = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? editedAt = freezed,Object? editedByUserId = freezed,Object? reactions = freezed,Object? pinned = null,Object? metadata = freezed,Object? text = null,Object? linkPreviewData = freezed,}) {
   return _then(TextMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
@@ -267,7 +271,9 @@ as DateTime?,sentAt: freezed == sentAt ? _self.sentAt : sentAt // ignore: cast_n
 as DateTime?,deliveredAt: freezed == deliveredAt ? _self.deliveredAt : deliveredAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
+as DateTime?,editedAt: freezed == editedAt ? _self.editedAt : editedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,editedByUserId: freezed == editedByUserId ? _self.editedByUserId : editedByUserId // ignore: cast_nullable_to_non_nullable
+as UserID?,reactions: freezed == reactions ? _self._reactions : reactions // ignore: cast_nullable_to_non_nullable
 as Map<String, List<UserID>>?,pinned: null == pinned ? _self.pinned : pinned // ignore: cast_nullable_to_non_nullable
 as bool,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
