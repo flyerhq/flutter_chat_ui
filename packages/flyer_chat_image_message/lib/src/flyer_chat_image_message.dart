@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:thumbhash/thumbhash.dart'
     show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
 
-import 'get_image_dimensions.dart';
+import 'helpers/get_image_dimensions.dart';
+import 'widgets/single_image_container.dart';
+import 'widgets/time_and_status.dart';
 
 /// A widget that displays an image message.
 ///
@@ -102,12 +104,10 @@ class FlyerChatImageMessage extends StatefulWidget {
 }
 
 /// State for [FlyerChatImageMessage].
-class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
-    with TickerProviderStateMixin {
+class _FlyerChatImageMessageState extends State<FlyerChatImageMessage> {
   late final ChatController _chatController;
   late ImageProvider _imageProvider;
   late double _aspectRatio;
-  ImageProvider? _placeholderProvider;
 
   @override
   void initState() {
@@ -124,23 +124,11 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       );
 
       _aspectRatio = thumbHashToApproximateAspectRatio(thumbhashBytes);
-
-      final rgbaImage = thumbHashToRGBA(thumbhashBytes);
-      final bmp = rgbaToBmp(rgbaImage);
-      _placeholderProvider = MemoryImage(bmp);
-    } else if (widget.message.blurhash?.isNotEmpty ?? false) {
-      _aspectRatio = 1;
-
-      final blurhash = BlurHash.decode(widget.message.blurhash!);
-      final image = blurhash.toImage(35, 20);
-      final jpg = encodeJpg(image);
-      _placeholderProvider = MemoryImage(jpg);
     } else {
       _aspectRatio = 1;
     }
 
     _chatController = context.read<ChatController>();
-    _imageProvider = _targetProvider;
 
     if (width == null || height == null) {
       getImageDimensions(_imageProvider).then((dimensions) {
@@ -156,29 +144,6 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
         }
       });
     }
-  }
-
-  @override
-  void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.message.source != widget.message.source ||
-        oldWidget.headers != widget.headers) {
-      final newImage = _targetProvider;
-
-      precacheImage(newImage, context).then((_) {
-        if (mounted) {
-          _imageProvider = newImage;
-        }
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _placeholderProvider?.evict();
-    // Evicting the image on dispose will result in images flickering
-    // PaintingBinding.instance.imageCache.evict(_imageProvider);
-    super.dispose();
   }
 
   @override
@@ -210,91 +175,21 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
           child: Stack(
             fit: StackFit.expand,
             children: [
-              _placeholderProvider != null
-                  ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
-                  : Container(
-                    color:
-                        widget.placeholderColor ??
-                        theme.colors.surfaceContainerLow,
-                  ),
-              Image(
-                image: _imageProvider,
-                fit: BoxFit.fill,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-
-                  return Container(
-                    color:
-                        widget.loadingOverlayColor ??
-                        theme.colors.surfaceContainerLow.withValues(alpha: 0.5),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color:
-                            widget.loadingIndicatorColor ??
-                            theme.colors.onSurface.withValues(alpha: 0.8),
-                        strokeCap: StrokeCap.round,
-                        value:
-                            loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                      ),
-                    ),
-                  );
-                },
-                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                  var content = child;
-
-                  if (widget.overlay != null &&
-                      widget.message.hasOverlay == true &&
-                      frame != null) {
-                    content = Stack(
-                      fit: StackFit.expand,
-                      children: [child, widget.overlay!],
-                    );
-                  }
-
-                  if (wasSynchronouslyLoaded) {
-                    return content;
-                  }
-
-                  return AnimatedOpacity(
-                    duration: const Duration(milliseconds: 250),
-                    opacity: frame == null ? 0 : 1,
-                    curve: Curves.linearToEaseOut,
-                    child: content,
-                  );
-                },
+              SingleImageContainer(
+                source: widget.message.source,
+                headers: widget.headers,
+                thumbhash: widget.message.thumbhash,
+                blurhash: widget.message.blurhash,
+                overlay: widget.overlay,
+                hasOverlay: widget.message.hasOverlay,
+                placeholderColor: widget.placeholderColor,
+                loadingOverlayColor: widget.loadingOverlayColor,
+                loadingIndicatorColor: widget.loadingIndicatorColor,
+                uploadOverlayColor: widget.uploadOverlayColor,
+                uploadIndicatorColor: widget.uploadIndicatorColor,
+                customImageProvider: widget.customImageProvider,
+                uploadProgressId: widget.message.id,
               ),
-              if (_chatController is UploadProgressMixin)
-                StreamBuilder<double>(
-                  stream: (_chatController as UploadProgressMixin)
-                      .getUploadProgress(widget.message.id),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData || snapshot.data! >= 1) {
-                      return const SizedBox();
-                    }
-
-                    return Container(
-                      color:
-                          widget.uploadOverlayColor ??
-                          theme.colors.surfaceContainerLow.withValues(
-                            alpha: 0.5,
-                          ),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color:
-                              widget.uploadIndicatorColor ??
-                              theme.colors.onSurface.withValues(alpha: 0.8),
-                          strokeCap: StrokeCap.round,
-                          value: snapshot.data,
-                        ),
-                      ),
-                    );
-                  },
-                ),
               if (timeAndStatus != null)
                 Positioned.directional(
                   textDirection: textDirection,
@@ -316,88 +211,6 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  ImageProvider get _targetProvider {
-    if (widget.customImageProvider != null) {
-      return widget.customImageProvider!;
-    } else {
-      final crossCache = context.read<CrossCache>();
-      return CachedNetworkImage(
-        widget.message.source,
-        crossCache,
-        headers: widget.headers,
-      );
-    }
-  }
-}
-
-/// A widget to display the message timestamp and status indicator over an image.
-class TimeAndStatus extends StatelessWidget {
-  /// The time the message was created.
-  final DateTime? time;
-
-  /// The status of the message.
-  final MessageStatus? status;
-
-  /// Whether to display the timestamp.
-  final bool showTime;
-
-  /// Whether to display the status indicator.
-  final bool showStatus;
-
-  /// Background color for the time and status container.
-  final Color? backgroundColor;
-
-  /// Text style for the time and status.
-  final TextStyle? textStyle;
-
-  /// Creates a widget for displaying time and status over an image.
-  const TimeAndStatus({
-    super.key,
-    required this.time,
-    this.status,
-    this.showTime = true,
-    this.showStatus = true,
-    this.backgroundColor,
-    this.textStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final timeFormat = context.watch<DateFormat>();
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        spacing: 2,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (showTime && time != null)
-            Text(timeFormat.format(time!.toLocal()), style: textStyle),
-          if (showStatus && status != null)
-            if (status == MessageStatus.sending)
-              SizedBox(
-                width: 6,
-                height: 6,
-                child: CircularProgressIndicator(
-                  color: textStyle?.color,
-                  strokeWidth: 2,
-                ),
-              )
-            else
-              Icon(
-                getIconForStatus(status!),
-                color: textStyle?.color,
-                size: 12,
-              ),
-        ],
       ),
     );
   }
