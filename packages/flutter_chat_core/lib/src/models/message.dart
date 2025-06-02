@@ -22,6 +22,9 @@ sealed class Message with _$Message {
     /// ID of the user who sent the message.
     required UserID authorId,
 
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
+
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
 
@@ -68,6 +71,9 @@ sealed class Message with _$Message {
     /// ID of the user (typically the AI) sending the message.
     required String authorId,
 
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
+
     /// ID of the message this one is replying to.
     String? replyToMessageId,
 
@@ -109,6 +115,9 @@ sealed class Message with _$Message {
 
     /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
 
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
@@ -170,6 +179,9 @@ sealed class Message with _$Message {
     /// ID of the user who sent the message.
     required UserID authorId,
 
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
+
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
 
@@ -220,6 +232,9 @@ sealed class Message with _$Message {
 
     /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
 
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
@@ -278,6 +293,9 @@ sealed class Message with _$Message {
     /// ID of the user who sent the message.
     required UserID authorId,
 
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
+
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
 
@@ -332,6 +350,9 @@ sealed class Message with _$Message {
     /// ID of the user associated with the system event (often a system ID).
     required UserID authorId,
 
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
+
     /// ID of the message this one is replying to (usually null for system messages).
     MessageID? replyToMessageId,
 
@@ -374,6 +395,9 @@ sealed class Message with _$Message {
     /// ID of the user who sent the message.
     required UserID authorId,
 
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
+
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,
 
@@ -413,6 +437,9 @@ sealed class Message with _$Message {
 
     /// ID of the user who sent the message.
     required UserID authorId,
+
+    /// The unique identifier of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+    UserID? peerId,
 
     /// ID of the message this one is replying to.
     MessageID? replyToMessageId,

@@ -15,6 +15,18 @@ typedef UserID = String;
 /// Represents the delivery status of a message.
 enum MessageStatus { delivered, error, seen, sending, sent }
 
+/// All possible message types.
+enum MessageType {
+  audio,
+  custom,
+  file,
+  image,
+  system,
+  text,
+  unsupported,
+  video,
+  textStream,
+}
 /// Defines the position of the timestamp and status indicator relative to the message content.
 enum TimeAndStatusPosition { start, end, inline }
 

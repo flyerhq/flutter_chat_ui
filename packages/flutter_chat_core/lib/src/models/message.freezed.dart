@@ -147,13 +147,15 @@ as Map<String, dynamic>?,
 @JsonSerializable()
 
 class TextMessage extends Message {
-  const TextMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, this.linkPreviewData, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
+  const TextMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, this.linkPreviewData, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'text',super._();
   factory TextMessage.fromJson(Map<String, dynamic> json) => _$TextMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.
@@ -290,13 +292,15 @@ $LinkPreviewDataCopyWith<$Res>? get linkPreviewData {
 @JsonSerializable()
 
 class TextStreamMessage extends Message {
-  const TextStreamMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.streamId, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'textStream',super._();
+  const TextStreamMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<String>>? reactions, final  Map<String, dynamic>? metadata, required this.streamId, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'textStream',super._();
   factory TextStreamMessage.fromJson(Map<String, dynamic> json) => _$TextStreamMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  String id;
 /// ID of the user (typically the AI) sending the message.
 @override final  String authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  String? replyToMessageId;
 /// Timestamp when the message was created.
@@ -418,13 +422,15 @@ as String,
 @JsonSerializable()
 
 class ImageMessage extends Message {
-  const ImageMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
+  const ImageMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
   factory ImageMessage.fromJson(Map<String, dynamic> json) => _$ImageMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.
@@ -564,13 +570,15 @@ as bool?,
 @JsonSerializable()
 
 class FileMessage extends Message {
-  const FileMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, required this.name, this.size, this.mimeType, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'file',super._();
+  const FileMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, required this.name, this.size, this.mimeType, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'file',super._();
   factory FileMessage.fromJson(Map<String, dynamic> json) => _$FileMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.
@@ -701,13 +709,15 @@ as String?,
 @JsonSerializable()
 
 class VideoMessage extends Message {
-  const VideoMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.name, this.size, this.width, this.height, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'video',super._();
+  const VideoMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, this.text, this.name, this.size, this.width, this.height, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'video',super._();
   factory VideoMessage.fromJson(Map<String, dynamic> json) => _$VideoMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.
@@ -844,13 +854,15 @@ as double?,
 @JsonSerializable()
 
 class AudioMessage extends Message {
-  const AudioMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, @DurationConverter() required this.duration, this.text, this.size, final  List<double>? waveform, final  String? $type}): _reactions = reactions,_metadata = metadata,_waveform = waveform,$type = $type ?? 'audio',super._();
+  const AudioMessage({required this.id, required this.authorId,this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.source, @DurationConverter() required this.duration, this.text, this.size, final  List<double>? waveform, final  String? $type}): _reactions = reactions,_metadata = metadata,_waveform = waveform,$type = $type ?? 'audio',super._();
   factory AudioMessage.fromJson(Map<String, dynamic> json) => _$AudioMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.
@@ -993,13 +1005,15 @@ as List<double>?,
 @JsonSerializable()
 
 class SystemMessage extends Message {
-  const SystemMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'system',super._();
+  const SystemMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, required this.text, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'system',super._();
   factory SystemMessage.fromJson(Map<String, dynamic> json) => _$SystemMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user associated with the system event (often a system ID).
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to (usually null for system messages).
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the system event occurred.
@@ -1121,13 +1135,15 @@ as String,
 @JsonSerializable()
 
 class CustomMessage extends Message {
-  const CustomMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'custom',super._();
+  const CustomMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'custom',super._();
   factory CustomMessage.fromJson(Map<String, dynamic> json) => _$CustomMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.
@@ -1246,13 +1262,15 @@ as Map<String, dynamic>?,
 @JsonSerializable()
 
 class UnsupportedMessage extends Message {
-  const UnsupportedMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'unsupported',super._();
+  const UnsupportedMessage({required this.id, required this.authorId, this.peerId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, final  Map<String, dynamic>? metadata, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'unsupported',super._();
   factory UnsupportedMessage.fromJson(Map<String, dynamic> json) => _$UnsupportedMessageFromJson(json);
 
 /// Unique identifier for the message.
 @override final  MessageID id;
 /// ID of the user who sent the message.
 @override final  UserID authorId;
+/// ID of the other party. If it's a one-on-one chat, it's the friend's ID. If it's a group chat, it's "GroupId". If you are chatting with a robot, he is botId
+@override final  UserID? peerId;
 /// ID of the message this one is replying to.
 @override final  MessageID? replyToMessageId;
 /// Timestamp when the message was created.

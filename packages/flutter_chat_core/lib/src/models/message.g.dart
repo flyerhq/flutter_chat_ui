@@ -9,6 +9,7 @@ part of 'message.dart';
 TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  peerId: json['peerId'] as String?,
   replyToMessageId: json['replyToMessageId'] as String?,
   createdAt: _$JsonConverterFromJson<int, DateTime>(
     json['createdAt'],
@@ -58,6 +59,7 @@ Map<String, dynamic> _$TextMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -123,6 +125,7 @@ TextStreamMessage _$TextStreamMessageFromJson(Map<String, dynamic> json) =>
     TextStreamMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      peerId: json['peerId'] as String?,
       replyToMessageId: json['replyToMessageId'] as String?,
       createdAt: _$JsonConverterFromJson<int, DateTime>(
         json['createdAt'],
@@ -166,6 +169,7 @@ Map<String, dynamic> _$TextStreamMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -218,6 +222,7 @@ Map<String, dynamic> _$TextStreamMessageToJson(
 ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  peerId: json['peerId'] as String?,
   replyToMessageId: json['replyToMessageId'] as String?,
   createdAt: _$JsonConverterFromJson<int, DateTime>(
     json['createdAt'],
@@ -267,6 +272,7 @@ Map<String, dynamic> _$ImageMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -325,6 +331,7 @@ Map<String, dynamic> _$ImageMessageToJson(
 FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  peerId: json['peerId'] as String?,
   replyToMessageId: json['replyToMessageId'] as String?,
   createdAt: _$JsonConverterFromJson<int, DateTime>(
     json['createdAt'],
@@ -371,6 +378,7 @@ Map<String, dynamic> _$FileMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -426,6 +434,7 @@ Map<String, dynamic> _$FileMessageToJson(
 VideoMessage _$VideoMessageFromJson(Map<String, dynamic> json) => VideoMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  peerId: json['peerId'] as String?,
   replyToMessageId: json['replyToMessageId'] as String?,
   createdAt: _$JsonConverterFromJson<int, DateTime>(
     json['createdAt'],
@@ -474,6 +483,7 @@ Map<String, dynamic> _$VideoMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -531,6 +541,7 @@ Map<String, dynamic> _$VideoMessageToJson(
 AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
   id: json['id'] as String,
   authorId: json['authorId'] as String,
+  peerId: json['peerId'] as String?,
   replyToMessageId: json['replyToMessageId'] as String?,
   createdAt: _$JsonConverterFromJson<int, DateTime>(
     json['createdAt'],
@@ -583,6 +594,7 @@ Map<String, dynamic> _$AudioMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -640,6 +652,7 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
     SystemMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      peerId: json['peerId'] as String?,
       replyToMessageId: json['replyToMessageId'] as String?,
       createdAt: _$JsonConverterFromJson<int, DateTime>(
         json['createdAt'],
@@ -683,6 +696,7 @@ Map<String, dynamic> _$SystemMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -736,6 +750,7 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
     CustomMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      peerId: json['peerId'] as String?,
       replyToMessageId: json['replyToMessageId'] as String?,
       createdAt: _$JsonConverterFromJson<int, DateTime>(
         json['createdAt'],
@@ -778,6 +793,7 @@ Map<String, dynamic> _$CustomMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
@@ -830,6 +846,7 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
     UnsupportedMessage(
       id: json['id'] as String,
       authorId: json['authorId'] as String,
+      peerId: json['peerId'] as String?,
       replyToMessageId: json['replyToMessageId'] as String?,
       createdAt: _$JsonConverterFromJson<int, DateTime>(
         json['createdAt'],
@@ -872,6 +889,7 @@ Map<String, dynamic> _$UnsupportedMessageToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'authorId': instance.authorId,
+  if (instance.peerId case final value?) 'peerId': value,
   if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
   if (_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
