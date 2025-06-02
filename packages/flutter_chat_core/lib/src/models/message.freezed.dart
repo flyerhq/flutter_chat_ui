@@ -482,9 +482,11 @@ class ImageMessage extends Message {
 /// Width of the image in pixels.
  final  double? width;
 /// Height of the image in pixels.
- final  double? height;
+final  double? height;
+/// Size of the image in bytes.
+final num size;
 /// Indicates if an overlay should be shown (e.g., for NSFW content).
- final  bool? hasOverlay;
+final  bool? hasOverlay;
 
 @JsonKey(name: 'type')
 final String $type;
