@@ -1,17 +1,23 @@
+import 'dart:io';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../helpers/is_network_source.dart';
+
 class FullscreenVideoPlayer extends StatefulWidget {
-  final String videoUrl;
+  final String source;
   final String heroTag;
   final Color? backgroundColor;
+  final Color? loadingIndicatorColor;
 
   const FullscreenVideoPlayer({
     super.key,
-    required this.videoUrl,
+    required this.source,
     required this.heroTag,
     this.backgroundColor,
+    this.loadingIndicatorColor,
   });
 
   @override
@@ -25,13 +31,25 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
-    _chewieController = ChewieController(
-      videoPlayerController: _controller,
-      autoPlay: true,
-      allowFullScreen: false,
-      autoInitialize: true,
-    );
+    _initializeVideoPlayerAsync();
+  }
+
+  Future<void> _initializeVideoPlayerAsync() async {
+    if (isNetworkSource(widget.source)) {
+      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.source));
+    } else {
+      _controller = VideoPlayerController.file(File(widget.source));
+    }
+
+    await _controller.initialize();
+    setState(() {
+      _chewieController = ChewieController(
+        videoPlayerController: _controller,
+        autoPlay: true,
+        allowFullScreen: false,
+        autoInitialize: false,
+      );
+    });
   }
 
   @override
@@ -49,7 +67,19 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
       body: SafeArea(
         child: Hero(
           tag: widget.heroTag,
-          child: Center(child: Chewie(controller: _chewieController)),
+          child:
+              _controller.value.isInitialized
+                  ? Center(
+                    child: AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: Chewie(controller: _chewieController),
+                    ),
+                  )
+                  : Center(
+                    child: CircularProgressIndicator(
+                      color: widget.loadingIndicatorColor,
+                    ),
+                  ),
         ),
       ),
     );
