@@ -72,16 +72,16 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
       body: SafeArea(
         child: Hero(
           tag: widget.heroTag,
-          child: AspectRatio(
-            aspectRatio: _aspectRatio,
-            child:
-                _videoPlayer.value.isInitialized
-                    ? Center(child: Chewie(controller: _chewieController))
-                    : Center(
-                      child: CircularProgressIndicator(
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: _aspectRatio,
+              child:
+                  _videoPlayer.value.isInitialized
+                      ? Chewie(controller: _chewieController)
+                      : CircularProgressIndicator(
                         color: widget.loadingIndicatorColor,
                       ),
-                    ),
+            ),
           ),
         ),
       ),
