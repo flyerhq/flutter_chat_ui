@@ -167,6 +167,9 @@ sealed class Message with _$Message {
     /// Height of the image in pixels.
     double? height,
 
+    /// Size of the image in bytes.
+    num? size,
+
     /// Indicates if an overlay should be shown (e.g., for NSFW content).
     bool? hasOverlay,
   }) = ImageMessage;
