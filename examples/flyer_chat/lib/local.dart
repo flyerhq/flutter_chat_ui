@@ -464,18 +464,46 @@ class LocalState extends State<Local> {
                 title: const Text('Video'),
                 onTap: () async {
                   Navigator.pop(context);
+                  // Uncomment to use proper path
+                  // Hardcoding for testing since the simulator library doesn't expose video files
 
-                  // Create a proper file message
-                  final fileMessage = VideoMessage(
-                    id: _uuid.v4(),
-                    authorId: _currentUser.id,
-                    createdAt: DateTime.now().toUtc(),
-                    sentAt: DateTime.now().toUtc(),
-                    source:
-                        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+                  final picker = ImagePicker();
+                  final result = await picker.pickVideo(
+                    source: ImageSource.gallery,
                   );
 
-                  await _chatController.insertMessage(fileMessage);
+                  if (result != null) {
+                    // Optionally get the file size
+                    // final fileSizeInBytes = await result.length();
+                    // Note to get the height/width of the video, you can use the following:
+                    // final controller = VideoPlayerController.file(file);
+                    // await controller.initialize();
+                    // final width = controller.value.size.width;
+                    // final height = controller.value.size.height;
+
+                    // Create a proper file message
+                    final videoMessage = VideoMessage(
+                      id: _uuid.v4(),
+                      authorId: _currentUser.id,
+                      createdAt: DateTime.now().toUtc(),
+                      sentAt: DateTime.now().toUtc(),
+                      // Uncomment to use proper path
+                      // Hardcoding for testing since the simulator library doesn't expose video files
+                      source: result.path,
+
+                      // size: fileSizeInBytes,
+                    );
+                    await _chatController.insertMessage(videoMessage);
+                  }
+
+                  // final videoMessage = VideoMessage(
+                  //   id: _uuid.v4(),
+                  //   authorId: _currentUser.id,
+                  //   createdAt: DateTime.now().toUtc(),
+                  //   source:
+                  //       'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+                  // );
+                  // await _chatController.insertMessage(videoMessage);
                 },
               ),
             ],
