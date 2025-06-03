@@ -46,8 +46,14 @@ sealed class Message with _$Message {
     /// Timestamp when the message was last updated.
     @EpochDateTimeConverter() DateTime? updatedAt,
 
+    /// Timestamp when the message was last edited.
+    @EpochDateTimeConverter() DateTime? editedAt,
+
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Indicates if the message is pinned.
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -95,6 +101,9 @@ sealed class Message with _$Message {
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<String>>? reactions,
 
+    /// Indicates if the message is pinned.
+    bool? pinned,
+
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
@@ -136,6 +145,9 @@ sealed class Message with _$Message {
 
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Indicates if the message is pinned.
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -197,6 +209,9 @@ sealed class Message with _$Message {
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
 
+    /// Indicates if the message is pinned.
+    bool? pinned,
+
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
@@ -247,6 +262,9 @@ sealed class Message with _$Message {
 
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Indicates if the message is pinned.
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -305,6 +323,9 @@ sealed class Message with _$Message {
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
 
+    /// Indicates if the message is pinned.
+    bool? pinned,
+
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
@@ -359,6 +380,9 @@ sealed class Message with _$Message {
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
 
+    /// Indicates if the message is pinned.
+    bool? pinned,
+
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
@@ -401,6 +425,9 @@ sealed class Message with _$Message {
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
 
+    /// Indicates if the message is pinned.
+    bool? pinned,
+
     /// Application-specific custom metadata.
     Map<String, dynamic>? metadata,
   }) = CustomMessage;
@@ -440,6 +467,9 @@ sealed class Message with _$Message {
 
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
+
+    /// Indicates if the message is pinned.
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,

@@ -38,10 +38,15 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
     json['updatedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
+  editedAt: _$JsonConverterFromJson<int, DateTime>(
+    json['editedAt'],
+    const EpochDateTimeConverter().fromJson,
+  ),
   reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
     (k, e) =>
         MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
   ),
+  pinned: json['pinned'] as bool?,
   metadata: json['metadata'] as Map<String, dynamic>?,
   text: json['text'] as String,
   linkPreviewData:
@@ -101,7 +106,14 @@ Map<String, dynamic> _$TextMessageToJson(
       )
       case final value?)
     'updatedAt': value,
+  if (_$JsonConverterToJson<int, DateTime>(
+        instance.editedAt,
+        const EpochDateTimeConverter().toJson,
+      )
+      case final value?)
+    'editedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'text': instance.text,
   if (instance.linkPreviewData?.toJson() case final value?)
@@ -156,6 +168,7 @@ TextStreamMessage _$TextStreamMessageFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      pinned: json['pinned'] as bool?,
       metadata: json['metadata'] as Map<String, dynamic>?,
       streamId: json['streamId'] as String,
       $type: json['type'] as String?,
@@ -210,6 +223,7 @@ Map<String, dynamic> _$TextStreamMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'streamId': instance.streamId,
   'type': instance.$type,
@@ -251,6 +265,7 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
     (k, e) =>
         MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
   ),
+  pinned: json['pinned'] as bool?,
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
   text: json['text'] as String?,
@@ -311,6 +326,7 @@ Map<String, dynamic> _$ImageMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'source': instance.source,
   if (instance.text case final value?) 'text': value,
@@ -358,6 +374,7 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
     (k, e) =>
         MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
   ),
+  pinned: json['pinned'] as bool?,
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
   name: json['name'] as String,
@@ -415,6 +432,7 @@ Map<String, dynamic> _$FileMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'source': instance.source,
   'name': instance.name,
@@ -459,6 +477,7 @@ VideoMessage _$VideoMessageFromJson(Map<String, dynamic> json) => VideoMessage(
     (k, e) =>
         MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
   ),
+  pinned: json['pinned'] as bool?,
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
   text: json['text'] as String?,
@@ -518,6 +537,7 @@ Map<String, dynamic> _$VideoMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'source': instance.source,
   if (instance.text case final value?) 'text': value,
@@ -564,6 +584,7 @@ AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
     (k, e) =>
         MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
   ),
+  pinned: json['pinned'] as bool?,
   metadata: json['metadata'] as Map<String, dynamic>?,
   source: json['source'] as String,
   duration: const DurationConverter().fromJson(
@@ -627,6 +648,7 @@ Map<String, dynamic> _$AudioMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'source': instance.source,
   'duration': const DurationConverter().toJson(instance.duration),
@@ -673,6 +695,7 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      pinned: json['pinned'] as bool?,
       metadata: json['metadata'] as Map<String, dynamic>?,
       text: json['text'] as String,
       $type: json['type'] as String?,
@@ -727,6 +750,7 @@ Map<String, dynamic> _$SystemMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'text': instance.text,
   'type': instance.$type,
@@ -769,6 +793,7 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      pinned: json['pinned'] as bool?,
       metadata: json['metadata'] as Map<String, dynamic>?,
       $type: json['type'] as String?,
     );
@@ -822,6 +847,7 @@ Map<String, dynamic> _$CustomMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'type': instance.$type,
 };
@@ -863,6 +889,7 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
       ),
+      pinned: json['pinned'] as bool?,
       metadata: json['metadata'] as Map<String, dynamic>?,
       $type: json['type'] as String?,
     );
@@ -916,6 +943,7 @@ Map<String, dynamic> _$UnsupportedMessageToJson(
       case final value?)
     'updatedAt': value,
   if (instance.reactions case final value?) 'reactions': value,
+  if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,
   'type': instance.$type,
 };
