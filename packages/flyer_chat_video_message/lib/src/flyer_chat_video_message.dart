@@ -109,10 +109,20 @@ class FlyerChatVideoMessage extends StatefulWidget {
 class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
   late final ChatController _chatController;
   VideoPlayerController? _videoPlayerController;
+  late double _aspectRatio;
 
   @override
   void initState() {
     super.initState();
+
+    final height = widget.message.height;
+    final width = widget.message.width;
+    if (height != null && width != null && height > 0 && width > 0) {
+      _aspectRatio = width / height;
+    } else {
+      _aspectRatio = 9 / 16;
+    }
+
     _chatController = context.read<ChatController>();
     _initalizeVideoPlayerAsync();
   }
@@ -128,8 +138,11 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
         File(widget.message.source),
       );
     }
-    await _videoPlayerController!.initialize();
-    setState(() {});
+    await _videoPlayerController!.initialize().then((_) {
+      setState(() {
+        _aspectRatio = _videoPlayerController!.value.aspectRatio;
+      });
+    });
   }
 
   @override
@@ -171,10 +184,7 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
       child: Container(
         constraints: widget.constraints,
         child: AspectRatio(
-          aspectRatio:
-              _videoPlayerController?.value.isInitialized == true
-                  ? _videoPlayerController!.value.aspectRatio
-                  : 16 / 9, // fallback aspect ratio
+          aspectRatio: _aspectRatio,
           child: GestureDetector(
             onTap: () {
               Navigator.of(
@@ -186,6 +196,7 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
                   builder:
                       (_) => FullscreenVideoPlayer(
                         source: widget.message.source,
+                        aspectRatio: _aspectRatio,
                         heroTag: widget.message.id,
                         backgroundColor: widget.fullScreenPlayerBackgroundColor,
                         loadingIndicatorColor:
