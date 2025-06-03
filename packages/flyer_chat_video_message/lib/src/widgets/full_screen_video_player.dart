@@ -11,6 +11,7 @@ class FullscreenVideoPlayer extends StatefulWidget {
   final String heroTag;
   final Color? backgroundColor;
   final Color? loadingIndicatorColor;
+  final double? aspectRatio;
 
   const FullscreenVideoPlayer({
     super.key,
@@ -18,6 +19,7 @@ class FullscreenVideoPlayer extends StatefulWidget {
     required this.heroTag,
     this.backgroundColor,
     this.loadingIndicatorColor,
+    this.aspectRatio,
   });
 
   @override
@@ -25,26 +27,29 @@ class FullscreenVideoPlayer extends StatefulWidget {
 }
 
 class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
-  late VideoPlayerController _controller;
+  late VideoPlayerController _videoPlayer;
   late ChewieController _chewieController;
+  late double _aspectRatio;
 
   @override
   void initState() {
     super.initState();
+    _aspectRatio = widget.aspectRatio ?? 16 / 9;
     _initializeVideoPlayerAsync();
   }
 
   Future<void> _initializeVideoPlayerAsync() async {
     if (isNetworkSource(widget.source)) {
-      _controller = VideoPlayerController.networkUrl(Uri.parse(widget.source));
+      _videoPlayer = VideoPlayerController.networkUrl(Uri.parse(widget.source));
     } else {
-      _controller = VideoPlayerController.file(File(widget.source));
+      _videoPlayer = VideoPlayerController.file(File(widget.source));
     }
 
-    await _controller.initialize();
+    await _videoPlayer.initialize();
     setState(() {
+      _aspectRatio = _videoPlayer.value.aspectRatio;
       _chewieController = ChewieController(
-        videoPlayerController: _controller,
+        videoPlayerController: _videoPlayer,
         autoPlay: true,
         allowFullScreen: false,
         autoInitialize: false,
@@ -55,7 +60,7 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
   @override
   void dispose() {
     _chewieController.dispose();
-    _controller.dispose();
+    _videoPlayer.dispose();
     super.dispose();
   }
 
@@ -67,19 +72,17 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
       body: SafeArea(
         child: Hero(
           tag: widget.heroTag,
-          child:
-              _controller.value.isInitialized
-                  ? Center(
-                    child: AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: Chewie(controller: _chewieController),
+          child: AspectRatio(
+            aspectRatio: _aspectRatio,
+            child:
+                _videoPlayer.value.isInitialized
+                    ? Center(child: Chewie(controller: _chewieController))
+                    : Center(
+                      child: CircularProgressIndicator(
+                        color: widget.loadingIndicatorColor,
+                      ),
                     ),
-                  )
-                  : Center(
-                    child: CircularProgressIndicator(
-                      color: widget.loadingIndicatorColor,
-                    ),
-                  ),
+          ),
         ),
       ),
     );
