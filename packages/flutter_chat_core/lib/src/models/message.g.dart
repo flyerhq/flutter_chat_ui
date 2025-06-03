@@ -42,7 +42,6 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
     json['editedAt'],
     const EpochDateTimeConverter().fromJson,
   ),
-  editedByUserId: json['editedByUserId'] as String?,
   reactions: (json['reactions'] as Map<String, dynamic>?)?.map(
     (k, e) =>
         MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
@@ -113,7 +112,6 @@ Map<String, dynamic> _$TextMessageToJson(
       )
       case final value?)
     'editedAt': value,
-  if (instance.editedByUserId case final value?) 'editedByUserId': value,
   if (instance.reactions case final value?) 'reactions': value,
   if (instance.pinned case final value?) 'pinned': value,
   if (instance.metadata case final value?) 'metadata': value,

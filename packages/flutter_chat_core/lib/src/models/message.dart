@@ -49,9 +49,6 @@ sealed class Message with _$Message {
     /// Timestamp when the message was last edited.
     @EpochDateTimeConverter() DateTime? editedAt,
 
-    /// ID of the user who last edited the message.
-    UserID? editedByUserId,
-
     /// Map of reaction keys to lists of user IDs who reacted.
     Map<String, List<UserID>>? reactions,
 
