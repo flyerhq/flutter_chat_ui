@@ -78,8 +78,13 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
               child:
                   _videoPlayer.value.isInitialized
                       ? Chewie(controller: _chewieController)
-                      : CircularProgressIndicator(
-                        color: widget.loadingIndicatorColor,
+                      : Container(
+                        width: 40,
+                        height: 40,
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          color: widget.loadingIndicatorColor,
+                        ),
                       ),
             ),
           ),
