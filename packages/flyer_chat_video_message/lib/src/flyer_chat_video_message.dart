@@ -181,8 +181,15 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
                           ? VideoPlayer(_videoPlayerController!)
                           : Container(
                             color: widget.placeholderColor ?? Colors.black12,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color:
+                                    widget
+                                        .fullScreenPlayerLoadingIndicatorColor ??
+                                    theme.colors.onSurface.withValues(
+                                      alpha: 0.8,
+                                    ),
+                              ),
                             ),
                           ),
                 ),
