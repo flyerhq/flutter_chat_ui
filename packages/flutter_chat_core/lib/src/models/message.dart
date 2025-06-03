@@ -56,7 +56,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -105,7 +105,7 @@ sealed class Message with _$Message {
     Map<String, List<String>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -150,7 +150,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -213,7 +213,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -267,7 +267,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -327,7 +327,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -384,7 +384,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
@@ -429,7 +429,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Application-specific custom metadata.
     Map<String, dynamic>? metadata,
@@ -472,7 +472,7 @@ sealed class Message with _$Message {
     Map<String, List<UserID>>? reactions,
 
     /// Indicates if the message is pinned.
-    @Default(false) bool pinned,
+    bool? pinned,
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
