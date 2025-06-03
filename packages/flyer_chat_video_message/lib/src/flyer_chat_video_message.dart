@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'helpers/is_network_source.dart';
 import 'widgets/full_screen_video_player.dart';
 import 'widgets/hero_video_route.dart';
 import 'widgets/time_and_status.dart';
@@ -60,6 +63,9 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Background color for the full screen video player.
   final Color? fullScreenPlayerBackgroundColor;
 
+  /// Background color for the full screen video player.
+  final Color? fullScreenPlayerLoadingIndicatorColor;
+
   /// Icon data to display as the play button overlay.
   final IconData playIcon;
 
@@ -88,6 +94,7 @@ class FlyerChatVideoMessage extends StatefulWidget {
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.useRootNavigator = false,
     this.fullScreenPlayerBackgroundColor,
+    this.fullScreenPlayerLoadingIndicatorColor,
     this.playIcon = Icons.play_circle_fill,
     this.playIconSize = 48,
     this.playIconColor = Colors.white,
@@ -111,12 +118,26 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
   }
 
   Future<void> _initalizeVideoPlayerAsync() async {
-    _videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(widget.message.source),
-      httpHeaders: widget.headers ?? {},
-    );
+    if (isNetworkSource(widget.message.source)) {
+      _videoPlayerController = VideoPlayerController.networkUrl(
+        Uri.parse(widget.message.source),
+        httpHeaders: widget.headers ?? {},
+      );
+    } else {
+      _videoPlayerController = VideoPlayerController.file(
+        File(widget.message.source),
+      );
+    }
     await _videoPlayerController!.initialize();
     setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(FlyerChatVideoMessage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.message.source != widget.message.source) {
+      _initalizeVideoPlayerAsync();
+    }
   }
 
   @override
@@ -164,9 +185,12 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
                   fullscreenDialog: true,
                   builder:
                       (_) => FullscreenVideoPlayer(
-                        videoUrl: widget.message.source,
+                        source: widget.message.source,
                         heroTag: widget.message.id,
                         backgroundColor: widget.fullScreenPlayerBackgroundColor,
+                        loadingIndicatorColor:
+                            widget.fullScreenPlayerLoadingIndicatorColor ??
+                            theme.colors.onSurface.withValues(alpha: 0.8),
                       ),
                 ),
               );
