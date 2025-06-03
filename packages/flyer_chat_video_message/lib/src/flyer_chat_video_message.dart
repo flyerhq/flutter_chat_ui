@@ -21,10 +21,10 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Commonly used for authorization tokens, e.g., {'Authorization': 'Bearer token'}.
   final Map<String, String>? headers;
 
-  /// Border radius of the image container.
+  /// Border radius of the video container.
   final BorderRadiusGeometry? borderRadius;
 
-  /// Constraints for the image size.
+  /// Constraints for the video size.
   final BoxConstraints? constraints;
 
   /// Color of the overlay shown during video loading for a sent message
@@ -33,13 +33,13 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Color of the overlay shown during video loading for a received message
   final Color? receivedLoadingOverlayColor;
 
-  /// Color of the circular progress indicator shown during image loading.
+  /// Color of the circular progress indicator shown during video loading.
   final Color? loadingIndicatorColor;
 
-  /// Color of the overlay shown during image upload.
+  /// Color of the overlay shown during video upload.
   final Color? uploadOverlayColor;
 
-  /// Color of the circular progress indicator shown during image upload.
+  /// Color of the circular progress indicator shown during video upload.
   final Color? uploadIndicatorColor;
 
   /// Text style for the message timestamp and status.
@@ -54,7 +54,7 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Whether to display the message status (sent, delivered, seen) for sent messages.
   final bool showStatus;
 
-  /// Position of the timestamp and status indicator relative to the image.
+  /// Position of the timestamp and status indicator relative to the video.
   final TimeAndStatusPosition timeAndStatusPosition;
 
   /// Wheter to use the root navigator to push the video player.
@@ -75,7 +75,7 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Color of the play icon.
   final Color playIconColor;
 
-  /// Creates a widget to display an image message.
+  /// Creates a widget to display an video message.
   const FlyerChatVideoMessage({
     super.key,
     required this.message,
