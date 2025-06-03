@@ -27,11 +27,11 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Constraints for the image size.
   final BoxConstraints? constraints;
 
-  /// Background color used while the placeholder is visible.
-  final Color? placeholderColor;
+  /// Color of the overlay shown during video loading for a sent message
+  final Color? sentLoadingOverlayColor;
 
-  /// Color of the overlay shown during image loading.
-  final Color? loadingOverlayColor;
+  /// Color of the overlay shown during video loading for a received message
+  final Color? receivedLoadingOverlayColor;
 
   /// Color of the circular progress indicator shown during image loading.
   final Color? loadingIndicatorColor;
@@ -82,8 +82,8 @@ class FlyerChatVideoMessage extends StatefulWidget {
     this.headers,
     this.borderRadius,
     this.constraints = const BoxConstraints(maxHeight: 300),
-    this.placeholderColor,
-    this.loadingOverlayColor,
+    this.sentLoadingOverlayColor,
+    this.receivedLoadingOverlayColor,
     this.loadingIndicatorColor,
     this.uploadOverlayColor,
     this.uploadIndicatorColor,
@@ -215,7 +215,7 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
                       _videoPlayerController?.value.isInitialized == true
                           ? VideoPlayer(_videoPlayerController!)
                           : Container(
-                            color: widget.placeholderColor ?? Colors.black12,
+                            color: _resolveBackgroundColor(isSentByMe, theme),
                             child: Center(
                               child: CircularProgressIndicator(
                                 color:
@@ -285,5 +285,12 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
         ),
       ),
     );
+  }
+
+  Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
+    if (isSentByMe) {
+      return widget.sentLoadingOverlayColor ?? theme.colors.primary;
+    }
+    return widget.receivedLoadingOverlayColor ?? theme.colors.surfaceContainer;
   }
 }
