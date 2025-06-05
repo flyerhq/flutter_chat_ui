@@ -133,12 +133,10 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
     }
 
     _chatController = context.read<ChatController>();
-    if (!false) {
-      try {
-        _generateImageCover();
-      } catch (e) {
-        debugPrint('Could not generate image cover: ${e.toString()}');
-      }
+    try {
+      _generateImageCover();
+    } catch (e) {
+      debugPrint('Could not generate image cover: ${e.toString()}');
     }
   }
 
