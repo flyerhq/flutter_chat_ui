@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:thumbhash/thumbhash.dart'
     show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import 'helpers/is_network_source.dart';
 import 'widgets/full_screen_video_player.dart';
 import 'widgets/hero_video_route.dart';
@@ -30,14 +33,11 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Constraints for the video size.
   final BoxConstraints? constraints;
 
-  /// Color of the overlay shown during video loading for a sent message
-  final Color? sentLoadingOverlayColor;
+  /// Background color for a sent message while image cover is generated
+  final Color? sentBackGroundColor;
 
-  /// Color of the overlay shown during video loading for a received message
-  final Color? receivedLoadingOverlayColor;
-
-  /// Color of the circular progress indicator shown during video loading.
-  final Color? loadingIndicatorColor;
+  /// Background color for a received message while image cover is generated
+  final Color? receivedBackgroundColor;
 
   /// Color of the overlay shown during video upload.
   final Color? uploadOverlayColor;
@@ -78,9 +78,6 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Color of the play icon.
   final Color playIconColor;
 
-  /// Background color used while the image thumbnail is visible.
-  final Color? placeholderColor;
-
   /// Creates a widget to display an video message.
   const FlyerChatVideoMessage({
     super.key,
@@ -88,9 +85,8 @@ class FlyerChatVideoMessage extends StatefulWidget {
     this.headers,
     this.borderRadius,
     this.constraints = const BoxConstraints(maxHeight: 300),
-    this.sentLoadingOverlayColor,
-    this.receivedLoadingOverlayColor,
-    this.loadingIndicatorColor,
+    this.sentBackGroundColor,
+    this.receivedBackgroundColor,
     this.uploadOverlayColor,
     this.uploadIndicatorColor,
     this.timeStyle,
@@ -104,7 +100,6 @@ class FlyerChatVideoMessage extends StatefulWidget {
     this.playIcon = Icons.play_circle_fill,
     this.playIconSize = 48,
     this.playIconColor = Colors.white,
-    this.placeholderColor,
   });
 
   @override
@@ -115,7 +110,6 @@ class FlyerChatVideoMessage extends StatefulWidget {
 /// State for [FlyerChatVideoMessage].
 class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
   late final ChatController _chatController;
-  VideoPlayerController? _videoPlayerController;
   ImageProvider? _placeholderProvider;
   late double _aspectRatio;
 
@@ -144,24 +138,35 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
     }
 
     _chatController = context.read<ChatController>();
-    _initalizeVideoPlayerAsync();
+    if (!false) {
+      try {
+        _generateImageCover();
+      } catch (e) {
+        debugPrint('Could not generate image cover: ${e.toString()}');
+      }
+    }
   }
 
-  Future<void> _initalizeVideoPlayerAsync() async {
-    if (isNetworkSource(widget.message.source)) {
-      _videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(widget.message.source),
-        httpHeaders: widget.headers ?? {},
-      );
-    } else {
-      _videoPlayerController = VideoPlayerController.file(
-        File(widget.message.source),
-      );
-    }
-    await _videoPlayerController!.initialize().then((_) {
-      setState(() {
-        _aspectRatio = _videoPlayerController!.value.aspectRatio;
-      });
+  Future<void> _generateImageCover() async {
+    final coverImageBytes = await VideoThumbnail.thumbnailData(
+      video: widget.message.source,
+      imageFormat: ImageFormat.WEBP,
+      quality: 25,
+      headers: widget.headers,
+    );
+    setState(() {
+      // TODO should we add 'image' package to decode and get height and width
+      // to update _aspectRatio?
+
+      // import 'package:image/image.dart' as img;
+
+      // final decoded = img.decodeImage(coverImageBytes!);
+      // if (decoded != null) {
+      //   final width = decoded.width;
+      //   final height = decoded.height;
+      // }
+
+      _placeholderProvider = MemoryImage(coverImageBytes!);
     });
   }
 
@@ -169,13 +174,15 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
   void didUpdateWidget(FlyerChatVideoMessage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.message.source != widget.message.source) {
-      _initalizeVideoPlayerAsync();
+      _generateImageCover();
     }
   }
 
   @override
   void dispose() {
-    _videoPlayerController?.dispose();
+    _placeholderProvider?.evict();
+    // Evicting the image on dispose will result in images flickering
+    // PaintingBinding.instance.imageCache.evict(_imageProvider);
     super.dispose();
   }
 
@@ -229,30 +236,18 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                _placeholderProvider != null
-                    ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
-                    : Container(
-                      color:
-                          widget.placeholderColor ??
-                          theme.colors.surfaceContainerLow,
-                    ),
                 Hero(
                   tag: widget.message.id,
                   child:
-                      _videoPlayerController?.value.isInitialized == true
-                          ? VideoPlayer(_videoPlayerController!)
+                      _placeholderProvider != null
+                          ? Image(
+                            image: _placeholderProvider!,
+                            fit: BoxFit.fill,
+                          )
                           : Container(
-                            color: _resolveBackgroundColor(isSentByMe, theme),
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color:
-                                    widget
-                                        .fullScreenPlayerLoadingIndicatorColor ??
-                                    theme.colors.onSurface.withValues(
-                                      alpha: 0.8,
-                                    ),
-                              ),
-                            ),
+                            color:
+                                _resolveBackgroundColor(isSentByMe, theme) ??
+                                theme.colors.surfaceContainerLow,
                           ),
                 ),
                 Icon(
@@ -260,7 +255,6 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
                   size: widget.playIconSize,
                   color: widget.playIconColor,
                 ),
-
                 if (_chatController is UploadProgressMixin)
                   StreamBuilder<double>(
                     stream: (_chatController as UploadProgressMixin)
@@ -316,8 +310,8 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
 
   Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
     if (isSentByMe) {
-      return widget.sentLoadingOverlayColor ?? theme.colors.primary;
+      return widget.sentBackGroundColor ?? theme.colors.primary;
     }
-    return widget.receivedLoadingOverlayColor ?? theme.colors.surfaceContainer;
+    return widget.receivedBackgroundColor ?? theme.colors.surfaceContainer;
   }
 }
