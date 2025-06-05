@@ -16,7 +16,7 @@ dependencies:
   flutter_chat_core: ^2.4.0
   provider: ^6.1.4
   thumbhash: ^0.1.0+1
-  video_player: ^2.9.5
+  video_thumbnail: ^0.5.6
 
 dev_dependencies:
   flutter_lints: ^6.0.0
