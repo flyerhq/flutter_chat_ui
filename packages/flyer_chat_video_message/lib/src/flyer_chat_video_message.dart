@@ -1,16 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'package:thumbhash/thumbhash.dart'
     show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
-import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import 'helpers/is_network_source.dart';
 import 'widgets/full_screen_video_player.dart';
 import 'widgets/hero_video_route.dart';
 import 'widgets/time_and_status.dart';
