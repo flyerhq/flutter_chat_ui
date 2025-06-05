@@ -470,129 +470,130 @@ class LocalState extends State<Local> {
                   Navigator.pop(context);
                   // Uncomment to use picker instead of hardcoding the video url
 
-                  final picker = ImagePicker();
-                  final result = await picker.pickVideo(
-                    source: ImageSource.gallery,
-                  );
+                  // final picker = ImagePicker();
+                  // final result = await picker.pickVideo(
+                  //   source: ImageSource.gallery,
+                  // );
 
-                  if (result != null) {
-                    String? thumbHash;
-                    int? width;
-                    int? height;
-                    int? fileSizeInBytes;
-                    try {
-                      // Optionally get the file size
-                      fileSizeInBytes = await result.length();
+                  // if (result != null) {
+                  //   String? thumbHash;
+                  //   int? width;
+                  //   int? height;
+                  //   int? fileSizeInBytes;
+                  //   try {
+                  //     // Optionally get the file size
+                  //     fileSizeInBytes = await result.length();
 
-                      // Get the video width and height
-                      final fullSizeimageBytes =
-                          await VideoThumbnail.thumbnailData(
-                            video: result.path,
-                            imageFormat: ImageFormat.WEBP,
-                            quality: 1,
-                          );
+                  //     // Get the video width and height
+                  //     final fullSizeimageBytes =
+                  //         await VideoThumbnail.thumbnailData(
+                  //           video: result.path,
+                  //           imageFormat: ImageFormat.WEBP,
+                  //           quality: 1,
+                  //         );
 
-                      final fullSizedecoded = img.decodeImage(
-                        fullSizeimageBytes!,
-                      );
-                      if (fullSizedecoded != null) {
-                        width = fullSizedecoded.width;
-                        height = fullSizedecoded.height;
-                      }
-
-                      // Generate the thumbhash
-                      final thumbSizeImageBytes =
-                          await VideoThumbnail.thumbnailData(
-                            video: result.path,
-                            imageFormat: ImageFormat.WEBP,
-                            maxWidth: 100,
-                            maxHeight: 100,
-                            quality: 25,
-                          );
-                      final decoded = img.decodeImage(thumbSizeImageBytes!);
-                      if (decoded != null) {
-                        final thumbHashBytes = rgbaToThumbHash(
-                          decoded.width,
-                          decoded.height,
-                          decoded.getBytes(),
-                        );
-
-                        thumbHash = base64.encode(thumbHashBytes);
-                      }
-                    } catch (e) {
-                      debugPrint(e.toString());
-                    }
-
-                    // Create a proper file message
-                    final videoMessage = VideoMessage(
-                      id: _uuid.v4(),
-                      authorId: _currentUser.id,
-                      createdAt: DateTime.now().toUtc(),
-                      sentAt: DateTime.now().toUtc(),
-                      source: result.path,
-                      thumbhash: thumbHash,
-                      width: width?.toDouble(),
-                      height: height?.toDouble(),
-                      size: fileSizeInBytes,
-                    );
-                    await _chatController.insertMessage(videoMessage);
-                  }
-
-                  // const videoUrl =
-                  //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
-                  // String? thumbHash;
-                  // int? width;
-                  // int? height;
-                  // try {
-                  //   // Get the video width and height
-                  //   final fullSizeimageBytes =
-                  //       await VideoThumbnail.thumbnailData(
-                  //         video: videoUrl,
-                  //         imageFormat: ImageFormat.WEBP,
-                  //         quality: 1,
-                  //       );
-
-                  //   final fullSizedecoded = img.decodeImage(
-                  //     fullSizeimageBytes!,
-                  //   );
-                  //   if (fullSizedecoded != null) {
-                  //     width = fullSizedecoded.width;
-                  //     height = fullSizedecoded.height;
-                  //   }
-
-                  //   // Generate the thumbhash
-                  //   final thumbSizeImageBytes =
-                  //       await VideoThumbnail.thumbnailData(
-                  //         video: videoUrl,
-                  //         imageFormat: ImageFormat.WEBP,
-                  //         maxWidth: 100,
-                  //         maxHeight: 100,
-                  //         quality: 25,
-                  //       );
-                  //   final decoded = img.decodeImage(thumbSizeImageBytes!);
-                  //   if (decoded != null) {
-                  //     final thumbHashBytes = rgbaToThumbHash(
-                  //       decoded.width,
-                  //       decoded.height,
-                  //       decoded.getBytes(),
+                  //     final fullSizedecoded = img.decodeImage(
+                  //       fullSizeimageBytes!,
                   //     );
+                  //     if (fullSizedecoded != null) {
+                  //       width = fullSizedecoded.width;
+                  //       height = fullSizedecoded.height;
+                  //     }
 
-                  //     thumbHash = base64.encode(thumbHashBytes);
+                  //     // Generate the thumbhash
+                  //     final thumbSizeImageBytes =
+                  //         await VideoThumbnail.thumbnailData(
+                  //           video: result.path,
+                  //           imageFormat: ImageFormat.WEBP,
+                  //           maxWidth: 100,
+                  //           maxHeight: 100,
+                  //           quality: 25,
+                  //         );
+                  //     final decoded = img.decodeImage(thumbSizeImageBytes!);
+                  //     if (decoded != null) {
+                  //       final thumbHashBytes = rgbaToThumbHash(
+                  //         decoded.width,
+                  //         decoded.height,
+                  //         decoded.getBytes(),
+                  //       );
+
+                  //       thumbHash = base64.encode(thumbHashBytes);
+                  //     }
+                  //   } catch (e) {
+                  //     debugPrint(e.toString());
                   //   }
-                  // } catch (e) {
-                  //   debugPrint(e.toString());
+
+                  //   // Create a proper file message
+                  //   final videoMessage = VideoMessage(
+                  //     id: _uuid.v4(),
+                  //     authorId: _currentUser.id,
+                  //     createdAt: DateTime.now().toUtc(),
+                  //     sentAt: DateTime.now().toUtc(),
+                  //     source: result.path,
+                  //     thumbhash: thumbHash,
+                  //     width: width?.toDouble(),
+                  //     height: height?.toDouble(),
+                  //     size: fileSizeInBytes,
+                  //   );
+                  //   await _chatController.insertMessage(videoMessage);
                   // }
 
-                  // final videoMessage = VideoMessage(
-                  //   id: _uuid.v4(),
-                  //   authorId: _currentUser.id,
-                  //   createdAt: DateTime.now().toUtc(),
-                  //   source: videoUrl,
-                  //   thumbhash: thumbHash,
-                  //   width: width?.toDouble(),
-                  //   height: height?.toDouble(),
-                  // );
-                  // await _chatController.insertMessage(videoMessage);
+                  const videoUrl =
+                      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
+                  String? thumbHash;
+                  int? width;
+                  int? height;
+                  try {
+                    // Get the video width and height
+                    // iOS/ Android ONLY
+                    final fullSizeimageBytes =
+                        await VideoThumbnail.thumbnailData(
+                          video: videoUrl,
+                          imageFormat: ImageFormat.WEBP,
+                          quality: 1,
+                        );
+
+                    final fullSizedecoded = img.decodeImage(
+                      fullSizeimageBytes!,
+                    );
+                    if (fullSizedecoded != null) {
+                      width = fullSizedecoded.width;
+                      height = fullSizedecoded.height;
+                    }
+
+                    // Generate the thumbhash
+                    final thumbSizeImageBytes =
+                        await VideoThumbnail.thumbnailData(
+                          video: videoUrl,
+                          imageFormat: ImageFormat.WEBP,
+                          maxWidth: 100,
+                          maxHeight: 100,
+                          quality: 25,
+                        );
+                    final decoded = img.decodeImage(thumbSizeImageBytes!);
+                    if (decoded != null) {
+                      final thumbHashBytes = rgbaToThumbHash(
+                        decoded.width,
+                        decoded.height,
+                        decoded.getBytes(),
+                      );
+
+                      thumbHash = base64.encode(thumbHashBytes);
+                    }
+                  } catch (e) {
+                    debugPrint(e.toString());
+                  }
+
+                  final videoMessage = VideoMessage(
+                    id: _uuid.v4(),
+                    authorId: _currentUser.id,
+                    createdAt: DateTime.now().toUtc(),
+                    source: videoUrl,
+                    thumbhash: thumbHash,
+                    width: width?.toDouble(),
+                    height: height?.toDouble(),
+                  );
+                  await _chatController.insertMessage(videoMessage);
                 },
               ),
             ],
