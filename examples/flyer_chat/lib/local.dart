@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -13,9 +14,12 @@ import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:flyer_chat_video_message/flyer_chat_video_message.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_down_button/pull_down_button.dart';
+import 'package:thumbhash/thumbhash.dart' show rgbaToThumbHash;
 import 'package:uuid/uuid.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 import 'create_message.dart';
 import 'widgets/composer_action_bar.dart';
@@ -464,8 +468,7 @@ class LocalState extends State<Local> {
                 title: const Text('Video'),
                 onTap: () async {
                   Navigator.pop(context);
-                  // Uncomment to use proper path
-                  // Hardcoding for testing since the simulator library doesn't expose video files
+                  // Uncomment to use picker instead of hardcoding the video url
 
                   final picker = ImagePicker();
                   final result = await picker.pickVideo(
@@ -473,13 +476,52 @@ class LocalState extends State<Local> {
                   );
 
                   if (result != null) {
-                    // Optionally get the file size
-                    // final fileSizeInBytes = await result.length();
-                    // Note to get the height/width of the video, you can use the following:
-                    // final controller = VideoPlayerController.file(file);
-                    // await controller.initialize();
-                    // final width = controller.value.size.width;
-                    // final height = controller.value.size.height;
+                    String? thumbHash;
+                    int? width;
+                    int? height;
+                    int? fileSizeInBytes;
+                    try {
+                      // Optionally get the file size
+                      fileSizeInBytes = await result.length();
+
+                      // Get the video width and height
+                      final fullSizeimageBytes =
+                          await VideoThumbnail.thumbnailData(
+                            video: result.path,
+                            imageFormat: ImageFormat.WEBP,
+                            quality: 1,
+                          );
+
+                      final fullSizedecoded = img.decodeImage(
+                        fullSizeimageBytes!,
+                      );
+                      if (fullSizedecoded != null) {
+                        width = fullSizedecoded.width;
+                        height = fullSizedecoded.height;
+                      }
+
+                      // Generate the thumbhash
+                      final thumbSizeImageBytes =
+                          await VideoThumbnail.thumbnailData(
+                            video: result.path,
+                            imageFormat: ImageFormat.WEBP,
+                            maxWidth: 100,
+                            maxHeight: 100,
+                            quality: 25,
+                          );
+                      final decoded = img.decodeImage(thumbSizeImageBytes!);
+                      if (decoded != null) {
+                        final thumbHashBytes = rgbaToThumbHash(
+                          decoded.width,
+                          decoded.height,
+                          decoded.getBytes(),
+                        );
+
+                        thumbHash = base64.encode(thumbHashBytes);
+                      }
+                    } catch (e) {
+                      debugPrint(e.toString());
+                    }
 
                     // Create a proper file message
                     final videoMessage = VideoMessage(
@@ -487,21 +529,68 @@ class LocalState extends State<Local> {
                       authorId: _currentUser.id,
                       createdAt: DateTime.now().toUtc(),
                       sentAt: DateTime.now().toUtc(),
-                      // Uncomment to use proper path
-                      // Hardcoding for testing since the simulator library doesn't expose video files
                       source: result.path,
-
-                      // size: fileSizeInBytes,
+                      thumbhash: thumbHash,
+                      width: width?.toDouble(),
+                      height: height?.toDouble(),
+                      size: fileSizeInBytes,
                     );
                     await _chatController.insertMessage(videoMessage);
                   }
+
+                  // const videoUrl =
+                  //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
+                  // String? thumbHash;
+                  // int? width;
+                  // int? height;
+                  // try {
+                  //   // Get the video width and height
+                  //   final fullSizeimageBytes =
+                  //       await VideoThumbnail.thumbnailData(
+                  //         video: videoUrl,
+                  //         imageFormat: ImageFormat.WEBP,
+                  //         quality: 1,
+                  //       );
+
+                  //   final fullSizedecoded = img.decodeImage(
+                  //     fullSizeimageBytes!,
+                  //   );
+                  //   if (fullSizedecoded != null) {
+                  //     width = fullSizedecoded.width;
+                  //     height = fullSizedecoded.height;
+                  //   }
+
+                  //   // Generate the thumbhash
+                  //   final thumbSizeImageBytes =
+                  //       await VideoThumbnail.thumbnailData(
+                  //         video: videoUrl,
+                  //         imageFormat: ImageFormat.WEBP,
+                  //         maxWidth: 100,
+                  //         maxHeight: 100,
+                  //         quality: 25,
+                  //       );
+                  //   final decoded = img.decodeImage(thumbSizeImageBytes!);
+                  //   if (decoded != null) {
+                  //     final thumbHashBytes = rgbaToThumbHash(
+                  //       decoded.width,
+                  //       decoded.height,
+                  //       decoded.getBytes(),
+                  //     );
+
+                  //     thumbHash = base64.encode(thumbHashBytes);
+                  //   }
+                  // } catch (e) {
+                  //   debugPrint(e.toString());
+                  // }
 
                   // final videoMessage = VideoMessage(
                   //   id: _uuid.v4(),
                   //   authorId: _currentUser.id,
                   //   createdAt: DateTime.now().toUtc(),
-                  //   source:
-                  //       'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+                  //   source: videoUrl,
+                  //   thumbhash: thumbHash,
+                  //   width: width?.toDouble(),
+                  //   height: height?.toDouble(),
                   // );
                   // await _chatController.insertMessage(videoMessage);
                 },
