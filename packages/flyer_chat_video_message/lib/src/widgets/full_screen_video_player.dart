@@ -28,7 +28,7 @@ class FullscreenVideoPlayer extends StatefulWidget {
 
 class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
   late VideoPlayerController _videoPlayer;
-  late ChewieController _chewieController;
+  late ChewieController? _chewieController;
   late double _aspectRatio;
 
   @override
@@ -59,7 +59,7 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
 
   @override
   void dispose() {
-    _chewieController.dispose();
+    _chewieController?.dispose();
     _videoPlayer.dispose();
     super.dispose();
   }
@@ -76,8 +76,8 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
             child: AspectRatio(
               aspectRatio: _aspectRatio,
               child:
-                  _videoPlayer.value.isInitialized
-                      ? Chewie(controller: _chewieController)
+                  _videoPlayer.value.isInitialized && _chewieController != null
+                      ? Chewie(controller: _chewieController!)
                       : Container(
                         width: 40,
                         height: 40,
