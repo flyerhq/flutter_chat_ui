@@ -147,20 +147,22 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
       quality: 25,
       headers: widget.headers,
     );
-    setState(() {
-      // TODO should we add 'image' package to decode and get height and width
-      // to update _aspectRatio?
+    if (mounted) {
+      setState(() {
+        // TODO should we add 'image' package to decode and get height and width
+        // to update _aspectRatio?
 
-      // import 'package:image/image.dart' as img;
+        // import 'package:image/image.dart' as img;
 
-      // final decoded = img.decodeImage(coverImageBytes!);
-      // if (decoded != null) {
-      //   final width = decoded.width;
-      //   final height = decoded.height;
-      // }
+        // final decoded = img.decodeImage(coverImageBytes!);
+        // if (decoded != null) {
+        //   final width = decoded.width;
+        //   final height = decoded.height;
+        // }
 
-      _placeholderProvider = MemoryImage(coverImageBytes!);
-    });
+        _placeholderProvider = MemoryImage(coverImageBytes!);
+      });
+    }
   }
 
   @override

@@ -46,15 +46,17 @@ class _FullscreenVideoPlayerState extends State<FullscreenVideoPlayer> {
     }
 
     await _videoPlayer.initialize();
-    setState(() {
-      _aspectRatio = _videoPlayer.value.aspectRatio;
-      _chewieController = ChewieController(
-        videoPlayerController: _videoPlayer,
-        autoPlay: true,
-        allowFullScreen: false,
-        autoInitialize: false,
-      );
-    });
+    if (mounted) {
+      setState(() {
+        _aspectRatio = _videoPlayer.value.aspectRatio;
+        _chewieController = ChewieController(
+          videoPlayerController: _videoPlayer,
+          autoPlay: true,
+          allowFullScreen: false,
+          autoInitialize: false,
+        );
+      });
+    }
   }
 
   @override
