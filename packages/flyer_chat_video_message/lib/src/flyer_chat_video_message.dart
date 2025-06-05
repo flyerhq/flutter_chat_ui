@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
+import 'package:thumbhash/thumbhash.dart'
+    show rgbaToBmp, thumbHashToApproximateAspectRatio, thumbHashToRGBA;
 import 'package:video_player/video_player.dart';
 import 'helpers/is_network_source.dart';
 import 'widgets/full_screen_video_player.dart';
@@ -75,6 +78,9 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Color of the play icon.
   final Color playIconColor;
 
+  /// Background color used while the image thumbnail is visible.
+  final Color? placeholderColor;
+
   /// Creates a widget to display an video message.
   const FlyerChatVideoMessage({
     super.key,
@@ -98,6 +104,7 @@ class FlyerChatVideoMessage extends StatefulWidget {
     this.playIcon = Icons.play_circle_fill,
     this.playIconSize = 48,
     this.playIconColor = Colors.white,
+    this.placeholderColor,
   });
 
   @override
@@ -109,6 +116,7 @@ class FlyerChatVideoMessage extends StatefulWidget {
 class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
   late final ChatController _chatController;
   VideoPlayerController? _videoPlayerController;
+  ImageProvider? _placeholderProvider;
   late double _aspectRatio;
 
   @override
@@ -121,6 +129,18 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
       _aspectRatio = width / height;
     } else {
       _aspectRatio = 9 / 16;
+    }
+
+    if (widget.message.thumbhash?.isNotEmpty ?? false) {
+      final thumbhashBytes = base64.decode(
+        base64.normalize(widget.message.thumbhash!),
+      );
+
+      _aspectRatio = thumbHashToApproximateAspectRatio(thumbhashBytes);
+
+      final rgbaImage = thumbHashToRGBA(thumbhashBytes);
+      final bmp = rgbaToBmp(rgbaImage);
+      _placeholderProvider = MemoryImage(bmp);
     }
 
     _chatController = context.read<ChatController>();
@@ -209,6 +229,13 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
             child: Stack(
               fit: StackFit.expand,
               children: [
+                _placeholderProvider != null
+                    ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
+                    : Container(
+                      color:
+                          widget.placeholderColor ??
+                          theme.colors.surfaceContainerLow,
+                    ),
                 Hero(
                   tag: widget.message.id,
                   child:

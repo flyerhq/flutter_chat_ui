@@ -740,7 +740,7 @@ as String?,
 @JsonSerializable()
 
 class VideoMessage extends Message {
-  const VideoMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, this.pinned, final  Map<String, dynamic>? metadata, this.status, required this.source, this.text, this.name, this.size, this.width, this.height, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'video',super._();
+  const VideoMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, this.pinned, final  Map<String, dynamic>? metadata, this.status, required this.source, this.text, this.name, this.size, this.width, this.height, this.thumbhash, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'video',super._();
   factory VideoMessage.fromJson(Map<String, dynamic> json) => _$VideoMessageFromJson(json);
 
 /// Unique identifier for the message.
@@ -802,6 +802,8 @@ class VideoMessage extends Message {
  final  double? width;
 /// Height of the video in pixels.
  final  double? height;
+/// ThumbHash string for a low-resolution placeholder.
+ final  String? thumbhash;
 
 @JsonKey(name: 'type')
 final String $type;
@@ -820,16 +822,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VideoMessage&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.replyToMessageId, replyToMessageId) || other.replyToMessageId == replyToMessageId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.failedAt, failedAt) || other.failedAt == failedAt)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.deliveredAt, deliveredAt) || other.deliveredAt == deliveredAt)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&(identical(other.pinned, pinned) || other.pinned == pinned)&&const DeepCollectionEquality().equals(other._metadata, _metadata)&&(identical(other.status, status) || other.status == status)&&(identical(other.source, source) || other.source == source)&&(identical(other.text, text) || other.text == text)&&(identical(other.name, name) || other.name == name)&&(identical(other.size, size) || other.size == size)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VideoMessage&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.replyToMessageId, replyToMessageId) || other.replyToMessageId == replyToMessageId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.failedAt, failedAt) || other.failedAt == failedAt)&&(identical(other.sentAt, sentAt) || other.sentAt == sentAt)&&(identical(other.deliveredAt, deliveredAt) || other.deliveredAt == deliveredAt)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&(identical(other.pinned, pinned) || other.pinned == pinned)&&const DeepCollectionEquality().equals(other._metadata, _metadata)&&(identical(other.status, status) || other.status == status)&&(identical(other.source, source) || other.source == source)&&(identical(other.text, text) || other.text == text)&&(identical(other.name, name) || other.name == name)&&(identical(other.size, size) || other.size == size)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.thumbhash, thumbhash) || other.thumbhash == thumbhash));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,authorId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(_reactions),pinned,const DeepCollectionEquality().hash(_metadata),status,source,text,name,size,width,height]);
+int get hashCode => Object.hashAll([runtimeType,id,authorId,replyToMessageId,createdAt,deletedAt,failedAt,sentAt,deliveredAt,seenAt,updatedAt,const DeepCollectionEquality().hash(_reactions),pinned,const DeepCollectionEquality().hash(_metadata),status,source,text,name,size,width,height,thumbhash]);
 
 @override
 String toString() {
-  return 'Message.video(id: $id, authorId: $authorId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, pinned: $pinned, metadata: $metadata, status: $status, source: $source, text: $text, name: $name, size: $size, width: $width, height: $height)';
+  return 'Message.video(id: $id, authorId: $authorId, replyToMessageId: $replyToMessageId, createdAt: $createdAt, deletedAt: $deletedAt, failedAt: $failedAt, sentAt: $sentAt, deliveredAt: $deliveredAt, seenAt: $seenAt, updatedAt: $updatedAt, reactions: $reactions, pinned: $pinned, metadata: $metadata, status: $status, source: $source, text: $text, name: $name, size: $size, width: $width, height: $height, thumbhash: $thumbhash)';
 }
 
 
@@ -840,7 +842,7 @@ abstract mixin class $VideoMessageCopyWith<$Res> implements $MessageCopyWith<$Re
   factory $VideoMessageCopyWith(VideoMessage value, $Res Function(VideoMessage) _then) = _$VideoMessageCopyWithImpl;
 @override @useResult
 $Res call({
- MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, bool? pinned, Map<String, dynamic>? metadata, MessageStatus? status, String source, String? text, String? name, int? size, double? width, double? height
+ MessageID id, UserID authorId, MessageID? replyToMessageId,@EpochDateTimeConverter() DateTime? createdAt,@EpochDateTimeConverter() DateTime? deletedAt,@EpochDateTimeConverter() DateTime? failedAt,@EpochDateTimeConverter() DateTime? sentAt,@EpochDateTimeConverter() DateTime? deliveredAt,@EpochDateTimeConverter() DateTime? seenAt,@EpochDateTimeConverter() DateTime? updatedAt, Map<String, List<UserID>>? reactions, bool? pinned, Map<String, dynamic>? metadata, MessageStatus? status, String source, String? text, String? name, int? size, double? width, double? height, String? thumbhash
 });
 
 
@@ -857,7 +859,7 @@ class _$VideoMessageCopyWithImpl<$Res>
 
 /// Create a copy of Message
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToMessageId = freezed,Object? createdAt = freezed,Object? deletedAt = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? pinned = freezed,Object? metadata = freezed,Object? status = freezed,Object? source = null,Object? text = freezed,Object? name = freezed,Object? size = freezed,Object? width = freezed,Object? height = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? replyToMessageId = freezed,Object? createdAt = freezed,Object? deletedAt = freezed,Object? failedAt = freezed,Object? sentAt = freezed,Object? deliveredAt = freezed,Object? seenAt = freezed,Object? updatedAt = freezed,Object? reactions = freezed,Object? pinned = freezed,Object? metadata = freezed,Object? status = freezed,Object? source = null,Object? text = freezed,Object? name = freezed,Object? size = freezed,Object? width = freezed,Object? height = freezed,Object? thumbhash = freezed,}) {
   return _then(VideoMessage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as MessageID,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
@@ -879,7 +881,8 @@ as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to
 as String?,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as int?,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
 as double?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as double?,
+as double?,thumbhash: freezed == thumbhash ? _self.thumbhash : thumbhash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

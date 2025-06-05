@@ -508,6 +508,7 @@ VideoMessage _$VideoMessageFromJson(Map<String, dynamic> json) => VideoMessage(
   size: (json['size'] as num?)?.toInt(),
   width: (json['width'] as num?)?.toDouble(),
   height: (json['height'] as num?)?.toDouble(),
+  thumbhash: json['thumbhash'] as String?,
   $type: json['type'] as String?,
 );
 
@@ -570,6 +571,7 @@ Map<String, dynamic> _$VideoMessageToJson(
   if (instance.size case final value?) 'size': value,
   if (instance.width case final value?) 'width': value,
   if (instance.height case final value?) 'height': value,
+  if (instance.thumbhash case final value?) 'thumbhash': value,
   'type': instance.$type,
 };
 

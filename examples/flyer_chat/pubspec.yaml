@@ -51,6 +51,7 @@ dependencies:
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1
   http: ^1.4.0
+  image: ^4.5.4
   image_picker: ^1.1.2
   intl: ^0.20.2
   isar_flutter_libs: ^4.0.0-dev.14
@@ -58,7 +59,9 @@ dependencies:
   path_provider: ^2.1.5
   provider: ^6.1.5
   pull_down_button: ^0.10.2
+  thumbhash: ^0.1.0+1
   uuid: ^4.5.1
+  video_thumbnail: ^0.5.6
   web_socket_channel: ^3.0.3
 
 dev_dependencies:
