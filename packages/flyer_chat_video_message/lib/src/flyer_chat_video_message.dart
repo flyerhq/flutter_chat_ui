@@ -73,6 +73,11 @@ class FlyerChatVideoMessage extends StatefulWidget {
   /// Color of the play icon.
   final Color playIconColor;
 
+  /// Optional builder function that returns a Future of high resolution thumbnail [ImageProvider]
+  /// for the video message. If provided, this will be used instead of the default
+  /// thumbnail generation.
+  final Future<ImageProvider?> Function()? highResThumbnailProviderBuilder;
+
   /// Creates a widget to display an video message.
   const FlyerChatVideoMessage({
     super.key,
@@ -95,6 +100,7 @@ class FlyerChatVideoMessage extends StatefulWidget {
     this.playIcon = Icons.play_circle_fill,
     this.playIconSize = 48,
     this.playIconColor = Colors.white,
+    this.highResThumbnailProviderBuilder,
   });
 
   @override
@@ -141,6 +147,17 @@ class _FlyerChatVideoMessageState extends State<FlyerChatVideoMessage> {
   }
 
   Future<void> _generateImageCover() async {
+    if (widget.highResThumbnailProviderBuilder != null) {
+      final provider = await widget.highResThumbnailProviderBuilder!();
+      if (mounted && provider != null) {
+        setState(() {
+          _placeholderProvider = provider;
+        });
+      }
+      return;
+    }
+
+    // TODO use cache manager (or crosscache? to save the image)
     final coverImageBytes = await VideoThumbnail.thumbnailData(
       video: widget.message.source,
       imageFormat: ImageFormat.WEBP,
