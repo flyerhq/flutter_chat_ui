@@ -87,11 +87,21 @@ class ApiState extends State<Api> {
           Chat(
             builders: Builders(
               textMessageBuilder:
-                  (context, message, index) =>
-                      FlyerChatTextMessage(message: message, index: index),
+                  (
+                    context,
+                    message,
+                    index, {
+                    required bool isSentByMe,
+                    MessageGroupStatus? groupStatus,
+                  }) => FlyerChatTextMessage(message: message, index: index),
               imageMessageBuilder:
-                  (context, message, index) =>
-                      FlyerChatImageMessage(message: message, index: index),
+                  (
+                    context,
+                    message,
+                    index, {
+                    required bool isSentByMe,
+                    MessageGroupStatus? groupStatus,
+                  }) => FlyerChatImageMessage(message: message, index: index),
               composerBuilder:
                   (context) => Composer(
                     topWidget: ComposerActionBar(
