@@ -147,7 +147,13 @@ class GeminiState extends State<Gemini> {
               );
             },
             imageMessageBuilder:
-                (context, message, index) => FlyerChatImageMessage(
+                (
+                  context,
+                  message,
+                  index, {
+                  required bool isSentByMe,
+                  MessageGroupStatus? groupStatus,
+                }) => FlyerChatImageMessage(
                   message: message,
                   index: index,
                   showTime: false,
@@ -172,7 +178,13 @@ class GeminiState extends State<Gemini> {
                   ),
                 ),
             textMessageBuilder:
-                (context, message, index) => FlyerChatTextMessage(
+                (
+                  context,
+                  message,
+                  index, {
+                  required bool isSentByMe,
+                  MessageGroupStatus? groupStatus,
+                }) => FlyerChatTextMessage(
                   message: message,
                   index: index,
                   showTime: false,
@@ -186,7 +198,13 @@ class GeminiState extends State<Gemini> {
                             vertical: 10,
                           ),
                 ),
-            textStreamMessageBuilder: (context, message, index) {
+            textStreamMessageBuilder: (
+              context,
+              message,
+              index, {
+              required bool isSentByMe,
+              MessageGroupStatus? groupStatus,
+            }) {
               // Watch the manager for state updates
               final streamState = context.watch<GeminiStreamManager>().getState(
                 message.streamId,
