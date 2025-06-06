@@ -25,9 +25,7 @@ class LinkPreview extends StatefulWidget {
     this.descriptionTextStyle,
     this.maxDescriptionLines = 3,
     this.imageBuilder,
-    this.onLinkPressed,
-    this.openOnPreviewImageTap = true,
-    this.openOnPreviewTitleTap = true,
+    this.onTap,
     this.hideImage = false,
     this.hideTitle = false,
     this.hideDescription = false,
@@ -87,13 +85,7 @@ class LinkPreview extends StatefulWidget {
   final Widget Function(String)? imageBuilder;
 
   /// Custom link press handler.
-  final void Function(String)? onLinkPressed;
-
-  /// Open the link when the link preview image is tapped. Defaults to true.
-  final bool openOnPreviewImageTap;
-
-  /// Open the link when the link preview title/description is tapped. Defaults to true.
-  final bool openOnPreviewTitleTap;
+  final void Function(String)? onTap;
 
   /// Hides image data from the preview.
   final bool hideImage;
@@ -176,103 +168,106 @@ class _LinkPreviewState extends State<LinkPreview>
   Widget _containerWidget({required LinkPreviewImagePosition imagePosition}) {
     final shouldAnimate = widget.enableAnimation == true;
 
-    final preview = Stack(
-      children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: widget.maxWidth ?? double.infinity,
-            maxHeight: widget.maxHeight ?? double.infinity,
-          ),
-          margin: widget.outsidePadding,
-          decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-          ),
-          child: Padding(
-            padding: widget.insidePadding,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(width: widget.borderRadius),
-                Flexible(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (_shouldShowTitle())
-                        Flexible(
-                          flex: 1,
-                          fit: FlexFit.loose,
-                          child: _titleWidget(_linkPreviewData!.title!),
-                        ),
-                      if (_shouldShowDescription())
-                        Flexible(
-                          flex: 1,
-                          fit: FlexFit.loose,
-                          child: _descriptionWidget(
-                            _linkPreviewData!.description!,
-                          ),
-                        ),
-                      if (_shouldShowImage() &&
-                          imagePosition == LinkPreviewImagePosition.bottom)
-                        Flexible(
-                          flex: 2,
-                          fit: FlexFit.loose,
-                          child: _imageWidget(
-                            imageUrl: _linkPreviewData!.image!.url,
-                            linkUrl: _linkPreviewData!.link,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                if (_shouldShowImage() &&
-                    imagePosition == LinkPreviewImagePosition.side) ...[
-                  const SizedBox(width: 4),
+    final preview = GestureDetector(
+      onTap: () => _onTap(_linkPreviewData!.link),
+      child: Stack(
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: widget.maxWidth ?? double.infinity,
+              maxHeight: widget.maxHeight ?? double.infinity,
+            ),
+            margin: widget.outsidePadding,
+            decoration: BoxDecoration(
+              color: widget.backgroundColor ?? Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+            ),
+            child: Padding(
+              padding: widget.insidePadding,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(width: widget.borderRadius),
                   Flexible(
-                    flex: 1,
+                    flex: 3,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: _imageWidget(
-                            imageUrl: _linkPreviewData!.image!.url,
-                            linkUrl: _linkPreviewData!.link,
+                        if (_shouldShowTitle())
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.loose,
+                            child: _titleWidget(_linkPreviewData!.title!),
                           ),
-                        ),
+                        if (_shouldShowDescription())
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.loose,
+                            child: _descriptionWidget(
+                              _linkPreviewData!.description!,
+                            ),
+                          ),
+                        if (_shouldShowImage() &&
+                            imagePosition == LinkPreviewImagePosition.bottom)
+                          Flexible(
+                            flex: 2,
+                            fit: FlexFit.loose,
+                            child: _imageWidget(
+                              imageUrl: _linkPreviewData!.image!.url,
+                              linkUrl: _linkPreviewData!.link,
+                            ),
+                          ),
                       ],
                     ),
                   ),
+                  if (_shouldShowImage() &&
+                      imagePosition == LinkPreviewImagePosition.side) ...[
+                    const SizedBox(width: 4),
+                    Flexible(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: _imageWidget(
+                              imageUrl: _linkPreviewData!.image!.url,
+                              linkUrl: _linkPreviewData!.link,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: Container(
-            margin: widget.outsidePadding,
-            width: widget.borderRadius,
-            decoration: BoxDecoration(
-              color:
-                  widget.sideBorderColor ??
-                  Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(widget.borderRadius),
-                bottomLeft: Radius.circular(widget.borderRadius),
               ),
             ),
           ),
-        ),
-      ],
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: Container(
+              margin: widget.outsidePadding,
+              width: widget.borderRadius,
+              decoration: BoxDecoration(
+                color:
+                    widget.sideBorderColor ??
+                    Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(widget.borderRadius),
+                  bottomLeft: Radius.circular(widget.borderRadius),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
 
     return shouldAnimate ? _animated(preview) : preview;
@@ -298,15 +293,12 @@ class _LinkPreviewState extends State<LinkPreview>
   );
 
   Widget _imageWidget({required String imageUrl, required String linkUrl}) =>
-      GestureDetector(
-        onTap: widget.openOnPreviewImageTap ? () => _onOpen(linkUrl) : null,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          child:
-              widget.imageBuilder != null
-                  ? widget.imageBuilder!(imageUrl)
-                  : Image.network(imageUrl, fit: BoxFit.contain),
-        ),
+      ClipRRect(
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+        child:
+            widget.imageBuilder != null
+                ? widget.imageBuilder!(imageUrl)
+                : Image.network(imageUrl, fit: BoxFit.contain),
       );
 
   Future<LinkPreviewData?> _fetchData(String text) async {
@@ -352,9 +344,9 @@ class _LinkPreviewState extends State<LinkPreview>
   bool _shouldShowDescription() =>
       _linkPreviewData?.description != null && !widget.hideDescription;
 
-  Future<void> _onOpen(String url) async {
-    if (widget.onLinkPressed != null) {
-      widget.onLinkPressed!(url);
+  Future<void> _onTap(String url) async {
+    if (widget.onTap != null) {
+      widget.onTap!(url);
     } else {
       final uri = Uri.parse(url);
       if (await canLaunchUrl(uri)) {
