@@ -213,10 +213,11 @@ class _LinkPreviewState extends State<LinkPreview>
                           flex: 1,
                           fit: FlexFit.loose,
                           child: _descriptionWidget(
-                            widget.linkPreviewData!.description!,
+                            _linkPreviewData!.description!,
                           ),
                         ),
-                      if (imagePosition == LinkPreviewImagePosition.bottom)
+                      if (_shouldShowImage() &&
+                          imagePosition == LinkPreviewImagePosition.bottom)
                         Flexible(
                           flex: 2,
                           fit: FlexFit.loose,
@@ -228,7 +229,8 @@ class _LinkPreviewState extends State<LinkPreview>
                     ],
                   ),
                 ),
-                if (imagePosition == LinkPreviewImagePosition.side) ...[
+                if (_shouldShowImage() &&
+                    imagePosition == LinkPreviewImagePosition.side) ...[
                   const SizedBox(width: 4),
                   Flexible(
                     flex: 1,
