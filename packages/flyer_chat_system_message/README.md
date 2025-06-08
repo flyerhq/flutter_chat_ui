@@ -28,7 +28,10 @@ import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 
 Chat(
     builders: Builders(
-        systemMessageBuilder: (context, message, index) =>
+        systemMessageBuilder: (context, message, index, {
+          required bool isSentByMe,
+          MessageGroupStatus? groupStatus,
+        }) =>
             FlyerChatSystemMessage(message: message, index: index),
     ),
 );

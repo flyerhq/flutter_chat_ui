@@ -27,7 +27,10 @@ class BasicState extends State<Basic> {
     return Scaffold(
       body: Chat(
         builders: Builders(
-          systemMessageBuilder: (context, message, index) =>
+          systemMessageBuilder: (context, message, index, {
+            required bool isSentByMe,
+            MessageGroupStatus? groupStatus,
+          }) =>
             FlyerChatSystemMessage(message: message, index: index),
         ),
         chatController: _chatController,

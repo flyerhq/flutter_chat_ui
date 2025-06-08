@@ -28,7 +28,10 @@ import 'package:flyer_chat_file_message/flyer_chat_file_message.dart';
 
 Chat(
     builders: Builders(
-        fileMessageBuilder: (context, message, index) =>
+        fileMessageBuilder: (context, message, index, {
+          required bool isSentByMe,
+          MessageGroupStatus? groupStatus,
+        }) =>
             FlyerChatFileMessage(message: message, index: index),
     ),
 );

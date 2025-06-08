@@ -29,7 +29,10 @@ import 'your_stream_state_manager.dart'; // Example import
 
 Chat(
     builders: Builders(
-        textStreamMessageBuilder: (context, message, index) {
+        textStreamMessageBuilder: (context, message, index, {
+          required bool isSentByMe,
+          MessageGroupStatus? groupStatus,
+        }) {
             final streamState = YourStreamStateManager.getState(message.streamId);
 
             return FlyerChatTextStreamMessage(

@@ -36,7 +36,10 @@ import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 
 Chat(
     builders: Builders(
-        imageMessageBuilder: (context, message, index) =>
+        imageMessageBuilder: (context, message, index, {
+          required bool isSentByMe,
+          MessageGroupStatus? groupStatus,
+        }) =>
             FlyerChatImageMessage(message: message, index: index),
     ),
 );

@@ -17,7 +17,10 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 Chat(
   builders: Builders(
-    customMessageBuilder: (context, message, index) =>
+    customMessageBuilder: (context, message, index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    }) =>
       const SizedBox.shrink(),
   ),
 );

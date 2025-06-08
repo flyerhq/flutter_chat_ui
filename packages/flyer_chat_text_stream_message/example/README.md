@@ -27,7 +27,10 @@ class BasicState extends State<Basic> {
     return Scaffold(
       body: Chat(
         builders: Builders(
-            textStreamMessageBuilder: (context, message, index) {
+            textStreamMessageBuilder: (context, message, index, {
+              required bool isSentByMe,
+              MessageGroupStatus? groupStatus,
+            }) {
               // To see a practical implementation of the stream manager, check the main example app at
               // https://github.com/flyerhq/flutter_chat_ui/tree/main/examples/flyer_chat
               final streamState = context.watch<GeminiStreamManager>().getState(
