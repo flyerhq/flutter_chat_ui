@@ -1,3 +1,8 @@
+## 2.5.0
+
+ - **FIX**: add editedAt and pinned [#797](https://github.com/flyerhq/flutter_chat_ui/issues/797) ([#798](https://github.com/flyerhq/flutter_chat_ui/issues/798)). ([e164caa3](https://github.com/flyerhq/flutter_chat_ui/commit/e164caa3de4a172f13f5810ffc32891e3e143c64))
+ - **FEAT**: expose isSentByMe and groupStatus in all messages builders ([#805](https://github.com/flyerhq/flutter_chat_ui/issues/805)). ([263d145b](https://github.com/flyerhq/flutter_chat_ui/commit/263d145bc3998d0f6ebed02406dda35634439b03))
+
 ## 2.4.0
 
  - **FIX**: expose user_cache and make it a changenotifier. ([baa7eee6](https://github.com/flyerhq/flutter_chat_ui/commit/baa7eee65201507eaf05574c8fcbd9afb9120d4a))

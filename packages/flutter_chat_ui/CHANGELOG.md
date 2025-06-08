@@ -1,3 +1,7 @@
+## 2.4.0
+
+ - **FEAT**: expose isSentByMe and groupStatus in all messages builders ([#805](https://github.com/flyerhq/flutter_chat_ui/issues/805)). ([263d145b](https://github.com/flyerhq/flutter_chat_ui/commit/263d145bc3998d0f6ebed02406dda35634439b03))
+
 ## 2.3.1
 
  - **FIX**: add username widget. ([892ee622](https://github.com/flyerhq/flutter_chat_ui/commit/892ee6220273431ef90f51ce305c06dcca6944f7))
