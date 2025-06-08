@@ -70,7 +70,13 @@ class LocalState extends State<Local> {
             );
           },
           customMessageBuilder:
-              (context, message, index) => Container(
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 10,
@@ -85,11 +91,21 @@ class LocalState extends State<Local> {
                 child: IsTypingIndicator(),
               ),
           imageMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatImageMessage(message: message, index: index),
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => FlyerChatImageMessage(message: message, index: index),
           systemMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatSystemMessage(message: message, index: index),
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => FlyerChatSystemMessage(message: message, index: index),
           composerBuilder:
               (context) => Composer(
                 topWidget: ComposerActionBar(
@@ -114,11 +130,21 @@ class LocalState extends State<Local> {
                 ),
               ),
           textMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatTextMessage(message: message, index: index),
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => FlyerChatTextMessage(message: message, index: index),
           fileMessageBuilder:
-              (context, message, index) =>
-                  FlyerChatFileMessage(message: message, index: index),
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => FlyerChatFileMessage(message: message, index: index),
           chatMessageBuilder: (
             context,
             message,
@@ -126,6 +152,7 @@ class LocalState extends State<Local> {
             animation,
             child, {
             bool? isRemoved,
+            required bool isSentByMe,
             MessageGroupStatus? groupStatus,
           }) {
             final isSystemMessage = message.authorId == 'system';

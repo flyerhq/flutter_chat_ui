@@ -90,14 +90,18 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
   @override
   Widget build(BuildContext context) {
     final builders = context.read<Builders>();
+
+    final groupStatus = _resolveGroupStatus(context);
+    final isSentByMe = context.watch<UserID>() == _updatedMessage.authorId;
+
     final child = _buildMessage(
       context,
       builders,
       _updatedMessage,
       widget.index,
+      isSentByMe,
+      groupStatus,
     );
-
-    final groupStatus = _resolveGroupStatus(context);
 
     return builders.chatMessageBuilder?.call(
           context,
@@ -106,6 +110,7 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
           widget.animation,
           child,
           isRemoved: widget.isRemoved,
+          isSentByMe: isSentByMe,
           groupStatus: groupStatus,
         ) ??
         ChatMessage(
@@ -171,21 +176,37 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
     Builders builders,
     Message message,
     int index,
+    bool isSentByMe,
+    MessageGroupStatus? groupStatus,
   ) {
     switch (message) {
       case TextMessage():
-        return builders.textMessageBuilder?.call(context, message, index) ??
+        return builders.textMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             SimpleTextMessage(message: message, index: index);
       case TextStreamMessage():
         return builders.textStreamMessageBuilder?.call(
               context,
               message,
               index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
             ) ??
             const SizedBox.shrink();
       case ImageMessage():
         final result =
-            builders.imageMessageBuilder?.call(context, message, index) ??
+            builders.imageMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             const SizedBox.shrink();
         assert(
           !(result is SizedBox && result.width == 0 && result.height == 0),
@@ -195,25 +216,57 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
         );
         return result;
       case FileMessage():
-        return builders.fileMessageBuilder?.call(context, message, index) ??
+        return builders.fileMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             const SizedBox.shrink();
       case VideoMessage():
-        return builders.videoMessageBuilder?.call(context, message, index) ??
+        return builders.videoMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             const SizedBox.shrink();
       case AudioMessage():
-        return builders.audioMessageBuilder?.call(context, message, index) ??
+        return builders.audioMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             const SizedBox.shrink();
       case SystemMessage():
-        return builders.systemMessageBuilder?.call(context, message, index) ??
+        return builders.systemMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             const SizedBox.shrink();
       case CustomMessage():
-        return builders.customMessageBuilder?.call(context, message, index) ??
+        return builders.customMessageBuilder?.call(
+              context,
+              message,
+              index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
+            ) ??
             const SizedBox.shrink();
       case UnsupportedMessage():
         return builders.unsupportedMessageBuilder?.call(
               context,
               message,
               index,
+              isSentByMe: isSentByMe,
+              groupStatus: groupStatus,
             ) ??
             const Text(
               'This message is not supported. Please update your app.',

@@ -8,39 +8,93 @@ part 'builders.freezed.dart';
 
 /// Signature for building a text message widget.
 typedef TextMessageBuilder =
-    Widget Function(BuildContext, TextMessage, int index);
+    Widget Function(
+      BuildContext,
+      TextMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building a streaming text message widget.
 typedef TextStreamMessageBuilder =
-    Widget Function(BuildContext, TextStreamMessage, int index);
+    Widget Function(
+      BuildContext,
+      TextStreamMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building an image message widget.
 typedef ImageMessageBuilder =
-    Widget Function(BuildContext, ImageMessage, int index);
+    Widget Function(
+      BuildContext,
+      ImageMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building a file message widget.
 typedef FileMessageBuilder =
-    Widget Function(BuildContext, FileMessage, int index);
+    Widget Function(
+      BuildContext,
+      FileMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building a video message widget.
 typedef VideoMessageBuilder =
-    Widget Function(BuildContext, VideoMessage, int index);
+    Widget Function(
+      BuildContext,
+      VideoMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building an audio message widget.
 typedef AudioMessageBuilder =
-    Widget Function(BuildContext, AudioMessage, int index);
+    Widget Function(
+      BuildContext,
+      AudioMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building a system message widget.
 typedef SystemMessageBuilder =
-    Widget Function(BuildContext, SystemMessage, int index);
+    Widget Function(
+      BuildContext,
+      SystemMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building a custom message widget.
 typedef CustomMessageBuilder =
-    Widget Function(BuildContext, CustomMessage, int index);
+    Widget Function(
+      BuildContext,
+      CustomMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building an unsupported message widget.
 typedef UnsupportedMessageBuilder =
-    Widget Function(BuildContext, UnsupportedMessage, int index);
+    Widget Function(
+      BuildContext,
+      UnsupportedMessage,
+      int index, {
+      required bool isSentByMe,
+      MessageGroupStatus? groupStatus,
+    });
 
 /// Signature for building the message composer widget.
 typedef ComposerBuilder = Widget Function(BuildContext);
@@ -54,6 +108,7 @@ typedef ChatMessageBuilder =
       Animation<double> animation,
       Widget child, {
       bool? isRemoved,
+      required bool isSentByMe,
       MessageGroupStatus? groupStatus,
     });
 
