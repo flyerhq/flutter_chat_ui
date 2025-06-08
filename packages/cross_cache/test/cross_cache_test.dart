@@ -19,13 +19,17 @@ void main() {
     });
 
     test('treats objects with the same properties as equal', () async {
+      var hitCount = 0;
       dioAdapter.onGet(
         path,
-        (server) => server.reply(
-          200,
-          transparentImage,
-          delay: const Duration(seconds: 1),
-        ),
+        (server) {
+          hitCount++;
+          server.reply(
+            200,
+            transparentImage,
+            delay: const Duration(seconds: 1),
+          );
+        },
       );
 
       final response = await dio.get(
@@ -41,9 +45,19 @@ void main() {
         'keep-alive': 1,
       });
 
-      final url = await crossCache.downloadAndSave(path);
+      // Reset hit counter to track downloadAndSave calls only.
+      hitCount = 0;
 
-      expect(url, path);
+      // First download should trigger the network request and cache the result.
+      final bytes1 = await crossCache.downloadAndSave(path);
+
+      // Second call with the same path should return cached data without
+      // invoking Dio again.
+      final bytes2 = await crossCache.downloadAndSave(path);
+
+      expect(hitCount, 1);
+      expect(bytes1, transparentImage);
+      expect(bytes2, transparentImage);
     });
   });
 }
