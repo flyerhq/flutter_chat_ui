@@ -286,8 +286,8 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
     final timeAndStatus =
         widget.showTime || (isSentByMe && widget.showStatus)
             ? TimeAndStatus(
-              time: widget.message.time,
-              status: widget.message.status,
+              time: widget.message.resolvedTime,
+              status: widget.message.resolvedStatus,
               showTime: widget.showTime,
               showStatus: isSentByMe && widget.showStatus,
               textStyle: timeStyle,
