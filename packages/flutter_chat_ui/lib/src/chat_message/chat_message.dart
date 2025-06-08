@@ -124,7 +124,7 @@ class ChatMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final onMessageTap = context.read<OnMessageTapCallback?>();
     final onMessageLongPress = context.read<OnMessageLongPressCallback?>();
-    final isSentByMe = context.watch<UserID>() == message.authorId;
+    final isSentByMe = context.read<UserID>() == message.authorId;
 
     final curvedAnimation = CurvedAnimation(
       parent: animation,

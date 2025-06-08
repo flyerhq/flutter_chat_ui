@@ -19,7 +19,6 @@ class Username extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
     final resolveUser = context.read<ResolveUserCallback>();
     final userCache = context.watch<UserCache>();
 
@@ -28,7 +27,7 @@ class Username extends StatelessWidget {
 
     if (cachedUser != null) {
       // Sync path - no FutureBuilder needed
-      return _buildUsername(context, theme, cachedUser);
+      return _buildUsername(context, cachedUser);
     }
 
     // Async path - use FutureBuilder with cache
@@ -36,15 +35,20 @@ class Username extends StatelessWidget {
       // This will update the cache when resolved
       future: userCache.getOrResolve(userId, resolveUser),
       builder: (context, snapshot) {
-        return _buildUsername(context, theme, snapshot.data);
+        return _buildUsername(context, snapshot.data);
       },
     );
   }
 
-  Widget _buildUsername(BuildContext context, ChatTheme theme, User? user) {
-    final defaultStyle = theme.typography.labelMedium.copyWith(
-      color: theme.colors.onSurface,
+  Widget _buildUsername(BuildContext context, User? user) {
+    final theme = context.select(
+      (ChatTheme t) => (
+        labelMedium: t.typography.labelMedium,
+        onSurface: t.colors.onSurface,
+      ),
     );
+
+    final defaultStyle = theme.labelMedium.copyWith(color: theme.onSurface);
 
     return Text(user?.name ?? '', style: style ?? defaultStyle);
   }

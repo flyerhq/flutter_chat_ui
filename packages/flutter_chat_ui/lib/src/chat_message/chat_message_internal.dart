@@ -90,7 +90,7 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
   @override
   Widget build(BuildContext context) {
     final builders = context.read<Builders>();
-    final isSentByMe = context.watch<UserID>() == _updatedMessage.authorId;
+    final isSentByMe = context.read<UserID>() == _updatedMessage.authorId;
 
     final groupStatus = _resolveGroupStatus(context);
 

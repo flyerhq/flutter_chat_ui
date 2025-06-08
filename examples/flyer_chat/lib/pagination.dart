@@ -226,7 +226,9 @@ class _CustomComposerState extends State<CustomComposer> {
   @override
   Widget build(BuildContext context) {
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
-    final theme = context.watch<ChatTheme>();
+    final theme = context.select(
+      (ChatTheme t) => (surfaceContainerLow: t.colors.surfaceContainerLow),
+    );
 
     return Positioned(
       left: 0,
@@ -235,7 +237,7 @@ class _CustomComposerState extends State<CustomComposer> {
       child: ClipRect(
         child: Container(
           key: _key,
-          color: theme.colors.surfaceContainerLow,
+          color: theme.surfaceContainerLow,
           child: Padding(
             padding: EdgeInsets.only(bottom: bottomSafeArea),
             child: widget.topWidget,

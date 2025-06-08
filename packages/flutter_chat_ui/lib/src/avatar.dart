@@ -41,7 +41,6 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
     final resolveUser = context.read<ResolveUserCallback>();
     final userCache = context.watch<UserCache>();
 
@@ -50,7 +49,7 @@ class Avatar extends StatelessWidget {
 
     if (cachedUser != null) {
       // Sync path - no FutureBuilder needed
-      return _buildAvatar(context, theme, cachedUser);
+      return _buildAvatar(context, cachedUser);
     }
 
     // Async path - use FutureBuilder with cache
@@ -58,26 +57,34 @@ class Avatar extends StatelessWidget {
       // This will update the cache when resolved
       future: userCache.getOrResolve(userId, resolveUser),
       builder: (context, snapshot) {
-        return _buildAvatar(context, theme, snapshot.data);
+        return _buildAvatar(context, snapshot.data);
       },
     );
   }
 
-  Widget _buildAvatar(BuildContext context, ChatTheme theme, User? user) {
+  Widget _buildAvatar(BuildContext context, User? user) {
+    final theme = context.select(
+      (ChatTheme t) => (
+        labelLarge: t.typography.labelLarge,
+        onSurface: t.colors.onSurface,
+        surfaceContainer: t.colors.surfaceContainer,
+      ),
+    );
+
     Widget avatar = Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: backgroundColor ?? theme.colors.surfaceContainer,
+        color: backgroundColor ?? theme.surfaceContainer,
         shape: BoxShape.circle,
       ),
       child: AvatarContent(
         user: user,
         size: size,
-        foregroundColor: foregroundColor ?? theme.colors.onSurface,
+        foregroundColor: foregroundColor ?? theme.onSurface,
         headers: headers,
-        textStyle: theme.typography.labelLarge.copyWith(
-          color: foregroundColor ?? theme.colors.onSurface,
+        textStyle: theme.labelLarge.copyWith(
+          color: foregroundColor ?? theme.onSurface,
           fontWeight: FontWeight.bold,
         ),
       ),

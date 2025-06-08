@@ -460,8 +460,15 @@ class _CustomComposerState extends State<CustomComposer> {
   @override
   Widget build(BuildContext context) {
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
-    final theme = context.watch<ChatTheme>();
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodyMedium: t.typography.bodyMedium,
+        onSurface: t.colors.onSurface,
+        surfaceContainerHigh: t.colors.surfaceContainerHigh,
+        surfaceContainerLow: t.colors.surfaceContainerLow,
+      ),
+    );
 
     return Positioned(
       left: 0,
@@ -470,7 +477,7 @@ class _CustomComposerState extends State<CustomComposer> {
       child: ClipRect(
         child: Container(
           key: _key,
-          color: theme.colors.surfaceContainerLow,
+          color: theme.surfaceContainerLow,
           child: Column(
             children: [
               if (widget.topWidget != null) widget.topWidget!,
@@ -483,7 +490,7 @@ class _CustomComposerState extends State<CustomComposer> {
                     onAttachmentTap != null
                         ? IconButton(
                           icon: const Icon(Icons.attachment),
-                          color: theme.colors.onSurface.withValues(alpha: 0.5),
+                          color: theme.onSurface.withValues(alpha: 0.5),
                           onPressed: onAttachmentTap,
                         )
                         : const SizedBox.shrink(),
@@ -493,22 +500,21 @@ class _CustomComposerState extends State<CustomComposer> {
                         controller: _textController,
                         decoration: InputDecoration(
                           hintText: 'Type a message',
-                          hintStyle: theme.typography.bodyMedium.copyWith(
-                            color: theme.colors.onSurface.withValues(
-                              alpha: 0.5,
-                            ),
+                          hintStyle: theme.bodyMedium.copyWith(
+                            color: theme.onSurface.withValues(alpha: 0.5),
                           ),
                           border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.all(Radius.circular(24)),
                           ),
                           filled: true,
-                          fillColor: theme.colors.surfaceContainerHigh
-                              .withValues(alpha: 0.8),
+                          fillColor: theme.surfaceContainerHigh.withValues(
+                            alpha: 0.8,
+                          ),
                           hoverColor: Colors.transparent,
                         ),
-                        style: theme.typography.bodyMedium.copyWith(
-                          color: theme.colors.onSurface,
+                        style: theme.bodyMedium.copyWith(
+                          color: theme.onSurface,
                         ),
                         onSubmitted: _handleSubmitted,
                         textInputAction: TextInputAction.newline,
@@ -526,7 +532,7 @@ class _CustomComposerState extends State<CustomComposer> {
                           widget.isStreaming
                               ? const Icon(Icons.stop_circle)
                               : const Icon(Icons.send),
-                      color: theme.colors.onSurface.withValues(alpha: 0.5),
+                      color: theme.onSurface.withValues(alpha: 0.5),
                       onPressed:
                           widget.isStreaming
                               ? widget.onStop

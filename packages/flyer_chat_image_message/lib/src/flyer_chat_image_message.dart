@@ -183,8 +183,15 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
-    final isSentByMe = context.watch<UserID>() == widget.message.authorId;
+    final theme = context.select(
+      (ChatTheme t) => (
+        labelSmall: t.typography.labelSmall,
+        onSurface: t.colors.onSurface,
+        shape: t.shape,
+        surfaceContainerLow: t.colors.surfaceContainerLow,
+      ),
+    );
+    final isSentByMe = context.read<UserID>() == widget.message.authorId;
     final textDirection = Directionality.of(context);
     final timeAndStatus =
         widget.showTime || (isSentByMe && widget.showStatus)
@@ -197,7 +204,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   widget.timeBackground ?? Colors.black.withValues(alpha: 0.6),
               textStyle:
                   widget.timeStyle ??
-                  theme.typography.labelSmall.copyWith(color: Colors.white),
+                  theme.labelSmall.copyWith(color: Colors.white),
             )
             : null;
 
@@ -213,9 +220,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
               _placeholderProvider != null
                   ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
                   : Container(
-                    color:
-                        widget.placeholderColor ??
-                        theme.colors.surfaceContainerLow,
+                    color: widget.placeholderColor ?? theme.surfaceContainerLow,
                   ),
               Image(
                 image: _imageProvider,
@@ -228,12 +233,12 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                   return Container(
                     color:
                         widget.loadingOverlayColor ??
-                        theme.colors.surfaceContainerLow.withValues(alpha: 0.5),
+                        theme.surfaceContainerLow.withValues(alpha: 0.5),
                     child: Center(
                       child: CircularProgressIndicator(
                         color:
                             widget.loadingIndicatorColor ??
-                            theme.colors.onSurface.withValues(alpha: 0.8),
+                            theme.onSurface.withValues(alpha: 0.8),
                         strokeCap: StrokeCap.round,
                         value:
                             loadingProgress.expectedTotalBytes != null
@@ -280,14 +285,12 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     return Container(
                       color:
                           widget.uploadOverlayColor ??
-                          theme.colors.surfaceContainerLow.withValues(
-                            alpha: 0.5,
-                          ),
+                          theme.surfaceContainerLow.withValues(alpha: 0.5),
                       child: Center(
                         child: CircularProgressIndicator(
                           color:
                               widget.uploadIndicatorColor ??
-                              theme.colors.onSurface.withValues(alpha: 0.8),
+                              theme.onSurface.withValues(alpha: 0.8),
                           strokeCap: StrokeCap.round,
                           value: snapshot.data,
                         ),

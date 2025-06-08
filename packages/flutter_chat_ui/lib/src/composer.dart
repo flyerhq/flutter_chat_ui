@@ -64,8 +64,8 @@ class Composer extends StatefulWidget {
   /// Color of the send icon.
   final Color? sendIconColor;
 
-  /// Color of the send icon when the text is not empty.
-  final Color? sendIconColorNotEmpty;
+  /// Color of the send icon when the text is empty.
+  final Color? emptyFieldSendIconColor;
 
   /// Color of the hint text in the input field.
   final Color? hintColor;
@@ -133,7 +133,7 @@ class Composer extends StatefulWidget {
     this.backgroundColor,
     this.attachmentIconColor,
     this.sendIconColor,
-    this.sendIconColorNotEmpty,
+    this.emptyFieldSendIconColor,
     this.hintColor,
     this.textColor,
     this.inputFillColor,
@@ -158,12 +158,14 @@ class _ComposerState extends State<Composer> {
   final _key = GlobalKey();
   late final TextEditingController _textController;
   late final FocusNode _focusNode;
+  late final ValueNotifier<bool> _hasTextNotifier;
 
   @override
   void initState() {
     super.initState();
     _textController = widget.textEditingController ?? TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
+    _hasTextNotifier = ValueNotifier(_textController.text.trim().isNotEmpty);
     _focusNode.onKeyEvent = _handleKeyEvent;
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
@@ -187,6 +189,7 @@ class _ComposerState extends State<Composer> {
 
   @override
   void dispose() {
+    _hasTextNotifier.dispose();
     // Only try to dispose text controller if it's not provided, let
     // user handle disposing it how they want.
     if (widget.textEditingController == null) {
@@ -204,8 +207,16 @@ class _ComposerState extends State<Composer> {
         widget.handleSafeArea == true
             ? MediaQuery.of(context).padding.bottom
             : 0.0;
-    final theme = context.watch<ChatTheme>();
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodyMedium: t.typography.bodyMedium,
+        onSurface: t.colors.onSurface,
+        primary: t.colors.primary,
+        surfaceContainerHigh: t.colors.surfaceContainerHigh,
+        surfaceContainerLow: t.colors.surfaceContainerLow,
+      ),
+    );
 
     return Positioned(
       left: widget.left,
@@ -215,7 +226,7 @@ class _ComposerState extends State<Composer> {
       child: ClipRect(
         child: Container(
           key: _key,
-          color: widget.backgroundColor ?? theme.colors.surfaceContainerLow,
+          color: widget.backgroundColor ?? theme.surfaceContainerLow,
           child: Column(
             children: [
               if (widget.topWidget != null) widget.topWidget!,
@@ -234,7 +245,7 @@ class _ComposerState extends State<Composer> {
                           icon: widget.attachmentIcon!,
                           color:
                               widget.attachmentIconColor ??
-                              theme.colors.onSurface.withValues(alpha: 0.5),
+                              theme.onSurface.withValues(alpha: 0.5),
                           onPressed: onAttachmentTap,
                         )
                         : const SizedBox.shrink(),
@@ -244,26 +255,24 @@ class _ComposerState extends State<Composer> {
                         controller: _textController,
                         decoration: InputDecoration(
                           hintText: widget.hintText,
-                          hintStyle: theme.typography.bodyMedium.copyWith(
+                          hintStyle: theme.bodyMedium.copyWith(
                             color:
                                 widget.hintColor ??
-                                theme.colors.onSurface.withValues(alpha: 0.5),
+                                theme.onSurface.withValues(alpha: 0.5),
                           ),
                           border: widget.inputBorder,
                           filled: widget.filled,
                           fillColor:
                               widget.inputFillColor ??
-                              theme.colors.surfaceContainerHigh.withValues(
-                                alpha: 0.8,
-                              ),
+                              theme.surfaceContainerHigh.withValues(alpha: 0.8),
                           hoverColor: Colors.transparent,
                         ),
-                        style: theme.typography.bodyMedium.copyWith(
-                          color: widget.textColor ?? theme.colors.onSurface,
+                        style: theme.bodyMedium.copyWith(
+                          color: widget.textColor ?? theme.onSurface,
                         ),
                         onSubmitted: _handleSubmitted,
                         onChanged: (value) {
-                          setState(() {});
+                          _hasTextNotifier.value = value.trim().isNotEmpty;
                         },
                         textInputAction: widget.textInputAction,
                         keyboardAppearance: widget.keyboardAppearance,
@@ -279,13 +288,24 @@ class _ComposerState extends State<Composer> {
                     ),
                     SizedBox(width: widget.gap),
                     widget.sendIcon != null
-                        ? IconButton(
-                          icon: widget.sendIcon!,
-                          color: _resolveSendIconColor(
-                            theme.colors.onSurface.withValues(alpha: 0.5),
-                          ),
-                          onPressed:
-                              () => _handleSubmitted(_textController.text),
+                        ? ValueListenableBuilder<bool>(
+                          valueListenable: _hasTextNotifier,
+                          builder: (context, hasText, child) {
+                            final iconColor =
+                                hasText
+                                    ? (widget.sendIconColor ??
+                                        theme.onSurface.withValues(alpha: 0.5))
+                                    : (widget.emptyFieldSendIconColor ??
+                                        widget.sendIconColor ??
+                                        theme.onSurface.withValues(alpha: 0.5));
+
+                            return IconButton(
+                              icon: widget.sendIcon!,
+                              color: iconColor,
+                              onPressed:
+                                  () => _handleSubmitted(_textController.text),
+                            );
+                          },
                         )
                         : const SizedBox.shrink(),
                   ],
@@ -296,15 +316,6 @@ class _ComposerState extends State<Composer> {
         ),
       ),
     );
-  }
-
-  Color _resolveSendIconColor(Color fallbackColor) {
-    if (_textController.text.isNotEmpty) {
-      return widget.sendIconColorNotEmpty ??
-          widget.sendIconColor ??
-          fallbackColor;
-    }
-    return widget.sendIconColor ?? fallbackColor;
   }
 
   void _measure() {
