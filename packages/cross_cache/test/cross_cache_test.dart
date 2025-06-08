@@ -18,7 +18,7 @@ void main() {
       dioAdapter = DioAdapter(dio: dio);
     });
 
-    test('treats objects with the same properties as equal', () async {
+    test('downloads data using provided headers', () async {
       dioAdapter.onGet(
         path,
         (server) => server.reply(
