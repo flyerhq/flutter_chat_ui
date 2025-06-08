@@ -180,6 +180,7 @@ class LocalState extends State<Local> {
               message: message,
               index: index,
               animation: animation,
+              isRemoved: isRemoved,
               groupStatus: groupStatus,
               topWidget:
                   shouldShowUsername
