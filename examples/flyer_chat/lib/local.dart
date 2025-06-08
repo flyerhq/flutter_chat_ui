@@ -161,7 +161,8 @@ class LocalState extends State<Local> {
             final shouldShowAvatar =
                 !isSystemMessage && isLastInGroup && isRemoved != true;
             final isCurrentUser = message.authorId == _currentUser.id;
-            final shouldShowUsername = !isSystemMessage && isFirstInGroup;
+            final shouldShowUsername =
+                !isSystemMessage && isFirstInGroup && isRemoved != true;
 
             Widget? avatar;
             if (shouldShowAvatar) {

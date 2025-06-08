@@ -58,6 +58,10 @@ sealed class Message with _$Message {
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
+
     /// The text content of the message.
     required String text,
 
@@ -107,6 +111,10 @@ sealed class Message with _$Message {
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
+
     /// Identifier for the stream this message belongs to.
     required String streamId,
   }) = TextStreamMessage;
@@ -151,6 +159,10 @@ sealed class Message with _$Message {
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
 
     /// Source URL or path of the image.
     required String source,
@@ -215,6 +227,10 @@ sealed class Message with _$Message {
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
+
     /// Source URL or path of the file.
     required String source,
 
@@ -268,6 +284,10 @@ sealed class Message with _$Message {
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
 
     /// Source URL or path of the video.
     required String source,
@@ -329,6 +349,10 @@ sealed class Message with _$Message {
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
+
     /// Source URL or path of the audio.
     required String source,
 
@@ -386,6 +410,10 @@ sealed class Message with _$Message {
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
 
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
+
     /// The text content of the system message.
     required String text,
   }) = SystemMessage;
@@ -430,6 +458,10 @@ sealed class Message with _$Message {
 
     /// Application-specific custom metadata.
     Map<String, dynamic>? metadata,
+
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
   }) = CustomMessage;
 
   /// Represents a message type that is not recognized or supported by the current version.
@@ -473,13 +505,18 @@ sealed class Message with _$Message {
 
     /// Additional custom metadata associated with the message.
     Map<String, dynamic>? metadata,
+
+    /// Status of the message. Takes precedence over the timestamp based status.
+    /// If not provided, the status is determined by createdAt, sentAt, seenAt etc.
+    MessageStatus? status,
   }) = UnsupportedMessage;
 
   const Message._();
 
-  /// Calculates the current status of the message based on its timestamps.
+  /// Calculates the current status of the message based on its timestamps or [status] field.
   /// Returns `null` if the message has no specific status yet (only `createdAt`).
-  MessageStatus? get status {
+  MessageStatus? get resolvedStatus {
+    if (status != null) return status;
     // Message status is determined by the most recent state change in the message lifecycle.
     // The order of checks matters - we check from most recent to oldest state.
     // Note: createdAt, updatedAt, and deletedAt are message states rather than statuses.
@@ -495,7 +532,7 @@ sealed class Message with _$Message {
   ///
   /// This is typically the time the message was successfully sent ([sentAt]).
   /// If [sentAt] is null (e.g., message is sending or failed), it falls back to [createdAt].
-  DateTime? get time {
+  DateTime? get resolvedTime {
     return sentAt ?? createdAt;
   }
 
