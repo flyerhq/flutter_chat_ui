@@ -142,9 +142,9 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
 
       // Get dates
       final now = DateTime.now();
-      final currentMessageDate = currentMessage.time ?? now;
-      final nextMessageDate = nextMessage?.time ?? now;
-      final previousMessageDate = previousMessage?.time ?? now;
+      final currentMessageDate = currentMessage.resolvedTime ?? now;
+      final nextMessageDate = nextMessage?.resolvedTime ?? now;
+      final previousMessageDate = previousMessage?.resolvedTime ?? now;
 
       // Check if message is part of a group with next message
       final isGroupedWithNext =

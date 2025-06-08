@@ -117,8 +117,8 @@ class FlyerChatTextMessage extends StatelessWidget {
     final timeAndStatus =
         showTime || (isSentByMe && showStatus)
             ? TimeAndStatus(
-              time: message.time,
-              status: message.status,
+              time: message.resolvedTime,
+              status: message.resolvedStatus,
               showTime: showTime,
               showStatus: isSentByMe && showStatus,
               textStyle: timeStyle,
