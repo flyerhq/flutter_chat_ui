@@ -302,8 +302,10 @@ class _ComposerState extends State<Composer> {
                             return IconButton(
                               icon: widget.sendIcon!,
                               color: iconColor,
-                              onPressed:
-                                  () => _handleSubmitted(_textController.text),
+                              onPressed: hasText
+                                  ? () =>
+                                      _handleSubmitted(_textController.text)
+                                  : null,
                             );
                           },
                         )
@@ -334,8 +336,9 @@ class _ComposerState extends State<Composer> {
   }
 
   void _handleSubmitted(String text) {
-    if (text.isNotEmpty) {
-      context.read<OnMessageSendCallback?>()?.call(text);
+    final trimmed = text.trim();
+    if (trimmed.isNotEmpty) {
+      context.read<OnMessageSendCallback?>()?.call(trimmed);
       _textController.clear();
     }
   }
