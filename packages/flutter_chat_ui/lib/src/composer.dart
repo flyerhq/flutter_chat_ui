@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
@@ -218,104 +220,120 @@ class _ComposerState extends State<Composer> {
       ),
     );
 
+    final sigmaX = widget.sigmaX ?? 0;
+    final sigmaY = widget.sigmaY ?? 0;
+    final shouldUseBackdropFilter = sigmaX > 0 || sigmaY > 0;
+
+    final content = Container(
+      key: _key,
+      color:
+          widget.backgroundColor ??
+          (shouldUseBackdropFilter
+              ? theme.surfaceContainerLow.withValues(alpha: 0.8)
+              : theme.surfaceContainerLow),
+      child: Column(
+        children: [
+          if (widget.topWidget != null) widget.topWidget!,
+          Padding(
+            padding:
+                widget.handleSafeArea == true
+                    ? (widget.padding?.add(
+                          EdgeInsets.only(bottom: bottomSafeArea),
+                        ) ??
+                        EdgeInsets.only(bottom: bottomSafeArea))
+                    : (widget.padding ?? EdgeInsets.zero),
+            child: Row(
+              children: [
+                widget.attachmentIcon != null && onAttachmentTap != null
+                    ? IconButton(
+                      icon: widget.attachmentIcon!,
+                      color:
+                          widget.attachmentIconColor ??
+                          theme.onSurface.withValues(alpha: 0.5),
+                      onPressed: onAttachmentTap,
+                    )
+                    : const SizedBox.shrink(),
+                SizedBox(width: widget.gap),
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                      hintText: widget.hintText,
+                      hintStyle: theme.bodyMedium.copyWith(
+                        color:
+                            widget.hintColor ??
+                            theme.onSurface.withValues(alpha: 0.5),
+                      ),
+                      border: widget.inputBorder,
+                      filled: widget.filled,
+                      fillColor:
+                          widget.inputFillColor ??
+                          theme.surfaceContainerHigh.withValues(alpha: 0.8),
+                      hoverColor: Colors.transparent,
+                    ),
+                    style: theme.bodyMedium.copyWith(
+                      color: widget.textColor ?? theme.onSurface,
+                    ),
+                    onSubmitted: _handleSubmitted,
+                    onChanged: (value) {
+                      _hasTextNotifier.value = value.trim().isNotEmpty;
+                    },
+                    textInputAction: widget.textInputAction,
+                    keyboardAppearance: widget.keyboardAppearance,
+                    autocorrect: widget.autocorrect ?? true,
+                    autofocus: widget.autofocus,
+                    textCapitalization: widget.textCapitalization,
+                    keyboardType: widget.keyboardType,
+                    focusNode: _focusNode,
+                    maxLength: widget.maxLength,
+                    minLines: widget.minLines,
+                    maxLines: widget.maxLines,
+                  ),
+                ),
+                SizedBox(width: widget.gap),
+                widget.sendIcon != null
+                    ? ValueListenableBuilder<bool>(
+                      valueListenable: _hasTextNotifier,
+                      builder: (context, hasText, child) {
+                        final iconColor =
+                            hasText
+                                ? (widget.sendIconColor ??
+                                    theme.onSurface.withValues(alpha: 0.5))
+                                : (widget.emptyFieldSendIconColor ??
+                                    widget.sendIconColor ??
+                                    theme.onSurface.withValues(alpha: 0.5));
+
+                        return IconButton(
+                          icon: widget.sendIcon!,
+                          color: iconColor,
+                          onPressed:
+                              hasText
+                                  ? () => _handleSubmitted(_textController.text)
+                                  : null,
+                        );
+                      },
+                    )
+                    : const SizedBox.shrink(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
     return Positioned(
       left: widget.left,
       right: widget.right,
       top: widget.top,
       bottom: widget.bottom,
       child: ClipRect(
-        child: Container(
-          key: _key,
-          color: widget.backgroundColor ?? theme.surfaceContainerLow,
-          child: Column(
-            children: [
-              if (widget.topWidget != null) widget.topWidget!,
-              Padding(
-                padding:
-                    widget.handleSafeArea == true
-                        ? (widget.padding?.add(
-                              EdgeInsets.only(bottom: bottomSafeArea),
-                            ) ??
-                            EdgeInsets.only(bottom: bottomSafeArea))
-                        : (widget.padding ?? EdgeInsets.zero),
-                child: Row(
-                  children: [
-                    widget.attachmentIcon != null && onAttachmentTap != null
-                        ? IconButton(
-                          icon: widget.attachmentIcon!,
-                          color:
-                              widget.attachmentIconColor ??
-                              theme.onSurface.withValues(alpha: 0.5),
-                          onPressed: onAttachmentTap,
-                        )
-                        : const SizedBox.shrink(),
-                    SizedBox(width: widget.gap),
-                    Expanded(
-                      child: TextField(
-                        controller: _textController,
-                        decoration: InputDecoration(
-                          hintText: widget.hintText,
-                          hintStyle: theme.bodyMedium.copyWith(
-                            color:
-                                widget.hintColor ??
-                                theme.onSurface.withValues(alpha: 0.5),
-                          ),
-                          border: widget.inputBorder,
-                          filled: widget.filled,
-                          fillColor:
-                              widget.inputFillColor ??
-                              theme.surfaceContainerHigh.withValues(alpha: 0.8),
-                          hoverColor: Colors.transparent,
-                        ),
-                        style: theme.bodyMedium.copyWith(
-                          color: widget.textColor ?? theme.onSurface,
-                        ),
-                        onSubmitted: _handleSubmitted,
-                        onChanged: (value) {
-                          _hasTextNotifier.value = value.trim().isNotEmpty;
-                        },
-                        textInputAction: widget.textInputAction,
-                        keyboardAppearance: widget.keyboardAppearance,
-                        autocorrect: widget.autocorrect ?? true,
-                        autofocus: widget.autofocus,
-                        textCapitalization: widget.textCapitalization,
-                        keyboardType: widget.keyboardType,
-                        focusNode: _focusNode,
-                        maxLength: widget.maxLength,
-                        minLines: widget.minLines,
-                        maxLines: widget.maxLines,
-                      ),
-                    ),
-                    SizedBox(width: widget.gap),
-                    widget.sendIcon != null
-                        ? ValueListenableBuilder<bool>(
-                          valueListenable: _hasTextNotifier,
-                          builder: (context, hasText, child) {
-                            final iconColor =
-                                hasText
-                                    ? (widget.sendIconColor ??
-                                        theme.onSurface.withValues(alpha: 0.5))
-                                    : (widget.emptyFieldSendIconColor ??
-                                        widget.sendIconColor ??
-                                        theme.onSurface.withValues(alpha: 0.5));
-
-                            return IconButton(
-                              icon: widget.sendIcon!,
-                              color: iconColor,
-                              onPressed: hasText
-                                  ? () =>
-                                      _handleSubmitted(_textController.text)
-                                  : null,
-                            );
-                          },
-                        )
-                        : const SizedBox.shrink(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        child:
+            shouldUseBackdropFilter
+                ? BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+                  child: content,
+                )
+                : content,
       ),
     );
   }
