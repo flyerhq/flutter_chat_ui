@@ -429,8 +429,6 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
             ),
           ],
         );
-      case TimeAndStatusPosition.none:
-        return textContent;
     }
   }
 

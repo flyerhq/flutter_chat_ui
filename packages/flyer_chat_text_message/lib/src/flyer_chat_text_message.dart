@@ -226,8 +226,6 @@ class FlyerChatTextMessage extends StatelessWidget {
             ),
           ],
         );
-      case TimeAndStatusPosition.none:
-        return textContent;
     }
   }
 

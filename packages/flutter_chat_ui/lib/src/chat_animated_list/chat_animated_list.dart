@@ -363,6 +363,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
           message,
           visualPosition(index),
           animation,
+          messagesGroupingMode: widget.messagesGroupingMode,
           messageGroupingTimeoutInSeconds:
               widget.messageGroupingTimeoutInSeconds,
         );
@@ -1020,6 +1021,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         data, // Pass the actual message data being removed.
         position, // Pass its original position.
         animation,
+        messagesGroupingMode: widget.messagesGroupingMode,
         messageGroupingTimeoutInSeconds: widget.messageGroupingTimeoutInSeconds,
         isRemoved: true,
       ),

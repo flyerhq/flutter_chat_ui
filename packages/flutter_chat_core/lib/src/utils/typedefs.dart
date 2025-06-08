@@ -16,12 +16,13 @@ typedef UserID = String;
 enum MessageStatus { delivered, error, seen, sending, sent }
 
 /// Defines the position of the timestamp and status indicator relative to the message content.
-enum TimeAndStatusPosition { start, end, inline, none }
+enum TimeAndStatusPosition { start, end, inline }
+
+/// Defines the mode for grouping messages. Default is [timeDifference].
+enum MessagesGroupingMode { timeDifference, sameMinute, sameHour, sameDay }
 
 /// Signature for a callback function that resolves a [User] object from a [UserID].
 typedef ResolveUserCallback = Future<User?> Function(UserID id);
-
-enum MessagesGroupingMode { timeDifference, sameMinute }
 
 /// Signature for a function that builds a single chat list item widget.
 /// Used by [ChatAnimatedList] and [ChatAnimatedListReversed].

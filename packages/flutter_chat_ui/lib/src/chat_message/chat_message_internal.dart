@@ -27,7 +27,7 @@ class ChatMessageInternal extends StatefulWidget {
   final MessagesGroupingMode? messagesGroupingMode;
 
   /// Timeout in seconds for grouping messages from the same author.
-  /// when [messagesGroupingMode] is [MessagingGroupingMode.timeDifference].
+  /// Only used when [messagesGroupingMode] is [MessagesGroupingMode.timeDifference].
   final int? messageGroupingTimeoutInSeconds;
 
   /// Flag indicating if this item is being animated out (removed).
@@ -134,7 +134,6 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
       final messages = chatController.messages;
       final index = widget.index;
       final currentMessage = _updatedMessage;
-      final timeoutInSeconds = widget.messageGroupingTimeoutInSeconds ?? 300;
 
       // Get adjacent messages if they exist
       final nextMessage =
@@ -151,19 +150,23 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
       final isGroupedWithNext =
           nextMessage != null &&
           nextMessage.authorId == currentMessage.authorId &&
-          (widget.messagesGroupingMode == MessagesGroupingMode.timeDifference
-              ? nextMessageDate.difference(currentMessageDate).inSeconds <
-                  timeoutInSeconds
-              : nextMessageDate.minute == currentMessageDate.minute);
+          _shouldGroupMessages(
+            currentMessageDate,
+            nextMessageDate,
+            widget.messagesGroupingMode ?? MessagesGroupingMode.timeDifference,
+            widget.messageGroupingTimeoutInSeconds ?? 300,
+          );
 
       // Check if message is part of a group with previous message
       final isGroupedWithPrevious =
           previousMessage != null &&
           previousMessage.authorId == currentMessage.authorId &&
-          (widget.messagesGroupingMode == MessagesGroupingMode.timeDifference
-              ? currentMessageDate.difference(previousMessageDate).inSeconds <
-                  timeoutInSeconds
-              : currentMessageDate.minute == previousMessageDate.minute);
+          _shouldGroupMessages(
+            previousMessageDate,
+            currentMessageDate,
+            widget.messagesGroupingMode ?? MessagesGroupingMode.timeDifference,
+            widget.messageGroupingTimeoutInSeconds ?? 300,
+          );
 
       // If not grouped with either message, return null
       if (!isGroupedWithNext && !isGroupedWithPrevious) {
@@ -282,4 +285,59 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
             );
     }
   }
+}
+
+/// Determines if two messages should be grouped together based on the grouping mode.
+///
+/// [earlierDate] should be the timestamp of the earlier message.
+/// [laterDate] should be the timestamp of the later message.
+bool _shouldGroupMessages(
+  DateTime earlierDate,
+  DateTime laterDate,
+  MessagesGroupingMode groupingMode,
+  int timeoutInSeconds,
+) {
+  switch (groupingMode) {
+    case MessagesGroupingMode.timeDifference:
+      return _isWithinTimeThreshold(earlierDate, laterDate, timeoutInSeconds);
+    case MessagesGroupingMode.sameMinute:
+      return _isSameMinute(earlierDate, laterDate);
+    case MessagesGroupingMode.sameHour:
+      return _isSameHour(earlierDate, laterDate);
+    case MessagesGroupingMode.sameDay:
+      return _isSameDay(earlierDate, laterDate);
+  }
+}
+
+/// Checks if two timestamps are within the specified time threshold.
+bool _isWithinTimeThreshold(
+  DateTime earlierDate,
+  DateTime laterDate,
+  int timeoutInSeconds,
+) {
+  return laterDate.difference(earlierDate).inSeconds < timeoutInSeconds;
+}
+
+/// Checks if two timestamps are in the same minute.
+bool _isSameMinute(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day &&
+      date1.hour == date2.hour &&
+      date1.minute == date2.minute;
+}
+
+/// Checks if two timestamps are in the same hour.
+bool _isSameHour(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day &&
+      date1.hour == date2.hour;
+}
+
+/// Checks if two timestamps are on the same day.
+bool _isSameDay(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day;
 }

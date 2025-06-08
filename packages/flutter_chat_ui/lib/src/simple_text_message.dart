@@ -218,8 +218,6 @@ class SimpleTextMessage extends StatelessWidget {
             ),
           ],
         );
-      case TimeAndStatusPosition.none:
-        return textContent;
     }
   }
 
