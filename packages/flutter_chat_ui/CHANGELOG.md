@@ -1,3 +1,11 @@
+## 2.5.0
+
+ - **FIX**: introduce status field back ([#809](https://github.com/flyerhq/flutter_chat_ui/issues/809)). ([1aadf874](https://github.com/flyerhq/flutter_chat_ui/commit/1aadf8747d81672422a0e40363b0c2aeaa9e3efd))
+ - **FIX**: prevent sending blank messages ([#808](https://github.com/flyerhq/flutter_chat_ui/issues/808)). ([6fbcfc73](https://github.com/flyerhq/flutter_chat_ui/commit/6fbcfc73645ec5f704fb1add52f0862bc19bc129))
+ - **FIX**: perf improvements ([#807](https://github.com/flyerhq/flutter_chat_ui/issues/807)). ([71e6d690](https://github.com/flyerhq/flutter_chat_ui/commit/71e6d69027d520c351b00c5e85e30cd97dabd321))
+ - **FIX**: allow to set a different color in Composer when not empty ([#794](https://github.com/flyerhq/flutter_chat_ui/issues/794)). ([788ca0c6](https://github.com/flyerhq/flutter_chat_ui/commit/788ca0c6ce470b10d70ef8965b49150e7e8570f9))
+ - **FEAT**: time and status grouping same minute fix [#764](https://github.com/flyerhq/flutter_chat_ui/issues/764) ([#792](https://github.com/flyerhq/flutter_chat_ui/issues/792)). ([61c04002](https://github.com/flyerhq/flutter_chat_ui/commit/61c04002153897113f47c239e059511b1e3468ec))
+
 ## 2.4.0
 
  - **FEAT**: expose isSentByMe and groupStatus in all messages builders ([#805](https://github.com/flyerhq/flutter_chat_ui/issues/805)). ([263d145b](https://github.com/flyerhq/flutter_chat_ui/commit/263d145bc3998d0f6ebed02406dda35634439b03))

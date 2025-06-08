@@ -1,5 +1,5 @@
 name: flutter_chat_ui
-version: 2.4.0
+version: 2.5.0
 description: >
   Free and open-source chat SDK. Build fast, real-time apps and generative
   AI agents with a high-performance, customizable, cross-platform UI.
@@ -15,7 +15,7 @@ dependencies:
   diffutil_dart: ^4.0.1
   flutter:
     sdk: flutter
-  flutter_chat_core: ^2.5.0
+  flutter_chat_core: ^2.6.0
   provider: ^6.1.4
   scrollview_observer: ^1.26.0
 

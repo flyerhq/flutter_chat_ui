@@ -1,3 +1,8 @@
+## 2.6.0
+
+ - **FIX**: introduce status field back ([#809](https://github.com/flyerhq/flutter_chat_ui/issues/809)). ([1aadf874](https://github.com/flyerhq/flutter_chat_ui/commit/1aadf8747d81672422a0e40363b0c2aeaa9e3efd))
+ - **FEAT**: time and status grouping same minute fix [#764](https://github.com/flyerhq/flutter_chat_ui/issues/764) ([#792](https://github.com/flyerhq/flutter_chat_ui/issues/792)). ([61c04002](https://github.com/flyerhq/flutter_chat_ui/commit/61c04002153897113f47c239e059511b1e3468ec))
+
 ## 2.5.0
 
  - **FIX**: add editedAt and pinned [#797](https://github.com/flyerhq/flutter_chat_ui/issues/797) ([#798](https://github.com/flyerhq/flutter_chat_ui/issues/798)). ([e164caa3](https://github.com/flyerhq/flutter_chat_ui/commit/e164caa3de4a172f13f5810ffc32891e3e143c64))

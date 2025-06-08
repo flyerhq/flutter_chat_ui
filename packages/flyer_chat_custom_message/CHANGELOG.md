@@ -1,3 +1,7 @@
+## 0.0.12+1
+
+ - **FIX**: update documentation. ([2ec05db2](https://github.com/flyerhq/flutter_chat_ui/commit/2ec05db24f3fb469658a3fd3a27a7c3c739826e9))
+
 ## 0.0.12
 
 - Version bump to match other packages
