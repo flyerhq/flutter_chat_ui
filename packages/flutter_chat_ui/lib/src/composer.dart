@@ -64,6 +64,9 @@ class Composer extends StatefulWidget {
   /// Color of the send icon.
   final Color? sendIconColor;
 
+  /// Color of the send icon when the text is not empty.
+  final Color? sendIconColorNotEmpty;
+
   /// Color of the hint text in the input field.
   final Color? hintColor;
 
@@ -130,6 +133,7 @@ class Composer extends StatefulWidget {
     this.backgroundColor,
     this.attachmentIconColor,
     this.sendIconColor,
+    this.sendIconColorNotEmpty,
     this.hintColor,
     this.textColor,
     this.inputFillColor,
@@ -258,6 +262,9 @@ class _ComposerState extends State<Composer> {
                           color: widget.textColor ?? theme.colors.onSurface,
                         ),
                         onSubmitted: _handleSubmitted,
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                         textInputAction: widget.textInputAction,
                         keyboardAppearance: widget.keyboardAppearance,
                         autocorrect: widget.autocorrect ?? true,
@@ -274,9 +281,9 @@ class _ComposerState extends State<Composer> {
                     widget.sendIcon != null
                         ? IconButton(
                           icon: widget.sendIcon!,
-                          color:
-                              widget.sendIconColor ??
-                              theme.colors.onSurface.withValues(alpha: 0.5),
+                          color: _resolveSendIconColor(
+                            theme.colors.onSurface.withValues(alpha: 0.5),
+                          ),
                           onPressed:
                               () => _handleSubmitted(_textController.text),
                         )
@@ -289,6 +296,15 @@ class _ComposerState extends State<Composer> {
         ),
       ),
     );
+  }
+
+  Color _resolveSendIconColor(Color fallbackColor) {
+    if (_textController.text.isNotEmpty) {
+      return widget.sendIconColorNotEmpty ??
+          widget.sendIconColor ??
+          fallbackColor;
+    }
+    return widget.sendIconColor ?? fallbackColor;
   }
 
   void _measure() {
