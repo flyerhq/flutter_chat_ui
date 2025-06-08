@@ -370,7 +370,7 @@ class TimeAndStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = context.read<DateFormat>();
+    final timeFormat = context.watch<DateFormat>();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

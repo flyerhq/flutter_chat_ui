@@ -20,7 +20,7 @@ class Username extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolveUser = context.read<ResolveUserCallback>();
-    final userCache = context.read<UserCache>();
+    final userCache = context.watch<UserCache>();
 
     // Try to get from cache synchronously first
     final cachedUser = userCache.getSync(userId);

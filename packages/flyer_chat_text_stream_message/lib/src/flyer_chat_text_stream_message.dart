@@ -493,7 +493,7 @@ class TimeAndStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = context.read<DateFormat>();
+    final timeFormat = context.watch<DateFormat>();
 
     return Row(
       spacing: 2,
