@@ -1,3 +1,7 @@
+## 2.5.1
+
+ - **FIX**: re-enable composer blur. ([791f7308](https://github.com/flyerhq/flutter_chat_ui/commit/791f7308cb499e854a6f59dc95a19ca9de7ef88d))
+
 ## 2.5.0
 
  - **FIX**: introduce status field back ([#809](https://github.com/flyerhq/flutter_chat_ui/issues/809)). ([1aadf874](https://github.com/flyerhq/flutter_chat_ui/commit/1aadf8747d81672422a0e40363b0c2aeaa9e3efd))
