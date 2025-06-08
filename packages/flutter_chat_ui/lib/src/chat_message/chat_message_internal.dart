@@ -90,17 +90,17 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
   @override
   Widget build(BuildContext context) {
     final builders = context.read<Builders>();
+    final isSentByMe = context.watch<UserID>() == _updatedMessage.authorId;
 
     final groupStatus = _resolveGroupStatus(context);
-    final isSentByMe = context.watch<UserID>() == _updatedMessage.authorId;
 
     final child = _buildMessage(
       context,
       builders,
       _updatedMessage,
       widget.index,
-      isSentByMe,
-      groupStatus,
+      isSentByMe: isSentByMe,
+      groupStatus: groupStatus,
     );
 
     return builders.chatMessageBuilder?.call(
@@ -175,10 +175,10 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
     BuildContext context,
     Builders builders,
     Message message,
-    int index,
-    bool isSentByMe,
+    int index, {
+    required bool isSentByMe,
     MessageGroupStatus? groupStatus,
-  ) {
+  }) {
     switch (message) {
       case TextMessage():
         return builders.textMessageBuilder?.call(
