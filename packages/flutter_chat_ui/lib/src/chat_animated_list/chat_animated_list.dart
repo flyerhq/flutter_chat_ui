@@ -103,6 +103,9 @@ class ChatAnimatedList extends StatefulWidget {
   /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
   final double? paginationThreshold;
 
+  /// The mode to use for grouping messages.
+  final MessagesGroupingMode? messagesGroupingMode;
+
   /// Timeout in seconds for grouping consecutive messages from the same author.
   final int? messageGroupingTimeoutInSeconds;
 
@@ -154,6 +157,7 @@ class ChatAnimatedList extends StatefulWidget {
     // Modify this value at your own risk. If you increase it and experience
     // unstable pagination jumps, revert to a smaller value like 0.01.
     this.paginationThreshold = 0.01,
+    this.messagesGroupingMode,
     this.messageGroupingTimeoutInSeconds,
     this.physics,
   });

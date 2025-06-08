@@ -23,7 +23,11 @@ class ChatMessageInternal extends StatefulWidget {
   /// Animation provided by the parent [SliverAnimatedList].
   final Animation<double> animation;
 
+  /// The mode to use for grouping messages.
+  final MessagesGroupingMode? messagesGroupingMode;
+
   /// Timeout in seconds for grouping messages from the same author.
+  /// when [messagesGroupingMode] is [MessagingGroupingMode.timeDifference].
   final int? messageGroupingTimeoutInSeconds;
 
   /// Flag indicating if this item is being animated out (removed).
@@ -35,6 +39,7 @@ class ChatMessageInternal extends StatefulWidget {
     required this.message,
     required this.index,
     required this.animation,
+    this.messagesGroupingMode = MessagesGroupingMode.timeDifference,
     this.messageGroupingTimeoutInSeconds,
     this.isRemoved,
   });
@@ -146,15 +151,19 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
       final isGroupedWithNext =
           nextMessage != null &&
           nextMessage.authorId == currentMessage.authorId &&
-          nextMessageDate.difference(currentMessageDate).inSeconds <
-              timeoutInSeconds;
+          (widget.messagesGroupingMode == MessagesGroupingMode.timeDifference
+              ? nextMessageDate.difference(currentMessageDate).inSeconds <
+                  timeoutInSeconds
+              : nextMessageDate.minute == currentMessageDate.minute);
 
       // Check if message is part of a group with previous message
       final isGroupedWithPrevious =
           previousMessage != null &&
           previousMessage.authorId == currentMessage.authorId &&
-          currentMessageDate.difference(previousMessageDate).inSeconds <
-              timeoutInSeconds;
+          (widget.messagesGroupingMode == MessagesGroupingMode.timeDifference
+              ? currentMessageDate.difference(previousMessageDate).inSeconds <
+                  timeoutInSeconds
+              : currentMessageDate.minute == previousMessageDate.minute);
 
       // If not grouped with either message, return null
       if (!isGroupedWithNext && !isGroupedWithPrevious) {
