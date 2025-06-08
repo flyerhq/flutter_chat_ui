@@ -69,7 +69,13 @@ class _EmptyChatListState extends State<EmptyChatList>
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodyLarge: t.typography.bodyLarge,
+        onSurface: t.colors.onSurface,
+      ),
+    );
+
     return FadeTransition(
       opacity: _opacityAnimation,
       child: Padding(
@@ -79,9 +85,7 @@ class _EmptyChatListState extends State<EmptyChatList>
             widget.text,
             style:
                 widget.textStyle ??
-                theme.typography.bodyLarge.copyWith(
-                  color: theme.colors.onSurface,
-                ),
+                theme.bodyLarge.copyWith(color: theme.onSurface),
           ),
         ),
       ),

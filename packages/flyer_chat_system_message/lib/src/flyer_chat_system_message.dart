@@ -32,12 +32,16 @@ class FlyerChatSystemMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
-    final resolvedBackgroundColor =
-        backgroundColor ?? theme.colors.surfaceContainer;
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodySmall: t.typography.bodySmall,
+        onSurface: t.colors.onSurface,
+        surfaceContainer: t.colors.surfaceContainer,
+      ),
+    );
+    final resolvedBackgroundColor = backgroundColor ?? theme.surfaceContainer;
     final resolvedTextStyle =
-        textStyle ??
-        theme.typography.bodySmall.copyWith(color: theme.colors.onSurface);
+        textStyle ?? theme.bodySmall.copyWith(color: theme.onSurface);
 
     return Center(
       child: Container(

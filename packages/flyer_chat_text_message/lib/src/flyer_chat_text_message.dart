@@ -3,6 +3,18 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
 
+/// Theme values for [FlyerChatTextMessage].
+typedef _LocalTheme =
+    ({
+      TextStyle bodyMedium,
+      TextStyle labelSmall,
+      Color onPrimary,
+      Color onSurface,
+      Color primary,
+      BorderRadiusGeometry shape,
+      Color surfaceContainer,
+    });
+
 /// A widget that displays a regular text message.
 ///
 /// Supports markdown rendering via [GptMarkdown].
@@ -86,8 +98,18 @@ class FlyerChatTextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
-    final isSentByMe = context.watch<UserID>() == message.authorId;
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodyMedium: t.typography.bodyMedium,
+        labelSmall: t.typography.labelSmall,
+        onPrimary: t.colors.onPrimary,
+        onSurface: t.colors.onSurface,
+        primary: t.colors.primary,
+        shape: t.shape,
+        surfaceContainer: t.colors.surfaceContainer,
+      ),
+    );
+    final isSentByMe = context.read<UserID>() == message.authorId;
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final paragraphStyle = _resolveParagraphStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
@@ -207,32 +229,29 @@ class FlyerChatTextMessage extends StatelessWidget {
     }
   }
 
-  Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
+  Color? _resolveBackgroundColor(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
-      return sentBackgroundColor ?? theme.colors.primary;
+      return sentBackgroundColor ?? theme.primary;
     }
-    return receivedBackgroundColor ?? theme.colors.surfaceContainer;
+    return receivedBackgroundColor ?? theme.surfaceContainer;
   }
 
-  TextStyle? _resolveParagraphStyle(bool isSentByMe, ChatTheme theme) {
+  TextStyle? _resolveParagraphStyle(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
-      return sentTextStyle ??
-          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
+      return sentTextStyle ?? theme.bodyMedium.copyWith(color: theme.onPrimary);
     }
     return receivedTextStyle ??
-        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
+        theme.bodyMedium.copyWith(color: theme.onSurface);
   }
 
-  TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
+  TextStyle? _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
       return timeStyle ??
-          theme.typography.labelSmall.copyWith(
-            color:
-                _isOnlyEmoji ? theme.colors.onSurface : theme.colors.onPrimary,
+          theme.labelSmall.copyWith(
+            color: _isOnlyEmoji ? theme.onSurface : theme.onPrimary,
           );
     }
-    return timeStyle ??
-        theme.typography.labelSmall.copyWith(color: theme.colors.onSurface);
+    return timeStyle ?? theme.labelSmall.copyWith(color: theme.onSurface);
   }
 }
 
@@ -271,7 +290,7 @@ class TimeAndStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = context.watch<DateFormat>();
+    final timeFormat = context.read<DateFormat>();
 
     return Row(
       spacing: 2,

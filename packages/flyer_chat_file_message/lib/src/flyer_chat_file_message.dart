@@ -3,6 +3,19 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+/// Theme values for [FlyerChatFileMessage].
+typedef _LocalTheme =
+    ({
+      TextStyle bodyMedium,
+      TextStyle bodySmall,
+      TextStyle labelSmall,
+      Color onPrimary,
+      Color onSurface,
+      Color primary,
+      BorderRadiusGeometry shape,
+      Color surfaceContainer,
+    });
+
 /// A widget that displays a file message.
 ///
 /// Shows the file name, size, and an icon.
@@ -86,8 +99,19 @@ class FlyerChatFileMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
-    final isSentByMe = context.watch<UserID>() == message.authorId;
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodyMedium: t.typography.bodyMedium,
+        bodySmall: t.typography.bodySmall,
+        labelSmall: t.typography.labelSmall,
+        onPrimary: t.colors.onPrimary,
+        onSurface: t.colors.onSurface,
+        primary: t.colors.primary,
+        shape: t.shape,
+        surfaceContainer: t.colors.surfaceContainer,
+      ),
+    );
+    final isSentByMe = context.read<UserID>() == message.authorId;
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final nameTextStyle = _resolveNameTextStyle(isSentByMe, theme);
     final sizeTextStyle = _resolveSizeTextStyle(isSentByMe, theme);
@@ -143,8 +167,7 @@ class FlyerChatFileMessage extends StatelessWidget {
           Icon(
             icon ?? Icons.insert_drive_file_outlined,
             color:
-                iconColor ??
-                (isSentByMe ? theme.colors.onPrimary : theme.colors.onSurface),
+                iconColor ?? (isSentByMe ? theme.onPrimary : theme.onSurface),
             size: iconSize,
           ),
           SizedBox(width: gap),
@@ -229,39 +252,37 @@ class FlyerChatFileMessage extends StatelessWidget {
     return '${format.format(size)} ${units[i]}';
   }
 
-  Color? _resolveBackgroundColor(bool isSentByMe, ChatTheme theme) {
+  Color? _resolveBackgroundColor(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
-      return sentBackgroundColor ?? theme.colors.primary;
+      return sentBackgroundColor ?? theme.primary;
     }
-    return receivedBackgroundColor ?? theme.colors.surfaceContainer;
+    return receivedBackgroundColor ?? theme.surfaceContainer;
   }
 
-  TextStyle? _resolveNameTextStyle(bool isSentByMe, ChatTheme theme) {
+  TextStyle? _resolveNameTextStyle(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
       return sentNameTextStyle ??
-          theme.typography.bodyMedium.copyWith(color: theme.colors.onPrimary);
+          theme.bodyMedium.copyWith(color: theme.onPrimary);
     }
     return receivedNameTextStyle ??
-        theme.typography.bodyMedium.copyWith(color: theme.colors.onSurface);
+        theme.bodyMedium.copyWith(color: theme.onSurface);
   }
 
-  TextStyle? _resolveSizeTextStyle(bool isSentByMe, ChatTheme theme) {
+  TextStyle? _resolveSizeTextStyle(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
       return sentSizeTextStyle ??
-          theme.typography.bodySmall.copyWith(
-            color: theme.colors.onPrimary.withValues(alpha: 0.8),
+          theme.bodySmall.copyWith(
+            color: theme.onPrimary.withValues(alpha: 0.8),
           );
     }
     return receivedSizeTextStyle ??
-        theme.typography.bodySmall.copyWith(
-          color: theme.colors.onSurface.withValues(alpha: 0.8),
-        );
+        theme.bodySmall.copyWith(color: theme.onSurface.withValues(alpha: 0.8));
   }
 
-  TextStyle? _resolveTimeStyle(bool isSentByMe, ChatTheme theme) {
-    final color = isSentByMe ? theme.colors.onPrimary : theme.colors.onSurface;
+  TextStyle? _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
+    final color = isSentByMe ? theme.onPrimary : theme.onSurface;
 
-    return timeStyle ?? theme.typography.labelSmall.copyWith(color: color);
+    return timeStyle ?? theme.labelSmall.copyWith(color: color);
   }
 }
 
@@ -300,7 +321,7 @@ class TimeAndStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = context.watch<DateFormat>();
+    final timeFormat = context.read<DateFormat>();
 
     return Row(
       spacing: 2,

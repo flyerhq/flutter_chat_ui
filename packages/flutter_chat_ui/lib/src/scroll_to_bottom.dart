@@ -69,10 +69,10 @@ class ScrollToBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomSafeArea = MediaQuery.of(context).padding.bottom;
-    final colors = context.select(
-      (ChatTheme theme) => (
-        onSurface: theme.colors.onSurface,
-        surfaceContainer: theme.colors.surfaceContainer,
+    final theme = context.select(
+      (ChatTheme t) => (
+        onSurface: t.colors.onSurface,
+        surfaceContainer: t.colors.surfaceContainer,
       ),
     );
 
@@ -91,8 +91,8 @@ class ScrollToBottom extends StatelessWidget {
           child: ScaleTransition(
             scale: animation,
             child: FloatingActionButton(
-              backgroundColor: backgroundColor ?? colors.surfaceContainer,
-              foregroundColor: foregroundColor ?? colors.onSurface,
+              backgroundColor: backgroundColor ?? theme.surfaceContainer,
+              foregroundColor: foregroundColor ?? theme.onSurface,
               heroTag: null,
               mini: mini ?? false,
               shape: shape,

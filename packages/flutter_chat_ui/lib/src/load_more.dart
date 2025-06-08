@@ -36,7 +36,9 @@ class _LoadMoreState extends State<LoadMore> {
 
   @override
   Widget build(BuildContext context) {
-    final color = context.select((ChatTheme theme) => theme.colors.onSurface);
+    final theme = context.select(
+      (ChatTheme t) => (onSurface: t.colors.onSurface),
+    );
 
     return Padding(
       key: _key,
@@ -46,7 +48,7 @@ class _LoadMoreState extends State<LoadMore> {
           height: widget.size,
           width: widget.size,
           child: CircularProgressIndicator(
-            color: widget.color ?? color,
+            color: widget.color ?? theme.onSurface,
             strokeCap: StrokeCap.round,
           ),
         ),
