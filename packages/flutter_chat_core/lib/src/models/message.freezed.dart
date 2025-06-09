@@ -440,7 +440,9 @@ as String,
 @JsonSerializable()
 
 class ImageMessage extends Message {
-  const ImageMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, this.pinned, final  Map<String, dynamic>? metadata, this.status, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
+
+  const ImageMessage({required this.id, required this.authorId, this.replyToMessageId, @EpochDateTimeConverter() this.createdAt, @EpochDateTimeConverter() this.deletedAt, @EpochDateTimeConverter() this.failedAt, @EpochDateTimeConverter() this.sentAt, @EpochDateTimeConverter() this.deliveredAt, @EpochDateTimeConverter() this.seenAt, @EpochDateTimeConverter() this.updatedAt, final  Map<String, List<UserID>>? reactions, this.pinned, final  Map<String, dynamic>? metadata, this.status, required this.source, this.text, this.thumbhash, this.blurhash, this.width, this.height, this.size, this.hasOverlay, final  String? $type}): _reactions = reactions,_metadata = metadata,$type = $type ?? 'image',super._();
+
   factory ImageMessage.fromJson(Map<String, dynamic> json) => _$ImageMessageFromJson(json);
 
 /// Unique identifier for the message.
@@ -502,6 +504,8 @@ class ImageMessage extends Message {
  final  double? width;
 /// Height of the image in pixels.
  final  double? height;
+/// Size of the image in bytes.
+ final  int? size;
 /// Indicates if an overlay should be shown (e.g., for NSFW content).
  final  bool? hasOverlay;
 
