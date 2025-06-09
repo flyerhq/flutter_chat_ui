@@ -1,5 +1,5 @@
 name: flyer_chat_video_message
-version: 0.0.12
+version: 0.0.15
 description: >
   Video message package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
 homepage: https://flyer.chat
@@ -10,8 +10,13 @@ environment:
   flutter: ">=3.29.0"
 
 dependencies:
+  chewie: ^1.11.3
   flutter:
     sdk: flutter
+  flutter_chat_core: ^2.4.0
+  provider: ^6.1.4
+  thumbhash: ^0.1.0+1
+  video_thumbnail: ^0.5.6
 
 dev_dependencies:
   flutter_lints: ^5.0.0
