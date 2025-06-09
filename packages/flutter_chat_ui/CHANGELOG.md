@@ -1,3 +1,7 @@
+## 2.5.2
+
+ - Update a dependency to the latest release.
+
 ## 2.5.1
 
  - **FIX**: re-enable composer blur. ([791f7308](https://github.com/flyerhq/flutter_chat_ui/commit/791f7308cb499e854a6f59dc95a19ca9de7ef88d))

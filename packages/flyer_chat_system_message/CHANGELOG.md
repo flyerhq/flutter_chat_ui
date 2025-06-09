@@ -1,3 +1,7 @@
+## 2.1.9
+
+ - Update a dependency to the latest release.
+
 ## 2.1.8
 
  - **FIX**: update documentation. ([2ec05db2](https://github.com/flyerhq/flutter_chat_ui/commit/2ec05db24f3fb469658a3fd3a27a7c3c739826e9))

@@ -1,3 +1,7 @@
+## 2.1.10
+
+ - Update a dependency to the latest release.
+
 ## 2.1.9
 
  - **FIX**: introduce status field back ([#809](https://github.com/flyerhq/flutter_chat_ui/issues/809)). ([1aadf874](https://github.com/flyerhq/flutter_chat_ui/commit/1aadf8747d81672422a0e40363b0c2aeaa9e3efd))

@@ -1,3 +1,7 @@
+## 2.6.1
+
+ - **FIX**: add size attribute for ImageMessage ([#813](https://github.com/flyerhq/flutter_chat_ui/issues/813)). ([f50a3420](https://github.com/flyerhq/flutter_chat_ui/commit/f50a34200c6cc003331bd9d15f2aa5f9669671fe))
+
 ## 2.6.0
 
  - **FIX**: introduce status field back ([#809](https://github.com/flyerhq/flutter_chat_ui/issues/809)). ([1aadf874](https://github.com/flyerhq/flutter_chat_ui/commit/1aadf8747d81672422a0e40363b0c2aeaa9e3efd))
