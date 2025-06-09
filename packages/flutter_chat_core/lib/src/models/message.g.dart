@@ -288,6 +288,7 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   blurhash: json['blurhash'] as String?,
   width: (json['width'] as num?)?.toDouble(),
   height: (json['height'] as num?)?.toDouble(),
+  size: (json['size'] as num?)?.toInt(),
   hasOverlay: json['hasOverlay'] as bool?,
   $type: json['type'] as String?,
 );
@@ -351,6 +352,7 @@ Map<String, dynamic> _$ImageMessageToJson(
   if (instance.blurhash case final value?) 'blurhash': value,
   if (instance.width case final value?) 'width': value,
   if (instance.height case final value?) 'height': value,
+  if (instance.size case final value?) 'size': value,
   if (instance.hasOverlay case final value?) 'hasOverlay': value,
   'type': instance.$type,
 };
