@@ -33,17 +33,6 @@ String? _getMetaContent(Document document, String propertyValue) {
   return element.attributes['content']?.trim();
 }
 
-bool _hasUTF8Charset(Document document) {
-  final emptyElement = Element.tag(null);
-  final meta = document.getElementsByTagName('meta');
-  final element = meta.firstWhere(
-    (e) => e.attributes.containsKey('charset'),
-    orElse: () => emptyElement,
-  );
-  if (element == emptyElement) return true;
-  return element.attributes['charset']!.toLowerCase() == 'utf-8';
-}
-
 String? _getTitle(Document document) {
   final titleElements = document.getElementsByTagName('title');
   if (titleElements.isNotEmpty) return titleElements.first.text;
@@ -214,9 +203,22 @@ Future<LinkPreviewData?> getLinkPreviewData(
       );
     }
 
-    final document = parser.parse(utf8.decode(response.bodyBytes));
-    if (!_hasUTF8Charset(document)) {
-      return LinkPreviewData(link: url);
+    Document document;
+    try {
+      Encoding encoding;
+      final contentType = response.headers['content-type']?.toLowerCase() ?? '';
+      if (contentType.contains('charset=')) {
+        final charset = contentType.split('charset=')[1].split(';')[0].trim();
+        encoding = Encoding.getByName(charset) ?? utf8;
+        debugPrint('encoding: $encoding');
+      } else {
+        encoding = utf8;
+      }
+
+      document = parser.parse(encoding.decode(response.bodyBytes));
+    } catch (e) {
+      // Always return the url so it's displayed and clickable
+      return LinkPreviewData(link: previewDataUrl, title: previewDataTitle);
     }
 
     final title = _getTitle(document);
