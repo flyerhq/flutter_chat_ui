@@ -7,7 +7,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart'
     show LinkPreviewData, ImagePreviewData;
 import 'package:html/dom.dart' show Document, Element;
 import 'package:html/parser.dart' as parser show parse;
-import 'package:http/http.dart' as http show get;
+import 'package:http/http.dart' as http show Request, Client, Response;
 
 import 'types.dart';
 
@@ -153,6 +153,37 @@ Future<String> _getBiggestImageUrl(
   return currentUrl;
 }
 
+Future<http.Response?> _getRedirectedResponse(
+  Uri uri, {
+  String? userAgent,
+  int maxRedirects = 5,
+  Duration timeout = const Duration(seconds: 5),
+  http.Client? client,
+}) async {
+  final httpClient = client ?? http.Client();
+  var redirectCount = 0;
+
+  while (redirectCount < maxRedirects) {
+    final request =
+        http.Request('GET', uri)
+          ..followRedirects = false
+          ..headers.addAll({if (userAgent != null) 'User-Agent': userAgent});
+
+    final streamedResponse = await httpClient.send(request).timeout(timeout);
+
+    if (streamedResponse.isRedirect &&
+        streamedResponse.headers.containsKey('location')) {
+      uri = uri.resolve(streamedResponse.headers['location']!);
+      redirectCount++;
+      continue;
+    }
+
+    return http.Response.fromStream(streamedResponse);
+  }
+
+  return null;
+}
+
 /// Parses provided text and returns [PreviewData] for the first found link.
 Future<LinkPreviewData?> getLinkPreviewData(
   String text, {
@@ -187,9 +218,16 @@ Future<LinkPreviewData?> getLinkPreviewData(
     }
     previewDataUrl = _calculateUrl(url, proxy);
     final uri = Uri.parse(previewDataUrl);
-    final response = await http
-        .get(uri, headers: {'User-Agent': userAgent ?? 'WhatsApp/2'})
-        .timeout(requestTimeout ?? const Duration(seconds: 5));
+    final response = await _getRedirectedResponse(
+      uri,
+      timeout: requestTimeout ?? const Duration(seconds: 5),
+      userAgent: userAgent ?? 'WhatsApp/2',
+    );
+
+    if (response == null || response.statusCode != 200) {
+      return null;
+    }
+    url = response.request?.url.toString() ?? url;
 
     final imageRegexp = RegExp(regexImageContentType);
 
