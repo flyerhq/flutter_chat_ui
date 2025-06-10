@@ -205,9 +205,9 @@ Future<LinkPreviewData?> getLinkPreviewData(
     if (imageRegexp.hasMatch(response.headers['content-type'] ?? '')) {
       final imageSize = await _getImageSizeFromBytes(response.bodyBytes);
       return LinkPreviewData(
-        link: url,
+        link: previewDataUrl,
         image: ImagePreviewData(
-          url: url,
+          url: previewDataUrl,
           height: imageSize.height,
           width: imageSize.width,
         ),
