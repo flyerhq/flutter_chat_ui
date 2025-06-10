@@ -224,7 +224,6 @@ Future<LinkPreviewData?> getLinkPreviewData(
   String previewDataImageUrl;
 
   try {
-    text = text.toLowerCase();
     final emailRegexp = RegExp(regexEmail, caseSensitive: false);
     final textWithoutEmails =
         text.replaceAllMapped(emailRegexp, (match) => '').trim();
