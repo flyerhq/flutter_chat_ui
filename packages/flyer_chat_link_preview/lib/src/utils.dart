@@ -164,6 +164,8 @@ Future<LinkPreviewData?> getLinkPreviewData(
   String? previewDataTitle;
   String? previewDataUrl;
   ImagePreviewData? previewDataImage;
+  Size imageSize;
+  String previewDataImageUrl;
 
   try {
     final emailRegexp = RegExp(regexEmail, caseSensitive: false);
@@ -231,24 +233,23 @@ Future<LinkPreviewData?> getLinkPreviewData(
       previewDataDescription = description.trim();
     }
 
-    final imageUrls = _getImageUrls(document, url);
+    try {
+      final imageUrls = _getImageUrls(document, url);
 
-    Size imageSize;
-    String previewDataImageUrl;
+      if (imageUrls.isNotEmpty) {
+        previewDataImageUrl =
+            imageUrls.length == 1
+                ? _calculateUrl(imageUrls[0], proxy)
+                : await _getBiggestImageUrl(imageUrls, proxy);
 
-    if (imageUrls.isNotEmpty) {
-      previewDataImageUrl =
-          imageUrls.length == 1
-              ? _calculateUrl(imageUrls[0], proxy)
-              : await _getBiggestImageUrl(imageUrls, proxy);
-
-      imageSize = await _getImageSize(previewDataImageUrl);
-      previewDataImage = ImagePreviewData(
-        url: previewDataImageUrl,
-        width: imageSize.width,
-        height: imageSize.height,
-      );
-    }
+        imageSize = await _getImageSize(previewDataImageUrl);
+        previewDataImage = ImagePreviewData(
+          url: previewDataImageUrl,
+          width: imageSize.width,
+          height: imageSize.height,
+        );
+      }
+    } catch (_) {}
     return LinkPreviewData(
       link: previewDataUrl,
       title: previewDataTitle,
