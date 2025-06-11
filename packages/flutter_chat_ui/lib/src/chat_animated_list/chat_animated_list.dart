@@ -183,7 +183,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   bool _isProcessingOperations = false;
 
   // Used by scrollview_observer to allow for scroll to specific item
-  BuildContext? _sliverListViewContext;
+  final ValueNotifier<BuildContext?> _sliverListViewContextNotifier =
+      ValueNotifier(null);
 
   late final AnimationController _scrollAnimationController;
   late final AnimationController _scrollToBottomController;
@@ -355,7 +356,13 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         int index,
         Animation<double> animation,
       ) {
-        _sliverListViewContext ??= context;
+        if (_sliverListViewContextNotifier.value == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              _sliverListViewContextNotifier.value = context;
+            }
+          });
+        }
         final message = _oldList[visualPosition(index)];
 
         return widget.itemBuilder(
@@ -434,21 +441,26 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       },
       child: Stack(
         children: [
-          SliverViewObserver(
-            controller: _observerController,
-            sliverContexts:
-                () => [
-                  if (_sliverListViewContext != null) _sliverListViewContext!,
-                ],
-            child: CustomScrollView(
-              controller: _scrollController,
-              reverse: widget.reversed,
-              physics: widget.physics,
-              keyboardDismissBehavior:
-                  widget.keyboardDismissBehavior ??
-                  ScrollViewKeyboardDismissBehavior.manual,
-              slivers: buildSlivers(), // Use the new helper method
-            ),
+          ValueListenableBuilder<BuildContext?>(
+            valueListenable: _sliverListViewContextNotifier,
+            builder: (context, value, child) {
+              return SliverViewObserver(
+                key: ValueKey(
+                  value,
+                ), // TODO @alex : Note i had to pass a key, else the Observer rebuilds but does not reset up sliversContexts
+                controller: _observerController,
+                sliverContexts: () => [if (value != null) value],
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  reverse: widget.reversed,
+                  physics: widget.physics,
+                  keyboardDismissBehavior:
+                      widget.keyboardDismissBehavior ??
+                      ScrollViewKeyboardDismissBehavior.manual,
+                  slivers: buildSlivers(), // Use the new helper method
+                ),
+              );
+            },
           ),
           builders.scrollToBottomBuilder?.call(
                 context,
@@ -756,7 +768,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         try {
           final notificationResult = await _observerController
               .dispatchOnceObserve(
-                sliverContext: _sliverListViewContext!,
+                sliverContext: _sliverListViewContextNotifier.value!,
                 isForce: true,
                 isDependObserveCallback: false,
               );
@@ -858,7 +870,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       return;
     }
 
-    if (_sliverListViewContext == null) {
+    if (_sliverListViewContextNotifier.value == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!_scrollController.hasClients || !mounted) return;
         return _scrollToIndex(
