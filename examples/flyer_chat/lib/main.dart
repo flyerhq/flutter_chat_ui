@@ -12,7 +12,9 @@ import 'api_get_initial_messages.dart';
 import 'basic.dart';
 import 'gemini.dart';
 import 'local.dart';
+import 'link_preview.dart';
 import 'pagination.dart';
+import 'topwidgets_demo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -119,13 +121,12 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                             if (mounted && context.mounted) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder:
-                                      (context) => Api(
-                                        currentUserId: _currentUserId,
-                                        chatId: _chatIdController.text,
-                                        initialMessages: messages,
-                                        dio: _dio,
-                                      ),
+                                  builder: (context) => Api(
+                                    currentUserId: _currentUserId,
+                                    chatId: _chatIdController.text,
+                                    initialMessages: messages,
+                                    dio: _dio,
+                                  ),
                                 ),
                               );
                             }
@@ -144,8 +145,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                                     actions: <Widget>[
                                       TextButton(
                                         child: const Text('OK'),
-                                        onPressed:
-                                            () => Navigator.of(context).pop(),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
                                       ),
                                     ],
                                   );
@@ -244,10 +245,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder:
-                          (context) => Gemini(
-                            geminiApiKey: _geminiApiKeyController.text,
-                          ),
+                      builder: (context) =>
+                          Gemini(geminiApiKey: _geminiApiKeyController.text),
                     ),
                   );
                 },
@@ -285,6 +284,28 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                   ).push(MaterialPageRoute(builder: (context) => Basic()));
                 },
                 child: const Text('basic'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LinkPreviewExample(dio: _dio),
+                    ),
+                  );
+                },
+                child: const Text('link preview'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TopWidgetInBubble(dio: _dio),
+                    ),
+                  );
+                },
+                child: const Text('Top widgets in bubble'),
               ),
             ],
           ),
