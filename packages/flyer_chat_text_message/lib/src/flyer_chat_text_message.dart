@@ -195,10 +195,6 @@ class FlyerChatTextMessage extends StatelessWidget {
     TextStyle? paragraphStyle,
     Widget? linkPreviewWidget,
   }) {
-    if (timeAndStatus == null) {
-      return textContent;
-    }
-
     final textDirection = Directionality.of(context);
     final effectiveLinkPreviewPosition =
         linkPreviewWidget != null
@@ -236,7 +232,8 @@ class FlyerChatTextMessage extends StatelessWidget {
               Opacity(opacity: 0, child: timeAndStatus),
           ],
         ),
-        if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null)
           Positioned.directional(
             textDirection: textDirection,
             end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
