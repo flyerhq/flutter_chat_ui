@@ -182,9 +182,6 @@ class FlyerChatTextMessage extends StatelessWidget {
                 linkPreviewWidget: linkPreviewWidget,
               ),
             ),
-            // if (linkPreviewWidget != null &&
-            //     linkPreviewPosition == LinkPreviewPosition.bottom)
-            //   linkPreviewWidget,
           ],
         ),
       ),
