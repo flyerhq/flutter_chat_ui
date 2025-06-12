@@ -123,6 +123,7 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final onMessageTap = context.read<OnMessageTapCallback?>();
+    final onMessageDoubleTap = context.read<OnMessageDoubleTapCallback?>();
     final onMessageLongPress = context.read<OnMessageLongPressCallback?>();
     final isSentByMe = context.read<UserID>() == message.authorId;
 
@@ -153,6 +154,8 @@ class ChatMessage extends StatelessWidget {
                 index: index,
                 details: details,
               ),
+          onDoubleTap:
+              () => onMessageDoubleTap?.call(context, message, index: index),
           onLongPressStart:
               (details) => onMessageLongPress?.call(
                 context,

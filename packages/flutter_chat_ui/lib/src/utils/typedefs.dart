@@ -12,6 +12,12 @@ typedef OnMessageTapCallback =
       TapUpDetails details,
     });
 
+/// Callback signature for when a message is double tapped.
+/// [context] is the BuildContext from the widget tree where the tap occurs.
+/// Provides the tapped [message], its [index]
+typedef OnMessageDoubleTapCallback =
+    void Function(BuildContext context, Message message, {int index});
+
 /// Callback signature for when a message is long-pressed.
 /// [context] is the BuildContext from the widget tree where the long press occurs.
 /// Provides the long-pressed [message], its [index], and [LongPressStartDetails].
