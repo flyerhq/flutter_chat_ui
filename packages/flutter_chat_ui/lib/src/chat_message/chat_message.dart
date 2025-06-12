@@ -147,10 +147,15 @@ class ChatMessage extends StatelessWidget {
           ),
         GestureDetector(
           onTapUp:
-              (details) =>
-                  onMessageTap?.call(message, index: index, details: details),
+              (details) => onMessageTap?.call(
+                context,
+                message,
+                index: index,
+                details: details,
+              ),
           onLongPressStart:
               (details) => onMessageLongPress?.call(
+                context,
                 message,
                 index: index,
                 details: details,
