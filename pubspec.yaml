@@ -25,7 +25,7 @@ dependencies:
       url: https://github.com/ntsmac/flutter_link_previewer.git
       ref: feature/audio_message
 
-  intl: ^0.19.0
+  intl: ^0.20.2
   photo_view: ^0.11.1
   #flutter_sound: ^8.1.4
   flutter_sound_lite: '8.1.9'
