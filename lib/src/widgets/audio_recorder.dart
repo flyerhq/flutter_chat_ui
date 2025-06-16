@@ -57,11 +57,11 @@ class AudioRecorderState extends State<AudioRecorder> {
   @override
   Future<void> dispose() async {
     super.dispose();
-    await _audioRecorder.closeAudioSession();
+    await _audioRecorder.close();
   }
 
   Future<void> _initAudioRecorder() async {
-    await _audioRecorder.openAudioSession();
+    await _audioRecorder.openRecorder();
     setState(() {
       _audioRecorderReady = true;
     });
