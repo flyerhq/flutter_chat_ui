@@ -48,7 +48,7 @@ class _AudioMessageState extends State<AudioMessage> {
   }
 
   Future<void> _initAudioPlayer() async {
-    await _audioPlayer.openAudioSession();
+    await _audioPlayer.openPlayer();
     setState(() {
       _audioPlayerReady = true;
     });
