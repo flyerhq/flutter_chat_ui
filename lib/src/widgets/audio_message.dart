@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/src/widgets/wave_form.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:intl/intl.dart';
 
 import 'inherited_chat_theme.dart';
