@@ -43,7 +43,7 @@ class _AudioMessageState extends State<AudioMessage> {
 
   @override
   Future<void> dispose() async {
-    await _audioPlayer.close();
+    await _audioPlayer.closePlayer();
     super.dispose();
   }
 
