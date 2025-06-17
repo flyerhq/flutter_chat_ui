@@ -296,6 +296,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   @override
   void dispose() {
     _oldListEmptyNotifier.dispose();
+    _sliverListViewContextNotifier.dispose();
     _scrollToBottomShowTimer?.cancel();
     _scrollToBottomController.dispose();
     _scrollAnimationController.removeListener(_linkAnimationToScroll);
