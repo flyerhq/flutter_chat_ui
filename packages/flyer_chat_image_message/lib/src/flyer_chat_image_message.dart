@@ -74,6 +74,9 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// Position of the timestamp and status indicator relative to the image.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// Error builder for the image widget.
+  final ImageErrorWidgetBuilder? errorBuilder;
+
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
@@ -94,6 +97,7 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.errorBuilder,
   });
 
   @override
@@ -272,6 +276,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                     child: content,
                   );
                 },
+                errorBuilder: widget.errorBuilder,
               ),
               if (_chatController is UploadProgressMixin)
                 StreamBuilder<double>(
