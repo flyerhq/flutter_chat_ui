@@ -111,6 +111,15 @@ class Composer extends StatefulWidget {
   /// Maximum number of lines the input field can expand to.
   final int? maxLines;
 
+  /// Controls the visibility behavior of the send button.
+  /// Defaults to [SendButtonVisibilityMode.disabled].
+  final SendButtonVisibilityMode sendButtonVisibilityMode;
+
+  /// Whether to allow sending empty messages. Defaults to `false`.
+  /// This is only considered when the button is pressed, which for `hidden` and
+  /// `disabled` modes still requires text to be present.
+  final bool allowEmptyMessage;
+
   /// Creates a message composer widget.
   const Composer({
     super.key,
@@ -150,6 +159,8 @@ class Composer extends StatefulWidget {
     this.maxLength,
     this.minLines = 1,
     this.maxLines = 3,
+    this.sendButtonVisibilityMode = SendButtonVisibilityMode.disabled,
+    this.allowEmptyMessage = false,
   });
 
   @override
@@ -295,21 +306,33 @@ class _ComposerState extends State<Composer> {
                     ? ValueListenableBuilder<bool>(
                       valueListenable: _hasTextNotifier,
                       builder: (context, hasText, child) {
-                        final iconColor =
-                            hasText
-                                ? (widget.sendIconColor ??
-                                    theme.onSurface.withValues(alpha: 0.5))
-                                : (widget.emptyFieldSendIconColor ??
-                                    widget.sendIconColor ??
-                                    theme.onSurface.withValues(alpha: 0.5));
+                        if (widget.sendButtonVisibilityMode ==
+                                SendButtonVisibilityMode.hidden &&
+                            !hasText) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final isActive =
+                            hasText ||
+                            widget.sendButtonVisibilityMode ==
+                                SendButtonVisibilityMode.always;
 
                         return IconButton(
                           icon: widget.sendIcon!,
-                          color: iconColor,
+                          color:
+                              isActive
+                                  ? (widget.sendIconColor ??
+                                      theme.onSurface.withValues(alpha: 0.5))
+                                  : (widget.emptyFieldSendIconColor ??
+                                      widget.sendIconColor ??
+                                      theme.onSurface.withValues(alpha: 0.5)),
                           onPressed:
-                              hasText
-                                  ? () => _handleSubmitted(_textController.text)
-                                  : null,
+                              (widget.sendButtonVisibilityMode ==
+                                          SendButtonVisibilityMode.disabled &&
+                                      !hasText)
+                                  ? null
+                                  : () =>
+                                      _handleSubmitted(_textController.text),
                         );
                       },
                     )
@@ -355,8 +378,9 @@ class _ComposerState extends State<Composer> {
 
   void _handleSubmitted(String text) {
     final trimmed = text.trim();
-    if (trimmed.isNotEmpty) {
+    if (trimmed.isNotEmpty || widget.allowEmptyMessage) {
       context.read<OnMessageSendCallback?>()?.call(trimmed);
+      _hasTextNotifier.value = false;
       _textController.clear();
     }
   }
