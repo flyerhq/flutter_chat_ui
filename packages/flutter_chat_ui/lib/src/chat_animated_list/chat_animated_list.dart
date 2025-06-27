@@ -182,9 +182,6 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   final List<ChatOperation> _operationsQueue = [];
   bool _isProcessingOperations = false;
 
-  // Used by scrollview_observer to allow for scroll to specific item
-  BuildContext? _sliverListViewContext;
-
   late final AnimationController _scrollAnimationController;
   late final AnimationController _scrollToBottomController;
   late final Animation<double> _scrollToBottomAnimation;
@@ -355,7 +352,6 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         int index,
         Animation<double> animation,
       ) {
-        _sliverListViewContext ??= context;
         final message = _oldList[visualPosition(index)];
 
         return widget.itemBuilder(
@@ -436,10 +432,13 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         children: [
           SliverViewObserver(
             controller: _observerController,
-            sliverContexts:
-                () => [
-                  if (_sliverListViewContext != null) _sliverListViewContext!,
-                ],
+            sliverContexts: () {
+              // Using the key's context ensures we always have the latest, valid
+              // context for the SliverAnimatedList, or null if it's not built.
+              // This is safer than storing a BuildContext.
+              final context = _listKey.currentContext;
+              return [if (context != null) context];
+            },
             child: CustomScrollView(
               controller: _scrollController,
               reverse: widget.reversed,
@@ -754,23 +753,27 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       // --- Scroll Anchoring Setup: Only for non-reversed lists ---
       if (!widget.reversed) {
         try {
-          final notificationResult = await _observerController
-              .dispatchOnceObserve(
-                sliverContext: _sliverListViewContext!,
-                isForce: true,
-                isDependObserveCallback: false,
-              );
-          final firstItem =
-              notificationResult
-                  .observeResult
-                  ?.innerDisplayingChildModelList
-                  .firstOrNull;
-          final anchorIndex = firstItem?.index;
+          // We can only anchor the scroll position if the list is actually
+          // in the widget tree and has a context.
+          if (_listKey.currentContext != null) {
+            final notificationResult = await _observerController
+                .dispatchOnceObserve(
+                  sliverContext: _listKey.currentContext!,
+                  isForce: true,
+                  isDependObserveCallback: false,
+                );
+            final firstItem =
+                notificationResult
+                    .observeResult
+                    ?.innerDisplayingChildModelList
+                    .firstOrNull;
+            final anchorIndex = firstItem?.index;
 
-          if (anchorIndex != null &&
-              anchorIndex >= 0 &&
-              anchorIndex < _oldList.length) {
-            anchorMessageId = _oldList[anchorIndex].id;
+            if (anchorIndex != null &&
+                anchorIndex >= 0 &&
+                anchorIndex < _oldList.length) {
+              anchorMessageId = _oldList[anchorIndex].id;
+            }
           }
         } catch (e) {
           debugPrint('Error observing scroll position for anchoring: $e');
@@ -858,17 +861,10 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       return;
     }
 
-    if (_sliverListViewContext == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        if (!_scrollController.hasClients || !mounted) return;
-        return _scrollToIndex(
-          index,
-          duration: duration,
-          curve: curve,
-          alignment: alignment,
-          offset: offset,
-        );
-      });
+    // If the context is null, it means the list is not
+    // in the tree, and there's nothing to scroll to.
+    if (_listKey.currentContext == null) {
+      return;
     }
 
     final visualIndex = visualPosition(index);

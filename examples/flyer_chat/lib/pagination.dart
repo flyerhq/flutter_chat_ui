@@ -152,7 +152,7 @@ class PaginationState extends State<Pagination> {
     // await Future.delayed(const Duration(milliseconds: 250));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // If the list is reserved, we might need to add an offset that
+      // If the list is reversed, we might need to add an offset that
       // is equal to the height of the chat composer (not including the safe area).
       // For this example it would be 110.
       _chatController.scrollToMessage(messageId);
