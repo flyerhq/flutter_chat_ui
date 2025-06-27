@@ -37,11 +37,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.6.2
-  flutter_chat_ui: ^2.5.3
+  flutter_chat_ui: ^2.6.0
   flutter_dotenv: ^5.2.1
   flutter_lorem: ^2.0.0
   flyer_chat_file_message: ^2.2.2
-  flyer_chat_image_message: ^2.1.11
+  flyer_chat_image_message: ^2.1.12
   flyer_chat_system_message: ^2.1.10
   flyer_chat_text_message: ^2.3.2
   flyer_chat_text_stream_message: ^2.2.2
