@@ -89,7 +89,10 @@ void main() {
       expect(message.metadata, {'key': 'value'});
       expect(message.linkPreviewData!.title, 'Google');
       expect(message.linkPreviewData!.description, 'Google homepage');
-      expect(message.linkPreviewData!.image!.url, 'https://google.com/logo.png');
+      expect(
+        message.linkPreviewData!.image!.url,
+        'https://google.com/logo.png',
+      );
       expect(message.linkPreviewData!.image!.width, 100.0);
       expect(message.linkPreviewData!.image!.height, 100.0);
       expect(message.linkPreviewData!.link, 'https://google.com');
@@ -133,7 +136,7 @@ void main() {
         linkPreviewData: const LinkPreviewData(
           title: 'New Title',
           description: 'New description',
-          image:  ImagePreviewData(
+          image: ImagePreviewData(
             url: 'https://newwebsite.com/logo.png',
             width: 100.0,
             height: 100.0,
@@ -176,7 +179,6 @@ void main() {
         );
         expect(copiedMessage.text, 'Hello, world!');
         expect(copiedMessage.metadata, {'key': 'value'});
-        
       },
     );
 

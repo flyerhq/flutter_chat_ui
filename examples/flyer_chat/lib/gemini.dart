@@ -68,11 +68,10 @@ class GeminiState extends State<Gemini> {
     );
 
     _chatSession = _model.startChat(
-      history:
-          _chatController.messages
-              .whereType<TextMessage>()
-              .map((message) => Content.text(message.text))
-              .toList(),
+      history: _chatController.messages
+          .whereType<TextMessage>()
+          .map((message) => Content.text(message.text))
+          .toList(),
     );
   }
 
@@ -159,24 +158,23 @@ class GeminiState extends State<Gemini> {
                   showTime: false,
                   showStatus: false,
                 ),
-            composerBuilder:
-                (context) => CustomComposer(
-                  isStreaming: _isStreaming,
-                  onStop: _stopCurrentStream,
-                  topWidget: ComposerActionBar(
-                    buttons: [
-                      ComposerActionButton(
-                        icon: Icons.delete_sweep,
-                        title: 'Clear all',
-                        onPressed: () {
-                          _chatController.setMessages([]);
-                          _chatSession = _model.startChat();
-                        },
-                        destructive: true,
-                      ),
-                    ],
+            composerBuilder: (context) => CustomComposer(
+              isStreaming: _isStreaming,
+              onStop: _stopCurrentStream,
+              topWidget: ComposerActionBar(
+                buttons: [
+                  ComposerActionButton(
+                    icon: Icons.delete_sweep,
+                    title: 'Clear all',
+                    onPressed: () {
+                      _chatController.setMessages([]);
+                      _chatSession = _model.startChat();
+                    },
+                    destructive: true,
                   ),
-                ),
+                ],
+              ),
+            ),
             textMessageBuilder:
                 (
                   context,
@@ -190,55 +188,53 @@ class GeminiState extends State<Gemini> {
                   showTime: false,
                   showStatus: false,
                   receivedBackgroundColor: Colors.transparent,
-                  padding:
-                      message.authorId == _agent.id
-                          ? EdgeInsets.zero
-                          : const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                ),
-            textStreamMessageBuilder: (
-              context,
-              message,
-              index, {
-              required bool isSentByMe,
-              MessageGroupStatus? groupStatus,
-            }) {
-              // Watch the manager for state updates
-              final streamState = context.watch<GeminiStreamManager>().getState(
-                message.streamId,
-              );
-              // Return the stream message widget, passing the state
-              return FlyerChatTextStreamMessage(
-                message: message,
-                index: index,
-                streamState: streamState,
-                chunkAnimationDuration: _kChunkAnimationDuration,
-                showTime: false,
-                showStatus: false,
-                receivedBackgroundColor: Colors.transparent,
-                padding:
-                    message.authorId == _agent.id
-                        ? EdgeInsets.zero
-                        : const EdgeInsets.symmetric(
+                  padding: message.authorId == _agent.id
+                      ? EdgeInsets.zero
+                      : const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 10,
                         ),
-              );
-            },
+                ),
+            textStreamMessageBuilder:
+                (
+                  context,
+                  message,
+                  index, {
+                  required bool isSentByMe,
+                  MessageGroupStatus? groupStatus,
+                }) {
+                  // Watch the manager for state updates
+                  final streamState = context
+                      .watch<GeminiStreamManager>()
+                      .getState(message.streamId);
+                  // Return the stream message widget, passing the state
+                  return FlyerChatTextStreamMessage(
+                    message: message,
+                    index: index,
+                    streamState: streamState,
+                    chunkAnimationDuration: _kChunkAnimationDuration,
+                    showTime: false,
+                    showStatus: false,
+                    receivedBackgroundColor: Colors.transparent,
+                    padding: message.authorId == _agent.id
+                        ? EdgeInsets.zero
+                        : const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                  );
+                },
           ),
           chatController: _chatController,
           crossCache: _crossCache,
           currentUserId: _currentUser.id,
           onAttachmentTap: _handleAttachmentTap,
           onMessageSend: _handleMessageSend,
-          resolveUser:
-              (id) => Future.value(switch (id) {
-                'me' => _currentUser,
-                'agent' => _agent,
-                _ => null,
-              }),
+          resolveUser: (id) => Future.value(switch (id) {
+            'me' => _currentUser,
+            'agent' => _agent,
+            _ => null,
+          }),
           theme: ChatTheme.fromThemeData(theme),
         ),
       ),
@@ -340,9 +336,8 @@ class GeminiState extends State<Gemini> {
               if (reachedTarget) return; // Already scrolled to target
 
               // Store initial extent after first chunk caused rebuild
-              initialExtent ??=
-                  _initialScrollExtents[streamId] =
-                      _scrollController.position.maxScrollExtent;
+              initialExtent ??= _initialScrollExtents[streamId] =
+                  _scrollController.position.maxScrollExtent;
 
               // Only scroll if the list is scrollable
               if (initialExtent > 0) {
@@ -489,10 +484,10 @@ class _CustomComposerState extends State<CustomComposer> {
                   children: [
                     onAttachmentTap != null
                         ? IconButton(
-                          icon: const Icon(Icons.attachment),
-                          color: theme.onSurface.withValues(alpha: 0.5),
-                          onPressed: onAttachmentTap,
-                        )
+                            icon: const Icon(Icons.attachment),
+                            color: theme.onSurface.withValues(alpha: 0.5),
+                            onPressed: onAttachmentTap,
+                          )
                         : const SizedBox.shrink(),
                     const SizedBox(width: 8),
                     Expanded(
@@ -528,15 +523,13 @@ class _CustomComposerState extends State<CustomComposer> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon:
-                          widget.isStreaming
-                              ? const Icon(Icons.stop_circle)
-                              : const Icon(Icons.send),
+                      icon: widget.isStreaming
+                          ? const Icon(Icons.stop_circle)
+                          : const Icon(Icons.send),
                       color: theme.onSurface.withValues(alpha: 0.5),
-                      onPressed:
-                          widget.isStreaming
-                              ? widget.onStop
-                              : () => _handleSubmitted(_textController.text),
+                      onPressed: widget.isStreaming
+                          ? widget.onStop
+                          : () => _handleSubmitted(_textController.text),
                     ),
                   ],
                 ),

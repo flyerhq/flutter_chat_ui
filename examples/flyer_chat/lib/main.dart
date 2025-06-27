@@ -119,13 +119,12 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                             if (mounted && context.mounted) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder:
-                                      (context) => Api(
-                                        currentUserId: _currentUserId,
-                                        chatId: _chatIdController.text,
-                                        initialMessages: messages,
-                                        dio: _dio,
-                                      ),
+                                  builder: (context) => Api(
+                                    currentUserId: _currentUserId,
+                                    chatId: _chatIdController.text,
+                                    initialMessages: messages,
+                                    dio: _dio,
+                                  ),
                                 ),
                               );
                             }
@@ -144,8 +143,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                                     actions: <Widget>[
                                       TextButton(
                                         child: const Text('OK'),
-                                        onPressed:
-                                            () => Navigator.of(context).pop(),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
                                       ),
                                     ],
                                   );
@@ -244,10 +243,8 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder:
-                          (context) => Gemini(
-                            geminiApiKey: _geminiApiKeyController.text,
-                          ),
+                      builder: (context) =>
+                          Gemini(geminiApiKey: _geminiApiKeyController.text),
                     ),
                   );
                 },

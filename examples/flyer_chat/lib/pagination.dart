@@ -15,24 +15,23 @@ class Pagination extends StatefulWidget {
 
 class PaginationState extends State<Pagination> {
   final _chatController = InMemoryChatController(
-    messages:
-        List.generate(20, (i) {
-          final random = Random();
-          final numLines = random.nextInt(4) + 1;
-          final text = List.generate(
-            numLines,
-            (lineIndex) => 'Message ${i + 1} - Line ${lineIndex + 1}',
-          ).join('\n');
-          return Message.text(
-            id: (i + 1).toString(),
-            authorId: 'me',
-            createdAt: DateTime.fromMillisecondsSinceEpoch(
-              1736893310000 - ((20 - i) * 1000),
-              isUtc: true,
-            ),
-            text: text,
-          );
-        }).reversed.toList(),
+    messages: List.generate(20, (i) {
+      final random = Random();
+      final numLines = random.nextInt(4) + 1;
+      final text = List.generate(
+        numLines,
+        (lineIndex) => 'Message ${i + 1} - Line ${lineIndex + 1}',
+      ).join('\n');
+      return Message.text(
+        id: (i + 1).toString(),
+        authorId: 'me',
+        createdAt: DateTime.fromMillisecondsSinceEpoch(
+          1736893310000 - ((20 - i) * 1000),
+          isUtc: true,
+        ),
+        text: text,
+      );
+    }).reversed.toList(),
   );
   final _currentUser = const User(id: 'me');
 
@@ -60,36 +59,34 @@ class PaginationState extends State<Pagination> {
               onEndReached: _loadMore,
             );
           },
-          composerBuilder:
-              (context) => CustomComposer(
-                topWidget: ComposerActionBar(
-                  buttons: [
-                    ComposerActionButton(
-                      icon: Icons.call_to_action,
-                      title: 'Scroll to 1',
-                      onPressed: () => _scrollToMessage('1'),
-                    ),
-                    ComposerActionButton(
-                      icon: Icons.call_to_action,
-                      title: 'Scroll to 40',
-                      onPressed: () => _scrollToMessage('40'),
-                    ),
-                    ComposerActionButton(
-                      icon: Icons.call_to_action,
-                      title: 'Scroll to 80',
-                      onPressed: () => _scrollToMessage('80'),
-                    ),
-                  ],
+          composerBuilder: (context) => CustomComposer(
+            topWidget: ComposerActionBar(
+              buttons: [
+                ComposerActionButton(
+                  icon: Icons.call_to_action,
+                  title: 'Scroll to 1',
+                  onPressed: () => _scrollToMessage('1'),
                 ),
-              ),
+                ComposerActionButton(
+                  icon: Icons.call_to_action,
+                  title: 'Scroll to 40',
+                  onPressed: () => _scrollToMessage('40'),
+                ),
+                ComposerActionButton(
+                  icon: Icons.call_to_action,
+                  title: 'Scroll to 80',
+                  onPressed: () => _scrollToMessage('80'),
+                ),
+              ],
+            ),
+          ),
         ),
         chatController: _chatController,
         currentUserId: _currentUser.id,
-        resolveUser:
-            (id) => Future.value(switch (id) {
-              'me' => _currentUser,
-              _ => null,
-            }),
+        resolveUser: (id) => Future.value(switch (id) {
+          'me' => _currentUser,
+          _ => null,
+        }),
         theme: ChatTheme.fromThemeData(theme),
       ),
     );
@@ -188,10 +185,9 @@ class MockDatabase {
   }) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
-    final start =
-        lastMessageId == null
-            ? 0
-            : _messages.indexWhere((m) => m.id == lastMessageId) + 1;
+    final start = lastMessageId == null
+        ? 0
+        : _messages.indexWhere((m) => m.id == lastMessageId) + 1;
 
     if (start >= _messages.length) return [];
 
