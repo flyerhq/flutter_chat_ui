@@ -17,10 +17,10 @@ dependencies:
     sdk: flutter
   flutter_chat_core: ^2.6.1
   image: ^4.5.4
-  provider: ^6.1.4
+  provider: ^6.1.5
   thumbhash: ^0.1.0+1
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

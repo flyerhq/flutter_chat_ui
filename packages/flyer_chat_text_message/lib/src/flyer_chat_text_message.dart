@@ -65,7 +65,7 @@ class FlyerChatTextMessage extends StatelessWidget {
   final EdgeInsetsGeometry? timeAndStatusPositionInlineInsets;
 
   /// The callback function to handle link clicks.
-  final void Function(String url, String title)? onLinkTab;
+  final void Function(String url, String title)? onLinkTap;
 
   /// The position of the link preview widget relative to the text.
   /// If set to [LinkPreviewPosition.none], the link preview widget will not be displayed.
@@ -90,7 +90,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.timeAndStatusPositionInlineInsets = const EdgeInsets.only(bottom: 2),
-    this.onLinkTab,
+    this.onLinkTap,
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
   });
 
@@ -131,7 +131,7 @@ class FlyerChatTextMessage extends StatelessWidget {
           _isOnlyEmoji
               ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
               : paragraphStyle,
-      onLinkTab: onLinkTab,
+      onLinkTap: onLinkTap,
     );
 
     final linkPreviewWidget =

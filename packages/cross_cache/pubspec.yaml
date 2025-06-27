@@ -16,11 +16,11 @@ dependencies:
   dio: ^5.8.0+1
   flutter:
     sdk: flutter
-  idb_shim: ^2.6.5+1
+  idb_shim: ^2.6.6+2
   path_provider: ^2.1.5
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
   http_mock_adapter: ^0.6.1

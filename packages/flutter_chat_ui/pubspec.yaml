@@ -16,10 +16,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.6.1
-  provider: ^6.1.4
-  scrollview_observer: ^1.26.0
+  provider: ^6.1.5
+  scrollview_observer: ^1.26.1
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
