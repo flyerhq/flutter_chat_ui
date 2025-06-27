@@ -2,14 +2,32 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 
 /// Callback signature for when a message is tapped.
+/// [context] is the BuildContext from the widget tree where the tap occurs.
 /// Provides the tapped [message], its [index], and [TapUpDetails].
 typedef OnMessageTapCallback =
-    void Function(Message message, {int index, TapUpDetails details});
+    void Function(
+      BuildContext context,
+      Message message, {
+      int index,
+      TapUpDetails details,
+    });
+
+/// Callback signature for when a message is double tapped.
+/// [context] is the BuildContext from the widget tree where the tap occurs.
+/// Provides the tapped [message], its [index]
+typedef OnMessageDoubleTapCallback =
+    void Function(BuildContext context, Message message, {int index});
 
 /// Callback signature for when a message is long-pressed.
+/// [context] is the BuildContext from the widget tree where the long press occurs.
 /// Provides the long-pressed [message], its [index], and [LongPressStartDetails].
 typedef OnMessageLongPressCallback =
-    void Function(Message message, {int index, LongPressStartDetails details});
+    void Function(
+      BuildContext context,
+      Message message, {
+      int index,
+      LongPressStartDetails details,
+    });
 
 /// Callback signature for when the user attempts to send a message.
 /// Provides the [text] entered by the user.
