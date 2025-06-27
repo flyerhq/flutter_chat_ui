@@ -125,11 +125,32 @@ class HiveChatController
   }
 }
 
-// ignore: unintended_html_in_doc_comment
-/// Efficient type conversion for Map<dynamic, dynamic> to Map<String, dynamic>
+/// Recursively converts a map with dynamic keys and values to a map with String keys.
+/// It's optimized to avoid creating new maps if no conversion is needed.
 Map<String, dynamic> _convertMap(dynamic map) {
   if (map is Map<String, dynamic>) {
-    return map;
+    Map<String, dynamic>? newMap;
+    for (final entry in map.entries) {
+      final value = entry.value;
+      if (value is Map) {
+        final convertedValue = _convertMap(value);
+        if (convertedValue != value) {
+          newMap ??= Map<String, dynamic>.of(map);
+          newMap[entry.key] = convertedValue;
+        }
+      }
+    }
+    return newMap ?? map;
   }
-  return Map<String, dynamic>.from(map);
+
+  final convertedMap = Map<String, dynamic>.from(map as Map);
+
+  for (final key in convertedMap.keys) {
+    final value = convertedMap[key];
+    if (value is Map) {
+      convertedMap[key] = _convertMap(value);
+    }
+  }
+
+  return convertedMap;
 }
