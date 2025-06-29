@@ -1,3 +1,7 @@
+## 2.6.1
+
+ - **FIX**: add sendButtonDisabled and sendButtonHidden [#828](https://github.com/flyerhq/flutter_chat_ui/issues/828). ([d476dd45](https://github.com/flyerhq/flutter_chat_ui/commit/d476dd4502df51148621577f9c66843cd3a067ab))
+
 ## 2.6.0
 
  - **FIX**: scrollToIndex does not work when starting with an empty list [#793](https://github.com/flyerhq/flutter_chat_ui/issues/793). ([1948c1f5](https://github.com/flyerhq/flutter_chat_ui/commit/1948c1f5c421d40ee8d276230eec295ca6b41d05))
