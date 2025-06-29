@@ -120,6 +120,18 @@ class Composer extends StatefulWidget {
   /// `disabled` modes still requires text to be present.
   final bool allowEmptyMessage;
 
+  /// Whether to disable the send button.
+  ///
+  /// If `true`, this will override [sendButtonVisibilityMode] and show a
+  /// disabled button. Defaults to `false`.
+  final bool sendButtonDisabled;
+
+  /// Whether to always hide the send button.
+  ///
+  /// If `true`, this will override all other send button-related properties
+  /// and hide the button. Defaults to `false`.
+  final bool sendButtonHidden;
+
   /// Creates a message composer widget.
   const Composer({
     super.key,
@@ -161,6 +173,8 @@ class Composer extends StatefulWidget {
     this.maxLines = 3,
     this.sendButtonVisibilityMode = SendButtonVisibilityMode.disabled,
     this.allowEmptyMessage = false,
+    this.sendButtonDisabled = false,
+    this.sendButtonHidden = false,
   });
 
   @override
@@ -302,41 +316,43 @@ class _ComposerState extends State<Composer> {
                   ),
                 ),
                 SizedBox(width: widget.gap),
-                widget.sendIcon != null
-                    ? ValueListenableBuilder<bool>(
-                      valueListenable: _hasTextNotifier,
-                      builder: (context, hasText, child) {
-                        if (widget.sendButtonVisibilityMode ==
-                                SendButtonVisibilityMode.hidden &&
-                            !hasText) {
-                          return const SizedBox.shrink();
-                        }
+                if (widget.sendIcon != null && !widget.sendButtonHidden)
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _hasTextNotifier,
+                    builder: (context, hasText, child) {
+                      if (widget.sendButtonVisibilityMode ==
+                              SendButtonVisibilityMode.hidden &&
+                          !hasText) {
+                        return const SizedBox.shrink();
+                      }
 
-                        final isActive =
-                            hasText ||
-                            widget.sendButtonVisibilityMode ==
-                                SendButtonVisibilityMode.always;
+                      final isActive =
+                          (hasText ||
+                              widget.sendButtonVisibilityMode ==
+                                  SendButtonVisibilityMode.always) &&
+                          !widget.sendButtonDisabled;
 
-                        return IconButton(
-                          icon: widget.sendIcon!,
-                          color:
-                              isActive
-                                  ? (widget.sendIconColor ??
-                                      theme.onSurface.withValues(alpha: 0.5))
-                                  : (widget.emptyFieldSendIconColor ??
-                                      widget.sendIconColor ??
-                                      theme.onSurface.withValues(alpha: 0.5)),
-                          onPressed:
-                              (widget.sendButtonVisibilityMode ==
-                                          SendButtonVisibilityMode.disabled &&
-                                      !hasText)
-                                  ? null
-                                  : () =>
-                                      _handleSubmitted(_textController.text),
-                        );
-                      },
-                    )
-                    : const SizedBox.shrink(),
+                      return IconButton(
+                        icon: widget.sendIcon!,
+                        color:
+                            isActive
+                                ? (widget.sendIconColor ??
+                                    theme.onSurface.withValues(alpha: 0.5))
+                                : (widget.emptyFieldSendIconColor ??
+                                    widget.sendIconColor ??
+                                    theme.onSurface.withValues(alpha: 0.5)),
+                        onPressed:
+                            (widget.sendButtonVisibilityMode ==
+                                            SendButtonVisibilityMode.disabled &&
+                                        !hasText) ||
+                                    widget.sendButtonDisabled
+                                ? null
+                                : () => _handleSubmitted(_textController.text),
+                      );
+                    },
+                  )
+                else
+                  const SizedBox.shrink(),
               ],
             ),
           ),
