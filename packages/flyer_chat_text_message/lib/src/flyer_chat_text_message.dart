@@ -49,6 +49,12 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// Text style for messages received from other users.
   final TextStyle? receivedTextStyle;
 
+  /// The color of the links in the sent messages.
+  final Color? sentLinksColor;
+
+  /// The color of the links in the received messages.
+  final Color? receivedLinksColor;
+
   /// Text style for the message timestamp and status.
   final TextStyle? timeStyle;
 
@@ -85,6 +91,8 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.receivedBackgroundColor,
     this.sentTextStyle,
     this.receivedTextStyle,
+    this.sentLinksColor,
+    this.receivedLinksColor,
     this.timeStyle,
     this.showTime = true,
     this.showStatus = true,
@@ -125,13 +133,19 @@ class FlyerChatTextMessage extends StatelessWidget {
             )
             : null;
 
-    final textContent = GptMarkdown(
-      message.text,
-      style:
-          _isOnlyEmoji
-              ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
-              : paragraphStyle,
-      onLinkTap: onLinkTap,
+    final textContent = GptMarkdownTheme(
+      gptThemeData: GptMarkdownTheme.of(context).copyWith(
+        linkColor: isSentByMe ? sentLinksColor : receivedLinksColor,
+        linkHoverColor: isSentByMe ? sentLinksColor : receivedLinksColor,
+      ),
+      child: GptMarkdown(
+        message.text,
+        style:
+            _isOnlyEmoji
+                ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+                : paragraphStyle,
+        onLinkTap: onLinkTap,
+      ),
     );
 
     final linkPreviewWidget =
