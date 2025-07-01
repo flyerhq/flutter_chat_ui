@@ -88,6 +88,9 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
   /// The rendering mode for the text content.
   final TextStreamMessageMode mode;
 
+  /// The callback function to handle link clicks.
+  final void Function(String url, String title)? onLinkTap;
+
   /// Creates a widget to display a streaming text message.
   const FlyerChatTextStreamMessage({
     super.key,
@@ -106,6 +109,7 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.chunkAnimationDuration = const Duration(milliseconds: 350),
     this.mode = TextStreamMessageMode.animatedOpacity,
+    this.onLinkTap,
   });
 
   @override
@@ -339,7 +343,11 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
 
     if (widget.streamState is StreamStateCompleted) {
       final state = widget.streamState as StreamStateCompleted;
-      return GptMarkdown(state.finalText, style: paragraphStyle);
+      return GptMarkdown(
+        state.finalText,
+        style: paragraphStyle,
+        onLinkTap: widget.onLinkTap,
+      );
     }
 
     // Build RichText from segments for Streaming state
