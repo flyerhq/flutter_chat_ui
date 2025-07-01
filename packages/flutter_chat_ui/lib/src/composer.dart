@@ -399,5 +399,6 @@ class _ComposerState extends State<Composer> {
       _hasTextNotifier.value = false;
       _textController.clear();
     }
+    _hasTextNotifier.value = false;
   }
 }
