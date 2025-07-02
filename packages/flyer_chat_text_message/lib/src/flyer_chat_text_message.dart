@@ -153,6 +153,7 @@ class FlyerChatTextMessage extends StatelessWidget {
             ? context.read<Builders>().linkPreviewBuilder?.call(
               context,
               message,
+              isSentByMe,
             )
             : null;
 
@@ -165,9 +166,6 @@ class FlyerChatTextMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (linkPreviewWidget != null &&
-                linkPreviewPosition == LinkPreviewPosition.top)
-              linkPreviewWidget,
             Container(
               padding:
                   _isOnlyEmoji
@@ -181,11 +179,9 @@ class FlyerChatTextMessage extends StatelessWidget {
                 textContent: textContent,
                 timeAndStatus: timeAndStatus,
                 paragraphStyle: paragraphStyle,
+                linkPreviewWidget: linkPreviewWidget,
               ),
             ),
-            if (linkPreviewWidget != null &&
-                linkPreviewPosition == LinkPreviewPosition.bottom)
-              linkPreviewWidget,
           ],
         ),
       ),
@@ -197,50 +193,57 @@ class FlyerChatTextMessage extends StatelessWidget {
     required Widget textContent,
     TimeAndStatus? timeAndStatus,
     TextStyle? paragraphStyle,
+    Widget? linkPreviewWidget,
   }) {
-    if (timeAndStatus == null) {
-      return textContent;
-    }
-
     final textDirection = Directionality.of(context);
+    final effectiveLinkPreviewPosition =
+        linkPreviewWidget != null
+            ? linkPreviewPosition
+            : LinkPreviewPosition.none;
 
-    switch (timeAndStatusPosition) {
-      case TimeAndStatusPosition.start:
-        return Column(
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [textContent, timeAndStatus],
-        );
-      case TimeAndStatusPosition.inline:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Flexible(child: textContent),
-            const SizedBox(width: 4),
-            Padding(
-              padding: timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
-              child: timeAndStatus,
-            ),
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.top)
+              linkPreviewWidget!,
+            timeAndStatusPosition == TimeAndStatusPosition.inline
+                ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Flexible(child: textContent),
+                    SizedBox(width: 4),
+                    Padding(
+                      padding:
+                          timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
+                      child: timeAndStatus,
+                    ),
+                  ],
+                )
+                : textContent,
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
+              linkPreviewWidget!,
+            if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
           ],
-        );
-      case TimeAndStatusPosition.end:
-        return Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: paragraphStyle?.lineHeight ?? 0),
-              child: textContent,
-            ),
-            Opacity(opacity: 0, child: timeAndStatus),
-            Positioned.directional(
-              textDirection: textDirection,
-              end: 0,
-              bottom: 0,
-              child: timeAndStatus,
-            ),
-          ],
-        );
-    }
+        ),
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
+            start:
+                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            bottom: 0,
+            child: timeAndStatus,
+          ),
+      ],
+    );
   }
 
   Color? _resolveBackgroundColor(bool isSentByMe, _LocalTheme theme) {
@@ -267,12 +270,6 @@ class FlyerChatTextMessage extends StatelessWidget {
     }
     return timeStyle ?? theme.labelSmall.copyWith(color: theme.onSurface);
   }
-}
-
-/// Internal extension for calculating the visual line height of a TextStyle.
-extension on TextStyle {
-  /// Calculates the line height based on the style's `height` and `fontSize`.
-  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }
 
 /// A widget to display the message timestamp and status indicator.
