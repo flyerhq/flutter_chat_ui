@@ -66,6 +66,7 @@ Future<Message> createMessage(
       message = FileMessage(
         id: uuid.v4(),
         name: 'image.png',
+        text: 'This is a file message',
         authorId: authorId,
         createdAt: DateTime.now().toUtc(),
         sentAt: localOnly == true ? DateTime.now().toUtc() : null,
