@@ -295,121 +295,129 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
           children: [
             if (widget.topWidgets != null) ...widget.topWidgets!,
             Flexible(
-              child: AspectRatio(
-                aspectRatio: _aspectRatio,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    _placeholderProvider != null
-                        ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
-                        : Container(
-                          color:
-                              widget.placeholderColor ??
-                              theme.surfaceContainerLow,
-                        ),
-                    Image(
-                      image: _imageProvider,
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
-
-                        return Container(
-                          color:
-                              widget.loadingOverlayColor ??
-                              theme.surfaceContainerLow.withValues(alpha: 0.5),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color:
-                                  widget.loadingIndicatorColor ??
-                                  theme.onSurface.withValues(alpha: 0.8),
-                              strokeCap: StrokeCap.round,
-                              value:
-                                  loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                            ),
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: _aspectRatio,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      _placeholderProvider != null
+                          ? Image(
+                            image: _placeholderProvider!,
+                            fit: BoxFit.fill,
+                          )
+                          : Container(
+                            color:
+                                widget.placeholderColor ??
+                                theme.surfaceContainerLow,
                           ),
-                        );
-                      },
-                      frameBuilder: (
-                        context,
-                        child,
-                        frame,
-                        wasSynchronouslyLoaded,
-                      ) {
-                        var content = child;
-
-                        if (widget.overlay != null &&
-                            widget.message.hasOverlay == true &&
-                            frame != null) {
-                          content = Stack(
-                            fit: StackFit.expand,
-                            children: [child, widget.overlay!],
-                          );
-                        }
-
-                        if (wasSynchronouslyLoaded) {
-                          return content;
-                        }
-
-                        return AnimatedOpacity(
-                          duration: const Duration(milliseconds: 250),
-                          opacity: frame == null ? 0 : 1,
-                          curve: Curves.linearToEaseOut,
-                          child: content,
-                        );
-                      },
-                      errorBuilder: widget.errorBuilder,
-                    ),
-                    if (_chatController is UploadProgressMixin)
-                      StreamBuilder<double>(
-                        stream: (_chatController as UploadProgressMixin)
-                            .getUploadProgress(widget.message.id),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData || snapshot.data! >= 1) {
-                            return const SizedBox();
+                      Image(
+                        image: _imageProvider,
+                        fit: BoxFit.fill,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
                           }
 
                           return Container(
                             color:
-                                widget.uploadOverlayColor ??
+                                widget.loadingOverlayColor ??
                                 theme.surfaceContainerLow.withValues(
                                   alpha: 0.5,
                                 ),
                             child: Center(
                               child: CircularProgressIndicator(
                                 color:
-                                    widget.uploadIndicatorColor ??
+                                    widget.loadingIndicatorColor ??
                                     theme.onSurface.withValues(alpha: 0.8),
                                 strokeCap: StrokeCap.round,
-                                value: snapshot.data,
+                                value:
+                                    loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
                               ),
                             ),
                           );
                         },
+                        frameBuilder: (
+                          context,
+                          child,
+                          frame,
+                          wasSynchronouslyLoaded,
+                        ) {
+                          var content = child;
+
+                          if (widget.overlay != null &&
+                              widget.message.hasOverlay == true &&
+                              frame != null) {
+                            content = Stack(
+                              fit: StackFit.expand,
+                              children: [child, widget.overlay!],
+                            );
+                          }
+
+                          if (wasSynchronouslyLoaded) {
+                            return content;
+                          }
+
+                          return AnimatedOpacity(
+                            duration: const Duration(milliseconds: 250),
+                            opacity: frame == null ? 0 : 1,
+                            curve: Curves.linearToEaseOut,
+                            child: content,
+                          );
+                        },
+                        errorBuilder: widget.errorBuilder,
                       ),
-                    if (timeAndStatus != null && widget.message.text == null)
-                      Positioned.directional(
-                        textDirection: textDirection,
-                        bottom: 8,
-                        end:
-                            widget.timeAndStatusPosition ==
-                                        TimeAndStatusPosition.end ||
-                                    widget.timeAndStatusPosition ==
-                                        TimeAndStatusPosition.inline
-                                ? 8
-                                : null,
-                        start:
-                            widget.timeAndStatusPosition ==
-                                    TimeAndStatusPosition.start
-                                ? 8
-                                : null,
-                        child: timeAndStatus,
-                      ),
-                  ],
+                      if (_chatController is UploadProgressMixin)
+                        StreamBuilder<double>(
+                          stream: (_chatController as UploadProgressMixin)
+                              .getUploadProgress(widget.message.id),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data! >= 1) {
+                              return const SizedBox();
+                            }
+
+                            return Container(
+                              color:
+                                  widget.uploadOverlayColor ??
+                                  theme.surfaceContainerLow.withValues(
+                                    alpha: 0.5,
+                                  ),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color:
+                                      widget.uploadIndicatorColor ??
+                                      theme.onSurface.withValues(alpha: 0.8),
+                                  strokeCap: StrokeCap.round,
+                                  value: snapshot.data,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      if (timeAndStatus != null && widget.message.text == null)
+                        Positioned.directional(
+                          textDirection: textDirection,
+                          bottom: 8,
+                          end:
+                              widget.timeAndStatusPosition ==
+                                          TimeAndStatusPosition.end ||
+                                      widget.timeAndStatusPosition ==
+                                          TimeAndStatusPosition.inline
+                                  ? 8
+                                  : null,
+                          start:
+                              widget.timeAndStatusPosition ==
+                                      TimeAndStatusPosition.start
+                                  ? 8
+                                  : null,
+                          child: timeAndStatus,
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
