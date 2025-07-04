@@ -280,160 +280,192 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                           Colors.black.withValues(alpha: 0.6)
                       : null,
               textStyle: _resolveTimeStyle(isSentByMe, theme),
-              padding: widget.message.text == null ? null : EdgeInsets.zero,
+              padding:
+                  widget.message.text == null
+                      ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
+                      : EdgeInsets.zero,
             )
             : null;
+
+    final Widget imageContent = AspectRatio(
+      aspectRatio: _aspectRatio,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          _placeholderProvider != null
+              ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
+              : Container(
+                color: widget.placeholderColor ?? theme.surfaceContainerLow,
+              ),
+          Image(
+            image: _imageProvider,
+            fit: BoxFit.fill,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+
+              return Container(
+                color:
+                    widget.loadingOverlayColor ??
+                    theme.surfaceContainerLow.withValues(alpha: 0.5),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color:
+                        widget.loadingIndicatorColor ??
+                        theme.onSurface.withValues(alpha: 0.8),
+                    strokeCap: StrokeCap.round,
+                    value:
+                        loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                  ),
+                ),
+              );
+            },
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              var content = child;
+
+              if (widget.overlay != null &&
+                  widget.message.hasOverlay == true &&
+                  frame != null) {
+                content = Stack(
+                  fit: StackFit.expand,
+                  children: [child, widget.overlay!],
+                );
+              }
+
+              if (wasSynchronouslyLoaded) {
+                return content;
+              }
+
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 250),
+                opacity: frame == null ? 0 : 1,
+                curve: Curves.linearToEaseOut,
+                child: content,
+              );
+            },
+            errorBuilder: widget.errorBuilder,
+          ),
+          if (_chatController is UploadProgressMixin)
+            StreamBuilder<double>(
+              stream: (_chatController as UploadProgressMixin)
+                  .getUploadProgress(widget.message.id),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || snapshot.data! >= 1) {
+                  return const SizedBox();
+                }
+
+                return Container(
+                  color:
+                      widget.uploadOverlayColor ??
+                      theme.surfaceContainerLow.withValues(alpha: 0.5),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color:
+                          widget.uploadIndicatorColor ??
+                          theme.onSurface.withValues(alpha: 0.8),
+                      strokeCap: StrokeCap.round,
+                      value: snapshot.data,
+                    ),
+                  ),
+                );
+              },
+            ),
+          if (timeAndStatus != null && widget.message.text == null)
+            Positioned.directional(
+              textDirection: textDirection,
+              bottom: 8,
+              end:
+                  widget.timeAndStatusPosition == TimeAndStatusPosition.end ||
+                          widget.timeAndStatusPosition ==
+                              TimeAndStatusPosition.inline
+                      ? 8
+                      : null,
+              start:
+                  widget.timeAndStatusPosition == TimeAndStatusPosition.start
+                      ? 8
+                      : null,
+              child: timeAndStatus,
+            ),
+        ],
+      ),
+    );
+
+    final Widget content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.topWidgets != null) ...widget.topWidgets!,
+        Flexible(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [Expanded(child: imageContent)],
+          ),
+        ),
+        if (widget.message.text != null)
+          Padding(
+            padding: widget.textPadding!,
+            child: _buildTextContentBasedOnPosition(
+              context: context,
+              text: widget.message.text!,
+              timeAndStatus: timeAndStatus,
+              paragraphStyle: _resolveParagraphStyle(isSentByMe, theme),
+            ),
+          ),
+        if (widget.timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            widget.message.text != null)
+          // Ensure the  width is not smaller than the timeAndStatus widget
+          // Ensure the height accounts for it's height
+          Opacity(opacity: 0, child: timeAndStatus),
+      ],
+    );
 
     return ClipRRect(
       borderRadius: widget.borderRadius ?? theme.shape,
       child: Container(
         constraints: widget.constraints,
         color: _resolveBackgroundColor(isSentByMe, theme),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (widget.topWidgets != null) ...widget.topWidgets!,
-            Flexible(
-              child: Center(
-                child: AspectRatio(
-                  aspectRatio: _aspectRatio,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      _placeholderProvider != null
-                          ? Image(
-                            image: _placeholderProvider!,
-                            fit: BoxFit.fill,
-                          )
-                          : Container(
-                            color:
-                                widget.placeholderColor ??
-                                theme.surfaceContainerLow,
-                          ),
-                      Image(
-                        image: _imageProvider,
-                        fit: BoxFit.fill,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-
-                          return Container(
-                            color:
-                                widget.loadingOverlayColor ??
-                                theme.surfaceContainerLow.withValues(
-                                  alpha: 0.5,
-                                ),
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color:
-                                    widget.loadingIndicatorColor ??
-                                    theme.onSurface.withValues(alpha: 0.8),
-                                strokeCap: StrokeCap.round,
-                                value:
-                                    loadingProgress.expectedTotalBytes != null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                              ),
-                            ),
-                          );
-                        },
-                        frameBuilder: (
-                          context,
-                          child,
-                          frame,
-                          wasSynchronouslyLoaded,
-                        ) {
-                          var content = child;
-
-                          if (widget.overlay != null &&
-                              widget.message.hasOverlay == true &&
-                              frame != null) {
-                            content = Stack(
-                              fit: StackFit.expand,
-                              children: [child, widget.overlay!],
-                            );
-                          }
-
-                          if (wasSynchronouslyLoaded) {
-                            return content;
-                          }
-
-                          return AnimatedOpacity(
-                            duration: const Duration(milliseconds: 250),
-                            opacity: frame == null ? 0 : 1,
-                            curve: Curves.linearToEaseOut,
-                            child: content,
-                          );
-                        },
-                        errorBuilder: widget.errorBuilder,
-                      ),
-                      if (_chatController is UploadProgressMixin)
-                        StreamBuilder<double>(
-                          stream: (_chatController as UploadProgressMixin)
-                              .getUploadProgress(widget.message.id),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData || snapshot.data! >= 1) {
-                              return const SizedBox();
-                            }
-
-                            return Container(
-                              color:
-                                  widget.uploadOverlayColor ??
-                                  theme.surfaceContainerLow.withValues(
-                                    alpha: 0.5,
-                                  ),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color:
-                                      widget.uploadIndicatorColor ??
-                                      theme.onSurface.withValues(alpha: 0.8),
-                                  strokeCap: StrokeCap.round,
-                                  value: snapshot.data,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      if (timeAndStatus != null && widget.message.text == null)
-                        Positioned.directional(
-                          textDirection: textDirection,
-                          bottom: 8,
-                          end:
-                              widget.timeAndStatusPosition ==
-                                          TimeAndStatusPosition.end ||
-                                      widget.timeAndStatusPosition ==
-                                          TimeAndStatusPosition.inline
-                                  ? 8
-                                  : null,
-                          start:
-                              widget.timeAndStatusPosition ==
-                                      TimeAndStatusPosition.start
-                                  ? 8
-                                  : null,
-                          child: timeAndStatus,
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            if (widget.message.text != null)
-              Padding(
-                padding: widget.textPadding!,
-                child: _buildTextContentBasedOnPosition(
-                  context: context,
-                  text: widget.message.text!,
-                  timeAndStatus: timeAndStatus,
-                  paragraphStyle: _resolveParagraphStyle(isSentByMe, theme),
-                ),
-              ),
-          ],
+        child: _buildContentBasedOnPosition(
+          context,
+          content,
+          timeAndStatus,
+          _resolveParagraphStyle(isSentByMe, theme),
         ),
       ),
+    );
+  }
+
+  Widget _buildContentBasedOnPosition(
+    BuildContext context,
+    Widget content,
+    TimeAndStatus? timeAndStatus,
+    TextStyle? paragraphStyle,
+  ) {
+    final textDirection = Directionality.of(context);
+
+    return Stack(
+      children: [
+        content,
+        if (widget.timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null &&
+            widget.message.text != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            end:
+                widget.timeAndStatusPosition == TimeAndStatusPosition.end
+                    ? widget.textPadding!.horizontal / 2
+                    : null,
+            start:
+                widget.timeAndStatusPosition == TimeAndStatusPosition.start
+                    ? widget.textPadding!.horizontal / 2
+                    : null,
+            bottom: widget.textPadding!.vertical / 2,
+            child: timeAndStatus,
+          ),
+      ],
     );
   }
 
@@ -443,53 +475,23 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     TimeAndStatus? timeAndStatus,
     TextStyle? paragraphStyle,
   }) {
-    final textDirection = Directionality.of(context);
-
-    return Stack(
-      children: [
-        Column(
+    final textContent = Text(text, style: paragraphStyle);
+    return widget.timeAndStatusPosition == TimeAndStatusPosition.inline
+        ? Row(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            widget.timeAndStatusPosition == TimeAndStatusPosition.inline
-                ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(child: Text(text, style: paragraphStyle)),
-                    SizedBox(width: 4),
-                    Padding(
-                      padding:
-                          // TODO? timeAndStatusPositionInlineInsets
-                          EdgeInsets.zero,
-                      child: timeAndStatus,
-                    ),
-                  ],
-                )
-                : Text(text, style: paragraphStyle),
-            if (widget.timeAndStatusPosition != TimeAndStatusPosition.inline)
-              // Ensure the  width is not smaller than the timeAndStatus widget
-              // Ensure the height accounts for it's height
-              Opacity(opacity: 0, child: timeAndStatus),
+            Flexible(child: textContent),
+            SizedBox(width: 4),
+            Padding(
+              padding:
+                  // TODO? timeAndStatusPositionInlineInsets
+                  EdgeInsets.zero,
+              child: timeAndStatus,
+            ),
           ],
-        ),
-        if (widget.timeAndStatusPosition != TimeAndStatusPosition.inline &&
-            timeAndStatus != null)
-          Positioned.directional(
-            textDirection: textDirection,
-            end:
-                widget.timeAndStatusPosition == TimeAndStatusPosition.end
-                    ? 0
-                    : null,
-            start:
-                widget.timeAndStatusPosition == TimeAndStatusPosition.start
-                    ? 0
-                    : null,
-            bottom: 0,
-            child: timeAndStatus,
-          ),
-      ],
-    );
+        )
+        : textContent;
   }
 
   ImageProvider get _targetProvider {
