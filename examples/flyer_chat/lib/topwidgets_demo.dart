@@ -138,7 +138,12 @@ class TopWidgetInBubbleState extends State<TopWidgetInBubble> {
                 index, {
                 required bool isSentByMe,
                 MessageGroupStatus? groupStatus,
-              }) => FlyerChatFileMessage(message: message, index: index),
+              }) => FlyerChatFileMessage(
+                message: message,
+                index: index,
+                topWidgets: [_buildUsername(message, isSentByMe, groupStatus)],
+                timeAndStatusPosition: TimeAndStatusPosition.inline,
+              ),
           chatMessageBuilder:
               (
                 context,

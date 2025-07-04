@@ -15,7 +15,9 @@ Future<Message> createMessage(
   const uuid = Uuid();
   Message message;
 
-  if (Random().nextBool() || textOnly == true || text != null) {
+  final randomType = Random().nextInt(3) + 1; // 1, 2, or 3
+
+  if (randomType == 1 || textOnly == true || text != null) {
     message = TextMessage(
       id: uuid.v4(),
       authorId: authorId,
@@ -50,15 +52,26 @@ Future<Message> createMessage(
       ),
     );
 
-    message = ImageMessage(
-      id: uuid.v4(),
-      authorId: authorId,
-      createdAt: DateTime.now().toUtc(),
-      sentAt: localOnly == true ? DateTime.now().toUtc() : null,
-      source: response.data['img'],
-      thumbhash: response.data['thumbhash'],
-      blurhash: response.data['blurhash'],
-    );
+    if (randomType == 2) {
+      message = ImageMessage(
+        id: uuid.v4(),
+        authorId: authorId,
+        createdAt: DateTime.now().toUtc(),
+        sentAt: localOnly == true ? DateTime.now().toUtc() : null,
+        source: response.data['img'],
+        thumbhash: response.data['thumbhash'],
+        blurhash: response.data['blurhash'],
+      );
+    } else {
+      message = FileMessage(
+        id: uuid.v4(),
+        name: 'image.png',
+        authorId: authorId,
+        createdAt: DateTime.now().toUtc(),
+        sentAt: localOnly == true ? DateTime.now().toUtc() : null,
+        source: response.data['img'],
+      );
+    }
   }
 
   // return ImageMessage(
