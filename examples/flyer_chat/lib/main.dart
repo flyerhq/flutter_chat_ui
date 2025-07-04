@@ -14,6 +14,7 @@ import 'gemini.dart';
 import 'link_preview.dart';
 import 'local.dart';
 import 'pagination.dart';
+import 'topwidgets_demo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -294,6 +295,17 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
                   );
                 },
                 child: const Text('link preview'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TopWidgetInBubble(dio: _dio),
+                    ),
+                  );
+                },
+                child: const Text('Top widgets in bubble'),
               ),
             ],
           ),
