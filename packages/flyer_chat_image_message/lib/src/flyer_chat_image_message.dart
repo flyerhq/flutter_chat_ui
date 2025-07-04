@@ -15,6 +15,8 @@ import 'get_image_dimensions.dart';
 typedef _LocalTheme =
     ({
       TextStyle labelSmall,
+      TextStyle bodyMedium,
+      Color onPrimary,
       Color onSurface,
       Color primary,
       BorderRadiusGeometry shape,
@@ -97,6 +99,15 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// The widgets to display before the message.
   final List<Widget>? topWidgets;
 
+  /// Text style for the accompanying text sent by the current user.
+  final TextStyle? sentTextStyle;
+
+  /// Text style for the accompanying text received from other users.
+  final TextStyle? receivedTextStyle;
+
+  /// Padding for the accompanying text.
+  final EdgeInsetsGeometry? textPadding;
+
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
@@ -121,6 +132,9 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.sentBackgroundColor,
     this.receivedBackgroundColor,
     this.topWidgets,
+    this.sentTextStyle,
+    this.receivedTextStyle,
+    this.textPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
   });
 
   @override
@@ -215,11 +229,35 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     return widget.receivedBackgroundColor ?? theme.surfaceContainer;
   }
 
+  TextStyle? _resolveParagraphStyle(bool isSentByMe, _LocalTheme theme) {
+    if (isSentByMe) {
+      return widget.sentTextStyle ??
+          theme.bodyMedium.copyWith(color: theme.onPrimary);
+    }
+    return widget.receivedTextStyle ??
+        theme.bodyMedium.copyWith(color: theme.onSurface);
+  }
+
+  TextStyle? _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
+    if (isSentByMe) {
+      return widget.timeStyle ??
+          theme.labelSmall.copyWith(
+            color: widget.message.text != null ? theme.onPrimary : Colors.white,
+          );
+    }
+    return widget.timeStyle ??
+        theme.labelSmall.copyWith(
+          color: widget.message.text != null ? theme.onSurface : Colors.white,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.select(
       (ChatTheme t) => (
         labelSmall: t.typography.labelSmall,
+        bodyMedium: t.typography.bodyMedium,
+        onPrimary: t.colors.onPrimary,
         onSurface: t.colors.onSurface,
         primary: t.colors.primary,
         surfaceContainer: t.colors.surfaceContainer,
@@ -237,10 +275,12 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
               showTime: widget.showTime,
               showStatus: isSentByMe && widget.showStatus,
               backgroundColor:
-                  widget.timeBackground ?? Colors.black.withValues(alpha: 0.6),
-              textStyle:
-                  widget.timeStyle ??
-                  theme.labelSmall.copyWith(color: Colors.white),
+                  widget.message.text == null
+                      ? widget.timeBackground ??
+                          Colors.black.withValues(alpha: 0.6)
+                      : null,
+              textStyle: _resolveTimeStyle(isSentByMe, theme),
+              padding: widget.message.text == null ? null : EdgeInsets.zero,
             )
             : null;
 
@@ -351,7 +391,7 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                           );
                         },
                       ),
-                    if (timeAndStatus != null)
+                    if (timeAndStatus != null && widget.message.text == null)
                       Positioned.directional(
                         textDirection: textDirection,
                         bottom: 8,
@@ -373,9 +413,74 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                 ),
               ),
             ),
+            if (widget.message.text != null)
+              Padding(
+                padding: widget.textPadding!,
+                child: _buildTextContentBasedOnPosition(
+                  context: context,
+                  text: widget.message.text!,
+                  timeAndStatus: timeAndStatus,
+                  paragraphStyle: _resolveParagraphStyle(isSentByMe, theme),
+                ),
+              ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTextContentBasedOnPosition({
+    required BuildContext context,
+    required String text,
+    TimeAndStatus? timeAndStatus,
+    TextStyle? paragraphStyle,
+  }) {
+    final textDirection = Directionality.of(context);
+
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.timeAndStatusPosition == TimeAndStatusPosition.inline
+                ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Flexible(child: Text(text, style: paragraphStyle)),
+                    SizedBox(width: 4),
+                    Padding(
+                      padding:
+                          // TODO? timeAndStatusPositionInlineInsets
+                          EdgeInsets.zero,
+                      child: timeAndStatus,
+                    ),
+                  ],
+                )
+                : Text(text, style: paragraphStyle),
+            if (widget.timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
+          ],
+        ),
+        if (widget.timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            end:
+                widget.timeAndStatusPosition == TimeAndStatusPosition.end
+                    ? 0
+                    : null,
+            start:
+                widget.timeAndStatusPosition == TimeAndStatusPosition.start
+                    ? 0
+                    : null,
+            bottom: 0,
+            child: timeAndStatus,
+          ),
+      ],
     );
   }
 
@@ -413,6 +518,9 @@ class TimeAndStatus extends StatelessWidget {
   /// Text style for the time and status.
   final TextStyle? textStyle;
 
+  /// Padding for the time and status container.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a widget for displaying time and status over an image.
   const TimeAndStatus({
     super.key,
@@ -422,6 +530,7 @@ class TimeAndStatus extends StatelessWidget {
     this.showStatus = true,
     this.backgroundColor,
     this.textStyle,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
   });
 
   @override
@@ -429,7 +538,7 @@ class TimeAndStatus extends StatelessWidget {
     final timeFormat = context.watch<DateFormat>();
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: padding,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(12),

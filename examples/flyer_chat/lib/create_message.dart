@@ -56,6 +56,7 @@ Future<Message> createMessage(
       message = ImageMessage(
         id: uuid.v4(),
         authorId: authorId,
+        text: 'This is an image message',
         createdAt: DateTime.now().toUtc(),
         sentAt: localOnly == true ? DateTime.now().toUtc() : null,
         source: response.data['img'],
