@@ -74,6 +74,9 @@ class FlyerChatFileMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text content.
   final TimeAndStatusPosition timeAndStatusPosition;
 
+  /// The widgets to display before the message.
+  final List<Widget>? topWidgets;
+
   /// Creates a widget to display a file message.
   const FlyerChatFileMessage({
     super.key,
@@ -95,6 +98,7 @@ class FlyerChatFileMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.topWidgets,
   });
 
   @override
@@ -190,42 +194,36 @@ class FlyerChatFileMessage extends StatelessWidget {
     required TimeAndStatus? timeAndStatus,
     required TextStyle? textStyle,
   }) {
-    if (timeAndStatus == null ||
-        timeAndStatusPosition == TimeAndStatusPosition.inline) {
-      return fileContent;
-    }
-
     final textDirection = Directionality.of(context);
-    switch (timeAndStatusPosition) {
-      case TimeAndStatusPosition.start:
-        return Column(
+
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [fileContent, timeAndStatus],
-        );
-      case TimeAndStatusPosition.inline:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [fileContent, const SizedBox(width: 4), timeAndStatus],
-        );
-      case TimeAndStatusPosition.end:
-        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: textStyle?.lineHeight ?? 0),
-              child: fileContent,
-            ),
-            Opacity(opacity: 0, child: timeAndStatus),
-            Positioned.directional(
-              textDirection: textDirection,
-              end: 0,
-              bottom: 0,
-              child: timeAndStatus,
-            ),
+            if (topWidgets != null) ...topWidgets!,
+            // In comparison to other messages types, if timeAndStatusPosition is inline,
+            // the fileContent is already a Row with the timeAndStatus widget inside it.
+            fileContent,
+            if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
           ],
-        );
-    }
+        ),
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
+            start:
+                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            bottom: 0,
+            child: timeAndStatus,
+          ),
+      ],
+    );
   }
 
   String _formatFileSize(int sizeInBytes) {
