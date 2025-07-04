@@ -400,10 +400,13 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       children: [
         if (widget.topWidgets != null) ...widget.topWidgets!,
         Flexible(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [Expanded(child: imageContent)],
-          ),
+          child:
+              widget.message.text != null
+                  ? Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [Expanded(child: imageContent)],
+                  )
+                  : imageContent,
         ),
         if (widget.message.text != null)
           Padding(
