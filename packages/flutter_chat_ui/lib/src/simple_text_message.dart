@@ -66,6 +66,9 @@ class SimpleTextMessage extends StatelessWidget {
   /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
   final LinkPreviewPosition linkPreviewPosition;
 
+  /// The widgets to display before the message.
+  final List<Widget>? topWidgets;
+
   /// Creates a widget to display a simple text message.
   const SimpleTextMessage({
     super.key,
@@ -85,6 +88,7 @@ class SimpleTextMessage extends StatelessWidget {
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.timeAndStatusPositionInlineInsets = const EdgeInsets.only(bottom: 2),
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
+    this.topWidgets,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -185,6 +189,7 @@ class SimpleTextMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (topWidgets != null) ...topWidgets!,
             if (effectiveLinkPreviewPosition == LinkPreviewPosition.top)
               linkPreviewWidget!,
             timeAndStatusPosition == TimeAndStatusPosition.inline
