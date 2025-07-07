@@ -703,7 +703,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
           },
         );
       } else {
-        if (_scrollToBottomController.status == AnimationStatus.completed) {
+        if (_scrollToBottomController.status == AnimationStatus.completed ||
+            _scrollToBottomController.status == AnimationStatus.forward) {
           _scrollToBottomController.reverse();
         }
       }

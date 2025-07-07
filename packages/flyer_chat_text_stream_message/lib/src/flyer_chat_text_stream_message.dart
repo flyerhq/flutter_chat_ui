@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'stream_state.dart';
 import 'text_segment.dart';
@@ -91,6 +92,23 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
   /// The callback function to handle link clicks.
   final void Function(String url, String title)? onLinkTap;
 
+  /// The text to display while in the loading state. Defaults to "Thinking".
+  final String loadingText;
+
+  /// The base color for the shimmer loading animation.
+  final Color? shimmerBaseColor;
+
+  /// The highlight color for the shimmer loading animation.
+  final Color? shimmerHighlightColor;
+
+  /// The period of the shimmer loading animation.
+  final Duration shimmerPeriod;
+
+  /// A builder to completely override the default loading widget.
+  /// If provided, `loadingText`, `shimmerBaseColor`, and `shimmerHighlightColor` are ignored.
+  final Widget Function(BuildContext context, TextStyle? paragraphStyle)?
+  loadingBuilder;
+
   /// Creates a widget to display a streaming text message.
   const FlyerChatTextStreamMessage({
     super.key,
@@ -110,6 +128,11 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
     this.chunkAnimationDuration = const Duration(milliseconds: 350),
     this.mode = TextStreamMessageMode.animatedOpacity,
     this.onLinkTap,
+    this.loadingText = 'Thinking',
+    this.shimmerBaseColor,
+    this.shimmerHighlightColor,
+    this.shimmerPeriod = const Duration(milliseconds: 1000),
+    this.loadingBuilder,
   });
 
   @override
@@ -299,7 +322,7 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
             : null;
 
     // Build text content based on segments
-    final textContent = _buildTextContent(paragraphStyle);
+    final textContent = _buildTextContent(paragraphStyle, theme);
 
     // Build the message container and layout
     return Container(
@@ -317,15 +340,20 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
     );
   }
 
-  Widget _buildTextContent(TextStyle? paragraphStyle) {
+  Widget _buildTextContent(TextStyle? paragraphStyle, _LocalTheme theme) {
     if (widget.streamState is StreamStateLoading) {
-      return SizedBox(
-        width: paragraphStyle?.lineHeight,
-        height: paragraphStyle?.lineHeight,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: paragraphStyle?.color,
-        ),
+      if (widget.loadingBuilder != null) {
+        return widget.loadingBuilder!(context, paragraphStyle);
+      }
+
+      return Shimmer.fromColors(
+        baseColor:
+            widget.shimmerBaseColor ?? theme.onSurface.withValues(alpha: 0.3),
+        highlightColor:
+            widget.shimmerHighlightColor ??
+            theme.onSurface.withValues(alpha: 0.8),
+        period: widget.shimmerPeriod,
+        child: Text(widget.loadingText, style: paragraphStyle),
       );
     }
 
