@@ -1,3 +1,8 @@
+## 2.2.3
+
+ - **FIX**: new loadingBuilder for stream message. ([38d539ac](https://github.com/flyerhq/flutter_chat_ui/commit/38d539ac7480392d223885a3378deee2b86b5966))
+ - **FIX**: add onLinkTap for StreamMessages ([#831](https://github.com/flyerhq/flutter_chat_ui/issues/831)). ([c92d7e22](https://github.com/flyerhq/flutter_chat_ui/commit/c92d7e22ac82204f93d6c35fe20d954de53077c5))
+
 ## 2.2.2
 
  - **FIX**: update dependencies. ([a8ff8b57](https://github.com/flyerhq/flutter_chat_ui/commit/a8ff8b573a25146d5c78b1014c9caa3126d1de40))

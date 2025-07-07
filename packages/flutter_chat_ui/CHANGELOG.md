@@ -1,3 +1,7 @@
+## 2.6.2
+
+ - **FIX**: new loadingBuilder for stream message. ([38d539ac](https://github.com/flyerhq/flutter_chat_ui/commit/38d539ac7480392d223885a3378deee2b86b5966))
+
 ## 2.6.1
 
  - **FIX**: add sendButtonDisabled and sendButtonHidden [#828](https://github.com/flyerhq/flutter_chat_ui/issues/828). ([d476dd45](https://github.com/flyerhq/flutter_chat_ui/commit/d476dd4502df51148621577f9c66843cd3a067ab))

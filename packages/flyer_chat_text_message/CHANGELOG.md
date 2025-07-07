@@ -1,3 +1,8 @@
+## 2.3.3
+
+ - **FIX**: add onLinkTap for StreamMessages ([#831](https://github.com/flyerhq/flutter_chat_ui/issues/831)). ([c92d7e22](https://github.com/flyerhq/flutter_chat_ui/commit/c92d7e22ac82204f93d6c35fe20d954de53077c5))
+ - **FIX**: allow set linksColor ([#830](https://github.com/flyerhq/flutter_chat_ui/issues/830)). ([a4044125](https://github.com/flyerhq/flutter_chat_ui/commit/a40441256914149b28174cc784ca190be4c03e19))
+
 ## 2.3.2
 
  - **FIX**: update dependencies. ([a8ff8b57](https://github.com/flyerhq/flutter_chat_ui/commit/a8ff8b573a25146d5c78b1014c9caa3126d1de40))
