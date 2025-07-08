@@ -31,7 +31,7 @@ class Gemini extends StatefulWidget {
 class GeminiState extends State<Gemini> {
   // Set to `true` to show a "Thinking..." message immediately.
   // Set to `false` to wait for the first chunk before showing the message.
-  final bool _isThinkingModel = true;
+  final bool _isThinkingModel = false;
 
   final _uuid = const Uuid();
   final _crossCache = CrossCache();
