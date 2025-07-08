@@ -66,6 +66,9 @@ class SimpleTextMessage extends StatelessWidget {
   /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
   final LinkPreviewPosition linkPreviewPosition;
 
+  /// The widgets to display before the message.
+  final List<Widget>? topWidgets;
+
   /// Creates a widget to display a simple text message.
   const SimpleTextMessage({
     super.key,
@@ -85,6 +88,7 @@ class SimpleTextMessage extends StatelessWidget {
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.timeAndStatusPositionInlineInsets = const EdgeInsets.only(bottom: 2),
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
+    this.topWidgets,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -131,6 +135,7 @@ class SimpleTextMessage extends StatelessWidget {
             ? context.read<Builders>().linkPreviewBuilder?.call(
               context,
               message,
+              isSentByMe,
             )
             : null;
 
@@ -143,9 +148,6 @@ class SimpleTextMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (linkPreviewWidget != null &&
-                linkPreviewPosition == LinkPreviewPosition.top)
-              linkPreviewWidget,
             Container(
               padding:
                   _isOnlyEmoji
@@ -159,11 +161,9 @@ class SimpleTextMessage extends StatelessWidget {
                 textContent: textContent,
                 timeAndStatus: timeAndStatus,
                 textStyle: textStyle,
+                linkPreviewWidget: linkPreviewWidget,
               ),
             ),
-            if (linkPreviewWidget != null &&
-                linkPreviewPosition == LinkPreviewPosition.bottom)
-              linkPreviewWidget,
           ],
         ),
       ),
@@ -175,50 +175,58 @@ class SimpleTextMessage extends StatelessWidget {
     required Widget textContent,
     TimeAndStatus? timeAndStatus,
     TextStyle? textStyle,
+    Widget? linkPreviewWidget,
   }) {
-    if (timeAndStatus == null) {
-      return textContent;
-    }
-
     final textDirection = Directionality.of(context);
+    final effectiveLinkPreviewPosition =
+        linkPreviewWidget != null
+            ? linkPreviewPosition
+            : LinkPreviewPosition.none;
 
-    switch (timeAndStatusPosition) {
-      case TimeAndStatusPosition.start:
-        return Column(
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [textContent, timeAndStatus],
-        );
-      case TimeAndStatusPosition.inline:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Flexible(child: textContent),
-            const SizedBox(width: 4),
-            Padding(
-              padding: timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
-              child: timeAndStatus,
-            ),
+            if (topWidgets != null) ...topWidgets!,
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.top)
+              linkPreviewWidget!,
+            timeAndStatusPosition == TimeAndStatusPosition.inline
+                ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Flexible(child: textContent),
+                    SizedBox(width: 4),
+                    Padding(
+                      padding:
+                          timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
+                      child: timeAndStatus,
+                    ),
+                  ],
+                )
+                : textContent,
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
+              linkPreviewWidget!,
+            if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
           ],
-        );
-      case TimeAndStatusPosition.end:
-        return Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: textStyle?.lineHeight ?? 0),
-              child: textContent,
-            ),
-            Opacity(opacity: 0, child: timeAndStatus),
-            Positioned.directional(
-              textDirection: textDirection,
-              end: 0,
-              bottom: 0,
-              child: timeAndStatus,
-            ),
-          ],
-        );
-    }
+        ),
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
+            start:
+                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            bottom: 0,
+            child: timeAndStatus,
+          ),
+      ],
+    );
   }
 
   Color? _resolveBackgroundColor(bool isSentByMe, _LocalTheme theme) {
@@ -245,12 +253,6 @@ class SimpleTextMessage extends StatelessWidget {
     }
     return timeStyle ?? theme.labelSmall.copyWith(color: theme.onSurface);
   }
-}
-
-/// Internal extension for calculating the visual line height of a TextStyle.
-extension on TextStyle {
-  /// Calculates the line height based on the style's `height` and `fontSize`.
-  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
 }
 
 /// A widget to display the message timestamp and status indicator.
