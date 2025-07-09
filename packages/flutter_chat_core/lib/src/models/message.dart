@@ -240,6 +240,9 @@ sealed class Message with _$Message {
     /// Name of the file.
     required String name,
 
+    /// Optional text accompanying the file.
+    String? text,
+
     /// Size of the file in bytes.
     int? size,
 

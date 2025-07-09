@@ -62,6 +62,12 @@ class FlyerChatFileMessage extends StatelessWidget {
   /// Text style for the file size in messages received from other users.
   final TextStyle? receivedSizeTextStyle;
 
+  /// Text style for the accompanying text sent by the current user.
+  final TextStyle? sentTextStyle;
+
+  /// Text style for the accompanying text received from other users.
+  final TextStyle? receivedTextStyle;
+
   /// Text style for the message timestamp and status.
   final TextStyle? timeStyle;
 
@@ -73,6 +79,9 @@ class FlyerChatFileMessage extends StatelessWidget {
 
   /// Position of the timestamp and status indicator relative to the text content.
   final TimeAndStatusPosition timeAndStatusPosition;
+
+  /// The widgets to display before the message.
+  final List<Widget>? topWidgets;
 
   /// Creates a widget to display a file message.
   const FlyerChatFileMessage({
@@ -91,10 +100,13 @@ class FlyerChatFileMessage extends StatelessWidget {
     this.receivedNameTextStyle,
     this.sentSizeTextStyle,
     this.receivedSizeTextStyle,
+    this.sentTextStyle,
+    this.receivedTextStyle,
     this.timeStyle,
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
+    this.topWidgets,
   });
 
   @override
@@ -115,6 +127,7 @@ class FlyerChatFileMessage extends StatelessWidget {
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final nameTextStyle = _resolveNameTextStyle(isSentByMe, theme);
     final sizeTextStyle = _resolveSizeTextStyle(isSentByMe, theme);
+    final textTextStyle = _resolveParagraphStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
 
     final timeAndStatus =
@@ -144,7 +157,8 @@ class FlyerChatFileMessage extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         timeAndStatus == null ||
-                timeAndStatusPosition != TimeAndStatusPosition.inline
+                timeAndStatusPosition != TimeAndStatusPosition.inline ||
+                message.text != null
             ? sizeContent
             : Row(
               mainAxisSize: MainAxisSize.min,
@@ -176,7 +190,7 @@ class FlyerChatFileMessage extends StatelessWidget {
               context: context,
               fileContent: fileContent,
               timeAndStatus: timeAndStatus,
-              textStyle: sizeTextStyle,
+              textStyle: textTextStyle,
             ),
           ),
         ],
@@ -190,42 +204,51 @@ class FlyerChatFileMessage extends StatelessWidget {
     required TimeAndStatus? timeAndStatus,
     required TextStyle? textStyle,
   }) {
-    if (timeAndStatus == null ||
-        timeAndStatusPosition == TimeAndStatusPosition.inline) {
-      return fileContent;
-    }
-
     final textDirection = Directionality.of(context);
-    switch (timeAndStatusPosition) {
-      case TimeAndStatusPosition.start:
-        return Column(
+
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [fileContent, timeAndStatus],
-        );
-      case TimeAndStatusPosition.inline:
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [fileContent, const SizedBox(width: 4), timeAndStatus],
-        );
-      case TimeAndStatusPosition.end:
-        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: textStyle?.lineHeight ?? 0),
-              child: fileContent,
-            ),
-            Opacity(opacity: 0, child: timeAndStatus),
-            Positioned.directional(
-              textDirection: textDirection,
-              end: 0,
-              bottom: 0,
-              child: timeAndStatus,
-            ),
+            if (topWidgets != null) ...topWidgets!,
+            if (timeAndStatusPosition == TimeAndStatusPosition.inline &&
+                message.text != null) ...[
+              fileContent,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Flexible(child: Text(message.text!, style: textStyle)),
+                  SizedBox(width: 4),
+                  Padding(
+                    // TODO? add timeAndStatusPositionInlineInsets
+                    padding: EdgeInsets.zero,
+                    child: timeAndStatus,
+                  ),
+                ],
+              ),
+            ] else
+              fileContent,
+            if (timeAndStatusPosition != TimeAndStatusPosition.inline)
+              // Ensure the  width is not smaller than the timeAndStatus widget
+              // Ensure the height accounts for it's height
+              Opacity(opacity: 0, child: timeAndStatus),
           ],
-        );
-    }
+        ),
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline &&
+            timeAndStatus != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
+            start:
+                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            bottom: 0,
+            child: timeAndStatus,
+          ),
+      ],
+    );
   }
 
   String _formatFileSize(int sizeInBytes) {
@@ -277,6 +300,14 @@ class FlyerChatFileMessage extends StatelessWidget {
     }
     return receivedSizeTextStyle ??
         theme.bodySmall.copyWith(color: theme.onSurface.withValues(alpha: 0.8));
+  }
+
+  TextStyle? _resolveParagraphStyle(bool isSentByMe, _LocalTheme theme) {
+    if (isSentByMe) {
+      return sentTextStyle ?? theme.bodyMedium.copyWith(color: theme.onPrimary);
+    }
+    return receivedTextStyle ??
+        theme.bodyMedium.copyWith(color: theme.onSurface);
   }
 
   TextStyle? _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
