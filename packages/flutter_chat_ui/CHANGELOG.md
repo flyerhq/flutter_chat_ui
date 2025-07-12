@@ -1,3 +1,7 @@
+## 2.7.0
+
+ - **FEAT**: link preview package ([#790](https://github.com/flyerhq/flutter_chat_ui/issues/790)). ([2938f646](https://github.com/flyerhq/flutter_chat_ui/commit/2938f646f3167fb9ab65ca769f2326801db45c52))
+
 ## 2.6.2
 
  - **FIX**: new loadingBuilder for stream message. ([38d539ac](https://github.com/flyerhq/flutter_chat_ui/commit/38d539ac7480392d223885a3378deee2b86b5966))

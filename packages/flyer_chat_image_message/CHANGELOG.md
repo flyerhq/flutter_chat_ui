@@ -1,3 +1,7 @@
+## 2.1.13
+
+ - Update a dependency to the latest release.
+
 ## 2.1.12
 
  - **FIX**: add missing errorBuilder for image ([#827](https://github.com/flyerhq/flutter_chat_ui/issues/827)). ([95ea8b6a](https://github.com/flyerhq/flutter_chat_ui/commit/95ea8b6ac228696d08a4124320a4a6b8745db7e9))

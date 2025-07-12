@@ -1,3 +1,7 @@
+## 2.2.4
+
+ - Update a dependency to the latest release.
+
 ## 2.2.3
 
  - **FIX**: new loadingBuilder for stream message. ([38d539ac](https://github.com/flyerhq/flutter_chat_ui/commit/38d539ac7480392d223885a3378deee2b86b5966))
