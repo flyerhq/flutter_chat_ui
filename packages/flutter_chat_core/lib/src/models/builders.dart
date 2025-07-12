@@ -131,7 +131,8 @@ typedef LoadMoreBuilder = Widget Function(BuildContext);
 typedef EmptyChatListBuilder = Widget Function(BuildContext);
 
 /// Signature for building the link preview widget.
-typedef LinkPreviewBuilder = Widget? Function(BuildContext, TextMessage);
+typedef LinkPreviewBuilder =
+    Widget? Function(BuildContext, TextMessage, bool isSendByMe);
 
 /// A collection of builder functions used to customize the UI components
 /// of the chat interface.

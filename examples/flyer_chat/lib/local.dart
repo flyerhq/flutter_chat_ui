@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_link_previewer/flutter_link_previewer.dart';
 import 'package:flyer_chat_file_message/flyer_chat_file_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
@@ -127,6 +128,25 @@ class LocalState extends State<Local> {
               ],
             ),
           ),
+          linkPreviewBuilder: (context, message, isSentByMe) {
+            // It's up to you to (optionally) implement the logic to avoid every
+            // message to refetch the preview data
+            //
+            // For example, you can use a metadata to indicate if the preview
+            // was already fetched (or null).
+            //
+            // Additionally, you can cache the data to avoid re-fetching across app restarts.
+            return LinkPreview(
+              text: message.text,
+              linkPreviewData: message.linkPreviewData,
+              onLinkPreviewDataFetched: (linkPreviewData) {
+                _chatController.updateMessage(
+                  message,
+                  message.copyWith(linkPreviewData: linkPreviewData),
+                );
+              },
+            );
+          },
           textMessageBuilder:
               (
                 context,
