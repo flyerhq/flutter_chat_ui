@@ -4,6 +4,8 @@
 
 A highly customizable Flutter widget for rendering a preview of a URL. It automatically fetches metadata (title, description, image) and displays it in a clean, animated card. It is a part of the [Flyer Chat](https://flyer.chat) ecosystem.
 
+![Screenshot](https://github.com/user-attachments/assets/d9b02238-7820-44ad-880d-cf7e9870f57a)
+
 ## ✨ Features
 
 - 🪄 **Automatic Preview Generation:** Fetches preview data (title, description, image) from the first URL found in a given text.
