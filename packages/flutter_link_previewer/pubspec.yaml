@@ -1,4 +1,4 @@
-name: flyer_chat_link_preview
+name: flutter_link_previewer
 description: >
   Customizable link and URL preview extracted from the
   provided text with the ability to render from the cache. Ideal
@@ -14,12 +14,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_chat_core: ^2.3.0
+  flutter_chat_core: ^2.6.2
   html: ^0.15.6
   http: ^1.4.0
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

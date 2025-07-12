@@ -2,7 +2,7 @@ name: flyer_chat
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -39,10 +39,10 @@ dependencies:
   flutter_chat_core: ^2.6.2
   flutter_chat_ui: ^2.6.2
   flutter_dotenv: ^5.2.1
+  flutter_link_previewer: ^4.0.0
   flutter_lorem: ^2.0.0
   flyer_chat_file_message: ^2.2.2
   flyer_chat_image_message: ^2.1.12
-  flyer_chat_link_preview: ^4.0.0
   flyer_chat_system_message: ^2.1.10
   flyer_chat_text_message: ^2.3.3
   flyer_chat_text_stream_message: ^2.2.3
@@ -77,6 +77,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
