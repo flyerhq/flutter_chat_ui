@@ -146,100 +146,76 @@ class ChatMessage extends StatelessWidget {
       );
     }
 
-    final Widget messageWidget = Hero(
-      tag: message.id,
-      flightShuttleBuilder: (
-        BuildContext flightContext,
-        Animation<double> animation,
-        HeroFlightDirection flightDirection,
-        BuildContext fromHeroContext,
-        BuildContext toHeroContext,
-      ) {
-        //  TODO Problem with the shuttle, it's size vary a lot during hero transition
-        // and causes many layout errors.
-        return MultiProvider(
-          providers: providers,
-          child: Material(
-            type: MaterialType.transparency,
-            child: buildChatMessage(showReactions: false),
-          ),
-        );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (headerWidget != null)
-            FadeTransition(
-              opacity: curvedAnimation,
-              child: SizeTransition(
-                axisAlignment: 0,
-                sizeFactor: curvedAnimation,
-                child: headerWidget!,
-              ),
+    final Widget messageWidget = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (headerWidget != null)
+          FadeTransition(
+            opacity: curvedAnimation,
+            child: SizeTransition(
+              axisAlignment: 0,
+              sizeFactor: curvedAnimation,
+              child: headerWidget!,
             ),
-          GestureDetector(
-            onTapUp:
-                (details) => onMessageTap?.call(
-                  context,
-                  message,
-                  index: index,
-                  details: details,
-                ),
-            // onLongPressStart:
-            //     (details) => onMessageLongPress?.call(
-            //       message,
-            //       index: index,
-            //       details: details,
-            //     ),
-            onLongPress: () {
-              Navigator.of(context).push(
-                HeroDialogRoute(
-                  builder:
-                      (_) => MultiProvider(
-                        providers: providers,
-                        child: ReactionsDialogWidget(
-                          id: message.id,
-                          messageWidget: buildChatMessage(showReactions: false),
-                          onReactionTap: (reaction) {
-                            if (reaction == '➕') {
-                              // show emoji picker
-                            } else {
-                              // handle add reaction
-                            }
-                          },
-                          onContextMenuTap: (menuItem) {
-                            // handle context menu
-                          },
-                        ),
-                      ),
-                ),
-              );
-            },
-            child: FadeTransition(
-              opacity: curvedAnimation,
-              child: SizeTransition(
-                sizeFactor: curvedAnimation,
-                child: ScaleTransition(
-                  scale: curvedAnimation,
-                  alignment:
-                      scaleAnimationAlignment ??
-                      (isSentByMe
-                          ? sentMessageScaleAnimationAlignment
-                          : receivedMessageScaleAnimationAlignment),
-                  child: Align(
-                    alignment:
-                        alignment ??
-                        (isSentByMe
-                            ? sentMessageAlignment
-                            : receivedMessageAlignment),
-                    child: buildChatMessage(showReactions: true),
+          ),
+        GestureDetector(
+          onTapUp: (details) {
+            onMessageTap?.call(
+              context,
+              message,
+              index: index,
+              details: details,
+            );
+          },
+          onLongPress: () {
+            showDialog(
+              context: context,
+              useSafeArea: true,
+              useRootNavigator: false,
+              builder:
+                  (context) => MultiProvider(
+                    providers: providers,
+                    child: ReactionsDialogWidget(
+                      messageWidget: buildChatMessage(showReactions: false),
+                      widgetAlignment:
+                          isSentByMe
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                      onReactionTap: (reaction) {
+                        // handle add reaction
+                      },
+                      onContextMenuTap: (menuItem) {
+                        // handle context menu
+                      },
+                    ),
                   ),
+            );
+            return;
+          },
+          child: FadeTransition(
+            opacity: curvedAnimation,
+            child: SizeTransition(
+              sizeFactor: curvedAnimation,
+              child: ScaleTransition(
+                scale: curvedAnimation,
+                alignment:
+                    scaleAnimationAlignment ??
+                    (isSentByMe
+                        ? sentMessageScaleAnimationAlignment
+                        : receivedMessageScaleAnimationAlignment),
+                child: Align(
+                  alignment:
+                      alignment ??
+                      (isSentByMe
+                          ? sentMessageAlignment
+                          : receivedMessageAlignment),
+                  child: buildChatMessage(showReactions: true),
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
 
     return _wrapWithPadding(messageWidget, resolvedPadding);

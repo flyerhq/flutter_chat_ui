@@ -8,7 +8,6 @@ import '../models/menu_item.dart';
 class ReactionsDialogWidget extends StatefulWidget {
   const ReactionsDialogWidget({
     super.key,
-    required this.id,
     required this.messageWidget,
     required this.onReactionTap,
     required this.onContextMenuTap,
@@ -17,9 +16,6 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.widgetAlignment = Alignment.centerRight,
     this.menuItemsWidth = 0.45,
   });
-
-  // Id for the hero widget
-  final String id;
 
   // The message widget to be displayed in the dialog
   final Widget messageWidget;
@@ -37,6 +33,7 @@ class ReactionsDialogWidget extends StatefulWidget {
   final List<String> reactions;
 
   // The alignment of the widget
+  // Only left right is taken into account
   final Alignment widgetAlignment;
 
   // The width of the menu items
@@ -60,7 +57,9 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
         child: Padding(
           padding: const EdgeInsets.only(right: 20.0, left: 20.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // reactions
               buildReactions(context),
@@ -172,7 +171,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
   Align buildMessage() {
     return Align(
       alignment: widget.widgetAlignment,
-      child: Hero(tag: widget.id, child: widget.messageWidget),
+      child: widget.messageWidget,
     );
   }
 
