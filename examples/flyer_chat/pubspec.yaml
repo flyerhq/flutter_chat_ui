@@ -46,7 +46,6 @@ dependencies:
   flyer_chat_system_message: ^2.1.11
   flyer_chat_text_message: ^2.4.0
   flyer_chat_text_stream_message: ^2.2.4
-  flutter_riverpod: ^3.0.0-dev.15
   google_generative_ai: ^0.4.6
   hive_ce: ^2.11.3
   hive_ce_flutter: ^2.3.1

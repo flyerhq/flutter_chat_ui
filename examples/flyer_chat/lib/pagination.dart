@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/composer_action_bar.dart';
@@ -63,54 +62,52 @@ class PaginationState extends State<Pagination> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Pagination')),
-      body: ProviderScope(
-        child: Chat(
-          onMessageReaction: _onMessageReaction,
-          builders: Builders(
-            chatAnimatedListBuilder: (context, itemBuilder) {
-              return ChatAnimatedList(
-                itemBuilder: itemBuilder,
-                onEndReached: _loadMore,
-              );
-            },
-            textMessageBuilder:
-                (
-                  context,
-                  message,
-                  index, {
-                  required bool isSentByMe,
-                  MessageGroupStatus? groupStatus,
-                }) => SimpleTextMessage(message: message, index: index),
-            composerBuilder: (context) => CustomComposer(
-              topWidget: ComposerActionBar(
-                buttons: [
-                  ComposerActionButton(
-                    icon: Icons.call_to_action,
-                    title: 'Scroll to 1',
-                    onPressed: () => _scrollToMessage('1'),
-                  ),
-                  ComposerActionButton(
-                    icon: Icons.call_to_action,
-                    title: 'Scroll to 40',
-                    onPressed: () => _scrollToMessage('40'),
-                  ),
-                  ComposerActionButton(
-                    icon: Icons.call_to_action,
-                    title: 'Scroll to 80',
-                    onPressed: () => _scrollToMessage('80'),
-                  ),
-                ],
-              ),
+      body: Chat(
+        onMessageReaction: _onMessageReaction,
+        builders: Builders(
+          chatAnimatedListBuilder: (context, itemBuilder) {
+            return ChatAnimatedList(
+              itemBuilder: itemBuilder,
+              onEndReached: _loadMore,
+            );
+          },
+          textMessageBuilder:
+              (
+                context,
+                message,
+                index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => SimpleTextMessage(message: message, index: index),
+          composerBuilder: (context) => CustomComposer(
+            topWidget: ComposerActionBar(
+              buttons: [
+                ComposerActionButton(
+                  icon: Icons.call_to_action,
+                  title: 'Scroll to 1',
+                  onPressed: () => _scrollToMessage('1'),
+                ),
+                ComposerActionButton(
+                  icon: Icons.call_to_action,
+                  title: 'Scroll to 40',
+                  onPressed: () => _scrollToMessage('40'),
+                ),
+                ComposerActionButton(
+                  icon: Icons.call_to_action,
+                  title: 'Scroll to 80',
+                  onPressed: () => _scrollToMessage('80'),
+                ),
+              ],
             ),
           ),
-          chatController: _chatController,
-          currentUserId: _currentUser.id,
-          resolveUser: (id) => Future.value(switch (id) {
-            'me' => _currentUser,
-            _ => null,
-          }),
-          theme: ChatTheme.fromThemeData(theme),
         ),
+        chatController: _chatController,
+        currentUserId: _currentUser.id,
+        resolveUser: (id) => Future.value(switch (id) {
+          'me' => _currentUser,
+          _ => null,
+        }),
+        theme: ChatTheme.fromThemeData(theme),
       ),
     );
   }

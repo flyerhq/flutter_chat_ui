@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
-import 'package:provider/provider.dart' as provider;
+import 'package:provider/provider.dart';
 
 import '../utils/typedefs.dart';
 
@@ -191,36 +190,34 @@ class ChatMessage extends StatelessWidget {
                     // We have to pass the necessary providers to the reactions dialog
                     // This is from py PoV prone to error since me need to be sure to pass all the providers
                     // the widget in the new tree might need (should be only SimpletextMessage and FlyerTextMessage)
-                    return ProviderScope(
-                      child: provider.MultiProvider(
-                        providers: [
-                          provider.Provider.value(value: theme),
-                          provider.Provider.value(value: builder),
-                          provider.Provider.value(value: user),
-                          provider.Provider.value(value: timeFormat),
-                        ],
-                        child: ReactionsDialogWidget(
-                          id: message.id,
-                          messageWidget: ChatMessageWidget(
-                            message: message,
-                            isSentByMe: isSentByMe,
-                            showReactions: false,
-                            child: child,
-                          ),
-                          onReactionTap: (reaction) {
-                            print('reaction: $reaction');
-
-                            if (reaction == '➕') {
-                              // show emoji picker container
-                            } else {
-                              // add reaction to message
-                            }
-                          },
-                          onContextMenuTap: (menuItem) {
-                            print('menu item: $menuItem');
-                            // handle context menu item
-                          },
+                    return MultiProvider(
+                      providers: [
+                        Provider.value(value: theme),
+                        Provider.value(value: builder),
+                        Provider.value(value: user),
+                        Provider.value(value: timeFormat),
+                      ],
+                      child: ReactionsDialogWidget(
+                        id: message.id,
+                        messageWidget: ChatMessageWidget(
+                          message: message,
+                          isSentByMe: isSentByMe,
+                          showReactions: false,
+                          child: child,
                         ),
+                        onReactionTap: (reaction) {
+                          print('reaction: $reaction');
+
+                          if (reaction == '➕') {
+                            // show emoji picker container
+                          } else {
+                            // add reaction to message
+                          }
+                        },
+                        onContextMenuTap: (menuItem) {
+                          print('menu item: $menuItem');
+                          // handle context menu item
+                        },
                       ),
                     );
                   },

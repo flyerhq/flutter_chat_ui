@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
 /// Theme values for [SimpleTextMessage].
@@ -16,7 +15,7 @@ typedef _LocalTheme =
     });
 
 /// A widget that displays a simple text message.
-class SimpleTextMessage extends ConsumerWidget {
+class SimpleTextMessage extends StatelessWidget {
   /// The text message data model.
   final TextMessage message;
 
@@ -91,27 +90,19 @@ class SimpleTextMessage extends ConsumerWidget {
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final oldtheme = context.watch<ChatTheme>();
-
-    //Here we can now access the theme
-    final theme = ref.watch(
-      riverpodChatThemeProvider.select(
-        (ChatTheme t) => (
-          bodyMedium: t.typography.bodyMedium,
-          labelSmall: t.typography.labelSmall,
-          onPrimary: t.colors.onPrimary,
-          onSurface: t.colors.onSurface,
-          primary: t.colors.primary,
-          shape: t.shape,
-          surfaceContainer: t.colors.surfaceContainer,
-        ),
+  Widget build(BuildContext context) {
+    final theme = context.select(
+      (ChatTheme t) => (
+        bodyMedium: t.typography.bodyMedium,
+        labelSmall: t.typography.labelSmall,
+        onPrimary: t.colors.onPrimary,
+        onSurface: t.colors.onSurface,
+        primary: t.colors.primary,
+        shape: t.shape,
+        surfaceContainer: t.colors.surfaceContainer,
       ),
     );
-
     final isSentByMe = context.read<UserID>() == message.authorId;
-    print('themeFromRiverpod: $theme');
-    print('context in simple text message: ${context.hashCode}');
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final textStyle = _resolveTextStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
