@@ -138,6 +138,8 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    /// IMPORTANT: Keep this list in sync with the  MultiProvider helper in [ChatProviders]].
+
     return MultiProvider(
       providers: [
         Provider.value(value: widget.currentUserId),
