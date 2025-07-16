@@ -23,6 +23,13 @@ Future<Message> createMessage(
       sentAt: localOnly == true ? DateTime.now().toUtc() : null,
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
       metadata: isOnlyEmoji(text ?? '') ? {'isOnlyEmoji': true} : null,
+      reactions: {
+        '👍': [authorId],
+        '👎': [authorId],
+        '👏': [authorId],
+        '👌': [authorId],
+        '👊': [authorId],
+      },
     );
   } else {
     final orientation = ['portrait', 'square', 'wide'][Random().nextInt(3)];
@@ -58,6 +65,13 @@ Future<Message> createMessage(
       source: response.data['img'],
       thumbhash: response.data['thumbhash'],
       blurhash: response.data['blurhash'],
+      reactions: {
+        '👍': [authorId],
+        '👎': [authorId],
+        '👏': [authorId],
+        '👌': [authorId],
+        '👊': [authorId],
+      },
     );
   }
 
