@@ -3,6 +3,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/chat_providers.dart';
 import '../utils/typedefs.dart';
 
 /// Default wrapper widget for a single chat message item.
@@ -134,23 +135,36 @@ class ChatMessage extends StatelessWidget {
     );
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
+    final providers = ChatProviders.from(context);
+
+    Widget buildChatMessage({required bool showReactions}) {
+      return ChatMessageWidget(
+        message: message,
+        isSentByMe: isSentByMe,
+        showReactions: showReactions,
+        child: child,
+      );
+    }
 
     final Widget messageWidget = Hero(
       tag: message.id,
-      // During transition we are in a Third context, we could also pass the providers here
-      // Or maybe just use a colored box (resolving the theme here)
-      flightShuttleBuilder:
-          (
-            BuildContext flightContext,
-            Animation<double> animation,
-            HeroFlightDirection flightDirection,
-            BuildContext fromHeroContext,
-            BuildContext toHeroContext,
-          ) => ColoredBox(
-            color: Colors.red,
-            child: SizedBox(height: 100, width: 100),
+      flightShuttleBuilder: (
+        BuildContext flightContext,
+        Animation<double> animation,
+        HeroFlightDirection flightDirection,
+        BuildContext fromHeroContext,
+        BuildContext toHeroContext,
+      ) {
+        //  TODO Problem with the shuttle, it's size vary a lot during hero transition
+        // and causes many layout errors.
+        return MultiProvider(
+          providers: providers,
+          child: Material(
+            type: MaterialType.transparency,
+            child: buildChatMessage(showReactions: false),
           ),
-
+        );
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -178,49 +192,26 @@ class ChatMessage extends StatelessWidget {
             //       details: details,
             //     ),
             onLongPress: () {
-              final theme = context.read<ChatTheme>();
-              final builder = context.read<Builders>();
-              final user = context.read<UserID>();
-              final timeFormat = context.read<DateFormat>();
-
               Navigator.of(context).push(
                 HeroDialogRoute(
-                  // The HeroRoute (and herotransitoon^hero)
-                  builder: (context) {
-                    // We have to pass the necessary providers to the reactions dialog
-                    // This is from py PoV prone to error since me need to be sure to pass all the providers
-                    // the widget in the new tree might need (should be only SimpletextMessage and FlyerTextMessage)
-                    return MultiProvider(
-                      providers: [
-                        Provider.value(value: theme),
-                        Provider.value(value: builder),
-                        Provider.value(value: user),
-                        Provider.value(value: timeFormat),
-                      ],
-                      child: ReactionsDialogWidget(
-                        id: message.id,
-                        messageWidget: ChatMessageWidget(
-                          message: message,
-                          isSentByMe: isSentByMe,
-                          showReactions: false,
-                          child: child,
+                  builder:
+                      (_) => MultiProvider(
+                        providers: providers,
+                        child: ReactionsDialogWidget(
+                          id: message.id,
+                          messageWidget: buildChatMessage(showReactions: false),
+                          onReactionTap: (reaction) {
+                            if (reaction == '➕') {
+                              // show emoji picker
+                            } else {
+                              // handle add reaction
+                            }
+                          },
+                          onContextMenuTap: (menuItem) {
+                            // handle context menu
+                          },
                         ),
-                        onReactionTap: (reaction) {
-                          print('reaction: $reaction');
-
-                          if (reaction == '➕') {
-                            // show emoji picker container
-                          } else {
-                            // add reaction to message
-                          }
-                        },
-                        onContextMenuTap: (menuItem) {
-                          print('menu item: $menuItem');
-                          // handle context menu item
-                        },
                       ),
-                    );
-                  },
                 ),
               );
             },
@@ -241,12 +232,7 @@ class ChatMessage extends StatelessWidget {
                         (isSentByMe
                             ? sentMessageAlignment
                             : receivedMessageAlignment),
-                    child: ChatMessageWidget(
-                      message: message,
-                      isSentByMe: isSentByMe,
-                      showReactions: true,
-                      child: child,
-                    ),
+                    child: buildChatMessage(showReactions: true),
                   ),
                 ),
               ),
@@ -256,18 +242,19 @@ class ChatMessage extends StatelessWidget {
       ),
     );
 
-    if (resolvedPadding != EdgeInsets.zero) {
-      return paddingChangeAnimationDuration != null
-          ? AnimatedPadding(
-            padding: resolvedPadding,
-            duration: paddingChangeAnimationDuration!,
-            curve: Curves.linearToEaseOut,
-            child: messageWidget,
-          )
-          : Padding(padding: resolvedPadding, child: messageWidget);
-    }
+    return _wrapWithPadding(messageWidget, resolvedPadding);
+  }
 
-    return messageWidget;
+  Widget _wrapWithPadding(Widget child, EdgeInsetsGeometry padding) {
+    if (padding == EdgeInsets.zero) return child;
+    return paddingChangeAnimationDuration != null
+        ? AnimatedPadding(
+          padding: padding,
+          duration: paddingChangeAnimationDuration!,
+          curve: Curves.linearToEaseOut,
+          child: child,
+        )
+        : Padding(padding: padding, child: child);
   }
 
   EdgeInsetsGeometry _resolveDefaultPadding(BuildContext context) {
@@ -360,7 +347,7 @@ class ChatMessageWidget extends StatelessWidget {
                           ),
                         ],
                       )
-                      : Container(child: child),
+                      : child,
             ),
             if (trailingWidget != null) trailingWidget!,
           ],
