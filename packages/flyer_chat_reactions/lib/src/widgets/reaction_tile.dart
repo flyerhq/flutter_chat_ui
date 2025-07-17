@@ -135,7 +135,7 @@ class _ReactionTileState extends State<ReactionTile> {
           padding: widget.padding,
           decoration: BoxDecoration(
             color:
-                widget.reactedByUser
+                _isTapped
                     ? widget.reactedBackgroundColor
                     : widget.backgroundColor,
             borderRadius: BorderRadius.circular(16),
