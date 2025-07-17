@@ -24,7 +24,7 @@ Future<Message> createMessage(
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
       metadata: isOnlyEmoji(text ?? '') ? {'isOnlyEmoji': true} : null,
       reactions: {
-        '👍': [authorId],
+        '👍': [authorId, 'someOtherId'],
         '👎': [authorId],
         '👏': [authorId],
         '👌': [authorId],
@@ -66,7 +66,7 @@ Future<Message> createMessage(
       thumbhash: response.data['thumbhash'],
       blurhash: response.data['blurhash'],
       reactions: {
-        '👍': [authorId],
+        '👍': [authorId, 'someOtherId'],
         '👎': [authorId],
         '👏': [authorId],
         '👌': [authorId],

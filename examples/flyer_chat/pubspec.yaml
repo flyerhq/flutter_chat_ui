@@ -43,6 +43,7 @@ dependencies:
   flutter_lorem: ^2.0.0
   flyer_chat_file_message: ^2.2.3
   flyer_chat_image_message: ^2.1.13
+  flyer_chat_reactions: ^0.0.12
   flyer_chat_system_message: ^2.1.11
   flyer_chat_text_message: ^2.4.0
   flyer_chat_text_stream_message: ^2.2.4
