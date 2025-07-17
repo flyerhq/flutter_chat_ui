@@ -239,6 +239,8 @@ class LocalState extends State<Local> {
                 alignment: isSentByMe
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.end,
+                onReactionTap: (reaction) =>
+                    _handleReactionTap(message, reaction),
               ),
         ),
         chatController: _chatController,
@@ -285,31 +287,7 @@ class LocalState extends State<Local> {
       context,
       message,
       isSentByMe: isSentByMe,
-      onReactionTap: (reaction) {
-        // Maybe the lib could expose if it's a removal or at least helpers methods
-        final reactions = Map<String, List<String>>.from(
-          message.reactions ?? {},
-        );
-        final userId = _currentUser.id;
-
-        final users = List<String>.from(reactions[reaction] ?? []);
-        if (users.contains(userId)) {
-          users.remove(userId);
-          if (users.isEmpty) {
-            reactions.remove(reaction); // Remove the key if no users left
-          } else {
-            reactions[reaction] = users;
-          }
-        } else {
-          users.add(userId);
-          reactions[reaction] = users;
-        }
-
-        _chatController.updateMessage(
-          message,
-          message.copyWith(reactions: reactions),
-        );
-      },
+      onReactionTap: (reaction) => _handleReactionTap(message, reaction),
       onContextMenuTap: (menuItem) {
         print('menuItem: $menuItem');
         // handle context menu
@@ -319,6 +297,31 @@ class LocalState extends State<Local> {
         // handle more reactions
       },
       menuItems: _getMenuItems(message),
+    );
+  }
+
+  void _handleReactionTap(Message message, String reaction) {
+    debugPrint('reaction Tapped: $reaction');
+    // Maybe the lib could expose if it's a removal or at least helpers methods
+    final reactions = Map<String, List<String>>.from(message.reactions ?? {});
+    final userId = _currentUser.id;
+
+    final users = List<String>.from(reactions[reaction] ?? []);
+    if (users.contains(userId)) {
+      users.remove(userId);
+      if (users.isEmpty) {
+        reactions.remove(reaction); // Remove the key if no users left
+      } else {
+        reactions[reaction] = users;
+      }
+    } else {
+      users.add(userId);
+      reactions[reaction] = users;
+    }
+
+    _chatController.updateMessage(
+      message,
+      message.copyWith(reactions: reactions),
     );
   }
 

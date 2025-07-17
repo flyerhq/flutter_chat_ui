@@ -25,7 +25,7 @@ Future<Message> createMessage(
       metadata: isOnlyEmoji(text ?? '') ? {'isOnlyEmoji': true} : null,
       reactions: {
         '👍': [authorId, 'someOtherId'],
-        '👎': [authorId],
+        '👎': ['someOtherId'],
         '👏': [authorId],
         '👌': [authorId],
         '👊': [authorId],
@@ -67,7 +67,7 @@ Future<Message> createMessage(
       blurhash: response.data['blurhash'],
       reactions: {
         '👍': [authorId, 'someOtherId'],
-        '👎': [authorId],
+        '👎': ['someOtherId'],
         '👏': [authorId],
         '👌': [authorId],
         '👊': [authorId],
