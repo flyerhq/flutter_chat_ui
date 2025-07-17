@@ -21,8 +21,7 @@ class ReactionsDialogWidget extends StatefulWidget {
     required this.onReactionTap,
     this.moreReactionsWidget,
     this.onMoreReactionsTap,
-    required this.onContextMenuTap,
-    this.menuItems = DefaultData.menuItems,
+    this.menuItems = const [],
     this.reactions = DefaultData.reactions,
     this.widgetAlignment = Alignment.centerRight,
     this.menuItemsWidthRatio = 0.45,
@@ -49,9 +48,6 @@ class ReactionsDialogWidget extends StatefulWidget {
   /// The callback function to be called when the "more" reactions  widget is tapped
   /// If not provided the widget will not be displayed
   final VoidCallback? onMoreReactionsTap;
-
-  /// The callback function to be called when a context menu item is tapped
-  final Function(MenuItem) onContextMenuTap;
 
   /// The list of menu items to be displayed in the context menu
   final List<MenuItem> menuItems;
@@ -162,7 +158,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                             if (context.mounted) {
                               Navigator.of(context).pop();
                             }
-                            widget.onContextMenuTap(item);
+                            item.onTap?.call();
                           });
                         },
                         child: Row(

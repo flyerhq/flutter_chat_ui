@@ -1,14 +1,16 @@
 import 'package:flutter/widgets.dart';
 
 class MenuItem {
-  final String label;
+  final String title;
   final IconData icon;
   final bool isDestructive;
+  final Function()? onTap;
 
-  // contsructor
+  // constructor
   const MenuItem({
-    required this.label,
+    required this.title,
     required this.icon,
     this.isDestructive = false,
+    this.onTap,
   });
 }
