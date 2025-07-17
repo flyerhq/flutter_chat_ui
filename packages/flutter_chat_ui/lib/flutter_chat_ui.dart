@@ -6,6 +6,7 @@ export 'src/chat.dart';
 export 'src/chat_animated_list/chat_animated_list.dart';
 export 'src/chat_animated_list/chat_animated_list_reversed.dart';
 export 'src/chat_message/chat_message.dart';
+export 'src/chat_message/chat_message_build_helpers.dart';
 export 'src/composer.dart';
 export 'src/empty_chat_list.dart';
 export 'src/is_typing.dart';
