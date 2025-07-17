@@ -5,96 +5,139 @@ import 'package:flutter/material.dart';
 import '../models/default_data.dart';
 import '../models/menu_item.dart';
 
+//// Theme values for [ReactionsDialogWidget].
+typedef _LocalTheme =
+    ({
+      Color onSurface,
+      Color surface,
+      Color primary,
+      BorderRadiusGeometry shape,
+    });
+
 class ReactionsDialogWidget extends StatefulWidget {
   const ReactionsDialogWidget({
     super.key,
     required this.messageWidget,
     required this.onReactionTap,
+    this.moreReactionsWidget,
+    this.onMoreReactionsTap,
     required this.onContextMenuTap,
     this.menuItems = DefaultData.menuItems,
     this.reactions = DefaultData.reactions,
     this.widgetAlignment = Alignment.centerRight,
-    this.menuItemsWidth = 0.45,
+    this.menuItemsWidthRatio = 0.45,
+    this.menuItemBackgroundColor,
+    this.menuItemDestructiveColor,
+    this.menuItemDividerColor = Colors.white,
+    this.reactionsPickerBackgroundColor,
+    this.menuItemTapAnimationDuration = const Duration(milliseconds: 200),
+    this.reactionTapAnimationDuration = const Duration(milliseconds: 200),
+    this.reactionPickerFadeLeftAnimationDuration = const Duration(
+      milliseconds: 200,
+    ),
   });
 
-  // The message widget to be displayed in the dialog
+  /// The message widget to be displayed in the dialog
   final Widget messageWidget;
 
-  // The callback function to be called when a reaction is tapped
+  /// The callback function to be called when a reaction is tapped
   final Function(String) onReactionTap;
 
-  // The callback function to be called when a context menu item is tapped
+  /// More Reactions Widget
+  final Widget? moreReactionsWidget;
+
+  /// The callback function to be called when the "more" reactions  widget is tapped
+  /// If not provided the widget will not be displayed
+  final VoidCallback? onMoreReactionsTap;
+
+  /// The callback function to be called when a context menu item is tapped
   final Function(MenuItem) onContextMenuTap;
 
-  // The list of menu items to be displayed in the context menu
+  /// The list of menu items to be displayed in the context menu
   final List<MenuItem> menuItems;
 
-  // The list of reactions to be displayed
+  /// The list of reactions to be displayed
   final List<String> reactions;
 
-  // The alignment of the widget
-  // Only left right is taken into account
+  /// The alignment of the widget
+  /// Only left right is taken into account
   final Alignment widgetAlignment;
 
-  // The width of the menu items
-  final double menuItemsWidth;
+  /// The width ratio of the menu items
+  final double menuItemsWidthRatio;
+
+  /// Animation duration when a menu item is selected
+  final Duration menuItemTapAnimationDuration;
+
+  /// The background color for menu items
+  final Color? menuItemBackgroundColor;
+
+  /// Destructive color for menu items
+  final Color? menuItemDestructiveColor;
+
+  /// The divider color for menu items
+  final Color? menuItemDividerColor;
+
+  /// The background color for reactions picker
+  final Color? reactionsPickerBackgroundColor;
+
+  /// Animation duration when a reaction is selected
+  final Duration reactionTapAnimationDuration;
+
+  /// Animation duration to display the reactions row
+  final Duration reactionPickerFadeLeftAnimationDuration;
 
   @override
   State<ReactionsDialogWidget> createState() => _ReactionsDialogWidgetState();
 }
 
 class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
-  // state variables for activating the animation
   bool reactionClicked = false;
   int? clickedReactionIndex;
   int? clickedContextMenuIndex;
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.select(
+      (ChatTheme t) => (
+        onSurface: t.colors.onSurface,
+        surface: t.colors.surface,
+        primary: t.colors.primary,
+        shape: t.shape,
+      ),
+    );
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(right: 20.0, left: 20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // reactions
-              buildReactions(context),
-              const SizedBox(height: 10),
-              // message
-              buildMessage(),
-              const SizedBox(height: 10),
-              // context menu
-              buildMenuItems(context),
-            ],
-          ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildReactionsPicker(context, theme),
+            const SizedBox(height: 10),
+            buildMessage(),
+            const SizedBox(height: 10),
+            buildMenuItems(context, theme),
+          ],
         ),
       ),
     );
   }
 
-  Align buildMenuItems(BuildContext context) {
+  Align buildMenuItems(BuildContext context, _LocalTheme theme) {
+    final destructiveColor = widget.menuItemDestructiveColor ?? Colors.red;
     return Align(
       alignment: widget.widgetAlignment,
-      child: // contextMenu for reply, copy, delete
-          Material(
+      child: Material(
         color: Colors.transparent,
         child: Container(
-          width: MediaQuery.of(context).size.width * widget.menuItemsWidth,
+          /// TODO: maybe use pixels, for desktop?
+          width: MediaQuery.of(context).size.width * widget.menuItemsWidthRatio,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade500,
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: const Offset(0, 1), // changes position of shadow
-              ),
-            ],
+            color: widget.menuItemBackgroundColor ?? theme.surface,
+            borderRadius: theme.shape,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -104,22 +147,21 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                 Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+                      padding: const EdgeInsets.all(8),
                       child: InkWell(
                         onTap: () {
-                          // set the clicked index for animation
                           setState(() {
                             clickedContextMenuIndex = widget.menuItems.indexOf(
                               item,
                             );
                           });
 
-                          // delay for 200 milliseconds to allow the animation to complete
                           Future.delayed(
-                            const Duration(milliseconds: 500),
+                            widget.menuItemTapAnimationDuration,
                           ).whenComplete(() {
-                            // pop the dialog
-                            Navigator.of(context).pop();
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
                             widget.onContextMenuTap(item);
                           });
                         },
@@ -127,19 +169,17 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              item.label,
+                              item.title,
                               style: TextStyle(
                                 color:
                                     item.isDestructive
-                                        ? Colors.red
-                                        : Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium!.color,
+                                        ? destructiveColor
+                                        : theme.onSurface,
                               ),
                             ),
                             Pulse(
                               infinite: false,
-                              duration: const Duration(milliseconds: 500),
+                              duration: widget.menuItemTapAnimationDuration,
                               animate:
                                   clickedContextMenuIndex ==
                                   widget.menuItems.indexOf(item),
@@ -147,10 +187,8 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                                 item.icon,
                                 color:
                                     item.isDestructive
-                                        ? Colors.red
-                                        : Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium!.color,
+                                        ? destructiveColor
+                                        : theme.onSurface,
                               ),
                             ),
                           ],
@@ -158,7 +196,11 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                       ),
                     ),
                     if (widget.menuItems.last != item)
-                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      Divider(
+                        color: widget.menuItemDividerColor,
+                        thickness: 0.5,
+                        height: 0.5,
+                      ),
                   ],
                 ),
             ],
@@ -175,7 +217,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
     );
   }
 
-  Align buildReactions(BuildContext context) {
+  Align buildReactionsPicker(BuildContext context, _LocalTheme theme) {
     return Align(
       alignment: widget.widgetAlignment,
       child: Material(
@@ -183,48 +225,22 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
         child: Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade500,
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: const Offset(0, 1), // changes position of shadow
-              ),
-            ],
+            color: widget.reactionsPickerBackgroundColor ?? theme.surface,
+            borderRadius: theme.shape,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               for (var reaction in widget.reactions)
                 FadeInLeft(
-                  from: // first index should be from 0, second from 20, third from 40 and so on
+                  from:
                       0 + (widget.reactions.indexOf(reaction) * 20).toDouble(),
-                  duration: const Duration(milliseconds: 500),
-                  delay: const Duration(milliseconds: 200),
+                  duration: widget.reactionPickerFadeLeftAnimationDuration,
+                  delay: Duration.zero,
                   child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        reactionClicked = true;
-                        clickedReactionIndex = widget.reactions.indexOf(
-                          reaction,
-                        );
-                      });
-                      // delay for 200 milliseconds to allow the animation to complete
-                      Future.delayed(
-                        const Duration(milliseconds: 500),
-                      ).whenComplete(() {
-                        // pop the dialog
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                          widget.onReactionTap(reaction);
-                        }
-                      });
-                    },
                     child: Pulse(
                       infinite: false,
-                      duration: const Duration(milliseconds: 500),
+                      duration: widget.reactionTapAnimationDuration,
                       animate:
                           reactionClicked &&
                           clickedReactionIndex ==
@@ -237,6 +253,45 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                         ),
                       ),
                     ),
+                    onTap: () {
+                      setState(() {
+                        reactionClicked = true;
+                        clickedReactionIndex = widget.reactions.indexOf(
+                          reaction,
+                        );
+                      });
+                      Future.delayed(
+                        widget.reactionTapAnimationDuration,
+                      ).whenComplete(() {
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                        widget.onReactionTap(reaction);
+                      });
+                    },
+                  ),
+                ),
+              if (widget.onMoreReactionsTap != null)
+                FadeInLeft(
+                  from: 0 + (widget.reactions.length * 20).toDouble(),
+                  duration: widget.reactionPickerFadeLeftAnimationDuration,
+                  delay: Duration.zero,
+                  child: InkWell(
+                    onTap: () {
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                      widget.onMoreReactionsTap?.call();
+                    },
+                    child:
+                        widget.moreReactionsWidget ??
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
+                          child: Icon(
+                            Icons.more_horiz_rounded,
+                            color: theme.onSurface,
+                          ),
+                        ),
                   ),
                 ),
             ],
