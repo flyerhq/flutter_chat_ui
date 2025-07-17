@@ -235,7 +235,7 @@ class LocalState extends State<Local> {
                 );
               },
           reactionsBuilder: (context, message, isSentByMe) =>
-              FlyerChatReactions(
+              FlyerChatReactionsRow(
                 reactions: message.reactions,
                 alignment: isSentByMe
                     ? MainAxisAlignment.start
@@ -288,9 +288,9 @@ class LocalState extends State<Local> {
       context,
       message,
       isSentByMe: isSentByMe,
+      userReactions: getUserReactions(message.reactions ?? {}, _currentUser.id),
       onReactionTap: (reaction) => _handleReactionTap(message, reaction),
       onMoreReactionsTap: () async {
-        debugPrint('more reactions');
         // Use whichever emoji picker you want
         final picked = await _showEmojiPicker();
         if (picked != null) {

@@ -28,12 +28,14 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.onMoreReactionsTap,
     this.menuItems,
     this.reactions,
+    this.userReactions,
     this.widgetAlignment,
     this.menuItemsWidthRatio,
     this.menuItemBackgroundColor,
     this.menuItemDestructiveColor,
     this.menuItemDividerColor,
     this.reactionsPickerBackgroundColor,
+    this.reactionsPickerReactedBackgroundColor,
     this.menuItemTapAnimationDuration,
     this.reactionTapAnimationDuration,
     this.reactionPickerFadeLeftAnimationDuration,
@@ -55,8 +57,12 @@ class ReactionsDialogWidget extends StatefulWidget {
   /// The list of menu items to be displayed in the context menu
   final List<MenuItem>? menuItems;
 
-  /// The list of reactions to be displayed
+  /// The list of default reactions to be displayed
   final List<String>? reactions;
+
+  /// The list of user reactions to be displayed
+  /// This allow user to remove them from here
+  final List<String>? userReactions;
 
   /// The alignment of the widget
   /// Only left right is taken into account
@@ -79,6 +85,9 @@ class ReactionsDialogWidget extends StatefulWidget {
 
   /// The background color for reactions picker
   final Color? reactionsPickerBackgroundColor;
+
+  /// The color for the reactions reacted by the user
+  final Color? reactionsPickerReactedBackgroundColor;
 
   /// Animation duration when a reaction is selected
   final Duration? reactionTapAnimationDuration;
@@ -222,6 +231,16 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
   }
 
   Align buildReactionsPicker(BuildContext context, _LocalTheme theme) {
+    // Merge default reactions with user reactions, removing duplicates
+    final allReactions =
+        <String>{
+          ...(widget.reactions ?? DefaultData.reactions),
+          ...(widget.userReactions ?? const []),
+        }.toList();
+
+    final reactionTapAnimationDuration =
+        widget.reactionTapAnimationDuration ??
+        const Duration(milliseconds: 200);
     return Align(
       alignment: widget.widgetAlignment ?? Alignment.centerRight,
       child: Material(
@@ -237,56 +256,56 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                for (var reaction in widget.reactions ?? DefaultData.reactions)
+                for (var i = 0; i < allReactions.length; i++)
                   FadeInLeft(
-                    from:
-                        0 +
-                        ((widget.reactions?.indexOf(reaction) ?? 0) * 20)
-                            .toDouble(),
+                    from: 0 + (i * 20).toDouble(),
                     duration:
                         widget.reactionPickerFadeLeftAnimationDuration ??
                         const Duration(milliseconds: 200),
                     delay: Duration.zero,
                     child: InkWell(
-                      child: Pulse(
-                        infinite: false,
-                        duration:
-                            widget.reactionTapAnimationDuration ??
-                            const Duration(milliseconds: 200),
-                        animate:
-                            reactionClicked &&
-                            clickedReactionIndex ==
-                                widget.reactions?.indexOf(reaction),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 2),
+                        padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
+                        decoration: BoxDecoration(
+                          color:
+                              (widget.userReactions ?? const []).contains(
+                                    allReactions[i],
+                                  )
+                                  ? widget.reactionsPickerReactedBackgroundColor ??
+                                      theme.onSurface.withValues(alpha: 0.2)
+                                  : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Pulse(
+                          infinite: false,
+                          duration: reactionTapAnimationDuration,
+                          animate: reactionClicked && clickedReactionIndex == i,
                           child: Text(
-                            reaction,
-                            style: const TextStyle(fontSize: 22),
+                            allReactions[i],
+                            style: TextStyle(fontSize: 22),
                           ),
                         ),
                       ),
                       onTap: () {
                         setState(() {
                           reactionClicked = true;
-                          clickedReactionIndex = widget.reactions?.indexOf(
-                            reaction,
-                          );
+                          clickedReactionIndex = i;
                         });
                         Future.delayed(
-                          widget.reactionTapAnimationDuration ??
-                              const Duration(milliseconds: 200),
+                          reactionTapAnimationDuration,
                         ).whenComplete(() {
                           if (context.mounted) {
                             Navigator.of(context).pop();
                           }
-                          widget.onReactionTap(reaction);
+                          widget.onReactionTap(allReactions[i]);
                         });
                       },
                     ),
                   ),
                 if (widget.onMoreReactionsTap != null)
                   FadeInLeft(
-                    from: 0 + ((widget.reactions?.length ?? 0) * 20).toDouble(),
+                    from: 0 + (allReactions.length * 20).toDouble(),
                     duration:
                         widget.reactionPickerFadeLeftAnimationDuration ??
                         const Duration(milliseconds: 200),
@@ -334,12 +353,14 @@ void showReactionsDialog(
   VoidCallback? onMoreReactionsTap,
   List<MenuItem>? menuItems,
   List<String>? reactions,
+  List<String>? userReactions,
   Alignment? widgetAlignment,
   double? menuItemsWidthRatio,
   Color? menuItemBackgroundColor,
   Color? menuItemDestructiveColor,
   Color? menuItemDividerColor,
   Color? reactionsPickerBackgroundColor,
+  Color? reactionsPickerReactedBackgroundColor,
   Duration? menuItemTapAnimationDuration,
   Duration? reactionTapAnimationDuration,
   Duration? reactionPickerFadeLeftAnimationDuration,
@@ -373,11 +394,14 @@ void showReactionsDialog(
             onMoreReactionsTap: onMoreReactionsTap,
             menuItems: menuItems,
             reactions: reactions,
+            userReactions: userReactions,
             menuItemsWidthRatio: menuItemsWidthRatio,
             menuItemBackgroundColor: menuItemBackgroundColor,
             menuItemDestructiveColor: menuItemDestructiveColor,
             menuItemDividerColor: menuItemDividerColor,
             reactionsPickerBackgroundColor: reactionsPickerBackgroundColor,
+            reactionsPickerReactedBackgroundColor:
+                reactionsPickerReactedBackgroundColor,
             menuItemTapAnimationDuration: menuItemTapAnimationDuration,
             reactionTapAnimationDuration: reactionTapAnimationDuration,
             reactionPickerFadeLeftAnimationDuration:

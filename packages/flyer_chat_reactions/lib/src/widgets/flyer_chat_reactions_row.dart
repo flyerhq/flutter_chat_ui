@@ -213,7 +213,7 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
               borderColor: theme.reactionBorderColor,
               backgroundColor: backgroundColor,
               reactedBackgroundColor: reactedBackgroundColor,
-              reactedByUser: _reactions[i].isReactedByUser(currentUserId),
+              reactedByUser: _reactions[i].isReactedByUser,
               onTap: () {
                 widget.onReactionTap?.call(_reactions[i].emoji);
               },
