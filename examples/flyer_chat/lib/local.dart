@@ -272,6 +272,7 @@ class LocalState extends State<Local> {
     Message message, {
     int? index,
     LongPressStartDetails? details,
+    required bool isSentByMe,
   }) async {
     // Skip showing menu for system messages
     if (message.authorId == 'system' || details == null) return;

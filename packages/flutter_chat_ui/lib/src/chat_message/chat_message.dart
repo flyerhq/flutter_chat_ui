@@ -147,22 +147,32 @@ class ChatMessage extends StatelessWidget {
             ),
           ),
         GestureDetector(
-          onTapUp:
-              (details) => onMessageTap?.call(
-                context,
-                message,
-                index: index,
-                details: details,
-              ),
+          onTapUp: (details) {
+            onMessageTap?.call(
+              context,
+              message,
+              index: index,
+              details: details,
+              isSentByMe: isSentByMe,
+            );
+          },
           onDoubleTap:
-              () => onMessageDoubleTap?.call(context, message, index: index),
-          onLongPressStart:
-              (details) => onMessageLongPress?.call(
+              () => onMessageDoubleTap?.call(
                 context,
                 message,
                 index: index,
-                details: details,
+                isSentByMe: isSentByMe,
               ),
+          onLongPress: () {
+            onMessageLongPress?.call(
+              context,
+              message,
+              index: index,
+              details: LongPressStartDetails(),
+              isSentByMe: isSentByMe,
+            );
+            return;
+          },
           child: FadeTransition(
             opacity: curvedAnimation,
             child: SizeTransition(
