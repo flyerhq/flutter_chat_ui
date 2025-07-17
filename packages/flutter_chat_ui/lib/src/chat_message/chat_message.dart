@@ -317,8 +317,8 @@ class ChatMessageWidget extends StatelessWidget {
                           Column(children: [child, SizedBox(height: 16)]),
                           Positioned(
                             bottom: 0,
-                            left: isSentByMe ? 8 : 0,
-                            right: isSentByMe ? 0 : 8,
+                            left: 8,
+                            right: 8,
                             child: reactionsWidget!,
                           ),
                         ],
