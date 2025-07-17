@@ -52,10 +52,6 @@ class PaginationState extends State<Pagination> {
     super.dispose();
   }
 
-  void _onMessageReaction(int index, String? reaction) {
-    print('reaction: $reaction');
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -63,7 +59,6 @@ class PaginationState extends State<Pagination> {
     return Scaffold(
       appBar: AppBar(title: const Text('Pagination')),
       body: Chat(
-        onMessageReaction: _onMessageReaction,
         builders: Builders(
           chatAnimatedListBuilder: (context, itemBuilder) {
             return ChatAnimatedList(

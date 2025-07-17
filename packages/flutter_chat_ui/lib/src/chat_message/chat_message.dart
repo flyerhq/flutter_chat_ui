@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/typedefs.dart';
@@ -135,15 +134,6 @@ class ChatMessage extends StatelessWidget {
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
-    Widget buildChatMessage({required bool showReactions}) {
-      return ChatMessageWidget(
-        message: message,
-        isSentByMe: isSentByMe,
-        showReactions: showReactions,
-        child: child,
-      );
-    }
-
     final Widget messageWidget = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -193,7 +183,12 @@ class ChatMessage extends StatelessWidget {
                       (isSentByMe
                           ? sentMessageAlignment
                           : receivedMessageAlignment),
-                  child: buildChatMessage(showReactions: true),
+                  child: ChatMessageWidget(
+                    message: message,
+                    isSentByMe: isSentByMe,
+                    showReactions: true,
+                    child: child,
+                  ),
                 ),
               ),
             ),
@@ -271,11 +266,9 @@ class ChatMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? reactionsWidget;
-    if (showReactions) {
-      reactionsWidget = FlyerChatReactions(
-        reactions: message.reactions,
-        alignment: isSentByMe ? MainAxisAlignment.start : MainAxisAlignment.end,
-      );
+    final reactionsBuilder = context.read<Builders?>()?.reactionsBuilder;
+    if (showReactions && reactionsBuilder != null) {
+      reactionsWidget = reactionsBuilder(context, message, isSentByMe);
     }
 
     return Column(
@@ -296,17 +289,16 @@ class ChatMessageWidget extends StatelessWidget {
             if (leadingWidget != null) leadingWidget!,
             Flexible(
               child:
-                  showReactions
+                  reactionsWidget != null
                       ? Stack(
                         children: [
                           // TODO Find better way to add height for the reactions widget
-                          // But the reaction Widget width depends on it's constraints and there is none in the column
                           Column(children: [child, SizedBox(height: 16)]),
                           Positioned(
                             bottom: 0,
                             left: 8,
                             right: 8,
-                            child: reactionsWidget!,
+                            child: reactionsWidget,
                           ),
                         ],
                       )
