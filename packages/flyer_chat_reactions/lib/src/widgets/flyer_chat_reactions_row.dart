@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
-import 'helpers/chattheme_extensions.dart';
-import 'models/reaction.dart';
-import 'utils/typedef.dart';
-import 'widgets/reaction_tile.dart';
-import 'widgets/reactions_list.dart';
+import '../helpers/chattheme_extensions.dart';
+import '../models/reaction.dart';
+import '../utils/typedef.dart';
+import 'reaction_tile.dart';
+import 'reactions_list.dart';
 
 /// A widget that displays a row of reaction tiles with emojis and counts.
 ///
 /// Handles layout and overflow of reactions, showing a surplus count when
 /// there are more reactions than can fit in the available space.
-class FlyerChatReactions extends StatefulWidget {
+class FlyerChatReactionsRow extends StatefulWidget {
   /// The reactions to display, mapped by emoji.
   final MessageReactions? reactions;
 
@@ -54,7 +54,7 @@ class FlyerChatReactions extends StatefulWidget {
   final MainAxisAlignment alignment;
 
   /// Creates a widget that displays a row of reaction tiles.
-  const FlyerChatReactions({
+  const FlyerChatReactionsRow({
     super.key,
     this.reactions,
     this.onReactionTap,
@@ -70,10 +70,10 @@ class FlyerChatReactions extends StatefulWidget {
   });
 
   @override
-  State<FlyerChatReactions> createState() => _FlyerChatReactionsState();
+  State<FlyerChatReactionsRow> createState() => _FlyerChatReactionsRowState();
 }
 
-class _FlyerChatReactionsState extends State<FlyerChatReactions> {
+class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
   /// Text style for the count text, initialized with default or provided style.
 
   /// List of reactions to display, processed from the input reactions.
