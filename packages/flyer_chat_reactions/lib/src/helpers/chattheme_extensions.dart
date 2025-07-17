@@ -10,5 +10,6 @@ extension ReactionsTheme on ChatTheme {
   TextStyle get reactionEmojiTextStyle => typography.bodyMedium;
   TextStyle get reactionCountTextStyle =>
       typography.bodySmall.copyWith(fontWeight: FontWeight.bold);
-  TextStyle get reactionSurplusTextStyle => typography.bodySmall;
+  TextStyle get reactionSurplusTextStyle =>
+      typography.bodySmall.copyWith(fontWeight: FontWeight.bold);
 }
