@@ -14,6 +14,7 @@ export 'src/load_more.dart';
 export 'src/scroll_to_bottom.dart';
 export 'src/simple_text_message.dart';
 export 'src/username.dart';
+export 'src/utils/chat_providers.dart';
 export 'src/utils/composer_height_notifier.dart';
 export 'src/utils/load_more_notifier.dart';
 export 'src/utils/typedefs.dart';
