@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,10 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart';
 import 'package:flyer_chat_file_message/flyer_chat_file_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
+import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
 
 import 'create_message.dart';
@@ -233,6 +234,30 @@ class LocalState extends State<Local> {
                   child: child,
                 );
               },
+          reactionsBuilder: (context, message, isSentByMe) {
+            final reactions = reactionsFromMessageReactions(
+              reactions: message.reactions,
+              currentUserId: _currentUser.id,
+            );
+            return FlyerChatReactionsRow(
+              reactions: reactions,
+              alignment: isSentByMe
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.end,
+
+              /// Open List on tap (WhatsApp Style)
+              // onReactionTap: (reaction) =>
+              //     showReactionsList(context: context, reactions: reactions),
+              /// Or react on tap (Slack Style)
+              onReactionTap: (reaction) =>
+                  _handleReactionTap(message, reaction),
+              removeOrAddLocallyOnTap: true,
+              onReactionLongPress: (reaction) =>
+                  showReactionsList(context: context, reactions: reactions),
+              onSurplusReactionTap: () =>
+                  showReactionsList(context: context, reactions: reactions),
+            );
+          },
         ),
         chatController: _chatController,
         currentUserId: _currentUser.id,
@@ -274,29 +299,83 @@ class LocalState extends State<Local> {
     LongPressStartDetails? details,
     required bool isSentByMe,
   }) async {
-    // Skip showing menu for system messages
-    if (message.authorId == 'system' || details == null) return;
-
-    // Calculate position for the menu
-    final position = details.globalPosition;
-
-    // Create a Rect for the menu position (small area around tap point)
-    final menuRect = Rect.fromCenter(
-      center: position,
-      width: 0, // Width and height of 0 means show exactly at the point
-      height: 0,
+    showReactionsDialog(
+      context,
+      message,
+      isSentByMe: isSentByMe,
+      // reactions: ['📌'], // The default reactions to propose in the dialog
+      userReactions: getUserReactions(message.reactions, _currentUser.id),
+      onReactionTap: (reaction) => _handleReactionTap(message, reaction),
+      onMoreReactionsTap: () async {
+        // Use whichever emoji picker you want
+        final picked = await _showEmojiPicker();
+        if (picked != null) {
+          _handleReactionTap(message, picked);
+        }
+      },
+      menuItems: _getMenuItems(message),
     );
+  }
+
+  Future<String?> _showEmojiPicker() {
+    return showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      builder: (context) => EmojiPicker(
+        onEmojiSelected: (Category? category, Emoji emoji) {
+          Navigator.of(context).pop(emoji.emoji);
+        },
+        config: Config(
+          height: 250,
+          checkPlatformCompatibility: false,
+          viewOrderConfig: const ViewOrderConfig(),
+          skinToneConfig: const SkinToneConfig(),
+          categoryViewConfig: const CategoryViewConfig(),
+          bottomActionBarConfig: const BottomActionBarConfig(enabled: false),
+          searchViewConfig: const SearchViewConfig(),
+        ),
+      ),
+    );
+  }
+
+  void _handleReactionTap(Message message, String reaction) {
+    debugPrint('reaction Tapped: $reaction');
+    // Maybe the lib could expose if it's a removal or at least helpers methods
+    final reactions = Map<String, List<String>>.from(message.reactions ?? {});
+    final userId = _currentUser.id;
+
+    final users = List<String>.from(reactions[reaction] ?? []);
+    if (users.contains(userId)) {
+      users.remove(userId);
+      if (users.isEmpty) {
+        reactions.remove(reaction); // Remove the key if no users left
+      } else {
+        reactions[reaction] = users;
+      }
+    } else {
+      users.add(userId);
+      reactions[reaction] = users;
+    }
+
+    _chatController.updateMessage(
+      message,
+      message.copyWith(reactions: reactions),
+    );
+  }
+
+  List<MenuItem> _getMenuItems(Message message) {
+    if (message.authorId == 'system') return [];
 
     final items = [
       if (message is TextMessage)
-        PullDownMenuItem(
+        MenuItem(
           title: 'Copy',
           icon: CupertinoIcons.doc_on_doc,
           onTap: () {
             _copyMessage(message);
           },
         ),
-      PullDownMenuItem(
+      MenuItem(
         title: 'Delete',
         icon: CupertinoIcons.delete,
         isDestructive: true,
@@ -305,8 +384,7 @@ class LocalState extends State<Local> {
         },
       ),
     ];
-
-    await showPullDownMenu(context: context, position: menuRect, items: items);
+    return items;
   }
 
   void _copyMessage(TextMessage message) async {
