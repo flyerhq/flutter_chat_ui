@@ -1,11 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:provider/provider.dart';
 
 import '../models/reaction.dart';
-import 'reaction_tile.dart';
 
 /// A widget that displays a list of users and their reactions in a bottom sheet.
 ///
