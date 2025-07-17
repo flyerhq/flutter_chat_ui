@@ -61,7 +61,7 @@ class ReactionTile extends StatefulWidget {
   final double? width;
 
   /// Fixed height for the reaction tile.
-  /// If null, the tile will size itself based on its content and constraints.
+  /// If null, uses the default height.
   final double? height;
 
   /// Creates a reaction tile widget.
@@ -125,7 +125,7 @@ class _ReactionTileState extends State<ReactionTile> {
         padding: EdgeInsets.symmetric(
           horizontal: ReactionTileConstants.horizontalPadding,
         ),
-        height: widget.height,
+        height: widget.height ?? ReactionTileConstants.height,
         width: widget.width,
         decoration: BoxDecoration(
           color:
