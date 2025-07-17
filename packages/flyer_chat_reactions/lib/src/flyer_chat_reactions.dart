@@ -5,6 +5,7 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
 
+import 'helpers/chattheme_extensions.dart';
 import 'helpers/reaction_text.dart';
 import 'helpers/text_size_extension.dart';
 import 'models/reaction.dart';
@@ -57,6 +58,9 @@ class FlyerChatReactions extends StatefulWidget {
   /// If null, uses the default theme color.
   final Color? reactionReactedBackgroundColor;
 
+  /// Alignment of the reactions row
+  final MainAxisAlignment alignment;
+
   /// Creates a widget that displays a row of reaction tiles.
   const FlyerChatReactions({
     super.key,
@@ -70,6 +74,7 @@ class FlyerChatReactions extends StatefulWidget {
     this.growDirection = FlyerChatReactionsGrowDirection.left,
     this.reactionBackgroundColor,
     this.reactionReactedBackgroundColor,
+    this.alignment = MainAxisAlignment.start,
   });
 
   @override
@@ -166,14 +171,25 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
   @override
   void initState() {
     super.initState();
-    _countTextStyle =
-        widget.countTextStyle ??
-        TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
+    _countTextStyle = _resolveCountTextStyle();
+  }
+
+  TextStyle _resolveCountTextStyle() {
+    if (widget.countTextStyle != null) {
+      return widget.countTextStyle!;
+    }
+
+    final theme = context.read<ChatTheme>();
+    return TextStyle(
+      fontSize: theme.reactionCountTextFontSize ?? 10,
+      fontWeight: FontWeight.bold,
+      color: theme.reactionCountTextColor,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ChatTheme>();
+    final theme = context.read<ChatTheme>();
     final currentUserId = context.watch<UserID>();
     final onReactionTap = context.read<OnMessageReactionCallback?>();
     _reactions = reactionsFromMessageReactions(
@@ -183,9 +199,9 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
 
     final reactedBackgroundColor =
         widget.reactionReactedBackgroundColor ??
-        theme.colors.surfaceContainerHigh;
+        theme.reactionReactedBackgroundColor;
     final backgroundColor =
-        widget.reactionBackgroundColor ?? theme.colors.surfaceContainerLow;
+        widget.reactionBackgroundColor ?? theme.reactionBackgroundColor;
 
     return LayoutBuilder(
       builder: (context, BoxConstraints constraints) {
@@ -229,7 +245,7 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
               padding: widget.reactionTilePadding,
               textStyle: _countTextStyle,
               emojiFontSize: widget.emojiFontSize,
-              borderColor: theme.colors.surface,
+              borderColor: theme.reactionBorderColor,
               backgroundColor: backgroundColor,
               reactedBackgroundColor: reactedBackgroundColor,
               reactedByUser: _reactions[i].isReactedByUser(currentUserId),
@@ -255,7 +271,7 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
               reactedByUser: false,
               textStyle: _countTextStyle,
               emojiFontSize: widget.emojiFontSize,
-              borderColor: theme.colors.surface,
+              borderColor: theme.reactionBorderColor,
               onTap: _showReactionList,
               onLongPress: _showReactionList,
             ),
@@ -263,7 +279,14 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
         }
         return Column(
           mainAxisSize: MainAxisSize.min,
-          children: [Row(children: children)],
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: widget.alignment,
+              mainAxisSize: MainAxisSize.max,
+              children: children,
+            ),
+          ],
         );
       },
     );
