@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -292,11 +293,36 @@ class LocalState extends State<Local> {
         print('menuItem: $menuItem');
         // handle context menu
       },
-      onMoreReactionsTap: () {
-        print('more reactions');
-        // handle more reactions
+      onMoreReactionsTap: () async {
+        debugPrint('more reactions');
+        // Use whichever emoji picker you want
+        final picked = await _showEmojiPicker();
+        if (picked != null) {
+          _handleReactionTap(message, picked);
+        }
       },
       menuItems: _getMenuItems(message),
+    );
+  }
+
+  Future<String?> _showEmojiPicker() {
+    return showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      builder: (context) => EmojiPicker(
+        onEmojiSelected: (Category? category, Emoji emoji) {
+          Navigator.of(context).pop(emoji.emoji);
+        },
+        config: Config(
+          height: 250,
+          checkPlatformCompatibility: false,
+          viewOrderConfig: const ViewOrderConfig(),
+          skinToneConfig: const SkinToneConfig(),
+          categoryViewConfig: const CategoryViewConfig(),
+          bottomActionBarConfig: const BottomActionBarConfig(enabled: false),
+          searchViewConfig: const SearchViewConfig(),
+        ),
+      ),
     );
   }
 
