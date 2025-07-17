@@ -221,20 +221,20 @@ class ReactionTileSizeHelper {
     var width = 0.0;
 
     if (hasEmoji) {
-      width += emojiStyle.fontSize!;
+      width += emojiStyle.fontSize ?? 12;
       width += 2.5; // See emoji alignement
     }
     if (hasText) {
       if (width > 0) {
         width += ReactionTileConstants.textElementsSpacing;
       }
-      width += countText.length * countTextStyle.fontSize!;
+      width += countText.length * (countTextStyle.fontSize ?? 12);
     }
     if (hasExtraText) {
       if (width > 0) {
         width += ReactionTileConstants.textElementsSpacing;
       }
-      width += extraText.length * extraTextStyle.fontSize!;
+      width += extraText.length * (extraTextStyle.fontSize ?? 12);
     }
     width += ReactionTileConstants.horizontalPadding * 2;
 
