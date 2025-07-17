@@ -12,9 +12,6 @@ import 'utils/typedef.dart';
 import 'widgets/reaction_tile.dart';
 import 'widgets/reactions_list.dart';
 
-/// Direction in which the reactions will grow when there are multiple reactions.
-enum FlyerChatReactionsGrowDirection { left, right }
-
 /// A widget that displays a row of reaction tiles with emojis and counts.
 ///
 /// Handles layout and overflow of reactions, showing a surplus count when
@@ -33,10 +30,6 @@ class FlyerChatReactions extends StatefulWidget {
   /// Text style for the count text in reaction tiles.
   /// If null, uses the default style.
   final TextStyle? countTextStyle;
-
-  /// Direction in which reactions will grow when there are multiple reactions.
-  /// Defaults to [FlyerChatReactionsGrowDirection.right].
-  final FlyerChatReactionsGrowDirection growDirection;
 
   /// Space between reaction tiles.
   /// Defaults to 2.
@@ -75,7 +68,6 @@ class FlyerChatReactions extends StatefulWidget {
     this.reactionTilePadding = EdgeInsets.zero,
     this.minimumReactionTileWidth = 40,
     this.borderColor,
-    this.growDirection = FlyerChatReactionsGrowDirection.left,
     this.reactionBackgroundColor,
     this.reactionReactedBackgroundColor,
     this.alignment = MainAxisAlignment.start,
