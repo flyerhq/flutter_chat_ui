@@ -134,6 +134,10 @@ class ChatMessage extends StatelessWidget {
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
+    final reactionsBuilder = context.read<Builders?>()?.reactionsBuilder;
+    Widget? reactionsWidget;
+    reactionsWidget = reactionsBuilder?.call(context, message, isSentByMe);
+
     final Widget messageWidget = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -190,7 +194,10 @@ class ChatMessage extends StatelessWidget {
                       (isSentByMe
                           ? sentMessageAlignment
                           : receivedMessageAlignment),
-                  child: _buildMessage(isSentByMe: isSentByMe),
+                  child: _buildMessage(
+                    isSentByMe: isSentByMe,
+                    reactionsWidget: reactionsWidget,
+                  ),
                 ),
               ),
             ),
@@ -213,27 +220,49 @@ class ChatMessage extends StatelessWidget {
     return messageWidget;
   }
 
-  Widget _buildMessage({required bool isSentByMe}) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment:
-        isSentByMe
-            ? sentMessageColumnAlignment
-            : receivedMessageColumnAlignment,
-    children: [
-      if (topWidget != null) topWidget!,
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment:
-            isSentByMe ? sentMessageRowAlignment : receivedMessageRowAlignment,
-        children: [
-          if (leadingWidget != null) leadingWidget!,
-          Flexible(child: child),
-          if (trailingWidget != null) trailingWidget!,
-        ],
-      ),
-      if (bottomWidget != null) bottomWidget!,
-    ],
-  );
+  Widget _buildMessage({required bool isSentByMe, Widget? reactionsWidget}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment:
+          isSentByMe
+              ? sentMessageColumnAlignment
+              : receivedMessageColumnAlignment,
+      children: [
+        if (topWidget != null) topWidget!,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment:
+              isSentByMe
+                  ? sentMessageRowAlignment
+                  : receivedMessageRowAlignment,
+          children: [
+            if (leadingWidget != null) leadingWidget!,
+            Flexible(
+              child:
+                  reactionsWidget != null
+                      ? Stack(
+                        children: [
+                          // TODO Find better way to add height for the reactions widget
+                          // TODO: maybe we could set a width to allow at least some space for the reactions widget
+                          // We message is really short ?
+                          Column(children: [child, SizedBox(height: 16)]),
+                          Positioned(
+                            bottom: 0,
+                            left: 8,
+                            right: 8,
+                            child: reactionsWidget,
+                          ),
+                        ],
+                      )
+                      : child,
+            ),
+            if (trailingWidget != null) trailingWidget!,
+          ],
+        ),
+        if (bottomWidget != null) bottomWidget!,
+      ],
+    );
+  }
 
   EdgeInsetsGeometry _resolveDefaultPadding(BuildContext context) {
     if (index == 0) {
