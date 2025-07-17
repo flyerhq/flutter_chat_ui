@@ -289,10 +289,6 @@ class LocalState extends State<Local> {
       message,
       isSentByMe: isSentByMe,
       onReactionTap: (reaction) => _handleReactionTap(message, reaction),
-      onContextMenuTap: (menuItem) {
-        print('menuItem: $menuItem');
-        // handle context menu
-      },
       onMoreReactionsTap: () async {
         debugPrint('more reactions');
         // Use whichever emoji picker you want

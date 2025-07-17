@@ -323,7 +323,6 @@ void showReactionsDialog(
   Message message, {
   required bool isSentByMe,
   required Function(String) onReactionTap,
-  required Function(MenuItem) onContextMenuTap,
   VoidCallback? onMoreReactionsTap,
   List<MenuItem>? menuItems,
   List<String>? reactions,
