@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../models/default_data.dart';
 import '../models/menu_item.dart';
+import '../utils/typedef.dart';
 
 //// Theme values for [ReactionsDialogWidget].
 typedef _LocalTheme =
@@ -42,7 +43,7 @@ class ReactionsDialogWidget extends StatefulWidget {
   final Widget messageWidget;
 
   /// The callback function to be called when a reaction is tapped
-  final Function(String) onReactionTap;
+  final OnMessageReactionCallback onReactionTap;
 
   /// More Reactions Widget
   final Widget? moreReactionsWidget;

@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'helpers/chattheme_extensions.dart';
 import 'helpers/reaction_text.dart';
 import 'helpers/text_size_extension.dart';
 import 'models/reaction.dart';
+import 'utils/typedef.dart';
 import 'widgets/reaction_tile.dart';
 import 'widgets/reactions_list.dart';
 
@@ -22,6 +22,9 @@ enum FlyerChatReactionsGrowDirection { left, right }
 class FlyerChatReactions extends StatefulWidget {
   /// The reactions to display, mapped by emoji.
   final MessageReactions? reactions;
+
+  /// Callback for when a reaction is tapped.
+  final OnMessageReactionCallback? onReactionTap;
 
   /// Font size for the emoji in reaction tiles.
   /// If null, uses the default size.
@@ -65,6 +68,7 @@ class FlyerChatReactions extends StatefulWidget {
   const FlyerChatReactions({
     super.key,
     this.reactions,
+    this.onReactionTap,
     this.emojiFontSize,
     this.countTextStyle,
     this.spacing = 2,
@@ -250,7 +254,7 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
               reactedBackgroundColor: reactedBackgroundColor,
               reactedByUser: _reactions[i].isReactedByUser(currentUserId),
               onTap: () {
-                onReactionTap?.call(1, _reactions[i].emoji);
+                widget.onReactionTap?.call(_reactions[i].emoji);
               },
               onLongPress: () => _showReactionList,
             ),

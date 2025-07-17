@@ -50,9 +50,6 @@ class Chat extends StatefulWidget {
   /// Callback triggered when a message is long-pressed.
   final OnMessageLongPressCallback? onMessageLongPress;
 
-  /// Callback triggered when a message is reacted.
-  final OnMessageReactionCallback? onMessageReaction;
-
   /// Callback triggered when the attachment button in the composer is tapped.
   final OnAttachmentTapCallback? onAttachmentTap;
 
@@ -82,7 +79,6 @@ class Chat extends StatefulWidget {
     this.onMessageSend,
     this.onMessageTap,
     this.onMessageLongPress,
-    this.onMessageReaction,
     this.onAttachmentTap,
     this.backgroundColor,
     this.decoration,
@@ -155,7 +151,6 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: _timeFormat),
         Provider.value(value: widget.onMessageSend),
         Provider.value(value: widget.onMessageTap),
-        Provider.value(value: widget.onMessageReaction),
         Provider.value(value: widget.onMessageLongPress),
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ComposerHeightNotifier()),

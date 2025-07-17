@@ -35,7 +35,6 @@ class ChatProviders {
     // Optional callbacks use context.read<T?>() directly:
     Provider.value(value: context.read<OnMessageSendCallback?>()),
     Provider.value(value: context.read<OnMessageTapCallback?>()),
-    Provider.value(value: context.read<OnMessageReactionCallback?>()),
     Provider.value(value: context.read<OnMessageLongPressCallback?>()),
     Provider.value(value: context.read<OnAttachmentTapCallback?>()),
 
