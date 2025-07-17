@@ -52,10 +52,6 @@ class ReactionTile extends StatefulWidget {
   /// Text style for the emoji.
   final TextStyle? emojiTextStyle;
 
-  /// Space between the emoji and the count text.
-  /// Defaults to 0.
-  final double spaceBetweenEmojiAndCount;
-
   /// Fixed width for the reaction tile.
   /// If null, the tile will size itself based on its content and constraints.
   final double? width;
@@ -79,7 +75,6 @@ class ReactionTile extends StatefulWidget {
     this.countTextStyle,
     this.emojiTextStyle,
     this.extraTextStyle,
-    this.spaceBetweenEmojiAndCount = 0,
     this.width,
     this.height,
   });
