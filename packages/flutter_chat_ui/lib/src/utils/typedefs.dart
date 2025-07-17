@@ -10,13 +10,19 @@ typedef OnMessageTapCallback =
       Message message, {
       int index,
       TapUpDetails details,
+      required bool isSentByMe,
     });
 
 /// Callback signature for when a message is double tapped.
 /// [context] is the BuildContext from the widget tree where the tap occurs.
 /// Provides the tapped [message], its [index]
 typedef OnMessageDoubleTapCallback =
-    void Function(BuildContext context, Message message, {int index});
+    void Function(
+      BuildContext context,
+      Message message, {
+      int index,
+      required bool isSentByMe,
+    });
 
 /// Callback signature for when a message is long-pressed.
 /// [context] is the BuildContext from the widget tree where the long press occurs.
@@ -27,11 +33,11 @@ typedef OnMessageLongPressCallback =
       Message message, {
       int index,
       LongPressStartDetails details,
+      required bool isSentByMe,
     });
 
 /// Callback signature for when a message is reacted.
-typedef OnMessageReactionCallback =
-    void Function(int index, String? reaction);
+typedef OnMessageReactionCallback = void Function(int index, String? reaction);
 
 /// Callback signature for when the user attempts to send a message.
 /// Provides the [text] entered by the user.

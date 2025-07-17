@@ -3,7 +3,6 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/chat_providers.dart';
 import '../utils/typedefs.dart';
 
 /// Default wrapper widget for a single chat message item.
@@ -135,7 +134,6 @@ class ChatMessage extends StatelessWidget {
     );
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
-    final providers = ChatProviders.from(context);
 
     Widget buildChatMessage({required bool showReactions}) {
       return ChatMessageWidget(
@@ -165,30 +163,16 @@ class ChatMessage extends StatelessWidget {
               message,
               index: index,
               details: details,
+              isSentByMe: isSentByMe,
             );
           },
           onLongPress: () {
-            showDialog(
-              context: context,
-              useSafeArea: true,
-              useRootNavigator: false,
-              builder:
-                  (context) => MultiProvider(
-                    providers: providers,
-                    child: ReactionsDialogWidget(
-                      messageWidget: buildChatMessage(showReactions: false),
-                      widgetAlignment:
-                          isSentByMe
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                      onReactionTap: (reaction) {
-                        // handle add reaction
-                      },
-                      onContextMenuTap: (menuItem) {
-                        // handle context menu
-                      },
-                    ),
-                  ),
+            onMessageLongPress?.call(
+              context,
+              message,
+              index: index,
+              details: LongPressStartDetails(),
+              isSentByMe: isSentByMe,
             );
             return;
           },
@@ -288,7 +272,10 @@ class ChatMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? reactionsWidget;
     if (showReactions) {
-      reactionsWidget = FlyerChatReactions(reactions: message.reactions);
+      reactionsWidget = FlyerChatReactions(
+        reactions: message.reactions,
+        alignment: isSentByMe ? MainAxisAlignment.start : MainAxisAlignment.end,
+      );
     }
 
     return Column(
