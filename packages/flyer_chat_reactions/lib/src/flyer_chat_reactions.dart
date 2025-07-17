@@ -185,9 +185,12 @@ class _FlyerChatReactionsState extends State<FlyerChatReactions> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.reactions == null || widget.reactions!.isEmpty) {
+      return const SizedBox.shrink();
+    }
     final theme = context.read<ChatTheme>();
-    final currentUserId = context.watch<UserID>();
-    final onReactionTap = context.read<OnMessageReactionCallback?>();
+    final currentUserId = context.read<UserID>();
+
     _reactions = reactionsFromMessageReactions(
       reactions: widget.reactions ?? {},
       currentUserId: currentUserId,
