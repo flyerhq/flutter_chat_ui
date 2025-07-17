@@ -7,5 +7,8 @@ extension ReactionsTheme on ChatTheme {
   Color get reactionBorderColor => colors.surface;
 
   Color get reactionCountTextColor => colors.onSurface;
-  double? get reactionCountTextFontSize => typography.bodySmall.fontSize;
+  TextStyle get reactionEmojiTextStyle => typography.bodyMedium;
+  TextStyle get reactionCountTextStyle =>
+      typography.bodySmall.copyWith(fontWeight: FontWeight.bold);
+  TextStyle get reactionSurplusTextStyle => typography.bodySmall;
 }
