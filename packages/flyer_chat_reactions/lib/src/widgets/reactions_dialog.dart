@@ -232,82 +232,90 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
             color: widget.reactionsPickerBackgroundColor ?? theme.surface,
             borderRadius: theme.shape,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (var reaction in widget.reactions ?? DefaultData.reactions)
-                FadeInLeft(
-                  from:
-                      0 +
-                      ((widget.reactions?.indexOf(reaction) ?? 0) * 20)
-                          .toDouble(),
-                  duration:
-                      widget.reactionPickerFadeLeftAnimationDuration ??
-                      const Duration(milliseconds: 200),
-                  delay: Duration.zero,
-                  child: InkWell(
-                    child: Pulse(
-                      infinite: false,
-                      duration:
-                          widget.reactionTapAnimationDuration ??
-                          const Duration(milliseconds: 200),
-                      animate:
-                          reactionClicked &&
-                          clickedReactionIndex ==
-                              widget.reactions?.indexOf(reaction),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
-                        child: Text(
-                          reaction,
-                          style: const TextStyle(fontSize: 22),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (var reaction in widget.reactions ?? DefaultData.reactions)
+                  FadeInLeft(
+                    from:
+                        0 +
+                        ((widget.reactions?.indexOf(reaction) ?? 0) * 20)
+                            .toDouble(),
+                    duration:
+                        widget.reactionPickerFadeLeftAnimationDuration ??
+                        const Duration(milliseconds: 200),
+                    delay: Duration.zero,
+                    child: InkWell(
+                      child: Pulse(
+                        infinite: false,
+                        duration:
+                            widget.reactionTapAnimationDuration ??
+                            const Duration(milliseconds: 200),
+                        animate:
+                            reactionClicked &&
+                            clickedReactionIndex ==
+                                widget.reactions?.indexOf(reaction),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
+                          child: Text(
+                            reaction,
+                            style: const TextStyle(fontSize: 22),
+                          ),
                         ),
                       ),
+                      onTap: () {
+                        setState(() {
+                          reactionClicked = true;
+                          clickedReactionIndex = widget.reactions?.indexOf(
+                            reaction,
+                          );
+                        });
+                        Future.delayed(
+                          widget.reactionTapAnimationDuration ??
+                              const Duration(milliseconds: 200),
+                        ).whenComplete(() {
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                          widget.onReactionTap(reaction);
+                        });
+                      },
                     ),
-                    onTap: () {
-                      setState(() {
-                        reactionClicked = true;
-                        clickedReactionIndex = widget.reactions?.indexOf(
-                          reaction,
-                        );
-                      });
-                      Future.delayed(
-                        widget.reactionTapAnimationDuration ??
-                            const Duration(milliseconds: 200),
-                      ).whenComplete(() {
+                  ),
+                if (widget.onMoreReactionsTap != null)
+                  FadeInLeft(
+                    from: 0 + ((widget.reactions?.length ?? 0) * 20).toDouble(),
+                    duration:
+                        widget.reactionPickerFadeLeftAnimationDuration ??
+                        const Duration(milliseconds: 200),
+                    delay: Duration.zero,
+                    child: InkWell(
+                      onTap: () {
                         if (context.mounted) {
                           Navigator.of(context).pop();
                         }
-                        widget.onReactionTap(reaction);
-                      });
-                    },
-                  ),
-                ),
-              if (widget.onMoreReactionsTap != null)
-                FadeInLeft(
-                  from: 0 + ((widget.reactions?.length ?? 0) * 20).toDouble(),
-                  duration:
-                      widget.reactionPickerFadeLeftAnimationDuration ??
-                      const Duration(milliseconds: 200),
-                  delay: Duration.zero,
-                  child: InkWell(
-                    onTap: () {
-                      if (context.mounted) {
-                        Navigator.of(context).pop();
-                      }
-                      widget.onMoreReactionsTap?.call();
-                    },
-                    child:
-                        widget.moreReactionsWidget ??
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
-                          child: Icon(
-                            Icons.more_horiz_rounded,
-                            color: theme.onSurface,
+                        widget.onMoreReactionsTap?.call();
+                      },
+                      child:
+                          widget.moreReactionsWidget ??
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              4.0,
+                              2.0,
+                              4.0,
+                              2,
+                            ),
+                            child: Icon(
+                              Icons.more_horiz_rounded,
+                              color: theme.onSurface,
+                            ),
                           ),
-                        ),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
