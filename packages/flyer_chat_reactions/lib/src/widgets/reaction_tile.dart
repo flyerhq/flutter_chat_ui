@@ -102,9 +102,11 @@ class _ReactionTileState extends State<ReactionTile> {
   @override
   void didUpdateWidget(ReactionTile oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.count != widget.count) {
+    if (oldWidget.count != widget.count ||
+        oldWidget.reactedByUser != widget.reactedByUser) {
       setState(() {
         _count = widget.count;
+        _isTapped = widget.reactedByUser;
       });
     }
   }
