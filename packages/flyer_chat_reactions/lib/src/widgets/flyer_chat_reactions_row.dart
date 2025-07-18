@@ -132,7 +132,8 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.reactions.isEmpty) {
+    final validReactions = widget.reactions.where((r) => r.count > 0).toList();
+    if (validReactions.isEmpty) {
       return const SizedBox.shrink();
     }
     final theme = context.read<ChatTheme>();
@@ -165,14 +166,14 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
 
         final stackWidth = constraints.maxWidth;
         var maxCapacity = calculateSizesAndMaxCapacity(
-          reactions: widget.reactions,
+          reactions: validReactions,
           stackWidth: stackWidth,
           emojiTextStyle: emojiTextStyle,
           countTextStyle: countTextStyle,
           extraTextStyle: extraTextStyle,
         );
         var visibleItemsCount = reactionsSizes.length;
-        var hiddenCount = widget.reactions.length - maxCapacity;
+        var hiddenCount = validReactions.length - maxCapacity;
         final souldDisplaySurplus = hiddenCount > 0;
 
         Size? surplusWidgetSize;
@@ -184,7 +185,7 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
             extraText: '+$hiddenCount',
           );
           maxCapacity = calculateSizesAndMaxCapacity(
-            reactions: widget.reactions,
+            reactions: validReactions,
             stackWidth: stackWidth - surplusWidgetSize.width - widget.spacing,
             emojiTextStyle: emojiTextStyle,
             countTextStyle: countTextStyle,
@@ -192,7 +193,7 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
           );
 
           visibleItemsCount = reactionsSizes.length;
-          hiddenCount = widget.reactions.length - visibleItemsCount;
+          hiddenCount = validReactions.length - visibleItemsCount;
         }
 
         final children = <Widget>[];
@@ -200,21 +201,21 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
         for (var i = 0; i < visibleItemsCount; i++) {
           children.add(
             ReactionTile(
-              key: ValueKey(widget.reactions[i].emoji),
+              key: ValueKey(validReactions[i].emoji),
               width: reactionsSizes[i].width,
-              emoji: widget.reactions[i].emoji,
-              count: widget.reactions[i].count,
+              emoji: validReactions[i].emoji,
+              count: validReactions[i].count,
               countTextStyle: countTextStyle,
               emojiTextStyle: emojiTextStyle,
               borderColor: theme.reactionBorderColor,
               backgroundColor: backgroundColor,
               reactedBackgroundColor: reactedBackgroundColor,
-              reactedByUser: widget.reactions[i].isReactedByUser,
+              reactedByUser: validReactions[i].isReactedByUser,
               onTap: () {
-                widget.onReactionTap?.call(widget.reactions[i].emoji);
+                widget.onReactionTap?.call(validReactions[i].emoji);
               },
               onLongPress: () {
-                widget.onReactionLongPress?.call(widget.reactions[i].emoji);
+                widget.onReactionLongPress?.call(validReactions[i].emoji);
               },
               removeOrAddLocallyOnTap: widget.removeOrAddLocallyOnTap,
             ),
