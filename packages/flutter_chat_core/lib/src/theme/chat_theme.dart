@@ -113,7 +113,7 @@ abstract class ChatColors with _$ChatColors {
     surfaceContainerLow: Color(0xff121212),
     surfaceContainer: Color(0xff1c1c1c),
     surfaceContainerHigh: Color(0xff242424),
-    surfaceContainerHighest: Color(0xff2c2c2c),
+    surfaceContainerHighest: Color(0xff444444),
   );
 
   /// Creates [ChatColors] from a Material [ThemeData].
