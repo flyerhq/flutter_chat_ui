@@ -105,11 +105,17 @@ class _ReactionsListState extends State<ReactionsList> {
             t.typography.bodyMedium,
       ),
     );
+    final validReactions = widget.reactions.where((r) => r.count > 0).toList();
 
     final filteredReactions =
         selectedEmoji == null
-            ? widget.reactions
-            : widget.reactions.where((r) => r.emoji == selectedEmoji).toList();
+            ? validReactions
+            : validReactions.where((r) => r.emoji == selectedEmoji).toList();
+
+    final totalReactionCount = widget.reactions.fold(
+      0,
+      (sum, r) => sum + r.count,
+    );
 
     return Container(
       clipBehavior: Clip.hardEdge,
@@ -131,7 +137,7 @@ class _ReactionsListState extends State<ReactionsList> {
               children: [
                 _buildChip(
                   label: Text(
-                    '${widget.styleConfig.allFilterChipLabel} • ${widget.reactions.length}',
+                    '${widget.styleConfig.allFilterChipLabel} • $totalReactionCount',
                   ),
                   theme: theme,
                   selected: selectedEmoji == null,
@@ -142,7 +148,7 @@ class _ReactionsListState extends State<ReactionsList> {
                   },
                 ),
                 const SizedBox(width: 8),
-                ...widget.reactions.map(
+                ...validReactions.map(
                   (reaction) => Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: _buildChip(
