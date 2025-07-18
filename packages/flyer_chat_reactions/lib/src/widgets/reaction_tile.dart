@@ -100,6 +100,16 @@ class _ReactionTileState extends State<ReactionTile> {
   }
 
   @override
+  void didUpdateWidget(ReactionTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.count != widget.count) {
+      setState(() {
+        _count = widget.count;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Used to shrink on state update
     if (_count == 0) {
