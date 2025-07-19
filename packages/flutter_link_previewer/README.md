@@ -9,6 +9,7 @@ A highly customizable Flutter widget for rendering a preview of a URL. It automa
 ## ✨ Features
 
 - 🪄 **Automatic Preview Generation:** Fetches preview data (title, description, image) from the first URL found in a given text.
+- 🌐 **International Domain Support:** Handles URLs with localized characters (e.g., Cyrillic, Arabic, Chinese, Japanese, etc.).
 - 🎨 **Highly Customizable:** Control colors, padding, border radius, text styles, and more.
 - 🖼️ **Smart Image Layout:** Automatically displays images on the side (for square images) or at the bottom (for rectangular images).
 - 📐 **Sophisticated Width Calculation:** Aligns with parent content (like chat bubbles) for a visually consistent layout.

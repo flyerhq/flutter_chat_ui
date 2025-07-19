@@ -17,6 +17,7 @@ dependencies:
   flutter_chat_core: ^2.7.0
   html: ^0.15.6
   http: ^1.4.0
+  punycode: ^1.0.0
   url_launcher: ^6.3.2
 
 dev_dependencies:

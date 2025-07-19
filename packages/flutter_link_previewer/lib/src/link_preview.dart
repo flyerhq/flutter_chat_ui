@@ -27,6 +27,7 @@ class LinkPreview extends StatefulWidget {
     this.parentContent,
     this.onTap,
     this.corsProxy,
+    this.headers,
     this.requestTimeout = const Duration(seconds: 5),
     this.userAgent,
     this.hideTitle = false,
@@ -81,6 +82,9 @@ class LinkPreview extends StatefulWidget {
 
   /// The CORS proxy to use for fetching the preview data.
   final String? corsProxy;
+
+  /// The headers to use for fetching the preview data.
+  final Map<String, String>? headers;
 
   /// The timeout for the request to fetch the preview data.
   final Duration? requestTimeout;
@@ -209,6 +213,7 @@ class _LinkPreviewState extends State<LinkPreview>
     final value = await getLinkPreviewData(
       widget.text,
       proxy: widget.corsProxy,
+      headers: widget.headers,
       requestTimeout: widget.requestTimeout,
       userAgent: widget.userAgent,
     );

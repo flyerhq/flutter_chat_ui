@@ -2,21 +2,44 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart' hide Element;
 import 'package:flutter_chat_core/flutter_chat_core.dart'
     show LinkPreviewData, ImagePreviewData;
 import 'package:html/dom.dart' show Document, Element;
 import 'package:html/parser.dart' as parser show parse;
 import 'package:http/http.dart' as http show Request, Client, Response;
+import 'package:punycode/punycode.dart' as puny;
 
 import 'types.dart';
 
 String _calculateUrl(String baseUrl, String? proxy) {
-  if (proxy != null) {
-    return '$proxy$baseUrl';
+  var urlToReturn = baseUrl;
+
+  final domainRegex = RegExp(r'^(?:(http|https|ftp):\/\/)?([^\/?#]+)');
+  final match = domainRegex.firstMatch(baseUrl);
+
+  if (match != null) {
+    final originalDomain = match.group(2)!;
+
+    final labels = originalDomain.split('.');
+    if (labels.length <= 10) {
+      final encodedLabels =
+          labels.map((label) {
+            final isAscii = label.runes.every((r) => r < 128);
+            return isAscii ? label : 'xn--${puny.punycodeEncode(label)}';
+          }).toList();
+
+      final punycodedDomain = encodedLabels.join('.');
+      urlToReturn = baseUrl.replaceFirst(originalDomain, punycodedDomain);
+    }
   }
 
-  return baseUrl;
+  if (proxy != null) {
+    return '$proxy$urlToReturn';
+  }
+
+  return urlToReturn;
 }
 
 String? _getMetaContent(Document document, String propertyValue) {
@@ -155,7 +178,7 @@ Future<String> _getBiggestImageUrl(
 
 Future<http.Response?> _getRedirectedResponse(
   Uri uri, {
-  String? userAgent,
+  Map<String, String>? headers,
   int maxRedirects = 5,
   Duration timeout = const Duration(seconds: 5),
   http.Client? client,
@@ -164,10 +187,11 @@ Future<http.Response?> _getRedirectedResponse(
   var redirectCount = 0;
 
   while (redirectCount < maxRedirects) {
-    final request =
-        http.Request('GET', uri)
-          ..followRedirects = false
-          ..headers.addAll({if (userAgent != null) 'User-Agent': userAgent});
+    final request = http.Request('GET', uri)..followRedirects = false;
+
+    if (headers != null) {
+      request.headers.addAll(headers);
+    }
 
     final streamedResponse = await httpClient.send(request).timeout(timeout);
 
@@ -187,6 +211,7 @@ Future<http.Response?> _getRedirectedResponse(
 /// Parses provided text and returns [PreviewData] for the first found link.
 Future<LinkPreviewData?> getLinkPreviewData(
   String text, {
+  Map<String, String>? headers,
   String? proxy,
   Duration? requestTimeout,
   String? userAgent,
@@ -204,7 +229,7 @@ Future<LinkPreviewData?> getLinkPreviewData(
         text.replaceAllMapped(emailRegexp, (match) => '').trim();
     if (textWithoutEmails.isEmpty) return null;
 
-    final urlRegexp = RegExp(regexLink, caseSensitive: false);
+    final urlRegexp = RegExp(regexLink, caseSensitive: false, unicode: true);
     final matches = urlRegexp.allMatches(textWithoutEmails);
     if (matches.isEmpty) return null;
 
@@ -218,10 +243,26 @@ Future<LinkPreviewData?> getLinkPreviewData(
     }
     previewDataUrl = _calculateUrl(url, proxy);
     final uri = Uri.parse(previewDataUrl);
+
+    final defaultHeaders =
+        kIsWeb
+            ? {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+            }
+            : {};
+
+    final effectiveHeaders = <String, String>{
+      ...defaultHeaders,
+      'User-Agent': userAgent ?? 'WhatsApp/2',
+      ...?headers,
+    };
+
     final response = await _getRedirectedResponse(
       uri,
+      headers: effectiveHeaders,
       timeout: requestTimeout ?? const Duration(seconds: 5),
-      userAgent: userAgent ?? 'WhatsApp/2',
     );
 
     if (response == null || response.statusCode != 200) {
@@ -307,4 +348,4 @@ const regexImageContentType = r'image\/*';
 
 /// Regex to find all links in the text.
 const regexLink =
-    r'((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]*[a-zA-Z_][\w_-]*)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?[^\.\s]';
+    r'((http|ftp|https):\/\/)?(([\p{L}\p{N}_-]+)(?:(?:\.([\p{L}\p{N}_-]*[\p{L}_][\p{L}\p{N}_-]*))+))([\p{L}\p{N}.,@?^=%&:/~+#-]*[\p{L}\p{N}@?^=%&/~+#-])?[^\.\s]';
