@@ -469,7 +469,14 @@ class _LinkPreviewState extends State<LinkPreview>
   }
 }
 
-enum LinkPreviewImagePosition { bottom, side }
+/// The position of the image in the link preview.
+enum LinkPreviewImagePosition {
+  /// The image is displayed at the bottom of the preview.
+  bottom,
+
+  /// The image is displayed on the side of the preview.
+  side,
+}
 
 extension on LinkPreviewData {
   bool hasTitle({bool hide = false}) =>
