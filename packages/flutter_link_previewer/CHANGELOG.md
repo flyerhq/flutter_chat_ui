@@ -1,3 +1,8 @@
+## 4.1.1
+
+ - **FIX**: update LICENSE. ([209a1292](https://github.com/flyerhq/flutter_chat_ui/commit/209a129297ebe7fd202e41273c9c0ddd52b8b983))
+ - **FIX**: add example to the flutter_link_previewer. ([a307c9e9](https://github.com/flyerhq/flutter_chat_ui/commit/a307c9e9394a077fb87106c192c55c029ace17fd))
+
 ## 4.1.0
 
  - **FEAT**: support international domains. ([9626bc29](https://github.com/flyerhq/flutter_chat_ui/commit/9626bc292dd6254b155176994401271d86b23a53))
