@@ -1,3 +1,7 @@
+## 2.8.1
+
+ - **FIX**: composer inputClearMode and fix custom editing controller. ([b4872190](https://github.com/flyerhq/flutter_chat_ui/commit/b4872190e92c5eae27dbd7c2bfa352f12085b527))
+
 ## 2.8.0
 
  - **FIX**: update LICENSE. ([209a1292](https://github.com/flyerhq/flutter_chat_ui/commit/209a129297ebe7fd202e41273c9c0ddd52b8b983))
