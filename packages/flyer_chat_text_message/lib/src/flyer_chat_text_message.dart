@@ -78,6 +78,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
   final LinkPreviewPosition linkPreviewPosition;
 
+  /// The widget to display on top of the message.
+  final Widget? topWidget;
+
   /// Creates a widget to display a text message.
   const FlyerChatTextMessage({
     super.key,
@@ -100,6 +103,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.timeAndStatusPositionInlineInsets = const EdgeInsets.only(bottom: 2),
     this.onLinkTap,
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
+    this.topWidget,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -207,6 +211,7 @@ class FlyerChatTextMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (topWidget != null) topWidget!,
             if (effectiveLinkPreviewPosition == LinkPreviewPosition.top)
               linkPreviewWidget!,
             timeAndStatusPosition == TimeAndStatusPosition.inline

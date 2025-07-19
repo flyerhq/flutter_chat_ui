@@ -11,6 +11,15 @@ import 'package:thumbhash/thumbhash.dart'
 
 import 'get_image_dimensions.dart';
 
+/// Theme values for [FlyerChatImageMessage].
+typedef _LocalTheme =
+    ({
+      TextStyle labelSmall,
+      Color onSurface,
+      BorderRadiusGeometry shape,
+      Color surfaceContainerLow,
+    });
+
 /// A widget that displays an image message.
 ///
 /// Uses [CachedNetworkImage] for efficient loading and caching.
@@ -77,6 +86,9 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// Error builder for the image widget.
   final ImageErrorWidgetBuilder? errorBuilder;
 
+  /// The widget to display on top of the message.
+  final Widget? topWidget;
+
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
@@ -98,6 +110,7 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.errorBuilder,
+    this.topWidget,
   });
 
   @override
@@ -218,113 +231,149 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
         constraints: widget.constraints,
         child: AspectRatio(
           aspectRatio: _aspectRatio,
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              _placeholderProvider != null
-                  ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
-                  : Container(
-                    color: widget.placeholderColor ?? theme.surfaceContainerLow,
-                  ),
-              Image(
-                image: _imageProvider,
-                fit: BoxFit.fill,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-
-                  return Container(
-                    color:
-                        widget.loadingOverlayColor ??
-                        theme.surfaceContainerLow.withValues(alpha: 0.5),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color:
-                            widget.loadingIndicatorColor ??
-                            theme.onSurface.withValues(alpha: 0.8),
-                        strokeCap: StrokeCap.round,
-                        value:
-                            loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                      ),
-                    ),
-                  );
-                },
-                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                  var content = child;
-
-                  if (widget.overlay != null &&
-                      widget.message.hasOverlay == true &&
-                      frame != null) {
-                    content = Stack(
-                      fit: StackFit.expand,
-                      children: [child, widget.overlay!],
-                    );
-                  }
-
-                  if (wasSynchronouslyLoaded) {
-                    return content;
-                  }
-
-                  return AnimatedOpacity(
-                    duration: const Duration(milliseconds: 250),
-                    opacity: frame == null ? 0 : 1,
-                    curve: Curves.linearToEaseOut,
-                    child: content,
-                  );
-                },
-                errorBuilder: widget.errorBuilder,
-              ),
-              if (_chatController is UploadProgressMixin)
-                StreamBuilder<double>(
-                  stream: (_chatController as UploadProgressMixin)
-                      .getUploadProgress(widget.message.id),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData || snapshot.data! >= 1) {
-                      return const SizedBox();
-                    }
-
-                    return Container(
-                      color:
-                          widget.uploadOverlayColor ??
-                          theme.surfaceContainerLow.withValues(alpha: 0.5),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color:
-                              widget.uploadIndicatorColor ??
-                              theme.onSurface.withValues(alpha: 0.8),
-                          strokeCap: StrokeCap.round,
-                          value: snapshot.data,
+          child:
+              widget.topWidget != null
+                  ? LayoutBuilder(
+                    builder:
+                        (context, constraints) => _buildStack(
+                          constraints,
+                          theme,
+                          textDirection,
+                          timeAndStatus,
                         ),
-                      ),
-                    );
-                  },
-                ),
-              if (timeAndStatus != null)
-                Positioned.directional(
-                  textDirection: textDirection,
-                  bottom: 8,
-                  end:
-                      widget.timeAndStatusPosition ==
-                                  TimeAndStatusPosition.end ||
-                              widget.timeAndStatusPosition ==
-                                  TimeAndStatusPosition.inline
-                          ? 8
-                          : null,
-                  start:
-                      widget.timeAndStatusPosition ==
-                              TimeAndStatusPosition.start
-                          ? 8
-                          : null,
-                  child: timeAndStatus,
-                ),
-            ],
-          ),
+                  )
+                  : _buildStack(null, theme, textDirection, timeAndStatus),
         ),
       ),
+    );
+  }
+
+  Widget _buildStack(
+    BoxConstraints? constraints,
+    _LocalTheme theme,
+    TextDirection textDirection,
+    TimeAndStatus? timeAndStatus,
+  ) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        _placeholderProvider != null
+            ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
+            : Container(
+              color: widget.placeholderColor ?? theme.surfaceContainerLow,
+            ),
+        Image(
+          image: _imageProvider,
+          fit: BoxFit.fill,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+
+            return Container(
+              color:
+                  widget.loadingOverlayColor ??
+                  theme.surfaceContainerLow.withValues(alpha: 0.5),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color:
+                      widget.loadingIndicatorColor ??
+                      theme.onSurface.withValues(alpha: 0.8),
+                  strokeCap: StrokeCap.round,
+                  value:
+                      loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                ),
+              ),
+            );
+          },
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            var content = child;
+
+            if (widget.overlay != null &&
+                widget.message.hasOverlay == true &&
+                frame != null) {
+              content = Stack(
+                fit: StackFit.expand,
+                children: [child, widget.overlay!],
+              );
+            }
+
+            if (wasSynchronouslyLoaded) {
+              return content;
+            }
+
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 250),
+              opacity: frame == null ? 0 : 1,
+              curve: Curves.linearToEaseOut,
+              child: content,
+            );
+          },
+          errorBuilder: widget.errorBuilder,
+        ),
+        if (_chatController is UploadProgressMixin)
+          StreamBuilder<double>(
+            stream: (_chatController as UploadProgressMixin).getUploadProgress(
+              widget.message.id,
+            ),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data! >= 1) {
+                return const SizedBox();
+              }
+
+              return Container(
+                color:
+                    widget.uploadOverlayColor ??
+                    theme.surfaceContainerLow.withValues(alpha: 0.5),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color:
+                        widget.uploadIndicatorColor ??
+                        theme.onSurface.withValues(alpha: 0.8),
+                    strokeCap: StrokeCap.round,
+                    value: snapshot.data,
+                  ),
+                ),
+              );
+            },
+          ),
+        if (widget.topWidget != null && constraints != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            start: 8,
+            top: 8,
+            child: Container(
+              constraints: BoxConstraints(maxWidth: constraints.maxWidth - 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color:
+                    widget.timeBackground ??
+                    Colors.black.withValues(alpha: 0.6),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: widget.topWidget,
+            ),
+          ),
+        if (timeAndStatus != null)
+          Positioned.directional(
+            textDirection: textDirection,
+            bottom: 8,
+            end:
+                widget.timeAndStatusPosition == TimeAndStatusPosition.end ||
+                        widget.timeAndStatusPosition ==
+                            TimeAndStatusPosition.inline
+                    ? 8
+                    : null,
+            start:
+                widget.timeAndStatusPosition == TimeAndStatusPosition.start
+                    ? 8
+                    : null,
+            child: timeAndStatus,
+          ),
+      ],
     );
   }
 
