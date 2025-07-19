@@ -70,6 +70,7 @@ Future<Message> createMessage(
         createdAt: DateTime.now().toUtc(),
         sentAt: localOnly == true ? DateTime.now().toUtc() : null,
         source: response.data['img'],
+        size: 1000000,
       );
     }
   }
