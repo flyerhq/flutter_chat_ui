@@ -284,12 +284,6 @@ class FlyerChatFileMessage extends StatelessWidget {
   }
 }
 
-/// Internal extension for calculating the visual line height of a TextStyle.
-extension on TextStyle {
-  /// Calculates the line height based on the style's `height` and `fontSize`.
-  double get lineHeight => (height ?? 1) * (fontSize ?? 0);
-}
-
 /// A widget to display the message timestamp and status indicator.
 class TimeAndStatus extends StatelessWidget {
   /// The time the message was created.
