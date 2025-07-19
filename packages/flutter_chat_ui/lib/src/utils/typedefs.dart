@@ -44,14 +44,23 @@ typedef PaginationCallback = Future<void> Function();
 /// Used for customizing insert/remove animations in the chat list.
 typedef MessageAnimationDurationResolver = Duration? Function(Message message);
 
-/// Enum to control the visibility of the send button.
+/// Used by [Composer] to control the visibility of the send button.
 enum SendButtonVisibilityMode {
-  /// The send button is always visible and enabled.
+  /// The send button is always visible.
   always,
 
-  /// The send button is only visible when the input field is not empty.
+  /// The send button is only visible when the text field is not empty.
   hidden,
 
-  /// The send button is disabled when the input field is empty. This is the default.
+  /// The send button is disabled when the text field is empty. Default.
   disabled,
+}
+
+/// Used by [Composer] to control the clear behavior of the text input.
+enum InputClearMode {
+  /// Always clears the text input after sending a message.
+  always,
+
+  /// Never clears the text input after sending a message.
+  never,
 }

@@ -132,6 +132,10 @@ class Composer extends StatefulWidget {
   /// and hide the button. Defaults to `false`.
   final bool sendButtonHidden;
 
+  /// Controls the behavior of the text input field after a message is sent.
+  /// Defaults to [InputClearMode.always].
+  final InputClearMode inputClearMode;
+
   /// Creates a message composer widget.
   const Composer({
     super.key,
@@ -175,6 +179,7 @@ class Composer extends StatefulWidget {
     this.allowEmptyMessage = false,
     this.sendButtonDisabled = false,
     this.sendButtonHidden = false,
+    this.inputClearMode = InputClearMode.always,
   });
 
   @override
@@ -194,6 +199,7 @@ class _ComposerState extends State<Composer> {
     _focusNode = widget.focusNode ?? FocusNode();
     _hasTextNotifier = ValueNotifier(_textController.text.trim().isNotEmpty);
     _focusNode.onKeyEvent = _handleKeyEvent;
+    _textController.addListener(_handleTextControllerChange);
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
 
@@ -211,12 +217,18 @@ class _ComposerState extends State<Composer> {
   @override
   void didUpdateWidget(covariant Composer oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.textEditingController != oldWidget.textEditingController) {
+      _textController.removeListener(_handleTextControllerChange);
+      _textController = widget.textEditingController ?? TextEditingController();
+      _textController.addListener(_handleTextControllerChange);
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
   }
 
   @override
   void dispose() {
     _hasTextNotifier.dispose();
+    _textController.removeListener(_handleTextControllerChange);
     // Only try to dispose text controller if it's not provided, let
     // user handle disposing it how they want.
     if (widget.textEditingController == null) {
@@ -392,11 +404,14 @@ class _ComposerState extends State<Composer> {
     }
   }
 
+  void _handleTextControllerChange() {
+    _hasTextNotifier.value = _textController.text.trim().isNotEmpty;
+  }
+
   void _handleSubmitted(String text) {
-    final trimmed = text.trim();
-    if (trimmed.isNotEmpty || widget.allowEmptyMessage) {
-      context.read<OnMessageSendCallback?>()?.call(trimmed);
-      _hasTextNotifier.value = false;
+    if (widget.allowEmptyMessage == false && text.trim().isEmpty) return;
+    context.read<OnMessageSendCallback?>()?.call(text.trim());
+    if (widget.inputClearMode == InputClearMode.always) {
       _textController.clear();
     }
   }
