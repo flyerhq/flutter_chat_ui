@@ -74,8 +74,8 @@ class FlyerChatFileMessage extends StatelessWidget {
   /// Position of the timestamp and status indicator relative to the text content.
   final TimeAndStatusPosition timeAndStatusPosition;
 
-  /// The widgets to display before the message.
-  final List<Widget>? topWidgets;
+  /// The widget to display on top of the message.
+  final Widget? topWidget;
 
   /// Creates a widget to display a file message.
   const FlyerChatFileMessage({
@@ -98,7 +98,7 @@ class FlyerChatFileMessage extends StatelessWidget {
     this.showTime = true,
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
-    this.topWidgets,
+    this.topWidget,
   });
 
   @override
@@ -202,7 +202,7 @@ class FlyerChatFileMessage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (topWidgets != null) ...topWidgets!,
+            if (topWidget != null) topWidget!,
             // In comparison to other messages types, if timeAndStatusPosition is inline,
             // the fileContent is already a Row with the timeAndStatus widget inside it.
             fileContent,

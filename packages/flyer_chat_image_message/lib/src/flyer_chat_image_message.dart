@@ -11,17 +11,6 @@ import 'package:thumbhash/thumbhash.dart'
 
 import 'get_image_dimensions.dart';
 
-/// Theme values for [FlyerChatTextMessage].
-typedef _LocalTheme =
-    ({
-      TextStyle labelSmall,
-      Color onSurface,
-      Color primary,
-      BorderRadiusGeometry shape,
-      Color surfaceContainer,
-      Color surfaceContainerLow,
-    });
-
 /// A widget that displays an image message.
 ///
 /// Uses [CachedNetworkImage] for efficient loading and caching.
@@ -88,15 +77,6 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// Error builder for the image widget.
   final ImageErrorWidgetBuilder? errorBuilder;
 
-  /// Background color for messages sent by the current user.
-  final Color? sentBackgroundColor;
-
-  /// Background color for messages received from other users.
-  final Color? receivedBackgroundColor;
-
-  /// The widgets to display before the message.
-  final List<Widget>? topWidgets;
-
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
@@ -118,9 +98,6 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.showStatus = true,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.errorBuilder,
-    this.sentBackgroundColor,
-    this.receivedBackgroundColor,
-    this.topWidgets,
   });
 
   @override
@@ -208,21 +185,12 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     super.dispose();
   }
 
-  Color? _resolveBackgroundColor(bool isSentByMe, _LocalTheme theme) {
-    if (isSentByMe) {
-      return widget.sentBackgroundColor ?? theme.primary;
-    }
-    return widget.receivedBackgroundColor ?? theme.surfaceContainer;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = context.select(
       (ChatTheme t) => (
         labelSmall: t.typography.labelSmall,
         onSurface: t.colors.onSurface,
-        primary: t.colors.primary,
-        surfaceContainer: t.colors.surfaceContainer,
         shape: t.shape,
         surfaceContainerLow: t.colors.surfaceContainerLow,
       ),
@@ -248,132 +216,113 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       borderRadius: widget.borderRadius ?? theme.shape,
       child: Container(
         constraints: widget.constraints,
-        color: _resolveBackgroundColor(isSentByMe, theme),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (widget.topWidgets != null) ...widget.topWidgets!,
-            Flexible(
-              child: AspectRatio(
-                aspectRatio: _aspectRatio,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    _placeholderProvider != null
-                        ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
-                        : Container(
-                          color:
-                              widget.placeholderColor ??
-                              theme.surfaceContainerLow,
-                        ),
-                    Image(
-                      image: _imageProvider,
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
+        child: AspectRatio(
+          aspectRatio: _aspectRatio,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              _placeholderProvider != null
+                  ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
+                  : Container(
+                    color: widget.placeholderColor ?? theme.surfaceContainerLow,
+                  ),
+              Image(
+                image: _imageProvider,
+                fit: BoxFit.fill,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
 
-                        return Container(
-                          color:
-                              widget.loadingOverlayColor ??
-                              theme.surfaceContainerLow.withValues(alpha: 0.5),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color:
-                                  widget.loadingIndicatorColor ??
-                                  theme.onSurface.withValues(alpha: 0.8),
-                              strokeCap: StrokeCap.round,
-                              value:
-                                  loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                            ),
-                          ),
-                        );
-                      },
-                      frameBuilder: (
-                        context,
-                        child,
-                        frame,
-                        wasSynchronouslyLoaded,
-                      ) {
-                        var content = child;
-
-                        if (widget.overlay != null &&
-                            widget.message.hasOverlay == true &&
-                            frame != null) {
-                          content = Stack(
-                            fit: StackFit.expand,
-                            children: [child, widget.overlay!],
-                          );
-                        }
-
-                        if (wasSynchronouslyLoaded) {
-                          return content;
-                        }
-
-                        return AnimatedOpacity(
-                          duration: const Duration(milliseconds: 250),
-                          opacity: frame == null ? 0 : 1,
-                          curve: Curves.linearToEaseOut,
-                          child: content,
-                        );
-                      },
-                      errorBuilder: widget.errorBuilder,
+                  return Container(
+                    color:
+                        widget.loadingOverlayColor ??
+                        theme.surfaceContainerLow.withValues(alpha: 0.5),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color:
+                            widget.loadingIndicatorColor ??
+                            theme.onSurface.withValues(alpha: 0.8),
+                        strokeCap: StrokeCap.round,
+                        value:
+                            loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                      ),
                     ),
-                    if (_chatController is UploadProgressMixin)
-                      StreamBuilder<double>(
-                        stream: (_chatController as UploadProgressMixin)
-                            .getUploadProgress(widget.message.id),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData || snapshot.data! >= 1) {
-                            return const SizedBox();
-                          }
+                  );
+                },
+                frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                  var content = child;
 
-                          return Container(
-                            color:
-                                widget.uploadOverlayColor ??
-                                theme.surfaceContainerLow.withValues(
-                                  alpha: 0.5,
-                                ),
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color:
-                                    widget.uploadIndicatorColor ??
-                                    theme.onSurface.withValues(alpha: 0.8),
-                                strokeCap: StrokeCap.round,
-                                value: snapshot.data,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    if (timeAndStatus != null)
-                      Positioned.directional(
-                        textDirection: textDirection,
-                        bottom: 8,
-                        end:
-                            widget.timeAndStatusPosition ==
-                                        TimeAndStatusPosition.end ||
-                                    widget.timeAndStatusPosition ==
-                                        TimeAndStatusPosition.inline
-                                ? 8
-                                : null,
-                        start:
-                            widget.timeAndStatusPosition ==
-                                    TimeAndStatusPosition.start
-                                ? 8
-                                : null,
-                        child: timeAndStatus,
-                      ),
-                  ],
-                ),
+                  if (widget.overlay != null &&
+                      widget.message.hasOverlay == true &&
+                      frame != null) {
+                    content = Stack(
+                      fit: StackFit.expand,
+                      children: [child, widget.overlay!],
+                    );
+                  }
+
+                  if (wasSynchronouslyLoaded) {
+                    return content;
+                  }
+
+                  return AnimatedOpacity(
+                    duration: const Duration(milliseconds: 250),
+                    opacity: frame == null ? 0 : 1,
+                    curve: Curves.linearToEaseOut,
+                    child: content,
+                  );
+                },
+                errorBuilder: widget.errorBuilder,
               ),
-            ),
-          ],
+              if (_chatController is UploadProgressMixin)
+                StreamBuilder<double>(
+                  stream: (_chatController as UploadProgressMixin)
+                      .getUploadProgress(widget.message.id),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.data! >= 1) {
+                      return const SizedBox();
+                    }
+
+                    return Container(
+                      color:
+                          widget.uploadOverlayColor ??
+                          theme.surfaceContainerLow.withValues(alpha: 0.5),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color:
+                              widget.uploadIndicatorColor ??
+                              theme.onSurface.withValues(alpha: 0.8),
+                          strokeCap: StrokeCap.round,
+                          value: snapshot.data,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              if (timeAndStatus != null)
+                Positioned.directional(
+                  textDirection: textDirection,
+                  bottom: 8,
+                  end:
+                      widget.timeAndStatusPosition ==
+                                  TimeAndStatusPosition.end ||
+                              widget.timeAndStatusPosition ==
+                                  TimeAndStatusPosition.inline
+                          ? 8
+                          : null,
+                  start:
+                      widget.timeAndStatusPosition ==
+                              TimeAndStatusPosition.start
+                          ? 8
+                          : null,
+                  child: timeAndStatus,
+                ),
+            ],
+          ),
         ),
       ),
     );
