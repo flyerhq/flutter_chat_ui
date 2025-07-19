@@ -1,3 +1,7 @@
+## 4.1.0
+
+ - **FEAT**: support international domains. ([9626bc29](https://github.com/flyerhq/flutter_chat_ui/commit/9626bc292dd6254b155176994401271d86b23a53))
+
 ## 4.0.0
 
 - **BREAKING CHANGE**: The **LinkPreview** widget has been completely rewritten for improved clarity and modern design.

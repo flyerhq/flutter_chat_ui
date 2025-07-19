@@ -3,7 +3,7 @@ description: >
   Customizable link and URL preview extracted from the
   provided text with the ability to render from the cache. Ideal
   for chat applications.
-version: 4.0.0
+version: 4.1.0
 homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
