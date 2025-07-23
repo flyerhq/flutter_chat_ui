@@ -14,7 +14,7 @@ import '../utils/typedef.dart';
 typedef _LocalTheme =
     ({
       Color onSurface,
-      Color surface,
+      Color surfaceContainer,
       Color primary,
       BorderRadiusGeometry shape,
     });
@@ -109,7 +109,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
     final theme = context.select(
       (ChatTheme t) => (
         onSurface: t.colors.onSurface,
-        surface: t.colors.surface,
+        surfaceContainer: t.colors.surfaceContainerHigh,
         primary: t.colors.primary,
         shape: t.shape,
       ),
@@ -146,7 +146,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
               MediaQuery.of(context).size.width *
               (widget.menuItemsWidthRatio ?? 0.45),
           decoration: BoxDecoration(
-            color: widget.menuItemBackgroundColor ?? theme.surface,
+            color: widget.menuItemBackgroundColor ?? theme.surfaceContainer,
             borderRadius: theme.shape,
           ),
           child: Column(
@@ -248,7 +248,8 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
         child: Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: widget.reactionsPickerBackgroundColor ?? theme.surface,
+            color:
+                widget.reactionsPickerBackgroundColor ?? theme.surfaceContainer,
             borderRadius: theme.shape,
           ),
           child: SingleChildScrollView(

@@ -87,7 +87,8 @@ class _ReactionsListState extends State<ReactionsList> {
   Widget build(BuildContext context) {
     final theme = context.select(
       (ChatTheme t) => (
-        backgroundColor: widget.styleConfig.backgroundColor ?? t.colors.surface,
+        backgroundColor:
+            widget.styleConfig.backgroundColor ?? t.colors.surfaceContainerHigh,
         selectedFilterChipColor:
             widget.styleConfig.filterChipsSelectedColor ??
             t.colors.onPrimary.withValues(alpha: 0.2),
