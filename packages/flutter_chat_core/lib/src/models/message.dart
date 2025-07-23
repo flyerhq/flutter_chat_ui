@@ -309,6 +309,9 @@ sealed class Message with _$Message {
 
     /// Height of the video in pixels.
     double? height,
+
+    /// ThumbHash string for a low-resolution placeholder.
+    String? thumbhash,
   }) = VideoMessage;
 
   /// Creates an audio message.
