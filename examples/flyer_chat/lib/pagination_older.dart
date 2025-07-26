@@ -1,37 +1,21 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
 
+import 'pagination_mock_database.dart';
 import 'widgets/composer_action_bar.dart';
 
-class Pagination extends StatefulWidget {
-  const Pagination({super.key});
+class PaginationOlder extends StatefulWidget {
+  const PaginationOlder({super.key});
 
   @override
-  PaginationState createState() => PaginationState();
+  PaginationOlderState createState() => PaginationOlderState();
 }
 
-class PaginationState extends State<Pagination> {
+class PaginationOlderState extends State<PaginationOlder> {
   final _chatController = InMemoryChatController(
-    messages: List.generate(20, (i) {
-      final random = Random();
-      final numLines = random.nextInt(4) + 1;
-      final text = List.generate(
-        numLines,
-        (lineIndex) => 'Message ${i + 1} - Line ${lineIndex + 1}',
-      ).join('\n');
-      return Message.text(
-        id: (i + 1).toString(),
-        authorId: 'me',
-        createdAt: DateTime.fromMillisecondsSinceEpoch(
-          1736893310000 - ((20 - i) * 1000),
-          isUtc: true,
-        ),
-        text: text,
-      );
-    }).reversed.toList(),
+    messages: List.from(MockDatabase.initialNewerMessages),
   );
   final _currentUser = const User(id: 'me');
 
@@ -50,13 +34,13 @@ class PaginationState extends State<Pagination> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Pagination')),
+      appBar: AppBar(title: const Text('Pagination (get older)')),
       body: Chat(
         builders: Builders(
           chatAnimatedListBuilder: (context, itemBuilder) {
             return ChatAnimatedList(
               itemBuilder: itemBuilder,
-              onEndReached: _loadMore,
+              onEndReached: _loadOlderMessages,
             );
           },
           composerBuilder: (context) => CustomComposer(
@@ -92,12 +76,12 @@ class PaginationState extends State<Pagination> {
     );
   }
 
-  Future<void> _loadMore() async {
+  Future<void> _loadOlderMessages() async {
     if (!_hasMore || _isLoading) return;
 
     _isLoading = true;
 
-    final messages = await MockDatabase.getMessages(
+    final messages = await MockDatabase.getOlderMessages(
       limit: 20,
       lastMessageId: _lastMessageId,
     );
@@ -108,7 +92,15 @@ class PaginationState extends State<Pagination> {
       return;
     }
 
-    await _chatController.insertAllMessages(messages, index: 0);
+    await _chatController.insertAllMessages(
+      messages,
+      index: 0,
+      // Important: we don't want to animate the insertion of the messages
+      // because pagination logic relies on messages to be inserted instantly.
+      // There is no need for animation anyway as all older messages are out of
+      // visible range.
+      animated: false,
+    );
     _lastMessageId = messages.first.id;
     _isLoading = false;
   }
@@ -120,10 +112,10 @@ class PaginationState extends State<Pagination> {
 
     if (messageExists) {
       // Message is already loaded, scroll to it directly
-      // If the list is reserved, we might need to add an offset that
+      // If the list is reversed, we might need to add an offset that
       // is equal to the height of the chat composer (not including the safe area).
-      // For this example it would be 110.
-      await _chatController.scrollToMessage(messageId);
+      // For this example it would be 60.
+      await _chatController.scrollToMessage(messageId, offset: 0);
       return;
     }
 
@@ -138,8 +130,8 @@ class PaginationState extends State<Pagination> {
       ),
     );
 
-    while (!messageExists) {
-      await _loadMore();
+    while (!messageExists && _hasMore) {
+      await _loadOlderMessages();
 
       // Check if message is now loaded
       messageExists = _chatController.messages.any((m) => m.id == messageId);
@@ -148,50 +140,10 @@ class PaginationState extends State<Pagination> {
     // Dismiss loaded information
     scaffoldMessenger.hideCurrentSnackBar();
 
-    // If the list is reversed, we need to wait for insert animation to complete
-    // await Future.delayed(const Duration(milliseconds: 250));
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // If the list is reversed, we might need to add an offset that
-      // is equal to the height of the chat composer (not including the safe area).
-      // For this example it would be 110.
-      _chatController.scrollToMessage(messageId);
-    });
-  }
-}
-
-class MockDatabase {
-  static final List<Message> _messages = List.generate(80, (i) {
-    final random = Random();
-    final numLines = random.nextInt(4) + 1;
-    final text = List.generate(
-      numLines,
-      (lineIndex) => 'Message ${i + 21} - Line ${lineIndex + 1}',
-    ).join('\n');
-    return Message.text(
-      id: (i + 21).toString(),
-      authorId: 'me',
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-        1736893310000 - ((80 - i) * 1000),
-        isUtc: true,
-      ),
-      text: text,
-    );
-  });
-
-  static Future<List<Message>> getMessages({
-    required int limit,
-    MessageID? lastMessageId,
-  }) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    final start = lastMessageId == null
-        ? 0
-        : _messages.indexWhere((m) => m.id == lastMessageId) + 1;
-
-    if (start >= _messages.length) return [];
-
-    return _messages.skip(start).take(limit).toList().reversed.toList();
+    // If the list is reversed, we might need to add an offset that
+    // is equal to the height of the chat composer (not including the safe area).
+    // For this example it would be 60.
+    await _chatController.scrollToMessage(messageId, offset: 0);
   }
 }
 

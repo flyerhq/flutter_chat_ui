@@ -13,17 +13,23 @@ class HiveChatController
   List<Message>? _cachedMessages;
 
   @override
-  Future<void> insertMessage(Message message, {int? index}) async {
+  Future<void> insertMessage(
+    Message message, {
+    int? index,
+    bool animated = true,
+  }) async {
     if (_box.containsKey(message.id)) return;
 
     // Index is ignored because Hive does not maintain order
     await _box.put(message.id, message.toJson());
     _invalidateCache();
-    _operationsController.add(ChatOperation.insert(message, _box.length - 1));
+    _operationsController.add(
+      ChatOperation.insert(message, _box.length - 1, animated: animated),
+    );
   }
 
   @override
-  Future<void> removeMessage(Message message) async {
+  Future<void> removeMessage(Message message, {bool animated = true}) async {
     final sortedMessages = List.from(messages);
     final index = sortedMessages.indexWhere((m) => m.id == message.id);
 
@@ -31,7 +37,9 @@ class HiveChatController
       final messageToRemove = sortedMessages[index];
       await _box.delete(messageToRemove.id);
       _invalidateCache();
-      _operationsController.add(ChatOperation.remove(messageToRemove, index));
+      _operationsController.add(
+        ChatOperation.remove(messageToRemove, index, animated: animated),
+      );
     }
   }
 
@@ -56,11 +64,14 @@ class HiveChatController
   }
 
   @override
-  Future<void> setMessages(List<Message> messages) async {
+  Future<void> setMessages(
+    List<Message> messages, {
+    bool animated = true,
+  }) async {
     await _box.clear();
     if (messages.isEmpty) {
       _invalidateCache();
-      _operationsController.add(ChatOperation.set([]));
+      _operationsController.add(ChatOperation.set([], animated: false));
       return;
     } else {
       await _box.putAll(
@@ -70,12 +81,18 @@ class HiveChatController
             .reduce((acc, map) => {...acc, ...map}),
       );
       _invalidateCache();
-      _operationsController.add(ChatOperation.set(messages));
+      _operationsController.add(
+        ChatOperation.set(messages, animated: animated),
+      );
     }
   }
 
   @override
-  Future<void> insertAllMessages(List<Message> messages, {int? index}) async {
+  Future<void> insertAllMessages(
+    List<Message> messages, {
+    int? index,
+    bool animated = true,
+  }) async {
     if (messages.isEmpty) return;
 
     // Index is ignored because Hive does not maintain order
@@ -88,7 +105,7 @@ class HiveChatController
     );
     _invalidateCache();
     _operationsController.add(
-      ChatOperation.insertAll(messages, originalLength),
+      ChatOperation.insertAll(messages, originalLength, animated: animated),
     );
   }
 

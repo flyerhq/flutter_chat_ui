@@ -12,7 +12,8 @@ import 'api_get_initial_messages.dart';
 import 'basic.dart';
 import 'gemini.dart';
 import 'local.dart';
-import 'pagination.dart';
+import 'pagination_newer.dart';
+import 'pagination_older.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -268,11 +269,22 @@ class _FlyerChatHomePageState extends State<FlyerChatHomePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (context) => Pagination()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const PaginationOlder(),
+                    ),
+                  );
                 },
-                child: const Text('pagination'),
+                child: const Text('pagination (get older)'),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const PaginationNewer(),
+                  ),
+                ),
+                child: const Text('pagination (get newer)'),
               ),
               const SizedBox(height: 8),
               ElevatedButton(

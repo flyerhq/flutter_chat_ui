@@ -55,12 +55,18 @@ class ChatAnimatedListReversed extends StatelessWidget {
   /// Whether to automatically scroll to the end (bottom) when a new message is sent (inserted).
   final bool? shouldScrollToEndWhenSendingMessage;
 
-  /// Callback triggered when the user scrolls near the top (visually bottom), requesting older messages.
+  /// Callback triggered when the user scrolls near the top, requesting older messages.
   final PaginationCallback? onEndReached;
 
-  /// Threshold (0.0 to 1.0) from the top (visually bottom) to trigger [onEndReached].
+  /// Callback triggered when the user scrolls near the bottom, requesting newer messages.
+  final PaginationCallback? onStartReached;
+
+  /// Threshold (0.0 to 1.0) from the top to trigger [onEndReached].
   /// Defaults to 0.2. See note below.
   final double? paginationThreshold;
+
+  /// Threshold (0.0 to 1.0) from the top to trigger [onStartReached].
+  final double? startPaginationThreshold;
 
   /// The mode to use for grouping messages.
   final MessagesGroupingMode? messagesGroupingMode;
@@ -90,13 +96,36 @@ class ChatAnimatedListReversed extends StatelessWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.onDrag,
     this.shouldScrollToEndWhenSendingMessage = true,
     this.onEndReached,
+    this.onStartReached,
     // Threshold for triggering pagination, represented as a value between 0 (top)
-    // and 1 (bottom). In reversed list, 0 is visually the bottom, 1 is visually the top.
+    // and 1 (bottom).
     //
     // Unlike the non-reversed list, scroll anchoring isn't typically needed here
     // because new items are added at the bottom (index 0). The default of 0.2
     // triggers pagination when 20% from the visual top is reached.
     this.paginationThreshold = 0.2,
+    // Threshold for triggering pagination for newer messages, represented as
+    // a value between 0 (top) and 1 (bottom).
+    //
+    // IMPORTANT: This value defaults to a very big number (e.g., 0.99 or 99%)
+    // for a critical reason. The scroll anchoring mechanism used to prevent
+    // content jumps during pagination relies on accurately identifying the
+    // *actual* bottommost visible item *before* loading new content.
+    //
+    // A small threshold ensures that pagination is triggered only when the user
+    // is very close to the bottom, making it highly likely that the scroll observer
+    // correctly identifies the visually bottommost item as the anchor.
+    //
+    // WARNING: Decreasing this value significantly (e.g., to 0.8 or lower)
+    // means pagination might trigger when items further up the viewport are
+    // technically the "first visible" according to the observer. This will cause
+    // the anchoring logic to select the wrong item, resulting in the list
+    // jumping incorrectly after new items are loaded, potentially appearing to
+    // scroll to a random position.
+    //
+    // Modify this value at your own risk. If you decrease it and experience
+    // unstable pagination jumps, revert to a bigger value like 0.99.
+    this.startPaginationThreshold = 0.99,
     this.messagesGroupingMode,
     this.messageGroupingTimeoutInSeconds,
     this.physics,
@@ -125,7 +154,9 @@ class ChatAnimatedListReversed extends StatelessWidget {
       shouldScrollToEndWhenSendingMessage: shouldScrollToEndWhenSendingMessage,
       shouldScrollToEndWhenAtBottom: false,
       onEndReached: onEndReached,
+      onStartReached: onStartReached,
       paginationThreshold: paginationThreshold,
+      startPaginationThreshold: startPaginationThreshold,
       messageGroupingTimeoutInSeconds: messageGroupingTimeoutInSeconds,
       physics: physics,
     );

@@ -49,7 +49,11 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> insertMessage(Message message, {int? index}) async {
+  Future<void> insertMessage(
+    Message message, {
+    int? index,
+    bool animated = true,
+  }) async {
     if (_messages.contains(message)) return;
 
     // Check if this message ID already exists in the list
@@ -66,16 +70,22 @@ class InMemoryChatController
     if (index == null) {
       _messages.add(message);
       _operationsController.add(
-        ChatOperation.insert(message, _messages.length - 1),
+        ChatOperation.insert(message, _messages.length - 1, animated: animated),
       );
     } else {
       _messages.insert(index, message);
-      _operationsController.add(ChatOperation.insert(message, index));
+      _operationsController.add(
+        ChatOperation.insert(message, index, animated: animated),
+      );
     }
   }
 
   @override
-  Future<void> insertAllMessages(List<Message> messages, {int? index}) async {
+  Future<void> insertAllMessages(
+    List<Message> messages, {
+    int? index,
+    bool animated = true,
+  }) async {
     if (messages.isEmpty) return;
 
     // Check for duplicates within the incoming list and against existing messages
@@ -97,16 +107,18 @@ class InMemoryChatController
       final originalLength = _messages.length;
       _messages.addAll(messages);
       _operationsController.add(
-        ChatOperation.insertAll(messages, originalLength),
+        ChatOperation.insertAll(messages, originalLength, animated: animated),
       );
     } else {
       _messages.insertAll(index, messages);
-      _operationsController.add(ChatOperation.insertAll(messages, index));
+      _operationsController.add(
+        ChatOperation.insertAll(messages, index, animated: animated),
+      );
     }
   }
 
   @override
-  Future<void> removeMessage(Message message) async {
+  Future<void> removeMessage(Message message, {bool animated = true}) async {
     final index = _messages.indexWhere((m) => m.id == message.id);
 
     if (index != -1) {
@@ -115,7 +127,9 @@ class InMemoryChatController
       _messages.removeAt(index); // Remove from the internal list
 
       // Emit the operation with the actual message instance from the list and its original index.
-      _operationsController.add(ChatOperation.remove(messageToRemove, index));
+      _operationsController.add(
+        ChatOperation.remove(messageToRemove, index, animated: animated),
+      );
     }
   }
 
@@ -141,10 +155,18 @@ class InMemoryChatController
   }
 
   @override
-  Future<void> setMessages(List<Message> messages) async {
+  Future<void> setMessages(
+    List<Message> messages, {
+    bool animated = true,
+  }) async {
     _assertNoMessageIdDuplicates(messages, 'set');
     _messages = List.from(messages);
-    _operationsController.add(ChatOperation.set(_messages));
+    _operationsController.add(
+      ChatOperation.set(
+        _messages,
+        animated: _messages.isEmpty ? false : animated,
+      ),
+    );
   }
 
   @override
