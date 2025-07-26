@@ -294,6 +294,7 @@ class ApiState extends State<Api> {
     Message item, {
     int? index,
     TapUpDetails? details,
+    required bool isSentByMe,
   }) async {
     await _chatController.removeMessage(item);
 
