@@ -3,27 +3,29 @@ import 'package:flutter/foundation.dart';
 /// A [ChangeNotifier] used to track the height and loading state
 /// of the "Load More" indicator widget.
 class LoadMoreNotifier extends ChangeNotifier {
-  double _height = 0;
-  bool _isLoading = false;
+  bool _isLoadingOlder = false;
+  bool _isLoadingNewer = false;
 
-  /// The current measured height of the LoadMore widget.
-  double get height => _height;
+  /// Whether the LoadMore widget is currently indicating a
+  /// loading state for older messages.
+  bool get isLoadingOlder => _isLoadingOlder;
 
-  /// Whether the LoadMore widget is currently indicating a loading state.
-  bool get isLoading => _isLoading;
+  /// Whether the LoadMore widget is currently indicating a
+  /// loading state for newer messages.
+  bool get isLoadingNewer => _isLoadingNewer;
 
-  /// Sets the height of the LoadMore widget and notifies listeners if it changes.
-  void setHeight(double newHeight) {
-    if (_height != newHeight) {
-      _height = newHeight;
+  /// Sets the loading state for older messages and notifies listeners if it changes.
+  void setLoadingOlder(bool loading) {
+    if (_isLoadingOlder != loading) {
+      _isLoadingOlder = loading;
       notifyListeners();
     }
   }
 
-  /// Sets the loading state and notifies listeners if it changes.
-  void setLoading(bool loading) {
-    if (_isLoading != loading) {
-      _isLoading = loading;
+  /// Sets the loading state for newer messages and notifies listeners if it changes.
+  void setLoadingNewer(bool loading) {
+    if (_isLoadingNewer != loading) {
+      _isLoadingNewer = loading;
       notifyListeners();
     }
   }

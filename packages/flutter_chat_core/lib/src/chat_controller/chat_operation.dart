@@ -25,25 +25,41 @@ class ChatOperation {
   /// Null for other operation types.
   final List<Message>? messages;
 
+  /// Whether the operation should be animated.
+  final bool animated;
+
   ChatOperation._(
     this.type, {
     this.oldMessage,
     this.message,
     this.index,
     this.messages,
+    this.animated = true,
   });
 
   /// Creates an insert operation.
-  factory ChatOperation.insert(Message message, int index) =>
-      ChatOperation._(ChatOperationType.insert, message: message, index: index);
+  factory ChatOperation.insert(
+    Message message,
+    int index, {
+    bool animated = true,
+  }) => ChatOperation._(
+    ChatOperationType.insert,
+    message: message,
+    index: index,
+    animated: animated,
+  );
 
   /// Creates an insertAll operation, for inserting multiple messages at a specified index.
-  factory ChatOperation.insertAll(List<Message> messages, int index) =>
-      ChatOperation._(
-        ChatOperationType.insertAll,
-        messages: messages,
-        index: index,
-      );
+  factory ChatOperation.insertAll(
+    List<Message> messages,
+    int index, {
+    bool animated = true,
+  }) => ChatOperation._(
+    ChatOperationType.insertAll,
+    messages: messages,
+    index: index,
+    animated: animated,
+  );
 
   /// Creates an update operation.
   factory ChatOperation.update(
@@ -58,13 +74,25 @@ class ChatOperation {
   );
 
   /// Creates a remove operation.
-  factory ChatOperation.remove(Message message, int index) =>
-      ChatOperation._(ChatOperationType.remove, message: message, index: index);
+  factory ChatOperation.remove(
+    Message message,
+    int index, {
+    bool animated = true,
+  }) => ChatOperation._(
+    ChatOperationType.remove,
+    message: message,
+    index: index,
+    animated: animated,
+  );
 
   /// Creates a set operation (signifying a full list replacement).
   ///
   /// The [messages] parameter contains the new list of messages. Passing an empty list
   /// signifies that the chat list should be cleared.
-  factory ChatOperation.set(List<Message> messages) =>
-      ChatOperation._(ChatOperationType.set, messages: messages);
+  factory ChatOperation.set(List<Message> messages, {bool animated = true}) =>
+      ChatOperation._(
+        ChatOperationType.set,
+        messages: messages,
+        animated: animated,
+      );
 }

@@ -11,6 +11,7 @@ import 'package:scrollview_observer/scrollview_observer.dart';
 import '../empty_chat_list.dart';
 import '../load_more.dart';
 import '../scroll_to_bottom.dart';
+import '../utils/composer_height_notifier.dart';
 import '../utils/load_more_notifier.dart';
 import '../utils/message_list_diff.dart';
 import '../utils/typedefs.dart';
@@ -98,10 +99,18 @@ class ChatAnimatedList extends StatefulWidget {
   /// Callback triggered when the user scrolls near the top, requesting older messages.
   final PaginationCallback? onEndReached;
 
+  /// Callback triggered when the user scrolls near the bottom, requesting newer messages.
+  final PaginationCallback? onStartReached;
+
   /// Threshold for triggering pagination, represented as a value between 0 and 1.
   /// 0 represents the top of the list, while 1 represents the bottom.
   /// A value of 0.2 means pagination will trigger when scrolled to 20% from the top.
   final double? paginationThreshold;
+
+  /// Threshold for triggering pagination for newer messages, represented as a
+  /// value between 0 and 1.
+  /// 0 represents the top of the list, while 1 represents the bottom.
+  final double? startPaginationThreshold;
 
   /// The mode to use for grouping messages.
   final MessagesGroupingMode? messagesGroupingMode;
@@ -135,6 +144,7 @@ class ChatAnimatedList extends StatefulWidget {
     this.shouldScrollToEndWhenSendingMessage = true,
     this.shouldScrollToEndWhenAtBottom = true,
     this.onEndReached,
+    this.onStartReached,
     // Threshold for triggering pagination, represented as a value between 0 (top)
     // and 1 (bottom).
     //
@@ -157,6 +167,14 @@ class ChatAnimatedList extends StatefulWidget {
     // Modify this value at your own risk. If you increase it and experience
     // unstable pagination jumps, revert to a smaller value like 0.01.
     this.paginationThreshold = 0.01,
+    // Threshold for triggering pagination for newer messages, represented as
+    // a value between 0 (top) and 1 (bottom).
+    //
+    // Unlike the non-reversed list, scroll anchoring isn't typically needed here
+    // because new items are added at the bottom (index 0) and we are blocking
+    // scrollToEnd when loading more newer messages. The default of 0.8
+    // triggers pagination when 20% left from the visual bottom.
+    this.startPaginationThreshold = 0.8,
     this.messagesGroupingMode,
     this.messageGroupingTimeoutInSeconds,
     this.physics,
@@ -198,6 +216,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   // This prevents infinite pagination loops when reaching the end of available messages,
   // ensuring onEndReached only fires once per user scroll gesture.
   bool _paginationShouldTrigger = false;
+  // This flag prevents infinite pagination loops when reaching the start of available messages.
+  bool _startPaginationShouldTrigger = false;
 
   @override
   void initState() {
@@ -373,6 +393,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
           // Visually at the bottom (first in sliver list for reverse: true)
           _buildComposerHeightSliver(context),
           if (widget.bottomSliver != null) widget.bottomSliver!,
+          if (widget.onStartReached != null)
+            _buildStartLoadMoreSliver(builders),
           sliverAnimatedList,
           if (widget.onEndReached != null) _buildLoadMoreSliver(builders),
           if (widget.topSliver != null) widget.topSliver!,
@@ -389,6 +411,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
           if (widget.topSliver != null) widget.topSliver!,
           if (widget.onEndReached != null) _buildLoadMoreSliver(builders),
           sliverAnimatedList,
+          if (widget.onStartReached != null)
+            _buildStartLoadMoreSliver(builders),
           if (widget.bottomSliver != null) widget.bottomSliver!,
           _buildComposerHeightSliver(context),
           // Visually at the bottom
@@ -414,6 +438,13 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             _paginationShouldTrigger = true;
             _userHasScrolled = true;
           } else {
+            if (notification.direction ==
+                (widget.reversed
+                    ? ScrollDirection.forward
+                    : ScrollDirection.reverse)) {
+              _startPaginationShouldTrigger = true;
+            }
+
             // When user overscolls to the bottom or stays idle at the bottom, set `_userHasScrolled` to false
             if (_isAtChatEndScrollPosition) {
               _userHasScrolled = false;
@@ -487,7 +518,22 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
       child: Consumer<LoadMoreNotifier>(
         builder: (context, notifier, child) {
           return Visibility(
-            visible: notifier.isLoading,
+            visible: notifier.isLoadingOlder,
+            maintainState: true,
+            child: child!,
+          );
+        },
+        child: builders.loadMoreBuilder?.call(context) ?? LoadMore(),
+      ),
+    );
+  }
+
+  Widget _buildStartLoadMoreSliver(Builders builders) {
+    return SliverToBoxAdapter(
+      child: Consumer<LoadMoreNotifier>(
+        builder: (context, notifier, child) {
+          return Visibility(
+            visible: notifier.isLoadingNewer,
             maintainState: true,
             child: child!,
           );
@@ -605,6 +651,10 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   }
 
   void _scrollToEnd(Message data) {
+    // Used during pagination. Here we prevent scrolling to the end
+    // when adding new messages with pagination.
+    if (context.read<LoadMoreNotifier>().isLoadingNewer) return;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients || !mounted) return;
 
@@ -684,6 +734,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
       _userHasScrolled = false;
       _isScrollingToBottom = false;
+      // Trigger pagination for newer messages since user is at the bottom.
+      _startPaginationShouldTrigger = true;
     });
   }
 
@@ -714,17 +766,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   void _handlePagination() async {
     if (!_scrollController.hasClients ||
         !mounted ||
-        _needsInitialScrollPositionAdjustment ||
-        widget.onEndReached == null ||
-        context.read<LoadMoreNotifier>().isLoading ||
-        !_paginationShouldTrigger) {
+        _needsInitialScrollPositionAdjustment) {
       return;
-    }
-
-    // Get the threshold for pagination, defaulting to the very top of the list
-    var threshold = (widget.paginationThreshold ?? 0);
-    if (widget.reversed) {
-      threshold = 1 - threshold;
     }
 
     // Calculate the user's scroll position as a percentage of the total scrollable area, ranging from 0 to 1.
@@ -736,95 +779,201 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             : _scrollController.offset /
                 _scrollController.position.maxScrollExtent;
 
-    final shouldTrigger =
-        widget.reversed
-            ? scrollPercentage >= threshold
-            : scrollPercentage <= threshold;
-
-    // Trigger pagination if user scrolled past the threshold towards the top.
-    if (shouldTrigger) {
-      // Prevent multiple triggers during one scroll gesture.
-      _paginationShouldTrigger = false;
-
-      // Store the ID of the topmost visible item before loading new messages.
-      // This item will be used as an anchor to maintain scroll position.
-      MessageID? anchorMessageId;
-      int? initialMessagesCount;
-
-      // --- Scroll Anchoring Setup: Only for non-reversed lists ---
-      if (!widget.reversed) {
-        try {
-          // We can only anchor the scroll position if the list is actually
-          // in the widget tree and has a context.
-          if (_listKey.currentContext != null) {
-            final notificationResult = await _observerController
-                .dispatchOnceObserve(
-                  sliverContext: _listKey.currentContext!,
-                  isForce: true,
-                  isDependObserveCallback: false,
-                );
-            final firstItem =
-                notificationResult
-                    .observeResult
-                    ?.innerDisplayingChildModelList
-                    .firstOrNull;
-            final anchorIndex = firstItem?.index;
-
-            if (anchorIndex != null &&
-                anchorIndex >= 0 &&
-                anchorIndex < _oldList.length) {
-              anchorMessageId = _oldList[anchorIndex].id;
-            }
-          }
-        } catch (e) {
-          debugPrint('Error observing scroll position for anchoring: $e');
-        }
-        if (!mounted) return;
-        initialMessagesCount = _oldList.length;
+    // --- Handle reaching the end (older messages) ---
+    if (widget.onEndReached != null &&
+        _paginationShouldTrigger &&
+        !context.read<LoadMoreNotifier>().isLoadingOlder) {
+      // Get the threshold for pagination, defaulting to the very top of the list
+      var threshold = (widget.paginationThreshold ?? 0);
+      if (widget.reversed) {
+        threshold = 1 - threshold;
       }
-      // --- End Scroll Anchoring Setup ---
 
-      // Ensure mounted before using context or calling async widget callbacks
-      if (!mounted) return;
+      final shouldTrigger =
+          widget.reversed
+              ? scrollPercentage >= threshold
+              : scrollPercentage <= threshold;
 
-      // Show loading indicator.
-      context.read<LoadMoreNotifier>().setLoading(true);
+      // Trigger pagination if user scrolled past the threshold towards the top.
+      if (shouldTrigger) {
+        // Prevent multiple triggers during one scroll gesture.
+        _paginationShouldTrigger = false;
 
-      // Load older messages.
-      await widget.onEndReached!();
+        // Store the ID of the topmost visible item before loading new messages.
+        // This item will be used as an anchor to maintain scroll position.
+        MessageID? anchorMessageId;
+        int? initialMessagesCount;
 
-      // Ensure mounted after await, as onEndReached might unmount the widget
-      if (!mounted) return;
-
-      // Wait for the next frame for UI updates.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!_scrollController.hasClients || !mounted) return;
-
-        final notifier = context.read<LoadMoreNotifier>();
-
-        // --- Scroll Anchoring Action: Only for non-reversed lists ---
+        // --- Scroll Anchoring Setup: Only for non-reversed lists ---
         if (!widget.reversed) {
-          // initialMessageCount will be non-null here if !widget.reversed
-          final didAddMessages = _oldList.length > initialMessagesCount!;
-          if (didAddMessages && anchorMessageId != null) {
-            final newIndex = _oldList.indexWhere(
-              (m) => m.id == anchorMessageId,
-            );
-            if (newIndex != -1) {
-              _scrollToIndex(
-                newIndex,
-                duration: Duration.zero, // Jump immediately
-                alignment: 0, // Align to the top edge
-                offset: 0, // Keep item top edge aligned with viewport top edge
+          try {
+            // We can only anchor the scroll position if the list is actually
+            // in the widget tree and has a context.
+            if (_listKey.currentContext != null) {
+              final notificationResult = await _observerController
+                  .dispatchOnceObserve(
+                    sliverContext: _listKey.currentContext!,
+                    isForce: true,
+                    isDependObserveCallback: false,
+                  );
+              final firstItem =
+                  notificationResult
+                      .observeResult
+                      ?.innerDisplayingChildModelList
+                      .firstOrNull;
+              final anchorIndex = firstItem?.index;
+
+              if (anchorIndex != null &&
+                  anchorIndex >= 0 &&
+                  anchorIndex < _oldList.length) {
+                anchorMessageId = _oldList[anchorIndex].id;
+              }
+            }
+          } catch (e) {
+            debugPrint('Error observing scroll position for anchoring: $e');
+          }
+          if (!mounted) return;
+          initialMessagesCount = _oldList.length;
+        }
+        // --- End Scroll Anchoring Setup ---
+
+        // Ensure mounted before using context or calling async widget callbacks
+        if (!mounted) return;
+
+        // Show loading indicator.
+        context.read<LoadMoreNotifier>().setLoadingOlder(true);
+
+        // Load older messages.
+        await widget.onEndReached!();
+
+        // Ensure mounted after await, as onEndReached might unmount the widget
+        if (!mounted) return;
+
+        // Wait for the next frame for UI updates.
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!_scrollController.hasClients || !mounted) return;
+
+          final notifier = context.read<LoadMoreNotifier>();
+
+          // --- Scroll Anchoring Action: Only for non-reversed lists ---
+          if (!widget.reversed) {
+            // initialMessageCount will be non-null here if !widget.reversed
+            final didAddMessages = _oldList.length > initialMessagesCount!;
+            if (didAddMessages && anchorMessageId != null) {
+              final newIndex = _oldList.indexWhere(
+                (m) => m.id == anchorMessageId,
               );
+              if (newIndex != -1) {
+                _scrollToIndex(
+                  newIndex,
+                  duration: Duration.zero,
+                  alignment: 0,
+                  offset: 0,
+                );
+              }
             }
           }
-        }
-        // --- End Scroll Anchoring Action ---
+          // --- End Scroll Anchoring Action ---
 
-        // Hide loading indicator.
-        notifier.setLoading(false);
-      });
+          // Hide loading indicator.
+          notifier.setLoadingOlder(false);
+        });
+
+        return;
+      }
+    }
+
+    // --- Handle reaching the start (newer messages) ---
+    if (widget.onStartReached != null &&
+        _startPaginationShouldTrigger &&
+        !context.read<LoadMoreNotifier>().isLoadingNewer) {
+      var threshold = widget.startPaginationThreshold ?? 1;
+      if (widget.reversed) {
+        threshold = 1 - threshold;
+      }
+
+      final shouldTrigger =
+          widget.reversed
+              ? scrollPercentage <= threshold
+              : scrollPercentage >= threshold;
+
+      if (shouldTrigger) {
+        // Prevent multiple triggers during one scroll gesture.
+        _startPaginationShouldTrigger = false;
+
+        MessageID? anchorMessageId;
+        int? initialMessagesCount;
+
+        // --- Scroll Anchoring Setup: Only for reversed lists ---
+        if (widget.reversed) {
+          try {
+            // We can only anchor the scroll position if the list is actually
+            // in the widget tree and has a context.
+            if (_listKey.currentContext != null) {
+              final notificationResult = await _observerController
+                  .dispatchOnceObserve(
+                    sliverContext: _listKey.currentContext!,
+                    isForce: true,
+                    isDependObserveCallback: false,
+                  );
+              final firstItem =
+                  notificationResult
+                      .observeResult
+                      ?.innerDisplayingChildModelList
+                      .firstOrNull;
+              final anchorIndex = firstItem?.index;
+
+              if (anchorIndex != null &&
+                  anchorIndex >= 0 &&
+                  anchorIndex < _oldList.length) {
+                anchorMessageId = _oldList[visualPosition(anchorIndex)].id;
+              }
+            }
+          } catch (e) {
+            debugPrint('Error observing scroll position for anchoring: $e');
+          }
+          if (!mounted) return;
+          initialMessagesCount = _oldList.length;
+        }
+        // --- End Scroll Anchoring Setup ---
+
+        context.read<LoadMoreNotifier>().setLoadingNewer(true);
+
+        await widget.onStartReached!();
+
+        if (!mounted) return;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!_scrollController.hasClients || !mounted) return;
+
+          final notifier = context.read<LoadMoreNotifier>();
+
+          // --- Scroll Anchoring Action: Only for reversed lists ---
+          if (widget.reversed) {
+            // initialMessageCount will be non-null here if widget.reversed
+            final didAddMessages = _oldList.length > initialMessagesCount!;
+            if (didAddMessages && anchorMessageId != null) {
+              final newIndex = _oldList.indexWhere(
+                (m) => m.id == anchorMessageId,
+              );
+              if (newIndex != -1) {
+                final composerHeight =
+                    context.read<ComposerHeightNotifier>().height;
+                _scrollToIndex(
+                  newIndex,
+                  duration: Duration.zero,
+                  alignment: 0,
+                  offset: composerHeight,
+                );
+              }
+            }
+          }
+          // --- End Scroll Anchoring Action ---
+
+          // Hide loading indicator.
+          notifier.setLoadingNewer(false);
+        });
+      }
     }
   }
 
@@ -893,7 +1042,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     }
   }
 
-  void _onInserted(final int position, final Message data) {
+  void _onInserted(
+    final int position,
+    final Message data,
+    final bool animated,
+  ) {
     // If for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
     // set `_userHasScrolled` to false
     if (_userHasScrolled && _isAtChatEndScrollPosition) {
@@ -906,7 +1059,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // - For non-reversed lists, use the animation duration only if the list is not yet scrollable.
     //   If it's already scrollable, the item is added instantly (Duration.zero),
     //   and the _scrollToEnd logic handles the visual scroll to the new item.
-    if (widget.reversed || _scrollController.position.maxScrollExtent == 0) {
+    if (animated &&
+        (widget.reversed || _scrollController.position.maxScrollExtent == 0)) {
       if (widget.insertAnimationDurationResolver != null) {
         duration =
             widget.insertAnimationDurationResolver!(data) ??
@@ -936,7 +1090,11 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     _scrollToEnd(data);
   }
 
-  void _onInsertedAll(final int position, List<Message> messagesToInsert) {
+  void _onInsertedAll(
+    final int position,
+    List<Message> messagesToInsert,
+    final bool animated,
+  ) {
     // If for some reason `_userHasScrolled` is true and the user is not at the bottom of the list,
     // set `_userHasScrolled` to false
     if (_userHasScrolled && _isAtChatEndScrollPosition) {
@@ -949,7 +1107,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // - For non-reversed lists, use the animation duration only if the list is not yet scrollable.
     //   If it's already scrollable, the item is added instantly (Duration.zero),
     //   and the _scrollToEnd logic handles the visual scroll to the new item.
-    if (widget.reversed || _scrollController.position.maxScrollExtent == 0) {
+    if (animated &&
+        (widget.reversed || _scrollController.position.maxScrollExtent == 0)) {
       if (widget.insertAnimationDurationResolver != null) {
         duration =
             widget.insertAnimationDurationResolver!(messagesToInsert.last) ??
@@ -996,13 +1155,15 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     _scrollToEnd(messagesToInsert.last);
   }
 
-  void _onRemoved(final int position, final Message data) {
+  void _onRemoved(final int position, final Message data, final bool animated) {
     // Use animation duration resolver if provided, otherwise use default duration.
     final duration =
-        widget.removeAnimationDurationResolver != null
-            ? (widget.removeAnimationDurationResolver!(data) ??
-                widget.removeAnimationDuration)
-            : widget.removeAnimationDuration;
+        animated
+            ? widget.removeAnimationDurationResolver != null
+                ? (widget.removeAnimationDurationResolver!(data) ??
+                    widget.removeAnimationDuration)
+                : widget.removeAnimationDuration
+            : Duration.zero;
 
     // Calculate the visual index for SliverAnimatedList.removeItem BEFORE modifying _oldList.
     // SliverAnimatedList.removeItem expects the index of the item *before* it's removed.
@@ -1026,9 +1187,14 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     );
   }
 
-  void _onChanged(int position, Message oldData, Message newData) {
-    _onRemoved(position, oldData);
-    _onInserted(position, newData);
+  void _onChanged(
+    int position,
+    Message oldData,
+    Message newData,
+    bool animated,
+  ) {
+    _onRemoved(position, oldData, animated);
+    _onInserted(position, newData, animated);
   }
 
   /// Handles a `Move` operation as identified by `diffutil.calculateDiff`.
@@ -1045,16 +1211,17 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
   ///    `diffutil_dart` seems to provide `newPos` as the target index in the list
   ///    state if the item at `oldPos` was the only one removed.
   ///  - `data`: The message data being moved.
+  ///  - `animated`: Whether the operation should be animated.
   ///
   /// The method first calls `_onRemoved` using `oldPos`. Then, it uses `newPos`
   /// (clamped to valid list bounds) as the `insertionPos` for the subsequent
   /// `_onInserted` call. This sequence correctly updates `_oldList` and drives
   /// the `SliverAnimatedList` removal and insertion animations to visually
   /// represent the move.
-  void _onMove(int oldPosition, int newPosition, Message data) {
+  void _onMove(int oldPosition, int newPosition, Message data, bool animated) {
     // 1. Perform the removal part of the move.
     // This removes the item from _oldList at oldPos and triggers removeItem animation.
-    _onRemoved(oldPosition, data);
+    _onRemoved(oldPosition, data, animated);
 
     // 2. Determine the insertion position.
     // Based on testing, diffutil_dart's `newPos` for a Move operation appears
@@ -1075,7 +1242,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // 3. Perform the insertion part of the move.
     // This inserts the item back into _oldList at the calculated insertionPos
     // and triggers insertItem animation.
-    _onInserted(insertionPos, data);
+    _onInserted(insertionPos, data, animated);
   }
 
   /// Maps a conceptual item position from `_oldList` (content order) to its
@@ -1090,12 +1257,14 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         : indexPosition;
   }
 
-  void _onDiffUpdate(diffutil.DataDiffUpdate<Message> update) {
+  void _onDiffUpdate(diffutil.DataDiffUpdate<Message> update, bool animated) {
     update.when<void>(
-      insert: (pos, data) => _onInserted(pos, data),
-      remove: (pos, data) => _onRemoved(pos, data),
-      change: (pos, oldData, newData) => _onChanged(pos, oldData, newData),
-      move: (oldPos, newPos, data) => _onMove(oldPos, newPos, data),
+      insert: (pos, data) => _onInserted(pos, data, animated),
+      remove: (pos, data) => _onRemoved(pos, data, animated),
+      change:
+          (pos, oldData, newData) =>
+              _onChanged(pos, oldData, newData, animated),
+      move: (oldPos, newPos, data) => _onMove(oldPos, newPos, data, animated),
     );
   }
 
@@ -1126,7 +1295,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
               op.message != null,
               'Message must be provided when inserting a message.',
             );
-            _onInserted(op.index!, op.message!);
+            _onInserted(op.index!, op.message!, op.animated);
             break;
           case ChatOperationType.remove:
             assert(
@@ -1137,7 +1306,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
               op.message != null,
               'Message must be provided when removing a message.',
             );
-            _onRemoved(op.index!, op.message!);
+            _onRemoved(op.index!, op.message!, op.animated);
             break;
           case ChatOperationType.set:
             // If op.messages is provided (even if empty), it's the new desired state.
@@ -1153,7 +1322,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                     .getUpdatesWithData();
 
             for (final update in updates) {
-              _onDiffUpdate(update);
+              _onDiffUpdate(update, op.animated);
             }
             break;
           case ChatOperationType.insertAll:
@@ -1165,7 +1334,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
               op.messages != null && op.messages!.isNotEmpty,
               'Messages must be provided and be non-empty when inserting all.',
             );
-            _onInsertedAll(op.index!, op.messages!);
+            _onInsertedAll(op.index!, op.messages!, op.animated);
             break;
           case ChatOperationType.update:
             assert(
