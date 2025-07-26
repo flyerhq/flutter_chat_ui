@@ -1,5 +1,33 @@
 ## 2.9.0
 
+This release introduces two-sided pagination. You can now load newer messages using the new `onStartReached` callback, while `onEndReached` continues to work for older messages. For pagination to work correctly, messages should be inserted instantly, without animation.
+
+To allow this and offer more granular control, a new optional `animated` parameter has been added to all controller operations except `update`. This is not a breaking change, but if you'd like to use it, you can update your controller like so:
+```dart
+insertMessage(Message message, {int? index}) // ❌
+insertMessage(Message message, {int? index, bool animated = true}) // ✅
+ChatOperation.insert(..., animated: animated) // add animated to insert operations
+
+insertAllMessages(List<Message> messages, {int? index}) // ❌
+insertAllMessages(List<Message> messages, {int? index, bool animated = true}) // ✅
+ChatOperation.insertAll(..., animated: animated) // add animated to insertAll operations
+
+removeMessage(Message message) // ❌
+removeMessage(Message message, {bool animated = true}) // ✅
+ChatOperation.remove(..., animated: animated) // add animated to remove operations
+
+setMessages(List<Message> messages) // ❌
+setMessages(List<Message> messages, {bool animated = true}) // ✅
+ChatOperation.set(..., animated: animated) // add animated to set operations
+```
+
+As an optional improvement, you can use this parameter to disable animations when clearing the chat, which is now the default behaviour in the example apps.
+```dart
+ChatOperation.set(messages, animated: messages.isEmpty ? false : animated) // inside the controller
+```
+
+⚠️ There is a small potential breaking change: `LoadMoreNotifier` was updated for two-sided loading. If you used a custom **LoadMore** widget and used `LoadMoreNotifier` to measure its height, that logic has been removed as it was not used. Additionally, the internal property `_isLoading` is now `_isLoadingOlder`, and `_isLoadingNewer` has been added.
+
  - **FEAT**: implement two-sided pagination ([#840](https://github.com/flyerhq/flutter_chat_ui/issues/840)). ([8cca3141](https://github.com/flyerhq/flutter_chat_ui/commit/8cca314116664216b9f1697fabde0eccfd1c582d))
 
 ## 2.8.1
