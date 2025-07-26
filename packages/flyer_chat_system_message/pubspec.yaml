@@ -1,5 +1,5 @@
 name: flyer_chat_system_message
-version: 2.1.12
+version: 2.1.13
 description: >
   System message package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
 homepage: https://flyer.chat
@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_chat_core: ^2.7.1
+  flutter_chat_core: ^2.8.0
   provider: ^6.1.5
 
 dev_dependencies:

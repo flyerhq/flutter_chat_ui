@@ -1,3 +1,7 @@
+## 2.8.0
+
+ - **FEAT**: implement two-sided pagination ([#840](https://github.com/flyerhq/flutter_chat_ui/issues/840)). ([8cca3141](https://github.com/flyerhq/flutter_chat_ui/commit/8cca314116664216b9f1697fabde0eccfd1c582d))
+
 ## 2.7.1
 
  - **FIX**: update LICENSE. ([209a1292](https://github.com/flyerhq/flutter_chat_ui/commit/209a129297ebe7fd202e41273c9c0ddd52b8b983))

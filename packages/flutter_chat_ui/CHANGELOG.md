@@ -1,3 +1,7 @@
+## 2.9.0
+
+ - **FEAT**: implement two-sided pagination ([#840](https://github.com/flyerhq/flutter_chat_ui/issues/840)). ([8cca3141](https://github.com/flyerhq/flutter_chat_ui/commit/8cca314116664216b9f1697fabde0eccfd1c582d))
+
 ## 2.8.1
 
  - **FIX**: composer inputClearMode and fix custom editing controller. ([b4872190](https://github.com/flyerhq/flutter_chat_ui/commit/b4872190e92c5eae27dbd7c2bfa352f12085b527))

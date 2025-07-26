@@ -1,3 +1,7 @@
+## 4.1.2
+
+ - Update a dependency to the latest release.
+
 ## 4.1.1
 
  - **FIX**: update LICENSE. ([209a1292](https://github.com/flyerhq/flutter_chat_ui/commit/209a129297ebe7fd202e41273c9c0ddd52b8b983))
