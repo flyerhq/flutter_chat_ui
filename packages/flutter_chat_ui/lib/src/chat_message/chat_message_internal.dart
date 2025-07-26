@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
-import '../simple_text_message.dart';
 import 'chat_message.dart';
 import 'chat_message_build_helpers.dart';
 
