@@ -29,7 +29,7 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.menuItems,
     this.reactions,
     this.userReactions,
-    this.widgetAlignment,
+    this.widgetAlignment = CrossAxisAlignment.end,
     this.menuItemsWidthRatio,
     this.menuItemBackgroundColor,
     this.menuItemDestructiveColor,
@@ -64,9 +64,8 @@ class ReactionsDialogWidget extends StatefulWidget {
   /// This allow user to remove them from here
   final List<String>? userReactions;
 
-  /// The alignment of the widget
-  /// Only left right is taken into account
-  final Alignment? widgetAlignment;
+  /// The horizontal alignment of the widget
+  final CrossAxisAlignment widgetAlignment;
 
   /// The width ratio of the menu items
   final double? menuItemsWidthRatio;
@@ -120,12 +119,12 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
         padding: const EdgeInsets.only(right: 20.0, left: 20.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: widget.widgetAlignment,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildReactionsPicker(context, theme),
             const SizedBox(height: 10),
-            buildMessage(),
+            widget.messageWidget,
             const SizedBox(height: 10),
             buildMenuItems(context, theme),
           ],
@@ -134,103 +133,93 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
     );
   }
 
-  Align buildMenuItems(BuildContext context, _LocalTheme theme) {
+  Widget buildMenuItems(BuildContext context, _LocalTheme theme) {
     final destructiveColor = widget.menuItemDestructiveColor ?? Colors.red;
-    return Align(
-      alignment: widget.widgetAlignment ?? Alignment.centerRight,
-      child: Material(
-        color: Colors.transparent,
-        child: Container(
-          /// TODO: maybe use pixels, for desktop?
-          width:
-              MediaQuery.of(context).size.width *
-              (widget.menuItemsWidthRatio ?? 0.45),
-          decoration: BoxDecoration(
-            color: widget.menuItemBackgroundColor ?? theme.surfaceContainer,
-            borderRadius: theme.shape,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (var item in widget.menuItems ?? const [])
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            clickedContextMenuIndex = widget.menuItems?.indexOf(
-                              item,
-                            );
-                          });
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        /// TODO: maybe use pixels, for desktop?
+        width:
+            MediaQuery.of(context).size.width *
+            (widget.menuItemsWidthRatio ?? 0.45),
+        decoration: BoxDecoration(
+          color: widget.menuItemBackgroundColor ?? theme.surfaceContainer,
+          borderRadius: theme.shape,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var item in widget.menuItems ?? const [])
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          clickedContextMenuIndex = widget.menuItems?.indexOf(
+                            item,
+                          );
+                        });
 
-                          Future.delayed(
-                            widget.menuItemTapAnimationDuration ??
+                        Future.delayed(
+                          widget.menuItemTapAnimationDuration ??
+                              const Duration(milliseconds: 200),
+                        ).whenComplete(() {
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                          item.onTap?.call();
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            item.title,
+                            style: TextStyle(
+                              color:
+                                  item.isDestructive
+                                      ? destructiveColor
+                                      : theme.onSurface,
+                            ),
+                          ),
+                          Pulse(
+                            infinite: false,
+                            duration:
+                                widget.menuItemTapAnimationDuration ??
                                 const Duration(milliseconds: 200),
-                          ).whenComplete(() {
-                            if (context.mounted) {
-                              Navigator.of(context).pop();
-                            }
-                            item.onTap?.call();
-                          });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              item.title,
-                              style: TextStyle(
-                                color:
-                                    item.isDestructive
-                                        ? destructiveColor
-                                        : theme.onSurface,
-                              ),
+                            animate:
+                                clickedContextMenuIndex ==
+                                widget.menuItems?.indexOf(item),
+                            child: Icon(
+                              item.icon,
+                              color:
+                                  item.isDestructive
+                                      ? destructiveColor
+                                      : theme.onSurface,
                             ),
-                            Pulse(
-                              infinite: false,
-                              duration:
-                                  widget.menuItemTapAnimationDuration ??
-                                  const Duration(milliseconds: 200),
-                              animate:
-                                  clickedContextMenuIndex ==
-                                  widget.menuItems?.indexOf(item),
-                              child: Icon(
-                                item.icon,
-                                color:
-                                    item.isDestructive
-                                        ? destructiveColor
-                                        : theme.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    if (widget.menuItems?.last != item)
-                      Divider(
-                        color: widget.menuItemDividerColor ?? Colors.white,
-                        thickness: 0.5,
-                        height: 0.5,
-                      ),
-                  ],
-                ),
-            ],
-          ),
+                  ),
+                  if (widget.menuItems?.last != item)
+                    Divider(
+                      color: widget.menuItemDividerColor ?? Colors.white,
+                      thickness: 0.5,
+                      height: 0.5,
+                    ),
+                ],
+              ),
+          ],
         ),
       ),
     );
   }
 
-  Align buildMessage() {
-    return Align(
-      alignment: widget.widgetAlignment ?? Alignment.centerRight,
-      child: widget.messageWidget,
-    );
-  }
-
-  Align buildReactionsPicker(BuildContext context, _LocalTheme theme) {
+  Widget buildReactionsPicker(BuildContext context, _LocalTheme theme) {
     // Merge default reactions with user reactions, removing duplicates
     final allReactions =
         <String>{
@@ -241,101 +230,93 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
     final reactionTapAnimationDuration =
         widget.reactionTapAnimationDuration ??
         const Duration(milliseconds: 200);
-    return Align(
-      alignment: widget.widgetAlignment ?? Alignment.centerRight,
-      child: Material(
-        color: Colors.transparent,
-        child: Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color:
-                widget.reactionsPickerBackgroundColor ?? theme.surfaceContainer,
-            borderRadius: theme.shape,
-          ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (var i = 0; i < allReactions.length; i++)
-                  FadeInLeft(
-                    from: 0 + (i * 20).toDouble(),
-                    duration:
-                        widget.reactionPickerFadeLeftAnimationDuration ??
-                        const Duration(milliseconds: 200),
-                    delay: Duration.zero,
-                    child: InkWell(
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 2),
-                        padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
-                        decoration: BoxDecoration(
-                          color:
-                              (widget.userReactions ?? const []).contains(
-                                    allReactions[i],
-                                  )
-                                  ? widget.reactionsPickerReactedBackgroundColor ??
-                                      theme.onSurface.withValues(alpha: 0.2)
-                                  : Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Pulse(
-                          infinite: false,
-                          duration: reactionTapAnimationDuration,
-                          animate: reactionClicked && clickedReactionIndex == i,
-                          child: Text(
-                            allReactions[i],
-                            style: TextStyle(fontSize: 22),
-                          ),
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color:
+              widget.reactionsPickerBackgroundColor ?? theme.surfaceContainer,
+          borderRadius: theme.shape,
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < allReactions.length; i++)
+                FadeInLeft(
+                  from: 0 + (i * 20).toDouble(),
+                  duration:
+                      widget.reactionPickerFadeLeftAnimationDuration ??
+                      const Duration(milliseconds: 200),
+                  delay: Duration.zero,
+                  child: InkWell(
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 2),
+                      padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
+                      decoration: BoxDecoration(
+                        color:
+                            (widget.userReactions ?? const []).contains(
+                                  allReactions[i],
+                                )
+                                ? widget.reactionsPickerReactedBackgroundColor ??
+                                    theme.onSurface.withValues(alpha: 0.2)
+                                : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Pulse(
+                        infinite: false,
+                        duration: reactionTapAnimationDuration,
+                        animate: reactionClicked && clickedReactionIndex == i,
+                        child: Text(
+                          allReactions[i],
+                          style: TextStyle(fontSize: 22),
                         ),
                       ),
-                      onTap: () {
-                        setState(() {
-                          reactionClicked = true;
-                          clickedReactionIndex = i;
-                        });
-                        Future.delayed(
-                          reactionTapAnimationDuration,
-                        ).whenComplete(() {
+                    ),
+                    onTap: () {
+                      setState(() {
+                        reactionClicked = true;
+                        clickedReactionIndex = i;
+                      });
+                      Future.delayed(reactionTapAnimationDuration).whenComplete(
+                        () {
                           if (context.mounted) {
                             Navigator.of(context).pop();
                           }
                           widget.onReactionTap(allReactions[i]);
-                        });
-                      },
-                    ),
+                        },
+                      );
+                    },
                   ),
-                if (widget.onMoreReactionsTap != null)
-                  FadeInLeft(
-                    from: 0 + (allReactions.length * 20).toDouble(),
-                    duration:
-                        widget.reactionPickerFadeLeftAnimationDuration ??
-                        const Duration(milliseconds: 200),
-                    delay: Duration.zero,
-                    child: InkWell(
-                      onTap: () {
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                        }
-                        widget.onMoreReactionsTap?.call();
-                      },
-                      child:
-                          widget.moreReactionsWidget ??
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              4.0,
-                              2.0,
-                              4.0,
-                              2,
-                            ),
-                            child: Icon(
-                              Icons.more_horiz_rounded,
-                              color: theme.onSurface,
-                            ),
+                ),
+              if (widget.onMoreReactionsTap != null)
+                FadeInLeft(
+                  from: 0 + (allReactions.length * 20).toDouble(),
+                  duration:
+                      widget.reactionPickerFadeLeftAnimationDuration ??
+                      const Duration(milliseconds: 200),
+                  delay: Duration.zero,
+                  child: InkWell(
+                    onTap: () {
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                      widget.onMoreReactionsTap?.call();
+                    },
+                    child:
+                        widget.moreReactionsWidget ??
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
+                          child: Icon(
+                            Icons.more_horiz_rounded,
+                            color: theme.onSurface,
                           ),
-                    ),
+                        ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),
@@ -355,7 +336,7 @@ void showReactionsDialog(
   List<MenuItem>? menuItems,
   List<String>? reactions,
   List<String>? userReactions,
-  Alignment? widgetAlignment,
+  CrossAxisAlignment? widgetAlignment,
   double? menuItemsWidthRatio,
   Color? menuItemBackgroundColor,
   Color? menuItemDestructiveColor,
@@ -388,7 +369,9 @@ void showReactionsDialog(
             messageWidget: widget,
             widgetAlignment:
                 widgetAlignment ??
-                (isSentByMe ? Alignment.centerRight : Alignment.centerLeft),
+                (isSentByMe
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start),
             onReactionTap: (reaction) {
               onReactionTap(reaction);
             },
