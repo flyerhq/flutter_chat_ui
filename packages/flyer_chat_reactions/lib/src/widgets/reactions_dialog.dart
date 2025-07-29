@@ -5,9 +5,10 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart'
     show ChatProviders, buildMessageContent;
 import 'package:provider/provider.dart';
+import 'package:pull_down_button/pull_down_button.dart'
+    show PullDownMenuEntry, PullDownMenu;
 
 import '../models/default_data.dart';
-import '../models/menu_item.dart';
 import '../utils/typedef.dart';
 
 //// Theme values for [ReactionsDialogWidget].
@@ -30,13 +31,8 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.reactions,
     this.userReactions,
     this.widgetAlignment = CrossAxisAlignment.end,
-    this.menuItemsWidthRatio,
-    this.menuItemBackgroundColor,
-    this.menuItemDestructiveColor,
-    this.menuItemDividerColor,
     this.reactionsPickerBackgroundColor,
     this.reactionsPickerReactedBackgroundColor,
-    this.menuItemTapAnimationDuration,
     this.reactionTapAnimationDuration,
     this.reactionPickerFadeLeftAnimationDuration,
   });
@@ -55,7 +51,7 @@ class ReactionsDialogWidget extends StatefulWidget {
   final VoidCallback? onMoreReactionsTap;
 
   /// The list of menu items to be displayed in the context menu
-  final List<MenuItem>? menuItems;
+  final List<PullDownMenuEntry>? menuItems;
 
   /// The list of default reactions to be displayed
   final List<String>? reactions;
@@ -66,21 +62,6 @@ class ReactionsDialogWidget extends StatefulWidget {
 
   /// The horizontal alignment of the widget
   final CrossAxisAlignment widgetAlignment;
-
-  /// The width ratio of the menu items
-  final double? menuItemsWidthRatio;
-
-  /// Animation duration when a menu item is selected
-  final Duration? menuItemTapAnimationDuration;
-
-  /// The background color for menu items
-  final Color? menuItemBackgroundColor;
-
-  /// Destructive color for menu items
-  final Color? menuItemDestructiveColor;
-
-  /// The divider color for menu items
-  final Color? menuItemDividerColor;
 
   /// The background color for reactions picker
   final Color? reactionsPickerBackgroundColor;
@@ -125,94 +106,10 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
             buildReactionsPicker(context, theme),
             const SizedBox(height: 10),
             widget.messageWidget,
-            const SizedBox(height: 10),
-            buildMenuItems(context, theme),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildMenuItems(BuildContext context, _LocalTheme theme) {
-    final destructiveColor = widget.menuItemDestructiveColor ?? Colors.red;
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        /// TODO: maybe use pixels, for desktop?
-        width:
-            MediaQuery.of(context).size.width *
-            (widget.menuItemsWidthRatio ?? 0.45),
-        decoration: BoxDecoration(
-          color: widget.menuItemBackgroundColor ?? theme.surfaceContainer,
-          borderRadius: theme.shape,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (var item in widget.menuItems ?? const [])
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          clickedContextMenuIndex = widget.menuItems?.indexOf(
-                            item,
-                          );
-                        });
-
-                        Future.delayed(
-                          widget.menuItemTapAnimationDuration ??
-                              const Duration(milliseconds: 200),
-                        ).whenComplete(() {
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                          }
-                          item.onTap?.call();
-                        });
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            item.title,
-                            style: TextStyle(
-                              color:
-                                  item.isDestructive
-                                      ? destructiveColor
-                                      : theme.onSurface,
-                            ),
-                          ),
-                          Pulse(
-                            infinite: false,
-                            duration:
-                                widget.menuItemTapAnimationDuration ??
-                                const Duration(milliseconds: 200),
-                            animate:
-                                clickedContextMenuIndex ==
-                                widget.menuItems?.indexOf(item),
-                            child: Icon(
-                              item.icon,
-                              color:
-                                  item.isDestructive
-                                      ? destructiveColor
-                                      : theme.onSurface,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (widget.menuItems?.last != item)
-                    Divider(
-                      color: widget.menuItemDividerColor ?? Colors.white,
-                      thickness: 0.5,
-                      height: 0.5,
-                    ),
-                ],
-              ),
+            if (widget.menuItems != null && widget.menuItems!.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              PullDownMenu(items: widget.menuItems!),
+            ],
           ],
         ),
       ),
@@ -333,17 +230,12 @@ void showReactionsDialog(
   required bool isSentByMe,
   required Function(String) onReactionTap,
   VoidCallback? onMoreReactionsTap,
-  List<MenuItem>? menuItems,
+  List<PullDownMenuEntry>? menuItems,
   List<String>? reactions,
   List<String>? userReactions,
   CrossAxisAlignment? widgetAlignment,
-  double? menuItemsWidthRatio,
-  Color? menuItemBackgroundColor,
-  Color? menuItemDestructiveColor,
-  Color? menuItemDividerColor,
   Color? reactionsPickerBackgroundColor,
   Color? reactionsPickerReactedBackgroundColor,
-  Duration? menuItemTapAnimationDuration,
   Duration? reactionTapAnimationDuration,
   Duration? reactionPickerFadeLeftAnimationDuration,
   Widget? moreReactionsWidget,
@@ -379,14 +271,9 @@ void showReactionsDialog(
             menuItems: menuItems,
             reactions: reactions,
             userReactions: userReactions,
-            menuItemsWidthRatio: menuItemsWidthRatio,
-            menuItemBackgroundColor: menuItemBackgroundColor,
-            menuItemDestructiveColor: menuItemDestructiveColor,
-            menuItemDividerColor: menuItemDividerColor,
             reactionsPickerBackgroundColor: reactionsPickerBackgroundColor,
             reactionsPickerReactedBackgroundColor:
                 reactionsPickerReactedBackgroundColor,
-            menuItemTapAnimationDuration: menuItemTapAnimationDuration,
             reactionTapAnimationDuration: reactionTapAnimationDuration,
             reactionPickerFadeLeftAnimationDuration:
                 reactionPickerFadeLeftAnimationDuration,

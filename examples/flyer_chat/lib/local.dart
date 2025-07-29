@@ -15,6 +15,7 @@ import 'package:flyer_chat_reactions/flyer_chat_reactions.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
 import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pull_down_button/pull_down_button.dart';
 import 'package:uuid/uuid.dart';
 
 import 'create_message.dart';
@@ -363,24 +364,26 @@ class LocalState extends State<Local> {
     );
   }
 
-  List<MenuItem> _getMenuItems(Message message) {
+  List<PullDownMenuEntry> _getMenuItems(Message message) {
     if (message.authorId == 'system') return [];
 
     final items = [
       if (message is TextMessage)
-        MenuItem(
+        PullDownMenuItem(
           title: 'Copy',
           icon: CupertinoIcons.doc_on_doc,
           onTap: () {
             _copyMessage(message);
+            Navigator.of(context).pop();
           },
         ),
-      MenuItem(
+      PullDownMenuItem(
         title: 'Delete',
         icon: CupertinoIcons.delete,
         isDestructive: true,
         onTap: () {
           _removeItem(message);
+          Navigator.of(context).pop();
         },
       ),
     ];
