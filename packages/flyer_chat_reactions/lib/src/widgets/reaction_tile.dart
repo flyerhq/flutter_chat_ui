@@ -160,9 +160,9 @@ class _ReactionTileState extends State<ReactionTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (widget.emoji != null)
-                  /// Emoji alignement issue https://github.com/flutter/flutter/issues/119623
+                  /// Emoji alignment issue https://github.com/flutter/flutter/issues/119623
                   Padding(
-                    padding: EdgeInsets.fromLTRB(2.5, 0, 0, 1.5),
+                    padding: ReactionTileConstants.emojiAlignmentPadding,
                     child: Text(
                       widget.emoji!,
                       style: ReactionTileStyleResolver.resolveEmojiTextStyle(
@@ -206,6 +206,12 @@ class ReactionTileConstants {
   static const double minimumWidth = 40;
   static const double horizontalPadding = 8;
   static const double height = 24;
+  static const EdgeInsets emojiAlignmentPadding = EdgeInsets.fromLTRB(
+    2.5,
+    0,
+    0,
+    1.5,
+  );
 }
 
 class ReactionTileCountTextHelper {
@@ -221,7 +227,7 @@ class ReactionTileSizeHelper {
   /// and the number of reactions that can fit in the available width.
   ///
 
-  static Size calculatePrefferedSize({
+  static Size calculatePreferredSize({
     required TextStyle emojiStyle,
     required TextStyle countTextStyle,
     required TextStyle extraTextStyle,
@@ -239,7 +245,7 @@ class ReactionTileSizeHelper {
 
     if (hasEmoji) {
       width += emojiStyle.fontSize ?? 12;
-      width += 2.5; // See emoji alignement
+      width += 2.5; // See emoji alignment
     }
     if (hasText) {
       if (width > 0) {

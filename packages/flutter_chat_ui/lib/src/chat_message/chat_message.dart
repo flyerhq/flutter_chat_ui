@@ -167,12 +167,12 @@ class ChatMessage extends StatelessWidget {
                 index: index,
                 isSentByMe: isSentByMe,
               ),
-          onLongPress: () {
+          onLongPressStart: (details) {
             onMessageLongPress?.call(
               context,
               message,
               index: index,
-              details: LongPressStartDetails(),
+              details: details,
               isSentByMe: isSentByMe,
             );
             return;

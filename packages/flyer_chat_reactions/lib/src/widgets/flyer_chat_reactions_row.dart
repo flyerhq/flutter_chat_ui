@@ -108,7 +108,7 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
     final widgetCount = reactions.length;
 
     for (var i = 0; i < widgetCount; i++) {
-      final nextSize = ReactionTileSizeHelper.calculatePrefferedSize(
+      final nextSize = ReactionTileSizeHelper.calculatePreferredSize(
         emojiStyle: emojiTextStyle,
         countTextStyle: countTextStyle,
         extraTextStyle: extraTextStyle,
@@ -178,7 +178,7 @@ class _FlyerChatReactionsRowState extends State<FlyerChatReactionsRow> {
 
         Size? surplusWidgetSize;
         if (souldDisplaySurplus) {
-          surplusWidgetSize = ReactionTileSizeHelper.calculatePrefferedSize(
+          surplusWidgetSize = ReactionTileSizeHelper.calculatePreferredSize(
             emojiStyle: emojiTextStyle,
             countTextStyle: countTextStyle,
             extraTextStyle: extraTextStyle,

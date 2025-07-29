@@ -125,7 +125,7 @@ abstract class ChatColors with _$ChatColors {
     surfaceContainerLow: themeData.colorScheme.surfaceContainerLow,
     surfaceContainer: themeData.colorScheme.surfaceContainer,
     surfaceContainerHigh: themeData.colorScheme.surfaceContainerHigh,
-    surfaceContainerHighest: themeData.colorScheme.surfaceContainerHigh,
+    surfaceContainerHighest: themeData.colorScheme.surfaceContainerHighest,
   );
 
   /// Merges this color scheme with another [ChatColors].
