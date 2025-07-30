@@ -26,7 +26,7 @@ class ReactionsDialogWidget extends StatefulWidget {
     super.key,
     required this.messageWidget,
     required this.onReactionTap,
-    this.moreReactionsWidget,
+    this.moreReactionsWidgetBuilder,
     this.onMoreReactionsTap,
     this.menuItems,
     this.reactions,
@@ -45,8 +45,8 @@ class ReactionsDialogWidget extends StatefulWidget {
   /// The callback function to be called when a reaction is tapped
   final OnReactionTapCallback onReactionTap;
 
-  /// More Reactions Widget
-  final Widget? moreReactionsWidget;
+  /// More Reactions Widget builder
+  final ReactionsDialogMoreReactionsWidgetBuilder? moreReactionsWidgetBuilder;
 
   /// The callback function to be called when the "more" reactions  widget is tapped
   /// If not provided the widget will not be displayed
@@ -210,7 +210,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
                       widget.onMoreReactionsTap?.call();
                     },
                     child:
-                        widget.moreReactionsWidget ??
+                        widget.moreReactionsWidgetBuilder?.call(context) ??
                         Padding(
                           padding: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2),
                           child: Icon(
@@ -245,7 +245,7 @@ void showReactionsDialog(
   Color? reactionsPickerReactedBackgroundColor,
   Duration? reactionTapAnimationDuration,
   Duration? reactionPickerFadeLeftAnimationDuration,
-  Widget? moreReactionsWidget,
+  ReactionsDialogMoreReactionsWidgetBuilder? moreReactionsWidgetBuilder,
   bool activateHoverFloatEffect = true,
 }) {
   final providers = ChatProviders.from(context);
@@ -283,7 +283,7 @@ void showReactionsDialog(
             reactionTapAnimationDuration: reactionTapAnimationDuration,
             reactionPickerFadeLeftAnimationDuration:
                 reactionPickerFadeLeftAnimationDuration,
-            moreReactionsWidget: moreReactionsWidget,
+            moreReactionsWidgetBuilder: moreReactionsWidgetBuilder,
             activateHoverFloatEffect: activateHoverFloatEffect,
           ),
         ),
