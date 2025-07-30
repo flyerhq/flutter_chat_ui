@@ -31,7 +31,7 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.menuItems,
     this.reactions,
     this.userReactions,
-    this.widgetAlignment = CrossAxisAlignment.end,
+    this.alignment = CrossAxisAlignment.end,
     this.reactionsPickerBackgroundColor,
     this.reactionsPickerReactedBackgroundColor,
     this.reactionTapAnimationDuration,
@@ -63,7 +63,7 @@ class ReactionsDialogWidget extends StatefulWidget {
   final List<String>? userReactions;
 
   /// The horizontal alignment of the widget
-  final CrossAxisAlignment widgetAlignment;
+  final CrossAxisAlignment alignment;
 
   /// The background color for reactions picker
   final Color? reactionsPickerBackgroundColor;
@@ -105,7 +105,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
         padding: const EdgeInsets.only(right: 32.0, left: 32.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: widget.widgetAlignment,
+          crossAxisAlignment: widget.alignment,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildReactionsPicker(context, theme),
@@ -267,7 +267,7 @@ void showReactionsDialog(
           providers: providers,
           child: ReactionsDialogWidget(
             messageWidget: widget,
-            widgetAlignment:
+            alignment:
                 widgetAlignment ??
                 (isSentByMe
                     ? CrossAxisAlignment.end
