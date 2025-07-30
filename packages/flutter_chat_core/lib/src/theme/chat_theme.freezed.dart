@@ -197,7 +197,8 @@ mixin _$ChatColors {
  Color get onSurface;/// Background color for elements like received messages.
  Color get surfaceContainer;/// A slightly lighter/darker variant of [surfaceContainer].
  Color get surfaceContainerLow;/// A slightly lighter/darker variant of [surfaceContainer].
- Color get surfaceContainerHigh;
+ Color get surfaceContainerHigh;/// The highest/most elevated container surface.
+ Color get surfaceContainerHighest;
 /// Create a copy of ChatColors
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -208,16 +209,16 @@ $ChatColorsCopyWith<ChatColors> get copyWith => _$ChatColorsCopyWithImpl<ChatCol
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatColors&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.onPrimary, onPrimary) || other.onPrimary == onPrimary)&&(identical(other.surface, surface) || other.surface == surface)&&(identical(other.onSurface, onSurface) || other.onSurface == onSurface)&&(identical(other.surfaceContainer, surfaceContainer) || other.surfaceContainer == surfaceContainer)&&(identical(other.surfaceContainerLow, surfaceContainerLow) || other.surfaceContainerLow == surfaceContainerLow)&&(identical(other.surfaceContainerHigh, surfaceContainerHigh) || other.surfaceContainerHigh == surfaceContainerHigh));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatColors&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.onPrimary, onPrimary) || other.onPrimary == onPrimary)&&(identical(other.surface, surface) || other.surface == surface)&&(identical(other.onSurface, onSurface) || other.onSurface == onSurface)&&(identical(other.surfaceContainer, surfaceContainer) || other.surfaceContainer == surfaceContainer)&&(identical(other.surfaceContainerLow, surfaceContainerLow) || other.surfaceContainerLow == surfaceContainerLow)&&(identical(other.surfaceContainerHigh, surfaceContainerHigh) || other.surfaceContainerHigh == surfaceContainerHigh)&&(identical(other.surfaceContainerHighest, surfaceContainerHighest) || other.surfaceContainerHighest == surfaceContainerHighest));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,primary,onPrimary,surface,onSurface,surfaceContainer,surfaceContainerLow,surfaceContainerHigh);
+int get hashCode => Object.hash(runtimeType,primary,onPrimary,surface,onSurface,surfaceContainer,surfaceContainerLow,surfaceContainerHigh,surfaceContainerHighest);
 
 @override
 String toString() {
-  return 'ChatColors(primary: $primary, onPrimary: $onPrimary, surface: $surface, onSurface: $onSurface, surfaceContainer: $surfaceContainer, surfaceContainerLow: $surfaceContainerLow, surfaceContainerHigh: $surfaceContainerHigh)';
+  return 'ChatColors(primary: $primary, onPrimary: $onPrimary, surface: $surface, onSurface: $onSurface, surfaceContainer: $surfaceContainer, surfaceContainerLow: $surfaceContainerLow, surfaceContainerHigh: $surfaceContainerHigh, surfaceContainerHighest: $surfaceContainerHighest)';
 }
 
 
@@ -228,7 +229,7 @@ abstract mixin class $ChatColorsCopyWith<$Res>  {
   factory $ChatColorsCopyWith(ChatColors value, $Res Function(ChatColors) _then) = _$ChatColorsCopyWithImpl;
 @useResult
 $Res call({
- Color primary, Color onPrimary, Color surface, Color onSurface, Color surfaceContainer, Color surfaceContainerLow, Color surfaceContainerHigh
+ Color primary, Color onPrimary, Color surface, Color onSurface, Color surfaceContainer, Color surfaceContainerLow, Color surfaceContainerHigh, Color surfaceContainerHighest
 });
 
 
@@ -245,7 +246,7 @@ class _$ChatColorsCopyWithImpl<$Res>
 
 /// Create a copy of ChatColors
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? primary = null,Object? onPrimary = null,Object? surface = null,Object? onSurface = null,Object? surfaceContainer = null,Object? surfaceContainerLow = null,Object? surfaceContainerHigh = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? primary = null,Object? onPrimary = null,Object? surface = null,Object? onSurface = null,Object? surfaceContainer = null,Object? surfaceContainerLow = null,Object? surfaceContainerHigh = null,Object? surfaceContainerHighest = null,}) {
   return _then(_self.copyWith(
 primary: null == primary ? _self.primary : primary // ignore: cast_nullable_to_non_nullable
 as Color,onPrimary: null == onPrimary ? _self.onPrimary : onPrimary // ignore: cast_nullable_to_non_nullable
@@ -254,6 +255,7 @@ as Color,onSurface: null == onSurface ? _self.onSurface : onSurface // ignore: c
 as Color,surfaceContainer: null == surfaceContainer ? _self.surfaceContainer : surfaceContainer // ignore: cast_nullable_to_non_nullable
 as Color,surfaceContainerLow: null == surfaceContainerLow ? _self.surfaceContainerLow : surfaceContainerLow // ignore: cast_nullable_to_non_nullable
 as Color,surfaceContainerHigh: null == surfaceContainerHigh ? _self.surfaceContainerHigh : surfaceContainerHigh // ignore: cast_nullable_to_non_nullable
+as Color,surfaceContainerHighest: null == surfaceContainerHighest ? _self.surfaceContainerHighest : surfaceContainerHighest // ignore: cast_nullable_to_non_nullable
 as Color,
   ));
 }
@@ -265,7 +267,7 @@ as Color,
 
 
 class _ChatColors extends ChatColors {
-  const _ChatColors({required this.primary, required this.onPrimary, required this.surface, required this.onSurface, required this.surfaceContainer, required this.surfaceContainerLow, required this.surfaceContainerHigh}): super._();
+  const _ChatColors({required this.primary, required this.onPrimary, required this.surface, required this.onSurface, required this.surfaceContainer, required this.surfaceContainerLow, required this.surfaceContainerHigh, required this.surfaceContainerHighest}): super._();
   
 
 /// Primary color, often used for sent messages and accents.
@@ -282,6 +284,8 @@ class _ChatColors extends ChatColors {
 @override final  Color surfaceContainerLow;
 /// A slightly lighter/darker variant of [surfaceContainer].
 @override final  Color surfaceContainerHigh;
+/// The highest/most elevated container surface.
+@override final  Color surfaceContainerHighest;
 
 /// Create a copy of ChatColors
 /// with the given fields replaced by the non-null parameter values.
@@ -293,16 +297,16 @@ _$ChatColorsCopyWith<_ChatColors> get copyWith => __$ChatColorsCopyWithImpl<_Cha
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatColors&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.onPrimary, onPrimary) || other.onPrimary == onPrimary)&&(identical(other.surface, surface) || other.surface == surface)&&(identical(other.onSurface, onSurface) || other.onSurface == onSurface)&&(identical(other.surfaceContainer, surfaceContainer) || other.surfaceContainer == surfaceContainer)&&(identical(other.surfaceContainerLow, surfaceContainerLow) || other.surfaceContainerLow == surfaceContainerLow)&&(identical(other.surfaceContainerHigh, surfaceContainerHigh) || other.surfaceContainerHigh == surfaceContainerHigh));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatColors&&(identical(other.primary, primary) || other.primary == primary)&&(identical(other.onPrimary, onPrimary) || other.onPrimary == onPrimary)&&(identical(other.surface, surface) || other.surface == surface)&&(identical(other.onSurface, onSurface) || other.onSurface == onSurface)&&(identical(other.surfaceContainer, surfaceContainer) || other.surfaceContainer == surfaceContainer)&&(identical(other.surfaceContainerLow, surfaceContainerLow) || other.surfaceContainerLow == surfaceContainerLow)&&(identical(other.surfaceContainerHigh, surfaceContainerHigh) || other.surfaceContainerHigh == surfaceContainerHigh)&&(identical(other.surfaceContainerHighest, surfaceContainerHighest) || other.surfaceContainerHighest == surfaceContainerHighest));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,primary,onPrimary,surface,onSurface,surfaceContainer,surfaceContainerLow,surfaceContainerHigh);
+int get hashCode => Object.hash(runtimeType,primary,onPrimary,surface,onSurface,surfaceContainer,surfaceContainerLow,surfaceContainerHigh,surfaceContainerHighest);
 
 @override
 String toString() {
-  return 'ChatColors(primary: $primary, onPrimary: $onPrimary, surface: $surface, onSurface: $onSurface, surfaceContainer: $surfaceContainer, surfaceContainerLow: $surfaceContainerLow, surfaceContainerHigh: $surfaceContainerHigh)';
+  return 'ChatColors(primary: $primary, onPrimary: $onPrimary, surface: $surface, onSurface: $onSurface, surfaceContainer: $surfaceContainer, surfaceContainerLow: $surfaceContainerLow, surfaceContainerHigh: $surfaceContainerHigh, surfaceContainerHighest: $surfaceContainerHighest)';
 }
 
 
@@ -313,7 +317,7 @@ abstract mixin class _$ChatColorsCopyWith<$Res> implements $ChatColorsCopyWith<$
   factory _$ChatColorsCopyWith(_ChatColors value, $Res Function(_ChatColors) _then) = __$ChatColorsCopyWithImpl;
 @override @useResult
 $Res call({
- Color primary, Color onPrimary, Color surface, Color onSurface, Color surfaceContainer, Color surfaceContainerLow, Color surfaceContainerHigh
+ Color primary, Color onPrimary, Color surface, Color onSurface, Color surfaceContainer, Color surfaceContainerLow, Color surfaceContainerHigh, Color surfaceContainerHighest
 });
 
 
@@ -330,7 +334,7 @@ class __$ChatColorsCopyWithImpl<$Res>
 
 /// Create a copy of ChatColors
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? primary = null,Object? onPrimary = null,Object? surface = null,Object? onSurface = null,Object? surfaceContainer = null,Object? surfaceContainerLow = null,Object? surfaceContainerHigh = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? primary = null,Object? onPrimary = null,Object? surface = null,Object? onSurface = null,Object? surfaceContainer = null,Object? surfaceContainerLow = null,Object? surfaceContainerHigh = null,Object? surfaceContainerHighest = null,}) {
   return _then(_ChatColors(
 primary: null == primary ? _self.primary : primary // ignore: cast_nullable_to_non_nullable
 as Color,onPrimary: null == onPrimary ? _self.onPrimary : onPrimary // ignore: cast_nullable_to_non_nullable
@@ -339,6 +343,7 @@ as Color,onSurface: null == onSurface ? _self.onSurface : onSurface // ignore: c
 as Color,surfaceContainer: null == surfaceContainer ? _self.surfaceContainer : surfaceContainer // ignore: cast_nullable_to_non_nullable
 as Color,surfaceContainerLow: null == surfaceContainerLow ? _self.surfaceContainerLow : surfaceContainerLow // ignore: cast_nullable_to_non_nullable
 as Color,surfaceContainerHigh: null == surfaceContainerHigh ? _self.surfaceContainerHigh : surfaceContainerHigh // ignore: cast_nullable_to_non_nullable
+as Color,surfaceContainerHighest: null == surfaceContainerHighest ? _self.surfaceContainerHighest : surfaceContainerHighest // ignore: cast_nullable_to_non_nullable
 as Color,
   ));
 }
