@@ -235,7 +235,7 @@ void showReactionsDialog(
   BuildContext context,
   Message message, {
   required bool isSentByMe,
-  required Function(String) onReactionTap,
+  required OnReactionTapCallback onReactionTap,
   VoidCallback? onMoreReactionsTap,
   List<PullDownMenuEntry>? menuItems,
   List<String>? reactions,
@@ -272,9 +272,7 @@ void showReactionsDialog(
                 (isSentByMe
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start),
-            onReactionTap: (reaction) {
-              onReactionTap(reaction);
-            },
+            onReactionTap: onReactionTap,
             onMoreReactionsTap: onMoreReactionsTap,
             menuItems: menuItems,
             reactions: reactions,
