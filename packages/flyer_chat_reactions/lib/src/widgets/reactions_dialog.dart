@@ -9,6 +9,7 @@ import 'package:pull_down_button/pull_down_button.dart'
     show PullDownMenuEntry, PullDownMenu;
 
 import '../models/default_data.dart';
+import '../utils/hover_float_effect.dart';
 import '../utils/typedef.dart';
 
 //// Theme values for [ReactionsDialogWidget].
@@ -35,6 +36,7 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.reactionsPickerReactedBackgroundColor,
     this.reactionTapAnimationDuration,
     this.reactionPickerFadeLeftAnimationDuration,
+    this.activateHoverFloatEffect = true,
   });
 
   /// The message widget to be displayed in the dialog
@@ -75,6 +77,9 @@ class ReactionsDialogWidget extends StatefulWidget {
   /// Animation duration to display the reactions row
   final Duration? reactionPickerFadeLeftAnimationDuration;
 
+  /// Whether to activate the hover float effect
+  final bool activateHoverFloatEffect;
+
   @override
   State<ReactionsDialogWidget> createState() => _ReactionsDialogWidgetState();
 }
@@ -97,7 +102,7 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Padding(
-        padding: const EdgeInsets.only(right: 20.0, left: 20.0),
+        padding: const EdgeInsets.only(right: 32.0, left: 32.0),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: widget.widgetAlignment,
@@ -105,7 +110,9 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
           children: [
             buildReactionsPicker(context, theme),
             const SizedBox(height: 10),
-            widget.messageWidget,
+            widget.activateHoverFloatEffect
+                ? HoverFloatEffect(child: widget.messageWidget)
+                : widget.messageWidget,
             if (widget.menuItems != null && widget.menuItems!.isNotEmpty) ...[
               const SizedBox(height: 10),
               PullDownMenu(items: widget.menuItems!),
@@ -239,6 +246,7 @@ void showReactionsDialog(
   Duration? reactionTapAnimationDuration,
   Duration? reactionPickerFadeLeftAnimationDuration,
   Widget? moreReactionsWidget,
+  bool activateHoverFloatEffect = true,
 }) {
   final providers = ChatProviders.from(context);
 
@@ -278,6 +286,7 @@ void showReactionsDialog(
             reactionPickerFadeLeftAnimationDuration:
                 reactionPickerFadeLeftAnimationDuration,
             moreReactionsWidget: moreReactionsWidget,
+            activateHoverFloatEffect: activateHoverFloatEffect,
           ),
         ),
   );
