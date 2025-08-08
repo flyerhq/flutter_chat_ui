@@ -73,6 +73,10 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// The callback function to handle link clicks.
   final void Function(String url, String title)? onLinkTap;
 
+  /// Optional builder to customize how Markdown is rendered.
+  /// If provided, it will be used instead of the default [GptMarkdown] widget.
+  final GptMarkdownBuilder? gptMarkdownBuilder;
+
   /// The position of the link preview widget relative to the text.
   /// If set to [LinkPreviewPosition.none], the link preview widget will not be displayed.
   /// A [LinkPreviewBuilder] must be provided for the preview to be displayed.
@@ -102,6 +106,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.timeAndStatusPositionInlineInsets = const EdgeInsets.only(bottom: 2),
     this.onLinkTap,
+    this.gptMarkdownBuilder,
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
     this.topWidget,
   });
@@ -137,20 +142,31 @@ class FlyerChatTextMessage extends StatelessWidget {
             )
             : null;
 
-    final textContent = GptMarkdownTheme(
-      gptThemeData: GptMarkdownTheme.of(context).copyWith(
-        linkColor: isSentByMe ? sentLinksColor : receivedLinksColor,
-        linkHoverColor: isSentByMe ? sentLinksColor : receivedLinksColor,
-      ),
-      child: GptMarkdown(
-        message.text,
-        style:
-            _isOnlyEmoji
-                ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
-                : paragraphStyle,
-        onLinkTap: onLinkTap,
-      ),
-    );
+    final effectiveParagraphStyle =
+        _isOnlyEmoji
+            ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+            : paragraphStyle;
+
+    final textContent =
+        gptMarkdownBuilder != null
+            ? gptMarkdownBuilder!(
+              context,
+              message.text,
+              effectiveParagraphStyle,
+              onLinkTap,
+            )
+            : GptMarkdownTheme(
+              gptThemeData: GptMarkdownTheme.of(context).copyWith(
+                linkColor: isSentByMe ? sentLinksColor : receivedLinksColor,
+                linkHoverColor:
+                    isSentByMe ? sentLinksColor : receivedLinksColor,
+              ),
+              child: GptMarkdown(
+                message.text,
+                style: effectiveParagraphStyle,
+                onLinkTap: onLinkTap,
+              ),
+            );
 
     final linkPreviewWidget =
         linkPreviewPosition != LinkPreviewPosition.none
