@@ -5,8 +5,6 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart'
     show ChatProviders, buildMessageContent;
 import 'package:provider/provider.dart';
-import 'package:pull_down_button/pull_down_button.dart'
-    show PullDownMenuEntry, PullDownMenu;
 
 import '../models/default_data.dart';
 import '../utils/hover_float_effect.dart';
@@ -28,7 +26,6 @@ class ReactionsDialogWidget extends StatefulWidget {
     required this.onReactionTap,
     this.moreReactionsWidgetBuilder,
     this.onMoreReactionsTap,
-    this.menuItems,
     this.reactions,
     this.userReactions,
     this.horizontalAlignment = CrossAxisAlignment.end,
@@ -37,6 +34,7 @@ class ReactionsDialogWidget extends StatefulWidget {
     this.reactionTapAnimationDuration,
     this.reactionPickerFadeLeftAnimationDuration,
     this.activateHoverFloatEffect = true,
+    this.bottomWidgetBuilder,
   });
 
   /// The message widget to be displayed in the dialog
@@ -53,7 +51,7 @@ class ReactionsDialogWidget extends StatefulWidget {
   final VoidCallback? onMoreReactionsTap;
 
   /// The list of menu items to be displayed in the context menu
-  final List<PullDownMenuEntry>? menuItems;
+  final ReactionsDialogBottomWidgetBuilder? bottomWidgetBuilder;
 
   /// The list of default reactions to be displayed
   final List<String>? reactions;
@@ -113,9 +111,9 @@ class _ReactionsDialogWidgetState extends State<ReactionsDialogWidget> {
             widget.activateHoverFloatEffect
                 ? HoverFloatEffect(child: widget.messageWidget)
                 : widget.messageWidget,
-            if (widget.menuItems != null && widget.menuItems!.isNotEmpty) ...[
+            if (widget.bottomWidgetBuilder != null) ...[
               const SizedBox(height: 10),
-              PullDownMenu(items: widget.menuItems!),
+              widget.bottomWidgetBuilder!(context),
             ],
           ],
         ),
@@ -237,7 +235,6 @@ void showReactionsDialog(
   required bool isSentByMe,
   required OnReactionTapCallback onReactionTap,
   VoidCallback? onMoreReactionsTap,
-  List<PullDownMenuEntry>? menuItems,
   List<String>? reactions,
   List<String>? userReactions,
   CrossAxisAlignment? horizontalAlignment,
@@ -246,6 +243,7 @@ void showReactionsDialog(
   Duration? reactionTapAnimationDuration,
   Duration? reactionPickerFadeLeftAnimationDuration,
   ReactionsDialogMoreReactionsWidgetBuilder? moreReactionsWidgetBuilder,
+  ReactionsDialogBottomWidgetBuilder? bottomWidgetBuilder,
   bool activateHoverFloatEffect = true,
 }) {
   final providers = ChatProviders.from(context);
@@ -274,7 +272,7 @@ void showReactionsDialog(
                     : CrossAxisAlignment.start),
             onReactionTap: onReactionTap,
             onMoreReactionsTap: onMoreReactionsTap,
-            menuItems: menuItems,
+            bottomWidgetBuilder: bottomWidgetBuilder,
             reactions: reactions,
             userReactions: userReactions,
             reactionsPickerBackgroundColor: reactionsPickerBackgroundColor,

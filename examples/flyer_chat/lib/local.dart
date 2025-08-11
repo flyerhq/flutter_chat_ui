@@ -314,7 +314,7 @@ class LocalState extends State<Local> {
           _handleReactionTap(message, picked);
         }
       },
-      menuItems: _getMenuItems(message),
+      bottomWidgetBuilder: (context) => _buildContextualMenu(message),
     );
   }
 
@@ -364,8 +364,8 @@ class LocalState extends State<Local> {
     );
   }
 
-  List<PullDownMenuEntry> _getMenuItems(Message message) {
-    if (message.authorId == 'system') return [];
+  Widget _buildContextualMenu(Message message) {
+    if (message.authorId == 'system') return SizedBox.shrink();
 
     final items = [
       if (message is TextMessage)
@@ -387,7 +387,7 @@ class LocalState extends State<Local> {
         },
       ),
     ];
-    return items;
+    return PullDownMenu(items: items);
   }
 
   void _copyMessage(TextMessage message) async {
