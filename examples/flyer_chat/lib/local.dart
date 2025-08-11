@@ -300,6 +300,7 @@ class LocalState extends State<Local> {
     LongPressStartDetails? details,
     required bool isSentByMe,
   }) async {
+    if (message.authorId == 'system') return;
     showReactionsDialog(
       context,
       message,
