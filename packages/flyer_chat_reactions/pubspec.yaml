@@ -1,0 +1,23 @@
+name: flyer_chat_reactions
+version: 0.0.12
+description: >
+  Reactions package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
+homepage: https://flyer.chat
+repository: https://github.com/flyerhq/flutter_chat_ui
+
+environment:
+  sdk: ">=3.7.0 <4.0.0"
+  flutter: ">=3.29.0"
+
+dependencies:
+  animate_do: ^4.2.0
+  flutter:
+    sdk: flutter
+  flutter_chat_core: ^2.7.0
+  flutter_chat_ui: ^2.7.0
+  provider: ^6.1.5
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter

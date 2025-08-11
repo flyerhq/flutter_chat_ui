@@ -25,6 +25,13 @@ Future<Message> createMessage(
       sentAt: localOnly == true ? DateTime.now().toUtc() : null,
       text: text ?? lorem(paragraphs: 1, words: Random().nextInt(30) + 1),
       metadata: isOnlyEmoji(text ?? '') ? {'isOnlyEmoji': true} : null,
+      reactions: {
+        '👍': [authorId, 'someOtherId'],
+        '👎': ['someOtherId'],
+        '👏': [authorId],
+        '👌': [authorId],
+        '👊': [authorId],
+      },
     );
   } else {
     final orientation = ['portrait', 'square', 'wide'][Random().nextInt(3)];
@@ -61,6 +68,13 @@ Future<Message> createMessage(
         source: response.data['img'],
         thumbhash: response.data['thumbhash'],
         blurhash: response.data['blurhash'],
+        reactions: {
+          '👍': [authorId, 'someOtherId'],
+          '👎': ['someOtherId'],
+          '👏': [authorId],
+          '👌': [authorId],
+          '👊': [authorId],
+        },
       );
     } else {
       message = FileMessage(
@@ -71,6 +85,13 @@ Future<Message> createMessage(
         sentAt: localOnly == true ? DateTime.now().toUtc() : null,
         source: response.data['img'],
         size: 1000000,
+        reactions: {
+          '👍': [authorId, 'someOtherId'],
+          '👎': ['someOtherId'],
+          '👏': [authorId],
+          '👌': [authorId],
+          '👊': [authorId],
+        },
       );
     }
   }
