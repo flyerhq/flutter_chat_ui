@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle, Uint8List;
 
 import 'cache/cache.dart'
     if (dart.library.io) 'cache/io.dart'
+    if (dart.library.js_interop) 'cache/html.dart'
     if (dart.library.html) 'cache/html.dart';
 
 /// A cross-platform caching utility for downloading and storing binary data (like images).
