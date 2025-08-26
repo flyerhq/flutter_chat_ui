@@ -134,6 +134,10 @@ typedef EmptyChatListBuilder = Widget Function(BuildContext);
 typedef LinkPreviewBuilder =
     Widget? Function(BuildContext, TextMessage, bool isSendByMe);
 
+/// Signature for building the reactions widget.
+typedef ReactionsBuilder =
+    Widget? Function(BuildContext, Message, bool isSentByMe);
+
 /// A collection of builder functions used to customize the UI components
 /// of the chat interface.
 @Freezed(fromJson: false, toJson: false)
@@ -190,6 +194,9 @@ abstract class Builders with _$Builders {
 
     /// Custom builder for the link preview widget.
     LinkPreviewBuilder? linkPreviewBuilder,
+
+    /// Custom builder for the reactions widget.
+    ReactionsBuilder? reactionsBuilder,
   }) = _Builders;
 
   const Builders._();

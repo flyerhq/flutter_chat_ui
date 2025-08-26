@@ -85,6 +85,9 @@ abstract class ChatColors with _$ChatColors {
 
     /// A slightly lighter/darker variant of [surfaceContainer].
     required Color surfaceContainerHigh,
+
+    /// The highest/most elevated container surface.
+    required Color surfaceContainerHighest,
   }) = _ChatColors;
 
   const ChatColors._();
@@ -98,6 +101,7 @@ abstract class ChatColors with _$ChatColors {
     surfaceContainerLow: Color(0xfffafafa),
     surfaceContainer: Color(0xfff5f5f5),
     surfaceContainerHigh: Color(0xffeeeeee),
+    surfaceContainerHighest: Color(0xfff0f0f0),
   );
 
   /// Default dark color palette.
@@ -109,6 +113,7 @@ abstract class ChatColors with _$ChatColors {
     surfaceContainerLow: Color(0xff121212),
     surfaceContainer: Color(0xff1c1c1c),
     surfaceContainerHigh: Color(0xff242424),
+    surfaceContainerHighest: Color(0xff444444),
   );
 
   /// Creates [ChatColors] from a Material [ThemeData].
@@ -120,6 +125,7 @@ abstract class ChatColors with _$ChatColors {
     surfaceContainerLow: themeData.colorScheme.surfaceContainerLow,
     surfaceContainer: themeData.colorScheme.surfaceContainer,
     surfaceContainerHigh: themeData.colorScheme.surfaceContainerHigh,
+    surfaceContainerHighest: themeData.colorScheme.surfaceContainerHighest,
   );
 
   /// Merges this color scheme with another [ChatColors].
@@ -135,6 +141,7 @@ abstract class ChatColors with _$ChatColors {
       surfaceContainerLow: other.surfaceContainerLow,
       surfaceContainer: other.surfaceContainer,
       surfaceContainerHigh: other.surfaceContainerHigh,
+      surfaceContainerHighest: other.surfaceContainerHighest,
     );
   }
 }
