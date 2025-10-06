@@ -55,6 +55,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// The color of the links in the received messages.
   final Color? receivedLinksColor;
 
+  /// The color of the links in the received messages.
+  final TextDecoration linksDecoration;
+
   /// Text style for the message timestamp and status.
   final TextStyle? timeStyle;
 
@@ -96,6 +99,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.receivedTextStyle,
     this.sentLinksColor,
     this.receivedLinksColor,
+    this.linksDecoration = TextDecoration.underline,
     this.timeStyle,
     this.showTime = true,
     this.showStatus = true,
@@ -138,27 +142,30 @@ class FlyerChatTextMessage extends StatelessWidget {
             : null;
 
     final textContent = GptMarkdownTheme(
-      gptThemeData: GptMarkdownTheme.of(context).copyWith(
-        linkColor: isSentByMe ? sentLinksColor : receivedLinksColor,
-        linkHoverColor: isSentByMe ? sentLinksColor : receivedLinksColor,
-      ),
+      gptThemeData: GptMarkdownTheme.of(context),
       child: GptMarkdown(
         message.text,
-        style:
-            _isOnlyEmoji
-                ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
-                : paragraphStyle,
+        followLinkColor: true,
+        style: _isOnlyEmoji ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize) : paragraphStyle,
         onLinkTap: onLinkTap,
+        linkBuilder: (context, span, href, onTap) {
+          return GestureDetector(
+            onTap: () => onLinkTap?.call(href, span.toStringShort()),
+            child: Text.rich(
+              span,
+              style: paragraphStyle?.copyWith(
+                decorationColor: isSentByMe ? sentLinksColor : receivedLinksColor,
+                decoration: linksDecoration,
+              ),
+            ),
+          );
+        },
       ),
     );
 
     final linkPreviewWidget =
         linkPreviewPosition != LinkPreviewPosition.none
-            ? context.read<Builders>().linkPreviewBuilder?.call(
-              context,
-              message,
-              isSentByMe,
-            )
+            ? context.read<Builders>().linkPreviewBuilder?.call(context, message, isSentByMe)
             : null;
 
     return ClipRRect(
@@ -173,10 +180,7 @@ class FlyerChatTextMessage extends StatelessWidget {
             Container(
               padding:
                   _isOnlyEmoji
-                      ? EdgeInsets.symmetric(
-                        horizontal: (padding?.horizontal ?? 0) / 2,
-                        vertical: 0,
-                      )
+                      ? EdgeInsets.symmetric(horizontal: (padding?.horizontal ?? 0) / 2, vertical: 0)
                       : padding,
               child: _buildContentBasedOnPosition(
                 context: context,
@@ -200,10 +204,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     Widget? linkPreviewWidget,
   }) {
     final textDirection = Directionality.of(context);
-    final effectiveLinkPreviewPosition =
-        linkPreviewWidget != null
-            ? linkPreviewPosition
-            : LinkPreviewPosition.none;
+    final effectiveLinkPreviewPosition = linkPreviewWidget != null ? linkPreviewPosition : LinkPreviewPosition.none;
 
     return Stack(
       children: [
@@ -212,8 +213,7 @@ class FlyerChatTextMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (topWidget != null) topWidget!,
-            if (effectiveLinkPreviewPosition == LinkPreviewPosition.top)
-              linkPreviewWidget!,
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.top) linkPreviewWidget!,
             timeAndStatusPosition == TimeAndStatusPosition.inline
                 ? Row(
                   mainAxisSize: MainAxisSize.min,
@@ -221,29 +221,22 @@ class FlyerChatTextMessage extends StatelessWidget {
                   children: [
                     Flexible(child: textContent),
                     SizedBox(width: 4),
-                    Padding(
-                      padding:
-                          timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
-                      child: timeAndStatus,
-                    ),
+                    Padding(padding: timeAndStatusPositionInlineInsets ?? EdgeInsets.zero, child: timeAndStatus),
                   ],
                 )
                 : textContent,
-            if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
-              linkPreviewWidget!,
+            if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom) linkPreviewWidget!,
             if (timeAndStatusPosition != TimeAndStatusPosition.inline)
               // Ensure the  width is not smaller than the timeAndStatus widget
               // Ensure the height accounts for it's height
               Opacity(opacity: 0, child: timeAndStatus),
           ],
         ),
-        if (timeAndStatusPosition != TimeAndStatusPosition.inline &&
-            timeAndStatus != null)
+        if (timeAndStatusPosition != TimeAndStatusPosition.inline && timeAndStatus != null)
           Positioned.directional(
             textDirection: textDirection,
             end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
-            start:
-                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            start: timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
             bottom: 0,
             child: timeAndStatus,
           ),
@@ -262,16 +255,12 @@ class FlyerChatTextMessage extends StatelessWidget {
     if (isSentByMe) {
       return sentTextStyle ?? theme.bodyMedium.copyWith(color: theme.onPrimary);
     }
-    return receivedTextStyle ??
-        theme.bodyMedium.copyWith(color: theme.onSurface);
+    return receivedTextStyle ?? theme.bodyMedium.copyWith(color: theme.onSurface);
   }
 
   TextStyle? _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
-      return timeStyle ??
-          theme.labelSmall.copyWith(
-            color: _isOnlyEmoji ? theme.onSurface : theme.onPrimary,
-          );
+      return timeStyle ?? theme.labelSmall.copyWith(color: _isOnlyEmoji ? theme.onSurface : theme.onPrimary);
     }
     return timeStyle ?? theme.labelSmall.copyWith(color: theme.onSurface);
   }
@@ -312,18 +301,10 @@ class TimeAndStatus extends StatelessWidget {
       spacing: 2,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (showTime && time != null)
-          Text(timeFormat.format(time!.toLocal()), style: textStyle),
+        if (showTime && time != null) Text(timeFormat.format(time!.toLocal()), style: textStyle),
         if (showStatus && status != null)
           if (status == MessageStatus.sending)
-            SizedBox(
-              width: 6,
-              height: 6,
-              child: CircularProgressIndicator(
-                color: textStyle?.color,
-                strokeWidth: 2,
-              ),
-            )
+            SizedBox(width: 6, height: 6, child: CircularProgressIndicator(color: textStyle?.color, strokeWidth: 2))
           else
             Icon(getIconForStatus(status!), color: textStyle?.color, size: 12),
       ],
