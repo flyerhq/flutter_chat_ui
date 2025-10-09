@@ -136,6 +136,9 @@ class Composer extends StatefulWidget {
   /// Defaults to [InputClearMode.always].
   final InputClearMode inputClearMode;
 
+  /// Configuration for content insertion (e.g., images, gifs, stickers) into the text field.
+  final ContentInsertionConfiguration? contentInsertionConfiguration;
+
   /// Creates a message composer widget.
   const Composer({
     super.key,
@@ -180,6 +183,7 @@ class Composer extends StatefulWidget {
     this.sendButtonDisabled = false,
     this.sendButtonHidden = false,
     this.inputClearMode = InputClearMode.always,
+    this.contentInsertionConfiguration,
   });
 
   @override
@@ -294,6 +298,8 @@ class _ComposerState extends State<Composer> {
                 Expanded(
                   child: TextField(
                     controller: _textController,
+                    contentInsertionConfiguration:
+                        widget.contentInsertionConfiguration,
                     decoration: InputDecoration(
                       hintText: widget.hintText,
                       hintStyle: theme.bodyMedium.copyWith(
