@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.8.0
-  provider: ^6.1.5
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_lints: ^6.0.0
