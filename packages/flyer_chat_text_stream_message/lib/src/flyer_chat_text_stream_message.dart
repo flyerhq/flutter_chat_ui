@@ -92,6 +92,10 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
   /// The callback function to handle link clicks.
   final void Function(String url, String title)? onLinkTap;
 
+  /// Optional builder to customize how Markdown is rendered.
+  /// If provided, it will be used instead of the default [GptMarkdown] widget.
+  final GptMarkdownBuilder? gptMarkdownBuilder;
+
   /// The text to display while in the loading state. Defaults to "Thinking".
   final String loadingText;
 
@@ -128,6 +132,7 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
     this.chunkAnimationDuration = const Duration(milliseconds: 350),
     this.mode = TextStreamMessageMode.animatedOpacity,
     this.onLinkTap,
+    this.gptMarkdownBuilder,
     this.loadingText = 'Thinking',
     this.shimmerBaseColor,
     this.shimmerHighlightColor,
@@ -371,6 +376,15 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
 
     if (widget.streamState is StreamStateCompleted) {
       final state = widget.streamState as StreamStateCompleted;
+      final builder = widget.gptMarkdownBuilder;
+      if (builder != null) {
+        return builder(
+          context,
+          state.finalText,
+          paragraphStyle,
+          widget.onLinkTap,
+        );
+      }
       return GptMarkdown(
         state.finalText,
         style: paragraphStyle,
@@ -392,6 +406,15 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
 
       if (widget.mode == TextStreamMessageMode.instantMarkdown) {
         final combinedText = _segments.map((s) => s.text).join('');
+        final builder = widget.gptMarkdownBuilder;
+        if (builder != null) {
+          return builder(
+            context,
+            combinedText,
+            paragraphStyle,
+            widget.onLinkTap,
+          );
+        }
         return GptMarkdown(combinedText, style: paragraphStyle);
       } else {
         return RichText(

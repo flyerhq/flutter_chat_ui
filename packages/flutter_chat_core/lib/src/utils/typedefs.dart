@@ -36,3 +36,13 @@ typedef ChatItem =
       int? messageGroupingTimeoutInSeconds,
       bool? isRemoved,
     });
+
+/// Builder signature for rendering streamed Markdown content.
+/// Used by widgets like `FlyerChatTextStreamMessage` to customize Markdown rendering.
+typedef GptMarkdownBuilder =
+    Widget Function(
+      BuildContext context,
+      String text,
+      TextStyle? paragraphStyle,
+      void Function(String url, String title)? onLinkTap,
+    );
