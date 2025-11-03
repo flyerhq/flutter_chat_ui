@@ -2,7 +2,7 @@ name: flyer_chat
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.9.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,32 +30,32 @@ environment:
 dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cross_cache: ^1.0.4
+  cross_cache: ^1.0.5
   cupertino_icons: ^1.0.8
-  dio: ^5.8.0+1
-  file_picker: ^10.2.0
+  dio: ^5.9.0
+  file_picker: ^10.3.3
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.8.0
-  flutter_chat_ui: ^2.9.0
-  flutter_dotenv: ^5.2.1
+  flutter_chat_ui: ^2.9.1
+  flutter_dotenv: ^6.0.0
   flutter_link_previewer: ^4.1.2
   flutter_lorem: ^2.0.0
   flyer_chat_file_message: ^2.3.1
-  flyer_chat_image_message: ^2.2.1
+  flyer_chat_image_message: ^2.2.2
   flyer_chat_system_message: ^2.1.13
   flyer_chat_text_message: ^2.5.1
   flyer_chat_text_stream_message: ^2.2.6
   google_generative_ai: ^0.4.6
-  hive_ce: ^2.11.3
-  hive_ce_flutter: ^2.3.1
-  http: ^1.4.0
-  image_picker: ^1.1.2
+  hive_ce: ^2.14.0
+  hive_ce_flutter: ^2.3.2
+  http: ^1.5.0
+  image_picker: ^1.2.0
   intl: ^0.20.2
   isar_flutter_libs: ^4.0.0-dev.14
   path: ^1.9.1
   path_provider: ^2.1.5
-  provider: ^6.1.5
+  provider: ^6.1.5+1
   pull_down_button: ^0.10.2
   uuid: ^4.5.1
   web_socket_channel: ^3.0.3
@@ -77,7 +77,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

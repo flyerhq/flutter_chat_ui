@@ -1,3 +1,7 @@
+## 1.0.5
+
+ - **FIX**: add dart.library.js_interop case to cross_cache to support --wasm ([#847](https://github.com/flyerhq/flutter_chat_ui/issues/847)). ([3650bc75](https://github.com/flyerhq/flutter_chat_ui/commit/3650bc75cd0ae17be720a178245cedbf2aab7dbc))
+
 ## 1.0.4
 
  - **FIX**: update LICENSE. ([209a1292](https://github.com/flyerhq/flutter_chat_ui/commit/209a129297ebe7fd202e41273c9c0ddd52b8b983))

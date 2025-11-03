@@ -1,3 +1,7 @@
+## 2.9.1
+
+ - **FIX**: add content insertion configuration to Composer widget ([#852](https://github.com/flyerhq/flutter_chat_ui/issues/852)). ([6b5f6afc](https://github.com/flyerhq/flutter_chat_ui/commit/6b5f6afcd55054b79c31d950be63c2a4583f8128))
+
 ## 2.9.0
 
 This release introduces two-sided pagination. You can now load newer messages using the new `onStartReached` callback, while `onEndReached` continues to work for older messages. For pagination to work correctly, messages should be inserted instantly, without animation.

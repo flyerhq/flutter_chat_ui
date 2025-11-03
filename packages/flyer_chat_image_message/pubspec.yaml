@@ -1,5 +1,5 @@
 name: flyer_chat_image_message
-version: 2.2.1
+version: 2.2.2
 description: >
   Image message package for Flutter chat apps, complementing flutter_chat_ui.
   Supports caching, ThumbHash and BlurHash. #chat #ui
@@ -12,12 +12,12 @@ environment:
 
 dependencies:
   blurhash_dart: ^1.2.1
-  cross_cache: ^1.0.4
+  cross_cache: ^1.0.5
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.8.0
   image: ^4.5.4
-  provider: ^6.1.5
+  provider: ^6.1.5+1
   thumbhash: ^0.1.0+1
 
 dev_dependencies:
