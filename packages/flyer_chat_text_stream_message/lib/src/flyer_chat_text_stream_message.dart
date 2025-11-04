@@ -104,6 +104,15 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
   /// The period of the shimmer loading animation.
   final Duration shimmerPeriod;
 
+  /// Builder for the status widget if not provided, will build a default widget with Icons
+  /// Will not be displayed if [showStatus] is false.
+  final Widget Function(BuildContext context, MessageStatus? status)?
+  statusBuilder;
+
+  /// Builder for the time widget, if not provided will build a default widget using the HH:mm format
+  /// Will not be displayed if [showTime] is false.
+  final Widget Function(BuildContext context, DateTime time)? timeBuilder;
+
   /// A builder to completely override the default loading widget.
   /// If provided, `loadingText`, `shimmerBaseColor`, and `shimmerHighlightColor` are ignored.
   final Widget Function(BuildContext context, TextStyle? paragraphStyle)?
@@ -123,7 +132,9 @@ class FlyerChatTextStreamMessage extends StatefulWidget {
     this.receivedTextStyle,
     this.timeStyle,
     this.showTime = true,
+    this.timeBuilder,
     this.showStatus = true,
+    this.statusBuilder,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.chunkAnimationDuration = const Duration(milliseconds: 350),
     this.mode = TextStreamMessageMode.animatedOpacity,
@@ -318,6 +329,8 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
               showTime: widget.showTime,
               showStatus: isSentByMe && widget.showStatus,
               textStyle: timeStyle,
+              timeBuilder: widget.timeBuilder,
+              statusBuilder: widget.statusBuilder,
             )
             : null;
 
@@ -484,7 +497,7 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
         theme.bodyMedium.copyWith(color: theme.onSurface);
   }
 
-  TextStyle? _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
+  TextStyle _resolveTimeStyle(bool isSentByMe, _LocalTheme theme) {
     if (isSentByMe) {
       return widget.timeStyle ??
           theme.labelSmall.copyWith(color: theme.onPrimary);
@@ -515,41 +528,67 @@ class TimeAndStatus extends StatelessWidget {
   final bool showStatus;
 
   /// The text style for the time and status.
-  final TextStyle? textStyle;
+  final TextStyle textStyle;
+
+  /// Builder for the status widget if not provided, will build a default widget with Icons
+  final Widget Function(BuildContext context, MessageStatus? status)?
+  statusBuilder;
+
+  /// Builder for the time widget, if not provided will build a default widget using the HH:mm format
+  final Widget Function(BuildContext context, DateTime time)? timeBuilder;
 
   /// Creates a widget for displaying time and status.
   const TimeAndStatus({
     super.key,
     required this.time,
+    required this.textStyle,
     this.status,
     this.showTime = true,
     this.showStatus = true,
-    this.textStyle,
+    this.statusBuilder,
+    this.timeBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
+    final timeWidgetBuilder = timeBuilder ?? _defaultTimeBuilder;
+    final statusWidgetBuilder = statusBuilder ?? _defaultStatusBuilder;
+
+    return IconTheme(
+      data: IconThemeData(color: textStyle.color, size: 12),
+      child: DefaultTextStyle(
+        style: textStyle,
+        child: Row(
+          spacing: 2,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (showTime && time != null) timeWidgetBuilder(context, time!),
+            if (showStatus && status != null)
+              statusWidgetBuilder(context, status),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _defaultTimeBuilder(BuildContext context, DateTime time) {
     final timeFormat = context.watch<DateFormat>();
 
-    return Row(
-      spacing: 2,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (showTime && time != null)
-          Text(timeFormat.format(time!.toLocal()), style: textStyle),
-        if (showStatus && status != null)
-          if (status == MessageStatus.sending)
-            SizedBox(
-              width: 6,
-              height: 6,
-              child: CircularProgressIndicator(
-                color: textStyle?.color,
-                strokeWidth: 2,
-              ),
-            )
-          else
-            Icon(getIconForStatus(status!), color: textStyle?.color, size: 12),
-      ],
-    );
+    return Text(timeFormat.format(time.toLocal()));
+  }
+
+  Widget _defaultStatusBuilder(BuildContext context, MessageStatus? status) {
+    if (status == MessageStatus.sending) {
+      return SizedBox(
+        width: 6,
+        height: 6,
+        child: CircularProgressIndicator(
+          color: textStyle.color,
+          strokeWidth: 2,
+        ),
+      );
+    }
+
+    return Icon(getIconForStatus(status!));
   }
 }

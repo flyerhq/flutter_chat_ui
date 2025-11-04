@@ -89,6 +89,15 @@ class FlyerChatImageMessage extends StatefulWidget {
   /// The widget to display on top of the message.
   final Widget? topWidget;
 
+  /// Builder for the status widget if not provided, will build a default widget with Icons
+  /// Will not be displayed if [showStatus] is false.
+  final Widget Function(BuildContext context, MessageStatus? status)?
+  statusBuilder;
+
+  /// Builder for the time widget, if not provided will build a default widget using the HH:mm format
+  /// Will not be displayed if [showTime] is false.
+  final Widget Function(BuildContext context, DateTime time)? timeBuilder;
+
   /// Creates a widget to display an image message.
   const FlyerChatImageMessage({
     super.key,
@@ -107,7 +116,9 @@ class FlyerChatImageMessage extends StatefulWidget {
     this.timeStyle,
     this.timeBackground,
     this.showTime = true,
+    this.timeBuilder,
     this.showStatus = true,
+    this.statusBuilder,
     this.timeAndStatusPosition = TimeAndStatusPosition.end,
     this.errorBuilder,
     this.topWidget,
@@ -216,7 +227,9 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
               time: widget.message.resolvedTime,
               status: widget.message.resolvedStatus,
               showTime: widget.showTime,
+              timeBuilder: widget.timeBuilder,
               showStatus: isSentByMe && widget.showStatus,
+              statusBuilder: widget.statusBuilder,
               backgroundColor:
                   widget.timeBackground ?? Colors.black.withValues(alpha: 0.6),
               textStyle:
@@ -409,22 +422,32 @@ class TimeAndStatus extends StatelessWidget {
   final Color? backgroundColor;
 
   /// Text style for the time and status.
-  final TextStyle? textStyle;
+  final TextStyle textStyle;
+
+  /// Builder for the status widget if not provided, will build a default widget with Icons
+  final Widget Function(BuildContext context, MessageStatus? status)?
+  statusBuilder;
+
+  /// Builder for the time widget, if not provided will build a default widget using the HH:mm format
+  final Widget Function(BuildContext context, DateTime time)? timeBuilder;
 
   /// Creates a widget for displaying time and status over an image.
   const TimeAndStatus({
     super.key,
     required this.time,
+    required this.textStyle,
     this.status,
     this.showTime = true,
+    this.timeBuilder,
     this.showStatus = true,
+    this.statusBuilder,
     this.backgroundColor,
-    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = context.watch<DateFormat>();
+    final timeWidgetBuilder = timeBuilder ?? _defaultTimeBuilder;
+    final statusWidgetBuilder = statusBuilder ?? _defaultStatusBuilder;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -432,30 +455,42 @@ class TimeAndStatus extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        spacing: 2,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (showTime && time != null)
-            Text(timeFormat.format(time!.toLocal()), style: textStyle),
-          if (showStatus && status != null)
-            if (status == MessageStatus.sending)
-              SizedBox(
-                width: 6,
-                height: 6,
-                child: CircularProgressIndicator(
-                  color: textStyle?.color,
-                  strokeWidth: 2,
-                ),
-              )
-            else
-              Icon(
-                getIconForStatus(status!),
-                color: textStyle?.color,
-                size: 12,
-              ),
-        ],
+      child: IconTheme(
+        data: IconThemeData(color: textStyle.color, size: 12),
+        child: DefaultTextStyle(
+          style: textStyle,
+          child: Row(
+            spacing: 2,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (showTime && time != null) timeWidgetBuilder(context, time!),
+              if (showStatus && status != null)
+                statusWidgetBuilder(context, status),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  Widget _defaultTimeBuilder(BuildContext context, DateTime time) {
+    final timeFormat = context.watch<DateFormat>();
+
+    return Text(timeFormat.format(time.toLocal()));
+  }
+
+  Widget _defaultStatusBuilder(BuildContext context, MessageStatus? status) {
+    if (status == MessageStatus.sending) {
+      return SizedBox(
+        width: 6,
+        height: 6,
+        child: CircularProgressIndicator(
+          color: textStyle.color,
+          strokeWidth: 2,
+        ),
+      );
+    }
+
+    return Icon(getIconForStatus(status!));
   }
 }
