@@ -132,6 +132,13 @@ class Composer extends StatefulWidget {
   /// and hide the button. Defaults to `false`.
   final bool sendButtonHidden;
 
+  /// Whether to send messages on enter.
+  ///
+  /// If `true`, typing enter will send the message, and typing shift+enter
+  /// will type enter. If `false`, typing shift+enter will send the message.
+  /// Defaults to `false`.
+  final bool sendOnEnter;
+
   /// Controls the behavior of the text input field after a message is sent.
   /// Defaults to [InputClearMode.always].
   final InputClearMode inputClearMode;
@@ -182,6 +189,7 @@ class Composer extends StatefulWidget {
     this.allowEmptyMessage = false,
     this.sendButtonDisabled = false,
     this.sendButtonHidden = false,
+    this.sendOnEnter = false,
     this.inputClearMode = InputClearMode.always,
     this.contentInsertionConfiguration,
   });
@@ -211,7 +219,7 @@ class _ComposerState extends State<Composer> {
     // Check for Shift+Enter
     if (event is KeyDownEvent &&
         event.logicalKey == LogicalKeyboardKey.enter &&
-        HardwareKeyboard.instance.isShiftPressed) {
+        widget.sendOnEnter ^ HardwareKeyboard.instance.isShiftPressed) {
       _handleSubmitted(_textController.text);
       return KeyEventResult.handled;
     }
