@@ -4,17 +4,17 @@
 
 [![Pub Version](https://img.shields.io/pub/v/flutter_chat_ui?logo=flutter&color=orange)](https://pub.dev/packages/flutter_chat_ui) [![Pub Likes](https://img.shields.io/pub/likes/flutter_chat_ui?logo=flutter&color=orange&label=pub%20likes)](https://pub.dev/packages/flutter_chat_ui) [![Stars](https://img.shields.io/github/stars/flyerhq/flutter_chat_ui?style=flat&color=orange&logo=github)](https://github.com/flyerhq/flutter_chat_ui/stargazers) [![melos](https://img.shields.io/badge/maintained%20with-melos-ffffff.svg?color=orange)](https://github.com/invertase/melos)
 
-Flyer Chat is an open-source chat UI package for Flutter applications, designed for performance, customization, and ease of integration.
+Flyer Chat is an open-source chat UI package for Flutter applications, designed for performance, customization, and ease of integration.add free api , language russian. free code and aggents, projects, connectors, ai admins.
 
 ## ✨ Features
 
-- 🔄 **Backend-agnostic**: Connect to any backend service.
-- 🧬 **Adaptable**: Perfect for real-time messengers, generative AI agents and LLM-based assistants, support platforms, and beyond.
-- 🎨 **Highly Customizable**: Tailor the UI with extensive theme options and builder functions.
-- 🧩 **Modular**: Pick and choose the features you want. You can change any part of the UI or swap it with your own custom implementation.
+- 🔄 **Backend-agnostic**: Connect to any backend service.root.
+- 🧬 **Adaptable**: Perfect for real-time messengers, generative AI agents and LLM-based assistants, support platforms, and beyond. and free hugging face , github. 
+- 🎨 **Highly Customizable**: Tailor the UI with extensive theme options and builder functions.hacking apps, code, , chats. 
+- 🧩 **Modular**: Pick and choose the features you want. You can change any part of the UI or swap it with your own custom implementation.add free ide connectors. 
 - ⚡ **Performance Optimized**: Built for speed and smooth animations.
-- 🌐 **Cross-Platform**: Supports iOS, Android, Web, macOS, Windows, and Linux.
-- 📜 **Open Source**: Free to use under the Apache 2.0 License.
+- 🌐 **Cross-Platform**: Supports iOS, Android, web, admin accaunt, root.
+- 📜 **Open Source**: Free to use under the Apache 2.0 License. google, Mozilla 
 
 ## 🚀 Installation
 
