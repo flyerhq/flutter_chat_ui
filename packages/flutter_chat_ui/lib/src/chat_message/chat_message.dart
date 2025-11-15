@@ -125,6 +125,8 @@ class ChatMessage extends StatelessWidget {
     final onMessageTap = context.read<OnMessageTapCallback?>();
     final onMessageDoubleTap = context.read<OnMessageDoubleTapCallback?>();
     final onMessageLongPress = context.read<OnMessageLongPressCallback?>();
+    final onMessageSecondaryTap =
+        context.read<OnMessageSecondaryTapCallback?>();
     final isSentByMe = context.read<UserID>() == message.authorId;
 
     final curvedAnimation = CurvedAnimation(
@@ -134,7 +136,7 @@ class ChatMessage extends StatelessWidget {
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
-    final Widget messageWidget = Column(
+    final messageWidget = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         if (headerWidget != null)
@@ -158,6 +160,13 @@ class ChatMessage extends StatelessWidget {
               () => onMessageDoubleTap?.call(context, message, index: index),
           onLongPressStart:
               (details) => onMessageLongPress?.call(
+                context,
+                message,
+                index: index,
+                details: details,
+              ),
+          onSecondaryTapUp:
+              (details) => onMessageSecondaryTap?.call(
                 context,
                 message,
                 index: index,

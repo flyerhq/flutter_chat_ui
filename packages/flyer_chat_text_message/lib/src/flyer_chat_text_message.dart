@@ -123,6 +123,9 @@ class FlyerChatTextMessage extends StatelessWidget {
   /// The widget to display on top of the message.
   final Widget? topWidget;
 
+  /// Widget to display as text, overriding message text.
+  final Widget? customWidget;
+
   /// Creates a widget to display a text message.
   const FlyerChatTextMessage({
     super.key,
@@ -149,6 +152,7 @@ class FlyerChatTextMessage extends StatelessWidget {
     this.onLinkTap,
     this.linkPreviewPosition = LinkPreviewPosition.bottom,
     this.topWidget,
+	this.customWidget,
   });
 
   bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
@@ -188,7 +192,7 @@ class FlyerChatTextMessage extends StatelessWidget {
             )
             : null;
 
-    final textContent = GptMarkdownTheme(
+    final textContent = customWidget ?? GptMarkdownTheme(
       gptThemeData: GptMarkdownTheme.of(context),
       child: GptMarkdown(
         message.text,
