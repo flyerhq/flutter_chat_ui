@@ -348,4 +348,4 @@ const regexImageContentType = r'image\/*';
 
 /// Regex to find all links in the text.
 const regexLink =
-    r'((http|ftp|https):\/\/)?(([\p{L}\p{N}_-]+)(?:(?:\.([\p{L}\p{N}_-]*[\p{L}_][\p{L}\p{N}_-]*))+))([\p{L}\p{N}.,@?^=%&:/~+#-]*[\p{L}\p{N}@?^=%&/~+#-])?[^\.\s]';
+    r'(?<!href="|">)(https?:\/\/[^\s<]+)';
