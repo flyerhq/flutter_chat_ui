@@ -350,10 +350,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
   /// If the scroll-to-bottom button should be shown.
   bool get _shouldShowScrollToBottomButton {
-    final scrollOffsetFromBottom =
-        widget.reversed
-            ? _scrollController.offset
-            : _chatEndScrollPosition - _scrollController.offset;
+    final scrollOffsetFromBottom = widget.reversed
+        ? _scrollController.offset
+        : _chatEndScrollPosition - _scrollController.offset;
 
     return scrollOffsetFromBottom > widget.scrollToBottomAppearanceThreshold;
   }
@@ -367,23 +366,29 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     final sliverAnimatedList = SliverAnimatedList(
       key: _listKey,
       initialItemCount: _oldList.length,
-      itemBuilder: (
-        BuildContext context,
-        int index,
-        Animation<double> animation,
-      ) {
-        final message = _oldList[visualPosition(index)];
-
-        return widget.itemBuilder(
-          context,
-          message,
-          visualPosition(index),
-          animation,
-          messagesGroupingMode: widget.messagesGroupingMode,
-          messageGroupingTimeoutInSeconds:
-              widget.messageGroupingTimeoutInSeconds,
-        );
+      findChildIndexCallback: (Key key) {
+        if (key is ValueKey<MessageID>) {
+          final index = _oldList.indexWhere((m) => m.id == key.value);
+          if (index != -1) {
+            return visualPosition(index);
+          }
+        }
+        return null;
       },
+      itemBuilder:
+          (BuildContext context, int index, Animation<double> animation) {
+            final message = _oldList[visualPosition(index)];
+
+            return widget.itemBuilder(
+              context,
+              message,
+              visualPosition(index),
+              animation,
+              messagesGroupingMode: widget.messagesGroupingMode,
+              messageGroupingTimeoutInSeconds:
+                  widget.messageGroupingTimeoutInSeconds,
+            );
+          },
     );
 
     List<Widget> buildSlivers() {
@@ -773,11 +778,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     // Calculate the user's scroll position as a percentage of the total scrollable area, ranging from 0 to 1.
     // In a standard list, 0 represents the topmost position and 1 represents the bottommost position.
     // In a reversed list, the values are inverted: 1 indicates the top and 0 indicates the bottom.
-    final scrollPercentage =
-        _scrollController.position.maxScrollExtent == 0
-            ? 0
-            : _scrollController.offset /
-                _scrollController.position.maxScrollExtent;
+    final scrollPercentage = _scrollController.position.maxScrollExtent == 0
+        ? 0
+        : _scrollController.offset / _scrollController.position.maxScrollExtent;
 
     // --- Handle reaching the end (older messages) ---
     if (widget.onEndReached != null &&
@@ -789,10 +792,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         threshold = 1 - threshold;
       }
 
-      final shouldTrigger =
-          widget.reversed
-              ? scrollPercentage >= threshold
-              : scrollPercentage <= threshold;
+      final shouldTrigger = widget.reversed
+          ? scrollPercentage >= threshold
+          : scrollPercentage <= threshold;
 
       // Trigger pagination if user scrolled past the threshold towards the top.
       if (shouldTrigger) {
@@ -816,11 +818,10 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                     isForce: true,
                     isDependObserveCallback: false,
                   );
-              final firstItem =
-                  notificationResult
-                      .observeResult
-                      ?.innerDisplayingChildModelList
-                      .firstOrNull;
+              final firstItem = notificationResult
+                  .observeResult
+                  ?.innerDisplayingChildModelList
+                  .firstOrNull;
               final anchorIndex = firstItem?.index;
 
               if (anchorIndex != null &&
@@ -892,10 +893,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
         threshold = 1 - threshold;
       }
 
-      final shouldTrigger =
-          widget.reversed
-              ? scrollPercentage <= threshold
-              : scrollPercentage >= threshold;
+      final shouldTrigger = widget.reversed
+          ? scrollPercentage <= threshold
+          : scrollPercentage >= threshold;
 
       if (shouldTrigger) {
         // Prevent multiple triggers during one scroll gesture.
@@ -916,11 +916,10 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                     isForce: true,
                     isDependObserveCallback: false,
                   );
-              final firstItem =
-                  notificationResult
-                      .observeResult
-                      ?.innerDisplayingChildModelList
-                      .firstOrNull;
+              final firstItem = notificationResult
+                  .observeResult
+                  ?.innerDisplayingChildModelList
+                  .firstOrNull;
               final anchorIndex = firstItem?.index;
 
               if (anchorIndex != null &&
@@ -957,8 +956,9 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
                 (m) => m.id == anchorMessageId,
               );
               if (newIndex != -1) {
-                final composerHeight =
-                    context.read<ComposerHeightNotifier>().height;
+                final composerHeight = context
+                    .read<ComposerHeightNotifier>()
+                    .height;
                 _scrollToIndex(
                   newIndex,
                   duration: Duration.zero,
@@ -1157,13 +1157,12 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
 
   void _onRemoved(final int position, final Message data, final bool animated) {
     // Use animation duration resolver if provided, otherwise use default duration.
-    final duration =
-        animated
-            ? widget.removeAnimationDurationResolver != null
-                ? (widget.removeAnimationDurationResolver!(data) ??
+    final duration = animated
+        ? widget.removeAnimationDurationResolver != null
+              ? (widget.removeAnimationDurationResolver!(data) ??
                     widget.removeAnimationDuration)
-                : widget.removeAnimationDuration
-            : Duration.zero;
+              : widget.removeAnimationDuration
+        : Duration.zero;
 
     // Calculate the visual index for SliverAnimatedList.removeItem BEFORE modifying _oldList.
     // SliverAnimatedList.removeItem expects the index of the item *before* it's removed.
@@ -1261,9 +1260,8 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     update.when<void>(
       insert: (pos, data) => _onInserted(pos, data, animated),
       remove: (pos, data) => _onRemoved(pos, data, animated),
-      change:
-          (pos, oldData, newData) =>
-              _onChanged(pos, oldData, newData, animated),
+      change: (pos, oldData, newData) =>
+          _onChanged(pos, oldData, newData, animated),
       move: (oldPos, newPos, data) => _onMove(oldPos, newPos, data, animated),
     );
   }
@@ -1313,13 +1311,12 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
             // If op.messages is null, it signifies that the list should be cleared.
             final newList = op.messages ?? const <Message>[];
 
-            final updates =
-                diffutil
-                    .calculateDiff<Message>(
-                      MessageListDiff(_oldList, newList),
-                      detectMoves: true,
-                    )
-                    .getUpdatesWithData();
+            final updates = diffutil
+                .calculateDiff<Message>(
+                  MessageListDiff(_oldList, newList),
+                  detectMoves: true,
+                )
+                .getUpdatesWithData();
 
             for (final update in updates) {
               _onDiffUpdate(update, op.animated);

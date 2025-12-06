@@ -1,3 +1,7 @@
+## 1.1.0
+
+ - **FEAT**: update deps - requires min dart 3.8 and flutter 3.32 ([#871](https://github.com/flyerhq/flutter_chat_ui/issues/871)). ([588b34bd](https://github.com/flyerhq/flutter_chat_ui/commit/588b34bd398900c8f25ee69c574d1e35391af1d1))
+
 ## 1.0.5
 
  - **FIX**: add dart.library.js_interop case to cross_cache to support --wasm ([#847](https://github.com/flyerhq/flutter_chat_ui/issues/847)). ([3650bc75](https://github.com/flyerhq/flutter_chat_ui/commit/3650bc75cd0ae17be720a178245cedbf2aab7dbc))

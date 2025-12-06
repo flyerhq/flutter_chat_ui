@@ -1,13 +1,15 @@
 name: flyer_chat_location_message
-version: 0.0.12+2
+version: 0.0.13
 description: >
   Location message package for Flutter chat apps, complementing flutter_chat_ui. #chat #ui
 homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: ">=3.7.0 <4.0.0"
-  flutter: ">=3.29.0"
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: ">=3.32.0"
+
+resolution: workspace
 
 dependencies:
   flutter:

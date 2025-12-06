@@ -292,8 +292,8 @@ class ApiState extends State<Api> {
   void _removeItem(
     BuildContext context,
     Message item, {
-    int? index,
-    TapUpDetails? details,
+    required int index,
+    required TapUpDetails details,
   }) async {
     await _chatController.removeMessage(item);
 

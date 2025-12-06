@@ -19,15 +19,13 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'id': instance.id,
-  if (instance.name case final value?) 'name': value,
-  if (instance.imageSource case final value?) 'imageSource': value,
-  if (_$JsonConverterToJson<int, DateTime>(
-        instance.createdAt,
-        const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (instance.metadata case final value?) 'metadata': value,
+  'name': ?instance.name,
+  'imageSource': ?instance.imageSource,
+  'createdAt': ?_$JsonConverterToJson<int, DateTime>(
+    instance.createdAt,
+    const EpochDateTimeConverter().toJson,
+  ),
+  'metadata': ?instance.metadata,
 };
 
 Value? _$JsonConverterFromJson<Json, Value>(

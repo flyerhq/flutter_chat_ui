@@ -1,3 +1,11 @@
+## 2.10.0
+
+ - **FEAT**: update deps - requires min dart 3.8 and flutter 3.32 ([#871](https://github.com/flyerhq/flutter_chat_ui/issues/871)). ([588b34bd](https://github.com/flyerhq/flutter_chat_ui/commit/588b34bd398900c8f25ee69c574d1e35391af1d1))
+
+## 2.9.2
+
+ - **FIX**: chat messages rebuilt after sending new message. ([a17f3162](https://github.com/flyerhq/flutter_chat_ui/commit/a17f3162b118b7d539486c5a15c14e2fa9b9a464))
+
 ## 2.9.1
 
  - **FIX**: add content insertion configuration to Composer widget ([#852](https://github.com/flyerhq/flutter_chat_ui/issues/852)). ([6b5f6afc](https://github.com/flyerhq/flutter_chat_ui/commit/6b5f6afcd55054b79c31d950be63c2a4583f8128))

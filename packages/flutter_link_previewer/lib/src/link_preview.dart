@@ -254,23 +254,21 @@ class _LinkPreviewState extends State<LinkPreview>
     final effectiveDescriptionTextStyle =
         widget.descriptionTextStyle ?? defaultTextStyle;
 
-    final parentWidth =
-        widget.parentContent == null
-            ? 0.0
-            : _calculateTextWidth(widget.parentContent!, defaultTextStyle);
+    final parentWidth = widget.parentContent == null
+        ? 0.0
+        : _calculateTextWidth(widget.parentContent!, defaultTextStyle);
 
-    final titleWidth =
-        !previewData.hasTitle(hide: widget.hideTitle)
-            ? 0.0
-            : _calculateTextWidth(previewData.title!, effectiveTitleTextStyle);
+    final titleWidth = !previewData.hasTitle(hide: widget.hideTitle)
+        ? 0.0
+        : _calculateTextWidth(previewData.title!, effectiveTitleTextStyle);
 
     final descriptionWidth =
         !previewData.hasDescription(hide: widget.hideDescription)
-            ? 0.0
-            : _calculateTextWidth(
-              previewData.description!,
-              effectiveDescriptionTextStyle,
-            );
+        ? 0.0
+        : _calculateTextWidth(
+            previewData.description!,
+            effectiveDescriptionTextStyle,
+          );
 
     final hasText =
         previewData.hasTitle(hide: widget.hideTitle) ||
@@ -285,8 +283,9 @@ class _LinkPreviewState extends State<LinkPreview>
             previewData.isSquareImage &&
             isNotImageOnly);
 
-    final imageWidth =
-        useSideImageLayout ? widget.squareImageSize + widget.gap : 0.0;
+    final imageWidth = useSideImageLayout
+        ? widget.squareImageSize + widget.gap
+        : 0.0;
     final textMaxWidth = min(
       widget.maxWidth,
       constraints.maxWidth - imageWidth,
@@ -303,19 +302,18 @@ class _LinkPreviewState extends State<LinkPreview>
     final canShowImage = previewData.hasImage(hide: widget.hideImage);
 
     if (canShowImage) {
-      final image =
-          widget.imageBuilder != null
-              ? widget.imageBuilder!(previewData.image!.url)
-              : Image.network(
-                previewData.image!.url,
-                fit: BoxFit.cover,
-                errorBuilder:
-                    (context, error, stackTrace) => const SizedBox.shrink(),
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const SizedBox.shrink();
-                },
-              );
+      final image = widget.imageBuilder != null
+          ? widget.imageBuilder!(previewData.image!.url)
+          : Image.network(
+              previewData.image!.url,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  const SizedBox.shrink(),
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const SizedBox.shrink();
+              },
+            );
       if (useSideImageLayout) {
         squareImage = ClipRRect(
           borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -339,40 +337,38 @@ class _LinkPreviewState extends State<LinkPreview>
       }
     }
 
-    final textOnlyBlock =
-        hasText
-            ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (previewData.hasTitle(hide: widget.hideTitle))
-                  Text(
-                    previewData.title!,
-                    style: effectiveTitleTextStyle,
-                    maxLines: widget.maxTitleLines,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                if (previewData.hasDescription(hide: widget.hideDescription))
-                  Text(
-                    previewData.description!,
-                    style: effectiveDescriptionTextStyle,
-                    maxLines: widget.maxDescriptionLines,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-              ],
-            )
-            : const SizedBox.shrink();
+    final textOnlyBlock = hasText
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (previewData.hasTitle(hide: widget.hideTitle))
+                Text(
+                  previewData.title!,
+                  style: effectiveTitleTextStyle,
+                  maxLines: widget.maxTitleLines,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              if (previewData.hasDescription(hide: widget.hideDescription))
+                Text(
+                  previewData.description!,
+                  style: effectiveDescriptionTextStyle,
+                  maxLines: widget.maxDescriptionLines,
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
+          )
+        : const SizedBox.shrink();
 
-    final mainContentBlock =
-        squareImage != null
-            ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(child: textOnlyBlock),
-                if (hasText) SizedBox(width: widget.gap),
-                squareImage,
-              ],
-            )
-            : textOnlyBlock;
+    final mainContentBlock = squareImage != null
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(child: textOnlyBlock),
+              if (hasText) SizedBox(width: widget.gap),
+              squareImage,
+            ],
+          )
+        : textOnlyBlock;
 
     return SizedBox(
       width: finalWidth,

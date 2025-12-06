@@ -12,11 +12,11 @@ We expect all contributors to adhere to our [Code of Conduct](https://github.com
 
 There are many ways to contribute:
 
-*   **Reporting Bugs:** If you find a bug, please report it by opening an issue.
-*   **Suggesting Enhancements:** Have an idea for a new feature or an improvement? Open a discussion to share your thoughts with the community.
-*   **Improving Documentation:** Spot a typo or think something could be clearer? Let us know by opening an issue.
-*   **Writing Code:** Help fix bugs or implement new features.
-*   **Creating Examples/Packages:** Follow the steps below to add new examples or packages.
+- **Reporting Bugs:** If you find a bug, please report it by opening an issue.
+- **Suggesting Enhancements:** Have an idea for a new feature or an improvement? Open a discussion to share your thoughts with the community.
+- **Improving Documentation:** Spot a typo or think something could be clearer? Let us know by opening an issue.
+- **Writing Code:** Help fix bugs or implement new features.
+- **Creating Examples/Packages:** Follow the steps below to add new examples or packages.
 
 ## Reporting Bugs & Suggesting Enhancements
 
@@ -29,8 +29,8 @@ Before creating a new issue:
 
 ### Prerequisites
 
-*   [Flutter SDK](https://docs.flutter.dev/get-started/install)
-*   [Melos](https://melos.invertase.dev/): Install via `dart pub global activate melos`
+- [Flutter SDK](https://docs.flutter.dev/get-started/install)
+- [Melos](https://melos.invertase.dev/): Install via `dart pub global activate melos`
 
 ### Initial Setup
 
@@ -53,11 +53,26 @@ Before creating a new issue:
     ```bash
     cd ..
     ```
-4.  Bootstrap Melos to link packages:
+4.  Add the example to the root `pubspec.yaml` under the `workspace` key:
+    ```yaml
+    workspace:
+      - examples/example_name
+      # ... other packages
+    ```
+5.  Add `resolution: workspace` to the example's `pubspec.yaml` after the `environment` section:
+
+    ```yaml
+    environment:
+      sdk: ^3.7.0
+
+    resolution: workspace
+    ```
+
+6.  Bootstrap Melos to link packages:
     ```bash
     melos bs
     ```
-5.  Replace the content of `examples/example_name/analysis_options.yaml` with:
+7.  Replace the content of `examples/example_name/analysis_options.yaml` with:
     ```yaml
     include: ../../analysis_options.yaml
     ```
@@ -76,15 +91,30 @@ Before creating a new issue:
     ```bash
     cd ..
     ```
-4.  Bootstrap Melos:
+4.  Add the package to the root `pubspec.yaml` under the `workspace` key:
+    ```yaml
+    workspace:
+      - packages/package_name
+      # ... other packages
+    ```
+5.  Add `resolution: workspace` to the package's `pubspec.yaml` after the `environment` section:
+
+    ```yaml
+    environment:
+      sdk: ">=3.7.0 <4.0.0"
+
+    resolution: workspace
+    ```
+
+6.  Bootstrap Melos:
     ```bash
     melos bs
     ```
-5.  Replace the content of `packages/package_name/analysis_options.yaml` with:
+7.  Replace the content of `packages/package_name/analysis_options.yaml` with:
     ```yaml
     include: ../../analysis_options.yaml
     ```
-6.  Structure the package similarly to existing ones. Essential files include:
+8.  Structure the package similarly to existing ones. Essential files include:
     ```
     lib/
       src/
@@ -97,27 +127,27 @@ Before creating a new issue:
     README.md
     ```
     Remove unnecessary generated files and update `pubspec.yaml`.
-7.  Run `melos bs` again after modifying `pubspec.yaml`.
+9.  Run `melos bs` again after modifying `pubspec.yaml`.
 
 ### Common Melos Commands
 
-*   **Get/Link Dependencies:** `melos bootstrap` or `melos bs`
-*   **Clean:** `melos clean` (removes build artifacts, pub caches, etc.)
-*   **Run All Tests:** `melos test`
-*   **Run Tests Selectively:** `melos run test:selective` (prompts for package selection)
-*   **Generate Coverage:** `melos coverage`
-*   **Generate Coverage Selectively:** `melos run coverage:selective`
-*   **Analyze Code:** `melos analyze`
-*   **Format Code:** `melos format`
-*   **Apply Fixes:** `melos run fix`
-*   **(flutter_chat_core) Build Runner:** `melos run build`
+- **Get/Link Dependencies:** `melos bootstrap` or `melos bs`
+- **Clean:** `melos clean` (removes build artifacts, pub caches, etc.)
+- **Run All Tests:** `melos test`
+- **Run Tests Selectively:** `melos run test:selective` (prompts for package selection)
+- **Generate Coverage:** `melos coverage`
+- **Generate Coverage Selectively:** `melos run coverage:selective`
+- **Analyze Code:** `melos analyze`
+- **Format Code:** `melos format`
+- **Apply Fixes:** `melos run fix`
+- **(flutter_chat_core) Build Runner:** `melos run build`
 
 ## Code Style
 
 Please adhere to the code style defined in the root `analysis_options.yaml` file.
 
-*   Run `melos format` to format your code before committing.
-*   Run `melos analyze` to check for static analysis issues.
+- Run `melos format` to format your code before committing.
+- Run `melos analyze` to check for static analysis issues.
 
 ## Pull Request Process
 
