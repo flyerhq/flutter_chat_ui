@@ -139,6 +139,13 @@ class Composer extends StatefulWidget {
   /// Configuration for content insertion (e.g., images, gifs, stickers) into the text field.
   final ContentInsertionConfiguration? contentInsertionConfiguration;
 
+  /// Controls how the Enter key behaves.
+  ///
+  /// When `true`: pressing Enter sends the message, and Shift+Enter inserts a newline.
+  /// When `false`: pressing Shift+Enter sends the message, and Enter inserts a newline.
+  /// Defaults to `false`.
+  final bool sendOnEnter;
+
   /// Creates a message composer widget.
   const Composer({
     super.key,
@@ -184,6 +191,7 @@ class Composer extends StatefulWidget {
     this.sendButtonHidden = false,
     this.inputClearMode = InputClearMode.always,
     this.contentInsertionConfiguration,
+    this.sendOnEnter = false,
   });
 
   @override
@@ -211,7 +219,7 @@ class _ComposerState extends State<Composer> {
     // Check for Shift+Enter
     if (event is KeyDownEvent &&
         event.logicalKey == LogicalKeyboardKey.enter &&
-        HardwareKeyboard.instance.isShiftPressed) {
+        widget.sendOnEnter ^ HardwareKeyboard.instance.isShiftPressed) {
       _handleSubmitted(_textController.text);
       return KeyEventResult.handled;
     }
