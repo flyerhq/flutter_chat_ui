@@ -29,6 +29,17 @@ typedef OnMessageLongPressCallback =
       required LongPressStartDetails details,
     });
 
+/// Callback signature for when a message is right-clicked (secondary tapped).
+/// [context] is the BuildContext from the widget tree where the secondary tap occurs.
+/// Provides the secondary tapped [message], its [index], and [TapUpDetails].
+typedef OnMessageSecondaryTapCallback =
+    void Function(
+      BuildContext context,
+      Message message, {
+      required int index,
+      required TapUpDetails details,
+    });
+
 /// Callback signature for when the user attempts to send a message.
 /// Provides the [text] entered by the user.
 typedef OnMessageSendCallback = void Function(String text);
