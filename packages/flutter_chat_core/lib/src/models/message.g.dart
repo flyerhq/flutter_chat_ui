@@ -50,79 +50,59 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
   metadata: json['metadata'] as Map<String, dynamic>?,
   status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
   text: json['text'] as String,
-  linkPreviewData:
-      json['linkPreviewData'] == null
-          ? null
-          : LinkPreviewData.fromJson(
-            json['linkPreviewData'] as Map<String, dynamic>,
-          ),
+  linkPreviewData: json['linkPreviewData'] == null
+      ? null
+      : LinkPreviewData.fromJson(
+          json['linkPreviewData'] as Map<String, dynamic>,
+        ),
   $type: json['type'] as String?,
 );
 
-Map<String, dynamic> _$TextMessageToJson(
-  TextMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$TextMessageToJson(TextMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'editedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.editedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'editedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'text': instance.text,
-  if (instance.linkPreviewData?.toJson() case final value?)
-    'linkPreviewData': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'text': instance.text,
+      'linkPreviewData': ?instance.linkPreviewData?.toJson(),
+      'type': instance.$type,
+    };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
@@ -186,62 +166,46 @@ TextStreamMessage _$TextStreamMessageFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$TextStreamMessageToJson(
-  TextStreamMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$TextStreamMessageToJson(TextStreamMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'streamId': instance.streamId,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'streamId': instance.streamId,
+      'type': instance.$type,
+    };
 
 ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   id: json['id'] as String,
@@ -293,69 +257,53 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
   $type: json['type'] as String?,
 );
 
-Map<String, dynamic> _$ImageMessageToJson(
-  ImageMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'source': instance.source,
-  if (instance.text case final value?) 'text': value,
-  if (instance.thumbhash case final value?) 'thumbhash': value,
-  if (instance.blurhash case final value?) 'blurhash': value,
-  if (instance.width case final value?) 'width': value,
-  if (instance.height case final value?) 'height': value,
-  if (instance.size case final value?) 'size': value,
-  if (instance.hasOverlay case final value?) 'hasOverlay': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'source': instance.source,
+      'text': ?instance.text,
+      'thumbhash': ?instance.thumbhash,
+      'blurhash': ?instance.blurhash,
+      'width': ?instance.width,
+      'height': ?instance.height,
+      'size': ?instance.size,
+      'hasOverlay': ?instance.hasOverlay,
+      'type': instance.$type,
+    };
 
 FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   id: json['id'] as String,
@@ -403,65 +351,49 @@ FileMessage _$FileMessageFromJson(Map<String, dynamic> json) => FileMessage(
   $type: json['type'] as String?,
 );
 
-Map<String, dynamic> _$FileMessageToJson(
-  FileMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$FileMessageToJson(FileMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'source': instance.source,
-  'name': instance.name,
-  if (instance.size case final value?) 'size': value,
-  if (instance.mimeType case final value?) 'mimeType': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'source': instance.source,
+      'name': instance.name,
+      'size': ?instance.size,
+      'mimeType': ?instance.mimeType,
+      'type': instance.$type,
+    };
 
 VideoMessage _$VideoMessageFromJson(Map<String, dynamic> json) => VideoMessage(
   id: json['id'] as String,
@@ -511,67 +443,51 @@ VideoMessage _$VideoMessageFromJson(Map<String, dynamic> json) => VideoMessage(
   $type: json['type'] as String?,
 );
 
-Map<String, dynamic> _$VideoMessageToJson(
-  VideoMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$VideoMessageToJson(VideoMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'source': instance.source,
-  if (instance.text case final value?) 'text': value,
-  if (instance.name case final value?) 'name': value,
-  if (instance.size case final value?) 'size': value,
-  if (instance.width case final value?) 'width': value,
-  if (instance.height case final value?) 'height': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'source': instance.source,
+      'text': ?instance.text,
+      'name': ?instance.name,
+      'size': ?instance.size,
+      'width': ?instance.width,
+      'height': ?instance.height,
+      'type': instance.$type,
+    };
 
 AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
   id: json['id'] as String,
@@ -618,73 +534,56 @@ AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) => AudioMessage(
   ),
   text: json['text'] as String?,
   size: (json['size'] as num?)?.toInt(),
-  waveform:
-      (json['waveform'] as List<dynamic>?)
-          ?.map((e) => (e as num).toDouble())
-          .toList(),
+  waveform: (json['waveform'] as List<dynamic>?)
+      ?.map((e) => (e as num).toDouble())
+      .toList(),
   $type: json['type'] as String?,
 );
 
-Map<String, dynamic> _$AudioMessageToJson(
-  AudioMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$AudioMessageToJson(AudioMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'source': instance.source,
-  'duration': const DurationConverter().toJson(instance.duration),
-  if (instance.text case final value?) 'text': value,
-  if (instance.size case final value?) 'size': value,
-  if (instance.waveform case final value?) 'waveform': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'source': instance.source,
+      'duration': const DurationConverter().toJson(instance.duration),
+      'text': ?instance.text,
+      'size': ?instance.size,
+      'waveform': ?instance.waveform,
+      'type': instance.$type,
+    };
 
 SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
     SystemMessage(
@@ -730,62 +629,46 @@ SystemMessage _$SystemMessageFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$SystemMessageToJson(
-  SystemMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$SystemMessageToJson(SystemMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'text': instance.text,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'text': instance.text,
+      'type': instance.$type,
+    };
 
 CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
     CustomMessage(
@@ -830,61 +713,45 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$CustomMessageToJson(
-  CustomMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'type': instance.$type,
+    };
 
 UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
     UnsupportedMessage(
@@ -929,58 +796,42 @@ UnsupportedMessage _$UnsupportedMessageFromJson(Map<String, dynamic> json) =>
       $type: json['type'] as String?,
     );
 
-Map<String, dynamic> _$UnsupportedMessageToJson(
-  UnsupportedMessage instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'authorId': instance.authorId,
-  if (instance.replyToMessageId case final value?) 'replyToMessageId': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+Map<String, dynamic> _$UnsupportedMessageToJson(UnsupportedMessage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'authorId': instance.authorId,
+      'replyToMessageId': ?instance.replyToMessageId,
+      'createdAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.createdAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'createdAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deletedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deletedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deletedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'failedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.failedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'failedAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'sentAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.sentAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'sentAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'deliveredAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.deliveredAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'deliveredAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'seenAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.seenAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'seenAt': value,
-  if (_$JsonConverterToJson<int, DateTime>(
+      ),
+      'updatedAt': ?_$JsonConverterToJson<int, DateTime>(
         instance.updatedAt,
         const EpochDateTimeConverter().toJson,
-      )
-      case final value?)
-    'updatedAt': value,
-  if (instance.reactions case final value?) 'reactions': value,
-  if (instance.pinned case final value?) 'pinned': value,
-  if (instance.metadata case final value?) 'metadata': value,
-  if (_$MessageStatusEnumMap[instance.status] case final value?)
-    'status': value,
-  'type': instance.$type,
-};
+      ),
+      'reactions': ?instance.reactions,
+      'pinned': ?instance.pinned,
+      'metadata': ?instance.metadata,
+      'status': ?_$MessageStatusEnumMap[instance.status],
+      'type': instance.$type,
+    };

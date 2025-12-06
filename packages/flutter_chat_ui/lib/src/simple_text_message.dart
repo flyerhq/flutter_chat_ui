@@ -3,16 +3,15 @@ import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 
 /// Theme values for [SimpleTextMessage].
-typedef _LocalTheme =
-    ({
-      TextStyle bodyMedium,
-      TextStyle labelSmall,
-      Color onPrimary,
-      Color onSurface,
-      Color primary,
-      BorderRadiusGeometry shape,
-      Color surfaceContainer,
-    });
+typedef _LocalTheme = ({
+  TextStyle bodyMedium,
+  TextStyle labelSmall,
+  Color onPrimary,
+  Color onSurface,
+  Color primary,
+  BorderRadiusGeometry shape,
+  Color surfaceContainer,
+});
 
 /// A widget that displays a simple text message.
 class SimpleTextMessage extends StatelessWidget {
@@ -111,33 +110,30 @@ class SimpleTextMessage extends StatelessWidget {
     final textStyle = _resolveTextStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
 
-    final timeAndStatus =
-        showTime || (isSentByMe && showStatus)
-            ? TimeAndStatus(
-              time: message.resolvedTime,
-              status: message.resolvedStatus,
-              showTime: showTime,
-              showStatus: isSentByMe && showStatus,
-              textStyle: timeStyle,
-            )
-            : null;
+    final timeAndStatus = showTime || (isSentByMe && showStatus)
+        ? TimeAndStatus(
+            time: message.resolvedTime,
+            status: message.resolvedStatus,
+            showTime: showTime,
+            showStatus: isSentByMe && showStatus,
+            textStyle: timeStyle,
+          )
+        : null;
 
     final textContent = Text(
       message.text,
-      style:
-          _isOnlyEmoji
-              ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
-              : textStyle,
+      style: _isOnlyEmoji
+          ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
+          : textStyle,
     );
 
-    final linkPreviewWidget =
-        linkPreviewPosition != LinkPreviewPosition.none
-            ? context.read<Builders>().linkPreviewBuilder?.call(
-              context,
-              message,
-              isSentByMe,
-            )
-            : null;
+    final linkPreviewWidget = linkPreviewPosition != LinkPreviewPosition.none
+        ? context.read<Builders>().linkPreviewBuilder?.call(
+            context,
+            message,
+            isSentByMe,
+          )
+        : null;
 
     return ClipRRect(
       borderRadius: borderRadius ?? theme.shape,
@@ -149,13 +145,12 @@ class SimpleTextMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding:
-                  _isOnlyEmoji
-                      ? EdgeInsets.symmetric(
-                        horizontal: (padding?.horizontal ?? 0) / 2,
-                        vertical: 0,
-                      )
-                      : padding,
+              padding: _isOnlyEmoji
+                  ? EdgeInsets.symmetric(
+                      horizontal: (padding?.horizontal ?? 0) / 2,
+                      vertical: 0,
+                    )
+                  : padding,
               child: _buildContentBasedOnPosition(
                 context: context,
                 textContent: textContent,
@@ -178,10 +173,9 @@ class SimpleTextMessage extends StatelessWidget {
     Widget? linkPreviewWidget,
   }) {
     final textDirection = Directionality.of(context);
-    final effectiveLinkPreviewPosition =
-        linkPreviewWidget != null
-            ? linkPreviewPosition
-            : LinkPreviewPosition.none;
+    final effectiveLinkPreviewPosition = linkPreviewWidget != null
+        ? linkPreviewPosition
+        : LinkPreviewPosition.none;
 
     return Stack(
       children: [
@@ -194,18 +188,19 @@ class SimpleTextMessage extends StatelessWidget {
               linkPreviewWidget!,
             timeAndStatusPosition == TimeAndStatusPosition.inline
                 ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(child: textContent),
-                    SizedBox(width: 4),
-                    Padding(
-                      padding:
-                          timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
-                      child: timeAndStatus,
-                    ),
-                  ],
-                )
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(child: textContent),
+                      SizedBox(width: 4),
+                      Padding(
+                        padding:
+                            timeAndStatusPositionInlineInsets ??
+                            EdgeInsets.zero,
+                        child: timeAndStatus,
+                      ),
+                    ],
+                  )
                 : textContent,
             if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
               linkPreviewWidget!,
@@ -220,8 +215,9 @@ class SimpleTextMessage extends StatelessWidget {
           Positioned.directional(
             textDirection: textDirection,
             end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
-            start:
-                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            start: timeAndStatusPosition == TimeAndStatusPosition.start
+                ? 0
+                : null,
             bottom: 0,
             child: timeAndStatus,
           ),

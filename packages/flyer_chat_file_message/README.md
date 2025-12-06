@@ -1,4 +1,4 @@
-# [Flyer Chat](https://flyer.chat) 💬 File Message Widget 
+# [Flyer Chat](https://flyer.chat) 💬 File Message Widget
 
 [![Pub Version](https://img.shields.io/pub/v/flyer_chat_file_message?logo=flutter&color=orange)](https://pub.dev/packages/flyer_chat_file_message) [![Stars](https://img.shields.io/github/stars/flyerhq/flutter_chat_ui?style=flat&color=orange&logo=github)](https://github.com/flyerhq/flutter_chat_ui/stargazers) [![melos](https://img.shields.io/badge/maintained%20with-melos-ffffff.svg?color=orange)](https://github.com/invertase/melos)
 

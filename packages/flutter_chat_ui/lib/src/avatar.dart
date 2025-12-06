@@ -140,14 +140,13 @@ class _AvatarContentState extends State<AvatarContent> {
 
     final crossCache = context.read<CrossCache>();
 
-    _cachedNetworkImage =
-        widget.user?.imageSource != null
-            ? CachedNetworkImage(
-              widget.user!.imageSource!,
-              crossCache,
-              headers: widget.headers,
-            )
-            : null;
+    _cachedNetworkImage = widget.user?.imageSource != null
+        ? CachedNetworkImage(
+            widget.user!.imageSource!,
+            crossCache,
+            headers: widget.headers,
+          )
+        : null;
   }
 
   @override

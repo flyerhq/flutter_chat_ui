@@ -4,17 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 /// Theme values for [FlyerChatFileMessage].
-typedef _LocalTheme =
-    ({
-      TextStyle bodyMedium,
-      TextStyle bodySmall,
-      TextStyle labelSmall,
-      Color onPrimary,
-      Color onSurface,
-      Color primary,
-      BorderRadiusGeometry shape,
-      Color surfaceContainer,
-    });
+typedef _LocalTheme = ({
+  TextStyle bodyMedium,
+  TextStyle bodySmall,
+  TextStyle labelSmall,
+  Color onPrimary,
+  Color onSurface,
+  Color primary,
+  BorderRadiusGeometry shape,
+  Color surfaceContainer,
+});
 
 /// A widget that displays a file message.
 ///
@@ -121,16 +120,15 @@ class FlyerChatFileMessage extends StatelessWidget {
     final sizeTextStyle = _resolveSizeTextStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
 
-    final timeAndStatus =
-        showTime || (isSentByMe && showStatus)
-            ? TimeAndStatus(
-              time: message.resolvedTime,
-              status: message.resolvedStatus,
-              showTime: showTime,
-              showStatus: isSentByMe && showStatus,
-              textStyle: timeStyle,
-            )
-            : null;
+    final timeAndStatus = showTime || (isSentByMe && showStatus)
+        ? TimeAndStatus(
+            time: message.resolvedTime,
+            status: message.resolvedStatus,
+            showTime: showTime,
+            showStatus: isSentByMe && showStatus,
+            textStyle: timeStyle,
+          )
+        : null;
 
     final sizeContent = Text(
       _formatFileSize(message.size ?? 0),
@@ -151,11 +149,15 @@ class FlyerChatFileMessage extends StatelessWidget {
                 timeAndStatusPosition != TimeAndStatusPosition.inline
             ? sizeContent
             : Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [sizeContent, const SizedBox(width: 4), timeAndStatus],
-            ),
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  sizeContent,
+                  const SizedBox(width: 4),
+                  timeAndStatus,
+                ],
+              ),
       ],
     );
 
@@ -217,8 +219,9 @@ class FlyerChatFileMessage extends StatelessWidget {
           Positioned.directional(
             textDirection: textDirection,
             end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
-            start:
-                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            start: timeAndStatusPosition == TimeAndStatusPosition.start
+                ? 0
+                : null,
             bottom: 0,
             child: timeAndStatus,
           ),

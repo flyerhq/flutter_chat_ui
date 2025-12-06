@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
-  isar_flutter_libs
   url_launcher_windows
 )
 

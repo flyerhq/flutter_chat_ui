@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -147,6 +146,178 @@ as MessageStatus?,
 
 }
 
+
+/// Adds pattern-matching-related methods to [Message].
+extension MessagePatterns on Message {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( TextMessage value)?  text,TResult Function( TextStreamMessage value)?  textStream,TResult Function( ImageMessage value)?  image,TResult Function( FileMessage value)?  file,TResult Function( VideoMessage value)?  video,TResult Function( AudioMessage value)?  audio,TResult Function( SystemMessage value)?  system,TResult Function( CustomMessage value)?  custom,TResult Function( UnsupportedMessage value)?  unsupported,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case TextMessage() when text != null:
+return text(_that);case TextStreamMessage() when textStream != null:
+return textStream(_that);case ImageMessage() when image != null:
+return image(_that);case FileMessage() when file != null:
+return file(_that);case VideoMessage() when video != null:
+return video(_that);case AudioMessage() when audio != null:
+return audio(_that);case SystemMessage() when system != null:
+return system(_that);case CustomMessage() when custom != null:
+return custom(_that);case UnsupportedMessage() when unsupported != null:
+return unsupported(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( TextMessage value)  text,required TResult Function( TextStreamMessage value)  textStream,required TResult Function( ImageMessage value)  image,required TResult Function( FileMessage value)  file,required TResult Function( VideoMessage value)  video,required TResult Function( AudioMessage value)  audio,required TResult Function( SystemMessage value)  system,required TResult Function( CustomMessage value)  custom,required TResult Function( UnsupportedMessage value)  unsupported,}){
+final _that = this;
+switch (_that) {
+case TextMessage():
+return text(_that);case TextStreamMessage():
+return textStream(_that);case ImageMessage():
+return image(_that);case FileMessage():
+return file(_that);case VideoMessage():
+return video(_that);case AudioMessage():
+return audio(_that);case SystemMessage():
+return system(_that);case CustomMessage():
+return custom(_that);case UnsupportedMessage():
+return unsupported(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( TextMessage value)?  text,TResult? Function( TextStreamMessage value)?  textStream,TResult? Function( ImageMessage value)?  image,TResult? Function( FileMessage value)?  file,TResult? Function( VideoMessage value)?  video,TResult? Function( AudioMessage value)?  audio,TResult? Function( SystemMessage value)?  system,TResult? Function( CustomMessage value)?  custom,TResult? Function( UnsupportedMessage value)?  unsupported,}){
+final _that = this;
+switch (_that) {
+case TextMessage() when text != null:
+return text(_that);case TextStreamMessage() when textStream != null:
+return textStream(_that);case ImageMessage() when image != null:
+return image(_that);case FileMessage() when file != null:
+return file(_that);case VideoMessage() when video != null:
+return video(_that);case AudioMessage() when audio != null:
+return audio(_that);case SystemMessage() when system != null:
+return system(_that);case CustomMessage() when custom != null:
+return custom(_that);case UnsupportedMessage() when unsupported != null:
+return unsupported(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt, @EpochDateTimeConverter()  DateTime? editedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String text,  LinkPreviewData? linkPreviewData)?  text,TResult Function( String id,  String authorId,  String? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<String>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String streamId)?  textStream,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String? text,  String? thumbhash,  String? blurhash,  double? width,  double? height,  int? size,  bool? hasOverlay)?  image,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String name,  int? size,  String? mimeType)?  file,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String? text,  String? name,  int? size,  double? width,  double? height)?  video,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source, @DurationConverter()  Duration duration,  String? text,  int? size,  List<double>? waveform)?  audio,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String text)?  system,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status)?  custom,TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status)?  unsupported,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case TextMessage() when text != null:
+return text(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.editedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.text,_that.linkPreviewData);case TextStreamMessage() when textStream != null:
+return textStream(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.streamId);case ImageMessage() when image != null:
+return image(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.text,_that.thumbhash,_that.blurhash,_that.width,_that.height,_that.size,_that.hasOverlay);case FileMessage() when file != null:
+return file(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.name,_that.size,_that.mimeType);case VideoMessage() when video != null:
+return video(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.text,_that.name,_that.size,_that.width,_that.height);case AudioMessage() when audio != null:
+return audio(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.duration,_that.text,_that.size,_that.waveform);case SystemMessage() when system != null:
+return system(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.text);case CustomMessage() when custom != null:
+return custom(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status);case UnsupportedMessage() when unsupported != null:
+return unsupported(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt, @EpochDateTimeConverter()  DateTime? editedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String text,  LinkPreviewData? linkPreviewData)  text,required TResult Function( String id,  String authorId,  String? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<String>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String streamId)  textStream,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String? text,  String? thumbhash,  String? blurhash,  double? width,  double? height,  int? size,  bool? hasOverlay)  image,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String name,  int? size,  String? mimeType)  file,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String? text,  String? name,  int? size,  double? width,  double? height)  video,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source, @DurationConverter()  Duration duration,  String? text,  int? size,  List<double>? waveform)  audio,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String text)  system,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status)  custom,required TResult Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status)  unsupported,}) {final _that = this;
+switch (_that) {
+case TextMessage():
+return text(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.editedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.text,_that.linkPreviewData);case TextStreamMessage():
+return textStream(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.streamId);case ImageMessage():
+return image(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.text,_that.thumbhash,_that.blurhash,_that.width,_that.height,_that.size,_that.hasOverlay);case FileMessage():
+return file(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.name,_that.size,_that.mimeType);case VideoMessage():
+return video(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.text,_that.name,_that.size,_that.width,_that.height);case AudioMessage():
+return audio(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.duration,_that.text,_that.size,_that.waveform);case SystemMessage():
+return system(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.text);case CustomMessage():
+return custom(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status);case UnsupportedMessage():
+return unsupported(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt, @EpochDateTimeConverter()  DateTime? editedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String text,  LinkPreviewData? linkPreviewData)?  text,TResult? Function( String id,  String authorId,  String? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<String>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String streamId)?  textStream,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String? text,  String? thumbhash,  String? blurhash,  double? width,  double? height,  int? size,  bool? hasOverlay)?  image,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String name,  int? size,  String? mimeType)?  file,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source,  String? text,  String? name,  int? size,  double? width,  double? height)?  video,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String source, @DurationConverter()  Duration duration,  String? text,  int? size,  List<double>? waveform)?  audio,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status,  String text)?  system,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status)?  custom,TResult? Function( MessageID id,  UserID authorId,  MessageID? replyToMessageId, @EpochDateTimeConverter()  DateTime? createdAt, @EpochDateTimeConverter()  DateTime? deletedAt, @EpochDateTimeConverter()  DateTime? failedAt, @EpochDateTimeConverter()  DateTime? sentAt, @EpochDateTimeConverter()  DateTime? deliveredAt, @EpochDateTimeConverter()  DateTime? seenAt, @EpochDateTimeConverter()  DateTime? updatedAt,  Map<String, List<UserID>>? reactions,  bool? pinned,  Map<String, dynamic>? metadata,  MessageStatus? status)?  unsupported,}) {final _that = this;
+switch (_that) {
+case TextMessage() when text != null:
+return text(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.editedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.text,_that.linkPreviewData);case TextStreamMessage() when textStream != null:
+return textStream(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.streamId);case ImageMessage() when image != null:
+return image(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.text,_that.thumbhash,_that.blurhash,_that.width,_that.height,_that.size,_that.hasOverlay);case FileMessage() when file != null:
+return file(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.name,_that.size,_that.mimeType);case VideoMessage() when video != null:
+return video(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.text,_that.name,_that.size,_that.width,_that.height);case AudioMessage() when audio != null:
+return audio(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.source,_that.duration,_that.text,_that.size,_that.waveform);case SystemMessage() when system != null:
+return system(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status,_that.text);case CustomMessage() when custom != null:
+return custom(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status);case UnsupportedMessage() when unsupported != null:
+return unsupported(_that.id,_that.authorId,_that.replyToMessageId,_that.createdAt,_that.deletedAt,_that.failedAt,_that.sentAt,_that.deliveredAt,_that.seenAt,_that.updatedAt,_that.reactions,_that.pinned,_that.metadata,_that.status);case _:
+  return null;
+
+}
+}
+
+}
 
 /// @nodoc
 @JsonSerializable()

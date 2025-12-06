@@ -12,13 +12,12 @@ import 'package:thumbhash/thumbhash.dart'
 import 'get_image_dimensions.dart';
 
 /// Theme values for [FlyerChatImageMessage].
-typedef _LocalTheme =
-    ({
-      TextStyle labelSmall,
-      Color onSurface,
-      BorderRadiusGeometry shape,
-      Color surfaceContainerLow,
-    });
+typedef _LocalTheme = ({
+  TextStyle labelSmall,
+  Color onSurface,
+  BorderRadiusGeometry shape,
+  Color surfaceContainerLow,
+});
 
 /// A widget that displays an image message.
 ///
@@ -210,20 +209,19 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     );
     final isSentByMe = context.read<UserID>() == widget.message.authorId;
     final textDirection = Directionality.of(context);
-    final timeAndStatus =
-        widget.showTime || (isSentByMe && widget.showStatus)
-            ? TimeAndStatus(
-              time: widget.message.resolvedTime,
-              status: widget.message.resolvedStatus,
-              showTime: widget.showTime,
-              showStatus: isSentByMe && widget.showStatus,
-              backgroundColor:
-                  widget.timeBackground ?? Colors.black.withValues(alpha: 0.6),
-              textStyle:
-                  widget.timeStyle ??
-                  theme.labelSmall.copyWith(color: Colors.white),
-            )
-            : null;
+    final timeAndStatus = widget.showTime || (isSentByMe && widget.showStatus)
+        ? TimeAndStatus(
+            time: widget.message.resolvedTime,
+            status: widget.message.resolvedStatus,
+            showTime: widget.showTime,
+            showStatus: isSentByMe && widget.showStatus,
+            backgroundColor:
+                widget.timeBackground ?? Colors.black.withValues(alpha: 0.6),
+            textStyle:
+                widget.timeStyle ??
+                theme.labelSmall.copyWith(color: Colors.white),
+          )
+        : null;
 
     return ClipRRect(
       borderRadius: widget.borderRadius ?? theme.shape,
@@ -231,18 +229,16 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
         constraints: widget.constraints,
         child: AspectRatio(
           aspectRatio: _aspectRatio,
-          child:
-              widget.topWidget != null
-                  ? LayoutBuilder(
-                    builder:
-                        (context, constraints) => _buildStack(
-                          constraints,
-                          theme,
-                          textDirection,
-                          timeAndStatus,
-                        ),
-                  )
-                  : _buildStack(null, theme, textDirection, timeAndStatus),
+          child: widget.topWidget != null
+              ? LayoutBuilder(
+                  builder: (context, constraints) => _buildStack(
+                    constraints,
+                    theme,
+                    textDirection,
+                    timeAndStatus,
+                  ),
+                )
+              : _buildStack(null, theme, textDirection, timeAndStatus),
         ),
       ),
     );
@@ -260,8 +256,8 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
         _placeholderProvider != null
             ? Image(image: _placeholderProvider!, fit: BoxFit.fill)
             : Container(
-              color: widget.placeholderColor ?? theme.surfaceContainerLow,
-            ),
+                color: widget.placeholderColor ?? theme.surfaceContainerLow,
+              ),
         Image(
           image: _imageProvider,
           fit: BoxFit.fill,
@@ -280,11 +276,10 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
                       widget.loadingIndicatorColor ??
                       theme.onSurface.withValues(alpha: 0.8),
                   strokeCap: StrokeCap.round,
-                  value:
-                      loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                      : null,
                 ),
               ),
             );
@@ -363,14 +358,12 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
             bottom: 8,
             end:
                 widget.timeAndStatusPosition == TimeAndStatusPosition.end ||
-                        widget.timeAndStatusPosition ==
-                            TimeAndStatusPosition.inline
-                    ? 8
-                    : null,
-            start:
-                widget.timeAndStatusPosition == TimeAndStatusPosition.start
-                    ? 8
-                    : null,
+                    widget.timeAndStatusPosition == TimeAndStatusPosition.inline
+                ? 8
+                : null,
+            start: widget.timeAndStatusPosition == TimeAndStatusPosition.start
+                ? 8
+                : null,
             child: timeAndStatus,
           ),
       ],
