@@ -1,3 +1,7 @@
+## 2.6.0
+
+ - **FEAT**: update deps - requires min dart 3.8 and flutter 3.32 ([#871](https://github.com/flyerhq/flutter_chat_ui/issues/871)). ([588b34bd](https://github.com/flyerhq/flutter_chat_ui/commit/588b34bd398900c8f25ee69c574d1e35391af1d1))
+
 ## 2.5.2
 
  - **FIX**: add support for linksDecoration, sentLinksDecorationColor, receivedLinksDecorationColor. ([b5b9e906](https://github.com/flyerhq/flutter_chat_ui/commit/b5b9e906fc94fc0b22b72a12eb3d71860e301323))
