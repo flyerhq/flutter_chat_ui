@@ -1,4 +1,4 @@
-# [Flyer Chat](https://flyer.chat) 💬 Text Stream Message Widget 
+# [Flyer Chat](https://flyer.chat) 💬 Text Stream Message Widget
 
 [![Pub Version](https://img.shields.io/pub/v/flyer_chat_text_stream_message?logo=flutter&color=orange)](https://pub.dev/packages/flyer_chat_text_stream_message) [![Stars](https://img.shields.io/github/stars/flyerhq/flutter_chat_ui?style=flat&color=orange&logo=github)](https://github.com/flyerhq/flutter_chat_ui/stargazers) [![melos](https://img.shields.io/badge/maintained%20with-melos-ffffff.svg?color=orange)](https://github.com/invertase/melos)
 
