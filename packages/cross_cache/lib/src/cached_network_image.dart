@@ -68,11 +68,10 @@ class CachedNetworkImage extends ImageProvider<NetworkImage>
       chunkEvents: chunkEvents.stream,
       scale: key.scale,
       debugLabel: key.url,
-      informationCollector:
-          () => <DiagnosticsNode>[
-            DiagnosticsProperty<ImageProvider>('Image provider', this),
-            DiagnosticsProperty<NetworkImage>('Image key', key),
-          ],
+      informationCollector: () => <DiagnosticsNode>[
+        DiagnosticsProperty<ImageProvider>('Image provider', this),
+        DiagnosticsProperty<NetworkImage>('Image key', key),
+      ],
     );
   }
 

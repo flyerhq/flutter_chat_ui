@@ -147,22 +147,20 @@ class ChatMessage extends StatelessWidget {
             ),
           ),
         GestureDetector(
-          onTapUp:
-              (details) => onMessageTap?.call(
-                context,
-                message,
-                index: index,
-                details: details,
-              ),
-          onDoubleTap:
-              () => onMessageDoubleTap?.call(context, message, index: index),
-          onLongPressStart:
-              (details) => onMessageLongPress?.call(
-                context,
-                message,
-                index: index,
-                details: details,
-              ),
+          onTapUp: (details) => onMessageTap?.call(
+            context,
+            message,
+            index: index,
+            details: details,
+          ),
+          onDoubleTap: () =>
+              onMessageDoubleTap?.call(context, message, index: index),
+          onLongPressStart: (details) => onMessageLongPress?.call(
+            context,
+            message,
+            index: index,
+            details: details,
+          ),
           child: FadeTransition(
             opacity: curvedAnimation,
             child: SizeTransition(
@@ -192,11 +190,11 @@ class ChatMessage extends StatelessWidget {
     if (resolvedPadding != EdgeInsets.zero) {
       return paddingChangeAnimationDuration != null
           ? AnimatedPadding(
-            padding: resolvedPadding,
-            duration: paddingChangeAnimationDuration!,
-            curve: Curves.linearToEaseOut,
-            child: messageWidget,
-          )
+              padding: resolvedPadding,
+              duration: paddingChangeAnimationDuration!,
+              curve: Curves.linearToEaseOut,
+              child: messageWidget,
+            )
           : Padding(padding: resolvedPadding, child: messageWidget);
     }
 
@@ -205,16 +203,16 @@ class ChatMessage extends StatelessWidget {
 
   Widget _buildMessage({required bool isSentByMe}) => Column(
     mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment:
-        isSentByMe
-            ? sentMessageColumnAlignment
-            : receivedMessageColumnAlignment,
+    crossAxisAlignment: isSentByMe
+        ? sentMessageColumnAlignment
+        : receivedMessageColumnAlignment,
     children: [
       if (topWidget != null) topWidget!,
       Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment:
-            isSentByMe ? sentMessageRowAlignment : receivedMessageRowAlignment,
+        crossAxisAlignment: isSentByMe
+            ? sentMessageRowAlignment
+            : receivedMessageRowAlignment,
         children: [
           if (leadingWidget != null) leadingWidget!,
           Flexible(child: child),
@@ -232,16 +230,16 @@ class ChatMessage extends StatelessWidget {
 
     return groupStatus?.isFirst == false || isRemoved == true
         ? EdgeInsets.fromLTRB(
-          horizontalPadding ?? 0,
-          verticalGroupedPadding ?? 0,
-          horizontalPadding ?? 0,
-          0,
-        )
+            horizontalPadding ?? 0,
+            verticalGroupedPadding ?? 0,
+            horizontalPadding ?? 0,
+            0,
+          )
         : EdgeInsets.fromLTRB(
-          horizontalPadding ?? 0,
-          verticalPadding ?? 0,
-          horizontalPadding ?? 0,
-          0,
-        );
+            horizontalPadding ?? 0,
+            verticalPadding ?? 0,
+            horizontalPadding ?? 0,
+            0,
+          );
   }
 }

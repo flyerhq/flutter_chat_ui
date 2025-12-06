@@ -4,16 +4,15 @@ import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:provider/provider.dart';
 
 /// Theme values for [FlyerChatTextMessage].
-typedef _LocalTheme =
-    ({
-      TextStyle bodyMedium,
-      TextStyle labelSmall,
-      Color onPrimary,
-      Color onSurface,
-      Color primary,
-      BorderRadiusGeometry shape,
-      Color surfaceContainer,
-    });
+typedef _LocalTheme = ({
+  TextStyle bodyMedium,
+  TextStyle labelSmall,
+  Color onPrimary,
+  Color onSurface,
+  Color primary,
+  BorderRadiusGeometry shape,
+  Color surfaceContainer,
+});
 
 // This can be removed when this issue is resolved https://github.com/Infinitix-LLC/gpt_markdown/issues/85
 InlineSpan _applyLinkStyle(
@@ -26,18 +25,17 @@ InlineSpan _applyLinkStyle(
   if (original is TextSpan) {
     return TextSpan(
       text: original.text,
-      children:
-          original.children
-              ?.map(
-                (child) => _applyLinkStyle(
-                  child,
-                  paragraphStyle,
-                  color,
-                  decoration,
-                  decorationColor,
-                ),
-              )
-              .toList(),
+      children: original.children
+          ?.map(
+            (child) => _applyLinkStyle(
+              child,
+              paragraphStyle,
+              color,
+              decoration,
+              decorationColor,
+            ),
+          )
+          .toList(),
       style: (original.style ?? paragraphStyle ?? const TextStyle()).copyWith(
         color: color,
         decoration: decoration,
@@ -177,47 +175,43 @@ class FlyerChatTextMessage extends StatelessWidget {
       theme,
     );
 
-    final timeAndStatus =
-        showTime || (isSentByMe && showStatus)
-            ? TimeAndStatus(
-              time: message.resolvedTime,
-              status: message.resolvedStatus,
-              showTime: showTime,
-              showStatus: isSentByMe && showStatus,
-              textStyle: timeStyle,
-            )
-            : null;
+    final timeAndStatus = showTime || (isSentByMe && showStatus)
+        ? TimeAndStatus(
+            time: message.resolvedTime,
+            status: message.resolvedStatus,
+            showTime: showTime,
+            showStatus: isSentByMe && showStatus,
+            textStyle: timeStyle,
+          )
+        : null;
 
     final textContent = GptMarkdownTheme(
       gptThemeData: GptMarkdownTheme.of(context),
       child: GptMarkdown(
         message.text,
-        style:
-            _isOnlyEmoji
-                ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
-                : paragraphStyle,
+        style: _isOnlyEmoji
+            ? paragraphStyle?.copyWith(fontSize: onlyEmojiFontSize)
+            : paragraphStyle,
         onLinkTap: onLinkTap,
-        linkBuilder:
-            (_, span, _, _) => Text.rich(
-              _applyLinkStyle(
-                span,
-                paragraphStyle,
-                linksColor,
-                linksDecoration,
-                linksDecorationColor,
-              ),
-            ),
+        linkBuilder: (_, span, _, _) => Text.rich(
+          _applyLinkStyle(
+            span,
+            paragraphStyle,
+            linksColor,
+            linksDecoration,
+            linksDecorationColor,
+          ),
+        ),
       ),
     );
 
-    final linkPreviewWidget =
-        linkPreviewPosition != LinkPreviewPosition.none
-            ? context.read<Builders>().linkPreviewBuilder?.call(
-              context,
-              message,
-              isSentByMe,
-            )
-            : null;
+    final linkPreviewWidget = linkPreviewPosition != LinkPreviewPosition.none
+        ? context.read<Builders>().linkPreviewBuilder?.call(
+            context,
+            message,
+            isSentByMe,
+          )
+        : null;
 
     return ClipRRect(
       borderRadius: borderRadius ?? theme.shape,
@@ -229,13 +223,12 @@ class FlyerChatTextMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding:
-                  _isOnlyEmoji
-                      ? EdgeInsets.symmetric(
-                        horizontal: (padding?.horizontal ?? 0) / 2,
-                        vertical: 0,
-                      )
-                      : padding,
+              padding: _isOnlyEmoji
+                  ? EdgeInsets.symmetric(
+                      horizontal: (padding?.horizontal ?? 0) / 2,
+                      vertical: 0,
+                    )
+                  : padding,
               child: _buildContentBasedOnPosition(
                 context: context,
                 textContent: textContent,
@@ -258,10 +251,9 @@ class FlyerChatTextMessage extends StatelessWidget {
     Widget? linkPreviewWidget,
   }) {
     final textDirection = Directionality.of(context);
-    final effectiveLinkPreviewPosition =
-        linkPreviewWidget != null
-            ? linkPreviewPosition
-            : LinkPreviewPosition.none;
+    final effectiveLinkPreviewPosition = linkPreviewWidget != null
+        ? linkPreviewPosition
+        : LinkPreviewPosition.none;
 
     return Stack(
       children: [
@@ -274,18 +266,19 @@ class FlyerChatTextMessage extends StatelessWidget {
               linkPreviewWidget!,
             timeAndStatusPosition == TimeAndStatusPosition.inline
                 ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(child: textContent),
-                    SizedBox(width: 4),
-                    Padding(
-                      padding:
-                          timeAndStatusPositionInlineInsets ?? EdgeInsets.zero,
-                      child: timeAndStatus,
-                    ),
-                  ],
-                )
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(child: textContent),
+                      SizedBox(width: 4),
+                      Padding(
+                        padding:
+                            timeAndStatusPositionInlineInsets ??
+                            EdgeInsets.zero,
+                        child: timeAndStatus,
+                      ),
+                    ],
+                  )
                 : textContent,
             if (effectiveLinkPreviewPosition == LinkPreviewPosition.bottom)
               linkPreviewWidget!,
@@ -300,8 +293,9 @@ class FlyerChatTextMessage extends StatelessWidget {
           Positioned.directional(
             textDirection: textDirection,
             end: timeAndStatusPosition == TimeAndStatusPosition.end ? 0 : null,
-            start:
-                timeAndStatusPosition == TimeAndStatusPosition.start ? 0 : null,
+            start: timeAndStatusPosition == TimeAndStatusPosition.start
+                ? 0
+                : null,
             bottom: 0,
             child: timeAndStatus,
           ),

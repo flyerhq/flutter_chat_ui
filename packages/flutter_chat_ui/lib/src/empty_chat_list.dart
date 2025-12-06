@@ -70,10 +70,8 @@ class _EmptyChatListState extends State<EmptyChatList>
   @override
   Widget build(BuildContext context) {
     final theme = context.select(
-      (ChatTheme t) => (
-        bodyLarge: t.typography.bodyLarge,
-        onSurface: t.colors.onSurface,
-      ),
+      (ChatTheme t) =>
+          (bodyLarge: t.typography.bodyLarge, onSurface: t.colors.onSurface),
     );
 
     return FadeTransition(
