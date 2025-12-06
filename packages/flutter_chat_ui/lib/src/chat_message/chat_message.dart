@@ -135,16 +135,16 @@ class ChatMessage extends StatelessWidget {
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
     Widget messageContent = GestureDetector(
-      onTapUp: (details) =>
-          onMessageTap?.call(context, message, index: index, details: details),
-      onDoubleTap: () =>
-          onMessageDoubleTap?.call(context, message, index: index),
-      onLongPressStart: (details) => onMessageLongPress?.call(
+      onTapUp: onMessageTap != null ? (details) =>
+          onMessageTap.call(context, message, index: index, details: details) : null,
+      onDoubleTap: onMessageDoubleTap != null ? () =>
+          onMessageDoubleTap.call(context, message, index: index) : null,
+      onLongPressStart: onMessageLongPress != null ? (details) => onMessageLongPress.call(
         context,
         message,
         index: index,
         details: details,
-      ),
+      ) : null,
       child: FadeTransition(
         opacity: curvedAnimation,
         child: SizeTransition(
