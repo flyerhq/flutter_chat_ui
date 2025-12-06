@@ -134,68 +134,101 @@ class ChatMessage extends StatelessWidget {
 
     final resolvedPadding = padding ?? _resolveDefaultPadding(context);
 
-    final Widget messageWidget = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (headerWidget != null)
-          FadeTransition(
-            opacity: curvedAnimation,
-            child: SizeTransition(
-              axisAlignment: 0,
-              sizeFactor: curvedAnimation,
-              child: headerWidget!,
-            ),
-          ),
-        GestureDetector(
-          onTapUp: (details) => onMessageTap?.call(
-            context,
-            message,
-            index: index,
-            details: details,
-          ),
-          onDoubleTap: () =>
-              onMessageDoubleTap?.call(context, message, index: index),
-          onLongPressStart: (details) => onMessageLongPress?.call(
-            context,
-            message,
-            index: index,
-            details: details,
-          ),
-          child: FadeTransition(
-            opacity: curvedAnimation,
-            child: SizeTransition(
-              sizeFactor: curvedAnimation,
-              child: ScaleTransition(
-                scale: curvedAnimation,
-                alignment:
-                    scaleAnimationAlignment ??
-                    (isSentByMe
-                        ? sentMessageScaleAnimationAlignment
-                        : receivedMessageScaleAnimationAlignment),
-                child: Align(
-                  alignment:
-                      alignment ??
-                      (isSentByMe
-                          ? sentMessageAlignment
-                          : receivedMessageAlignment),
-                  child: _buildMessage(isSentByMe: isSentByMe),
-                ),
-              ),
+    Widget messageContent = GestureDetector(
+      onTapUp: (details) =>
+          onMessageTap?.call(context, message, index: index, details: details),
+      onDoubleTap: () =>
+          onMessageDoubleTap?.call(context, message, index: index),
+      onLongPressStart: (details) => onMessageLongPress?.call(
+        context,
+        message,
+        index: index,
+        details: details,
+      ),
+      child: FadeTransition(
+        opacity: curvedAnimation,
+        child: SizeTransition(
+          sizeFactor: curvedAnimation,
+          child: ScaleTransition(
+            scale: curvedAnimation,
+            alignment:
+                scaleAnimationAlignment ??
+                (isSentByMe
+                    ? sentMessageScaleAnimationAlignment
+                    : receivedMessageScaleAnimationAlignment),
+            child: Align(
+              alignment:
+                  alignment ??
+                  (isSentByMe
+                      ? sentMessageAlignment
+                      : receivedMessageAlignment),
+              child: _buildMessage(isSentByMe: isSentByMe),
             ),
           ),
         ),
+      ),
+    );
+
+    // If no headerWidget, apply full padding to message content directly
+    if (headerWidget == null) {
+      if (resolvedPadding != EdgeInsetsGeometry.zero) {
+        return paddingChangeAnimationDuration != null
+            ? AnimatedPadding(
+                padding: resolvedPadding,
+                duration: paddingChangeAnimationDuration!,
+                curve: Curves.linearToEaseOut,
+                child: messageContent,
+              )
+            : Padding(padding: resolvedPadding, child: messageContent);
+      }
+      return messageContent;
+    }
+
+    // With headerWidget: split padding so header spans full width
+    // (not affected by horizontal padding) but respects vertical spacing.
+    final resolved = resolvedPadding.resolve(Directionality.of(context));
+    final verticalPadding = EdgeInsets.only(
+      top: resolved.top,
+      bottom: resolved.bottom,
+    );
+    final horizontalPadding = EdgeInsets.only(
+      left: resolved.left,
+      right: resolved.right,
+    );
+
+    // Apply horizontal padding only to message content
+    if (horizontalPadding != EdgeInsetsGeometry.zero) {
+      messageContent = Padding(
+        padding: horizontalPadding,
+        child: messageContent,
+      );
+    }
+
+    final Widget messageWidget = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FadeTransition(
+          opacity: curvedAnimation,
+          child: SizeTransition(
+            axisAlignment: 0,
+            sizeFactor: curvedAnimation,
+            child: headerWidget!,
+          ),
+        ),
+        messageContent,
       ],
     );
 
-    if (resolvedPadding != EdgeInsets.zero) {
+    // Apply vertical padding to the entire widget for spacing
+    if (verticalPadding != EdgeInsetsGeometry.zero) {
       return paddingChangeAnimationDuration != null
           ? AnimatedPadding(
-              padding: resolvedPadding,
+              padding: verticalPadding,
               duration: paddingChangeAnimationDuration!,
               curve: Curves.linearToEaseOut,
               child: messageWidget,
             )
-          : Padding(padding: resolvedPadding, child: messageWidget);
+          : Padding(padding: verticalPadding, child: messageWidget);
     }
 
     return messageWidget;
