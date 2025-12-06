@@ -39,7 +39,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_core: ^2.9.0
-  flutter_chat_ui: ^2.10.0
+  flutter_chat_ui: ^2.11.0
   flutter_dotenv: ^6.0.0
   flutter_link_previewer: ^4.2.0
   flutter_lorem: ^2.0.0
