@@ -270,11 +270,11 @@ class LocalState extends State<Local> {
   void _handleMessageLongPress(
     BuildContext context,
     Message message, {
-    int? index,
-    LongPressStartDetails? details,
+    required int index,
+    required LongPressStartDetails details,
   }) async {
     // Skip showing menu for system messages
-    if (message.authorId == 'system' || details == null) return;
+    if (message.authorId == 'system') return;
 
     // Calculate position for the menu
     final position = details.globalPosition;
