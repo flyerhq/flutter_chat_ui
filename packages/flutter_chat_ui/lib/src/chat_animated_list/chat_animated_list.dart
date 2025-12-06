@@ -367,6 +367,15 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
     final sliverAnimatedList = SliverAnimatedList(
       key: _listKey,
       initialItemCount: _oldList.length,
+      findChildIndexCallback: (Key key) {
+        if (key is ValueKey<MessageID>) {
+          final index = _oldList.indexWhere((m) => m.id == key.value);
+          if (index != -1) {
+            return visualPosition(index);
+          }
+        }
+        return null;
+      },
       itemBuilder: (
         BuildContext context,
         int index,
