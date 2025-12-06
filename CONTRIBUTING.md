@@ -53,11 +53,24 @@ Before creating a new issue:
     ```bash
     cd ..
     ```
-4.  Bootstrap Melos to link packages:
+4.  Add the example to the root `pubspec.yaml` under the `workspace` key:
+    ```yaml
+    workspace:
+      - examples/example_name
+      # ... other packages
+    ```
+5.  Add `resolution: workspace` to the example's `pubspec.yaml` after the `environment` section:
+    ```yaml
+    environment:
+      sdk: ^3.7.0
+
+    resolution: workspace
+    ```
+6.  Bootstrap Melos to link packages:
     ```bash
     melos bs
     ```
-5.  Replace the content of `examples/example_name/analysis_options.yaml` with:
+7.  Replace the content of `examples/example_name/analysis_options.yaml` with:
     ```yaml
     include: ../../analysis_options.yaml
     ```
@@ -76,15 +89,28 @@ Before creating a new issue:
     ```bash
     cd ..
     ```
-4.  Bootstrap Melos:
+4.  Add the package to the root `pubspec.yaml` under the `workspace` key:
+    ```yaml
+    workspace:
+      - packages/package_name
+      # ... other packages
+    ```
+5.  Add `resolution: workspace` to the package's `pubspec.yaml` after the `environment` section:
+    ```yaml
+    environment:
+      sdk: ">=3.7.0 <4.0.0"
+
+    resolution: workspace
+    ```
+6.  Bootstrap Melos:
     ```bash
     melos bs
     ```
-5.  Replace the content of `packages/package_name/analysis_options.yaml` with:
+7.  Replace the content of `packages/package_name/analysis_options.yaml` with:
     ```yaml
     include: ../../analysis_options.yaml
     ```
-6.  Structure the package similarly to existing ones. Essential files include:
+8.  Structure the package similarly to existing ones. Essential files include:
     ```
     lib/
       src/
@@ -97,7 +123,7 @@ Before creating a new issue:
     README.md
     ```
     Remove unnecessary generated files and update `pubspec.yaml`.
-7.  Run `melos bs` again after modifying `pubspec.yaml`.
+9.  Run `melos bs` again after modifying `pubspec.yaml`.
 
 ### Common Melos Commands
 

@@ -21,6 +21,8 @@ version: 1.0.0+1
 environment:
   sdk: ^3.10.1
 
+resolution: workspace
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -52,7 +54,6 @@ dependencies:
   http: ^1.6.0
   image_picker: ^1.2.1
   intl: ^0.20.2
-  isar_flutter_libs: ^4.0.0-dev.14
   path: ^1.9.1
   path_provider: ^2.1.5
   provider: ^6.1.5+1

@@ -1,7 +1,63 @@
-name: chat
+name: flyer_chat_workspace
+publish_to: none
 
 environment:
   sdk: ">=3.7.0 <4.0.0"
+
+workspace:
+  - examples/flyer_chat
+  - packages/cross_cache
+  - packages/flutter_chat_core
+  - packages/flutter_chat_ui
+  - packages/flutter_link_previewer
+  - packages/flyer_chat_audio_message
+  - packages/flyer_chat_custom_message
+  - packages/flyer_chat_file_message
+  - packages/flyer_chat_image_message
+  - packages/flyer_chat_location_message
+  - packages/flyer_chat_system_message
+  - packages/flyer_chat_text_message
+  - packages/flyer_chat_text_stream_message
+  - packages/flyer_chat_video_message
+
 dev_dependencies:
   flutter_lints: ^6.0.0
-  melos: ^6.3.3
+  melos: ^7.3.0
+
+melos:
+  repository: https://github.com/flyerhq/flutter_chat_ui
+
+  scripts:
+    test:selective:
+      run: melos exec --fail-fast -- flutter test --no-pub --coverage
+      description: run flutter test for a specific package
+      packageFilters:
+        dirExists: test
+    test:
+      run: melos run test:selective --no-select
+      description: run flutter test in all packages
+    coverage:selective:
+      exec: genhtml coverage/lcov.info -o coverage/html
+      description: generate coverage for a specific package
+      packageFilters:
+        dirExists: test
+    coverage:
+      run: melos run test && melos run coverage:selective --no-select
+      description: generate coverage for all packages
+    analyze:
+      exec: dart analyze --fatal-infos .
+      description: run `dart analyze` in all packages
+    build:
+      exec: dart run build_runner build --delete-conflicting-outputs
+      packageFilters:
+        dependsOn: build_runner
+    format:
+      run: dart format --set-exit-if-changed .
+      description: run `dart format --set-exit-if-changed .` in all packages
+    fix:
+      run: dart fix --apply .
+      description: run `dart fix --apply .` in all packages
+
+  command:
+    version:
+      workspaceChangelog: false

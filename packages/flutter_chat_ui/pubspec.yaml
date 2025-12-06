@@ -10,6 +10,8 @@ environment:
   sdk: ">=3.8.0 <4.0.0"
   flutter: ">=3.32.0"
 
+resolution: workspace
+
 dependencies:
   cross_cache: ^1.0.5
   diffutil_dart: ^4.0.1
