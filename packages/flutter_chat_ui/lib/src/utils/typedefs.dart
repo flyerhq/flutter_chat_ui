@@ -37,7 +37,8 @@ typedef OnMessageSecondaryTapCallback =
       BuildContext context,
       Message message, {
       required int index,
-      required TapUpDetails details,
+      // TODO: When provider is removed make definition same as OnMessageTapCallback
+      TapUpDetails? details,
     });
 
 /// Callback signature for when the user attempts to send a message.
