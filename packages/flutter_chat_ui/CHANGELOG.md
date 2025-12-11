@@ -1,3 +1,7 @@
+## 2.11.1
+
+ - **FIX**: change definition of OnMessageSecondaryTapCallback. ([50ba67e0](https://github.com/flyerhq/flutter_chat_ui/commit/50ba67e07ec8c28167d3702fc0beda8393cbc44d))
+
 ## 2.11.0
 
  - **FIX**: handle null checks for message gesture callbacks in ChatMessage widget ([#861](https://github.com/flyerhq/flutter_chat_ui/issues/861)). ([0a7fe3dd](https://github.com/flyerhq/flutter_chat_ui/commit/0a7fe3dd61ab6310c45774cc28103611df1dd3d3))
