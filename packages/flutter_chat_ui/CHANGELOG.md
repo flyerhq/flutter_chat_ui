@@ -1,3 +1,23 @@
+## 2.11.1
+
+ - **FIX**: change definition of OnMessageSecondaryTapCallback. ([50ba67e0](https://github.com/flyerhq/flutter_chat_ui/commit/50ba67e07ec8c28167d3702fc0beda8393cbc44d))
+
+## 2.11.0
+
+ - **FIX**: handle null checks for message gesture callbacks in ChatMessage widget ([#861](https://github.com/flyerhq/flutter_chat_ui/issues/861)). ([0a7fe3dd](https://github.com/flyerhq/flutter_chat_ui/commit/0a7fe3dd61ab6310c45774cc28103611df1dd3d3))
+ - **FIX**: add required modifier to named params of onMessageTap, onMessageDoubleTap, onMessageLongPress. ([8509a1b2](https://github.com/flyerhq/flutter_chat_ui/commit/8509a1b2583a7fd1c5b3e3e9f81c38898f9e9cb2))
+ - **FEAT**: sendOnEnter param for composer. ([98ece404](https://github.com/flyerhq/flutter_chat_ui/commit/98ece404dd17f530fdc6bb9a5e7c260c17921751))
+ - **FEAT**: add onMessageSecondaryTap callback. ([fcca65a5](https://github.com/flyerhq/flutter_chat_ui/commit/fcca65a500bdb73bfbce8d2c327f67d67e2df10e))
+ - **FEAT**: headerWidget should ignore horizontal padding. ([14ca1b2d](https://github.com/flyerhq/flutter_chat_ui/commit/14ca1b2d023f81c4e865c33022d7f01ec9a4952e))
+
+## 2.10.0
+
+ - **FEAT**: update deps - requires min dart 3.8 and flutter 3.32 ([#871](https://github.com/flyerhq/flutter_chat_ui/issues/871)). ([588b34bd](https://github.com/flyerhq/flutter_chat_ui/commit/588b34bd398900c8f25ee69c574d1e35391af1d1))
+
+## 2.9.2
+
+ - **FIX**: chat messages rebuilt after sending new message. ([a17f3162](https://github.com/flyerhq/flutter_chat_ui/commit/a17f3162b118b7d539486c5a15c14e2fa9b9a464))
+
 ## 2.9.1
 
  - **FIX**: add content insertion configuration to Composer widget ([#852](https://github.com/flyerhq/flutter_chat_ui/issues/852)). ([6b5f6afc](https://github.com/flyerhq/flutter_chat_ui/commit/6b5f6afcd55054b79c31d950be63c2a4583f8128))

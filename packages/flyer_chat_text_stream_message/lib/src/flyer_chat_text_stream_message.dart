@@ -8,16 +8,15 @@ import 'stream_state.dart';
 import 'text_segment.dart';
 
 /// Theme values for [FlyerChatTextStreamMessage].
-typedef _LocalTheme =
-    ({
-      TextStyle bodyMedium,
-      TextStyle labelSmall,
-      Color onPrimary,
-      Color onSurface,
-      Color primary,
-      BorderRadiusGeometry shape,
-      Color surfaceContainer,
-    });
+typedef _LocalTheme = ({
+  TextStyle bodyMedium,
+  TextStyle labelSmall,
+  Color onPrimary,
+  Color onSurface,
+  Color primary,
+  BorderRadiusGeometry shape,
+  Color surfaceContainer,
+});
 
 /// Defines how the text stream message content is rendered.
 enum TextStreamMessageMode {
@@ -310,16 +309,15 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
     final paragraphStyle = _resolveParagraphStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
 
-    final timeAndStatus =
-        widget.showTime || (isSentByMe && widget.showStatus)
-            ? TimeAndStatus(
-              time: widget.message.resolvedTime,
-              status: widget.message.resolvedStatus,
-              showTime: widget.showTime,
-              showStatus: isSentByMe && widget.showStatus,
-              textStyle: timeStyle,
-            )
-            : null;
+    final timeAndStatus = widget.showTime || (isSentByMe && widget.showStatus)
+        ? TimeAndStatus(
+            time: widget.message.resolvedTime,
+            status: widget.message.resolvedStatus,
+            showTime: widget.showTime,
+            showStatus: isSentByMe && widget.showStatus,
+            textStyle: timeStyle,
+          )
+        : null;
 
     // Build text content based on segments
     final textContent = _buildTextContent(paragraphStyle, theme);
@@ -359,10 +357,9 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
 
     if (widget.streamState is StreamStateError) {
       final state = widget.streamState as StreamStateError;
-      final errorText =
-          state.accumulatedText != null
-              ? '${state.accumulatedText}\n\nError: ${state.error}'
-              : 'Error: ${state.error}';
+      final errorText = state.accumulatedText != null
+          ? '${state.accumulatedText}\n\nError: ${state.error}'
+          : 'Error: ${state.error}';
       return Text(
         errorText,
         style: paragraphStyle?.copyWith(color: Colors.red),
@@ -397,21 +394,20 @@ class _FlyerChatTextStreamMessageState extends State<FlyerChatTextStreamMessage>
         return RichText(
           text: TextSpan(
             style: paragraphStyle,
-            children:
-                _segments.map<InlineSpan>((segment) {
-                  if (segment is StaticSegment) {
-                    return TextSpan(text: segment.text);
-                  } else if (segment is AnimatingSegment) {
-                    final currentOpacity = segment.fadeAnimation.value;
-                    final animatingStyle = paragraphStyle?.copyWith(
-                      color: paragraphStyle.color?.withValues(
-                        alpha: currentOpacity,
-                      ),
-                    );
-                    return TextSpan(text: segment.text, style: animatingStyle);
-                  }
-                  return const TextSpan();
-                }).toList(),
+            children: _segments.map<InlineSpan>((segment) {
+              if (segment is StaticSegment) {
+                return TextSpan(text: segment.text);
+              } else if (segment is AnimatingSegment) {
+                final currentOpacity = segment.fadeAnimation.value;
+                final animatingStyle = paragraphStyle?.copyWith(
+                  color: paragraphStyle.color?.withValues(
+                    alpha: currentOpacity,
+                  ),
+                );
+                return TextSpan(text: segment.text, style: animatingStyle);
+              }
+              return const TextSpan();
+            }).toList(),
           ),
         );
       }

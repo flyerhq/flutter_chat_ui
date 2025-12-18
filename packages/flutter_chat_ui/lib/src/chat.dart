@@ -50,6 +50,9 @@ class Chat extends StatefulWidget {
   /// Callback triggered when a message is long-pressed.
   final OnMessageLongPressCallback? onMessageLongPress;
 
+  /// Callback triggered when a message is right-clicked (secondary tapped).
+  final OnMessageSecondaryTapCallback? onMessageSecondaryTap;
+
   /// Callback triggered when the attachment button in the composer is tapped.
   final OnAttachmentTapCallback? onAttachmentTap;
 
@@ -79,6 +82,7 @@ class Chat extends StatefulWidget {
     this.onMessageSend,
     this.onMessageTap,
     this.onMessageLongPress,
+    this.onMessageSecondaryTap,
     this.onAttachmentTap,
     this.backgroundColor,
     this.decoration,
@@ -150,15 +154,15 @@ class _ChatState extends State<Chat> with WidgetsBindingObserver {
         Provider.value(value: widget.onMessageSend),
         Provider.value(value: widget.onMessageTap),
         Provider.value(value: widget.onMessageLongPress),
+        Provider.value(value: widget.onMessageSecondaryTap),
         Provider.value(value: widget.onAttachmentTap),
         ChangeNotifierProvider(create: (_) => ComposerHeightNotifier()),
         ChangeNotifierProvider(create: (_) => LoadMoreNotifier()),
       ],
       child: Container(
-        color:
-            widget.decoration != null
-                ? null
-                : (widget.backgroundColor ?? _theme.colors.surface),
+        color: widget.decoration != null
+            ? null
+            : (widget.backgroundColor ?? _theme.colors.surface),
         decoration: widget.decoration,
         child: Stack(
           children: [

@@ -1,5 +1,5 @@
 name: cross_cache
-version: 1.0.5
+version: 1.1.0
 description: >
   Cross-platform cache manager for Flutter using IndexedDB for web, file system
   for mobile and desktop, and Dio for network requests. #cache #indexeddb #dio
@@ -7,16 +7,18 @@ homepage: https://flyer.chat
 repository: https://github.com/flyerhq/flutter_chat_ui
 
 environment:
-  sdk: ">=3.7.0 <4.0.0"
-  flutter: ">=3.29.0"
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: ">=3.32.0"
+
+resolution: workspace
 
 dependencies:
-  cross_file: ^0.3.4+2
-  crypto: ^3.0.6
+  cross_file: ^0.3.5+1
+  crypto: ^3.0.7
   dio: ^5.9.0
   flutter:
     sdk: flutter
-  idb_shim: ^2.6.6+2
+  idb_shim: ^2.6.7+1
   path_provider: ^2.1.5
 
 dev_dependencies:

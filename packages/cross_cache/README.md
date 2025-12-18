@@ -8,11 +8,11 @@ A simple cross-platform caching library for Flutter, primarily designed for cach
 
 - 💾 **Cross-Platform Caching:** Automatically uses the appropriate storage mechanism for Web and IO platforms.
 - 🌐 **Versatile Fetching:** Downloads and caches resources from various sources:
-    - Network URLs (http, https, blob)
-    - Flutter asset paths (`assets/...`)
-    - Data URIs (`data:...`)
-    - Local file paths (IO platforms only)
-    - Base64 encoded strings
+  - Network URLs (http, https, blob)
+  - Flutter asset paths (`assets/...`)
+  - Data URIs (`data:...`)
+  - Local file paths (IO platforms only)
+  - Base64 encoded strings
 - 🤝 **Dio Integration:** Uses [`dio`](https://pub.dev/packages/dio) for network requests (instance can be provided).
 - 🖼️ **Flutter `ImageProvider`:** Includes `CachedNetworkImage`, a drop-in replacement for `NetworkImage` that uses the cache.
 - ⚙️ **Standard Cache API:** Provides basic `get`, `set`, `contains`, `delete`, and `updateKey` methods for direct cache interaction.
@@ -154,16 +154,16 @@ await cache.delete('my_unique_key');
 
 ## 🤔 How It Works
 
--   **Web:** Uses the `idb_shim` package to store `Uint8List` data in an IndexedDB object store named `data` within a database called `cross_cache_db`. The cache key is used directly as the IndexedDB key.
--   **IO:** Uses the `path_provider` package to get the application's cache directory. It creates a `cross_cache` subdirectory. The provided cache key is SHA256 hashed to create a unique filename, and the `Uint8List` data is written to that file.
+- **Web:** Uses the `idb_shim` package to store `Uint8List` data in an IndexedDB object store named `data` within a database called `cross_cache_db`. The cache key is used directly as the IndexedDB key.
+- **IO:** Uses the `path_provider` package to get the application's cache directory. It creates a `cross_cache` subdirectory. The provided cache key is SHA256 hashed to create a unique filename, and the `Uint8List` data is written to that file.
 
 ## 🚧 Future Work
 
--   Better error handling.
--   Cache management features like manual/automatic purging.
--   Cancellation support for downloads in progress.
--   Option to set maximum cache size or item count.
--   Caching strategy (LRU, MRU, FIFO etc.)
+- Better error handling.
+- Cache management features like manual/automatic purging.
+- Cancellation support for downloads in progress.
+- Option to set maximum cache size or item count.
+- Caching strategy (LRU, MRU, FIFO etc.)
 
 ## 🤝 Contributing
 

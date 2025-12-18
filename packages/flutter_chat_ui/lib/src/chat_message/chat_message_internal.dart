@@ -136,8 +136,9 @@ class _ChatMessageInternalState extends State<ChatMessageInternal> {
       final currentMessage = _updatedMessage;
 
       // Get adjacent messages if they exist
-      final nextMessage =
-          index < messages.length - 1 ? messages[index + 1] : null;
+      final nextMessage = index < messages.length - 1
+          ? messages[index + 1]
+          : null;
       final previousMessage = index > 0 ? messages[index - 1] : null;
 
       // Get dates

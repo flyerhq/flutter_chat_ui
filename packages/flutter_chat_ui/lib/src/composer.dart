@@ -139,6 +139,13 @@ class Composer extends StatefulWidget {
   /// Configuration for content insertion (e.g., images, gifs, stickers) into the text field.
   final ContentInsertionConfiguration? contentInsertionConfiguration;
 
+  /// Controls how the Enter key behaves.
+  ///
+  /// When `true`: pressing Enter sends the message, and Shift+Enter inserts a newline.
+  /// When `false`: pressing Shift+Enter sends the message, and Enter inserts a newline.
+  /// Defaults to `false`.
+  final bool sendOnEnter;
+
   /// Creates a message composer widget.
   const Composer({
     super.key,
@@ -184,6 +191,7 @@ class Composer extends StatefulWidget {
     this.sendButtonHidden = false,
     this.inputClearMode = InputClearMode.always,
     this.contentInsertionConfiguration,
+    this.sendOnEnter = false,
   });
 
   @override
@@ -211,7 +219,7 @@ class _ComposerState extends State<Composer> {
     // Check for Shift+Enter
     if (event is KeyDownEvent &&
         event.logicalKey == LogicalKeyboardKey.enter &&
-        HardwareKeyboard.instance.isShiftPressed) {
+        widget.sendOnEnter ^ HardwareKeyboard.instance.isShiftPressed) {
       _handleSubmitted(_textController.text);
       return KeyEventResult.handled;
     }
@@ -246,10 +254,9 @@ class _ComposerState extends State<Composer> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomSafeArea =
-        widget.handleSafeArea == true
-            ? MediaQuery.of(context).padding.bottom
-            : 0.0;
+    final bottomSafeArea = widget.handleSafeArea == true
+        ? MediaQuery.of(context).padding.bottom
+        : 0.0;
     final onAttachmentTap = context.read<OnAttachmentTapCallback?>();
     final theme = context.select(
       (ChatTheme t) => (
@@ -276,23 +283,22 @@ class _ComposerState extends State<Composer> {
         children: [
           if (widget.topWidget != null) widget.topWidget!,
           Padding(
-            padding:
-                widget.handleSafeArea == true
-                    ? (widget.padding?.add(
-                          EdgeInsets.only(bottom: bottomSafeArea),
-                        ) ??
-                        EdgeInsets.only(bottom: bottomSafeArea))
-                    : (widget.padding ?? EdgeInsets.zero),
+            padding: widget.handleSafeArea == true
+                ? (widget.padding?.add(
+                        EdgeInsets.only(bottom: bottomSafeArea),
+                      ) ??
+                      EdgeInsets.only(bottom: bottomSafeArea))
+                : (widget.padding ?? EdgeInsets.zero),
             child: Row(
               children: [
                 widget.attachmentIcon != null && onAttachmentTap != null
                     ? IconButton(
-                      icon: widget.attachmentIcon!,
-                      color:
-                          widget.attachmentIconColor ??
-                          theme.onSurface.withValues(alpha: 0.5),
-                      onPressed: onAttachmentTap,
-                    )
+                        icon: widget.attachmentIcon!,
+                        color:
+                            widget.attachmentIconColor ??
+                            theme.onSurface.withValues(alpha: 0.5),
+                        onPressed: onAttachmentTap,
+                      )
                     : const SizedBox.shrink(),
                 SizedBox(width: widget.gap),
                 Expanded(
@@ -352,20 +358,19 @@ class _ComposerState extends State<Composer> {
 
                       return IconButton(
                         icon: widget.sendIcon!,
-                        color:
-                            isActive
-                                ? (widget.sendIconColor ??
-                                    theme.onSurface.withValues(alpha: 0.5))
-                                : (widget.emptyFieldSendIconColor ??
-                                    widget.sendIconColor ??
-                                    theme.onSurface.withValues(alpha: 0.5)),
+                        color: isActive
+                            ? (widget.sendIconColor ??
+                                  theme.onSurface.withValues(alpha: 0.5))
+                            : (widget.emptyFieldSendIconColor ??
+                                  widget.sendIconColor ??
+                                  theme.onSurface.withValues(alpha: 0.5)),
                         onPressed:
                             (widget.sendButtonVisibilityMode ==
-                                            SendButtonVisibilityMode.disabled &&
-                                        !hasText) ||
-                                    widget.sendButtonDisabled
-                                ? null
-                                : () => _handleSubmitted(_textController.text),
+                                        SendButtonVisibilityMode.disabled &&
+                                    !hasText) ||
+                                widget.sendButtonDisabled
+                            ? null
+                            : () => _handleSubmitted(_textController.text),
                       );
                     },
                   )
@@ -384,13 +389,12 @@ class _ComposerState extends State<Composer> {
       top: widget.top,
       bottom: widget.bottom,
       child: ClipRect(
-        child:
-            shouldUseBackdropFilter
-                ? BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
-                  child: content,
-                )
-                : content,
+        child: shouldUseBackdropFilter
+            ? BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+                child: content,
+              )
+            : content,
       ),
     );
   }

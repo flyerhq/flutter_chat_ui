@@ -89,15 +89,13 @@ class _IsTypingIndicatorState extends State<IsTypingIndicator>
         spacing: widget.spacing,
         children: List.generate(3, (index) {
           return SlideTransition(
-            position: Tween<Offset>(
-              begin: Offset(0, 0),
-              end: Offset(0, -0.5),
-            ).animate(
-              CurvedAnimation(
-                parent: _controllers[index],
-                curve: Curves.easeOut,
-              ),
-            ),
+            position: Tween<Offset>(begin: Offset(0, 0), end: Offset(0, -0.5))
+                .animate(
+                  CurvedAnimation(
+                    parent: _controllers[index],
+                    curve: Curves.easeOut,
+                  ),
+                ),
             child: Container(
               width: widget.size,
               height: widget.size,
