@@ -121,6 +121,15 @@ class ChatAnimatedList extends StatefulWidget {
   /// Physics for the scroll view.
   final ScrollPhysics? physics;
 
+  /// Cache extent for the underlying [CustomScrollView].
+  ///
+  /// Widening this keeps off-screen messages measured by [SliverList], so
+  /// their exact heights stay in the scroll extent calculation instead of
+  /// being replaced by the running average of active children. This prevents
+  /// scrollbar thumb jumps when tall messages (e.g. long markdown or tables)
+  /// leave the viewport.
+  final double? cacheExtent;
+
   /// Creates an animated chat list.
   const ChatAnimatedList({
     super.key,
@@ -178,6 +187,7 @@ class ChatAnimatedList extends StatefulWidget {
     this.messagesGroupingMode,
     this.messageGroupingTimeoutInSeconds,
     this.physics,
+    this.cacheExtent,
   });
 
   @override
@@ -479,6 +489,7 @@ class _ChatAnimatedListState extends State<ChatAnimatedList>
               controller: _scrollController,
               reverse: widget.reversed,
               physics: widget.physics,
+              cacheExtent: widget.cacheExtent,
               keyboardDismissBehavior:
                   widget.keyboardDismissBehavior ??
                   ScrollViewKeyboardDismissBehavior.manual,
