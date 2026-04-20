@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_link_previewer/flutter_link_previewer.dart';
+import 'package:flyer_chat_audio_message/flyer_chat_audio_message.dart';
 import 'package:flyer_chat_file_message/flyer_chat_file_message.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
 import 'package:flyer_chat_system_message/flyer_chat_system_message.dart';
@@ -28,8 +29,12 @@ class Local extends StatefulWidget {
   LocalState createState() => LocalState();
 }
 
+class LocalChatController extends InMemoryChatController with AudioMessageBinding {
+
+}
+
 class LocalState extends State<Local> {
-  final _chatController = InMemoryChatController();
+  final _chatController = LocalChatController();
   final _uuid = const Uuid();
 
   final _currentUser = const User(
@@ -45,6 +50,11 @@ class LocalState extends State<Local> {
   final _systemUser = const User(id: 'system');
 
   bool _isTyping = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -125,6 +135,42 @@ class LocalState extends State<Local> {
                   onPressed: () => _chatController.setMessages([]),
                   destructive: true,
                 ),
+                ComposerActionButton(
+                  icon: Icons.spatial_audio_off,
+                  title: 'Send audio from current',
+                  onPressed: () {
+                    const source = 'https://cdn.pixabay.com/download/audio/2025/05/20/audio_baf0cfbdf7.mp3?filename=news-intro-344332.mp3';
+                    final audioMessage = AudioMessage(
+                      // Better to use UUID or similar for the ID - IDs must be unique
+                      id: '${Random().nextInt(1000) + 1}',
+                      authorId: _currentUser.id,
+                      createdAt: DateTime.now().toUtc(),
+                      source: source,
+                      size: 510,
+                      duration: Duration(seconds: 8),
+                    );
+                    _chatController.insertMessage(audioMessage);
+                  },
+                  destructive: true,
+                ),
+                ComposerActionButton(
+                  icon: Icons.spatial_audio_off,
+                  title: 'Send audio from other',
+                  onPressed: () {
+                    const source = 'https://cdn.pixabay.com/download/audio/2025/05/20/audio_baf0cfbdf7.mp3?filename=news-intro-344332.mp3';
+                    final audioMessage = AudioMessage(
+                      // Better to use UUID or similar for the ID - IDs must be unique
+                      id: '${Random().nextInt(1000) + 1}',
+                      authorId: 'user-1',
+                      createdAt: DateTime.now().toUtc(),
+                      source: source,
+                      size: 510,
+                      duration: Duration(seconds: 8),
+                    );
+                    _chatController.insertMessage(audioMessage);
+                  },
+                  destructive: true,
+                ),
               ],
             ),
           ),
@@ -155,6 +201,14 @@ class LocalState extends State<Local> {
                 required bool isSentByMe,
                 MessageGroupStatus? groupStatus,
               }) => FlyerChatTextMessage(message: message, index: index),
+          audioMessageBuilder:
+              (
+              context,
+              message,
+              index, {
+                required bool isSentByMe,
+                MessageGroupStatus? groupStatus,
+              }) => FlyerChatAudioMessage(message: message, waveColor: isSentByMe ? Colors.white : Colors.black,),
           fileMessageBuilder:
               (
                 context,
