@@ -61,6 +61,8 @@ dependencies:
   uuid: ^4.5.2
   web_socket_channel: ^3.0.3
 
+  material_ui: any
+  cupertino_ui: any
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

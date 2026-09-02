@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:cross_cache/cross_cache.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:image/image.dart' show encodeJpg;
 import 'package:provider/provider.dart';

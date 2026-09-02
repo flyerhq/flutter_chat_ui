@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cross_cache/cross_cache.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
