@@ -18,6 +18,7 @@ dependencies:
   gpt_markdown: ^1.1.4
   provider: ^6.1.5+1
 
+  material_ui: any
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:

@@ -1,5 +1,5 @@
 import 'package:cross_cache/cross_cache.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';
 import 'chat_animated_list/chat_animated_list.dart';

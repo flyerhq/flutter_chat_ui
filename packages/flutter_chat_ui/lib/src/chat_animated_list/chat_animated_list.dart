@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:diffutil_dart/diffutil.dart' as diffutil;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:provider/provider.dart';

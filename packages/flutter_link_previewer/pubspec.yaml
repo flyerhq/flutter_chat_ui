@@ -22,6 +22,7 @@ dependencies:
   punycode: ^1.0.0
   url_launcher: ^6.3.2
 
+  material_ui: any
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:

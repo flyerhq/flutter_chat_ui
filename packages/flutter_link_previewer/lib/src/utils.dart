@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/material.dart' hide Element;
+import 'package:material_ui/material_ui.dart' hide Element;
 import 'package:flutter_chat_core/flutter_chat_core.dart'
     show LinkPreviewData, ImagePreviewData;
 import 'package:html/dom.dart' show Document, Element;
