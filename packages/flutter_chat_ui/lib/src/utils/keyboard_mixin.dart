@@ -45,7 +45,10 @@ mixin KeyboardMixin<T extends StatefulWidget>
     super.didChangeMetrics();
     if (!mounted) return;
 
-    final keyboardHeight = View.of(context).viewInsets.bottom;
+    final view = View.maybeOf(context);
+    if (view == null) return;
+
+    final keyboardHeight = view.viewInsets.bottom;
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     if (keyboardHeight != _previousKeyboardHeight) {
       _previousKeyboardHeight = keyboardHeight;
