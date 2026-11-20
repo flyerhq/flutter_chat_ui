@@ -177,15 +177,51 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    final width = widget.message.width;
+    final height = widget.message.height;
+    if ((oldWidget.message.width != width ||
+            oldWidget.message.height != height) &&
+        width != null &&
+        height != null &&
+        width > 0 &&
+        height > 0) {
+      _aspectRatio = width / height;
+    }
+
     if (oldWidget.message.source != widget.message.source ||
         oldWidget.headers != widget.headers) {
       final newImage = _targetProvider;
+      final requestedSource = widget.message.source;
+      // A later source change can finish loading first; ignore stale results.
+      bool isCurrent() => mounted && widget.message.source == requestedSource;
 
       precacheImage(newImage, context).then((_) {
-        if (mounted) {
-          _imageProvider = newImage;
+        if (isCurrent()) {
+          setState(() {
+            _imageProvider = newImage;
+          });
         }
       });
+
+      if (width == null || height == null) {
+        getImageDimensions(newImage)
+            .then((dimensions) {
+              if (isCurrent()) {
+                setState(() {
+                  _aspectRatio = dimensions.$1 / dimensions.$2;
+                });
+                _chatController.updateMessage(
+                  widget.message,
+                  widget.message.copyWith(
+                    width: dimensions.$1,
+                    height: dimensions.$2,
+                  ),
+                );
+              }
+            })
+            .catchError((Object _) {});
+      }
     }
   }
 
