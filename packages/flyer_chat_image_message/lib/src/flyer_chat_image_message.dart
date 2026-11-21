@@ -124,6 +124,9 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   late ImageProvider _imageProvider;
   late double _aspectRatio;
   ImageProvider? _placeholderProvider;
+  // Advanced on every source or header change, so a load started for an
+  // earlier request (even for the same URL, as in A -> B -> A) is ignored.
+  int _imageRequest = 0;
 
   @override
   void initState() {
@@ -192,9 +195,8 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
     if (oldWidget.message.source != widget.message.source ||
         oldWidget.headers != widget.headers) {
       final newImage = _targetProvider;
-      final requestedSource = widget.message.source;
-      // A later source change can finish loading first; ignore stale results.
-      bool isCurrent() => mounted && widget.message.source == requestedSource;
+      final request = ++_imageRequest;
+      bool isCurrent() => mounted && request == _imageRequest;
 
       precacheImage(newImage, context).then((_) {
         if (isCurrent()) {
@@ -207,7 +209,10 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
       if (width == null || height == null) {
         getImageDimensions(newImage)
             .then((dimensions) {
-              if (isCurrent()) {
+              // Skip if a newer update already supplied the size.
+              if (isCurrent() &&
+                  (widget.message.width == null ||
+                      widget.message.height == null)) {
                 setState(() {
                   _aspectRatio = dimensions.$1 / dimensions.$2;
                 });
