@@ -124,6 +124,9 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   late ImageProvider _imageProvider;
   late double _aspectRatio;
   ImageProvider? _placeholderProvider;
+  // Advanced on every source or header change, so a load started for an
+  // earlier request (even for the same URL, as in A -> B -> A) is ignored.
+  int _imageRequest = 0;
 
   @override
   void initState() {
@@ -177,15 +180,53 @@ class _FlyerChatImageMessageState extends State<FlyerChatImageMessage>
   @override
   void didUpdateWidget(covariant FlyerChatImageMessage oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    final width = widget.message.width;
+    final height = widget.message.height;
+    if ((oldWidget.message.width != width ||
+            oldWidget.message.height != height) &&
+        width != null &&
+        height != null &&
+        width > 0 &&
+        height > 0) {
+      _aspectRatio = width / height;
+    }
+
     if (oldWidget.message.source != widget.message.source ||
         oldWidget.headers != widget.headers) {
       final newImage = _targetProvider;
+      final request = ++_imageRequest;
+      bool isCurrent() => mounted && request == _imageRequest;
 
       precacheImage(newImage, context).then((_) {
-        if (mounted) {
-          _imageProvider = newImage;
+        if (isCurrent()) {
+          setState(() {
+            _imageProvider = newImage;
+          });
         }
       });
+
+      if (width == null || height == null) {
+        getImageDimensions(newImage)
+            .then((dimensions) {
+              // Skip if a newer update already supplied the size.
+              if (isCurrent() &&
+                  (widget.message.width == null ||
+                      widget.message.height == null)) {
+                setState(() {
+                  _aspectRatio = dimensions.$1 / dimensions.$2;
+                });
+                _chatController.updateMessage(
+                  widget.message,
+                  widget.message.copyWith(
+                    width: dimensions.$1,
+                    height: dimensions.$2,
+                  ),
+                );
+              }
+            })
+            .catchError((Object _) {});
+      }
     }
   }
 
